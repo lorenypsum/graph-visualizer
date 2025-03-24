@@ -14,10 +14,20 @@ body {
   
   #controls {
     display: flex;
-    justify-content: center;
+    justify-content: start;
     flex-wrap: wrap;
     gap: 0.5rem;
-    padding: 1rem;
+    padding-left: 5rem;
+  }
+
+  #title {
+    display: flex;
+    justify-content: start;
+    text-align: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    color: #5b8f79;
+    padding-left: 5rem;
   }
   
   input, button {
@@ -42,6 +52,7 @@ body {
   #log {
     text-align: center;
     padding: 1rem;
+    color: #5b8f79;
   }
   
   #log-output {
