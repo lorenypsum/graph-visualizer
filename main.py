@@ -1,9 +1,11 @@
 import networkx as nx
 import matplotlib.pyplot as plt
-import unittest
+# import unittest #não usado ainda
 import logging
-from js import document
-from pyodide.ffi import create_proxy
+from js import document, JSON, Blob, URL, __new__
+import io
+import base64
+# from pyodide.ffi import create_proxy
 
 G = nx.DiGraph()
 
@@ -13,11 +15,6 @@ def log(msg):
     log_box.scrollTop = log_box.scrollHeight
 
 def update_graph_output(G_display, title="Grafo Atual"):
-    import matplotlib.pyplot as plt
-    from matplotlib import pyplot
-    import io
-    import base64
-
     plt.clf()
     pos = nx.spring_layout(G_display)
     edge_labels = nx.get_edge_attributes(G_display, 'w')
@@ -48,7 +45,6 @@ def reset_graph(event=None):
     log("Grafo resetado.")
 
 def export_graph(event=None):
-    import json
     edges = [{"from": u, "to": v, "weight": d.get("w", 1)} for u, v, d in G.edges(data=True)]
     blob = __new__(Blob.new([JSON.stringify(edges)], {"type": "application/json"}))
     link = document.createElement("a")
