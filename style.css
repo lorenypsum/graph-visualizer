@@ -1,0 +1,65 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    background-color: #f5f7fb;
+    color: #333;
+  }
+  
+  header {
+    background-color: #2e8bff;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+  }
+  
+  main {
+    padding: 1rem;
+  }
+  
+  #controls {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  input {
+    margin: 0.3rem;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  button {
+    padding: 0.6rem 1rem;
+    margin: 0.3rem;
+    background-color: #2e8bff;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #1c6fde;
+  }
+  
+  #graph {
+    border: 1px solid #ccc;
+    background-color: white;
+  }
+  
+  #log {
+    margin-top: 2rem;
+    text-align: center;
+  }
+  
+  #log-output {
+    width: 90%;
+    height: 200px;
+    font-family: monospace;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    padding: 1rem;
+    resize: none;
+  }
+  
