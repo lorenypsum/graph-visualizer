@@ -115,7 +115,7 @@ def draw_graph(G, title="Digrafo"):
         print(f"[ERRO] Ocorreu um problema ao desenhar o grafo: {e}")
 
 # Grafo de teste   
-# TODO - Fazer testes com grafos maioress     
+# TODO - Fazer testes com grafos maiores   
 
 # Criando Digrafo com a biblioteca networkx para testes
 DG = nx.DiGraph()
@@ -188,7 +188,7 @@ def get_Fstar(G, r0):
 
         for v in G.nodes():
             if v != r0:
-                in_edges = list(G.in_edges(v, data='w'))
+                in_edges = list(G.in_edges(v, data='w')) 
                 if not in_edges:
                     continue  # Nenhuma aresta entra em v
                 # Tenta encontrar uma aresta com custo 0
@@ -288,7 +288,8 @@ def contract_cycle(G, C, label):
         if not cycle_nodes: # TODO - No final dos testes podemos remover esse if, já que se ele existe significa que algo deu errado.
             raise ValueError("O ciclo fornecido (C) está vazio e não pode ser contraído.")
 
-        # Encontra aresta de fora -> ciclo
+        # Encontra aresta de fora -> ciclo 
+        # TODO - criar atributo no in e ou edges falando qual a ponto original que o arco de entrada e saida do ciclo herdam
         in_candidates = [(u, v, w) for u, v, w in G.edges(data='w') if u not in cycle_nodes and v in cycle_nodes]
         in_edge = min(in_candidates, key=lambda e: e[2]) if in_candidates else None # TODO - Temos que fazer essa operação para cada vértice u
         if in_edge:
@@ -385,7 +386,7 @@ def find_optimum_arborescence(G, r0, level=0, raise_on_error=False):
 
         for v in G_arb.nodes:
             if v != r0:
-                change_edge_weight(G_arb, v)
+                change_edge_weight(G_arb, v) # TODO - devolver aqui todo mundo que tem um sub digrafo igual a 0, uma vez que já calculamos isso na mão
         draw_graph(G_arb, f"{indent}Após ajuste de pesos")
 
         F_star = get_Fstar(G_arb, r0)
