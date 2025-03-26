@@ -114,7 +114,8 @@ def draw_graph(G, title="Digrafo"):
     except Exception as e:
         print(f"[ERRO] Ocorreu um problema ao desenhar o grafo: {e}")
 
-# Grafo de teste        
+# Grafo de teste   
+# TODO - Fazer testes com grafos maioress     
 
 # Criando Digrafo com a biblioteca networkx para testes
 DG = nx.DiGraph()
@@ -271,25 +272,25 @@ def find_cycle(F_star):
 def contract_cycle(G, C, label):
     """
     Contrai um ciclo C no grafo G, substituindo-o por um supernó com rótulo `label`.
-    Retorna o novo grafo (G'), a aresta de entrada (in_edge) e a de saída (out_edge).
+    Devolve o novo grafo (G'), a aresta de entrada (in_edge) e a de saída (out_edge).
     """
     try:
         # Verificações iniciais de tipo
         if not isinstance(G, nx.DiGraph) or not isinstance(C, (nx.DiGraph, nx.Graph)):
             raise TypeError("G e C devem ser grafos (preferencialmente nx.DiGraph).")
 
-        if label in G:
+        if label in G: # TODO - Pensar em uma forma mas elegante de tratar o label
             raise ValueError(f"O rótulo '{label}' já existe como nó em G.")
 
-        G_prime = G.copy()
-        cycle_nodes = list(C.nodes())
+        G_prime = G.copy() # TODO - Remover o deep copy, não é necessário
+        cycle_nodes = list(C.nodes()) # TODO Otimizar o processo de busca até a linha 219 - não é uma boa ideia deixar o cycle_nodes como losta, mas sim como um conjunto
 
-        if not cycle_nodes:
+        if not cycle_nodes: # TODO - No final dos testes podemos remover esse if, já que se ele existe significa que algo deu errado.
             raise ValueError("O ciclo fornecido (C) está vazio e não pode ser contraído.")
 
         # Encontra aresta de fora -> ciclo
         in_candidates = [(u, v, w) for u, v, w in G.edges(data='w') if u not in cycle_nodes and v in cycle_nodes]
-        in_edge = min(in_candidates, key=lambda e: e[2]) if in_candidates else None
+        in_edge = min(in_candidates, key=lambda e: e[2]) if in_candidates else None # TODO - Temos que fazer essa operação para cada vértice u
         if in_edge:
             u, v, w = in_edge
             G_prime.add_edge(u, label, w=w)
@@ -396,7 +397,7 @@ def find_optimum_arborescence(G, r0, level=0, raise_on_error=False):
             return F_star
 
         C = find_cycle(F_star)
-        if not C or C.number_of_nodes() == 0:
+        if not C or C.number_of_nodes() == 0: # TODO - No final dos testes podemos remover esse if, já que se ele existe significa que algo deu errado.
             raise RuntimeError("Ciclo não encontrado em F_star")
 
         contracted_label = f"C*{level}"
