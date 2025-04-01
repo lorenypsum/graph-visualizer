@@ -135,7 +135,7 @@ DG.add_edge("C", "E", w = 4)
 print(DG)
 
 # Funções auxiliares ao algoritmo de Chu-Liu
-def change_edge_weight(G, node):
+def change_edge_weight(G: nx.DiGraph, node: str):
     try:
         # Verifica se é um grafo direcionado válido
         if not isinstance(G, nx.DiGraph):
@@ -173,7 +173,7 @@ def change_edge_weight(G, node):
         print(f"[ERRO] change_edge_weight falhou: {e}")
         return G  # Retorna o grafo original inalterado como fallback
 
-def get_Fstar(G, r0):
+def get_Fstar(G: nx.DiGraph, r0: str):
     try:
         # Verifica se é um grafo direcionado válido
         if not isinstance(G, nx.DiGraph):
@@ -216,7 +216,7 @@ def get_Fstar(G, r0):
         print(f"[ERRO] Falha ao construir F_star: {e}")
         return nx.DiGraph()  # Retorna grafo vazio como fallback    
 
-def is_F_star_arborescence(F_star, r0):
+def is_F_star_arborescence(F_star: nx.DiGraph, r0: str):
     try:
         # Verifica se é um grafo dirigido
         if not isinstance(F_star, nx.DiGraph):
@@ -240,7 +240,7 @@ def is_F_star_arborescence(F_star, r0):
         print(f"[ERRO] Falha ao verificar se é arborescência: {e}")
         return False    
 
-def find_cycle(F_star):
+def find_cycle(F_star: nx.DiGraph):
     """
     Encontra um ciclo direcionado / circuito no grafo.
     Retorna um subgrafo contendo o ciclo, ou None se não houver.
@@ -268,7 +268,7 @@ def find_cycle(F_star):
         print(f"[ERRO] Falha ao procurar ciclo em F_star: {e}")
         return None
 
-def contract_cycle(G, C, label):
+def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
     """
     Contrai um ciclo C no grafo G, substituindo-o por um supernó com rótulo `label`.
     Retorna o novo grafo (G'), a aresta de entrada (in_edge) e a de saída (out_edge).
@@ -283,30 +283,42 @@ def contract_cycle(G, C, label):
 
         cycle_nodes = set(C.nodes())
 
-        # Encontra aresta de fora -> ciclo
-        in_candidates = [(u, v, w) for u, v, w in G.edges(data='w') if u not in cycle_nodes and v in cycle_nodes]
-        in_edge = min(in_candidates, key=lambda e: e[2]) if in_candidates else None
-        if in_edge:
-            u, v, w = in_edge
+        # Encontra arestas de fora -> ciclo
+        in_edges: dict[str, tuple[str, float]] = {}
+        for v in cycle_nodes:
+            in_edge = min((
+                (u, w)
+                for u, _, w in G.in_edges(v, data='w')
+                if u not in cycle_nodes
+            ), key=lambda x: x[1], default=None)
+            if in_edge:
+                in_edges[v] = in_edge
+        for v, (u, w) in in_edges.items():
             G.add_edge(u, label, w=w)
 
-        # Encontra aresta de ciclo -> fora
-        out_candidates = [(u, v, w) for u, v, w in G.edges(data='w') if u in cycle_nodes and v not in cycle_nodes]
-        out_edge = min(out_candidates, key=lambda e: e[2]) if out_candidates else None
-        if out_edge:
-            u, v, w = out_edge
+        # Encontra arestas de ciclo -> fora
+        out_edges: dict[str, tuple[str, float]] = {}
+        for u in cycle_nodes:
+            out_edge = min((
+                (v, w)
+                for _, v, w in G.out_edges(u, data='w')
+                if v not in cycle_nodes
+            ), key=lambda x: x[1], default=None)
+            if out_edge:
+                out_edges[u] = out_edge
+        for u, (v, w) in out_edges.items():
             G.add_edge(label, v, w=w)
 
         # Remove os nós do ciclo original
         G.remove_nodes_from(cycle_nodes)
 
-        return in_edge, out_edge
+        return in_edges, out_edges
 
     except Exception as e:
         print(f"[ERRO] Falha ao contrair ciclo: {e}")
         return None, None  # Retorna o grafo original como fallback
 
-def remove_edge_in_r0(G, r0):
+def remove_edge_in_r0(G: nx.DiGraph, r0: str):
     """
     Remove todas as arestas que entram no nó raiz r0 no grafo G.
     Retorna o grafo atualizado.
@@ -333,7 +345,7 @@ def remove_edge_in_r0(G, r0):
         print(f"[ERRO] Falha ao remover arestas que entram em '{r0}': {e}")
         return G  # Retorna o grafo original como fallback
 
-def remove_edge_from_cycle(C, G, in_edge):
+def remove_edge_from_cycle(C: nx.DiGraph, G: nx.DiGraph, in_edge: tuple[str, str, float]):
     """
     Remove do ciclo C a aresta que entra no vértice `v` (obtido de `in_edge`)
     caso esse vértice já tenha um predecessor em C.
@@ -364,7 +376,7 @@ def remove_edge_from_cycle(C, G, in_edge):
         return C  # Retorna o ciclo original inalterado como fallback
 
 # Algoritmo de Chu-Liu
-def find_optimum_arborescence(G, r0, level=0, raise_on_error=False):
+def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, raise_on_error=False):
     indent = "  " * level
     try:
         logger.info(f"{indent}Iniciando nível {level}")
@@ -394,17 +406,25 @@ def find_optimum_arborescence(G, r0, level=0, raise_on_error=False):
         C = find_cycle(F_star)
 
         contracted_label = f"C*{level}"
-        in_edge, out_edge = contract_cycle(G_arb, C, contracted_label)
+        in_edges, out_edges = contract_cycle(G_arb, C, contracted_label)
         F_prime = find_optimum_arborescence(G_arb, r0, level + 1, raise_on_error)
 
-        C = remove_edge_from_cycle(C, G, in_edge)
+        # Dúvida: como escolher a aresta que vamos remover do ciclo?
+        # Provisoriamente, escolhemos a aresta de maior peso
+        edge_to_remove = max(
+            (
+                (u, v, w)
+                for v, (u, w) in in_edges.items()
+            ),
+            key=lambda x: x[2]
+        )
+
+        C = remove_edge_from_cycle(C, G, edge_to_remove)
         for u, v in C.edges:
             F_prime.add_edge(u, v)
-        if in_edge:
-            u, v, w = in_edge
+        for v, (u, w) in in_edges.items():
             F_prime.add_edge(u, v, w=w)
-        if out_edge:
-            u, v, w = out_edge
+        for u, (v, w) in out_edges.items():
             F_prime.add_edge(u, v, w=w)
         if contracted_label in F_prime:
             F_prime.remove_node(contracted_label)
