@@ -396,8 +396,6 @@ def find_optimum_arborescence(G, r0, level=0, raise_on_error=False):
             return F_star
 
         C = find_cycle(F_star)
-        if not C or C.number_of_nodes() == 0:
-            raise RuntimeError("Ciclo não encontrado em F_star")
 
         contracted_label = f"C*{level}"
         G_prime, in_edge, out_edge = contract_cycle(G_arb, C, contracted_label)
