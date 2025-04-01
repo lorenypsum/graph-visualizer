@@ -282,7 +282,7 @@ def contract_cycle(G, C, label):
             raise ValueError(f"O rótulo '{label}' já existe como nó em G.")
 
         G_prime = G.copy()
-        cycle_nodes = list(C.nodes())
+        cycle_nodes = set(C.nodes())
 
         if not cycle_nodes:
             raise ValueError("O ciclo fornecido (C) está vazio e não pode ser contraído.")
