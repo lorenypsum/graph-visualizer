@@ -281,34 +281,30 @@ def contract_cycle(G, C, label):
         if label in G:
             raise ValueError(f"O rótulo '{label}' já existe como nó em G.")
 
-        G_prime = G.copy()
         cycle_nodes = set(C.nodes())
-
-        if not cycle_nodes:
-            raise ValueError("O ciclo fornecido (C) está vazio e não pode ser contraído.")
 
         # Encontra aresta de fora -> ciclo
         in_candidates = [(u, v, w) for u, v, w in G.edges(data='w') if u not in cycle_nodes and v in cycle_nodes]
         in_edge = min(in_candidates, key=lambda e: e[2]) if in_candidates else None
         if in_edge:
             u, v, w = in_edge
-            G_prime.add_edge(u, label, w=w)
+            G.add_edge(u, label, w=w)
 
         # Encontra aresta de ciclo -> fora
         out_candidates = [(u, v, w) for u, v, w in G.edges(data='w') if u in cycle_nodes and v not in cycle_nodes]
         out_edge = min(out_candidates, key=lambda e: e[2]) if out_candidates else None
         if out_edge:
             u, v, w = out_edge
-            G_prime.add_edge(label, v, w=w)
+            G.add_edge(label, v, w=w)
 
         # Remove os nós do ciclo original
-        G_prime.remove_nodes_from(cycle_nodes)
+        G.remove_nodes_from(cycle_nodes)
 
-        return G_prime, in_edge, out_edge
+        return in_edge, out_edge
 
     except Exception as e:
         print(f"[ERRO] Falha ao contrair ciclo: {e}")
-        return G.copy(), None, None  # Retorna o grafo original como fallback
+        return None, None  # Retorna o grafo original como fallback
 
 def remove_edge_in_r0(G, r0):
     """
@@ -398,8 +394,8 @@ def find_optimum_arborescence(G, r0, level=0, raise_on_error=False):
         C = find_cycle(F_star)
 
         contracted_label = f"C*{level}"
-        G_prime, in_edge, out_edge = contract_cycle(G_arb, C, contracted_label)
-        F_prime = find_optimum_arborescence(G_prime, r0, level + 1, raise_on_error)
+        in_edge, out_edge = contract_cycle(G_arb, C, contracted_label)
+        F_prime = find_optimum_arborescence(G_arb, r0, level + 1, raise_on_error)
 
         C = remove_edge_from_cycle(C, G, in_edge)
         for u, v in C.edges:
