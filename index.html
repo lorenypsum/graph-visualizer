@@ -1,56 +1,133 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Chu-Liu/Edmonds Visualizer</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
-    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://pyscript.net/releases/2025.3.1/core.css"
+    />
+    <script
+      type="module"
+      src="https://pyscript.net/releases/2025.3.1/core.js"
+    ></script>
   </head>
-  <body>
-    <header>
-      <h1>Chu-Liu/Edmonds Visualizer</h1>
-      <p>Visualização passo a passo de arborescências em grafos direcionados</p>
+  <body class="bg-gray-100">
+    <header class="bg-[#5b8f79] text-white text-center p-6">
+      <h1 class="text-3xl font-bold">Chu-Liu/Edmonds Visualizer</h1>
+      <p class="text-lg mt-2">
+        Visualização passo a passo de arborescências em grafos direcionados
+      </p>
     </header>
 
-    <section id="title">
-      <h2>Desenhar Di-grafo</h2>
-    </section>
+    <main class="flex flex-col items-center gap-8 py-8 px-8">
+      <section class="text-center w-full max-w-4xl">
+        <h2 class="text-2xl font-semibold text-[#5b8f79] mb-4">
+          Definir Di-grafo
+        </h2>
+        <div class="flex flex-wrap justify-center gap-4 items-center mb-4">
+          <input
+            type="text"
+            id="source"
+            placeholder="Origem"
+            class="p-3 border rounded border-gray-300 w-40"
+          />
+          <input
+            type="text"
+            id="target"
+            placeholder="Destino"
+            class="p-3 border rounded border-gray-300 w-40"
+          />
+          <input
+            type="number"
+            id="weight"
+            placeholder="Peso"
+            min="0"
+            class="p-3 border rounded border-gray-300 w-40"
+          />
+          <button
+            id="add-edge"
+            class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+          >
+            ➕ Adicionar Aresta
+          </button>
+        </div>
+        <div class="flex flex-wrap justify-center gap-4 items-center mb-4">
+          <button
+            id="reset-graph"
+            class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+          >
+            🔄 Limpar Grafo
+          </button>
+          <button
+            id="export-graph"
+            class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+          >
+            📤 Exportar Grafo para JSON
+          </button>
+        </div>
+        <div class="flex flex-wrap justify-center gap-4 items-center mb-4">
+          <button
+            id="load-test-graph"
+            class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+          >
+            📥 Carregar Grafo de Teste
+          </button>
+          <button
+            id="show-ready-arborescence"
+            class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+          >
+            🌳 Mostrar Arborescência do Grafo de Teste
+          </button>
+        </div>
+      </section>
 
-    <section id="controls">
-      <div>
-        <input type="text" id="source" placeholder="Origem" />
-        <input type="text" id="target" placeholder="Destino" />
-        <input type="number" id="weight" placeholder="Peso" min="0" />
-        <button py-click="add_edge">➕ Adicionar Aresta</button>
-        <button py-click="run_algorithm">▶ Executar Algoritmo</button>
-        <button py-click="reset_graph">🔄 Resetar</button>
-      </div>
-    </section>
+      <section class="text-center w-full max-w-4xl">
+        <h2 class="text-2xl font-semibold text-[#5b8f79] mb-4">
+          Executar Algoritmo de Chu-Liu/Edmonds
+        </h2>
+        <div class="flex flex-wrap justify-center gap-4 items-center">
+          <label for="root-node" class="text-gray-700 font-medium"
+            >Nó Raiz:</label
+          >
+          <input
+            type="text"
+            id="root-node"
+            placeholder="Nó Raiz"
+            value="r0"
+            class="p-3 border rounded border-gray-300 w-40"
+          />
+          <button
+            id="run-algorithm"
+            class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+          >
+            ▶ Executar Algoritmo
+          </button>
+        </div>
+      </section>
 
-    <sectior id="title">
-      <h2>Carregar Di-grafo</h2>
-    </sectior>
+      <section
+        id="graph-output"
+        class="w-full max-w-4xl bg-white p-6 rounded shadow"
+      >
+        <h2 class="text-2xl font-semibold text-[#5b8f79] mb-4">Grafo Atual</h2>
+        <py-script id="graph-area"></py-script>
+      </section>
 
-    <section id="controls">
-      <button py-click="export_graph">📤 Exportar JSON</button>
-      <button py-click="load_test_graph">📥 Carregar Grafo de Teste</button>
-      <button py-click="show_ready_arborescence">
-        🌳 Mostrar Arborescência Pronta
-      </button>
-    </section>
+      <section id="log" class="w-full max-w-4xl bg-white p-6 rounded shadow">
+        <h2 class="text-2xl font-semibold text-[#5b8f79] mb-4">
+          Log da Execução
+        </h2>
+        <textarea
+          id="log-output"
+          readonly
+          class="w-full p-3 border rounded border-gray-300 h-40"
+        ></textarea>
+      </section>
+    </main>
 
-    <section id="graph-output">
-      <py-script id="graph-area"></py-script>
-    </section>
-
-    <section id="log">
-      <h2>Log da Execução</h2>
-      <textarea id="log-output" readonly></textarea>
-    </section>
-
-    <py-config> packages = ["networkx", "matplotlib"] </py-config>
-
-    <py-script src="main.py"></py-script>
+    <script type="py" src="./main.py" config="./pyscript.json"></script>
   </body>
 </html>
