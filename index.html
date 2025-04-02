@@ -27,7 +27,7 @@
         <h2 class="text-2xl font-semibold text-[#5b8f79] mb-4">
           Definir Di-grafo
         </h2>
-        <div class="flex flex-wrap justify-center gap-4 items-center">
+        <div class="flex flex-wrap justify-center gap-4 items-center mb-4">
           <input
             type="text"
             id="source"
@@ -53,23 +53,27 @@
           >
             ➕ Adicionar Aresta
           </button>
+        </div>
+        <div class="flex flex-wrap justify-center gap-4 items-center mb-4">
           <button
             id="reset-graph"
             class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
           >
-            🔄 Resetar
-          </button>
-          <button
-            id="load-test-graph"
-            class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
-          >
-            📥 Carregar Grafo de Teste
+            🔄 Limpar Grafo
           </button>
           <button
             id="export-graph"
             class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
           >
-            📤 Exportar JSON
+            📤 Exportar Grafo para JSON
+          </button>
+        </div>
+        <div class="flex flex-wrap justify-center gap-4 items-center mb-4">
+          <button
+            id="load-test-graph"
+            class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+          >
+            📥 Carregar Grafo de Teste
           </button>
           <button
             id="show-ready-arborescence"
