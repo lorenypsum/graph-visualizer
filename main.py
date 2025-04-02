@@ -106,138 +106,100 @@ def run_algorithm(event):
     log("Execução concluída com sucesso.")
 
 
-# Criando Digrafo com a biblioteca networkx para testes
-DG = nx.DiGraph()
-
-# Adicionando vértices (opcional, pois são criados automaticamente ao adicionar arestas)
-DG.add_nodes_from(["A", "B", "C", "D"])
-
-# Adicionando arestas com pesos (custo)
-DG.add_edge("r0", "B", w=10)
-DG.add_edge("r0", "A", w=2)
-DG.add_edge("r0", "C", w=10)
-DG.add_edge("B", "A", w=1)
-DG.add_edge("A", "C", w=4)
-DG.add_edge("C", "D", w=2)
-DG.add_edge("D", "B", w=2)
-DG.add_edge("B", "E", w=8)
-DG.add_edge("C", "E", w=4)
-log(repr(DG))
-
-
 # Funções auxiliares ao algoritmo de Chu-Liu
 def change_edge_weight(G: nx.DiGraph, node: str):
-    try:
-        # Verifica se é um grafo direcionado válido
-        if not isinstance(G, nx.DiGraph):
-            raise TypeError("O grafo fornecido deve ser do tipo networkx.DiGraph.")
+    # Verifica se é um grafo direcionado válido
+    if not isinstance(G, nx.DiGraph):
+        raise TypeError("O grafo fornecido deve ser do tipo networkx.DiGraph.")
 
-        # Verifica se o nó existe
-        if node not in G:
-            raise ValueError(f"O nó '{node}' não existe no grafo.")
+    # Verifica se o nó existe
+    if node not in G:
+        raise ValueError(f"O nó '{node}' não existe no grafo.")
 
-        # Obtém predecessores com pesos
-        predecessors = list(G.in_edges(node, data="w"))
+    # Obtém predecessores com pesos
+    predecessors = list(G.in_edges(node, data="w"))
 
-        if not predecessors:
-            raise ValueError(f"Nenhum arco entra no nó '{node}'.")
+    if not predecessors:
+        raise ValueError(f"Nenhum arco entra no nó '{node}'.")
 
-        # Verifica se todos os predecessores possuem pesos válidos
-        weights = []
-        for u, v, w in predecessors:
-            if w is None:
-                raise ValueError(
-                    f"A aresta ({u}, {v}) não possui atributo de peso 'w'."
-                )
-            if not isinstance(w, (int, float)):
-                raise TypeError(
-                    f"Peso inválido na aresta ({u}, {v}): esperado número, obtido {type(w)}."
-                )
-            weights.append(w)
+    # Verifica se todos os predecessores possuem pesos válidos
+    weights = []
+    for u, v, w in predecessors:
+        if w is None:
+            raise ValueError(f"A aresta ({u}, {v}) não possui atributo de peso 'w'.")
+        if not isinstance(w, (int, float)):
+            raise TypeError(
+                f"Peso inválido na aresta ({u}, {v}): esperado número, obtido {type(w)}."
+            )
+        weights.append(w)
 
-        # Calcula Yv = menor peso de entrada
-        yv = min(weights)
+    # Calcula Yv = menor peso de entrada
+    yv = min(weights)
 
-        # Subtrai Yv de cada aresta de entrada
-        for u, _, _ in predecessors:
-            G[u][node]["w"] -= yv
+    # Subtrai Yv de cada aresta de entrada
+    for u, _, _ in predecessors:
+        G[u][node]["w"] -= yv
 
-        return G
-
-    except Exception as e:
-        log(f"[ERRO] change_edge_weight falhou: {e}")
-        return G  # Retorna o grafo original inalterado como fallback
+    return G
 
 
 def get_Fstar(G: nx.DiGraph, r0: str):
-    try:
-        # Verifica se é um grafo direcionado válido
-        if not isinstance(G, nx.DiGraph):
-            raise TypeError("O grafo fornecido deve ser do tipo networkx.DiGraph.")
+    # Verifica se é um grafo direcionado válido
+    if not isinstance(G, nx.DiGraph):
+        raise TypeError("O grafo fornecido deve ser do tipo networkx.DiGraph.")
 
-        # Verifica se a raiz existe no grafo
-        if r0 not in G:
-            raise ValueError(f"O nó raiz '{r0}' não existe no grafo.")
+    # Verifica se a raiz existe no grafo
+    if r0 not in G:
+        raise ValueError(f"O nó raiz '{r0}' não existe no grafo.")
 
-        F_star = nx.DiGraph()
+    F_star = nx.DiGraph()
 
-        for v in G.nodes():
-            if v != r0:
-                in_edges = list(G.in_edges(v, data="w"))
-                if not in_edges:
-                    continue  # Nenhuma aresta entra em v
-                # Tenta encontrar uma aresta com custo 0
-                u = next((u for u, _, w in in_edges if w == 0), None)
-                if u:
-                    F_star.add_edge(u, v, w=0)
+    for v in G.nodes():
+        if v != r0:
+            in_edges = list(G.in_edges(v, data="w"))
+            if not in_edges:
+                continue  # Nenhuma aresta entra em v
+            # Tenta encontrar uma aresta com custo 0
+            u = next((u for u, _, w in in_edges if w == 0), None)
+            if u:
+                F_star.add_edge(u, v, w=0)
 
-        successors = list(G.out_edges(r0, data="w"))
-        if not successors:
-            raise ValueError(f"O nó raiz '{r0}' não possui arestas de saída.")
+    successors = list(G.out_edges(r0, data="w"))
+    if not successors:
+        raise ValueError(f"O nó raiz '{r0}' não possui arestas de saída.")
 
-        # Verifica validade dos pesos
-        for _, v, w in successors:
-            if w is None:
-                raise ValueError(
-                    f"A aresta ({r0}, {v}) não possui atributo de peso 'w'."
-                )
-            if not isinstance(w, (int, float)):
-                raise TypeError(f"Peso inválido na aresta ({r0}, {v}): tipo {type(w)}.")
+    # Verifica validade dos pesos
+    for _, v, w in successors:
+        if w is None:
+            raise ValueError(f"A aresta ({r0}, {v}) não possui atributo de peso 'w'.")
+        if not isinstance(w, (int, float)):
+            raise TypeError(f"Peso inválido na aresta ({r0}, {v}): tipo {type(w)}.")
 
-        # Aresta de menor custo saindo da raiz
-        v, w = min([(v, w) for _, v, w in successors], key=lambda vw: vw[1])
-        F_star.add_edge(r0, v, w=w)
+    # Aresta de menor custo saindo da raiz
+    v, w = min([(v, w) for _, v, w in successors], key=lambda vw: vw[1])
+    F_star.add_edge(r0, v, w=w)
 
-        return F_star
-
-    except Exception as e:
-        log(f"[ERRO] Falha ao construir F_star: {e}")
-        return nx.DiGraph()  # Retorna grafo vazio como fallback
+    return F_star
 
 
 def is_F_star_arborescence(F_star: nx.DiGraph, r0: str):
-    try:
-        # Verifica se é um grafo dirigido
-        if not isinstance(F_star, nx.DiGraph):
-            raise TypeError("O grafo fornecido deve ser do tipo networkx.DiGraph.")
+    # Verifica se é um grafo dirigido
+    if not isinstance(F_star, nx.DiGraph):
+        raise TypeError("O grafo fornecido deve ser do tipo networkx.DiGraph.")
 
-        # Verifica se o nó raiz existe no grafo
-        if r0 not in F_star:
-            raise ValueError(f"O nó raiz '{r0}' não existe no grafo.")
+    # Verifica se o nó raiz existe no grafo
+    if r0 not in F_star:
+        raise ValueError(f"O nó raiz '{r0}' não existe no grafo.")
 
-        # Se o grafo estiver vazio
-        if F_star.number_of_nodes() == 0:
-            raise ValueError("O grafo fornecido está vazio.")
+    # Se o grafo estiver vazio
+    if F_star.number_of_nodes() == 0:
+        raise ValueError("O grafo fornecido está vazio.")
 
-        # Verifica se o grafo é acíclico e todos os nós são alcançáveis a partir de r0
-        is_reachable = all(nx.has_path(F_star, r0, v) for v in F_star.nodes)
-        is_acyclic = nx.is_directed_acyclic_graph(F_star)
+    # Verifica se o grafo é acíclico e todos os nós são alcançáveis a partir de r0
+    is_reachable = all(nx.has_path(F_star, r0, v) for v in F_star.nodes)
+    is_acyclic = nx.is_directed_acyclic_graph(F_star)
 
-        return is_reachable and is_acyclic
-
-    except Exception as e:
-        log(f"[ERRO] Falha ao verificar se é arborescência: {e}")
-        return False
+    return is_reachable and is_acyclic
 
 
 def find_cycle(F_star: nx.DiGraph):
@@ -263,65 +225,56 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
     Contrai um ciclo C no grafo G, substituindo-o por um supernó com rótulo `label`.
     Retorna o novo grafo (G'), a aresta de entrada (in_edge) e a de saída (out_edge).
     """
-    try:
-        # Verificações iniciais de tipo
-        if not isinstance(G, nx.DiGraph) or not isinstance(C, (nx.DiGraph, nx.Graph)):
-            raise TypeError("G e C devem ser grafos (preferencialmente nx.DiGraph).")
+    # Verificações iniciais de tipo
+    if not isinstance(G, nx.DiGraph) or not isinstance(C, (nx.DiGraph, nx.Graph)):
+        raise TypeError("G e C devem ser grafos (preferencialmente nx.DiGraph).")
 
-        if label in G:
-            raise ValueError(f"O rótulo '{label}' já existe como nó em G.")
+    if label in G:
+        raise ValueError(f"O rótulo '{label}' já existe como nó em G.")
 
-        cycle_nodes = set(C.nodes())
+    cycle_nodes = set(C.nodes())
 
-        # Encontra arestas de fora -> ciclo
-        # Fazer um filtro dos vértices que estão fora de C
-        # Para cada um deles, faz outro filtro: pegando os arcos
-        # que tem uma ponta nele e outra dentro de C
-        # Generator expression, tratar caso devolva um None
-        # "Para cada vértice u fora de C, determina o arco de menor custo
-        # que tem uma ponta em u e outra
-        # em algum vértice de C. E ficar some com aqueles que estão em C
-        # escolhendo a aresta minima
-        # Posso ter um arco que não tem um vértice na vizinhança de C
-        # Fazer a mesma coisa para quem tá saindo
+    # Encontra arestas de fora -> ciclo
+    # Fazer um filtro dos vértices que estão fora de C
+    # Para cada um deles, faz outro filtro: pegando os arcos
+    # que tem uma ponta nele e outra dentro de C
+    # Generator expression, tratar caso devolva um None
+    # "Para cada vértice u fora de C, determina o arco de menor custo
+    # que tem uma ponta em u e outra
+    # em algum vértice de C. E ficar some com aqueles que estão em C
+    # escolhendo a aresta minima
+    # Posso ter um arco que não tem um vértice na vizinhança de C
+    # Fazer a mesma coisa para quem tá saindo
 
-        in_edges: dict[str, tuple[str, float]] = {}
-        for v in cycle_nodes:
-            in_edge = min(
-                ((u, w) for u, _, w in G.in_edges(v, data="w") if u not in cycle_nodes),
-                key=lambda x: x[1],
-                default=None,
-            )
-            if in_edge:
-                in_edges[v] = in_edge
-        for v, (u, w) in in_edges.items():
-            G.add_edge(u, label, w=w)
+    in_edges: dict[str, tuple[str, float]] = {}
+    for v in cycle_nodes:
+        in_edge = min(
+            ((u, w) for u, _, w in G.in_edges(v, data="w") if u not in cycle_nodes),
+            key=lambda x: x[1],
+            default=None,
+        )
+        if in_edge:
+            in_edges[v] = in_edge
+    for v, (u, w) in in_edges.items():
+        G.add_edge(u, label, w=w)
 
-        # Encontra arestas de ciclo -> fora
-        out_edges: dict[str, tuple[str, float]] = {}
-        for u in cycle_nodes:
-            out_edge = min(
-                (
-                    (v, w)
-                    for _, v, w in G.out_edges(u, data="w")
-                    if v not in cycle_nodes
-                ),
-                key=lambda x: x[1],
-                default=None,
-            )
-            if out_edge:
-                out_edges[u] = out_edge
-        for u, (v, w) in out_edges.items():
-            G.add_edge(label, v, w=w)
+    # Encontra arestas de ciclo -> fora
+    out_edges: dict[str, tuple[str, float]] = {}
+    for u in cycle_nodes:
+        out_edge = min(
+            ((v, w) for _, v, w in G.out_edges(u, data="w") if v not in cycle_nodes),
+            key=lambda x: x[1],
+            default=None,
+        )
+        if out_edge:
+            out_edges[u] = out_edge
+    for u, (v, w) in out_edges.items():
+        G.add_edge(label, v, w=w)
 
-        # Remove os nós do ciclo original
-        G.remove_nodes_from(cycle_nodes)
+    # Remove os nós do ciclo original
+    G.remove_nodes_from(cycle_nodes)
 
-        return in_edges, out_edges
-
-    except Exception as e:
-        log(f"[ERRO] Falha ao contrair ciclo: {e}")
-        return None, None  # Retorna o grafo original como fallback
+    return in_edges, out_edges
 
 
 def remove_edge_in_r0(G: nx.DiGraph, r0: str):
@@ -329,27 +282,18 @@ def remove_edge_in_r0(G: nx.DiGraph, r0: str):
     Remove todas as arestas que entram no nó raiz r0 no grafo G.
     Retorna o grafo atualizado.
     """
-    try:
-        # Verifica se G é um grafo direcionado
-        if not isinstance(G, nx.DiGraph):
-            raise TypeError("O grafo fornecido deve ser do tipo networkx.DiGraph.")
+    # Verifica se r0 existe no grafo
+    if r0 not in G:
+        raise ValueError(f"O nó raiz '{r0}' não existe no grafo.")
 
-        # Verifica se r0 existe no grafo
-        if r0 not in G:
-            raise ValueError(f"O nó raiz '{r0}' não existe no grafo.")
+    # Remove as arestas que entram em r0
+    in_edges = list(G.in_edges(r0))
+    if not in_edges:
+        log(f"[INFO] Nenhuma aresta entrando em '{r0}' para remover.")
+    else:
+        G.remove_edges_from(in_edges)
 
-        # Remove as arestas que entram em r0
-        in_edges = list(G.in_edges(r0))
-        if not in_edges:
-            log(f"[INFO] Nenhuma aresta entrando em '{r0}' para remover.")
-        else:
-            G.remove_edges_from(in_edges)
-
-        return G
-
-    except Exception as e:
-        log(f"[ERRO] Falha ao remover arestas que entram em '{r0}': {e}")
-        return G  # Retorna o grafo original como fallback
+    return G
 
 
 def remove_edge_from_cycle(C: nx.DiGraph, in_edge: tuple[str, str, float]):
@@ -357,32 +301,27 @@ def remove_edge_from_cycle(C: nx.DiGraph, in_edge: tuple[str, str, float]):
     Remove do ciclo C a aresta que entra no vértice `v` (obtido de `in_edge`)
     caso esse vértice já tenha um predecessor em C.
     """
-    try:
-        # Verifica se C é um grafo válido
-        if not isinstance(C, (nx.DiGraph, nx.Graph)):
-            raise TypeError("O ciclo fornecido (C) deve ser um grafo válido.")
+    # Verifica se C é um grafo válido
+    if not isinstance(C, (nx.DiGraph, nx.Graph)):
+        raise TypeError("O ciclo fornecido (C) deve ser um grafo válido.")
 
-        C = C.copy()  # Cópia segura
+    C = C.copy()  # Cópia segura
 
-        if in_edge:
-            if len(in_edge) != 3:
-                raise ValueError("A aresta in_edge deve ter 3 elementos (u, v, w).")
-            _, v, _ = in_edge
+    if in_edge:
+        if len(in_edge) != 3:
+            raise ValueError("A aresta in_edge deve ter 3 elementos (u, v, w).")
+        _, v, _ = in_edge
 
-            if v not in C:
-                raise ValueError(
-                    f"O vértice destino '{v}' da in_edge não está presente no ciclo."
-                )
+        if v not in C:
+            raise ValueError(
+                f"O vértice destino '{v}' da in_edge não está presente no ciclo."
+            )
 
-            # Procura um predecessor em C que leva até v
-            u = next((u for u, _ in C.in_edges(v)), None)
-            if u:
-                C.remove_edge(u, v)
-        return C
-
-    except Exception as e:
-        log(f"[ERRO] Falha ao remover aresta do ciclo: {e}")
-        return C  # Retorna o ciclo original inalterado como fallback
+        # Procura um predecessor em C que leva até v
+        u = next((u for u, _ in C.in_edges(v)), None)
+        if u:
+            C.remove_edge(u, v)
+    return C
 
 
 # Algoritmo de Chu-Liu
