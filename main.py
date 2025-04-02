@@ -123,10 +123,6 @@ def change_edge_weight(G: nx.DiGraph, node: str):
     for u, v, w in predecessors:
         if w is None:
             raise ValueError(f"A aresta ({u}, {v}) não possui atributo de peso 'w'.")
-        if not isinstance(w, (int, float)):
-            raise TypeError(
-                f"Peso inválido na aresta ({u}, {v}): esperado número, obtido {type(w)}."
-            )
         weights.append(w)
 
     # Calcula Yv = menor peso de entrada
@@ -140,10 +136,6 @@ def change_edge_weight(G: nx.DiGraph, node: str):
 
 
 def get_Fstar(G: nx.DiGraph, r0: str):
-    # Verifica se é um grafo direcionado válido
-    if not isinstance(G, nx.DiGraph):
-        raise TypeError("O grafo fornecido deve ser do tipo networkx.DiGraph.")
-
     # Verifica se a raiz existe no grafo
     if r0 not in G:
         raise ValueError(f"O nó raiz '{r0}' não existe no grafo.")
@@ -164,13 +156,6 @@ def get_Fstar(G: nx.DiGraph, r0: str):
     if not successors:
         raise ValueError(f"O nó raiz '{r0}' não possui arestas de saída.")
 
-    # Verifica validade dos pesos
-    for _, v, w in successors:
-        if w is None:
-            raise ValueError(f"A aresta ({r0}, {v}) não possui atributo de peso 'w'.")
-        if not isinstance(w, (int, float)):
-            raise TypeError(f"Peso inválido na aresta ({r0}, {v}): tipo {type(w)}.")
-
     # Aresta de menor custo saindo da raiz
     v, w = min([(v, w) for _, v, w in successors], key=lambda vw: vw[1])
     F_star.add_edge(r0, v, w=w)
@@ -179,10 +164,6 @@ def get_Fstar(G: nx.DiGraph, r0: str):
 
 
 def is_F_star_arborescence(F_star: nx.DiGraph, r0: str):
-    # Verifica se é um grafo dirigido
-    if not isinstance(F_star, nx.DiGraph):
-        raise TypeError("O grafo fornecido deve ser do tipo networkx.DiGraph.")
-
     # Verifica se o nó raiz existe no grafo
     if r0 not in F_star:
         raise ValueError(f"O nó raiz '{r0}' não existe no grafo.")
@@ -316,8 +297,6 @@ def remove_edge_from_cycle(C: nx.DiGraph, in_edge: tuple[str, str, float]):
 def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0):
     indent = "  " * level
     log(f"{indent}Iniciando nível {level}")
-    if not isinstance(G, nx.DiGraph):
-        raise TypeError("O grafo fornecido deve ser um networkx.DiGraph.")
     if r0 not in G:
         raise ValueError(f"O nó raiz '{r0}' não está presente no grafo.")
 
