@@ -419,6 +419,8 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, raise_on_error=Fa
 
         # Dúvida: como escolher a aresta que vamos remover do ciclo?
         # Provisoriamente, escolhemos a aresta de maior peso
+        # Resposta: Eu vou remover a aresta que chega no vértice v que recebe a única aresta da arborescência
+        # Criar um dicionário auxiliar para armazenas para cada u qual era o nome original do arco u  para v em C.
         edge_to_remove = max(
             (
                 (u, v, w)
