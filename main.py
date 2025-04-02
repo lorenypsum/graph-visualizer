@@ -68,6 +68,7 @@ def run_algorithm(event):
 # Funções para desenho do grafo
 def draw_graph(G: nx.DiGraph, title="Digrafo"):
     try:
+        plt.clf()  # Limpa a figura atual
         # Verifica se G é um grafo válido
         if not isinstance(G, (nx.Graph, nx.DiGraph)):
             raise TypeError(
@@ -105,7 +106,7 @@ def draw_graph(G: nx.DiGraph, title="Digrafo"):
         )
 
         plt.title(title)
-        plt.show()
+        display(plt, target="graph-area", append=True)
 
     except Exception as e:
         log(f"[ERRO] Ocorreu um problema ao desenhar o grafo: {e}")
@@ -129,7 +130,7 @@ DG.add_edge("C", "D", w=2)
 DG.add_edge("D", "B", w=2)
 DG.add_edge("B", "E", w=8)
 DG.add_edge("C", "E", w=4)
-log(DG)
+log(repr(DG))
 
 
 # Funções auxiliares ao algoritmo de Chu-Liu
