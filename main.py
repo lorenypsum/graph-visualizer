@@ -3,34 +3,13 @@ import matplotlib.pyplot as plt
 from pyscript import document, window, when, display
 
 
-def log(msg):
+def log(msg: str):
     log_box = document.getElementById("log-output")
     log_box.value += msg + "\n"
     log_box.scrollTop = log_box.scrollHeight
 
 
-G = nx.DiGraph()
-
-
-@when("click", "#export-graph")
-def export_graph(event):
-    log("Exportando grafo...")
-
-
-def update_graph_output(G: nx.DiGraph, title="Grafo Atual"):
-    plt.clf()
-    pos = nx.spring_layout(G)
-    nx.draw(G, pos, with_labels=True, node_color="lightblue", node_size=2000)
-    nx.draw_networkx_edge_labels(
-        G, pos, edge_labels=nx.get_edge_attributes(G, "w"), font_color="red"
-    )
-    plt.title(title)
-    display(title, target="graph-area", append=False)
-    display(plt, target="graph-area")
-
-
-# Funções para desenho do grafo
-def draw_graph(G: nx.DiGraph, title="Digrafo"):
+def draw_graph(G: nx.DiGraph, title="Digrafo", append=True):
     plt.clf()  # Limpa a figura atual
     pos = nx.planar_layout(G)  # Layout para posicionamento dos nós
     plt.figure(figsize=(6, 4))  # Tamanho da figura
@@ -49,19 +28,23 @@ def draw_graph(G: nx.DiGraph, title="Digrafo"):
         G, pos, edge_labels=weights, font_color="red", font_size=12
     )
     plt.title(title)
-    display(title, target="graph-area")
-    display(plt, target="graph-area")
+    display(title, target="graph-area", append=append)
+    display(plt, target="graph-area", append=append)
+
+
+G = nx.DiGraph()
 
 
 @when("click", "#add-edge")
 def add_edge():
+    global G
     source = document.getElementById("source").value
     target = document.getElementById("target").value
     weight = document.getElementById("weight").value
     if source and target and weight:
         G.add_edge(source, target, w=float(weight))
         log(f"Aresta adicionada: {source} → {target} (peso={weight})")
-        update_graph_output(G, "Grafo com Arestas")
+        draw_graph(G, "Grafo com Arestas", append=False)
 
 
 @when("click", "#reset-graph")
@@ -69,25 +52,58 @@ def reset_graph():
     global G
     G.clear()
     document.getElementById("log-output").value = ""
-    update_graph_output(G, "Grafo Resetado")
+    draw_graph(G, "Grafo Resetado", append=False)
     log("Grafo resetado.")
+
+
+@when("click", "#export-graph")
+def export_graph(event):
+    log("Exportando grafo...")
+    # TODO
+
+
+@when("click", "#load-test-graph")
+def load_test_graph(event):
+    global G
+    G.clear()
+    G.add_edge("r0", "B", w=10)
+    G.add_edge("r0", "A", w=2)
+    G.add_edge("r0", "C", w=10)
+    G.add_edge("B", "A", w=1)
+    G.add_edge("A", "C", w=4)
+    G.add_edge("C", "D", w=2)
+    G.add_edge("D", "B", w=2)
+    G.add_edge("B", "E", w=8)
+    G.add_edge("C", "E", w=4)
+
+    log("Grafo de teste carregado.")
+    draw_graph(G, "Grafo de Teste (DG)", append=False)
+
+
+@when("click", "#show-ready-arborescence")
+def show_ready_arborescence(event):
+    T = nx.DiGraph()
+    T.add_edge("r0", "A", w=2)
+    T.add_edge("A", "C", w=4)
+    T.add_edge("C", "D", w=2)
+    T.add_edge("D", "B", w=2)
+    T.add_edge("C", "E", w=4)
+    draw_graph(T, "Arborescência Pré-definida")
+    log("Arborescência pronta exibida.")
 
 
 @when("click", "#run-algorithm")
 def run_algorithm(event):
-    try:
-        r0 = document.getElementById("root-node").value or "r0"
-        if r0 not in G:
-            window.alert(f"[ERRO] O nó raiz '{r0}' deve existir no grafo.")
-            return
+    global G
+    r0 = document.getElementById("root-node").value or "r0"
+    if r0 not in G:
+        window.alert(f"[ERRO] O nó raiz '{r0}' deve existir no grafo.")
+        return
 
-        log("Executando algoritmo de Chu-Liu...")
-        T = find_optimum_arborescence(G, r0)
-        draw_graph(T, "Arborescência Ótima")
-        log("Execução concluída com sucesso.")
-
-    except Exception as e:
-        window.alert(f"ERRO: {e}")
+    log("Executando algoritmo de Chu-Liu...")
+    T = find_optimum_arborescence(G, r0)
+    draw_graph(T, "Arborescência Ótima")
+    log("Execução concluída com sucesso.")
 
 
 # Criando Digrafo com a biblioteca networkx para testes
@@ -229,28 +245,17 @@ def find_cycle(F_star: nx.DiGraph):
     Encontra um ciclo direcionado / circuito no grafo.
     Retorna um subgrafo contendo o ciclo, ou None se não houver.
     """
-    try:
-        # Verifica se o grafo é do tipo esperado
-        if not isinstance(F_star, nx.DiGraph):
-            raise TypeError("O grafo fornecido deve ser do tipo networkx.DiGraph.")
-
-        # Verifica se o grafo tem nós suficientes para conter um ciclo
-        if F_star.number_of_edges() == 0 or F_star.number_of_nodes() < 2:
-            return None
-
-        # Tenta encontrar um ciclo no grafo
-        nodes_in_cycle = set()
-        for u, v, _ in nx.find_cycle(F_star, orientation="original"):
-            nodes_in_cycle.update([u, v])
-
-        # Retorna o subgrafo contendo apenas o ciclo
-        return F_star.subgraph(nodes_in_cycle)
-
-    except nx.NetworkXNoCycle:
+    # Verifica se o grafo tem nós suficientes para conter um ciclo
+    if F_star.number_of_edges() == 0 or F_star.number_of_nodes() < 2:
         return None
-    except Exception as e:
-        log(f"[ERRO] Falha ao procurar ciclo em F_star: {e}")
-        return None
+
+    # Tenta encontrar um ciclo no grafo
+    nodes_in_cycle = set()
+    for u, v, _ in nx.find_cycle(F_star, orientation="original"):
+        nodes_in_cycle.update([u, v])
+
+    # Retorna o subgrafo contendo apenas o ciclo
+    return F_star.subgraph(nodes_in_cycle)
 
 
 def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
@@ -441,33 +446,3 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, raise_on_error=Fa
         if raise_on_error:
             raise
         return nx.DiGraph()
-
-
-@when("click", "#load-test-graph")
-def load_test_graph(event):
-    global G
-    G.clear()
-    G.add_edge("r0", "B", w=10)
-    G.add_edge("r0", "A", w=2)
-    G.add_edge("r0", "C", w=10)
-    G.add_edge("B", "A", w=1)
-    G.add_edge("A", "C", w=4)
-    G.add_edge("C", "D", w=2)
-    G.add_edge("D", "B", w=2)
-    G.add_edge("B", "E", w=8)
-    G.add_edge("C", "E", w=4)
-
-    log("Grafo de teste carregado.")
-    update_graph_output(G, "Grafo de Teste (DG)")
-
-
-@when("click", "#show-ready-arborescence")
-def show_ready_arborescence(event):
-    T = nx.DiGraph()
-    T.add_edge("r0", "A", w=2)
-    T.add_edge("A", "C", w=4)
-    T.add_edge("C", "D", w=2)
-    T.add_edge("D", "B", w=2)
-    T.add_edge("C", "E", w=4)
-    update_graph_output(T, "Arborescência Pré-definida")
-    log("Arborescência pronta exibida.")
