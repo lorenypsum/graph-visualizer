@@ -286,12 +286,16 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
 
         # Encontra arestas de fora -> ciclo
         # Fazer um filtro dos vértices que estão fora de C
-        # Para cada um deles, faz outro filtro: pegando os arcos que tem uma ponta nele e outra dentro de C
+        # Para cada um deles, faz outro filtro: pegando os arcos 
+        # que tem uma ponta nele e outra dentro de C
         # Generator expression, tratar caso devolva um None
-        # "Para cada vértice u fora de C, determina o arco de menor custo que tem uma ponta em u e outra
-        # em algum vértice de C. E ficar some com aqueles que estão em C escolhendo a aresta minima
+        # "Para cada vértice u fora de C, determina o arco de menor custo 
+        # que tem uma ponta em u e outra
+        # em algum vértice de C. E ficar some com aqueles que estão em C 
+        # escolhendo a aresta minima
         # Posso ter um arco que não tem um vértice na vizinhança de C
         # Fazer a mesma coisa para quem tá saindo
+
         in_edges: dict[str, tuple[str, float]] = {}
         for v in cycle_nodes:
             in_edge = min((
