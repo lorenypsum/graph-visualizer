@@ -25,7 +25,32 @@ def update_graph_output(G: nx.DiGraph, title="Grafo Atual"):
         G, pos, edge_labels=nx.get_edge_attributes(G, "w"), font_color="red"
     )
     plt.title(title)
-    display(plt, target="graph-area", append=False)
+    display(title, target="graph-area", append=False)
+    display(plt, target="graph-area")
+
+
+# Funções para desenho do grafo
+def draw_graph(G: nx.DiGraph, title="Digrafo"):
+    plt.clf()  # Limpa a figura atual
+    pos = nx.planar_layout(G)  # Layout para posicionamento dos nós
+    plt.figure(figsize=(6, 4))  # Tamanho da figura
+    # Desenha os nós e arestas
+    nx.draw(
+        G,
+        pos,
+        with_labels=True,
+        node_color="lightblue",
+        edge_color="gray",
+        node_size=2000,
+        font_size=12,
+    )
+    weights = nx.get_edge_attributes(G, "w")
+    nx.draw_networkx_edge_labels(
+        G, pos, edge_labels=weights, font_color="red", font_size=12
+    )
+    plt.title(title)
+    display(title, target="graph-area")
+    display(plt, target="graph-area")
 
 
 @when("click", "#add-edge")
@@ -58,61 +83,12 @@ def run_algorithm(event):
 
         log("Executando algoritmo de Chu-Liu...")
         T = find_optimum_arborescence(G, r0)
-        update_graph_output(T, "Arborescência Ótima")
+        draw_graph(T, "Arborescência Ótima")
         log("Execução concluída com sucesso.")
 
     except Exception as e:
         window.alert(f"ERRO: {e}")
 
-
-# Funções para desenho do grafo
-def draw_graph(G: nx.DiGraph, title="Digrafo"):
-    try:
-        plt.clf()  # Limpa a figura atual
-        # Verifica se G é um grafo válido
-        if not isinstance(G, (nx.Graph, nx.DiGraph)):
-            raise TypeError(
-                "O objeto fornecido não é um grafo do tipo networkx.Graph ou networkx.DiGraph."
-            )
-
-        if G.number_of_nodes() == 0:
-            log(f"[AVISO] Grafo vazio — nada a desenhar. ({title})")
-            return
-
-        pos = nx.planar_layout(G)  # Layout para posicionamento dos nós
-        plt.figure(figsize=(6, 4))  # Tamanho da figura
-
-        # Desenha os nós e arestas
-        nx.draw(
-            G,
-            pos,
-            with_labels=True,
-            node_color="lightblue",
-            edge_color="gray",
-            node_size=2000,
-            font_size=12,
-        )
-
-        # Tenta obter os pesos das arestas
-        weights = nx.get_edge_attributes(G, "w")
-        if not weights:
-            log(
-                f"[INFO] Nenhum peso ('w') encontrado nas arestas para exibir no grafo."
-            )
-
-        # Desenha os rótulos dos pesos, se existirem
-        nx.draw_networkx_edge_labels(
-            G, pos, edge_labels=weights, font_color="red", font_size=12
-        )
-
-        plt.title(title)
-        display(plt, target="graph-area", append=True)
-
-    except Exception as e:
-        log(f"[ERRO] Ocorreu um problema ao desenhar o grafo: {e}")
-
-
-# Grafo de teste
 
 # Criando Digrafo com a biblioteca networkx para testes
 DG = nx.DiGraph()
