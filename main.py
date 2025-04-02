@@ -1,32 +1,46 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 import logging
-from js import document, JSON, Blob, URL, __new__
-import io
-import base64
+from pyscript import document, window, when, display
+
+
+# Configuração do logger
+logging.basicConfig(
+    level=logging.INFO,  # Altere para DEBUG se quiser mais detalhes
+    format="[%(levelname)s] %(message)s",
+)
+
+logger = logging.getLogger(__name__)
+
 
 G = nx.DiGraph()
+
 
 def log(msg):
     log_box = document.getElementById("log-output")
     log_box.value += msg + "\n"
     log_box.scrollTop = log_box.scrollHeight
 
+
+@when("click", "#export-graph")
+def export_graph(event):
+    log("Exportando grafo...")
+
+
 def update_graph_output(G_display, title="Grafo Atual"):
     plt.clf()
     pos = nx.spring_layout(G_display)
-    edge_labels = nx.get_edge_attributes(G_display, 'w')
-    nx.draw(G_display, pos, with_labels=True, node_color='lightblue', node_size=2000)
-    nx.draw_networkx_edge_labels(G_display, pos, edge_labels=edge_labels, font_color='red')
+    edge_labels = nx.get_edge_attributes(G_display, "w")
+    nx.draw(G_display, pos, with_labels=True, node_color="lightblue", node_size=2000)
+    nx.draw_networkx_edge_labels(
+        G_display, pos, edge_labels=edge_labels, font_color="red"
+    )
     plt.title(title)
-    buffer = io.BytesIO()
-    plt.savefig(buffer, format='png')
-    buffer.seek(0)
-    img_str = base64.b64encode(buffer.read()).decode("utf-8")
-    graph_area = document.getElementById("graph-area")
-    graph_area.innerHTML = f"<img src='data:image/png;base64,{img_str}' />"
+    display(plt, target="graph-area", append=False)
 
-def add_edge(event=None):
+
+@when("click", "#add-edge")
+def add_edge():
     source = document.getElementById("source").value
     target = document.getElementById("target").value
     weight = document.getElementById("weight").value
@@ -35,30 +49,22 @@ def add_edge(event=None):
         log(f"Aresta adicionada: {source} → {target} (peso={weight})")
         update_graph_output(G, "Grafo com Arestas")
 
-def reset_graph(event=None):
+
+@when("click", "#reset-graph")
+def reset_graph():
     global G
     G.clear()
     document.getElementById("log-output").value = ""
     update_graph_output(G, "Grafo Resetado")
     log("Grafo resetado.")
 
-def export_graph(event=None):
-    edges = [{"from": u, "to": v, "weight": d.get("w", 1)} for u, v, d in G.edges(data=True)]
-    blob = __new__(Blob.new([JSON.stringify(edges)], {"type": "application/json"}))
-    link = document.createElement("a")
-    link.href = URL.createObjectURL(blob)
-    link.download = "arborescencia.json"
-    link.click()
-    log("Exportado como JSON.")
 
-def run_algorithm(event=None):
-
-    from js import setTimeout
-
+@when("click", "#run-algorithm")
+def run_algorithm(event):
     try:
         r0 = "r0"
         if r0 not in G:
-            log("[ERRO] O nó raiz 'r0' deve existir no grafo.")
+            window.alert("[ERRO] O nó raiz 'r0' deve existir no grafo.")
             return
 
         log("Executando algoritmo de Chu-Liu...")
@@ -67,23 +73,17 @@ def run_algorithm(event=None):
         log("Execução concluída com sucesso.")
 
     except Exception as e:
-        log(f"[ERRO] {e}")
+        window.alert(f"ERRO: {e}")
 
-
-# Configuração do logger
-logging.basicConfig(
-    level=logging.INFO,  # Altere para DEBUG se quiser mais detalhes
-    format='[%(levelname)s] %(message)s'
-)
-
-logger = logging.getLogger(__name__)
 
 # Funções para desenho do grafo
 def draw_graph(G, title="Digrafo"):
     try:
         # Verifica se G é um grafo válido
         if not isinstance(G, (nx.Graph, nx.DiGraph)):
-            raise TypeError("O objeto fornecido não é um grafo do tipo networkx.Graph ou networkx.DiGraph.")
+            raise TypeError(
+                "O objeto fornecido não é um grafo do tipo networkx.Graph ou networkx.DiGraph."
+            )
 
         if G.number_of_nodes() == 0:
             print(f"[AVISO] Grafo vazio — nada a desenhar. ({title})")
@@ -94,18 +94,26 @@ def draw_graph(G, title="Digrafo"):
 
         # Desenha os nós e arestas
         nx.draw(
-            G, pos, with_labels=True,
-            node_color='lightblue', edge_color='gray',
-            node_size=2000, font_size=12
+            G,
+            pos,
+            with_labels=True,
+            node_color="lightblue",
+            edge_color="gray",
+            node_size=2000,
+            font_size=12,
         )
 
         # Tenta obter os pesos das arestas
-        weights = nx.get_edge_attributes(G, 'w')
+        weights = nx.get_edge_attributes(G, "w")
         if not weights:
-            print(f"[INFO] Nenhum peso ('w') encontrado nas arestas para exibir no grafo.")
+            print(
+                f"[INFO] Nenhum peso ('w') encontrado nas arestas para exibir no grafo."
+            )
 
         # Desenha os rótulos dos pesos, se existirem
-        nx.draw_networkx_edge_labels(G, pos, edge_labels=weights, font_color='red', font_size=12)
+        nx.draw_networkx_edge_labels(
+            G, pos, edge_labels=weights, font_color="red", font_size=12
+        )
 
         plt.title(title)
         plt.show()
@@ -113,7 +121,8 @@ def draw_graph(G, title="Digrafo"):
     except Exception as e:
         print(f"[ERRO] Ocorreu um problema ao desenhar o grafo: {e}")
 
-# Grafo de teste        
+
+# Grafo de teste
 
 # Criando Digrafo com a biblioteca networkx para testes
 DG = nx.DiGraph()
@@ -122,16 +131,17 @@ DG = nx.DiGraph()
 DG.add_nodes_from(["A", "B", "C", "D"])
 
 # Adicionando arestas com pesos (custo)
-DG.add_edge("r0", "B", w = 10)
-DG.add_edge("r0", "A", w = 2)
-DG.add_edge("r0", "C", w = 10)
-DG.add_edge("B", "A", w = 1)
-DG.add_edge("A", "C", w = 4)
-DG.add_edge("C", "D", w = 2)
-DG.add_edge("D", "B", w = 2)
-DG.add_edge("B", "E", w = 8)
-DG.add_edge("C", "E", w = 4)
+DG.add_edge("r0", "B", w=10)
+DG.add_edge("r0", "A", w=2)
+DG.add_edge("r0", "C", w=10)
+DG.add_edge("B", "A", w=1)
+DG.add_edge("A", "C", w=4)
+DG.add_edge("C", "D", w=2)
+DG.add_edge("D", "B", w=2)
+DG.add_edge("B", "E", w=8)
+DG.add_edge("C", "E", w=4)
 print(DG)
+
 
 # Funções auxiliares ao algoritmo de Chu-Liu
 def change_edge_weight(G: nx.DiGraph, node: str):
@@ -145,7 +155,7 @@ def change_edge_weight(G: nx.DiGraph, node: str):
             raise ValueError(f"O nó '{node}' não existe no grafo.")
 
         # Obtém predecessores com pesos
-        predecessors = list(G.in_edges(node, data='w'))
+        predecessors = list(G.in_edges(node, data="w"))
 
         if not predecessors:
             raise ValueError(f"Nenhum arco entra no nó '{node}'.")
@@ -154,9 +164,13 @@ def change_edge_weight(G: nx.DiGraph, node: str):
         weights = []
         for u, v, w in predecessors:
             if w is None:
-                raise ValueError(f"A aresta ({u}, {v}) não possui atributo de peso 'w'.")
+                raise ValueError(
+                    f"A aresta ({u}, {v}) não possui atributo de peso 'w'."
+                )
             if not isinstance(w, (int, float)):
-                raise TypeError(f"Peso inválido na aresta ({u}, {v}): esperado número, obtido {type(w)}.")
+                raise TypeError(
+                    f"Peso inválido na aresta ({u}, {v}): esperado número, obtido {type(w)}."
+                )
             weights.append(w)
 
         # Calcula Yv = menor peso de entrada
@@ -164,13 +178,14 @@ def change_edge_weight(G: nx.DiGraph, node: str):
 
         # Subtrai Yv de cada aresta de entrada
         for u, _, _ in predecessors:
-            G[u][node]['w'] -= yv
+            G[u][node]["w"] -= yv
 
         return G
 
     except Exception as e:
         print(f"[ERRO] change_edge_weight falhou: {e}")
         return G  # Retorna o grafo original inalterado como fallback
+
 
 def get_Fstar(G: nx.DiGraph, r0: str):
     try:
@@ -186,7 +201,7 @@ def get_Fstar(G: nx.DiGraph, r0: str):
 
         for v in G.nodes():
             if v != r0:
-                in_edges = list(G.in_edges(v, data='w'))
+                in_edges = list(G.in_edges(v, data="w"))
                 if not in_edges:
                     continue  # Nenhuma aresta entra em v
                 # Tenta encontrar uma aresta com custo 0
@@ -194,14 +209,16 @@ def get_Fstar(G: nx.DiGraph, r0: str):
                 if u:
                     F_star.add_edge(u, v, w=0)
 
-        successors = list(G.out_edges(r0, data='w'))
+        successors = list(G.out_edges(r0, data="w"))
         if not successors:
             raise ValueError(f"O nó raiz '{r0}' não possui arestas de saída.")
 
         # Verifica validade dos pesos
         for _, v, w in successors:
             if w is None:
-                raise ValueError(f"A aresta ({r0}, {v}) não possui atributo de peso 'w'.")
+                raise ValueError(
+                    f"A aresta ({r0}, {v}) não possui atributo de peso 'w'."
+                )
             if not isinstance(w, (int, float)):
                 raise TypeError(f"Peso inválido na aresta ({r0}, {v}): tipo {type(w)}.")
 
@@ -213,7 +230,8 @@ def get_Fstar(G: nx.DiGraph, r0: str):
 
     except Exception as e:
         print(f"[ERRO] Falha ao construir F_star: {e}")
-        return nx.DiGraph()  # Retorna grafo vazio como fallback    
+        return nx.DiGraph()  # Retorna grafo vazio como fallback
+
 
 def is_F_star_arborescence(F_star: nx.DiGraph, r0: str):
     try:
@@ -237,7 +255,8 @@ def is_F_star_arborescence(F_star: nx.DiGraph, r0: str):
 
     except Exception as e:
         print(f"[ERRO] Falha ao verificar se é arborescência: {e}")
-        return False    
+        return False
+
 
 def find_cycle(F_star: nx.DiGraph):
     """
@@ -267,6 +286,7 @@ def find_cycle(F_star: nx.DiGraph):
         print(f"[ERRO] Falha ao procurar ciclo em F_star: {e}")
         return None
 
+
 def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
     """
     Contrai um ciclo C no grafo G, substituindo-o por um supernó com rótulo `label`.
@@ -284,23 +304,23 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
 
         # Encontra arestas de fora -> ciclo
         # Fazer um filtro dos vértices que estão fora de C
-        # Para cada um deles, faz outro filtro: pegando os arcos 
+        # Para cada um deles, faz outro filtro: pegando os arcos
         # que tem uma ponta nele e outra dentro de C
         # Generator expression, tratar caso devolva um None
-        # "Para cada vértice u fora de C, determina o arco de menor custo 
+        # "Para cada vértice u fora de C, determina o arco de menor custo
         # que tem uma ponta em u e outra
-        # em algum vértice de C. E ficar some com aqueles que estão em C 
+        # em algum vértice de C. E ficar some com aqueles que estão em C
         # escolhendo a aresta minima
         # Posso ter um arco que não tem um vértice na vizinhança de C
         # Fazer a mesma coisa para quem tá saindo
 
         in_edges: dict[str, tuple[str, float]] = {}
         for v in cycle_nodes:
-            in_edge = min((
-                (u, w)
-                for u, _, w in G.in_edges(v, data='w')
-                if u not in cycle_nodes
-            ), key=lambda x: x[1], default=None)
+            in_edge = min(
+                ((u, w) for u, _, w in G.in_edges(v, data="w") if u not in cycle_nodes),
+                key=lambda x: x[1],
+                default=None,
+            )
             if in_edge:
                 in_edges[v] = in_edge
         for v, (u, w) in in_edges.items():
@@ -309,11 +329,15 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
         # Encontra arestas de ciclo -> fora
         out_edges: dict[str, tuple[str, float]] = {}
         for u in cycle_nodes:
-            out_edge = min((
-                (v, w)
-                for _, v, w in G.out_edges(u, data='w')
-                if v not in cycle_nodes
-            ), key=lambda x: x[1], default=None)
+            out_edge = min(
+                (
+                    (v, w)
+                    for _, v, w in G.out_edges(u, data="w")
+                    if v not in cycle_nodes
+                ),
+                key=lambda x: x[1],
+                default=None,
+            )
             if out_edge:
                 out_edges[u] = out_edge
         for u, (v, w) in out_edges.items():
@@ -327,6 +351,7 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
     except Exception as e:
         print(f"[ERRO] Falha ao contrair ciclo: {e}")
         return None, None  # Retorna o grafo original como fallback
+
 
 def remove_edge_in_r0(G: nx.DiGraph, r0: str):
     """
@@ -355,7 +380,8 @@ def remove_edge_in_r0(G: nx.DiGraph, r0: str):
         print(f"[ERRO] Falha ao remover arestas que entram em '{r0}': {e}")
         return G  # Retorna o grafo original como fallback
 
-def remove_edge_from_cycle(C: nx.DiGraph, G: nx.DiGraph, in_edge: tuple[str, str, float]):
+
+def remove_edge_from_cycle(C: nx.DiGraph, in_edge: tuple[str, str, float]):
     """
     Remove do ciclo C a aresta que entra no vértice `v` (obtido de `in_edge`)
     caso esse vértice já tenha um predecessor em C.
@@ -373,7 +399,9 @@ def remove_edge_from_cycle(C: nx.DiGraph, G: nx.DiGraph, in_edge: tuple[str, str
             _, v, _ = in_edge
 
             if v not in C:
-                raise ValueError(f"O vértice destino '{v}' da in_edge não está presente no ciclo.")
+                raise ValueError(
+                    f"O vértice destino '{v}' da in_edge não está presente no ciclo."
+                )
 
             # Procura um predecessor em C que leva até v
             u = next((u for u, _ in C.in_edges(v)), None)
@@ -385,11 +413,12 @@ def remove_edge_from_cycle(C: nx.DiGraph, G: nx.DiGraph, in_edge: tuple[str, str
         print(f"[ERRO] Falha ao remover aresta do ciclo: {e}")
         return C  # Retorna o ciclo original inalterado como fallback
 
+
 # Algoritmo de Chu-Liu
 def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, raise_on_error=False):
     indent = "  " * level
     try:
-        logger.info(f"{indent}Iniciando nível {level}")
+        log(f"{indent}Iniciando nível {level}")
         if not isinstance(G, nx.DiGraph):
             raise TypeError("O grafo fornecido deve ser um networkx.DiGraph.")
         if r0 not in G:
@@ -410,7 +439,7 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, raise_on_error=Fa
 
         if is_F_star_arborescence(F_star, r0):
             for u, v in F_star.edges:
-                F_star[u][v]['w'] = G[u][v]['w']
+                F_star[u][v]["w"] = G[u][v]["w"]
             return F_star
 
         C = find_cycle(F_star)
@@ -424,14 +453,10 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, raise_on_error=Fa
         # Resposta: Eu vou remover a aresta que chega no vértice v que recebe a única aresta da arborescência
         # Criar um dicionário auxiliar para armazenas para cada u qual era o nome original do arco u  para v em C.
         edge_to_remove = max(
-            (
-                (u, v, w)
-                for v, (u, w) in in_edges.items()
-            ),
-            key=lambda x: x[2]
+            ((u, v, w) for v, (u, w) in in_edges.items()), key=lambda x: x[2]
         )
 
-        C = remove_edge_from_cycle(C, G, edge_to_remove)
+        C = remove_edge_from_cycle(C, edge_to_remove)
         for u, v in C.edges:
             F_prime.add_edge(u, v)
         for v, (u, w) in in_edges.items():
@@ -442,7 +467,7 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, raise_on_error=Fa
             F_prime.remove_node(contracted_label)
 
         for u, v in F_prime.edges:
-            F_prime[u][v]['w'] = G[u][v]['w']
+            F_prime[u][v]["w"] = G[u][v]["w"]
         return F_prime
 
     except Exception as e:
@@ -451,7 +476,8 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, raise_on_error=Fa
             raise
         return nx.DiGraph()
 
-# Para testar
+
+@when("click", "#load-test-graph")
 def load_test_graph(event=None):
     global G
     G.clear()
@@ -469,6 +495,8 @@ def load_test_graph(event=None):
     log("Grafo de teste carregado.")
     update_graph_output(G, "Grafo de Teste (DG)")
 
+
+@when("click", "#show-ready-arborescence")
 def show_ready_arborescence(event=None):
     T = nx.DiGraph()
     T.add_edge("r0", "A", w=2)

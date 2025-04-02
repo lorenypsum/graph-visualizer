@@ -1,56 +1,57 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <title>Chu-Liu/Edmonds Visualizer</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
-    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width,initial-scale=1" />
+      <title>Chu-Liu/Edmonds Visualizer</title>
+      <link rel="stylesheet" href="style.css" />
+      <link rel="stylesheet" href="https://pyscript.net/releases/2025.3.1/core.css">
+      <script type="module" src="https://pyscript.net/releases/2025.3.1/core.js"></script>
   </head>
   <body>
-    <header>
-      <h1>Chu-Liu/Edmonds Visualizer</h1>
-      <p>Visualização passo a passo de arborescências em grafos direcionados</p>
-    </header>
+    <body>
+      <header>
+        <h1>Chu-Liu/Edmonds Visualizer</h1>
+        <p>Visualização passo a passo de arborescências em grafos direcionados</p>
+      </header>
+  
+      <section id="title">
+        <h2>Desenhar Di-grafo</h2>
+      </section>
+  
+      <section id="controls">
+        <div>
+          <input type="text" id="source" placeholder="Origem" />
+          <input type="text" id="target" placeholder="Destino" />
+          <input type="number" id="weight" placeholder="Peso" min="0" />
+          <button id="add-edge">➕ Adicionar Aresta</button>
+          <button id="run-algorithm">▶ Executar Algoritmo</button>
+          <button id="reset-graph">🔄 Resetar</button>
+        </div>
+      </section>
+  
+      <section id="title">
+        <h2>Carregar Di-grafo</h2>
+      </section>
+  
+      <section id="controls">
+        <button id="export-graph">📤 Exportar JSON</button>
+        <button id="load-test-graph">📥 Carregar Grafo de Teste</button>
+        <button id="show-ready-arborescence">
+          🌳 Mostrar Arborescência Pronta
+        </button>
+      </section>
+  
+      <section id="graph-output">
+        <py-script id="graph-area"></py-script>
+      </section>
+  
+      <section id="log">
+        <h2>Log da Execução</h2>
+        <textarea id="log-output" readonly></textarea>
+      </section>
 
-    <section id="title">
-      <h2>Desenhar Di-grafo</h2>
-    </section>
-
-    <section id="controls">
-      <div>
-        <input type="text" id="source" placeholder="Origem" />
-        <input type="text" id="target" placeholder="Destino" />
-        <input type="number" id="weight" placeholder="Peso" min="0" />
-        <button py-click="add_edge">➕ Adicionar Aresta</button>
-        <button py-click="run_algorithm">▶ Executar Algoritmo</button>
-        <button py-click="reset_graph">🔄 Resetar</button>
-      </div>
-    </section>
-
-    <sectior id="title">
-      <h2>Carregar Di-grafo</h2>
-    </sectior>
-
-    <section id="controls">
-      <button py-click="export_graph">📤 Exportar JSON</button>
-      <button py-click="load_test_graph">📥 Carregar Grafo de Teste</button>
-      <button py-click="show_ready_arborescence">
-        🌳 Mostrar Arborescência Pronta
-      </button>
-    </section>
-
-    <section id="graph-output">
-      <py-script id="graph-area"></py-script>
-    </section>
-
-    <section id="log">
-      <h2>Log da Execução</h2>
-      <textarea id="log-output" readonly></textarea>
-    </section>
-
-    <py-config> packages = ["networkx", "matplotlib"] </py-config>
-
-    <py-script src="main.py"></py-script>
+      <script type="py" src="./main.py" config="./pyscript.json"></script>
+    </body>
   </body>
 </html>
