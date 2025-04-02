@@ -25,9 +25,9 @@
     <main class="flex flex-col items-center gap-8 py-8 px-8">
       <section class="text-center w-full max-w-4xl">
         <h2 class="text-2xl font-semibold text-[#5b8f79] mb-4">
-          Desenhar Di-grafo
+          Definir Di-grafo
         </h2>
-        <div class="flex flex-wrap justify-center gap-4">
+        <div class="flex flex-wrap justify-center gap-4 items-center">
           <input
             type="text"
             id="source"
@@ -53,54 +53,11 @@
           >
             ➕ Adicionar Aresta
           </button>
-        </div>
-      </section>
-
-      <section class="text-center w-full max-w-4xl">
-        <h2 class="text-2xl font-semibold text-[#5b8f79] mb-4">
-          Configurar Nó Raiz
-        </h2>
-        <div class="flex flex-wrap justify-center gap-4">
-          <input
-            type="text"
-            id="root-node"
-            placeholder="Nó Raiz"
-            value="r0"
-            class="p-3 border rounded border-gray-300 w-40"
-          />
-        </div>
-      </section>
-
-      <section class="text-center w-full max-w-4xl">
-        <h2 class="text-2xl font-semibold text-[#5b8f79] mb-4">
-          Operações no Grafo
-        </h2>
-        <div class="flex flex-wrap justify-center gap-4">
-          <button
-            id="run-algorithm"
-            class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
-          >
-            ▶ Executar Algoritmo
-          </button>
           <button
             id="reset-graph"
             class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
           >
             🔄 Resetar
-          </button>
-        </div>
-      </section>
-
-      <section class="text-center w-full max-w-4xl">
-        <h2 class="text-2xl font-semibold text-[#5b8f79] mb-4">
-          Carregar e Exportar
-        </h2>
-        <div class="flex flex-wrap justify-center gap-4">
-          <button
-            id="export-graph"
-            class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
-          >
-            📤 Exportar JSON
           </button>
           <button
             id="load-test-graph"
@@ -109,10 +66,40 @@
             📥 Carregar Grafo de Teste
           </button>
           <button
+            id="export-graph"
+            class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+          >
+            📤 Exportar JSON
+          </button>
+          <button
             id="show-ready-arborescence"
             class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
           >
-            🌳 Mostrar Arborescência Pronta
+            🌳 Mostrar Arborescência do Grafo de Teste
+          </button>
+        </div>
+      </section>
+
+      <section class="text-center w-full max-w-4xl">
+        <h2 class="text-2xl font-semibold text-[#5b8f79] mb-4">
+          Executar Algoritmo de Chu-Liu/Edmonds
+        </h2>
+        <div class="flex flex-wrap justify-center gap-4 items-center">
+          <label for="root-node" class="text-gray-700 font-medium"
+            >Nó Raiz:</label
+          >
+          <input
+            type="text"
+            id="root-node"
+            placeholder="Nó Raiz"
+            value="r0"
+            class="p-3 border rounded border-gray-300 w-40"
+          />
+          <button
+            id="run-algorithm"
+            class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+          >
+            ▶ Executar Algoritmo
           </button>
         </div>
       </section>
