@@ -30,6 +30,7 @@ def draw_graph(G: nx.DiGraph, title="Digrafo", append=True):
     plt.title(title)
     display(title, target="graph-area", append=append)
     display(plt, target="graph-area", append=append)
+    plt.close()  # Fecha a figura para liberar memória
 
 
 G = nx.DiGraph()
