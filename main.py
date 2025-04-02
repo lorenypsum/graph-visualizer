@@ -54,6 +54,7 @@ def export_graph(event=None):
     log("Exportado como JSON.")
 
 def run_algorithm(event=None):
+    
     from js import setTimeout
 
     try:
