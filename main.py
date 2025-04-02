@@ -51,9 +51,9 @@ def reset_graph():
 @when("click", "#run-algorithm")
 def run_algorithm(event):
     try:
-        r0 = "r0"
+        r0 = document.getElementById("root-node").value or "r0"
         if r0 not in G:
-            window.alert("[ERRO] O nó raiz 'r0' deve existir no grafo.")
+            window.alert(f"[ERRO] O nó raiz '{r0}' deve existir no grafo.")
             return
 
         log("Executando algoritmo de Chu-Liu...")
@@ -66,7 +66,7 @@ def run_algorithm(event):
 
 
 # Funções para desenho do grafo
-def draw_graph(G, title="Digrafo"):
+def draw_graph(G: nx.DiGraph, title="Digrafo"):
     try:
         # Verifica se G é um grafo válido
         if not isinstance(G, (nx.Graph, nx.DiGraph)):
@@ -75,7 +75,7 @@ def draw_graph(G, title="Digrafo"):
             )
 
         if G.number_of_nodes() == 0:
-            print(f"[AVISO] Grafo vazio — nada a desenhar. ({title})")
+            log(f"[AVISO] Grafo vazio — nada a desenhar. ({title})")
             return
 
         pos = nx.planar_layout(G)  # Layout para posicionamento dos nós
@@ -95,7 +95,7 @@ def draw_graph(G, title="Digrafo"):
         # Tenta obter os pesos das arestas
         weights = nx.get_edge_attributes(G, "w")
         if not weights:
-            print(
+            log(
                 f"[INFO] Nenhum peso ('w') encontrado nas arestas para exibir no grafo."
             )
 
@@ -108,7 +108,7 @@ def draw_graph(G, title="Digrafo"):
         plt.show()
 
     except Exception as e:
-        print(f"[ERRO] Ocorreu um problema ao desenhar o grafo: {e}")
+        log(f"[ERRO] Ocorreu um problema ao desenhar o grafo: {e}")
 
 
 # Grafo de teste
@@ -129,7 +129,7 @@ DG.add_edge("C", "D", w=2)
 DG.add_edge("D", "B", w=2)
 DG.add_edge("B", "E", w=8)
 DG.add_edge("C", "E", w=4)
-print(DG)
+log(DG)
 
 
 # Funções auxiliares ao algoritmo de Chu-Liu
@@ -172,7 +172,7 @@ def change_edge_weight(G: nx.DiGraph, node: str):
         return G
 
     except Exception as e:
-        print(f"[ERRO] change_edge_weight falhou: {e}")
+        log(f"[ERRO] change_edge_weight falhou: {e}")
         return G  # Retorna o grafo original inalterado como fallback
 
 
@@ -218,7 +218,7 @@ def get_Fstar(G: nx.DiGraph, r0: str):
         return F_star
 
     except Exception as e:
-        print(f"[ERRO] Falha ao construir F_star: {e}")
+        log(f"[ERRO] Falha ao construir F_star: {e}")
         return nx.DiGraph()  # Retorna grafo vazio como fallback
 
 
@@ -243,7 +243,7 @@ def is_F_star_arborescence(F_star: nx.DiGraph, r0: str):
         return is_reachable and is_acyclic
 
     except Exception as e:
-        print(f"[ERRO] Falha ao verificar se é arborescência: {e}")
+        log(f"[ERRO] Falha ao verificar se é arborescência: {e}")
         return False
 
 
@@ -272,7 +272,7 @@ def find_cycle(F_star: nx.DiGraph):
     except nx.NetworkXNoCycle:
         return None
     except Exception as e:
-        print(f"[ERRO] Falha ao procurar ciclo em F_star: {e}")
+        log(f"[ERRO] Falha ao procurar ciclo em F_star: {e}")
         return None
 
 
@@ -338,7 +338,7 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
         return in_edges, out_edges
 
     except Exception as e:
-        print(f"[ERRO] Falha ao contrair ciclo: {e}")
+        log(f"[ERRO] Falha ao contrair ciclo: {e}")
         return None, None  # Retorna o grafo original como fallback
 
 
@@ -359,14 +359,14 @@ def remove_edge_in_r0(G: nx.DiGraph, r0: str):
         # Remove as arestas que entram em r0
         in_edges = list(G.in_edges(r0))
         if not in_edges:
-            print(f"[INFO] Nenhuma aresta entrando em '{r0}' para remover.")
+            log(f"[INFO] Nenhuma aresta entrando em '{r0}' para remover.")
         else:
             G.remove_edges_from(in_edges)
 
         return G
 
     except Exception as e:
-        print(f"[ERRO] Falha ao remover arestas que entram em '{r0}': {e}")
+        log(f"[ERRO] Falha ao remover arestas que entram em '{r0}': {e}")
         return G  # Retorna o grafo original como fallback
 
 
@@ -399,7 +399,7 @@ def remove_edge_from_cycle(C: nx.DiGraph, in_edge: tuple[str, str, float]):
         return C
 
     except Exception as e:
-        print(f"[ERRO] Falha ao remover aresta do ciclo: {e}")
+        log(f"[ERRO] Falha ao remover aresta do ciclo: {e}")
         return C  # Retorna o ciclo original inalterado como fallback
 
 
