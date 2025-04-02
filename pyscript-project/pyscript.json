@@ -1,0 +1,27 @@
+{
+    "version": "0.1",
+    "packages": ["networkx", "matplotlib", "flask", "pandas"],
+    "fetch": [
+        "https://cdn.jsdelivr.net/npm/pandas@1.5.3/pandas.min.js"
+    ],
+    "permissions": {
+        "filesystem": {
+            "read": true,
+            "write": true
+        },
+        "clipboard": {
+            "read": true,
+            "write": true
+        },
+        "network": {
+            "fetch": true
+        }
+    },
+    "app": {
+        "run_on_load": true,
+        "main": "main.py"
+    },
+    "env": {
+        "DEBUG": "true"
+    }
+}

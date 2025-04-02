@@ -15,6 +15,31 @@ def log(msg):
     log_box.scrollTop = log_box.scrollHeight
 
 def update_graph_output(G_display, title="Grafo Atual"):
+    """
+    Updates the graph visualization by rendering the given graph `G_display` 
+    and embedding it as a base64-encoded PNG image in an HTML element.
+
+    Args:
+        G_display (networkx.Graph): The graph to be visualized. It should be a 
+            NetworkX graph object.
+        title (str, optional): The title to be displayed above the graph. 
+            Defaults to "Grafo Atual".
+
+    Behavior:
+        - Clears the current matplotlib figure.
+        - Computes the layout for the graph using the spring layout algorithm.
+        - Draws the graph nodes and edges with specified styles.
+        - Adds edge labels (if any) with red font color.
+        - Saves the graph visualization as a PNG image in memory.
+        - Encodes the image in base64 format.
+        - Updates the inner HTML of the element with ID "graph-area" to display 
+          the graph image.
+
+    Note:
+        This function assumes the presence of a DOM element with ID "graph-area" 
+        and requires the `document` object to be available (e.g., in a Jupyter 
+        Notebook with IPython.display or a web-based Python environment).
+    """
     plt.clf()
     pos = nx.spring_layout(G_display)
     edge_labels = nx.get_edge_attributes(G_display, 'w')
@@ -114,26 +139,26 @@ def draw_graph(G, title="Digrafo"):
     except Exception as e:
         print(f"[ERRO] Ocorreu um problema ao desenhar o grafo: {e}")
 
-# Grafo de teste   
-# TODO - Fazer testes com grafos maiores   
+# # Grafo de teste   
+# # TODO - Fazer testes com grafos maiores   
 
-# Criando Digrafo com a biblioteca networkx para testes
-DG = nx.DiGraph()
+# # Criando Digrafo com a biblioteca networkx para testes
+# DG = nx.DiGraph()
 
-# Adicionando vértices (opcional, pois são criados automaticamente ao adicionar arestas)
-DG.add_nodes_from(["A", "B", "C", "D"])
+# # Adicionando vértices (opcional, pois são criados automaticamente ao adicionar arestas)
+# DG.add_nodes_from(["A", "B", "C", "D"])
 
-# Adicionando arestas com pesos (custo)
-DG.add_edge("r0", "B", w = 10)
-DG.add_edge("r0", "A", w = 2)
-DG.add_edge("r0", "C", w = 10)
-DG.add_edge("B", "A", w = 1)
-DG.add_edge("A", "C", w = 4)
-DG.add_edge("C", "D", w = 2)
-DG.add_edge("D", "B", w = 2)
-DG.add_edge("B", "E", w = 8)
-DG.add_edge("C", "E", w = 4)
-print(DG)
+# # Adicionando arestas com pesos (custo)
+# DG.add_edge("r0", "B", w = 10)
+# DG.add_edge("r0", "A", w = 2)
+# DG.add_edge("r0", "C", w = 10)
+# DG.add_edge("B", "A", w = 1)
+# DG.add_edge("A", "C", w = 4)
+# DG.add_edge("C", "D", w = 2)
+# DG.add_edge("D", "B", w = 2)
+# DG.add_edge("B", "E", w = 8)
+# DG.add_edge("C", "E", w = 4)
+# print(DG)
 
 # Funções auxiliares ao algoritmo de Chu-Liu
 def change_edge_weight(G, node):
@@ -454,3 +479,4 @@ def show_ready_arborescence(event=None):
     T.add_edge("C", "E", w=4)
     update_graph_output(T, "Arborescência Pré-definida")
     log("Arborescência pronta exibida.")
+
