@@ -1,6 +1,10 @@
 import networkx as nx
+from networkx.readwrite import json_graph
 import matplotlib.pyplot as plt
+from js import Blob, URL, document
 from pyscript import document, window, when, display
+import json
+import os 
 
 
 def log(msg: str):
@@ -56,12 +60,60 @@ def reset_graph():
     draw_graph(G, "Grafo Resetado", append=False)
     log("Grafo resetado.")
 
+# @when("click", "#export-graph")
+# def export_graph(event):
+#     log("Exportando grafo...")
+#     global G
+#     if G.number_of_nodes() == 0:
+#         log("[ERRO] O grafo está vazio.")
+#         return
+#     # Define explicitamente o parâmetro `edges` para evitar o aviso
+#     data = json_graph.node_link_data(G, edges="links")
+#     json_data = json.dumps(data, indent=4)
+#     with open("graph_teste.json", "w") as f:
+#         f.write(json_data)
+#     log("Grafo exportado para graph.json.")
+
+# @when("click", "#export-graph")
+# def export_graph(event):
+#     log("Exportando grafo...")
+#     global G
+#     if G.number_of_nodes() == 0:
+#         log("[ERRO] O grafo está vazio.")
+#         return
+#     # Define explicitamente o parâmetro `edges` para evitar o aviso
+#     data = json_graph.node_link_data(G, edges="links")
+#     json_data = json.dumps(data, indent=4)
+#     file_path = os.path.join(os.getcwd(), "graph_teste.json")  # Caminho completo
+#     with open(file_path, "w") as f:
+#         f.write(json_data)
+#     log(f"Grafo exportado para {file_path}.")
 
 @when("click", "#export-graph")
 def export_graph(event):
     log("Exportando grafo...")
-    # TODO
+    global G
+    if G.number_of_nodes() == 0:
+        log("[ERRO] O grafo está vazio.")
+        return
 
+    # Converte o grafo para JSON
+    data = json_graph.node_link_data(G, edges="links")
+    json_data = json.dumps(data, indent=4)
+
+    # Cria um link de download no navegador
+    from js import Blob, URL, document
+    blob = Blob.new([json_data], {"type": "application/json"})
+    url = URL.createObjectURL(blob)
+
+    # Configura e dispara o download
+    link = document.createElement("a")
+    link.href = url
+    link.download = "graph_teste.json"
+    link.click()
+    URL.revokeObjectURL(url)
+
+    log("Download do grafo iniciado.")
 
 @when("click", "#load-test-graph")
 def load_test_graph(event):
