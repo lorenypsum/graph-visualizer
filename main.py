@@ -1,11 +1,9 @@
 import networkx as nx
 import matplotlib.pyplot as plt
-# import unittest #não usado ainda
 import logging
 from js import document, JSON, Blob, URL, __new__
 import io
 import base64
-# from pyodide.ffi import create_proxy
 
 G = nx.DiGraph()
 
