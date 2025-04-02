@@ -108,10 +108,6 @@ def run_algorithm(event):
 
 # Funções auxiliares ao algoritmo de Chu-Liu
 def change_edge_weight(G: nx.DiGraph, node: str):
-    # Verifica se é um grafo direcionado válido
-    if not isinstance(G, nx.DiGraph):
-        raise TypeError("O grafo fornecido deve ser do tipo networkx.DiGraph.")
-
     # Verifica se o nó existe
     if node not in G:
         raise ValueError(f"O nó '{node}' não existe no grafo.")
@@ -225,14 +221,10 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
     Contrai um ciclo C no grafo G, substituindo-o por um supernó com rótulo `label`.
     Retorna o novo grafo (G'), a aresta de entrada (in_edge) e a de saída (out_edge).
     """
-    # Verificações iniciais de tipo
-    if not isinstance(G, nx.DiGraph) or not isinstance(C, (nx.DiGraph, nx.Graph)):
-        raise TypeError("G e C devem ser grafos (preferencialmente nx.DiGraph).")
-
     if label in G:
         raise ValueError(f"O rótulo '{label}' já existe como nó em G.")
 
-    cycle_nodes = set(C.nodes())
+    cycle_nodes: set[str] = set(C.nodes())
 
     # Encontra arestas de fora -> ciclo
     # Fazer um filtro dos vértices que estão fora de C
@@ -301,10 +293,6 @@ def remove_edge_from_cycle(C: nx.DiGraph, in_edge: tuple[str, str, float]):
     Remove do ciclo C a aresta que entra no vértice `v` (obtido de `in_edge`)
     caso esse vértice já tenha um predecessor em C.
     """
-    # Verifica se C é um grafo válido
-    if not isinstance(C, (nx.DiGraph, nx.Graph)):
-        raise TypeError("O ciclo fornecido (C) deve ser um grafo válido.")
-
     C = C.copy()  # Cópia segura
 
     if in_edge:
@@ -325,63 +313,56 @@ def remove_edge_from_cycle(C: nx.DiGraph, in_edge: tuple[str, str, float]):
 
 
 # Algoritmo de Chu-Liu
-def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, raise_on_error=False):
+def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0):
     indent = "  " * level
-    try:
-        log(f"{indent}Iniciando nível {level}")
-        if not isinstance(G, nx.DiGraph):
-            raise TypeError("O grafo fornecido deve ser um networkx.DiGraph.")
-        if r0 not in G:
-            raise ValueError(f"O nó raiz '{r0}' não está presente no grafo.")
+    log(f"{indent}Iniciando nível {level}")
+    if not isinstance(G, nx.DiGraph):
+        raise TypeError("O grafo fornecido deve ser um networkx.DiGraph.")
+    if r0 not in G:
+        raise ValueError(f"O nó raiz '{r0}' não está presente no grafo.")
 
-        G_arb = G.copy()
-        draw_graph(G_arb, f"{indent}Grafo original")
-        remove_edge_in_r0(G_arb, r0)
-        draw_graph(G_arb, f"{indent}Após remoção de entradas")
+    G_arb = G.copy()
+    draw_graph(G_arb, f"{indent}Grafo original")
+    remove_edge_in_r0(G_arb, r0)
+    draw_graph(G_arb, f"{indent}Após remoção de entradas")
 
-        for v in G_arb.nodes:
-            if v != r0:
-                change_edge_weight(G_arb, v)
-        draw_graph(G_arb, f"{indent}Após ajuste de pesos")
+    for v in G_arb.nodes:
+        if v != r0:
+            change_edge_weight(G_arb, v)
+    draw_graph(G_arb, f"{indent}Após ajuste de pesos")
 
-        F_star = get_Fstar(G_arb, r0)
-        draw_graph(F_star, f"{indent}F_star")
+    F_star = get_Fstar(G_arb, r0)
+    draw_graph(F_star, f"{indent}F_star")
 
-        if is_F_star_arborescence(F_star, r0):
-            for u, v in F_star.edges:
-                F_star[u][v]["w"] = G[u][v]["w"]
-            return F_star
+    if is_F_star_arborescence(F_star, r0):
+        for u, v in F_star.edges:
+            F_star[u][v]["w"] = G[u][v]["w"]
+        return F_star
 
-        C = find_cycle(F_star)
+    C = find_cycle(F_star)
 
-        contracted_label = f"C*{level}"
-        in_edges, out_edges = contract_cycle(G_arb, C, contracted_label)
-        F_prime = find_optimum_arborescence(G_arb, r0, level + 1, raise_on_error)
+    contracted_label = f"C*{level}"
+    in_edges, out_edges = contract_cycle(G_arb, C, contracted_label)
+    F_prime = find_optimum_arborescence(G_arb, r0, level + 1)
 
-        # Dúvida: como escolher a aresta que vamos remover do ciclo?
-        # Provisoriamente, escolhemos a aresta de maior peso
-        # Resposta: Eu vou remover a aresta que chega no vértice v que recebe a única aresta da arborescência
-        # Criar um dicionário auxiliar para armazenas para cada u qual era o nome original do arco u  para v em C.
-        edge_to_remove = max(
-            ((u, v, w) for v, (u, w) in in_edges.items()), key=lambda x: x[2]
-        )
+    # Dúvida: como escolher a aresta que vamos remover do ciclo?
+    # Provisoriamente, escolhemos a aresta de maior peso
+    # Resposta: Eu vou remover a aresta que chega no vértice v que recebe a única aresta da arborescência
+    # Criar um dicionário auxiliar para armazenas para cada u qual era o nome original do arco u  para v em C.
+    edge_to_remove = max(
+        ((u, v, w) for v, (u, w) in in_edges.items()), key=lambda x: x[2]
+    )
 
-        C = remove_edge_from_cycle(C, edge_to_remove)
-        for u, v in C.edges:
-            F_prime.add_edge(u, v)
-        for v, (u, w) in in_edges.items():
-            F_prime.add_edge(u, v, w=w)
-        for u, (v, w) in out_edges.items():
-            F_prime.add_edge(u, v, w=w)
-        if contracted_label in F_prime:
-            F_prime.remove_node(contracted_label)
+    C = remove_edge_from_cycle(C, edge_to_remove)
+    for u, v in C.edges:
+        F_prime.add_edge(u, v)
+    for v, (u, w) in in_edges.items():
+        F_prime.add_edge(u, v, w=w)
+    for u, (v, w) in out_edges.items():
+        F_prime.add_edge(u, v, w=w)
+    if contracted_label in F_prime:
+        F_prime.remove_node(contracted_label)
 
-        for u, v in F_prime.edges:
-            F_prime[u][v]["w"] = G[u][v]["w"]
-        return F_prime
-
-    except Exception as e:
-        log(f"{indent}Erro no nível {level}: {e}")
-        if raise_on_error:
-            raise
-        return nx.DiGraph()
+    for u, v in F_prime.edges:
+        F_prime[u][v]["w"] = G[u][v]["w"]
+    return F_prime
