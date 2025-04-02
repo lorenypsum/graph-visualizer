@@ -115,18 +115,8 @@ def change_edge_weight(G: nx.DiGraph, node: str):
     # Obtém predecessores com pesos
     predecessors = list(G.in_edges(node, data="w"))
 
-    if not predecessors:
-        raise ValueError(f"Nenhum arco entra no nó '{node}'.")
-
-    # Verifica se todos os predecessores possuem pesos válidos
-    weights = []
-    for u, v, w in predecessors:
-        if w is None:
-            raise ValueError(f"A aresta ({u}, {v}) não possui atributo de peso 'w'.")
-        weights.append(w)
-
     # Calcula Yv = menor peso de entrada
-    yv = min(weights)
+    yv = min((w for _, _, w in predecessors))
 
     # Subtrai Yv de cada aresta de entrada
     for u, _, _ in predecessors:
