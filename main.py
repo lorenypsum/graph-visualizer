@@ -1,19 +1,6 @@
 import networkx as nx
 import matplotlib.pyplot as plt
-import logging
 from pyscript import document, window, when, display
-
-
-# Configuração do logger
-logging.basicConfig(
-    level=logging.INFO,  # Altere para DEBUG se quiser mais detalhes
-    format="[%(levelname)s] %(message)s",
-)
-
-logger = logging.getLogger(__name__)
-
-
-G = nx.DiGraph()
 
 
 def log(msg):
@@ -22,18 +9,20 @@ def log(msg):
     log_box.scrollTop = log_box.scrollHeight
 
 
+G = nx.DiGraph()
+
+
 @when("click", "#export-graph")
 def export_graph(event):
     log("Exportando grafo...")
 
 
-def update_graph_output(G_display, title="Grafo Atual"):
+def update_graph_output(G: nx.DiGraph, title="Grafo Atual"):
     plt.clf()
-    pos = nx.spring_layout(G_display)
-    edge_labels = nx.get_edge_attributes(G_display, "w")
-    nx.draw(G_display, pos, with_labels=True, node_color="lightblue", node_size=2000)
+    pos = nx.spring_layout(G)
+    nx.draw(G, pos, with_labels=True, node_color="lightblue", node_size=2000)
     nx.draw_networkx_edge_labels(
-        G_display, pos, edge_labels=edge_labels, font_color="red"
+        G, pos, edge_labels=nx.get_edge_attributes(G, "w"), font_color="red"
     )
     plt.title(title)
     display(plt, target="graph-area", append=False)
@@ -471,17 +460,16 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, raise_on_error=Fa
         return F_prime
 
     except Exception as e:
-        logger.error(f"{indent}Erro no nível {level}: {e}")
+        log(f"{indent}Erro no nível {level}: {e}")
         if raise_on_error:
             raise
         return nx.DiGraph()
 
 
 @when("click", "#load-test-graph")
-def load_test_graph(event=None):
+def load_test_graph(event):
     global G
     G.clear()
-    # Grafo exemplo
     G.add_edge("r0", "B", w=10)
     G.add_edge("r0", "A", w=2)
     G.add_edge("r0", "C", w=10)
@@ -497,7 +485,7 @@ def load_test_graph(event=None):
 
 
 @when("click", "#show-ready-arborescence")
-def show_ready_arborescence(event=None):
+def show_ready_arborescence(event):
     T = nx.DiGraph()
     T.add_edge("r0", "A", w=2)
     T.add_edge("A", "C", w=4)
