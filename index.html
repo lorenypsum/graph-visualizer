@@ -1,54 +1,110 @@
 <!DOCTYPE html>
 <html>
   <head>
-      <meta charset="utf-8" />
-      <meta name="viewport" content="width=device-width,initial-scale=1" />
-      <title>Chu-Liu/Edmonds Visualizer</title>
-      <link rel="stylesheet" href="style.css" />
-      <link rel="stylesheet" href="https://pyscript.net/releases/2025.3.1/core.css">
-      <script type="module" src="https://pyscript.net/releases/2025.3.1/core.js"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Chu-Liu/Edmonds Visualizer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://pyscript.net/releases/2025.3.1/core.css"
+    />
+    <script
+      type="module"
+      src="https://pyscript.net/releases/2025.3.1/core.js"
+    ></script>
   </head>
   <body>
     <body>
-      <header>
-        <h1>Chu-Liu/Edmonds Visualizer</h1>
-        <p>Visualização passo a passo de arborescências em grafos direcionados</p>
+      <header class="bg-[#5b8f79] text-white text-center p-4">
+        <h1 class="text-2xl font-bold">Chu-Liu/Edmonds Visualizer</h1>
+        <p class="text-lg">
+          Visualização passo a passo de arborescências em grafos direcionados
+        </p>
       </header>
-  
-      <section id="title">
-        <h2>Desenhar Di-grafo</h2>
+
+      <section class="text-left px-20 py-4">
+        <h2 class="text-xl font-semibold text-[#5b8f79]">Desenhar Di-grafo</h2>
       </section>
-  
-      <section id="controls">
+
+      <section class="flex flex-wrap gap-2 px-20">
         <div>
-          <input type="text" id="source" placeholder="Origem" />
-          <input type="text" id="target" placeholder="Destino" />
-          <input type="number" id="weight" placeholder="Peso" min="0" />
-          <button id="add-edge">➕ Adicionar Aresta</button>
-          <button id="run-algorithm">▶ Executar Algoritmo</button>
-          <button id="reset-graph">🔄 Resetar</button>
+          <input
+            type="text"
+            id="source"
+            placeholder="Origem"
+            class="p-2 border rounded border-gray-300"
+          />
+          <input
+            type="text"
+            id="target"
+            placeholder="Destino"
+            class="p-2 border rounded border-gray-300"
+          />
+          <input
+            type="number"
+            id="weight"
+            placeholder="Peso"
+            min="0"
+            class="p-2 border rounded border-gray-300"
+          />
+          <button
+            id="add-edge"
+            class="p-2 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+          >
+            ➕ Adicionar Aresta
+          </button>
+          <button
+            id="run-algorithm"
+            class="p-2 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+          >
+            ▶ Executar Algoritmo
+          </button>
+          <button
+            id="reset-graph"
+            class="p-2 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+          >
+            🔄 Resetar
+          </button>
         </div>
       </section>
-  
-      <section id="title">
-        <h2>Carregar Di-grafo</h2>
+
+      <section class="text-left px-20 py-4">
+        <h2 class="text-xl font-semibold text-[#5b8f79]">Carregar Di-grafo</h2>
       </section>
-  
-      <section id="controls">
-        <button id="export-graph">📤 Exportar JSON</button>
-        <button id="load-test-graph">📥 Carregar Grafo de Teste</button>
-        <button id="show-ready-arborescence">
+
+      <section class="flex flex-wrap gap-2 px-20">
+        <button
+          id="export-graph"
+          class="p-2 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+        >
+          📤 Exportar JSON
+        </button>
+        <button
+          id="load-test-graph"
+          class="p-2 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+        >
+          📥 Carregar Grafo de Teste
+        </button>
+        <button
+          id="show-ready-arborescence"
+          class="p-2 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+        >
           🌳 Mostrar Arborescência Pronta
         </button>
       </section>
-  
-      <section id="graph-output">
+
+      <section id="graph-output" class="px-20 py-4">
         <py-script id="graph-area"></py-script>
       </section>
-  
-      <section id="log">
-        <h2>Log da Execução</h2>
-        <textarea id="log-output" readonly></textarea>
+
+      <section id="log" class="px-20 py-4">
+        <h2 class="text-xl font-semibold text-[#5b8f79]">Log da Execução</h2>
+        <textarea
+          id="log-output"
+          readonly
+          class="w-full p-2 border rounded border-gray-300"
+        ></textarea>
       </section>
 
       <script type="py" src="./main.py" config="./pyscript.json"></script>
