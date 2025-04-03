@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 from js import Blob, URL, document
 from pyscript import document, window, when, display
 import json
-import os 
 
 
 def log(msg: str):
@@ -60,34 +59,6 @@ def reset_graph():
     draw_graph(G, "Grafo Resetado", append=False)
     log("Grafo resetado.")
 
-# @when("click", "#export-graph")
-# def export_graph(event):
-#     log("Exportando grafo...")
-#     global G
-#     if G.number_of_nodes() == 0:
-#         log("[ERRO] O grafo está vazio.")
-#         return
-#     # Define explicitamente o parâmetro `edges` para evitar o aviso
-#     data = json_graph.node_link_data(G, edges="links")
-#     json_data = json.dumps(data, indent=4)
-#     with open("graph_teste.json", "w") as f:
-#         f.write(json_data)
-#     log("Grafo exportado para graph.json.")
-
-# @when("click", "#export-graph")
-# def export_graph(event):
-#     log("Exportando grafo...")
-#     global G
-#     if G.number_of_nodes() == 0:
-#         log("[ERRO] O grafo está vazio.")
-#         return
-#     # Define explicitamente o parâmetro `edges` para evitar o aviso
-#     data = json_graph.node_link_data(G, edges="links")
-#     json_data = json.dumps(data, indent=4)
-#     file_path = os.path.join(os.getcwd(), "graph_teste.json")  # Caminho completo
-#     with open(file_path, "w") as f:
-#         f.write(json_data)
-#     log(f"Grafo exportado para {file_path}.")
 
 @when("click", "#export-graph")
 def export_graph(event):
