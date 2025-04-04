@@ -1,8 +1,8 @@
 import networkx as nx
 from networkx.readwrite import json_graph
 import matplotlib.pyplot as plt
-from js import Blob, URL, document
-from pyscript import document, window, when, display
+from js import Blob, URL, document, alert
+from pyscript import when, display
 import json
 
 
@@ -73,7 +73,6 @@ def export_graph(event):
     json_data = json.dumps(data, indent=4)
 
     # Cria um link de download no navegador
-    from js import Blob, URL, document
     blob = Blob.new([json_data], {"type": "application/json"})
     url = URL.createObjectURL(blob)
 
@@ -121,7 +120,7 @@ def run_algorithm(event):
     global G
     r0 = document.getElementById("root-node").value or "r0"
     if r0 not in G:
-        window.alert(f"[ERRO] O nó raiz '{r0}' deve existir no grafo.")
+        alert(f"[ERRO] O nó raiz '{r0}' deve existir no grafo.")
         return
 
     log("Executando algoritmo de Chu-Liu...")
