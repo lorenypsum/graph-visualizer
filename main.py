@@ -221,7 +221,7 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
 
     cycle_nodes: set[str] = set(C.nodes())
 
-    # Encontra arestas de fora -> ciclo
+    # TODO Encontra arestas de fora -> ciclo
     # Fazer um filtro dos vértices que estão fora de C
     # Para cada um deles, faz outro filtro: pegando os arcos
     # que tem uma ponta nele e outra dentro de C
@@ -233,30 +233,44 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
     # Posso ter um arco que não tem um vértice na vizinhança de C
     # Fazer a mesma coisa para quem tá saindo
 
+    # HOW_TO_FIX 
+    # Arestas de fora para o ciclo (in_edges):
+        # Para cada nó fora do ciclo (u), encontre a aresta de menor peso que conecta u a um nó dentro do ciclo (v).
+        # Use uma expressão geradora para filtrar as arestas de entrada de G e selecione a de menor peso.
+    # Arestas do ciclo para fora (out_edges):
+        # Para cada nó dentro do ciclo (u), encontre a aresta de menor peso que conecta u a um nó fora do ciclo (v).
+        # Use uma lógica semelhante para filtrar as arestas de saída de G.
+    # Tratamento de casos especiais:
+    #   Certifique-se de lidar com casos onde não há arestas válidas (retornar None ou ignorar).
+
     in_edges: dict[str, tuple[str, float]] = {}
-    for v in cycle_nodes:
-        in_edge = min(
-            ((u, w) for u, _, w in G.in_edges(v, data="w") if u not in cycle_nodes),
-            key=lambda x: x[1],
-            default=None,
-        )
-        if in_edge:
-            in_edges[v] = in_edge
+    for u in G.nodes:
+        if u not in cycle_nodes:
+            # Encontra a aresta de menor peso de u para algum nó em C
+            in_edge = min(
+                ((u, v, w) for _, v, w in G.out_edges(u, data="w") if v in cycle_nodes),
+                key=lambda x: x[2],
+                default=None,
+            )
+            if in_edge:
+                in_edges[u] = in_edge
     for v, (u, w) in in_edges.items():
         G.add_edge(u, label, w=w)
 
     # Encontra arestas de ciclo -> fora
     out_edges: dict[str, tuple[str, float]] = {}
-    for u in cycle_nodes:
-        out_edge = min(
-            ((v, w) for _, v, w in G.out_edges(u, data="w") if v not in cycle_nodes),
-            key=lambda x: x[1],
-            default=None,
-        )
-        if out_edge:
-            out_edges[u] = out_edge
+    for u in G.nodes:
+        if u not in cycle_nodes:
+            out_edge = min(
+                ((u, v, w) for _, v, w in G.in_edges(u, data="w") if v in cycle_nodes),
+                key=lambda x: x[2],
+                default=None,
+            )
+            if out_edge:
+                out_edges[v] = out_edge
+            
     for u, (v, w) in out_edges.items():
-        G.add_edge(label, v, w=w)
+        G.add_edge(label, u, w=w)
 
     # Remove os nós do ciclo original
     G.remove_nodes_from(cycle_nodes)
