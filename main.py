@@ -277,7 +277,7 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
                     key=lambda x: x[1],
                     default=None,
                 )
-            # ??? Posso ter um arco que não tem um vértice na vizinhança de C    
+            # ??? Posso ter um arco que não tem um vértice na vizinhança de C (como)  
             if in_edge:
                 in_edges[u] = in_edge
     for u, (v, w) in in_edges.items():
