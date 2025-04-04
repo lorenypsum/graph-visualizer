@@ -224,78 +224,56 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
     edges_outside_cycle = set(G.nodes()) - cycle_nodes
 
     in_edges: dict[str, tuple[str, float]] = {}
+    out_edges: dict[str, tuple[str, float]] = {}
+    edge_to_remove_later = {}
+
+    ''''
+    Para cada vértice u fora de C, verifica se vértice tem arcos
+    que saem de u e entram em C. 
+    
+    Caso sim, filtra-se os arcos para adicionar apenas o arco de menor custo
+    ao conjunto de arcos que entram em C. 
+    '''    
     
      # Fazer um filtro dos vértices que estão fora de C
     for u in edges_outside_cycle:
-        
-        ''' 
-        Para cada um deles, faz outro filtro: pegando os arcos
-        que tem uma ponta nele e outra dentro de C 
-        '''
-        if v in cycle_nodes:
-            # Tratar caso devolva um None
-            if v == None:
-                continue
-            else:
-                '''
-                Para cada vértice u fora de C, determina o arco de menor custo
-                que tem uma ponta em u e outra em algum vértice de C,
-                escolhendo a aresta minima
-                '''
-                in_edge = min(
-                    ((v, w) for _, v, w in G.out_edges(u, data="w") if v in cycle_nodes),
-                    key=lambda x: x[1],
-                    default=None, ???
-                )
-            # ??? Posso ter um arco que não tem um vértice na vizinhança de C    
-            if in_edge:
-                in_edges[v] = in_edge
-    for v, (u, w) in in_edges.items():
-         G.add_edge(u, label, w=w)        
-
-    out_edges: dict[str, tuple[str, float]] = {}         
-
-    # Fazer a mesma coisa para quem tá saindo
-    for v in edges_outside_cycle:
-         
+       
         # Para cada um deles, faz outro filtro: pegando os arcos
         # que tem uma ponta nele e outra dentro de C 
-        
-        if u in cycle_nodes:
-            # Tratar caso devolva um None
-            if u == None:
+        if v in cycle_nodes:
+            # Para cada vértice u fora de C, determina o arco de menor custo
+            # que tem uma ponta em u e outra em algum vértice de C,
+            # escolhendo a aresta minima
+            in_edge = min(
+                ((v, w) for _, v, w in G.out_edges(u, data="w") if v in cycle_nodes),
+                key=lambda x: x[1],
+                default=None,
+            )
+
+            # Tratar caso devolve None
+            if in_edge == None:
                 continue
+            # Caso contrário, adiciona o arco de u para v no conjunto de vértices fora de C com ponta em C  
             else:
-                
-                # Para cada vértice v fora de C, determina o arco de menor custo
-                # que tem uma ponta em v e outra vinda em algum vértice de C,
-                # escolhendo a aresta minima
-                out_edge = min(
-                    ((u, w) for _, u, w in G.in_edges(u, data="w") if u in cycle_nodes),
-                    key=lambda x: x[1],
-                    default=None,
-                )
-            # ??? Posso ter um arco que não tem um vértice na vizinhança de C   
-            if in_edge:
-                in_edges[u] = in_edge
-    for u, (v, w) in in_edges.items():
+                in_edges[v] = in_edge
+                # Remover o arco de u para v do conjunto de vértices fora de C   
+                edges_outside_cycle.remove(u)
+    
+    # Adiciona os arcos que entram de C no grafo original       
+    for v, (u, w) in in_edges.items():
          G.add_edge(u, label, w=w)
 
-    # Encontra arestas de ciclo -> fora
-    out_edges: dict[str, tuple[str, float]] = {}
-    for u in cycle_nodes:
-        out_edge = min(
-            ((v, w) for _, v, w in G.out_edges(u, data="w") if v not in cycle_nodes),
-            key=lambda x: x[1],
-            default=None,
-        )
-        if out_edge:
-            out_edges[u] = out_edge
-    for u, (v, w) in out_edges.items():
-        G.add_edge(label, v, w=w)
+    ''''
+    Para cada vértice u fora de C, verifica se vértice tem arcos
+    que saem de u e entram em C. 
+    
+    Caso sim, filtra-se os arcos para adicionar apenas o arco de menor custo
+    ao conjunto de arcos que entram em C. 
+    '''                  
 
-    # Remove os nós do ciclo original
-    G.remove_nodes_from(cycle_nodes)
+    # Adiciona os arcos que não tem um vértice na vizinhança de C ???
+    for u, v in edges_outside_cycle:
+        G.add_edge(u, v, w=w)
 
     return in_edges, out_edges
 
