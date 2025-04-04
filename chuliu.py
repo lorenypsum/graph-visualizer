@@ -130,18 +130,19 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
 
     # Encontra arestas de ciclo -> fora
     out_edges: dict[str, tuple[str, float]] = {}
-    for u in G.nodes:
-        if u not in cycle_nodes:
-            out_edge = min(
-                ((u, w) for _, v, w in G.in_edges(u, data="w") if v in cycle_nodes),
-                key=lambda x: x[1],
-                default=None,
-            )
-            if out_edge:
-                out_edges[v] = out_edge
-            
-    for v, (u, w) in out_edges.items():
-        G.add_edge(label, v, w=w)
+    
+    for u in cycle_nodes: 
+        out_edge = min(
+            ((v, w) for _, v, w in G.out_edges(u, data="w") if v not in cycle_nodes),
+            key=lambda x: x[1],  
+            default=None,        
+        )
+        if out_edge:
+            out_edges[u] = out_edge  # Armazena a aresta de menor peso
+
+    for u, (v, w) in out_edges.items():
+        G.add_edge(label, v, w=w)      
+    
 
     # Remove os nós do ciclo original
     G.remove_nodes_from(cycle_nodes)

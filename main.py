@@ -247,29 +247,31 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
         if u not in cycle_nodes:
             # Encontra a aresta de menor peso de u para algum nó em C
             in_edge = min(
-                ((u, v, w) for _, v, w in G.out_edges(u, data="w") if v in cycle_nodes),
-                key=lambda x: x[2],
+                ((v, w) for _, v, w in G.out_edges(u, data="w") if v in cycle_nodes),
+                key=lambda x: x[1],
                 default=None,
             )
             if in_edge:
                 in_edges[u] = in_edge
-    for v, (u, w) in in_edges.items():
+
+    for u, (v, w) in in_edges.items():
         G.add_edge(u, label, w=w)
 
     # Encontra arestas de ciclo -> fora
     out_edges: dict[str, tuple[str, float]] = {}
-    for u in G.nodes:
-        if u not in cycle_nodes:
-            out_edge = min(
-                ((u, v, w) for _, v, w in G.in_edges(u, data="w") if v in cycle_nodes),
-                key=lambda x: x[2],
-                default=None,
-            )
-            if out_edge:
-                out_edges[v] = out_edge
-            
+    
+    for u in cycle_nodes: 
+        out_edge = min(
+            ((v, w) for _, v, w in G.out_edges(u, data="w") if v not in cycle_nodes),
+            key=lambda x: x[1],  
+            default=None,        
+        )
+        if out_edge:
+            out_edges[u] = out_edge  # Armazena a aresta de menor peso
+
     for u, (v, w) in out_edges.items():
-        G.add_edge(label, u, w=w)
+        G.add_edge(label, v, w=w)      
+    
 
     # Remove os nós do ciclo original
     G.remove_nodes_from(cycle_nodes)
@@ -318,7 +320,6 @@ def remove_edge_from_cycle(C: nx.DiGraph, in_edge: tuple[str, str, float]):
         if u:
             C.remove_edge(u, v)
     return C
-
 
 # Algoritmo de Chu-Liu
 def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0):
