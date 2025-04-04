@@ -1,6 +1,6 @@
 import unittest
 import networkx as nx
-from main import contract_cycle
+from chuliu import contract_cycle
 
 class TestContractCycle(unittest.TestCase):
     def setUp(self):
