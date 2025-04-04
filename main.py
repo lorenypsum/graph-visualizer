@@ -257,44 +257,29 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
 
     # Fazer a mesma coisa para quem tá saindo
     for v in edges_outside_cycle:
+         
+        # Para cada um deles, faz outro filtro: pegando os arcos
+        # que tem uma ponta nele e outra dentro de C 
         
-        ''' 
-        Para cada um deles, faz outro filtro: pegando os arcos
-        que tem uma ponta nele e outra dentro de C 
-        '''
         if u in cycle_nodes:
             # Tratar caso devolva um None
             if u == None:
                 continue
             else:
-                '''
-                Para cada vértice v fora de C, determina o arco de menor custo
-                que tem uma ponta em v e outra vinda em algum vértice de C,
-                escolhendo a aresta minima
-                '''
+                
+                # Para cada vértice v fora de C, determina o arco de menor custo
+                # que tem uma ponta em v e outra vinda em algum vértice de C,
+                # escolhendo a aresta minima
                 out_edge = min(
                     ((u, w) for _, u, w in G.in_edges(u, data="w") if u in cycle_nodes),
                     key=lambda x: x[1],
                     default=None,
                 )
-            # ??? Posso ter um arco que não tem um vértice na vizinhança de C (como)  
+            # ??? Posso ter um arco que não tem um vértice na vizinhança de C   
             if in_edge:
                 in_edges[u] = in_edge
     for u, (v, w) in in_edges.items():
          G.add_edge(u, label, w=w)
-
-
-    # in_edges: dict[str, tuple[str, float]] = {}
-    # for v in cycle_nodes:
-    #     in_edge = min(
-    #         ((u, w) for u, _, w in G.in_edges(v, data="w") if u not in cycle_nodes),
-    #         key=lambda x: x[1],
-    #         default=None,
-    #     )
-    #     if in_edge:
-    #         in_edges[v] = in_edge
-    # for v, (u, w) in in_edges.items():
-    #     G.add_edge(u, label, w=w)
 
     # Encontra arestas de ciclo -> fora
     out_edges: dict[str, tuple[str, float]] = {}
