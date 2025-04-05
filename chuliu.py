@@ -1,133 +1,4 @@
 import networkx as nx
-from networkx.readwrite import json_graph
-import matplotlib.pyplot as plt
-from js import Blob, URL, document, alert
-from pyscript import when, display
-import json
-
-
-def log(msg: str):
-    log_box = document.getElementById("log-output")
-    log_box.value += msg + "\n"
-    log_box.scrollTop = log_box.scrollHeight
-
-
-def draw_graph(G: nx.DiGraph, title="Digrafo", append=True):
-    plt.clf()  # Limpa a figura atual
-    pos = nx.planar_layout(G)  # Layout para posicionamento dos nós
-    plt.figure(figsize=(6, 4))  # Tamanho da figura
-    # Desenha os nós e arestas
-    nx.draw(
-        G,
-        pos,
-        with_labels=True,
-        node_color="lightblue",
-        edge_color="gray",
-        node_size=2000,
-        font_size=12,
-    )
-    weights = nx.get_edge_attributes(G, "w")
-    nx.draw_networkx_edge_labels(
-        G, pos, edge_labels=weights, font_color="red", font_size=12
-    )
-    plt.title(title)
-    display(title, target="graph-area", append=append)
-    display(plt, target="graph-area", append=append)
-    plt.close()  # Fecha a figura para liberar memória
-
-
-G = nx.DiGraph()
-
-
-@when("click", "#add-edge")
-def add_edge():
-    global G
-    source = document.getElementById("source").value
-    target = document.getElementById("target").value
-    weight = document.getElementById("weight").value
-    if source and target and weight:
-        G.add_edge(source, target, w=float(weight))
-        log(f"Aresta adicionada: {source} → {target} (peso={weight})")
-        draw_graph(G, "Grafo com Arestas", append=False)
-
-
-@when("click", "#reset-graph")
-def reset_graph():
-    global G
-    G.clear()
-    document.getElementById("log-output").value = ""
-    draw_graph(G, "Grafo Resetado", append=False)
-    log("Grafo resetado.")
-
-
-@when("click", "#export-graph")
-def export_graph(event):
-    log("Exportando grafo...")
-    global G
-    if G.number_of_nodes() == 0:
-        log("[ERRO] O grafo está vazio.")
-        return
-
-    # Converte o grafo para JSON
-    data = json_graph.node_link_data(G, edges="links")
-    json_data = json.dumps(data, indent=4)
-
-    # Cria um link de download no navegador
-    blob = Blob.new([json_data], {"type": "application/json"})
-    url = URL.createObjectURL(blob)
-
-    # Configura e dispara o download
-    link = document.createElement("a")
-    link.href = url
-    link.download = "graph_teste.json"
-    link.click()
-    URL.revokeObjectURL(url)
-
-    log("Download do grafo iniciado.")
-
-@when("click", "#load-test-graph")
-def load_test_graph(event):
-    global G
-    G.clear()
-    G.add_edge("r0", "B", w=10)
-    G.add_edge("r0", "A", w=2)
-    G.add_edge("r0", "C", w=10)
-    G.add_edge("B", "A", w=1)
-    G.add_edge("A", "C", w=4)
-    G.add_edge("C", "D", w=2)
-    G.add_edge("D", "B", w=2)
-    G.add_edge("B", "E", w=8)
-    G.add_edge("C", "E", w=4)
-
-    log("Grafo de teste carregado.")
-    draw_graph(G, "Grafo de Teste (DG)", append=False)
-
-
-@when("click", "#show-ready-arborescence")
-def show_ready_arborescence(event):
-    T = nx.DiGraph()
-    T.add_edge("r0", "A", w=2)
-    T.add_edge("A", "C", w=4)
-    T.add_edge("C", "D", w=2)
-    T.add_edge("D", "B", w=2)
-    T.add_edge("C", "E", w=4)
-    draw_graph(T, "Arborescência Pré-definida")
-    log("Arborescência pronta exibida.")
-
-
-@when("click", "#run-algorithm")
-def run_algorithm(event):
-    global G
-    r0 = document.getElementById("root-node").value or "r0"
-    if r0 not in G:
-        alert(f"[ERRO] O nó raiz '{r0}' deve existir no grafo.")
-        return
-
-    log("Executando algoritmo de Chu-Liu...")
-    T = find_optimum_arborescence(G, r0)
-    draw_graph(T, "Arborescência Ótima")
-    log("Execução concluída com sucesso.")
-
 
 # Funções auxiliares ao algoritmo de Chu-Liu
 def change_edge_weight(G: nx.DiGraph, node: str):
@@ -221,9 +92,17 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
     cycle_nodes: set[str] = set(C.nodes())
 
     # TODO Encontra arestas de fora -> ciclo
-    edges_outside_cycle = set(G.nodes()) - cycle_nodes
+    # Fazer um filtro dos vértices que estão fora de C
+    # Para cada um deles, faz outro filtro: pegando os arcos
+    # que tem uma ponta nele e outra dentro de C
+    # Generator expression, tratar caso devolva um None
+    # "Para cada vértice u fora de C, determina o arco de menor custo
+    # que tem uma ponta em u e outra
+    # em algum vértice de C. E ficar some com aqueles que estão em C
+    # escolhendo a aresta minima
+    # Posso ter um arco que não tem um vértice na vizinhança de C
+    # Fazer a mesma coisa para quem tá saindo
 
-    # TODO: trocar o nome para out_edges 
     # HOW_TO_FIX 
     # Arestas de fora para o ciclo (in_edges):
         # Para cada nó fora do ciclo (u), encontre a aresta de menor peso que conecta u a um nó dentro do ciclo (v).
@@ -235,83 +114,38 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
     #   Certifique-se de lidar com casos onde não há arestas válidas (retornar None ou ignorar).
 
     in_edges: dict[str, tuple[str, float]] = {}
-    out_edges: dict[str, tuple[str, float]] = {}
-    edge_to_remove_later = {}
-
-    ''''
-    Para cada vértice u fora de C, verifica se vértice tem arcos
-    que saem de u e entram em C. 
-    
-    Caso sim, filtra-se os arcos para adicionar apenas o arco de menor custo
-    ao conjunto de arcos que entram em C. 
-    '''    
-    
-     # Fazer um filtro dos vértices que estão fora de C
-    for u in edges_outside_cycle:
-       
-        # Para cada um deles, faz outro filtro: pegando os arcos
-        # que tem uma ponta nele e outra dentro de C 
-        if v in cycle_nodes:
-            # Para cada vértice u fora de C, determina o arco de menor custo
-            # que tem uma ponta em u e outra em algum vértice de C,
-            # escolhendo a aresta minima
+    for u in G.nodes:
+        if u not in cycle_nodes:
+            # Encontra a aresta de menor peso de u para algum nó em C
             in_edge = min(
                 ((v, w) for _, v, w in G.out_edges(u, data="w") if v in cycle_nodes),
                 key=lambda x: x[1],
                 default=None,
             )
+            if in_edge:
+                in_edges[u] = in_edge
 
-            # Tratar caso devolve None
-            if in_edge == None:
-                continue
-            # Caso contrário, adiciona o arco de u para v no conjunto de vértices fora de C com ponta em C  
-            else:
-                in_edges[v] = in_edge
-                # Remover o arco de u para v do conjunto de vértices fora de C   
-                edges_outside_cycle.remove(u)
+    for u, (v, w) in in_edges.items():
+        G.add_edge(u, label, w=w)
+
+    # Encontra arestas de ciclo -> fora
+    out_edges: dict[str, tuple[str, float]] = {}
     
-    # Adiciona os arcos que entram de C no grafo original       
-    for v, (u, w) in in_edges.items():
-         G.add_edge(u, label, w=w)
+    for u in cycle_nodes: 
+        out_edge = min(
+            ((v, w) for _, v, w in G.out_edges(u, data="w") if v not in cycle_nodes),
+            key=lambda x: x[1],  
+            default=None,        
+        )
+        if out_edge:
+            out_edges[u] = out_edge  # Armazena a aresta de menor peso
 
-    ''''
-    Para cada vértice u fora de C, verifica se vértice tem arcos
-    que saem de u e entram em C. 
+    for u, (v, w) in out_edges.items():
+        G.add_edge(label, v, w=w)      
     
-    Caso sim, filtra-se os arcos para adicionar apenas o arco de menor custo
-    ao conjunto de arcos que entram em C. 
-    '''
-    # Fazer um filtro dos vértices que estão fora de C
-    for v in edges_outside_cycle:
-       
-        # Para cada um deles, faz outro filtro: pegando os arcos
-        # que tem uma ponta nele e outra dentro de C 
-        if u in cycle_nodes:
-            # Para cada vértice u fora de C, determina o arco de menor custo
-            # que tem uma ponta em u e outra em algum vértice de C,
-            # escolhendo a aresta minima
-            out_edge = min(
-                ((u, w) for u, _, w in G.out_edges(v, data="w") if u in cycle_nodes),
-                key=lambda x: x[1],
-                default=None,
-            )
 
-            # Tratar caso devolve None
-            if out_edge == None:
-                continue
-            # Caso contrário, adiciona o arco de u para v no conjunto de vértices fora de C com ponta em C  
-            else:
-                out_edges[u] = out_edge
-                # Remover o arco de u para v do conjunto de vértices fora de C   
-                edges_outside_cycle.remove(v)
-    
-    # Adiciona os arcos que entram de C no grafo original       
-    for v, (u, w) in in_edges.items():
-         G.add_edge(u, label, w=w)                  
-
-    # Adiciona os arcos que não tem um vértice na vizinhança de C ???
-    for u, v in edges_outside_cycle:
-        G.add_edge(u, v, w=w)
+    # Remove os nós do ciclo original
+    G.remove_nodes_from(cycle_nodes)
 
     return in_edges, out_edges
 
@@ -358,6 +192,7 @@ def remove_edge_from_cycle(C: nx.DiGraph, in_edge: tuple[str, str, float]):
             C.remove_edge(u, v)
     return C
 
+
 # Algoritmo de Chu-Liu
 def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0):
     indent = "  " * level
@@ -367,7 +202,6 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0):
 
     G_arb = G.copy()
     draw_graph(G_arb, f"{indent}Grafo original")
-    # TODO: não chamar aqui dentro. 
     remove_edge_in_r0(G_arb, r0)
     draw_graph(G_arb, f"{indent}Após remoção de entradas")
 
@@ -393,7 +227,7 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0):
     # Dúvida: como escolher a aresta que vamos remover do ciclo?
     # Provisoriamente, escolhemos a aresta de maior peso
     # Resposta: Eu vou remover a aresta que chega no vértice v que recebe a única aresta da arborescência
-    # TODO: Criar um dicionário auxiliar para armazenar para cada u qual era o nome original do arco u  para v em C.
+    # Criar um dicionário auxiliar para armazenas para cada u qual era o nome original do arco u  para v em C.
     edge_to_remove = max(
         ((u, v, w) for v, (u, w) in in_edges.items()), key=lambda x: x[2]
     )
