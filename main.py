@@ -223,6 +223,7 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
     # Encontra arestas de fora -> ciclo
     edges_outside_cycle = set(G.nodes()) - cycle_nodes
 
+    # TODO: trocar o nome para out_edges 
     in_edges: dict[str, tuple[str, float]] = {}
     out_edges: dict[str, tuple[str, float]] = {}
     edge_to_remove_later = {}
@@ -269,7 +270,34 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
     
     Caso sim, filtra-se os arcos para adicionar apenas o arco de menor custo
     ao conjunto de arcos que entram em C. 
-    '''                  
+    '''
+    # Fazer um filtro dos vértices que estão fora de C
+    for v in edges_outside_cycle:
+       
+        # Para cada um deles, faz outro filtro: pegando os arcos
+        # que tem uma ponta nele e outra dentro de C 
+        if u in cycle_nodes:
+            # Para cada vértice u fora de C, determina o arco de menor custo
+            # que tem uma ponta em u e outra em algum vértice de C,
+            # escolhendo a aresta minima
+            out_edge = min(
+                ((u, w) for u, _, w in G.out_edges(v, data="w") if u in cycle_nodes),
+                key=lambda x: x[1],
+                default=None,
+            )
+
+            # Tratar caso devolve None
+            if out_edge == None:
+                continue
+            # Caso contrário, adiciona o arco de u para v no conjunto de vértices fora de C com ponta em C  
+            else:
+                out_edges[u] = out_edge
+                # Remover o arco de u para v do conjunto de vértices fora de C   
+                edges_outside_cycle.remove(v)
+    
+    # Adiciona os arcos que entram de C no grafo original       
+    for v, (u, w) in in_edges.items():
+         G.add_edge(u, label, w=w)                  
 
     # Adiciona os arcos que não tem um vértice na vizinhança de C ???
     for u, v in edges_outside_cycle:
@@ -330,6 +358,7 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0):
 
     G_arb = G.copy()
     draw_graph(G_arb, f"{indent}Grafo original")
+    # TODO: não chamar aqui dentro. 
     remove_edge_in_r0(G_arb, r0)
     draw_graph(G_arb, f"{indent}Após remoção de entradas")
 
@@ -355,7 +384,7 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0):
     # Dúvida: como escolher a aresta que vamos remover do ciclo?
     # Provisoriamente, escolhemos a aresta de maior peso
     # Resposta: Eu vou remover a aresta que chega no vértice v que recebe a única aresta da arborescência
-    # Criar um dicionário auxiliar para armazenas para cada u qual era o nome original do arco u  para v em C.
+    # TODO: Criar um dicionário auxiliar para armazenar para cada u qual era o nome original do arco u  para v em C.
     edge_to_remove = max(
         ((u, v, w) for v, (u, w) in in_edges.items()), key=lambda x: x[2]
     )
