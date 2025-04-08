@@ -132,7 +132,7 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
 
     for u in G.nodes:
         if u not in cycle_nodes: 
-            # Encontra a aresta de menor peso de u para algum vértice em C
+            # Encontra a aresta de menor peso que v recebe de algum vértice em C
             in_edge = min(
                 ((v, w) for v, _, w in G.in_edges(u, data="w") if v in cycle_nodes),
                 key=lambda x: x[1],
@@ -199,7 +199,7 @@ def remove_edge_from_cycle(C: nx.DiGraph, in_edge: tuple[str, str, float]):
 
 # Algoritmo de Chu-Liu
 def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None):
-    
+
     """"
     Encontra recursivamente a arborescência ótima em um grafo direcionado G com raiz r0.
     """
