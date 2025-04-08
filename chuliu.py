@@ -3,9 +3,9 @@ import networkx as nx
 
 # Funções auxiliar para alterar peso das arestas
 def change_edge_weight(G: nx.DiGraph, node: str):
-    # Verifica se o nó existe
+    # Verifica se o vértice existe
     if node not in G:
-        raise ValueError(f"O nó '{node}' não existe no grafo.")
+        raise ValueError(f"O vértice '{node}' não existe no grafo.")
 
     # Obtém predecessores com pesos
     predecessors = list(G.in_edges(node, data="w"))
@@ -23,7 +23,7 @@ def change_edge_weight(G: nx.DiGraph, node: str):
 def get_Fstar(G: nx.DiGraph, r0: str):
     # Verifica se a raiz existe no grafo
     if r0 not in G:
-        raise ValueError(f"O nó raiz '{r0}' não existe no grafo.")
+        raise ValueError(f"O vértice raiz '{r0}' não existe no grafo.")
 
     F_star = nx.DiGraph()
 
@@ -39,7 +39,7 @@ def get_Fstar(G: nx.DiGraph, r0: str):
 
     successors = list(G.out_edges(r0, data="w"))
     if not successors:
-        raise ValueError(f"O nó raiz '{r0}' não possui arestas de saída.")
+        raise ValueError(f"O vértice raiz '{r0}' não possui arestas de saída.")
 
     # Aresta de menor custo saindo da raiz
     v, w = min([(v, w) for _, v, w in successors], key=lambda vw: vw[1])
@@ -49,9 +49,9 @@ def get_Fstar(G: nx.DiGraph, r0: str):
 
 # Função auxiliar para verificar se F_star é uma arborescência
 def is_F_star_arborescence(F_star: nx.DiGraph, r0: str):
-    # Verifica se o nó raiz existe no grafo
+    # Verifica se o vértice raiz existe no grafo
     if r0 not in F_star:
-        raise ValueError(f"O nó raiz '{r0}' não existe no grafo.")
+        raise ValueError(f"O vértice raiz '{r0}' não existe no grafo.")
 
     # Se o grafo estiver vazio
     if F_star.number_of_nodes() == 0:
@@ -88,7 +88,7 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
     Devolve o novo grafo (G'), a aresta de entrada (in_edge) e a de saída (out_edge).
     """
     if label in G:
-        raise ValueError(f"O rótulo '{label}' já existe como nó em G.")
+        raise ValueError(f"O rótulo '{label}' já existe como vértice em G.")
 
     cycle_nodes: set[str] = set(C.nodes())
     
@@ -96,7 +96,7 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
     out_edges: dict[str, tuple[str, float]] = {}
     for u in G.nodes:
         if u not in cycle_nodes: 
-            # Encontra a aresta de menor peso de u para algum nó em C
+            # Encontra a aresta de menor peso de u para algum vértice em C
             out_edge = min(
                 ((v, w) for _, v, w in G.out_edges(u, data="w") if v in cycle_nodes),
                 key=lambda x: x[1],
@@ -113,7 +113,7 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
 
     for u in G.nodes:
         if u not in cycle_nodes: 
-            # Encontra a aresta de menor peso de u para algum nó em C
+            # Encontra a aresta de menor peso de u para algum vértice em C
             in_edge = min(
                 ((v, w) for v, _, w in G.in_edges(u, data="w") if v in cycle_nodes),
                 key=lambda x: x[1],
@@ -133,12 +133,12 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
 # Função auxiliar para remover arestas que entram em um vértice raiz
 def remove_edge_in_r0(G: nx.DiGraph, r0: str):
     """
-    Remove todas as arestas que entram no nó raiz r0 no grafo G.
+    Remove todas as arestas que entram no vértice raiz r0 no grafo G.
     Retorna o grafo atualizado.
     """
     # Verifica se r0 existe no grafo
     if r0 not in G:
-        raise ValueError(f"O nó raiz '{r0}' não existe no grafo.")
+        raise ValueError(f"O vértice raiz '{r0}' não existe no grafo.")
 
     # Remove as arestas que entram em r0
     in_edges = list(G.in_edges(r0))
@@ -180,7 +180,7 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None):
     log(f"{indent}Iniciando nível {level}")
 
     if r0 not in G:
-        raise ValueError(f"O nó raiz '{r0}' não está presente no grafo.")
+        raise ValueError(f"O vértice raiz '{r0}' não está presente no grafo.")
 
     G_arb = G.copy()
 
