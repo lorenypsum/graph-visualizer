@@ -218,6 +218,7 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
     if label in G:
         raise ValueError(f"O rótulo '{label}' já existe como nó em G.")
 
+    # TODO: Criar um dicionário auxiliar para armazena para cada u qual era o nome original do arco u para v em C.
     cycle_nodes: set[str] = set(C.nodes())
 
     # FIXED Encontra arestas de fora -> ciclo
@@ -342,6 +343,7 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0):
 
     G_arb = G.copy()
     draw_graph(G_arb, f"{indent}Grafo original")
+    # TODO: Não chamar aqui dentro
     remove_edge_in_r0(G_arb, r0) # TODO Só chamar isso no nível 0
     draw_graph(G_arb, f"{indent}Após remoção de entradas")
 
@@ -364,10 +366,7 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0):
     in_edges, out_edges = contract_cycle(G_arb, C, contracted_label)
     F_prime = find_optimum_arborescence(G_arb, r0, level + 1)
 
-    # Dúvida: como escolher a aresta que vamos remover do ciclo?
-    # Provisoriamente, escolhemos a aresta de maior peso
-    # Resposta: Eu vou remover a aresta que chega no vértice v que recebe a única aresta da arborescência
-    # Criar um dicionário auxiliar para armazenas para cada u qual era o nome original do arco u  para v em C.
+    # TODO: remover a aresta que chega no vértice v que recebe a única aresta da arborescência
     edge_to_remove = max(
         ((u, v, w) for v, (u, w) in in_edges.items()), key=lambda x: x[2]
     )
@@ -376,9 +375,11 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0):
     for u, v in C.edges:
         F_prime.add_edge(u, v)
     for v, (u, w) in in_edges.items():
-        F_prime.add_edge(u, v, w=w)
+        F_prime.add_edge(u, v)
     for u, (v, w) in out_edges.items():
-        F_prime.add_edge(u, v, w=w)
+        F_prime.add_edge(u, v)
+        
+    # TODO: Colocar um alerta caso não faça isso
     if contracted_label in F_prime:
         F_prime.remove_node(contracted_label)
 
