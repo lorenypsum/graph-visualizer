@@ -1,8 +1,6 @@
 from matplotlib.pylab import log
 import networkx as nx
 
-from main import draw_graph
-
 # Funções auxiliar para alterar peso das arestas
 def change_edge_weight(G: nx.DiGraph, node: str):
     # Verifica se o nó existe
@@ -220,7 +218,7 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None):
     )
 
     C = remove_edge_from_cycle(C, edge_to_remove)
-    
+
     for u, v in C.edges:
         F_prime.add_edge(u, v)
     for v, (u, w) in out_edges.items():
