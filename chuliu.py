@@ -225,7 +225,6 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0):
     for u, (v, w) in out_edges.items():
         F_prime.add_edge(u, v)
         
-    # TODO: Colocar um alerta caso não faça isso
     if contracted_label in F_prime:
         F_prime.remove_node(contracted_label)
     else:
