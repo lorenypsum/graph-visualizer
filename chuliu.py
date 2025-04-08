@@ -188,9 +188,6 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0):
 
     #TODO: passar a função por parâmetro
     draw_graph(G_arb, f"{indent}Grafo original")
-
-    # TODO: Não chamar aqui dentro
-    remove_edge_in_r0(G_arb, r0) # TODO Só chamar isso no nível 0
     draw_graph(G_arb, f"{indent}Após remoção de entradas")
 
     for v in G_arb.nodes:
