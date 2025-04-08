@@ -122,10 +122,3 @@ def run_algorithm(event):
     T = find_optimum_arborescence(G_filtered, r0)
     draw_graph(T, "Arborescência Ótima")
     log("Execução concluída com sucesso.")
-
-
-
-
-
-
-
