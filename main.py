@@ -220,28 +220,6 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
 
     cycle_nodes: set[str] = set(C.nodes())
 
-    # TODO Encontra arestas de fora -> ciclo
-    # Fazer um filtro dos vértices que estão fora de C
-    # Para cada um deles, faz outro filtro: pegando os arcos
-    # que tem uma ponta nele e outra dentro de C
-    # Generator expression, tratar caso devolva um None
-    # "Para cada vértice u fora de C, determina o arco de menor custo
-    # que tem uma ponta em u e outra
-    # em algum vértice de C. E ficar some com aqueles que estão em C
-    # escolhendo a aresta minima
-    # Posso ter um arco que não tem um vértice na vizinhança de C
-    # Fazer a mesma coisa para quem tá saindo
-
-    # HOW_TO_FIX 
-    # Arestas de fora para o ciclo (in_edges):
-        # Para cada nó fora do ciclo (u), encontre a aresta de menor peso que conecta u a um nó dentro do ciclo (v).
-        # Use uma expressão geradora para filtrar as arestas de entrada de G e selecione a de menor peso.
-    # Arestas do ciclo para fora (out_edges):
-        # Para cada nó dentro do ciclo (u), encontre a aresta de menor peso que conecta u a um nó fora do ciclo (v).
-        # Use uma lógica semelhante para filtrar as arestas de saída de G.
-    # Tratamento de casos especiais:
-    #   Certifique-se de lidar com casos onde não há arestas válidas (retornar None ou ignorar).
-
     in_edges: dict[str, tuple[str, float]] = {}
     for u in G.nodes:
         if u not in cycle_nodes:
@@ -364,9 +342,9 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0):
     for u, v in C.edges:
         F_prime.add_edge(u, v)
     for v, (u, w) in in_edges.items():
-        F_prime.add_edge(u, v, w=w)
+        F_prime.add_edge(u, v)
     for u, (v, w) in out_edges.items():
-        F_prime.add_edge(u, v, w=w)
+        F_prime.add_edge(u, v)
     if contracted_label in F_prime:
         F_prime.remove_node(contracted_label)
 
