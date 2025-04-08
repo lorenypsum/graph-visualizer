@@ -205,20 +205,20 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0):
     C = find_cycle(F_star)
 
     contracted_label = f"C*{level}"
-    in_edges, out_edges = contract_cycle(G_arb, C, contracted_label)
+    out_edges, in_edges = contract_cycle(G_arb, C, contracted_label)
     F_prime = find_optimum_arborescence(G_arb, r0, level + 1)
 
     # TODO: remover a aresta que chega no vértice v que recebe a única aresta da arborescência
     edge_to_remove = max(
-        ((u, v, w) for v, (u, w) in in_edges.items()), key=lambda x: x[2]
+        ((u, v, w) for v, (u, w) in out_edges.items()), key=lambda x: x[2]
     )
 
     C = remove_edge_from_cycle(C, edge_to_remove)
     for u, v in C.edges:
         F_prime.add_edge(u, v)
-    for v, (u, w) in in_edges.items():
+    for v, (u, w) in out_edges.items():
         F_prime.add_edge(u, v)
-    for u, (v, w) in out_edges.items():
+    for u, (v, w) in in_edges.items():
         F_prime.add_edge(u, v)
         
     if contracted_label in F_prime:
