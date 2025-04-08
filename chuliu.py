@@ -177,25 +177,29 @@ def remove_edge_from_cycle(C: nx.DiGraph, in_edge: tuple[str, str, float]):
 
 
 # Algoritmo de Chu-Liu
-def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0):
+def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None):
     indent = "  " * level
     log(f"{indent}Iniciando nível {level}")
+
     if r0 not in G:
         raise ValueError(f"O nó raiz '{r0}' não está presente no grafo.")
 
     G_arb = G.copy()
 
-    #TODO: passar a função por parâmetro
-    draw_graph(G_arb, f"{indent}Grafo original")
-    draw_graph(G_arb, f"{indent}Após remoção de entradas")
+    if draw_fn:
+        draw_fn(G_arb, f"{indent}Após remoção de entradas")
 
     for v in G_arb.nodes:
         if v != r0:
             change_edge_weight(G_arb, v)
-    draw_graph(G_arb, f"{indent}Após ajuste de pesos")
+
+        if draw_fn:
+            draw_fn(G_arb, f"{indent}Após ajuste de pesos")
 
     F_star = get_Fstar(G_arb, r0)
-    draw_graph(F_star, f"{indent}F_star")
+
+    if draw_fn:
+        draw_fn(F_star, f"{indent}F_star")
 
     if is_F_star_arborescence(F_star, r0):
         for u, v in F_star.edges:
@@ -206,7 +210,9 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0):
 
     contracted_label = f"C*{level}"
     out_edges, in_edges = contract_cycle(G_arb, C, contracted_label)
-    F_prime = find_optimum_arborescence(G_arb, r0, level + 1)
+
+    # Chamada Recursiva
+    F_prime = find_optimum_arborescence(G_arb, r0, level + 1, draw_fn=draw_fn)
 
     # TODO: remover a aresta que chega no vértice v que recebe a única aresta da arborescência
     edge_to_remove = max(
@@ -214,6 +220,7 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0):
     )
 
     C = remove_edge_from_cycle(C, edge_to_remove)
+    
     for u, v in C.edges:
         F_prime.add_edge(u, v)
     for v, (u, w) in out_edges.items():

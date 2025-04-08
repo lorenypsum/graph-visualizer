@@ -119,6 +119,6 @@ def run_algorithm(event):
 
     log("Executando algoritmo de Chu-Liu...")
     G_filtered = remove_edge_in_r0(G, r0)
-    T = find_optimum_arborescence(G_filtered, r0)
+    T = find_optimum_arborescence(G_filtered, r0, draw_fn=draw_graph)
     draw_graph(T, "Arborescência Ótima")
     log("Execução concluída com sucesso.")
