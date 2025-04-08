@@ -3,7 +3,7 @@ import networkx as nx
 
 from main import draw_graph
 
-# Funções auxiliares ao algoritmo de Chu-Liu
+# Funções auxiliar para alterar peso das arestas
 def change_edge_weight(G: nx.DiGraph, node: str):
     # Verifica se o nó existe
     if node not in G:
@@ -21,6 +21,7 @@ def change_edge_weight(G: nx.DiGraph, node: str):
 
     return G
 
+# Função auxiliar para definir conjunto F_star
 def get_Fstar(G: nx.DiGraph, r0: str):
     # Verifica se a raiz existe no grafo
     if r0 not in G:
@@ -48,6 +49,7 @@ def get_Fstar(G: nx.DiGraph, r0: str):
 
     return F_star
 
+# Função auxiliar para verificar se F_star é uma arborescência
 def is_F_star_arborescence(F_star: nx.DiGraph, r0: str):
     # Verifica se o nó raiz existe no grafo
     if r0 not in F_star:
@@ -63,6 +65,7 @@ def is_F_star_arborescence(F_star: nx.DiGraph, r0: str):
 
     return is_reachable and is_acyclic
 
+# Função auxiliar para encontrar um ciclo no grafo
 def find_cycle(F_star: nx.DiGraph):
     """
     Encontra um ciclo direcionado / circuito no grafo.
@@ -80,6 +83,7 @@ def find_cycle(F_star: nx.DiGraph):
     # Retorna o subgrafo contendo apenas o ciclo
     return F_star.subgraph(nodes_in_cycle)
 
+# Função auxiliar para contrair um ciclo
 def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
     """
     Contrai um ciclo C no grafo G, substituindo-o por um supernó com rótulo `label`.
@@ -129,6 +133,7 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
 
     return in_edges, out_edges
 
+# Função auxiliar para remover arestas que entram em um vértice raiz
 def remove_edge_in_r0(G: nx.DiGraph, r0: str):
     """
     Remove todas as arestas que entram no nó raiz r0 no grafo G.
@@ -147,6 +152,7 @@ def remove_edge_in_r0(G: nx.DiGraph, r0: str):
 
     return G
 
+# Função auxiliar para remover aresta de um ciclo
 def remove_edge_from_cycle(C: nx.DiGraph, in_edge: tuple[str, str, float]):
     """
     Remove do ciclo C a aresta que entra no vértice `v` (obtido de `in_edge`)
@@ -222,6 +228,8 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0):
     # TODO: Colocar um alerta caso não faça isso
     if contracted_label in F_prime:
         F_prime.remove_node(contracted_label)
+    else:
+        log(f"[AVISO] Vértice '{contracted_label}' não encontrado para remoção.")    
 
     for u, v in F_prime.edges:
         F_prime[u][v]["w"] = G[u][v]["w"]
