@@ -1,4 +1,7 @@
+from matplotlib.pylab import log
 import networkx as nx
+
+from main import draw_graph
 
 # Funções auxiliares ao algoritmo de Chu-Liu
 def change_edge_weight(G: nx.DiGraph, node: str):
@@ -17,7 +20,6 @@ def change_edge_weight(G: nx.DiGraph, node: str):
         G[u][node]["w"] -= yv
 
     return G
-
 
 def get_Fstar(G: nx.DiGraph, r0: str):
     # Verifica se a raiz existe no grafo
@@ -46,7 +48,6 @@ def get_Fstar(G: nx.DiGraph, r0: str):
 
     return F_star
 
-
 def is_F_star_arborescence(F_star: nx.DiGraph, r0: str):
     # Verifica se o nó raiz existe no grafo
     if r0 not in F_star:
@@ -61,7 +62,6 @@ def is_F_star_arborescence(F_star: nx.DiGraph, r0: str):
     is_acyclic = nx.is_directed_acyclic_graph(F_star)
 
     return is_reachable and is_acyclic
-
 
 def find_cycle(F_star: nx.DiGraph):
     """
@@ -80,7 +80,6 @@ def find_cycle(F_star: nx.DiGraph):
     # Retorna o subgrafo contendo apenas o ciclo
     return F_star.subgraph(nodes_in_cycle)
 
-
 def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
     """
     Contrai um ciclo C no grafo G, substituindo-o por um supernó com rótulo `label`.
@@ -90,32 +89,12 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
         raise ValueError(f"O rótulo '{label}' já existe como nó em G.")
 
     cycle_nodes: set[str] = set(C.nodes())
-
-    # TODO Encontra arestas de fora -> ciclo
-    # Fazer um filtro dos vértices que estão fora de C
-    # Para cada um deles, faz outro filtro: pegando os arcos
-    # que tem uma ponta nele e outra dentro de C
-    # Generator expression, tratar caso devolva um None
-    # "Para cada vértice u fora de C, determina o arco de menor custo
-    # que tem uma ponta em u e outra
-    # em algum vértice de C. E ficar some com aqueles que estão em C
-    # escolhendo a aresta minima
-    # Posso ter um arco que não tem um vértice na vizinhança de C
-    # Fazer a mesma coisa para quem tá saindo
-
-    # HOW_TO_FIX 
-    # Arestas de fora para o ciclo (in_edges):
-        # Para cada nó fora do ciclo (u), encontre a aresta de menor peso que conecta u a um nó dentro do ciclo (v).
-        # Use uma expressão geradora para filtrar as arestas de entrada de G e selecione a de menor peso.
-    # Arestas do ciclo para fora (out_edges):
-        # Para cada nó dentro do ciclo (u), encontre a aresta de menor peso que conecta u a um nó fora do ciclo (v).
-        # Use uma lógica semelhante para filtrar as arestas de saída de G.
-    # Tratamento de casos especiais:
-    #   Certifique-se de lidar com casos onde não há arestas válidas (retornar None ou ignorar).
-
+    
+    # TODO: Criar um dicionário auxiliar para armazenar para cada u o nome original do arco v em c
+    # TODO Inverter o nome das variáveis - trocar in_edges por out_edges e vice-versa
     in_edges: dict[str, tuple[str, float]] = {}
     for u in G.nodes:
-        if u not in cycle_nodes:
+        if u not in cycle_nodes: 
             # Encontra a aresta de menor peso de u para algum nó em C
             in_edge = min(
                 ((v, w) for _, v, w in G.out_edges(u, data="w") if v in cycle_nodes),
@@ -130,25 +109,25 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
 
     # Encontra arestas de ciclo -> fora
     out_edges: dict[str, tuple[str, float]] = {}
-    
-    for u in cycle_nodes: 
-        out_edge = min(
-            ((v, w) for _, v, w in G.out_edges(u, data="w") if v not in cycle_nodes),
-            key=lambda x: x[1],  
-            default=None,        
-        )
-        if out_edge:
-            out_edges[u] = out_edge  # Armazena a aresta de menor peso
+
+    for u in G.nodes:
+        if u not in cycle_nodes: 
+            # Encontra a aresta de menor peso de u para algum nó em C
+            out_edge = min(
+                ((v, w) for v, _, w in G.in_edges(u, data="w") if v in cycle_nodes),
+                key=lambda x: x[1],
+                default=None,
+            )
+            if out_edge:
+                out_edges[u] = out_edge
 
     for u, (v, w) in out_edges.items():
         G.add_edge(label, v, w=w)      
     
-
     # Remove os nós do ciclo original
     G.remove_nodes_from(cycle_nodes)
 
     return in_edges, out_edges
-
 
 def remove_edge_in_r0(G: nx.DiGraph, r0: str):
     """
@@ -167,7 +146,6 @@ def remove_edge_in_r0(G: nx.DiGraph, r0: str):
         G.remove_edges_from(in_edges)
 
     return G
-
 
 def remove_edge_from_cycle(C: nx.DiGraph, in_edge: tuple[str, str, float]):
     """
@@ -201,8 +179,12 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0):
         raise ValueError(f"O nó raiz '{r0}' não está presente no grafo.")
 
     G_arb = G.copy()
+
+    #TODO: passar a função por parâmetro
     draw_graph(G_arb, f"{indent}Grafo original")
-    remove_edge_in_r0(G_arb, r0)
+
+    # TODO: Não chamar aqui dentro
+    remove_edge_in_r0(G_arb, r0) # TODO Só chamar isso no nível 0
     draw_graph(G_arb, f"{indent}Após remoção de entradas")
 
     for v in G_arb.nodes:
@@ -224,10 +206,7 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0):
     in_edges, out_edges = contract_cycle(G_arb, C, contracted_label)
     F_prime = find_optimum_arborescence(G_arb, r0, level + 1)
 
-    # Dúvida: como escolher a aresta que vamos remover do ciclo?
-    # Provisoriamente, escolhemos a aresta de maior peso
-    # Resposta: Eu vou remover a aresta que chega no vértice v que recebe a única aresta da arborescência
-    # Criar um dicionário auxiliar para armazenas para cada u qual era o nome original do arco u  para v em C.
+    # TODO: remover a aresta que chega no vértice v que recebe a única aresta da arborescência
     edge_to_remove = max(
         ((u, v, w) for v, (u, w) in in_edges.items()), key=lambda x: x[2]
     )
@@ -236,9 +215,11 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0):
     for u, v in C.edges:
         F_prime.add_edge(u, v)
     for v, (u, w) in in_edges.items():
-        F_prime.add_edge(u, v, w=w)
+        F_prime.add_edge(u, v)
     for u, (v, w) in out_edges.items():
-        F_prime.add_edge(u, v, w=w)
+        F_prime.add_edge(u, v)
+        
+    # TODO: Colocar um alerta caso não faça isso
     if contracted_label in F_prime:
         F_prime.remove_node(contracted_label)
 
