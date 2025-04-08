@@ -261,6 +261,7 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
                 default=None,
             )
 
+            # Saber a ponta original para remover depois (ao readicionar depois)
             # Tratar caso devolve None
             if in_edge == None:
                 continue
@@ -402,9 +403,11 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0):
     for u, v in C.edges:
         F_prime.add_edge(u, v)
     for v, (u, w) in in_edges.items():
+        # Não adicionar os pesos aqui
         F_prime.add_edge(u, v, w=w)
     for u, (v, w) in out_edges.items():
         F_prime.add_edge(u, v, w=w)
+    # TODO: colocar um alerta caso não faça isso
     if contracted_label in F_prime:
         F_prime.remove_node(contracted_label)
 
