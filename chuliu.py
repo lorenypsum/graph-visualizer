@@ -3,6 +3,11 @@ import networkx as nx
 
 # Funções auxiliar para alterar peso das arestas
 def change_edge_weight(G: nx.DiGraph, node: str):
+
+    """
+    Altera o peso das arestas de entrada de um nó `node` no grafo `G`.
+    """
+
     # Verifica se o vértice existe
     if node not in G:
         raise ValueError(f"O vértice '{node}' não existe no grafo.")
@@ -21,6 +26,11 @@ def change_edge_weight(G: nx.DiGraph, node: str):
 
 # Função auxiliar para definir conjunto F_star
 def get_Fstar(G: nx.DiGraph, r0: str):
+
+    """
+    Cria o conjunto F_star a partir do grafo G e da raiz r0.
+    """
+
     # Verifica se a raiz existe no grafo
     if r0 not in G:
         raise ValueError(f"O vértice raiz '{r0}' não existe no grafo.")
@@ -49,6 +59,11 @@ def get_Fstar(G: nx.DiGraph, r0: str):
 
 # Função auxiliar para verificar se F_star é uma arborescência
 def is_F_star_arborescence(F_star: nx.DiGraph, r0: str):
+
+    """
+    Verifica se o grafo F_star é uma arborescência com raiz r0.
+    """
+
     # Verifica se o vértice raiz existe no grafo
     if r0 not in F_star:
         raise ValueError(f"O vértice raiz '{r0}' não existe no grafo.")
@@ -65,10 +80,12 @@ def is_F_star_arborescence(F_star: nx.DiGraph, r0: str):
 
 # Função auxiliar para encontrar um ciclo no grafo
 def find_cycle(F_star: nx.DiGraph):
+
     """
     Encontra um ciclo direcionado / circuito no grafo.
     Retorna um subgrafo contendo o ciclo, ou None se não houver.
     """
+
     # Verifica se o grafo tem nós suficientes para conter um ciclo
     if F_star.number_of_edges() == 0 or F_star.number_of_nodes() < 2:
         return None
@@ -83,10 +100,12 @@ def find_cycle(F_star: nx.DiGraph):
 
 # Função auxiliar para contrair um ciclo
 def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
+
     """
     Contrai um ciclo C no grafo G, substituindo-o por um supernó com rótulo `label`.
     Devolve o novo grafo (G'), a aresta de entrada (in_edge) e a de saída (out_edge).
     """
+
     if label in G:
         raise ValueError(f"O rótulo '{label}' já existe como vértice em G.")
 
@@ -132,10 +151,12 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
 
 # Função auxiliar para remover arestas que entram em um vértice raiz
 def remove_edge_in_r0(G: nx.DiGraph, r0: str):
+
     """
     Remove todas as arestas que entram no vértice raiz r0 no grafo G.
     Retorna o grafo atualizado.
     """
+
     # Verifica se r0 existe no grafo
     if r0 not in G:
         raise ValueError(f"O vértice raiz '{r0}' não existe no grafo.")
@@ -151,10 +172,12 @@ def remove_edge_in_r0(G: nx.DiGraph, r0: str):
 
 # Função auxiliar para remover aresta de um ciclo
 def remove_edge_from_cycle(C: nx.DiGraph, in_edge: tuple[str, str, float]):
+
     """
     Remove do ciclo C a aresta que entra no vértice `v` (obtido de `in_edge`)
     caso esse vértice já tenha um predecessor em C.
     """
+
     C = C.copy()  # Cópia segura
 
     if in_edge:
@@ -176,6 +199,11 @@ def remove_edge_from_cycle(C: nx.DiGraph, in_edge: tuple[str, str, float]):
 
 # Algoritmo de Chu-Liu
 def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None):
+    
+    """"
+    Encontra recursivamente a arborescência ótima em um grafo direcionado G com raiz r0.
+    """
+
     indent = "  " * level
     log(f"{indent}Iniciando nível {level}")
 
