@@ -118,8 +118,8 @@ def run_algorithm(event):
         return
 
     log("Executando algoritmo de Chu-Liu...")
-    G_unrooted = remove_edge_in_r0(G, r0)
-    T = find_optimum_arborescence(G_unrooted, r0)
+    G_filtered = remove_edge_in_r0(G, r0)
+    T = find_optimum_arborescence(G_filtered, r0)
     draw_graph(T, "Arborescência Ótima")
     log("Execução concluída com sucesso.")
 
