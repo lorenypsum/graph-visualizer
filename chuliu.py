@@ -95,7 +95,6 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
     cycle_nodes: set[str] = set(C.nodes())
     
     # TODO: Criar um dicionário auxiliar para armazenar para cada u o nome original do arco v em c
-    # TODO Inverter o nome das variáveis - trocar in_edges por out_edges e vice-versa
     out_edges: dict[str, tuple[str, float]] = {}
     for u in G.nodes:
         if u not in cycle_nodes: 
