@@ -220,7 +220,7 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
 
     cycle_nodes: set[str] = set(C.nodes())
 
-    # TODO Encontra arestas de fora -> ciclo
+    # FIXED Encontra arestas de fora -> ciclo
     # Fazer um filtro dos vértices que estão fora de C
     # Para cada um deles, faz outro filtro: pegando os arcos
     # que tem uma ponta nele e outra dentro de C
@@ -241,10 +241,10 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
         # Use uma lógica semelhante para filtrar as arestas de saída de G.
     # Tratamento de casos especiais:
     #   Certifique-se de lidar com casos onde não há arestas válidas (retornar None ou ignorar).
-
+    # TODO Inverter o nome das variáveis - trocar in_edges por out_edges e vice-versa
     in_edges: dict[str, tuple[str, float]] = {}
     for u in G.nodes:
-        if u not in cycle_nodes:
+        if u not in cycle_nodes: 
             # Encontra a aresta de menor peso de u para algum nó em C
             in_edge = min(
                 ((v, w) for _, v, w in G.out_edges(u, data="w") if v in cycle_nodes),
@@ -259,15 +259,27 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
 
     # Encontra arestas de ciclo -> fora
     out_edges: dict[str, tuple[str, float]] = {}
+
+
+    for u in G.nodes:
+        if u not in cycle_nodes: 
+            # Encontra a aresta de menor peso de u para algum nó em C
+            out_edge = min(
+                ((v, w) for v, _, w in G.in_edges(u, data="w") if v in cycle_nodes),
+                key=lambda x: x[1],
+                default=None,
+            )
+            if out_edge:
+                out_edges[u] = out_edge
     
-    for u in cycle_nodes: 
-        out_edge = min(
-            ((v, w) for _, v, w in G.out_edges(u, data="w") if v not in cycle_nodes),
-            key=lambda x: x[1],  
-            default=None,        
-        )
-        if out_edge:
-            out_edges[u] = out_edge  # Armazena a aresta de menor peso
+    # for u in cycle_nodes: 
+    #     out_edge = min(
+    #         ((v, w) for _, v, w in G.out_edges(u, data="w") if v not in cycle_nodes),
+    #         key=lambda x: x[1],  
+    #         default=None,        
+    #     )
+    #     if out_edge:
+    #         out_edges[u] = out_edge  # Armazena a aresta de menor peso
 
     for u, (v, w) in out_edges.items():
         G.add_edge(label, v, w=w)      
@@ -330,7 +342,7 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0):
 
     G_arb = G.copy()
     draw_graph(G_arb, f"{indent}Grafo original")
-    remove_edge_in_r0(G_arb, r0)
+    remove_edge_in_r0(G_arb, r0) # TODO Só chamar isso no nível 0
     draw_graph(G_arb, f"{indent}Após remoção de entradas")
 
     for v in G_arb.nodes:
