@@ -96,29 +96,12 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
     
     # TODO: Criar um dicionário auxiliar para armazenar para cada u o nome original do arco v em c
     # TODO Inverter o nome das variáveis - trocar in_edges por out_edges e vice-versa
-    in_edges: dict[str, tuple[str, float]] = {}
-    for u in G.nodes:
-        if u not in cycle_nodes: 
-            # Encontra a aresta de menor peso de u para algum nó em C
-            in_edge = min(
-                ((v, w) for _, v, w in G.out_edges(u, data="w") if v in cycle_nodes),
-                key=lambda x: x[1],
-                default=None,
-            )
-            if in_edge:
-                in_edges[u] = in_edge
-
-    for u, (v, w) in in_edges.items():
-        G.add_edge(u, label, w=w)
-
-    # Encontra arestas de ciclo -> fora
     out_edges: dict[str, tuple[str, float]] = {}
-
     for u in G.nodes:
         if u not in cycle_nodes: 
             # Encontra a aresta de menor peso de u para algum nó em C
             out_edge = min(
-                ((v, w) for v, _, w in G.in_edges(u, data="w") if v in cycle_nodes),
+                ((v, w) for _, v, w in G.out_edges(u, data="w") if v in cycle_nodes),
                 key=lambda x: x[1],
                 default=None,
             )
@@ -126,12 +109,29 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
                 out_edges[u] = out_edge
 
     for u, (v, w) in out_edges.items():
+        G.add_edge(u, label, w=w)
+
+    # Encontra arestas de ciclo -> fora
+    in_edges: dict[str, tuple[str, float]] = {}
+
+    for u in G.nodes:
+        if u not in cycle_nodes: 
+            # Encontra a aresta de menor peso de u para algum nó em C
+            in_edge = min(
+                ((v, w) for v, _, w in G.in_edges(u, data="w") if v in cycle_nodes),
+                key=lambda x: x[1],
+                default=None,
+            )
+            if in_edge:
+                in_edges[u] = in_edge
+
+    for u, (v, w) in in_edges.items():
         G.add_edge(label, v, w=w)      
     
     # Remove os nós do ciclo original
     G.remove_nodes_from(cycle_nodes)
 
-    return in_edges, out_edges
+    return out_edges, in_edges
 
 # Função auxiliar para remover arestas que entram em um vértice raiz
 def remove_edge_in_r0(G: nx.DiGraph, r0: str):
