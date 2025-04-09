@@ -238,7 +238,6 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None):
         return F_star
     
     else:
-
         log(f"{indent}F_star não é uma arborescência. Continuando...")
 
         C = find_cycle(F_star)
