@@ -116,7 +116,7 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
 
     cycle_nodes: set[str] = set(C.nodes())
     
-    # TODO: Criar um dicionário auxiliar para armazenar para cada u o nome original do arco v em c
+    # Armazena o vértice u e o v de menor peso de dentro do ciclo
     out_edges: dict[str, tuple[str, float]] = {}
 
     for u in G.nodes:
@@ -133,21 +133,21 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
     for u, (v, w) in out_edges.items():
         G.add_edge(u, label, w=w)
 
-    # Encontra arestas de ciclo -> fora
+    # Armazena o vértice v e o u de menor peso de dentro do ciclo que chega em v
     in_edges: dict[str, tuple[str, float]] = {}
 
     for v in G.nodes:
         if v not in cycle_nodes: 
             # Encontra a aresta de menor peso que v recebe de algum vértice em C
             in_edge = min(
-                ((u, w) for u, _, w in G.in_edges(u, data="w") if u in cycle_nodes),
+                ((u, w) for u, _, w in G.in_edges(v, data="w") if u in cycle_nodes),
                 key=lambda x: x[1],
                 default=None,
             )
             if in_edge:
                 in_edges[v] = in_edge
 
-    for u, (v, w) in in_edges.items():
+    for v, (u, w) in in_edges.items():
         G.add_edge(label, v, w=w)      
     
     # Remove os nós do ciclo original
