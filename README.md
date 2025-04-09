@@ -1,9 +1,21 @@
 # Graph-Visualizer
 
+**Github Pages:** [Graph Visualizer Web Application](https://lorenypsum.github.io/graph-visualizer/)
+
 Web application that provides visualization for the execution of algorithms in directed graphs.
 
 This project is a web application that provides visualization for the execution of the **Chu, Liu and Edmonds Algorithm** in directed graphs.
 It allows users to input a directed graph and visualize the steps of the algorithm in real-time.
+
+
+
+## Cloning the Repository:
+To clone the repository, run the following command in your terminal:
+
+```bash 
+git clone https://github.com/lorenypsum/graph-visualizer.git
+```
+
 
 ## Install Requirements:
 
