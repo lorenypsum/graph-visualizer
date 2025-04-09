@@ -153,7 +153,7 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
     # Remove os nós do ciclo original
     G.remove_nodes_from(cycle_nodes)
 
-    return in_edges, out_edges
+    return out_edges, in_edges
 
 # Função auxiliar para remover arestas que entram em um vértice raiz
 def remove_edge_in_r0(G: nx.DiGraph, r0: str, logger=None):
@@ -268,9 +268,9 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None, log
 
         for u, v in C.edges:
             F_prime.add_edge(u, v)
-        for v, (u, w) in out_edges.items():
+        for u, (v, w) in out_edges.items():
             F_prime.add_edge(u, v)
-        for u, (v, w) in in_edges.items():
+        for v, (u, w) in in_edges.items():
             F_prime.add_edge(u, v)
             
         if contracted_label in F_prime:
