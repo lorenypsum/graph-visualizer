@@ -17,6 +17,9 @@ def change_edge_weight(G: nx.DiGraph, node: str):
     # Obtém predecessores com pesos
     predecessors = list(G.in_edges(node, data="w"))
 
+    if not predecessors:
+        return G  # ← ESSA LINHA FALTA NO SEU CÓDIGO ATUAL
+
     # Calcula Yv = menor peso de entrada
     yv = min((w for _, _, w in predecessors))
 
