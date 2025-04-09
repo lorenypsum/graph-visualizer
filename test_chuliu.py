@@ -53,7 +53,7 @@ def test_case_2_no_cycles():
     assert_arborescence_equal(result, expected)
 
 
-# === TESTE COM DOIS CICLOS DESCONEXOS ===
+# === TESTE COM CICLOS DESCONEXOS ===
 def test_case_3_multiple_cycles():
     G = nx.DiGraph()
     G.add_edge("r0", "A", w=1)
