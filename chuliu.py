@@ -240,11 +240,19 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None):
     # Chamada Recursiva
     F_prime = find_optimum_arborescence(G_arb, r0, level + 1, draw_fn=draw_fn)
 
-    # TODO: remover a aresta que chega no vértice v que recebe a única aresta da arborescência
-    edge_to_remove = max(
-        ((u, v, w) for v, (u, w) in out_edges.items()), key=lambda x: x[2]
+    # Identifica o vértice do ciclo que recebeu a única aresta de entrada da arborescência
+    vertice_reentrada = next(
+        (v for v in in_edges if v in C and F_prime.in_degree(v) == 1),
+        None
     )
 
+    if not vertice_reentrada:
+        raise ValueError("Nenhum vértice do ciclo recebeu aresta de entrada esperada.")
+
+    u, w = in_edges[vertice_reentrada]
+    edge_to_remove = (u, vertice_reentrada, w)
+
+    # Remove essa aresta do ciclo antes de reexpandir
     C = remove_edge_from_cycle(C, edge_to_remove)
 
     for u, v in C.edges:
