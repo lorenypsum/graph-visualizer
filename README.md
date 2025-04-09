@@ -8,7 +8,6 @@ This project is a web application that provides visualization for the execution 
 It allows users to input a directed graph and visualize the steps of the algorithm in real-time.
 
 
-
 ## Cloning the Repository:
 To clone the repository, run the following command in your terminal:
 
