@@ -1,5 +1,7 @@
-from matplotlib.pylab import log
 import networkx as nx
+
+def log(msg: str):
+    print(msg)
 
 # Funções auxiliar para alterar peso das arestas
 def change_edge_weight(G: nx.DiGraph, node: str):
