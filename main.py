@@ -7,7 +7,7 @@ import json
 
 from chuliu import find_optimum_arborescence, remove_edge_in_r0
 
-def log(msg: str):
+def log_in_box(msg: str):
     log_box = document.getElementById("log-output")
     log_box.value += msg + "\n"
     log_box.scrollTop = log_box.scrollHeight
@@ -45,7 +45,7 @@ def add_edge():
     weight = document.getElementById("weight").value
     if source and target and weight:
         G.add_edge(source, target, w=float(weight))
-        log(f"Aresta adicionada: {source} → {target} (peso={weight})")
+        log_in_box(f"Aresta adicionada: {source} → {target} (peso={weight})")
         draw_graph(G, "Grafo com Arestas", append=False)
 
 @when("click", "#reset-graph")
@@ -54,14 +54,14 @@ def reset_graph():
     G.clear()
     document.getElementById("log-output").value = ""
     draw_graph(G, "Grafo Resetado", append=False)
-    log("Grafo resetado.")
+    log_in_box("Grafo resetado.")
 
 @when("click", "#export-graph")
 def export_graph(event):
-    log("Exportando grafo...")
+    log_in_box("Exportando grafo...")
     global G
     if G.number_of_nodes() == 0:
-        log("[ERRO] O grafo está vazio.")
+        log_in_box("[ERRO] O grafo está vazio.")
         return
 
     # Converte o grafo para JSON
@@ -79,7 +79,7 @@ def export_graph(event):
     link.click()
     URL.revokeObjectURL(url)
 
-    log("Download do grafo iniciado.")
+    log_in_box("Download do grafo iniciado.")
 
 @when("click", "#load-test-graph")
 def load_test_graph(event):
@@ -95,7 +95,7 @@ def load_test_graph(event):
     G.add_edge("B", "E", w=8)
     G.add_edge("C", "E", w=4)
 
-    log("Grafo de teste carregado.")
+    log_in_box("Grafo de teste carregado.")
     draw_graph(G, "Grafo de Teste (DG)", append=False)
 
 @when("click", "#show-ready-arborescence")
@@ -107,7 +107,7 @@ def show_ready_arborescence(event):
     T.add_edge("D", "B", w=2)
     T.add_edge("C", "E", w=4)
     draw_graph(T, "Arborescência Pré-definida")
-    log("Arborescência pronta exibida.")
+    log_in_box("Arborescência pronta exibida.")
 
 @when("click", "#run-algorithm")
 def run_algorithm(event):
@@ -117,8 +117,9 @@ def run_algorithm(event):
         alert(f"[ERRO] O nó raiz '{r0}' deve existir no grafo.")
         return
 
-    log("Executando algoritmo de Chu-Liu...")
+    log_in_box("Executando algoritmo de Chu-Liu...")
+    print(remove_edge_in_r0)
     G_filtered = remove_edge_in_r0(G, r0)
-    T = find_optimum_arborescence(G_filtered, r0, draw_fn=draw_graph)
+    T = find_optimum_arborescence(G_filtered, r0, draw_fn=draw_graph, log=log_in_box)
     draw_graph(T, "Arborescência Ótima")
-    log("Execução concluída com sucesso.")
+    log_in_box("Execução concluída com sucesso.")

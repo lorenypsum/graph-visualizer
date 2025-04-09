@@ -1,6 +1,6 @@
 import networkx as nx
 
-def log(msg: str):
+def log_dummy(msg: str):
     print(msg)
 
 # Funções auxiliar para alterar peso das arestas
@@ -156,7 +156,7 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
     return out_edges, in_edges
 
 # Função auxiliar para remover arestas que entram em um vértice raiz
-def remove_edge_in_r0(G: nx.DiGraph, r0: str):
+def remove_edge_in_r0(G: nx.DiGraph, r0: str, logger=None):
 
     """
     Remove todas as arestas que entram no vértice raiz r0 no grafo G.
@@ -170,7 +170,8 @@ def remove_edge_in_r0(G: nx.DiGraph, r0: str):
     # Remove as arestas que entram em r0
     in_edges = list(G.in_edges(r0))
     if not in_edges:
-        log(f"[INFO] Nenhuma aresta entrando em '{r0}' para remover.")
+        if logger:
+            logger(f"[INFO] Nenhuma aresta entrando em '{r0}' para remover.")
     else:
         G.remove_edges_from(in_edges)
 
@@ -203,7 +204,7 @@ def remove_edge_from_cycle(C: nx.DiGraph, in_edge: tuple[str, str, float]):
     return C
 
 # Algoritmo de Chu-Liu
-def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None):
+def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None, log=log_dummy):
 
     """"
     Encontra recursivamente a arborescência ótima em um grafo direcionado G com raiz r0.
@@ -246,7 +247,7 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None):
         out_edges, in_edges = contract_cycle(G_arb, C, contracted_label)
 
         # Chamada Recursiva
-        F_prime = find_optimum_arborescence(G_arb, r0, level + 1, draw_fn=draw_fn)
+        F_prime = find_optimum_arborescence(G_arb, r0, level + 1, draw_fn=draw_fn, log=log)
 
         # Identifica o vértice do ciclo que recebeu a única aresta de entrada da arborescência
         candidate_edges_to_remove = [

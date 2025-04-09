@@ -1,3 +1,11 @@
 {
-    "packages": ["networkx", "matplotlib"]
+    "packages": [
+        "networkx",
+        "matplotlib"
+    ],
+    "fetch": [{
+        "files": [
+            "./chuliu.py"
+        ]
+    }]
 }
