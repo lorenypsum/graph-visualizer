@@ -153,7 +153,7 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
     # Remove os nós do ciclo original
     G.remove_nodes_from(cycle_nodes)
 
-    return out_edges, in_edges
+    return in_edges, out_edges
 
 # Função auxiliar para remover arestas que entram em um vértice raiz
 def remove_edge_in_r0(G: nx.DiGraph, r0: str, logger=None):
