@@ -246,19 +246,17 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None):
     F_prime = find_optimum_arborescence(G_arb, r0, level + 1, draw_fn=draw_fn)
 
     # Identifica o vértice do ciclo que recebeu a única aresta de entrada da arborescência
-    vertice_reentrada = next(
-        (v for v in in_edges if v in C and F_prime.in_degree(v) == 1),
-        None
-    )
+    candidatos = [
+        v for v in in_edges if v in C and F_prime.in_degree(v) == 1
+    ]
 
-    if not vertice_reentrada:
-        raise ValueError("Nenhum vértice do ciclo recebeu aresta de entrada esperada.")
-
-    u, w = in_edges[vertice_reentrada]
-    edge_to_remove = (u, vertice_reentrada, w)
-
-    # Remove essa aresta do ciclo antes de reexpandir
-    C = remove_edge_from_cycle(C, edge_to_remove)
+    if not candidatos:
+        print(f"[INFO] Nenhuma entrada externa foi usada pelo ciclo. Mantendo ciclo inteiro.")
+    else:
+        vertice_reentrada = candidatos[0]
+        u, w = in_edges[vertice_reentrada]
+        edge_to_remove = (u, vertice_reentrada, w)
+        C = remove_edge_from_cycle(C, edge_to_remove)
 
     for u, v in C.edges:
         F_prime.add_edge(u, v)
@@ -273,5 +271,10 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None):
         log(f"[AVISO] Vértice '{contracted_label}' não encontrado para remoção.")    
 
     for u, v in F_prime.edges:
-        F_prime[u][v]["w"] = G[u][v]["w"]
+        if G.has_edge(u, v):
+            F_prime[u][v]["w"] = G[u][v]["w"]
+        else:
+            print(f"[AVISO] Aresta ({u} → {v}) não encontrada no grafo original.")
+    
+    print("Arborescência final:", list(F_prime.edges))
     return F_prime
