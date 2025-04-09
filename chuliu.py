@@ -201,7 +201,6 @@ def remove_edge_from_cycle(C: nx.DiGraph, in_edge: tuple[str, str, float]):
             C.remove_edge(u, v)
     return C
 
-
 # Algoritmo de Chu-Liu
 def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None):
 
