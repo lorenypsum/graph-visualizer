@@ -1,5 +1,9 @@
 # Graph-Visualizer
+
 Web application that provides visualization for the execution of algorithms in directed graphs.
+
+This project is a web application that provides visualization for the execution of the **Chu, Liu and Edmonds Algorithm** in directed graphs.
+It allows users to input a directed graph and visualize the steps of the algorithm in real-time.
 
 ## Install Requirements:
 
