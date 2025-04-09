@@ -116,7 +116,7 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
 
     cycle_nodes: set[str] = set(C.nodes())
     
-    # Armazena o vértice u e o v de menor peso de dentro do ciclo
+    # Armazena o vértice u fora do ciclo e o vértive v dentro do ciclo que recebe a aresta de menor peso
     out_edges: dict[str, tuple[str, float]] = {}
 
     for u in G.nodes:
@@ -133,7 +133,7 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
     for u, (v, w) in out_edges.items():
         G.add_edge(u, label, w=w)
 
-    # Armazena o vértice v e o u de menor peso de dentro do ciclo que chega em v
+    # Armazena o vértice v fora do ciclo que recebe a aresta de de menor peso de um vértice u dentro do ciclo
     in_edges: dict[str, tuple[str, float]] = {}
 
     for v in G.nodes:
@@ -240,7 +240,7 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None):
     else:
         log(f"{indent}F_star não é uma arborescência. Continuando...")
 
-        C = find_cycle(F_star)
+        C: nx.DiGraph = find_cycle(F_star)
 
         contracted_label = f"C*{level}"
         out_edges, in_edges = contract_cycle(G_arb, C, contracted_label)
@@ -249,20 +249,21 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None):
         F_prime = find_optimum_arborescence(G_arb, r0, level + 1, draw_fn=draw_fn)
 
         # Identifica o vértice do ciclo que recebeu a única aresta de entrada da arborescência
-        candidatos = [
-            v for v in in_edges if v in C and F_prime.in_degree(v) == 1
+        candidate_edges_to_remove = [
+            # Para cada v que recebe uma aresta de um vértice u de fora do ciclo 
+            # Ou seja, em out_edges.values, verificar se ele recebe uma aresta de um vértice u dentro do ciclo
+            v for v, _ in out_edges.values() if any(u in C for u, _ in G.in_edges(v)) 
         ]
 
-        if not candidatos:
+        if not candidate_edges_to_remove:
             raise ValueError(
             "[ERRO] A solução recursiva não utilizou nenhuma entrada externa para o ciclo, "
             "o que viola o algoritmo de Chu-Liu/Edmonds. Isso indica erro na contração ou reconstrução."
         )
         else:
-            vertice_reentrada = candidatos[0]
-            u, w = in_edges[vertice_reentrada]
-            edge_to_remove = (u, vertice_reentrada, w)
-            C = remove_edge_from_cycle(C, edge_to_remove)
+            v_of_edge_to_remove = candidate_edges_to_remove[0]
+            u, _, w = next(iter(C.in_edges(v_of_edge_to_remove, data='w')))
+            C = remove_edge_from_cycle(C, (u, v_of_edge_to_remove, w))
 
         for u, v in C.edges:
             F_prime.add_edge(u, v)
