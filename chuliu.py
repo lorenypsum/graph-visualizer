@@ -118,6 +118,7 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
     
     # TODO: Criar um dicionário auxiliar para armazenar para cada u o nome original do arco v em c
     out_edges: dict[str, tuple[str, float]] = {}
+
     for u in G.nodes:
         if u not in cycle_nodes: 
             # Encontra a aresta de menor peso de u para algum vértice em C
@@ -135,16 +136,16 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
     # Encontra arestas de ciclo -> fora
     in_edges: dict[str, tuple[str, float]] = {}
 
-    for u in G.nodes:
-        if u not in cycle_nodes: 
+    for v in G.nodes:
+        if v not in cycle_nodes: 
             # Encontra a aresta de menor peso que v recebe de algum vértice em C
             in_edge = min(
-                ((v, w) for v, _, w in G.in_edges(u, data="w") if v in cycle_nodes),
+                ((u, w) for u, _, w in G.in_edges(u, data="w") if u in cycle_nodes),
                 key=lambda x: x[1],
                 default=None,
             )
             if in_edge:
-                in_edges[u] = in_edge
+                in_edges[v] = in_edge
 
     for u, (v, w) in in_edges.items():
         G.add_edge(label, v, w=w)      
@@ -235,45 +236,52 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None):
         for u, v in F_star.edges:
             F_star[u][v]["w"] = G[u][v]["w"]
         return F_star
-
-    C = find_cycle(F_star)
-
-    contracted_label = f"C*{level}"
-    out_edges, in_edges = contract_cycle(G_arb, C, contracted_label)
-
-    # Chamada Recursiva
-    F_prime = find_optimum_arborescence(G_arb, r0, level + 1, draw_fn=draw_fn)
-
-    # Identifica o vértice do ciclo que recebeu a única aresta de entrada da arborescência
-    candidatos = [
-        v for v in in_edges if v in C and F_prime.in_degree(v) == 1
-    ]
-
-    if not candidatos:
-        print(f"[INFO] Nenhuma entrada externa foi usada pelo ciclo. Mantendo ciclo inteiro.")
-    else:
-        vertice_reentrada = candidatos[0]
-        u, w = in_edges[vertice_reentrada]
-        edge_to_remove = (u, vertice_reentrada, w)
-        C = remove_edge_from_cycle(C, edge_to_remove)
-
-    for u, v in C.edges:
-        F_prime.add_edge(u, v)
-    for v, (u, w) in out_edges.items():
-        F_prime.add_edge(u, v)
-    for u, (v, w) in in_edges.items():
-        F_prime.add_edge(u, v)
-        
-    if contracted_label in F_prime:
-        F_prime.remove_node(contracted_label)
-    else:
-        log(f"[AVISO] Vértice '{contracted_label}' não encontrado para remoção.")    
-
-    for u, v in F_prime.edges:
-        if G.has_edge(u, v):
-            F_prime[u][v]["w"] = G[u][v]["w"]
-        else:
-            print(f"[AVISO] Aresta ({u} → {v}) não encontrada no grafo original.")
     
-    print("Arborescência final:", list(F_prime.edges))
-    return F_prime
+    else:
+
+        log(f"{indent}F_star não é uma arborescência. Continuando...")
+
+        C = find_cycle(F_star)
+
+        contracted_label = f"C*{level}"
+        out_edges, in_edges = contract_cycle(G_arb, C, contracted_label)
+
+        # Chamada Recursiva
+        F_prime = find_optimum_arborescence(G_arb, r0, level + 1, draw_fn=draw_fn)
+
+        # Identifica o vértice do ciclo que recebeu a única aresta de entrada da arborescência
+        candidatos = [
+            v for v in in_edges if v in C and F_prime.in_degree(v) == 1
+        ]
+
+        if not candidatos:
+            raise ValueError(
+            "[ERRO] A solução recursiva não utilizou nenhuma entrada externa para o ciclo, "
+            "o que viola o algoritmo de Chu-Liu/Edmonds. Isso indica erro na contração ou reconstrução."
+        )
+        else:
+            vertice_reentrada = candidatos[0]
+            u, w = in_edges[vertice_reentrada]
+            edge_to_remove = (u, vertice_reentrada, w)
+            C = remove_edge_from_cycle(C, edge_to_remove)
+
+        for u, v in C.edges:
+            F_prime.add_edge(u, v)
+        for v, (u, w) in out_edges.items():
+            F_prime.add_edge(u, v)
+        for u, (v, w) in in_edges.items():
+            F_prime.add_edge(u, v)
+            
+        if contracted_label in F_prime:
+            F_prime.remove_node(contracted_label)
+        else:
+            log(f"[AVISO] Vértice '{contracted_label}' não encontrado para remoção.")    
+
+        for u, v in F_prime.edges:
+            if G.has_edge(u, v):
+                F_prime[u][v]["w"] = G[u][v]["w"]
+            else:
+                print(f"[AVISO] Aresta ({u} → {v}) não encontrada no grafo original.")
+        
+        print("Arborescência final:", list(F_prime.edges))
+        return F_prime
