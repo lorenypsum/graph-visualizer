@@ -4,13 +4,14 @@ def log_dummy(msg: str):
     print(msg)
 
 # Funções auxiliar para alterar peso das arestas
+# TODO: trocar os raises por asserts
 def change_edge_weight(G: nx.DiGraph, node: str):
 
     """
     Altera o peso das arestas de entrada de um nó `node` no grafo `G`.
     """
 
-    # Verifica se o vértice existe
+    # TODO: tirar depois de testar
     if node not in G:
         raise ValueError(f"O vértice '{node}' não existe no grafo.")
 
@@ -43,6 +44,8 @@ def get_Fstar(G: nx.DiGraph, r0: str):
     F_star = nx.DiGraph()
 
     for v in G.nodes():
+        # TODO: mais fácil: Se v =/ r0, jogar todas arestas de custo zero ao invés de apenas uma (com o next).
+        # Isso pode fazer o algoritmo executar menos passos.
         if v != r0:
             in_edges = list(G.in_edges(v, data="w"))
             if not in_edges:
@@ -52,10 +55,12 @@ def get_Fstar(G: nx.DiGraph, r0: str):
             if u:
                 F_star.add_edge(u, v, w=0)
 
+    # TODO: raiseValueError errado. Pode acontecer do vértice raíz não possuir arestas de saída mesmo
     successors = list(G.out_edges(r0, data="w"))
     if not successors:
         raise ValueError(f"O vértice raiz '{r0}' não possui arestas de saída.")
 
+    # TODO: Tirar essas linhas abaixo
     # Aresta de menor custo saindo da raiz
     v, w = min([(v, w) for _, v, w in successors], key=lambda vw: vw[1])
     F_star.add_edge(r0, v, w=w)
@@ -78,6 +83,7 @@ def is_F_star_arborescence(F_star: nx.DiGraph, r0: str):
         raise ValueError("O grafo fornecido está vazio.")
 
     # Verifica se o grafo é acíclico e todos os nós são alcançáveis a partir de r0
+    # TODO: ele é uma arborescência só porque estamos construindo com apenas um vértice por vez, não refazendo o TODO da linha 46.
     is_reachable = all(nx.has_path(F_star, r0, v) for v in F_star.nodes)
     is_acyclic = nx.is_directed_acyclic_graph(F_star)
 
@@ -91,6 +97,7 @@ def find_cycle(F_star: nx.DiGraph):
     Retorna um subgrafo contendo o ciclo, ou None se não houver.
     """
 
+    # TODO: tem que ter um raiseError aqui embaixo, pq isso nunca poderia acontecer.
     # Verifica se o grafo tem nós suficientes para conter um ciclo
     if F_star.number_of_edges() == 0 or F_star.number_of_nodes() < 2:
         return None
@@ -107,10 +114,11 @@ def find_cycle(F_star: nx.DiGraph):
 def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
 
     """
-    Contrai um ciclo C no grafo G, substituindo-o por um supernó com rótulo `label`.
-    Devolve o novo grafo (G'), a aresta de entrada (in_edge) e a de saída (out_edge).
+    Contrai um ciclo C no grafo G, substituindo-o por um supervértice com rótulo `label`.
+    Devolve o grafo G modificado "G'"com o ciclo contraído, a lista das arestas de entrada (in_edge) e as de saída (out_edge).
     """
 
+    # TODO: tirar depois de testar 
     if label in G:
         raise ValueError(f"O rótulo '{label}' já existe como vértice em G.")
 
@@ -177,6 +185,7 @@ def remove_edge_in_r0(G: nx.DiGraph, r0: str, logger=None):
 
     return G
 
+# TODO: tirar a tupla
 # Função auxiliar para remover aresta de um ciclo
 def remove_edge_from_cycle(C: nx.DiGraph, in_edge: tuple[str, str, float]):
 
@@ -184,9 +193,10 @@ def remove_edge_from_cycle(C: nx.DiGraph, in_edge: tuple[str, str, float]):
     Remove do ciclo C a aresta que entra no vértice `v` (obtido de `in_edge`)
     caso esse vértice já tenha um predecessor em C.
     """
-
+    # TODO: não precisa fazer cópia
     C = C.copy()  # Cópia segura
 
+    # Não levantar exceções quando se trata de erro lógico.
     if in_edge:
         if len(in_edge) != 3:
             raise ValueError("A aresta in_edge deve ter 3 elementos (u, v, w).")
@@ -202,6 +212,7 @@ def remove_edge_from_cycle(C: nx.DiGraph, in_edge: tuple[str, str, float]):
         if u:
             C.remove_edge(u, v)
     return C
+
 
 # Algoritmo de Chu-Liu
 def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None, log=log_dummy):
@@ -250,6 +261,9 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None, log
         F_prime = find_optimum_arborescence(G_arb, r0, level + 1, draw_fn=draw_fn, log=log)
 
         # Identifica o vértice do ciclo que recebeu a única aresta de entrada da arborescência
+        # TODO: O F_prime in_edges, ver as arestas que entram em C. Pega o next do Fprime.in_edges(C*label). O arco que está entrando em C é unico.
+        # TODO: u, _, _ = next(F_prime.in_edge(label))
+        # v, _ = out_edges(u)
         candidate_edges_to_remove = [
             # Para cada v que recebe uma aresta de um vértice u de fora do ciclo 
             # Ou seja, em out_edges.values, verificar se ele recebe uma aresta de um vértice u dentro do ciclo
@@ -264,21 +278,27 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None, log
         else:
             v_of_edge_to_remove = candidate_edges_to_remove[0]
             u, _, w = next(iter(C.in_edges(v_of_edge_to_remove, data='w')))
-            C = remove_edge_from_cycle(C, (u, v_of_edge_to_remove, w))
+            C = remove_edge_from_cycle(C, (u, v_of_edge_to_remove, w)) #TODO: mandar só o v.
 
+        # TODO: adicionar o vértice da linha de cima.
+        # TODO: for _ z, z in F_prime.out_edges(label):
+        # TODO: F_prime.add_edge(in_edge(z), z, w) 
         for u, v in C.edges:
             F_prime.add_edge(u, v)
+        # TODO: passos abaixo estão errados.     
         for u, (v, w) in out_edges.items():
             F_prime.add_edge(u, v)
         for v, (u, w) in in_edges.items():
             F_prime.add_edge(u, v)
             
+        # TODO: assert contracted_label in F_prime.    
         if contracted_label in F_prime:
             F_prime.remove_node(contracted_label)
         else:
             log(f"[AVISO] Vértice '{contracted_label}' não encontrado para remoção.")    
 
         for u, v in F_prime.edges:
+            # TODO: assert
             if G.has_edge(u, v):
                 F_prime[u][v]["w"] = G[u][v]["w"]
             else:
