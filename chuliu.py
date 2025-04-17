@@ -12,8 +12,9 @@ def change_edge_weight(G: nx.DiGraph, node: str):
     """
 
     # TODO: tirar depois de testar
-    if node not in G:
-        raise ValueError(f"O vértice '{node}' não existe no grafo.")
+    # if node not in G:
+    #     raise ValueError(f"O vértice '{node}' não existe no grafo.")
+    assert node in G, f"O vértice '{node}' não existe no grafo."
 
     # Obtém predecessores com pesos
     predecessors = list(G.in_edges(node, data="w"))
@@ -38,8 +39,9 @@ def get_Fstar(G: nx.DiGraph, r0: str):
     """
 
     # Verifica se a raiz existe no grafo
-    if r0 not in G:
-        raise ValueError(f"O vértice raiz '{r0}' não existe no grafo.")
+    # if r0 not in G:
+    #     raise ValueError(f"O vértice raiz '{r0}' não existe no grafo.")
+    assert r0 in G, f"O vértice raiz '{r0}' não existe no grafo."
 
     F_star = nx.DiGraph()
 
@@ -75,12 +77,14 @@ def is_F_star_arborescence(F_star: nx.DiGraph, r0: str):
     """
 
     # Verifica se o vértice raiz existe no grafo
-    if r0 not in F_star:
-        raise ValueError(f"O vértice raiz '{r0}' não existe no grafo.")
+    # if r0 not in F_star:
+    #     raise ValueError(f"O vértice raiz '{r0}' não existe no grafo.")
+    assert r0 in F_star, f"O vértice raiz '{r0}' não existe no grafo."
 
     # Se o grafo estiver vazio
-    if F_star.number_of_nodes() == 0:
-        raise ValueError("O grafo fornecido está vazio.")
+    # if F_star.number_of_nodes() == 0:
+    #     raise ValueError("O grafo fornecido está vazio.")
+    assert F_star.number_of_nodes() > 0, "O grafo fornecido está vazio."
 
     # Verifica se o grafo é acíclico e todos os nós são alcançáveis a partir de r0
     # TODO: ele é uma arborescência só porque estamos construindo com apenas um vértice por vez, não refazendo o TODO da linha 46.
@@ -118,10 +122,10 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
     Devolve o grafo G modificado "G'"com o ciclo contraído, a lista das arestas de entrada (in_edge) e as de saída (out_edge).
     """
 
-    # TODO: tirar depois de testar 
-    if label in G:
-        raise ValueError(f"O rótulo '{label}' já existe como vértice em G.")
-
+    # if label in G:
+    #     raise ValueError(f"O rótulo '{label}' já existe como vértice em G.")
+    assert label not in G, f"O rótulo '{label}' já existe como vértice em G."
+    
     cycle_nodes: set[str] = set(C.nodes())
     
     # Armazena o vértice u fora do ciclo e o vértive v dentro do ciclo que recebe a aresta de menor peso
@@ -172,8 +176,9 @@ def remove_edge_in_r0(G: nx.DiGraph, r0: str, logger=None):
     """
 
     # Verifica se r0 existe no grafo
-    if r0 not in G:
-        raise ValueError(f"O vértice raiz '{r0}' não existe no grafo.")
+    # if r0 not in G:
+    #     raise ValueError(f"O vértice raiz '{r0}' não existe no grafo.")
+    assert r0 in G, f"O vértice raiz '{r0}' não existe no grafo."
 
     # Remove as arestas que entram em r0
     in_edges = list(G.in_edges(r0))
@@ -198,14 +203,16 @@ def remove_edge_from_cycle(C: nx.DiGraph, in_edge: tuple[str, str, float]):
 
     # Não levantar exceções quando se trata de erro lógico.
     if in_edge:
-        if len(in_edge) != 3:
-            raise ValueError("A aresta in_edge deve ter 3 elementos (u, v, w).")
+        # if len(in_edge) != 3:
+        #     raise ValueError("A aresta in_edge deve ter 3 elementos (u, v, w).")
+        assert len(in_edge) == 3, "A aresta in_edge deve ter 3 elementos (u, v, w)."
         _, v, _ = in_edge
 
-        if v not in C:
-            raise ValueError(
-                f"O vértice destino '{v}' da in_edge não está presente no ciclo."
-            )
+        # if v not in C:
+        #     raise ValueError(
+        #         f"O vértice destino '{v}' da in_edge não está presente no ciclo."
+        #     )
+        assert v in C, f"O vértice destino '{v}' da in_edge não está presente no ciclo."
 
         # Procura um predecessor em C que leva até v
         u = next((u for u, _ in C.in_edges(v)), None)
@@ -224,8 +231,9 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None, log
     indent = "  " * level
     log(f"{indent}Iniciando nível {level}")
 
-    if r0 not in G:
-        raise ValueError(f"O vértice raiz '{r0}' não está presente no grafo.")
+    # if r0 not in G:
+    #     raise ValueError(f"O vértice raiz '{r0}' não está presente no grafo.")
+    assert r0 in G, f"O vértice raiz '{r0}' não está presente no grafo."
 
     G_arb = G.copy()
 
