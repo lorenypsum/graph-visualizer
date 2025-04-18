@@ -11,9 +11,6 @@ def change_edge_weight(G: nx.DiGraph, node: str):
     Altera o peso das arestas de entrada de um nó `node` no grafo `G`.
     """
 
-    # TODO: tirar depois de testar
-    # if node not in G:
-    #     raise ValueError(f"O vértice '{node}' não existe no grafo.")
     assert node in G, f"O vértice '{node}' não existe no grafo."
 
     # Obtém predecessores com pesos
@@ -38,9 +35,6 @@ def get_Fstar(G: nx.DiGraph, r0: str):
     Cria o conjunto F_star a partir do grafo G e da raiz r0.
     """
 
-    # Verifica se a raiz existe no grafo
-    # if r0 not in G:
-    #     raise ValueError(f"O vértice raiz '{r0}' não existe no grafo.")
     assert r0 in G, f"O vértice raiz '{r0}' não existe no grafo."
 
     F_star = nx.DiGraph()
@@ -56,16 +50,6 @@ def get_Fstar(G: nx.DiGraph, r0: str):
             u = next((u for u, _, w in in_edges if w == 0), None)
             if u:
                 F_star.add_edge(u, v, w=0)
-
-    # TODO: raiseValueError errado. Pode acontecer do vértice raíz não possuir arestas de saída mesmo
-    successors = list(G.out_edges(r0, data="w"))
-    if not successors:
-        raise ValueError(f"O vértice raiz '{r0}' não possui arestas de saída.")
-
-    # TODO: Tirar essas linhas abaixo
-    # Aresta de menor custo saindo da raiz
-    v, w = min([(v, w) for _, v, w in successors], key=lambda vw: vw[1])
-    F_star.add_edge(r0, v, w=w)
 
     return F_star
 
