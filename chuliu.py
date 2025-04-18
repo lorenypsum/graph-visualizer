@@ -204,6 +204,8 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None, log
 
         C: nx.DiGraph = find_cycle(F_star)
 
+        assert C, f"find_optimum_arborescence: Nenhum ciclo encontrado em F_star."
+
         contracted_label = f"C*{level}"
         out_edges, in_edges = contract_cycle(G_arb, C, contracted_label)
 
