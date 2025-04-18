@@ -66,7 +66,7 @@ def is_F_star_arborescence(F_star: nx.DiGraph, r0: str):
     assert F_star.number_of_nodes() > 0, "O grafo fornecido está vazio."
 
     # Verifica se o grafo é acíclico e todos os nós são alcançáveis a partir de r0
-    # Eele é uma arborescência só porque estamos construindo com apenas um vértice por vez.
+    # Ele é uma arborescência só porque estamos construindo com apenas um vértice por vez.
     is_reachable = all(nx.has_path(F_star, r0, v) for v in F_star.nodes)
     is_acyclic = nx.is_directed_acyclic_graph(F_star)
 
@@ -82,8 +82,7 @@ def find_cycle(F_star: nx.DiGraph):
 
     # TODO: tem que ter um raiseError aqui embaixo, pq isso nunca poderia acontecer.
     # Verifica se o grafo tem nós suficientes para conter um ciclo
-    if F_star.number_of_edges() == 0 or F_star.number_of_nodes() < 2:
-        return None
+    assert F_star.number_of_edges() == 0 or F_star.number_of_nodes() < 2
 
     # Tenta encontrar um ciclo no grafo
     nodes_in_cycle = set()
