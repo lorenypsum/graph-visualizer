@@ -16,7 +16,7 @@ def change_edge_weight(G: nx.DiGraph, node: str):
     predecessors = list(G.in_edges(node, data="w"))
 
     if not predecessors:
-        return G
+        return
 
     # Calcula Yv = menor peso de entrada
     yv = min((w for _, _, w in predecessors))
@@ -24,8 +24,6 @@ def change_edge_weight(G: nx.DiGraph, node: str):
     # Subtrai Yv de cada aresta de entrada
     for u, _, _ in predecessors:
         G[u][node]["w"] -= yv
-
-    return G
 
 # Função auxiliar para definir conjunto F_star
 def get_Fstar(G: nx.DiGraph, r0: str):
@@ -37,7 +35,6 @@ def get_Fstar(G: nx.DiGraph, r0: str):
     assert r0 in G, f"get_Fstar: O vértice raiz '{r0}' não existe no grafo."
 
     F_star = nx.DiGraph()
-    F_star.add_node(r0)
 
     for v in G.nodes():
         # Mais fácil: Se v =/ r0, jogar todas arestas de custo zero ao invés de apenas uma (com o next).
@@ -51,6 +48,8 @@ def get_Fstar(G: nx.DiGraph, r0: str):
             u = next((u for u, _, w in in_edges if w == 0), None)
             if u:
                 F_star.add_edge(u, v, w=0)
+    
+    assert r0 in F_star, f"get_Fstar: O vértice raiz '{r0}' não existe no F_star. {F_star.edges()} {G.edges(data='w')}"
 
     return F_star
 
