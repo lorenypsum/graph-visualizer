@@ -15,7 +15,6 @@ To clone the repository, run the following command in your terminal:
 git clone https://github.com/lorenypsum/graph-visualizer.git
 ```
 
-
 ## Install Requirements:
 
 ```bash
@@ -23,13 +22,7 @@ pip install -r requirements.txt
 ```
 
 ## Run Tests:
-To run the tests, you need to have `pytest` installed. And run in terminal:
-
-```bash:
-pip install pytest
-```
-
-Then run the tests with:
+To run the tests with:
 
 ```bash
 # For all tests
