@@ -171,8 +171,6 @@ def remove_edge_from_cycle(C: nx.DiGraph, v: str):
     Remove do ciclo C a aresta que entra no vértice `v` (obtido de `in_edge`)
     caso esse vértice já tenha um predecessor em C.
     """
-    # TODO: não precisa fazer cópia
-    C = C.copy()  # Cópia segura
 
     # Não levantar exceções quando se trata de erro lógico.
     if v:
