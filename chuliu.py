@@ -197,7 +197,7 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None, log
     if draw_fn:
         draw_fn(F_star, f"{indent}F_star")
 
-    if  nx.is_arborescence(F_star):
+    if nx.is_arborescence(F_star):
         for u, v in F_star.edges:
             F_star[u][v]["w"] = G[u][v]["w"]
         return F_star
