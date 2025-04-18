@@ -4,16 +4,14 @@ def log_dummy(msg: str):
     print(msg)
 
 # Funções auxiliar para alterar peso das arestas
-# TODO: trocar os raises por asserts
+# DONE: trocar os raises por asserts
 def change_edge_weight(G: nx.DiGraph, node: str):
 
     """
     Altera o peso das arestas de entrada de um nó `node` no grafo `G`.
     """
 
-    # TODO: tirar depois de testar
-    # if node not in G:
-    #     raise ValueError(f"O vértice '{node}' não existe no grafo.")
+    # LATER: tirar depois de testar
     assert node in G, f"O vértice '{node}' não existe no grafo."
 
     # Obtém predecessores com pesos
@@ -46,16 +44,26 @@ def get_Fstar(G: nx.DiGraph, r0: str):
     F_star = nx.DiGraph()
 
     for v in G.nodes():
-        # TODO: mais fácil: Se v =/ r0, jogar todas arestas de custo zero ao invés de apenas uma (com o next).
+        # FIXED: mais fácil: Se v =/ r0, jogar todas arestas de custo zero ao invés de apenas uma (com o next).
         # Isso pode fazer o algoritmo executar menos passos.
+        # Explicação:
+        # Adicionar apenas uma aresta de custo zero pode 
+        # não ser eficiente. Se houver várias arestas de custo 
+        # zero entrando no mesmo nó v, o algoritmo poderia 
+        # adicionar todas elas ao grafo F_star. 
+        # Isso pode reduzir o número de passos necessários 
+        # em etapas posteriores do algoritmo, já que mais 
+        # arestas de custo zero estariam disponíveis para 
+        # processamento.
+
         if v != r0:
             in_edges = list(G.in_edges(v, data="w"))
             if not in_edges:
                 continue  # Nenhuma aresta entra em v
-            # Tenta encontrar uma aresta com custo 0
-            u = next((u for u, _, w in in_edges if w == 0), None)
-            if u:
-                F_star.add_edge(u, v, w=0)
+
+            for u, _, w in in_edges:
+                if w == 0:
+                    F_star.add_edge(u, v, w=0)
 
     # TODO: raiseValueError errado. Pode acontecer do vértice raíz não possuir arestas de saída mesmo
     successors = list(G.out_edges(r0, data="w"))
