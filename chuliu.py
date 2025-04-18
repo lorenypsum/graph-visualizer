@@ -37,18 +37,20 @@ def get_Fstar(G: nx.DiGraph, r0: str):
     assert r0 in G, f"get_Fstar: O vértice raiz '{r0}' não existe no grafo."
 
     F_star = nx.DiGraph()
+    F_star.add_node(r0)
 
     for v in G.nodes():
         # Mais fácil: Se v =/ r0, jogar todas arestas de custo zero ao invés de apenas uma (com o next).
         # Isso pode fazer o algoritmo executar menos passos.
         # Mas, precisaria mudar a forma de verificar se F_star é uma arborescência.
-        in_edges = list(G.in_edges(v, data="w"))
-        if not in_edges:
-            continue  # Nenhuma aresta entra em v
-        # Tenta encontrar uma aresta com custo 0
-        u = next((u for u, _, w in in_edges if w == 0), None)
-        if u:
-            F_star.add_edge(u, v, w=0)
+        if v != r0:
+            in_edges = list(G.in_edges(v, data="w"))
+            if not in_edges:
+                continue  # Nenhuma aresta entra em v
+            # Tenta encontrar uma aresta com custo 0
+            u = next((u for u, _, w in in_edges if w == 0), None)
+            if u:
+                F_star.add_edge(u, v, w=0)
 
     return F_star
 
