@@ -48,8 +48,6 @@ def get_Fstar(G: nx.DiGraph, r0: str):
             u = next((u for u, _, w in in_edges if w == 0), None)
             if u:
                 F_star.add_edge(u, v, w=0)
-    
-    assert r0 in F_star, f"get_Fstar: O vértice raiz '{r0}' não existe no F_star. {F_star.edges()} {G.edges(data='w')}"
 
     return F_star
 
