@@ -37,7 +37,10 @@ def get_Fstar(G: nx.DiGraph, r0: str):
     F_star = nx.DiGraph()
 
     for v in G.nodes():
-        # Se v =/ r0, adicionar todas as arestas de custo zero
+        # Mais fácil: Se v =/ r0, jogar todas arestas de custo zero ao invés de apenas uma (com o next).
+        # Isso pode fazer o algoritmo executar menos passos.
+        # Mas, precisaria mudar a forma de verificar se F_star é uma arborescência.
+        # Verificar se F_star contém uma arborescência, mas a biblioteca parece não ter essa função.
         if v != r0:
             in_edges = list(G.in_edges(v, data="w"))
             if not in_edges:
@@ -46,24 +49,11 @@ def get_Fstar(G: nx.DiGraph, r0: str):
             for u, _, w in in_edges:
                 if w == 0:
                     F_star.add_edge(u, v, w=w)
+            u = next((u for u, _, w in in_edges if w == 0), None)
             if u:
                 F_star.add_edge(u, v, w=0)
 
     return F_star
-
-# Função auxiliar para verificar se F_star é uma arborescência
-def is_F_star_arborescence(F_star: nx.DiGraph, r0: str):
-
-    """
-    Verifica se o grafo F_star é uma arborescência com raiz r0.
-    """
-
-    # Verifica se o grafo é acíclico e todos os nós são alcançáveis a partir de r0
-    # Ele é uma arborescência só porque estamos construindo com apenas um vértice por vez.
-    is_reachable = all(nx.has_path(F_star, r0, v) for v in F_star.nodes)
-    is_acyclic = nx.is_directed_acyclic_graph(F_star)
-
-    return is_reachable and is_acyclic
 
 # Função auxiliar para encontrar um ciclo no grafo
 def find_cycle(F_star: nx.DiGraph):
@@ -207,7 +197,7 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None, log
     if draw_fn:
         draw_fn(F_star, f"{indent}F_star")
 
-    if is_F_star_arborescence(F_star, r0):
+    if  nx.is_arborescence(F_star):
         for u, v in F_star.edges:
             F_star[u][v]["w"] = G[u][v]["w"]
         return F_star
