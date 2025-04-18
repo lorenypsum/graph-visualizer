@@ -10,7 +10,7 @@ def change_edge_weight(G: nx.DiGraph, node: str):
     Altera o peso das arestas de entrada de um nó `node` no grafo `G`.
     """
 
-    assert node in G, f"O vértice '{node}' não existe no grafo."
+    assert node in G, f"change_edge_weight: O vértice '{node}' não existe no grafo."
 
     # Obtém predecessores com pesos
     predecessors = list(G.in_edges(node, data="w"))
@@ -34,7 +34,7 @@ def get_Fstar(G: nx.DiGraph, r0: str):
     Cria o conjunto F_star a partir do grafo G e da raiz r0.
     """
 
-    assert r0 in G, f"O vértice raiz '{r0}' não existe no grafo."
+    assert r0 in G, f"get_Fstar: O vértice raiz '{r0}' não existe no grafo."
 
     F_star = nx.DiGraph()
 
@@ -60,7 +60,7 @@ def is_F_star_arborescence(F_star: nx.DiGraph, r0: str):
     Verifica se o grafo F_star é uma arborescência com raiz r0.
     """
 
-    assert r0 in F_star, f"O vértice raiz '{r0}' não existe no grafo."
+    assert r0 in F_star, f"is_F_star_arborescence: O vértice raiz '{r0}' não existe no grafo."
 
     assert F_star.number_of_nodes() > 0, "O grafo fornecido está vazio."
 
@@ -80,7 +80,7 @@ def find_cycle(F_star: nx.DiGraph):
     """
     
     # Verifica se o grafo tem nós suficientes para conter um ciclo
-    assert F_star.number_of_edges() == 0 or F_star.number_of_nodes() < 2
+    assert F_star.number_of_edges() == 0 or F_star.number_of_nodes() < 2, f"find_cycle: o ciclo não pode ser encontrado em um grafo com {F_star.number_of_nodes()} nós e {F_star.number_of_edges()} arestas."
 
     # Tenta encontrar um ciclo no grafo
     nodes_in_cycle = set()
@@ -98,7 +98,7 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
     Devolve o grafo G modificado "G'"com o ciclo contraído, a lista das arestas de entrada (in_edge) e as de saída (out_edge).
     """
 
-    assert label not in G, f"O rótulo '{label}' já existe como vértice em G."
+    assert label not in G, f"contract_cycle: O rótulo '{label}' já existe como vértice em G."
     
     cycle_nodes: set[str] = set(C.nodes())
     
@@ -142,7 +142,7 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
     return out_edges, in_edges
 
 # Função auxiliar para remover arestas que entram em um vértice raiz
-def remove_edge_in_r0(G: nx.DiGraph, r0: str, logger=None):
+def remove_edges_to_r0(G: nx.DiGraph, r0: str, logger=None):
 
     """
     Remove todas as arestas que entram no vértice raiz r0 no grafo G.
@@ -150,7 +150,7 @@ def remove_edge_in_r0(G: nx.DiGraph, r0: str, logger=None):
     """
 
     # Verifica se r0 existe no grafo
-    assert r0 in G, f"O vértice raiz '{r0}' não existe no grafo."
+    assert r0 in G, f"remove_edges_to_r0: O vértice raiz '{r0}' não existe no grafo."
 
     # Remove as arestas que entram em r0
     in_edges = list(G.in_edges(r0))
@@ -172,7 +172,7 @@ def remove_edge_from_cycle(C: nx.DiGraph, v: str):
 
     # Não levantar exceções quando se trata de erro lógico.
     if v:
-        assert len(v) == 3, "A aresta in_edge deve ter 3 elementos (u, v, w)."
+        assert len(v) == 3, "remove_edge_from_cycle: A aresta in_edge deve ter 3 elementos (u, v, w)."
         _, v, _ = v
 
         assert v in C, f"O vértice destino '{v}' da in_edge não está presente no ciclo."
@@ -194,7 +194,7 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None, log
     indent = "  " * level
     log(f"{indent}Iniciando nível {level}")
 
-    assert r0 in G, f"O vértice raiz '{r0}' não está presente no grafo."
+    assert r0 in G, f"find_optimum_arborescence: O vértice raiz '{r0}' não está presente no grafo."
 
     G_arb = G.copy()
 
@@ -231,12 +231,12 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None, log
 
         # Identifica o vértice do ciclo que recebeu a única aresta de entrada da arborescência
         in_edge = next(F_prime.in_edges(contracted_label, data="w"), None)
-        assert in_edge, f"Nenhuma aresta encontrada entrando no vértice '{contracted_label}'."
+        assert in_edge, f"find_optimum_arborescence: Nenhuma aresta encontrada entrando no vértice '{contracted_label}'."
         u, _, w = in_edge
 
         # Identifica o vértice do ciclo que recebeu a aresta de entrada
         v = next((v for v, (u_out, _) in out_edges.items() if u_out == u), None)
-        assert v, f"Nenhum vértice do ciclo encontrado que recebeu a aresta de entrada de '{u}'."
+        assert v, f"find_optimum_arborescence: Nenhum vértice do ciclo encontrado que recebeu a aresta de entrada de '{u}'."
 
         # Remove a aresta que entra no vértice `v` do ciclo
         C = remove_edge_from_cycle(C, (u, v, w)) # Nota: w está vindo de F_prime, não de G
@@ -256,7 +256,7 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None, log
         # encontrar a aresta original (u_cycle, z) que a originou usando in_edges.
         for _, z, _ in F_prime.out_edges(contracted_label, data=True):
             # in_edges[z] = (u_cycle, original_weight)
-            assert z in in_edges, f"Nenhuma aresta de saída encontrada para o vértice '{z}'."
+            assert z in in_edges, f"find_optimum_arborescence: Nenhuma aresta de saída encontrada para o vértice '{z}'."
             u_cycle, _ = in_edges[z]
             F_prime.add_edge(u_cycle, z)
             log(f"{indent}  Adicionando aresta externa de saída: ({u_cycle}, {z})")
@@ -268,7 +268,7 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None, log
 
         # Atualiza os pesos das arestas com os pesos originais de G
         for u, v in F_prime.edges:
-            assert u in G and v in G, f"Vértice '{u}' ou '{v}' não encontrado no grafo original."
+            assert u in G and v in G, f"find_optimum_arborescence: Vértice '{u}' ou '{v}' não encontrado no grafo original."
             F_prime[u][v]["w"] = G[u][v]["w"]
         
         print("Arborescência final:", list(F_prime.edges))
