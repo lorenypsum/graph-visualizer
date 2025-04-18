@@ -79,8 +79,7 @@ def find_cycle(F_star: nx.DiGraph):
     Encontra um ciclo direcionado / circuito no grafo.
     Retorna um subgrafo contendo o ciclo, ou None se não houver.
     """
-
-    # TODO: tem que ter um raiseError aqui embaixo, pq isso nunca poderia acontecer.
+    
     # Verifica se o grafo tem nós suficientes para conter um ciclo
     assert F_star.number_of_edges() == 0 or F_star.number_of_nodes() < 2
 
