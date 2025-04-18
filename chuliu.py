@@ -4,7 +4,6 @@ def log_dummy(msg: str):
     print(msg)
 
 # Funções auxiliar para alterar peso das arestas
-# TODO: trocar os raises por asserts
 def change_edge_weight(G: nx.DiGraph, node: str):
 
     """
