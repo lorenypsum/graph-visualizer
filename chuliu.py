@@ -195,8 +195,6 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None, log
     indent = "  " * level
     log(f"{indent}Iniciando nível {level}")
 
-    # if r0 not in G:
-    #     raise ValueError(f"O vértice raiz '{r0}' não está presente no grafo.")
     assert r0 in G, f"O vértice raiz '{r0}' não está presente no grafo."
 
     G_arb = G.copy()
@@ -263,18 +261,13 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None, log
         for v, (u, w) in in_edges.items():
             F_prime.add_edge(u, v)
             
-        # TODO: assert contracted_label in F_prime.    
-        if contracted_label in F_prime:
-            F_prime.remove_node(contracted_label)
-        else:
-            log(f"[AVISO] Vértice '{contracted_label}' não encontrado para remoção.")    
+        # TODO: assert contracted_label in F_prime.  
+        assert contracted_label in F_prime, f"Vértice '{contracted_label}' não encontrado no grafo."
+        F_prime.remove_node(contracted_label)
 
         for u, v in F_prime.edges:
-            # TODO: assert
-            if G.has_edge(u, v):
-                F_prime[u][v]["w"] = G[u][v]["w"]
-            else:
-                print(f"[AVISO] Aresta ({u} → {v}) não encontrada no grafo original.")
+            assert u in G and v in G, f"Vértice '{u}' ou '{v}' não encontrado no grafo original."
+            F_prime[u][v]["w"] = G[u][v]["w"]
         
         print("Arborescência final:", list(F_prime.edges))
         return F_prime
