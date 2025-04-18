@@ -40,8 +40,9 @@ def get_Fstar(G: nx.DiGraph, r0: str):
     F_star = nx.DiGraph()
 
     for v in G.nodes():
-        # TODO: mais fácil: Se v =/ r0, jogar todas arestas de custo zero ao invés de apenas uma (com o next).
+        # Mais fácil: Se v =/ r0, jogar todas arestas de custo zero ao invés de apenas uma (com o next).
         # Isso pode fazer o algoritmo executar menos passos.
+        # Mas, precisaria mudar a forma de verificar se F_star é uma arborescência.
         if v != r0:
             in_edges = list(G.in_edges(v, data="w"))
             if not in_edges:
@@ -60,18 +61,12 @@ def is_F_star_arborescence(F_star: nx.DiGraph, r0: str):
     Verifica se o grafo F_star é uma arborescência com raiz r0.
     """
 
-    # Verifica se o vértice raiz existe no grafo
-    # if r0 not in F_star:
-    #     raise ValueError(f"O vértice raiz '{r0}' não existe no grafo.")
     assert r0 in F_star, f"O vértice raiz '{r0}' não existe no grafo."
 
-    # Se o grafo estiver vazio
-    # if F_star.number_of_nodes() == 0:
-    #     raise ValueError("O grafo fornecido está vazio.")
     assert F_star.number_of_nodes() > 0, "O grafo fornecido está vazio."
 
     # Verifica se o grafo é acíclico e todos os nós são alcançáveis a partir de r0
-    # TODO: ele é uma arborescência só porque estamos construindo com apenas um vértice por vez, não refazendo o TODO da linha 46.
+    # Eele é uma arborescência só porque estamos construindo com apenas um vértice por vez.
     is_reachable = all(nx.has_path(F_star, r0, v) for v in F_star.nodes)
     is_acyclic = nx.is_directed_acyclic_graph(F_star)
 
