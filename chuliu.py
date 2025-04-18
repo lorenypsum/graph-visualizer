@@ -63,9 +63,6 @@ def find_cycle(F_star: nx.DiGraph):
     Retorna um subgrafo contendo o ciclo, ou None se não houver.
     """
     
-    # Verifica se o grafo tem nós suficientes para conter um ciclo
-    assert F_star.number_of_edges() == 0 or F_star.number_of_nodes() < 2, f"find_cycle: o ciclo não pode ser encontrado em um grafo com {F_star.number_of_nodes()} nós e {F_star.number_of_edges()} arestas."
-
     # Tenta encontrar um ciclo no grafo
     nodes_in_cycle = set()
     for u, v, _ in nx.find_cycle(F_star, orientation="original"):
