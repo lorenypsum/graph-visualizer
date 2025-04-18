@@ -152,16 +152,12 @@ def remove_edge_from_cycle(C: nx.DiGraph, v: str):
     """
 
     # Não levantar exceções quando se trata de erro lógico.
-    if v:
-        assert len(v) == 3, "remove_edge_from_cycle: A aresta in_edge deve ter 3 elementos (u, v, w)."
-        _, v, _ = v
-
-        assert v in C, f"O vértice destino '{v}' da in_edge não está presente no ciclo."
-
-        # Procura um predecessor em C que leva até v
-        u = next((u for u, _ in C.in_edges(v)), None)
-        if u:
-            C.remove_edge(u, v)
+    assert v in C, f"O vértice destino '{v}' da in_edge não está presente no ciclo."
+    C = C.copy()
+    # Procura um predecessor em C que leva até v
+    u = next((u for u, _ in C.in_edges(v)), None)
+    if u:
+        C.remove_edge(u, v)
     return C
 
 
@@ -212,17 +208,14 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None, log
         # Chamada Recursiva
         F_prime = find_optimum_arborescence(G_arb, r0, level + 1, draw_fn=draw_fn, log=log)
 
-        # Identifica o vértice do ciclo que recebeu a única aresta de entrada da arborescência
-        in_edge = next(F_prime.in_edges(contracted_label, data="w"), None)
-        assert in_edge, f"find_optimum_arborescence: Nenhuma aresta encontrada entrando no vértice '{contracted_label}'."
-        u, _, w = in_edge
-
+        # Identifica o único vértice que tem aresta saindo dele e entrando em C
+        u = next((u for u, _ in F_prime.in_edges(contracted_label)), None)
+        assert u, f"find_optimum_arborescence: Nenhuma aresta de entrada encontrada para o ciclo. {F_prime.edges}"
         # Identifica o vértice do ciclo que recebeu a aresta de entrada
-        v = next((v for v, (u_out, _) in out_edges.items() if u_out == u), None)
-        assert v, f"find_optimum_arborescence: Nenhum vértice do ciclo encontrado que recebeu a aresta de entrada de '{u}'."
-
-        # Remove a aresta que entra no vértice `v` do ciclo
-        C = remove_edge_from_cycle(C, (u, v, w)) # Nota: w está vindo de F_prime, não de G
+        vw = out_edges.get(u)
+        assert vw, f"find_optimum_arborescence: Nenhuma aresta de saída encontrada para o vértice '{u}'."
+        v, _ = vw
+        C = remove_edge_from_cycle(C, v)
 
         # 1. Adiciona a aresta externa que entra no ciclo (identificada por in_edge)
         # O peso será corrigido no final usando G
