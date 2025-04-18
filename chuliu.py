@@ -99,8 +99,6 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
     Devolve o grafo G modificado "G'"com o ciclo contraído, a lista das arestas de entrada (in_edge) e as de saída (out_edge).
     """
 
-    # if label in G:
-    #     raise ValueError(f"O rótulo '{label}' já existe como vértice em G.")
     assert label not in G, f"O rótulo '{label}' já existe como vértice em G."
     
     cycle_nodes: set[str] = set(C.nodes())
