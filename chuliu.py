@@ -231,40 +231,43 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None, log
         F_prime = find_optimum_arborescence(G_arb, r0, level + 1, draw_fn=draw_fn, log=log)
 
         # Identifica o vértice do ciclo que recebeu a única aresta de entrada da arborescência
-        # TODO: O F_prime in_edges, ver as arestas que entram em C. Pega o next do Fprime.in_edges(C*label). O arco que está entrando em C é unico.
-        # TODO: u, _, _ = next(F_prime.in_edge(label))
-        # v, _ = out_edges(u)
-        candidate_edges_to_remove = [
-            # Para cada v que recebe uma aresta de um vértice u de fora do ciclo 
-            # Ou seja, em out_edges.values, verificar se ele recebe uma aresta de um vértice u dentro do ciclo
-            v for v, _ in out_edges.values() if any(u in C for u, _ in G.in_edges(v)) 
-        ]
+        in_edge = next(F_prime.in_edges(contracted_label, data="w"), None)
+        assert in_edge, f"Nenhuma aresta encontrada entrando no vértice '{contracted_label}'."
+        u, _, w = in_edge
 
-        if not candidate_edges_to_remove:
-            raise ValueError(
-            "[ERRO] A solução recursiva não utilizou nenhuma entrada externa para o ciclo, "
-            "o que viola o algoritmo de Chu-Liu/Edmonds. Isso indica erro na contração ou reconstrução."
-        )
-        else:
-            v_of_edge_to_remove = candidate_edges_to_remove[0]
-            u, _, w = next(iter(C.in_edges(v_of_edge_to_remove, data='w')))
-            C = remove_edge_from_cycle(C, (u, v_of_edge_to_remove, w)) #TODO: mandar só o v.
+        # Identifica o vértice do ciclo que recebeu a aresta de entrada
+        v = next((v for v, (u_out, _) in out_edges.items() if u_out == u), None)
+        assert v, f"Nenhum vértice do ciclo encontrado que recebeu a aresta de entrada de '{u}'."
 
-        # TODO: adicionar o vértice da linha de cima.
-        # TODO: for _ z, z in F_prime.out_edges(label):
-        # TODO: F_prime.add_edge(in_edge(z), z, w) 
-        for u, v in C.edges:
-            F_prime.add_edge(u, v)
-        # TODO: passos abaixo estão errados.     
-        for u, (v, w) in out_edges.items():
-            F_prime.add_edge(u, v)
-        for v, (u, w) in in_edges.items():
-            F_prime.add_edge(u, v)
-            
-        # TODO: assert contracted_label in F_prime.  
+        # Remove a aresta que entra no vértice `v` do ciclo
+        C = remove_edge_from_cycle(C, (u, v, w)) # Nota: w está vindo de F_prime, não de G
+
+        # 1. Adiciona a aresta externa que entra no ciclo (identificada por in_edge)
+        # O peso será corrigido no final usando G
+        F_prime.add_edge(u, v) 
+        log(f"{indent}  Adicionando aresta externa de entrada: ({u}, {v})")
+
+        # 2. Adiciona as arestas restantes do ciclo modificado C
+        for u_c, v_c in C.edges:
+            F_prime.add_edge(u_c, v_c)
+            log(f"{indent}  Adicionando aresta do ciclo: ({u_c}, {v_c})")
+
+        # 3. Adiciona as arestas que saem do ciclo
+        # Para cada aresta (contracted_label, z) em F_prime,
+        # encontrar a aresta original (u_cycle, z) que a originou usando in_edges.
+        for _, z, _ in F_prime.out_edges(contracted_label, data=True):
+            # in_edges[z] = (u_cycle, original_weight)
+            assert z in in_edges, f"Nenhuma aresta de saída encontrada para o vértice '{z}'."
+            u_cycle, _ = in_edges[z]
+            F_prime.add_edge(u_cycle, z)
+            log(f"{indent}  Adicionando aresta externa de saída: ({u_cycle}, {z})")
+
+        # Remove o nó contraído
         assert contracted_label in F_prime, f"Vértice '{contracted_label}' não encontrado no grafo."
         F_prime.remove_node(contracted_label)
+        log(f"{indent}  Nó contraído '{contracted_label}' removido.")
 
+        # Atualiza os pesos das arestas com os pesos originais de G
         for u, v in F_prime.edges:
             assert u in G and v in G, f"Vértice '{u}' ou '{v}' não encontrado no grafo original."
             F_prime[u][v]["w"] = G[u][v]["w"]

@@ -1,0 +1,57 @@
+        # candidate_edges_to_remove = [
+        #     # Para cada v que recebe uma aresta de um vértice u de fora do ciclo 
+        #     # Ou seja, em out_edges.values, verificar se ele recebe uma aresta de um vértice u dentro do ciclo
+        #     v for v, _ in out_edges.values() if any(u in C for u, _ in G.in_edges(v)) 
+        # ]
+
+        # if not candidate_edges_to_remove:
+        #     raise ValueError(
+        #     "[ERRO] A solução recursiva não utilizou nenhuma entrada externa para o ciclo, "
+        #     "o que viola o algoritmo de Chu-Liu/Edmonds. Isso indica erro na contração ou reconstrução."
+        # )
+        # else:
+        #     v_of_edge_to_remove = candidate_edges_to_remove[0]
+        #     u, _, w = next(iter(C.in_edges(v_of_edge_to_remove, data='w')))
+        #     C = remove_edge_from_cycle(C, (u, v_of_edge_to_remove, w)) : mandar só o v.
+
+        # TODO: adicionar o vértice da linha de cima.
+        # TODO: for _ z, z in F_prime.out_edges(label):
+        # TODO: F_prime.add_edge(in_edge(z), z, w) 
+        # for u, v in C.edges:
+        #     F_prime.add_edge(u, v)
+        # # TODO: passos abaixo estão errados.     
+        # for u, (v, w) in out_edges.items():
+        #     F_prime.add_edge(u, v)
+        # for v, (u, w) in in_edges.items():
+        #     F_prime.add_edge(u, v)
+            
+        # assert contracted_label in F_prime, f"Vértice '{contracted_label}' não encontrado no grafo."
+        # F_prime.remove_node(contracted_label)
+
+        # for u, v in F_prime.edges:
+        #     assert u in G and v in G, f"Vértice '{u}' ou '{v}' não encontrado no grafo original."
+        #     F_prime[u][v]["w"] = G[u][v]["w"]
+        
+        # print("Arborescência final:", list(F_prime.edges))
+        # return F_prime
+
+        ____________________________________________________________
+
+                # Adiciona as arestas do ciclo ao grafo F_prime
+        for u, v in C.edges:
+            F_prime.add_edge(u, v, w=G[u][v]["w"])
+
+        # Adiciona as arestas de entrada e saída do ciclo ao grafo F_prime
+        for u, (v, w) in out_edges.items():
+            F_prime.add_edge(u, v, w=w)
+        for v, (u, w) in in_edges.items():
+            F_prime.add_edge(u, v, w=w)
+
+        # Remove o vértice contraído do grafo F_prime
+        assert contracted_label in F_prime, f"Vértice '{contracted_label}' não encontrado no grafo."
+        F_prime.remove_node(contracted_label)
+
+        # Ajusta os pesos das arestas no grafo F_prime para corresponder ao grafo original
+        for u, v in F_prime.edges:
+            assert u in G and v in G, f"Vértice '{u}' ou '{v}' não encontrado no grafo original."
+            F_prime[u][v]["w"] = G[u][v]["w"]
