@@ -174,15 +174,9 @@ def remove_edge_from_cycle(C: nx.DiGraph, v: str):
 
     # Não levantar exceções quando se trata de erro lógico.
     if v:
-        # if len(in_edge) != 3:
-        #     raise ValueError("A aresta in_edge deve ter 3 elementos (u, v, w).")
         assert len(v) == 3, "A aresta in_edge deve ter 3 elementos (u, v, w)."
         _, v, _ = v
-
-        # if v not in C:
-        #     raise ValueError(
-        #         f"O vértice destino '{v}' da in_edge não está presente no ciclo."
-        #     )
+        
         assert v in C, f"O vértice destino '{v}' da in_edge não está presente no ciclo."
 
         # Procura um predecessor em C que leva até v
