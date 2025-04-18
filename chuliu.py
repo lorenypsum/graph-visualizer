@@ -165,7 +165,7 @@ def remove_edge_in_r0(G: nx.DiGraph, r0: str, logger=None):
 
 # TODO: tirar a tupla
 # Função auxiliar para remover aresta de um ciclo
-def remove_edge_from_cycle(C: nx.DiGraph, in_edge: tuple[str, str, float]):
+def remove_edge_from_cycle(C: nx.DiGraph, v: str):
 
     """
     Remove do ciclo C a aresta que entra no vértice `v` (obtido de `in_edge`)
@@ -175,11 +175,11 @@ def remove_edge_from_cycle(C: nx.DiGraph, in_edge: tuple[str, str, float]):
     C = C.copy()  # Cópia segura
 
     # Não levantar exceções quando se trata de erro lógico.
-    if in_edge:
+    if v:
         # if len(in_edge) != 3:
         #     raise ValueError("A aresta in_edge deve ter 3 elementos (u, v, w).")
-        assert len(in_edge) == 3, "A aresta in_edge deve ter 3 elementos (u, v, w)."
-        _, v, _ = in_edge
+        assert len(v) == 3, "A aresta in_edge deve ter 3 elementos (u, v, w)."
+        _, v, _ = v
 
         # if v not in C:
         #     raise ValueError(
