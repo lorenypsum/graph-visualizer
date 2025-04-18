@@ -151,8 +151,6 @@ def remove_edge_in_r0(G: nx.DiGraph, r0: str, logger=None):
     """
 
     # Verifica se r0 existe no grafo
-    # if r0 not in G:
-    #     raise ValueError(f"O vértice raiz '{r0}' não existe no grafo.")
     assert r0 in G, f"O vértice raiz '{r0}' não existe no grafo."
 
     # Remove as arestas que entram em r0
