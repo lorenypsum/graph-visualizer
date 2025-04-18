@@ -1,6 +1,6 @@
 import networkx as nx
 import random
-from chuliu import find_optimum_arborescence, remove_edge_in_r0
+from chuliu import find_optimum_arborescence, remove_edges_to_r0
 
 def assert_arborescence_equal(result, expected):
     assert nx.is_arborescence(result), "O resultado não é uma arborescência"
@@ -35,7 +35,7 @@ def build_expected_arborescence():
 def test_arborescence_structure():
     G = build_test_graph()
     expected = build_expected_arborescence()
-    G_filtered = remove_edge_in_r0(G, r0="r0")
+    G_filtered = remove_edges_to_r0(G, r0="r0")
     result = find_optimum_arborescence(G_filtered, r0="r0")
     assert_arborescence_equal(result, expected)
 
@@ -48,7 +48,7 @@ def test_case_2_no_cycles():
     G.add_edge("C", "D", w=4)
 
     expected = G.copy()
-    G_filtered = remove_edge_in_r0(G, r0="r0")
+    G_filtered = remove_edges_to_r0(G, r0="r0")
     result = find_optimum_arborescence(G_filtered, r0="r0")
     assert_arborescence_equal(result, expected)
 
@@ -70,7 +70,7 @@ def test_case_3_multiple_cycles():
     expected.add_edge("A", "C", w=3)
     expected.add_edge("D", "C", w=1)
 
-    G_filtered = remove_edge_in_r0(G, r0="r0")
+    G_filtered = remove_edges_to_r0(G, r0="r0")
     result = find_optimum_arborescence(G_filtered, r0="r0")
     assert_arborescence_equal(result, expected)
 
@@ -97,7 +97,7 @@ def test_case_4_large_graph_with_cycle():
         G.add_edge(u, v, w=w)
 
     # Espera-se que o ciclo A→B→C→A e E→F→G→H→E sejam contraídos
-    result = find_optimum_arborescence(remove_edge_in_r0(G, "r0"), "r0")
+    result = find_optimum_arborescence(remove_edges_to_r0(G, "r0"), "r0")
     assert nx.is_arborescence(result), "O resultado não é uma arborescência"
     assert "r0" in result
     assert "K" in result
@@ -121,7 +121,7 @@ def generate_random_graph(n_nodes: int, edge_density: float = 0.3, seed=42):
 def test_random_graph_structure():
     G = generate_random_graph(10, edge_density=0.4)
     r0 = "r0"
-    G_filtered = remove_edge_in_r0(G, r0)
+    G_filtered = remove_edges_to_r0(G, r0)
 
     result = find_optimum_arborescence(G_filtered, r0)
 
@@ -134,7 +134,7 @@ def test_multiple_random_graphs():
     for i in range(5):  # Executa 5 grafos diferentes
         G = generate_random_graph(15, edge_density=0.2, seed=100 + i)
         r0 = "r0"
-        G_filtered = remove_edge_in_r0(G, r0)
+        G_filtered = remove_edges_to_r0(G, r0)
 
         result = find_optimum_arborescence(G_filtered, r0)
 

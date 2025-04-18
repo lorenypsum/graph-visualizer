@@ -1,3 +1,4 @@
 pyscript
 networkx
 matplotlib
+pytest
