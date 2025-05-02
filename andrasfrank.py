@@ -20,7 +20,6 @@ def build_D_zero(D):
     where D_zero contains only the edges with weight zero.
     The function also returns a list of tuples representing the edges with weight zero in D_zero.
     """
-
     D_zero = nx.DiGraph()
     A_zero = []
     for v in D.nodes():
@@ -129,7 +128,6 @@ def phase1_find_minimum_arborescence(D, r0):
     while True:
         iteration += 1
         print(f"\n🔄 Iteração {iteration} ----------------------------")
-        found = False
 
         for v in D.nodes():
             if v == r0 or v in visited:
@@ -149,20 +147,14 @@ def phase1_find_minimum_arborescence(D, r0):
                     continue
 
                 min_arcs, min_weight = get_minimum_weight_arcs(arcs)
+
                 print(f"   ✅ Arco mínimo encontrado: {min_arcs[0]} com peso {min_weight}")
-                found = True
-
-                chosen_arc = min_arcs[0]
-                u, v_, data = chosen_arc
-
-                if (u, v_) not in A_zero:
-                    A_zero.append((u, v_))
-                    D_zero.add_edge(u, v_, **data)
-                    print(f"   ➕ Arco {u}->{v_} adicionado a D_zero e A_zero")
+        
 
                 D, D_zero, A_zero = update_weights_in_X(D, X, min_weight, A_zero, D_zero)
                 print(f"   🔄 Pesos atualizados nos arcos que entram em X")
-                break  # reinicia o laço externo
+                found = True
+                break  # reinicia o laço externo    
             else:
                 print(f"   ❌ {v} já alcançável a partir da raiz ou sem ancestrais. Marcando como visitado.")
                 visited.add(v)
