@@ -6,6 +6,7 @@
     "fetch": [{
         "files": [
             "./chuliu.py"
+            "./andrasfrank.py"
         ]
     }]
 }

@@ -15,6 +15,12 @@ To clone the repository, run the following command in your terminal:
 git clone https://github.com/lorenypsum/graph-visualizer.git
 ```
 
+## Activate Virtual Environment:
+
+```bash
+source .venv/bin/activate
+```
+
 ## Install Requirements:
 
 ```bash
