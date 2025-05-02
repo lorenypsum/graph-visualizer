@@ -46,6 +46,7 @@ def get_ancestors_without_root(D_zero, node, root):
     if node == root:
         return None
     ancestors = nx.ancestors(D_zero, node)
+    #TODO: não discartar a raiz, e ignorar se a raiz estiver presente, não precisa de uma função
     ancestors.discard(root)  # remove a raíz, se estiver presente
     return ancestors | {node}  # inclui o próprio nó
 
@@ -54,7 +55,7 @@ X = get_ancestors_without_root(G_zero, "A", "r0")
 
 print("Conjunto X: ", X)
 
-
+#TODO: Iterar apenas sobre X, se o predecessor estiver fora do X olhar o que está nele
 def get_arcs_entering_X(D, X):
     """
     Get the arcs entering a set of nodes X in a directed graph D.
@@ -77,12 +78,12 @@ def get_minimum_weight_arcs(arcs):
     Get the minimum weight arcs from a list of arcs.
     The function returns a list of tuples representing the minimum weight arcs.
     """
-
+    # TODO: tirar esse min_weight do for loop
     min_weight = min(data["w"] for _, _, data in arcs)
     min_arcs = [(u, v, data) for u, v, data in arcs if data["w"] == min_weight]
     return min_arcs, min_weight
 
-
+# TODO: não chamar de arcs, chamar de cortes
 min_arcs, min_weight = get_minimum_weight_arcs(arcs)
 
 print("Arco de menor valor: ", min_arcs, min_weight)
@@ -94,6 +95,7 @@ def update_weights_in_X(D, X, min_weight, A_zero, D_zero):
     The function returns a new directed graph with updated weights.
     """
 
+    # TODO: não faze isso de novo, fazer só com o os arcos que já tenho (vinda do get_arcs_entering_X)
     for u, v, data in D.edges(data=True):
         if u not in X and v in X:
             D[u][v]["w"] -= min_weight
@@ -111,6 +113,10 @@ print("D_zero: ", D_zero.edges(data=True))
 
 print("A_zero: ", A_zero)
 
+# TODO: mudar o nome da cópia
+# TODO: não usar o visited (sem otimização)
+
+# TODO: ANTES USAR UMA FUNÇAO QUE VERIFICA SE TEM UMA ARBORESCENCIA
 
 def phase1_find_minimum_arborescence(D, r0):
     """
@@ -121,7 +127,7 @@ def phase1_find_minimum_arborescence(D, r0):
     D = D.copy()
     A_zero = []
     D_zero, A_zero = build_D_zero(D)
-    visited = set()
+
 
     iteration = 0  # Contador de iterações
 
@@ -136,11 +142,18 @@ def phase1_find_minimum_arborescence(D, r0):
             print(f"🔍 Verificando nó: {v}")
             X = get_ancestors_without_root(D_zero, v, r0)
 
+            # TODO: X nunca pode ser vazio, verificar se o r0 está no X, se estiver dá um continue. 
+            # TODO: usar assert
+            # if r0 in X:
+              # continue
+            # else:
+                
             if X is not None:
-                print(f"   ↳ Conjunto X (ancestrais de {v} sem a raiz): {X}")
+                print(f" ↳ Conjunto X (ancestrais de {v} sem a raiz): {X}")
                 arcs = get_arcs_entering_X(D, X)
-                print(f"   ↳ Arcos que entram em X: {arcs}")
+                print(f" ↳ Arcos que entram em X: {arcs}")
 
+                #TODO:  NÃO FAZER ISSO AGORA
                 if not arcs:
                     print(f"   ⚠️ Nenhum arco entra em X. Marcando {v} como visitado.")
                     visited.add(v)
@@ -148,27 +161,27 @@ def phase1_find_minimum_arborescence(D, r0):
 
                 min_arcs, min_weight = get_minimum_weight_arcs(arcs)
 
-                print(f"   ✅ Arco mínimo encontrado: {min_arcs[0]} com peso {min_weight}")
+                print(f" ✅ Arco mínimo encontrado: {min_arcs[0]} com peso {min_weight}")
         
-
+                # TODO: não preciso devolver o D. (na documentação sempre indicar quando tem efeito colateral, porém.)                           
                 D, D_zero, A_zero = update_weights_in_X(D, X, min_weight, A_zero, D_zero)
                 print(f"   🔄 Pesos atualizados nos arcos que entram em X")
                 found = True
+                # TODO: continue_execution = TRUE, quando entra no laço fica falso. Quando entrar na condicao de pegar o peso minimo levo pra TRUE. e ai ele para.
                 break  # reinicia o laço externo    
             else:
-                print(f"   ❌ {v} já alcançável a partir da raiz ou sem ancestrais. Marcando como visitado.")
+                print(f" ❌ {v} já alcançável a partir da raiz ou sem ancestrais. Marcando como visitado.")
                 visited.add(v)
 
         if not found:
-            print("✅ Nenhum novo arco adicionado. Finalizando.")
+            print(" ✅ Nenhum novo arco adicionado. Finalizando.")
             break
 
         if iteration > 50:
-            print("🚨 Limite de iterações excedido. Pode haver loop infinito.")
+            print(" 🚨 Limite de iterações excedido. Pode haver loop infinito.")
             break
 
     return A_zero
-
 
 arborescence = phase1_find_minimum_arborescence(G, "r0")
 print("Arborescência mínima:", arborescence)
