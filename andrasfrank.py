@@ -37,7 +37,7 @@ def get_arcs_entering_X(D, X):
     """
     arcs = []
     for u, v, data in D.edges(data=True):
-        if v in X:
+        if u not in X and v in X:
             arcs.append((u, v, data))
     return arcs
 
