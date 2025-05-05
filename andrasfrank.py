@@ -36,25 +36,6 @@ G_zero, A_zero = build_D_zero(G)
 print("G_zero: ", G_zero.nodes(data=True))
 print("A_zero: ", A_zero)
 
-
-def get_ancestors_without_root(D_zero, node, root):
-    """
-    Get the ancestors of a node in a directed graph D_zero, excluding the root node.
-    The function returns a set of ancestors, including the node itself.
-    """
-
-    if node == root:
-        return None
-    ancestors = nx.ancestors(D_zero, node)
-    #TODO: não discartar a raiz, e ignorar se a raiz estiver presente, não precisa de uma função
-    ancestors.discard(root)  # remove a raíz, se estiver presente
-    return ancestors | {node}  # inclui o próprio nó
-
-
-X = get_ancestors_without_root(G_zero, "A", "r0")
-
-print("Conjunto X: ", X)
-
 #TODO: Iterar apenas sobre X, se o predecessor estiver fora do X olhar o que está nele
 def get_arcs_entering_X(D, X):
     """
@@ -118,13 +99,13 @@ print("A_zero: ", A_zero)
 
 # TODO: ANTES USAR UMA FUNÇAO QUE VERIFICA SE TEM UMA ARBORESCENCIA
 
-def phase1_find_minimum_arborescence(D, r0):
+def phase1_find_minimum_arborescence(D_original, r0):
     """
     Find the minimum arborescence in a directed graph D with root r0.
     The function returns the minimum arborescence as a list of arcs.
     """
 
-    D = D.copy()
+    D = D_original.copy()
     A_zero = []
     D_zero, A_zero = build_D_zero(D)
 
@@ -136,18 +117,14 @@ def phase1_find_minimum_arborescence(D, r0):
         print(f"\n🔄 Iteração {iteration} ----------------------------")
 
         for v in D.nodes():
-            if v == r0 or v in visited:
+            if v == r0:
                 continue
 
             print(f"🔍 Verificando nó: {v}")
-            X = get_ancestors_without_root(D_zero, v, r0)
+            X = nx.ancestors(D, v)  # Obter ancestrais de v
 
-            # TODO: X nunca pode ser vazio, verificar se o r0 está no X, se estiver dá um continue. 
-            # TODO: usar assert
-            # if r0 in X:
-              # continue
-            # else:
-                
+            assert X is not None, "X não pode ser vazio"            
+            
             if X is not None:
                 print(f" ↳ Conjunto X (ancestrais de {v} sem a raiz): {X}")
                 arcs = get_arcs_entering_X(D, X)
@@ -174,14 +151,15 @@ def phase1_find_minimum_arborescence(D, r0):
                 visited.add(v)
 
         if not found:
-            print(" ✅ Nenhum novo arco adicionado. Finalizando.")
+            print("✅ Nenhum novo arco adicionado. Finalizando.")
             break
 
         if iteration > 50:
-            print(" 🚨 Limite de iterações excedido. Pode haver loop infinito.")
+            print("🚨 Limite de iterações excedido. Pode haver loop infinito.")
             break
 
     return A_zero
 
-arborescence = phase1_find_minimum_arborescence(G, "r0")
-print("Arborescência mínima:", arborescence)
+
+# arborescence = phase1_find_minimum_arborescence(G, "r0")
+# print("Arborescência mínima:", arborescence)
