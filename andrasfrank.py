@@ -36,14 +36,14 @@ G_zero, A_zero = build_D_zero(G)
 print("G_zero: ", G_zero.nodes(data=True))
 print("A_zero: ", A_zero)
 
-#TODO: Iterar apenas sobre X, se o predecessor estiver fora do X olhar o que está nele
-def get_arcs_entering_X(D, X):
+
+def get_arcs_entering_X(X):
     """
     Get the arcs entering a set of nodes X in a directed graph D.
     The function returns a list of tuples representing the arcs entering X with the designated weights.
     """
     arcs = []
-    for u, v, data in D.edges(data=True):
+    for u, v, data in X.edges(data=True):
         if u not in X and v in X:
             arcs.append((u, v, data))
     return arcs
@@ -94,7 +94,17 @@ print("D_zero: ", D_zero.edges(data=True))
 
 print("A_zero: ", A_zero)
 
-
+def has_arborescence(D, r0):
+    """
+    Check if a directed graph D has an arborescence with root r0.
+    The function returns True if an arborescence exists, otherwise False.
+    """
+    has_arborescence = True
+    for v in D.nodes():
+        if nx.has_path(D, r0, v) == False:
+            has_arborescence = False
+            break
+    return has_arborescence
 
 # TODO: ANTES USAR UMA FUNÇAO QUE VERIFICA SE TEM UMA ARBORESCENCIA
 
