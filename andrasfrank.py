@@ -49,23 +49,16 @@ def get_arcs_entering_X(X):
     return arcs
 
 
-arcs = get_arcs_entering_X(G, X)
-
-print("Arcos: ", arcs)
-
-
-def get_minimum_weight_arcs(arcs):
+def get_minimum_weight_cut(arcs):
     """
     Get the minimum weight arcs from a list of arcs.
     The function returns a list of tuples representing the minimum weight arcs.
     """
-    # TODO: tirar esse min_weight do for loop
     min_weight = min(data["w"] for _, _, data in arcs)
-    min_arcs = [(u, v, data) for u, v, data in arcs if data["w"] == min_weight]
-    return min_arcs, min_weight
+    return min_weight
 
-# TODO: não chamar de arcs, chamar de cortes
-min_arcs, min_weight = get_minimum_weight_arcs(arcs)
+
+min_arcs, min_weight = get_minimum_weight_cut(arcs)
 
 print("Arco de menor valor: ", min_arcs, min_weight)
 
