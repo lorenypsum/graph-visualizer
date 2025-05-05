@@ -101,10 +101,8 @@ def phase1_find_minimum_arborescence(D_original, r0):
             if v == r0:
                 continue
 
-            X = set(ancestors) | v # Conjunto de ancestrais de v
-
             print(f"🔍 Verificando nó: {v}")
-            ancestors = nx.ancestors(D, v)  # Obter ancestrais de v
+            ancestors = nx.ancestors(D_zero, v)  # Obter ancestrais de v
 
             if r0 in ancestors:
                 print(f"   ⚠️ {v} é ancestral de {r0}. Pulando...")
@@ -112,13 +110,14 @@ def phase1_find_minimum_arborescence(D_original, r0):
 
             else:
 
-                X = set(ancestors) | v # Conjunto de ancestrais de v
+                # TODO: DÚVIDA, não é pra fazer essa operação aqui? E porque?
+                X = set(ancestors) | set(v) # Conjunto de ancestrais de v
 
                 assert X is not None, "X não pode ser vazio"
 
                 print(f" ↳ Conjunto X (ancestrais de {v} sem a raiz): {X}")
 
-                arcs = get_arcs_entering_X(D, X)
+                arcs = get_arcs_entering_X(X)
                 print(f" ↳ Arcos que entram em X: {arcs}")
 
                 # TODO:  NÃO FAZER ISSO AGORA
