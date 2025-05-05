@@ -125,30 +125,25 @@ def phase1_find_minimum_arborescence(D_original, r0):
 
             assert X is not None, "X não pode ser vazio"            
             
-            if X is not None:
-                print(f" ↳ Conjunto X (ancestrais de {v} sem a raiz): {X}")
-                arcs = get_arcs_entering_X(D, X)
-                print(f" ↳ Arcos que entram em X: {arcs}")
+            print(f" ↳ Conjunto X (ancestrais de {v} sem a raiz): {X}")
+            arcs = get_arcs_entering_X(D, X)
+            print(f" ↳ Arcos que entram em X: {arcs}")
 
-                #TODO:  NÃO FAZER ISSO AGORA
-                if not arcs:
-                    print(f"   ⚠️ Nenhum arco entra em X. Marcando {v} como visitado.")
-                    visited.add(v)
-                    continue
+            #TODO:  NÃO FAZER ISSO AGORA
+            # if not arcs:
+            #     print(f"   ⚠️ Nenhum arco entra em X.")
+            #     continue
 
-                min_arcs, min_weight = get_minimum_weight_arcs(arcs)
+            min_arcs, min_weight = get_minimum_weight_arcs(arcs)
 
-                print(f" ✅ Arco mínimo encontrado: {min_arcs[0]} com peso {min_weight}")
-        
-                # TODO: não preciso devolver o D. (na documentação sempre indicar quando tem efeito colateral, porém.)                           
-                D, D_zero, A_zero = update_weights_in_X(D, X, min_weight, A_zero, D_zero)
-                print(f"   🔄 Pesos atualizados nos arcos que entram em X")
-                found = True
-                # TODO: continue_execution = TRUE, quando entra no laço fica falso. Quando entrar na condicao de pegar o peso minimo levo pra TRUE. e ai ele para.
-                break  # reinicia o laço externo    
-            else:
-                print(f" ❌ {v} já alcançável a partir da raiz ou sem ancestrais. Marcando como visitado.")
-                visited.add(v)
+            print(f" ✅ Arco mínimo encontrado: {min_arcs[0]} com peso {min_weight}")
+
+            # TODO: não preciso devolver o D. (na documentação sempre indicar quando tem efeito colateral, porém.)                           
+            D, D_zero, A_zero = update_weights_in_X(D, X, min_weight, A_zero, D_zero)
+            print(f"   🔄 Pesos atualizados nos arcos que entram em X")
+            found = True
+            # TODO: continue_execution = TRUE, quando entra no laço fica falso. Quando entrar na condicao de pegar o peso minimo levo pra TRUE. e ai ele para.
+            break  # reinicia o laço externo    
 
         if not found:
             print("✅ Nenhum novo arco adicionado. Finalizando.")
