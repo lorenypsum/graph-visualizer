@@ -58,20 +58,14 @@ def get_minimum_weight_cut(arcs):
     return min_weight
 
 
-min_arcs, min_weight = get_minimum_weight_cut(arcs)
-
-print("Arco de menor valor: ", min_arcs, min_weight)
-
-
 def update_weights_in_X(D, X, min_weight, A_zero, D_zero):
     """
     Update the weights of the arcs in a directed graph D for the nodes in set X.
     The function returns a new directed graph with updated weights.
     """
 
-    # TODO: não faze isso de novo, fazer só com o os arcos que já tenho (vinda do get_arcs_entering_X)
-    for u, v, data in D.edges(data=True):
-        if u not in X and v in X:
+   
+    for u, v, data in X.edges(data=True):
             D[u][v]["w"] -= min_weight
             if D[u][v]["w"] == 0:
                 A_zero.append((u, v))
