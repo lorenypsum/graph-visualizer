@@ -94,8 +94,7 @@ print("D_zero: ", D_zero.edges(data=True))
 
 print("A_zero: ", A_zero)
 
-# TODO: mudar o nome da cópia
-# TODO: não usar o visited (sem otimização)
+
 
 # TODO: ANTES USAR UMA FUNÇAO QUE VERIFICA SE TEM UMA ARBORESCENCIA
 
@@ -134,7 +133,7 @@ def phase1_find_minimum_arborescence(D_original, r0):
             #     print(f"   ⚠️ Nenhum arco entra em X.")
             #     continue
 
-            min_arcs, min_weight = get_minimum_weight_arcs(arcs)
+            min_weight = get_minimum_weight_arcs(arcs)
 
             print(f" ✅ Arco mínimo encontrado: {min_arcs[0]} com peso {min_weight}")
 
