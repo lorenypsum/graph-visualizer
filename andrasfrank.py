@@ -32,7 +32,7 @@ def build_D_zero(D):
 
 def get_arcs_entering_X(D, X):
     """
-    Get the arcs entering a set of nodes X in a directed graph D.
+    Get the arcs entering a set X in a directed graph D.
     The function returns a list of tuples representing the arcs entering X with the designated weights.
     """
     arcs = []
@@ -40,6 +40,7 @@ def get_arcs_entering_X(D, X):
         if u not in X and v in X:
             arcs.append((u, v, data))
     return arcs
+    # return [(u, v, data) for v in X for u, v, data in D.in_edges(v, data=True) if u not in X]
 
 
 def get_minimum_weight_cut(arcs):
