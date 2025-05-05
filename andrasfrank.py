@@ -31,12 +31,6 @@ def build_D_zero(D):
     return D_zero, A_zero
 
 
-G_zero, A_zero = build_D_zero(G)
-
-print("G_zero: ", G_zero.nodes(data=True))
-print("A_zero: ", A_zero)
-
-
 def get_arcs_entering_X(X):
     """
     Get the arcs entering a set of nodes X in a directed graph D.
@@ -61,25 +55,15 @@ def get_minimum_weight_cut(arcs):
 def update_weights_in_X(D, X, min_weight, A_zero, D_zero):
     """
     Update the weights of the arcs in a directed graph D for the nodes in set X.
-    The function returns a new directed graph with updated weights.
+    ATTENTION: The function produces colateral effect in the provided directed graph by updating its arcs weights.
     """
-
-   
     for u, v, data in X.edges(data=True):
-            D[u][v]["w"] -= min_weight
-            if D[u][v]["w"] == 0:
-                A_zero.append((u, v))
-                D_zero.add_edge(u, v, **data)
-    return D, D_zero, A_zero
+        D[u][v]["w"] -= min_weight
+        if D[u][v]["w"] == 0:
+            A_zero.append((u, v))
+            D_zero.add_edge(u, v, **data)
+    return D_zero, A_zero
 
-
-D_updated, D_zero, A_zero = update_weights_in_X(G, X, min_weight, A_zero, G_zero)
-
-print("D_updated: ", D_updated.edges(data=True))
-
-print("D_zero: ", D_zero.edges(data=True))
-
-print("A_zero: ", A_zero)
 
 def has_arborescence(D, r0):
     """
@@ -93,7 +77,6 @@ def has_arborescence(D, r0):
             break
     return has_arborescence
 
-# TODO: ANTES USAR UMA FUNÇAO QUE VERIFICA SE TEM UMA ARBORESCENCIA
 
 def phase1_find_minimum_arborescence(D_original, r0):
     """
@@ -104,7 +87,6 @@ def phase1_find_minimum_arborescence(D_original, r0):
     D = D_original.copy()
     A_zero = []
     D_zero, A_zero = build_D_zero(D)
-
 
     iteration = 0  # Contador de iterações
 
@@ -119,27 +101,28 @@ def phase1_find_minimum_arborescence(D_original, r0):
             print(f"🔍 Verificando nó: {v}")
             X = nx.ancestors(D, v)  # Obter ancestrais de v
 
-            assert X is not None, "X não pode ser vazio"            
-            
+            assert X is not None, "X não pode ser vazio"
+
             print(f" ↳ Conjunto X (ancestrais de {v} sem a raiz): {X}")
+
             arcs = get_arcs_entering_X(D, X)
             print(f" ↳ Arcos que entram em X: {arcs}")
 
-            #TODO:  NÃO FAZER ISSO AGORA
+            # TODO:  NÃO FAZER ISSO AGORA
             # if not arcs:
             #     print(f"   ⚠️ Nenhum arco entra em X.")
             #     continue
 
-            min_weight = get_minimum_weight_arcs(arcs)
+            min_weight = get_minimum_weight_cut(arcs)
 
-            print(f" ✅ Arco mínimo encontrado: {min_arcs[0]} com peso {min_weight}")
+            print(f" ✅ Peso mínimo encontrado: {min_weight}")
 
-            # TODO: não preciso devolver o D. (na documentação sempre indicar quando tem efeito colateral, porém.)                           
-            D, D_zero, A_zero = update_weights_in_X(D, X, min_weight, A_zero, D_zero)
+            D_zero, A_zero = update_weights_in_X(D, X, min_weight, A_zero, D_zero)
             print(f"   🔄 Pesos atualizados nos arcos que entram em X")
+            
             found = True
             # TODO: continue_execution = TRUE, quando entra no laço fica falso. Quando entrar na condicao de pegar o peso minimo levo pra TRUE. e ai ele para.
-            break  # reinicia o laço externo    
+            break  # reinicia o laço externo
 
         if not found:
             print("✅ Nenhum novo arco adicionado. Finalizando.")
