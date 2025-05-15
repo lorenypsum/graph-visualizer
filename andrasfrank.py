@@ -63,6 +63,8 @@ def update_weights_in_X(D, X, min_weight, A_zero, D_zero):
             if D[u][v]["w"] == 0:
                 A_zero.append((u, v)) # TODO: Não precisa adicionar a informação do peso, pois é zero.
                 D_zero.add_edge(u, v, **data)
+    # TODO: Não precisa devolver o A_zero e o D_zero, pois devem ser atualizados dentro da função, indicar como efeito colateral
+    # a alteração de D_zero e A_zero.
     return D_zero, A_zero
 
 
@@ -113,7 +115,7 @@ def phase1_find_minimum_arborescence(D_original, r0):
 
                 X.add(v)  # Conjunto de ancestrais de v
 
-                assert X is not None, "X não pode ser vazio"
+                assert X is not None, "X não pode ser vazio." # TODO: 
 
                 print(f" ↳ Conjunto X (ancestrais de {v} sem a raiz): {X}")
 
@@ -131,11 +133,13 @@ def phase1_find_minimum_arborescence(D_original, r0):
                 if min_weight:
                     continue_execution = True
 
+                # TODO: Não precisa devolver o A_zero e o D_zero, pois devem ser atualizados dentro da função.
                 D_zero, A_zero = update_weights_in_X(D, X, min_weight, A_zero, D_zero)
                 print(f"   🔄 Pesos atualizados nos arcos que entram em X")
             # TODO: continue_execution = TRUE, quando entra no laço fica falso.
             # Quando entrar na condicao de pegar o peso minimo levo pra TRUE. e ai ele para.
 
+        # TODO: tirar isso para estimar em função do tamanho do grafo.
         if iteration > 50:
             print("🚨 Limite de iterações excedido. Pode haver loop infinito.")
             break
@@ -151,5 +155,6 @@ def main():
     else:
         print("O grafo não possui uma arborescência.")
 
-
 main()
+
+# TODO: Implementar a fase 2 do algoritmo de Edmonds para encontrar a arborescência mínima.
