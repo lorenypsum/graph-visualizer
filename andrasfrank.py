@@ -61,7 +61,7 @@ def update_weights_in_X(D, X, min_weight, A_zero, D_zero):
         if v in X:
             D[u][v]["w"] -= min_weight
             if D[u][v]["w"] == 0:
-                A_zero.append((u, v)) # Não precisa adicionar a informação do peso, pois é zero.
+                A_zero.append((u, v)) # TODO: Não precisa adicionar a informação do peso, pois é zero.
                 D_zero.add_edge(u, v, **data)
     return D_zero, A_zero
 
@@ -103,16 +103,15 @@ def phase1_find_minimum_arborescence(D_original, r0):
                 continue
 
             print(f"🔍 Verificando nó: {v}")
-            ancestors = nx.ancestors(D_zero, v)  # Obter ancestrais de v
+            X = nx.ancestors(D_zero, v)  # Obter ancestrais de v
 
-            if r0 in ancestors:
+            if r0 in X:
                 print(f"   ⚠️ {v} é ancestral de {r0}. Pulando...")
                 continue
 
             else:
 
-                # TODO: DÚVIDA, não é pra fazer essa operação aqui? E porque?
-                X = set(ancestors) | set(v)  # Conjunto de ancestrais de v
+                X.add(v)  # Conjunto de ancestrais de v
 
                 assert X is not None, "X não pode ser vazio"
 
