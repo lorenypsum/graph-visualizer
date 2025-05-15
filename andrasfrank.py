@@ -139,7 +139,8 @@ def phase1_find_minimum_arborescence(D_original, r0):
             # TODO: continue_execution = TRUE, quando entra no laço fica falso.
             # Quando entrar na condicao de pegar o peso minimo levo pra TRUE. e ai ele para.
 
-        # TODO: tirar isso para estimar em função do tamanho do grafo.
+        # TODO: tirar isso para estimar em função do tamanho do grafo. 
+        # Ver se o numero de iteracoes é maior que o numero de arcos.
         if iteration > 50:
             print("🚨 Limite de iterações excedido. Pode haver loop infinito.")
             break
