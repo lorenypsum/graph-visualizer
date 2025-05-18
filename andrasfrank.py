@@ -141,20 +141,19 @@ def phase2_find_minimum_arborescence(D_original, r0, A_zero):
     The function returns the minimum arborescence as a DiGraph.
     """
     Arb = nx.DiGraph()
-    A = A_zero.copy()
     
     # Adiciona-se o nó raiz
     Arb.add_node(r0)
+    n = len(D_original.nodes())
 
     # Enquanto houver arcos a serem considerados
-    while A:
+    for i in range(n):
         progress = False  
-        for i in range(len(A)):
-            u, v = A[i]
+        for i in range(len(A_zero)):
+            u, v = A_zero[i]
             if u in Arb.nodes() and v not in Arb.nodes():
                 edge_data = D_original.get_edge_data(u, v)
                 Arb.add_edge(u, v, **edge_data)
-                A.pop(i)
                 progress = True
                 break  # Reinicia o loop após adicionar uma aresta
 
