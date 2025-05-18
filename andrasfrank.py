@@ -65,9 +65,9 @@ def update_weights_in_X(D, X, min_weight, A_zero, D_zero):
                 D_zero.add_edge(u, v, **data)
     # TODO: Não precisa devolver o A_zero e o D_zero, pois devem ser atualizados dentro da função, indicar como efeito colateral
     # a alteração de D_zero e A_zero.
-    return D_zero, A_zero
 
-
+# TODO: USAR DFS_TREE E perguntar se atingiu todo mundo verificando se o numero de vértice é o mesmo nos dois quem.
+# Ver se a arvore devolvivda pela função tem o mesmo numero de vertices que o grafo original.
 def has_arborescence(D, r0):
     """
     Check if a directed graph D has an arborescence with root r0.
@@ -75,6 +75,7 @@ def has_arborescence(D, r0):
     """
     has_arborescence = True
     for v in D.nodes():
+        # nunca compare nada com Verdadeiro ou Falso.
         if nx.has_path(D, r0, v) == False:
             has_arborescence = False
             break
@@ -159,3 +160,16 @@ def main():
 main()
 
 # TODO: Implementar a fase 2 do algoritmo de Edmonds para encontrar a arborescência mínima.
+# Construir um Digrafo, comecando com r0.
+# Ver na lista A_zero, procurar o primeiro arco da lista que tem uma ponta em r0 e outra fora.
+# Dando um nome pro conjunto, a biblioteca NetworkX deve ter uma funcao para dectectar se um arco:
+# Sendo T o original.
+# for i in range(len(A_zero)):
+#     for a in A_zero[i]:
+#         if a[0] == r0:
+#             (u, v) = a
+#             if u in T.nodes() and v not in T.nodes():
+#                 D.add_edge(u, v, **data)
+#                 return D
+
+# Nunca compare nada com Verdadeiro ou Falso
