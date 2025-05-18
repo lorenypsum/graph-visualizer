@@ -136,8 +136,6 @@ def phase1_find_minimum_arborescence(D_original, r0):
                 print(f"   🔄 Pesos atualizados nos arcos que entram em X")
            
 
-        # TODO: tirar isso para estimar em função do tamanho do grafo. 
-        # Ver se o numero de iteracoes é maior que o numero de arcos.
         if iteration > len(D.edges()):
             print("🚨 Limite de iterações excedido. Pode haver loop infinito.")
             break
