@@ -135,18 +135,35 @@ def phase1_find_minimum_arborescence(D_original, r0):
 
     return A_zero
 
+def phase2_find_minimum_arborescence(D_original, r0, A_zero):
+    """
+    Find the minimum arborescence in a directed graph D with root r0.
+    The function returns the minimum arborescence as a DiGraph.
+    """
+    Arb = nx.DiGraph()
+    A = A_zero.copy()
+    
+    # Adiciona-se o nó raiz
+    Arb.add_node(r0)
 
-def main():
-    if has_arborescence(G, "r0"):
-        print("O grafo possui uma arborescência.")
-        minimum_arborescence_phase_1 = phase1_find_minimum_arborescence(G, "r0")
-        print("A_zero:", minimum_arborescence_phase_1)
-    else:
-        print("O grafo não possui uma arborescência.")
+    # Enquanto houver arcos a serem considerados
+    while A:
+        progress = False  
+        for i in range(len(A)):
+            u, v = A[i]
+            if u in Arb.nodes() and v not in Arb.nodes():
+                edge_data = D_original.get_edge_data(u, v)
+                Arb.add_edge(u, v, **edge_data)
+                A.pop(i)
+                progress = True
+                break  # Reinicia o loop após adicionar uma aresta
 
-main()
+        # Se não adicionar nenhuma aresta, termina
+        if not progress:
+            break
 
-# TODO: Implementar a fase 2 do algoritmo de Edmonds para encontrar a arborescência mínima.
+    return Arb
+            
 # Construir um Digrafo, comecando com r0.
 # Ver na lista A_zero, procurar o primeiro arco da lista que tem uma ponta em r0 e outra fora.
 # Dando um nome pro conjunto, a biblioteca NetworkX deve ter uma funcao para dectectar se um arco:
@@ -159,4 +176,16 @@ main()
 #                 D.add_edge(u, v, **data)
 #                 return D
 
-# Nunca compare nada com Verdadeiro ou Falso
+
+
+def main():
+    if has_arborescence(G, "r0"):
+        print("O grafo possui uma arborescência.")
+        A_zero = phase1_find_minimum_arborescence(G, "r0")
+        print("A_zero:", A_zero)
+        minimum_arborescence_phase_2 = phase2_find_minimum_arborescence(G, "r0", A_zero)
+        print("Arborescência mínima encontrada:", minimum_arborescence_phase_2)
+    else:
+        print("O grafo não possui uma arborescência.")
+
+main()
