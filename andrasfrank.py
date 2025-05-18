@@ -66,18 +66,16 @@ def update_weights_in_X(D, X, min_weight, A_zero, D_zero):
 
 # TODO: USAR DFS_TREE E perguntar se atingiu todo mundo verificando se o numero de vértice é o mesmo nos dois quem.
 # Ver se a arvore devolvivda pela função tem o mesmo numero de vertices que o grafo original.
+
+
 def has_arborescence(D, r0):
     """
     Check if a directed graph D has an arborescence with root r0.
     The function returns True if an arborescence exists, otherwise False.
     """
-    has_arborescence = True
-    for v in D.nodes():
-        # nunca compare nada com Verdadeiro ou Falso.
-        if nx.has_path(D, r0, v) == False:
-            has_arborescence = False
-            break
-    return has_arborescence
+    # Verifica se o grafo é uma árvore DFS com raiz r0
+    tree = nx.dfs_tree(D, r0) 
+    return tree.number_of_nodes() == D.number_of_nodes() 
 
 
 def phase1_find_minimum_arborescence(D_original, r0):
