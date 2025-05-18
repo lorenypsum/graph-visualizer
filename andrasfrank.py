@@ -132,7 +132,6 @@ def phase1_find_minimum_arborescence(D_original, r0):
                 if min_weight:
                     continue_execution = True
 
-                # TODO: Não precisa devolver o A_zero e o D_zero, pois devem ser atualizados dentro da função.
                 update_weights_in_X(D, X, min_weight, A_zero, D_zero)
                 print(f"   🔄 Pesos atualizados nos arcos que entram em X")
             # TODO: continue_execution = TRUE, quando entra no laço fica falso.
