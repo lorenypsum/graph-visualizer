@@ -135,7 +135,6 @@ def phase1_find_minimum_arborescence(D_original, r0):
                 update_weights_in_X(D, X, min_weight, A_zero, D_zero)
                 print(f"   🔄 Pesos atualizados nos arcos que entram em X")
            
-
         if iteration > len(D.edges()):
             print("🚨 Limite de iterações excedido. Pode haver loop infinito.")
             break
