@@ -64,10 +64,6 @@ def update_weights_in_X(D, X, min_weight, A_zero, D_zero):
                 A_zero.append((u, v)) # TODO: Não precisa adicionar a informação do peso, pois é zero.
                 D_zero.add_edge(u, v, **data)
 
-# TODO: USAR DFS_TREE E perguntar se atingiu todo mundo verificando se o numero de vértice é o mesmo nos dois quem.
-# Ver se a arvore devolvivda pela função tem o mesmo numero de vertices que o grafo original.
-
-
 def has_arborescence(D, r0):
     """
     Check if a directed graph D has an arborescence with root r0.
