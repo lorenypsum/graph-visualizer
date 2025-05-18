@@ -134,8 +134,7 @@ def phase1_find_minimum_arborescence(D_original, r0):
 
                 update_weights_in_X(D, X, min_weight, A_zero, D_zero)
                 print(f"   🔄 Pesos atualizados nos arcos que entram em X")
-            # TODO: continue_execution = TRUE, quando entra no laço fica falso.
-            # Quando entrar na condicao de pegar o peso minimo levo pra TRUE. e ai ele para.
+           
 
         # TODO: tirar isso para estimar em função do tamanho do grafo. 
         # Ver se o numero de iteracoes é maior que o numero de arcos.
