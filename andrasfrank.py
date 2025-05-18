@@ -63,8 +63,6 @@ def update_weights_in_X(D, X, min_weight, A_zero, D_zero):
             if D[u][v]["w"] == 0:
                 A_zero.append((u, v)) # TODO: Não precisa adicionar a informação do peso, pois é zero.
                 D_zero.add_edge(u, v, **data)
-    # TODO: Não precisa devolver o A_zero e o D_zero, pois devem ser atualizados dentro da função, indicar como efeito colateral
-    # a alteração de D_zero e A_zero.
 
 # TODO: USAR DFS_TREE E perguntar se atingiu todo mundo verificando se o numero de vértice é o mesmo nos dois quem.
 # Ver se a arvore devolvivda pela função tem o mesmo numero de vertices que o grafo original.
@@ -135,7 +133,7 @@ def phase1_find_minimum_arborescence(D_original, r0):
                     continue_execution = True
 
                 # TODO: Não precisa devolver o A_zero e o D_zero, pois devem ser atualizados dentro da função.
-                D_zero, A_zero = update_weights_in_X(D, X, min_weight, A_zero, D_zero)
+                update_weights_in_X(D, X, min_weight, A_zero, D_zero)
                 print(f"   🔄 Pesos atualizados nos arcos que entram em X")
             # TODO: continue_execution = TRUE, quando entra no laço fica falso.
             # Quando entrar na condicao de pegar o peso minimo levo pra TRUE. e ai ele para.
