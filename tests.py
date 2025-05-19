@@ -1,6 +1,8 @@
 import networkx as nx
 import random
 from chuliu import find_optimum_arborescence, remove_edges_to_r0
+from andrasfrank import phase1_find_minimum_arborescence, phase2_find_minimum_arborescence
+
 
 def assert_arborescence_equal(result, expected):
     assert nx.is_arborescence(result), "O resultado não é uma arborescência"
@@ -36,8 +38,8 @@ def test_arborescence_structure():
     G = build_test_graph()
     expected = build_expected_arborescence()
     G_filtered = remove_edges_to_r0(G, r0="r0")
-    result = find_optimum_arborescence(G_filtered, r0="r0")
-    assert_arborescence_equal(result, expected)
+    result_chuliu = find_optimum_arborescence(G_filtered, r0="r0")
+    assert_arborescence_equal(result_chuliu, expected)
 
 # === TESTE SEM CICLO ===
 def test_case_2_no_cycles():
@@ -49,8 +51,8 @@ def test_case_2_no_cycles():
 
     expected = G.copy()
     G_filtered = remove_edges_to_r0(G, r0="r0")
-    result = find_optimum_arborescence(G_filtered, r0="r0")
-    assert_arborescence_equal(result, expected)
+    result_chuliu = find_optimum_arborescence(G_filtered, r0="r0")
+    assert_arborescence_equal(result_chuliu, expected)
 
 
 # === TESTE COM CICLOS DESCONEXOS ===
@@ -71,8 +73,8 @@ def test_case_3_multiple_cycles():
     expected.add_edge("D", "C", w=1)
 
     G_filtered = remove_edges_to_r0(G, r0="r0")
-    result = find_optimum_arborescence(G_filtered, r0="r0")
-    assert_arborescence_equal(result, expected)
+    result_chuliu = find_optimum_arborescence(G_filtered, r0="r0")
+    assert_arborescence_equal(result_chuliu, expected)
 
 
 # === TESTE MAIOR COM CICLO ENCADEADO ===
@@ -97,11 +99,11 @@ def test_case_4_large_graph_with_cycle():
         G.add_edge(u, v, w=w)
 
     # Espera-se que o ciclo A→B→C→A e E→F→G→H→E sejam contraídos
-    result = find_optimum_arborescence(remove_edges_to_r0(G, "r0"), "r0")
-    assert nx.is_arborescence(result), "O resultado não é uma arborescência"
-    assert "r0" in result
-    assert "K" in result
-    assert len(result.nodes) == len(G.nodes)  # todos devem estar incluídos
+    result_chuliu = find_optimum_arborescence(remove_edges_to_r0(G, "r0"), "r0")
+    assert nx.is_arborescence(result_chuliu), "O resultado não é uma arborescência"
+    assert "r0" in result_chuliu
+    assert "K" in result_chuliu
+    assert len(result_chuliu.nodes) == len(G.nodes)  # todos devem estar incluídos
 
 # === TESTE COM PESOS ALEATÓRIOS ===
 def generate_random_graph(n_nodes: int, edge_density: float = 0.3, seed=42):
@@ -123,12 +125,12 @@ def test_random_graph_structure():
     r0 = "r0"
     G_filtered = remove_edges_to_r0(G, r0)
 
-    result = find_optimum_arborescence(G_filtered, r0)
+    result_chuliu = find_optimum_arborescence(G_filtered, r0)
 
-    assert nx.is_arborescence(result), "O resultado não é uma arborescência"
-    assert r0 in result, "A raiz não está presente"
-    assert len(result.nodes) == len(G.nodes), "Nem todos os vértices estão na arborescência"
-    assert nx.is_weakly_connected(result), "A arborescência não conecta todos os nós"
+    assert nx.is_arborescence(result_chuliu), "O resultado não é uma arborescência"
+    assert r0 in result_chuliu, "A raiz não está presente"
+    assert len(result_chuliu.nodes) == len(G.nodes), "Nem todos os vértices estão na arborescência"
+    assert nx.is_weakly_connected(result_chuliu), "A arborescência não conecta todos os nós"
 
 def test_multiple_random_graphs():
     for i in range(5):  # Executa 5 grafos diferentes
@@ -136,8 +138,8 @@ def test_multiple_random_graphs():
         r0 = "r0"
         G_filtered = remove_edges_to_r0(G, r0)
 
-        result = find_optimum_arborescence(G_filtered, r0)
+        result_chuliu = find_optimum_arborescence(G_filtered, r0)
 
-        assert nx.is_arborescence(result), f"[{i}] Resultado não é arborescência"
-        assert r0 in result, f"[{i}] Raiz ausente"
-        assert len(result.nodes) == len(G.nodes), f"[{i}] Número de vértices incorreto"
+        assert nx.is_arborescence(result_chuliu), f"[{i}] Resultado não é arborescência"
+        assert r0 in result_chuliu, f"[{i}] Raiz ausente"
+        assert len(result_chuliu.nodes) == len(G.nodes), f"[{i}] Número de vértices incorreto"

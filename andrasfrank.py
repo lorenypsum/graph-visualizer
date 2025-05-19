@@ -175,7 +175,7 @@ def phase2_find_minimum_arborescence(D_original, r0, A_zero):
 #                 D.add_edge(u, v, **data)
 #                 return D
 
-def main():
+def main(G, r0="r0"):
     if has_arborescence(G, "r0"):
         print("O grafo possui uma arborescência.")
         A_zero = phase1_find_minimum_arborescence(G, "r0")
