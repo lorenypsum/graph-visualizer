@@ -1,0 +1,12 @@
+{
+    "packages": [
+        "networkx",
+        "matplotlib"
+    ],
+    "fetch": [{
+        "files": [
+            "./chuliu.py",
+            "./andrasfrank.py"
+        ]
+    }]
+}
