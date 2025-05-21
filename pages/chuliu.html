@@ -12,7 +12,7 @@
 
 <body class="flex min-h-screen text-gray-800 bg-gray-100">
     <div class="absolute top-[100px] w-full h-[1px] bg-[#DBDBDB]"></div>
-    
+
     <!-- MENU LATERAL -->
     <div id="sidebar"></div>
 
@@ -27,31 +27,31 @@
             <div class="col-span-6 p-2">
                 <span class="text-sm text-gray-500">
                     1. Desenhe um grafo,
-                    <a href="link-carregue.html" class="text-[#5A3CE5] hover:underline">carregue</a>
+                    <span id="load-test-graph" class="text-[#5A3CE5] hover:underline">carregue</span>
                     um exemplo ou
-                    <a href="link-importe.html" class="text-[#5A3CE5] hover:underline">importe</a>
+                    <span id="show-ready-arborescence" class="text-[#5A3CE5] hover:underline">importe</span>
                     um grafo já existente.
                 </span>
                 <div class="grid grid-cols-4">
                     <div class="col-span-1 py-4 px-2">
-                        <input type="text" id="input-field"
+                        <input type="text" id="source"
                             class="w-full p-2 rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="origem" />
                     </div>
                     <div class="col-span-1 py-4 px-2">
-                        <input type="text" id="input-field"
+                        <input type="text" id="target"
                             class="w-full p-2 rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="destino" />
                     </div>
                     <div class="col-span-1 py-4 px-2">
-                        <input type="text" id="input-field"
+                        <input type="number" id="weight" min="0"
                             class="w-full p-2 rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="peso" />
                     </div>
                     <div class="col-span-1 flex justify-center items-center gap-1">
-                        <img src="../assets/edit.png" alt="Editar"
+                        <img src="../assets/edit.png" alt="Adicionar" id="add-edge"
                             class="cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
-                        <img src="../assets/delete.png" alt="Excluir"
+                        <img src="../assets/delete.png" alt="Excluir" id="reset-graph"
                             class="cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
                     </div>
                 </div>
@@ -61,8 +61,9 @@
             <!-- Coluna 2 -->
             <div class="col-span-2 p-2">
                 <span class="text-sm text-gray-500">2. Escolha o nó raiz</span>
-                <div class="py-4 px-2">
-                    <input type="text" id="input-field"
+                <div class="mx-4 py-4 px-2">
+                    <input type="text" id="root-node"
+                        value="r0"
                         class="w-full p-2 rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="node" />
                 </div>
@@ -73,7 +74,7 @@
             <div class="col-span-2 p-2">
                 <span class="text-sm text-gray-500">3. Execute o algoritmo</span>
                 <div class="py-4 px-2 flex justify-center items-center gap-1">
-                    <img src="../assets/run.png" alt="Executar"
+                    <img src="../assets/run.png" alt="Executar" id="run-algorithm"
                         class="cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
                 </div>
             </div>
@@ -85,16 +86,13 @@
             <div class="col-span-6 p-4">
                 <span class="mb-50 text-xl text-[#9993B7]">Grafo Original</span>
                 <div class="my-3 mt-50 py-4 px-50 bg-white rounded-lg">
-                    <img id="grafo-original"
-                    src="../assets/graph_image.png"
-                    alt="Grafo Original"
-                    class="mx-auto"
-                    />
+                    <img id="grafo-original" src="../assets/graph_image.png" alt="Grafo Original" class="mx-auto" />
+                    <py-script id="original-graph-area"></py-script>
                 </div>
             </div>
             <div class="col-span-2 p-4">
                 <div class="py-4 px-2 flex justify-left items-center gap-1">
-                    <img src="../assets/download.png" alt="Download"
+                    <img src="../assets/download.png" alt="Download" id="export-graph-original"
                         class="my-5 cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
                 </div>
             </div>
@@ -106,16 +104,13 @@
             <div class="col-span-6 p-4">
                 <span class="mb-50 text-xl text-[#9993B7]">Arborescência</span>
                 <div class="my-3 mt-50 py-4 px-50 bg-white rounded-lg">
-                    <img id="grafo-arborescencia"
-                    src="../assets/graph_image.png"
-                    alt="Arborescência"
-                    class="mx-auto"
-                    />
+                    <img id="grafo-arborescencia" src="../assets/graph_image.png" alt="Arborescência" class="mx-auto" />
+                    <py-script id="graph-area"></py-script>
                 </div>
             </div>
             <div class="col-span-2 p-4">
                 <div class="py-4 px-2 flex justify-left items-center gap-1">
-                    <img src="../assets/download.png" alt="Download"
+                    <img src="../assets/download.png" alt="Download" id="export-graph-arborescencia"
                         class="my-5 cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
                 </div>
             </div>
@@ -126,7 +121,7 @@
         <div class="grid grid-cols-10 gap-4 py-4 px-4">
             <div class="col-span-2 p-4"></div>
             <div class="col-span-6 p-4">
-                <button id="collapser-button" 
+                <button id="collapser-button"
                     class="w-full bg-[#EEEEEE] text-[#948EB3] py-2 px-4 rounded-t-md text-left flex justify-between items-center"
                     onclick="toggleCollapser()">
                     Log de Execução
@@ -134,12 +129,15 @@
                 </button>
 
                 <!-- Conteúdo colapsável -->
-                <div id="log-collapser-content" class="p-4 bg-[#EEEEEE] text-sm text-gray-400 rounded-b-md hidden transition-all duration-500 ease-in-out">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                <div id="log-collapser-content"
+                    class="p-4 bg-[#EEEEEE] text-sm text-gray-400 rounded-b-md hidden transition-all duration-500 ease-in-out">
+                    <textarea id="log-output" readonly
+                        class="w-full p-3 rounded h-40 bg-[#EEEEEE] text-sm text-gray-400"></textarea>
+                    <!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
                         labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
                         laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
                         voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-                        non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                        non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p> -->
                 </div>
             </div>
         </div>
@@ -150,7 +148,7 @@
         <span class="flex items-center gap-6 p-8 top-6 text-lg text-[#4B4277] font-medium">Passo A Passo</span>
         <div class="my-6 mx-4 gap-4 py-2 px-2 bg-[#F5F5F5] rounded-lg">
             <div id="step_1" class="mb-5">
-                <div class="btn_step grid grid-cols-10 gap-1 hover:bg-[#c4c4c4] rounded px-1 py-[1px]">
+                <div class="btn_step grid grid-cols-10 gap-1 hover:bg-[#e3e3e3] rounded px-1 py-[1px]">
                     <div class="my-1 col-span-2">
                         <div
                             class="flex items-center justify-center w-5 h-5 bg-[#787486] text-white text-[12px] rounded-full">
@@ -162,7 +160,9 @@
                     </div>
                     <div class="my-1 col-span-2">
                         <div class="flex justify-end items-center">
-                            <img id="step_1_icon" src="../assets/plus.png" alt="Contrair" class="cursor-pointer w-5 h-5 hover:opacity-80" onclick="toggleStep('step_1', 'step_1_icon')"/>
+                            <img id="step_1_icon" src="../assets/plus.png" alt="Contrair"
+                                class="cursor-pointer w-5 h-5 hover:opacity-80"
+                                onclick="toggleStep('step_1', 'step_1_icon')" />
                         </div>
                     </div>
                 </div>
@@ -170,16 +170,18 @@
                     <div class="border-t-2 border-[#5030E5] w-full rounded-full my-2"></div>
                     <div class="my-1 gap-4 py-2 px-2 bg-white rounded-lg">
                         <div class="flex justify-center items-center">
-                            <img src="../assets/image.png" alt="Contrair" class=""/>
+                            <img src="../assets/image.png" alt="Contrair" class="" />
                         </div>
                         <div class="border-t-2 border-[#DBDBDB] w-full rounded-full my-2"></div>
-                        <span class="flex text-xs text-[#BDBACA] justify-left">Lorem ipsum dolor sit amet consectetur adipiscing
-                            elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium </span>
+                        <span class="flex text-xs text-[#BDBACA] justify-left">Lorem ipsum dolor sit amet consectetur
+                            adipiscing
+                            elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium
+                        </span>
                     </div>
                 </div>
             </div>
             <div id="step_2" class="mb-5">
-                <div class="btn_step grid grid-cols-10 gap-1 hover:bg-[#c4c4c4] rounded px-1 py-[1px]">
+                <div class="btn_step grid grid-cols-10 gap-1 hover:bg-[#e3e3e3] rounded px-1 py-[1px]">
                     <div class="my-1 col-span-2">
                         <div
                             class="flex items-center justify-center w-5 h-5 bg-[#787486] text-white text-[12px] rounded-full">
@@ -191,7 +193,9 @@
                     </div>
                     <div class="my-1 col-span-2">
                         <div class="flex justify-end items-center">
-                            <img id="step_2_icon" src="../assets/plus.png" alt="Contrair" class="cursor-pointer w-5 h-5 hover:opacity-80" onclick="toggleStep('step_2', 'step_2_icon')"/>
+                            <img id="step_2_icon" src="../assets/plus.png" alt="Contrair"
+                                class="cursor-pointer w-5 h-5 hover:opacity-80"
+                                onclick="toggleStep('step_2', 'step_2_icon')" />
                         </div>
                     </div>
                 </div>
@@ -199,16 +203,18 @@
                     <div class="border-t-2 border-[#5030E5] w-full rounded-full my-2"></div>
                     <div class="my-1 gap-4 py-2 px-2 bg-white rounded-lg">
                         <div class="flex justify-center items-center">
-                            <img src="../assets/image.png" alt="Contrair" class=""/>
+                            <img src="../assets/image.png" alt="Contrair" class="" />
                         </div>
                         <div class="border-t-2 border-[#DBDBDB] w-full rounded-full my-2"></div>
-                        <span class="flex text-xs text-[#BDBACA] justify-left">Lorem ipsum dolor sit amet consectetur adipiscing
-                            elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium </span>
+                        <span class="flex text-xs text-[#BDBACA] justify-left">Lorem ipsum dolor sit amet consectetur
+                            adipiscing
+                            elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium
+                        </span>
                     </div>
                 </div>
             </div>
             <div id="step_3" class="mb-5">
-                <div class="btn_step grid grid-cols-10 gap-1 hover:bg-[#c4c4c4] rounded px-1 py-[1px]">
+                <div class="btn_step grid grid-cols-10 gap-1 hover:bg-[#e3e3e3] rounded px-1 py-[1px]">
                     <div class="my-1 col-span-2">
                         <div
                             class="flex items-center justify-center w-5 h-5 bg-[#787486] text-white text-[12px] rounded-full">
@@ -220,7 +226,9 @@
                     </div>
                     <div class="my-1 col-span-2">
                         <div class="flex justify-end items-center">
-                            <img id="step_3_icon" src="../assets/plus.png" alt="Contrair" class="cursor-pointer w-5 h-5 hover:opacity-80" onclick="toggleStep('step_3', 'step_3_icon')"/>
+                            <img id="step_3_icon" src="../assets/plus.png" alt="Contrair"
+                                class="cursor-pointer w-5 h-5 hover:opacity-80"
+                                onclick="toggleStep('step_3', 'step_3_icon')" />
                         </div>
                     </div>
                 </div>
@@ -228,55 +236,24 @@
                     <div class="border-t-2 border-[#5030E5] w-full rounded-full my-2"></div>
                     <div class="my-1 gap-4 py-2 px-2 bg-white rounded-lg">
                         <div class="flex justify-center items-center">
-                            <img src="../assets/image.png" alt="Contrair" class=""/>
+                            <img src="../assets/image.png" alt="Contrair" class="" />
                         </div>
                         <div class="border-t-2 border-[#DBDBDB] w-full rounded-full my-2"></div>
-                        <span class="flex text-xs text-[#BDBACA] justify-left">Lorem ipsum dolor sit amet consectetur adipiscing
-                            elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium </span>
+                        <span class="flex text-xs text-[#BDBACA] justify-left">Lorem ipsum dolor sit amet consectetur
+                            adipiscing
+                            elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium
+                        </span>
                     </div>
                 </div>
             </div>
         </div>
-        
+
     </div>
 
     <!-- Scripts -->
-    <script src="./sidebar.js"></script>
+    <script src="../scripts/sidebar.js"></script>
+    <script src="../scripts/main.js"></script>
     <script type="py" src="../scripts/chuliu.py" config="./pyscript.json"></script>
-    <script>
-        function toggleCollapser() {
-            const content = document.getElementById("log-collapser-content");
-            const icon = document.getElementById("collapser-icon");
-    
-            // Alterna a visibilidade do conteúdo
-            content.classList.toggle("hidden");
-    
-            // Alterna a imagem do botão
-            if (content.classList.contains("hidden")) {
-                icon.src = "../assets/plus.png"; // Ícone de expandir
-            } else {
-                icon.src = "../assets/minus.png"; // Ícone de contrair
-            }
-        }
-        function toggleStep(stepId, iconId) {
-            const content = document.querySelector(`#${stepId} .detalhes`);
-            const icon = document.getElementById(iconId);
-            const btn_step = document.querySelector(`#${stepId} .btn_step`);
-    
-
-            // Alterna a visibilidade do conteúdo
-            content.classList.toggle("hidden");
-
-            // Alterna a imagem do botão
-            if (content.classList.contains("hidden")) {
-                icon.src = "../assets/plus.png"; // Ícone de expandir
-                btn_step.classList.remove("bg-[#D9D9D9]");
-            } else {
-                icon.src = "../assets/minus.png"; // Ícone de contrair
-                btn_step.classList.add("bg-[#D9D9D9]");
-            }
-        }
-    </script>
 </body>
 
 </html>
