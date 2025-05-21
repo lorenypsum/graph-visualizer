@@ -40,7 +40,6 @@ def get_arcs_entering_X(D, X):
         if u not in X and v in X:
             arcs.append((u, v, data))
     return arcs
-    # return [(u, v, data) for v in X for u, v, data in D.in_edges(v, data=True) if u not in X]
 
 
 def get_minimum_weight_cut(arcs):
