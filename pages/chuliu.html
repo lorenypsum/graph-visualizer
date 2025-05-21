@@ -147,10 +147,10 @@
 
     <!-- Passo a Passo -->
     <div id="right-sidebar" class="w-80 border-l-[1px] bg-[#E5E5E5] border-[#DBDBDB]">
-        <span class="flex items-center gap-6 p-8 top-6 text-lg text-[#4B4277]">Passo A Passo</span>
+        <span class="flex items-center gap-6 p-8 top-6 text-lg text-[#4B4277] font-medium">Passo A Passo</span>
         <div class="my-6 mx-4 gap-4 py-2 px-2 bg-[#F5F5F5] rounded-lg">
             <div id="step_1" class="mb-5">
-                <div class="btn_step grid grid-cols-10 gap-1">
+                <div class="btn_step grid grid-cols-10 gap-1 hover:bg-[#c4c4c4] rounded px-1 py-[1px]">
                     <div class="my-1 col-span-2">
                         <div
                             class="flex items-center justify-center w-5 h-5 bg-[#787486] text-white text-[12px] rounded-full">
@@ -162,11 +162,11 @@
                     </div>
                     <div class="my-1 col-span-2">
                         <div class="flex justify-end items-center">
-                            <img src="../assets/minus.png" alt="Contrair" class="cursor-pointer w-5 h-5 hover:opacity-80" />
+                            <img id="step_1_icon" src="../assets/plus.png" alt="Contrair" class="cursor-pointer w-5 h-5 hover:opacity-80" onclick="toggleStep('step_1', 'step_1_icon')"/>
                         </div>
                     </div>
                 </div>
-                <div class="detalhes">
+                <div class="detalhes hidden transition-all duration-500 ease-in-out">
                     <div class="border-t-2 border-[#5030E5] w-full rounded-full my-2"></div>
                     <div class="my-1 gap-4 py-2 px-2 bg-white rounded-lg">
                         <div class="flex justify-center items-center">
@@ -179,7 +179,7 @@
                 </div>
             </div>
             <div id="step_2" class="mb-5">
-                <div class="btn_step grid grid-cols-10 gap-1">
+                <div class="btn_step grid grid-cols-10 gap-1 hover:bg-[#c4c4c4] rounded px-1 py-[1px]">
                     <div class="my-1 col-span-2">
                         <div
                             class="flex items-center justify-center w-5 h-5 bg-[#787486] text-white text-[12px] rounded-full">
@@ -191,11 +191,11 @@
                     </div>
                     <div class="my-1 col-span-2">
                         <div class="flex justify-end items-center">
-                            <img src="../assets/minus.png" alt="Contrair" class="cursor-pointer w-5 h-5 hover:opacity-80" />
+                            <img id="step_2_icon" src="../assets/plus.png" alt="Contrair" class="cursor-pointer w-5 h-5 hover:opacity-80" onclick="toggleStep('step_2', 'step_2_icon')"/>
                         </div>
                     </div>
                 </div>
-                <div class="detalhes">
+                <div class="detalhes hidden transition-all duration-500 ease-in-out">
                     <div class="border-t-2 border-[#5030E5] w-full rounded-full my-2"></div>
                     <div class="my-1 gap-4 py-2 px-2 bg-white rounded-lg">
                         <div class="flex justify-center items-center">
@@ -208,7 +208,7 @@
                 </div>
             </div>
             <div id="step_3" class="mb-5">
-                <div class="btn_step grid grid-cols-10 gap-1 bg-[#D9D9D9] rounded px-1 py-[1px]">
+                <div class="btn_step grid grid-cols-10 gap-1 hover:bg-[#c4c4c4] rounded px-1 py-[1px]">
                     <div class="my-1 col-span-2">
                         <div
                             class="flex items-center justify-center w-5 h-5 bg-[#787486] text-white text-[12px] rounded-full">
@@ -220,11 +220,11 @@
                     </div>
                     <div class="my-1 col-span-2">
                         <div class="flex justify-end items-center">
-                            <img src="../assets/plus.png" alt="Contrair" class="cursor-pointer w-5 h-5 hover:opacity-80" />
+                            <img id="step_3_icon" src="../assets/plus.png" alt="Contrair" class="cursor-pointer w-5 h-5 hover:opacity-80" onclick="toggleStep('step_3', 'step_3_icon')"/>
                         </div>
                     </div>
                 </div>
-                <div class="detalhes hidden">
+                <div class="detalhes hidden transition-all duration-500 ease-in-out">
                     <div class="border-t-2 border-[#5030E5] w-full rounded-full my-2"></div>
                     <div class="my-1 gap-4 py-2 px-2 bg-white rounded-lg">
                         <div class="flex justify-center items-center">
@@ -256,6 +256,24 @@
                 icon.src = "../assets/plus.png"; // Ícone de expandir
             } else {
                 icon.src = "../assets/minus.png"; // Ícone de contrair
+            }
+        }
+        function toggleStep(stepId, iconId) {
+            const content = document.querySelector(`#${stepId} .detalhes`);
+            const icon = document.getElementById(iconId);
+            const btn_step = document.querySelector(`#${stepId} .btn_step`);
+    
+
+            // Alterna a visibilidade do conteúdo
+            content.classList.toggle("hidden");
+
+            // Alterna a imagem do botão
+            if (content.classList.contains("hidden")) {
+                icon.src = "../assets/plus.png"; // Ícone de expandir
+                btn_step.classList.remove("bg-[#D9D9D9]");
+            } else {
+                icon.src = "../assets/minus.png"; // Ícone de contrair
+                btn_step.classList.add("bg-[#D9D9D9]");
             }
         }
     </script>
