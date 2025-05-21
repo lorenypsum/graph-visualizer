@@ -147,33 +147,17 @@ def phase2_find_minimum_arborescence(D_original, r0, A_zero):
     n = len(D_original.nodes())
 
     # Enquanto houver arcos a serem considerados
-    for i in range(n):
-        progress = False  
-        for i in range(len(A_zero)):
-            u, v = A_zero[i]
+    for i in range(n - 1):
+        for u, v in A_zero:
             if u in Arb.nodes() and v not in Arb.nodes():
                 edge_data = D_original.get_edge_data(u, v)
                 Arb.add_edge(u, v, **edge_data)
-                progress = True
+                
                 break  # Reinicia o loop após adicionar uma aresta
 
-        # Se não adicionar nenhuma aresta, termina
-        if not progress:
-            break
 
     return Arb
             
-# Construir um Digrafo, comecando com r0.
-# Ver na lista A_zero, procurar o primeiro arco da lista que tem uma ponta em r0 e outra fora.
-# Dando um nome pro conjunto, a biblioteca NetworkX deve ter uma funcao para dectectar se um arco:
-# Sendo T o original.
-# for i in range(len(A_zero)):
-#     for a in A_zero[i]:
-#         if a[0] == r0:
-#             (u, v) = a
-#             if u in T.nodes() and v not in T.nodes():
-#                 D.add_edge(u, v, **data)
-#                 return D
 
 def main(G, r0="r0"):
     if has_arborescence(G, "r0"):
@@ -185,4 +169,4 @@ def main(G, r0="r0"):
     else:
         print("O grafo não possui uma arborescência.")
 
-main()
+main(G, r0="r0")
