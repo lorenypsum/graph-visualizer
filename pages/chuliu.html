@@ -126,14 +126,15 @@
         <div class="grid grid-cols-10 gap-4 py-4 px-4">
             <div class="col-span-2 p-4"></div>
             <div class="col-span-6 p-4">
-                <!-- Botão para abrir/fechar -->
-                <button id="collapser-button" class="w-full bg-[#EEEEEE] text-[#948EB3] py-2 px-4 rounded text-left"
+                <button id="collapser-button" 
+                    class="w-full bg-[#EEEEEE] text-[#948EB3] py-2 px-4 rounded-t-md text-left flex justify-between items-center"
                     onclick="toggleCollapser()">
                     Log de Execução
+                    <img id="collapser-icon" src="../assets/plus.png" alt="Contrair" class="w-5 h-5 hover:opacity-80" />
                 </button>
 
                 <!-- Conteúdo colapsável -->
-                <div id="collapser-content" class="mt-4 p-4 bg-[#EEEEEE] text-sm text-gray-400 hidden">
+                <div id="log-collapser-content" class="p-4 bg-[#EEEEEE] text-sm text-gray-400 rounded-b-md hidden transition-all duration-500 ease-in-out">
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
                         labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
                         laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
@@ -244,8 +245,18 @@
     <script type="py" src="../scripts/chuliu.py" config="./pyscript.json"></script>
     <script>
         function toggleCollapser() {
-            const content = document.getElementById("collapser-content");
+            const content = document.getElementById("log-collapser-content");
+            const icon = document.getElementById("collapser-icon");
+    
+            // Alterna a visibilidade do conteúdo
             content.classList.toggle("hidden");
+    
+            // Alterna a imagem do botão
+            if (content.classList.contains("hidden")) {
+                icon.src = "../assets/plus.png"; // Ícone de expandir
+            } else {
+                icon.src = "../assets/minus.png"; // Ícone de contrair
+            }
         }
     </script>
 </body>
