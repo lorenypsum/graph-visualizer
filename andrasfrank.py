@@ -152,10 +152,7 @@ def phase2_find_minimum_arborescence(D_original, r0, A_zero):
             if u in Arb.nodes() and v not in Arb.nodes():
                 edge_data = D_original.get_edge_data(u, v)
                 Arb.add_edge(u, v, **edge_data)
-                
                 break  # Reinicia o loop após adicionar uma aresta
-
-
     return Arb
             
 
