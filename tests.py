@@ -143,3 +143,7 @@ def test_multiple_random_graphs():
         assert nx.is_arborescence(result_chuliu), f"[{i}] Resultado não é arborescência"
         assert r0 in result_chuliu, f"[{i}] Raiz ausente"
         assert len(result_chuliu.nodes) == len(G.nodes), f"[{i}] Número de vértices incorreto"
+
+#TODO: Encontrar repositório c/ Dígrafos maiores.
+#TODO: Verificar se ambos os algoritmos estão retornando o mesmo resultado:
+# Verificar se o custo total da arborescência das arborescências encontradas é o mesmo para ambos os algoritmos.
