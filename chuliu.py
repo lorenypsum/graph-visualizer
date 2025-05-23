@@ -1,5 +1,7 @@
 import networkx as nx
 
+print("Hello, I am Chu Liu.")
+
 def log_dummy(msg: str):
     print(msg)
 

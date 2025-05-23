@@ -2,18 +2,6 @@ import networkx as nx
 
 print("Hello, I am Andras Frank.")
 
-G = nx.DiGraph()
-G.add_edge("r0", "A", w=2)
-G.add_edge("r0", "B", w=10)
-G.add_edge("r0", "C", w=10)
-G.add_edge("A", "C", w=4)
-G.add_edge("B", "A", w=1)
-G.add_edge("C", "D", w=2)
-G.add_edge("D", "B", w=2)
-G.add_edge("B", "E", w=8)
-G.add_edge("C", "E", w=4)
-
-
 def build_D_zero(D):
     """
     Build a directed graph D_zero and from the input directed graph D,
@@ -100,7 +88,7 @@ def phase1_find_minimum_arborescence(D_original, r0):
             X = nx.ancestors(D_zero, v)  # Obter ancestrais de v
 
             if r0 in X:
-                print(f"   ⚠️ {v} é ancestral de {r0}. Pulando...")
+                print(f"⚠️ {v} é ancestral de {r0}. Pulando...")
                 continue
 
             else:
@@ -116,7 +104,7 @@ def phase1_find_minimum_arborescence(D_original, r0):
 
                 # TODO:  NÃO FAZER ISSO AGORA
                 # if not arcs:
-                #     print(f"   ⚠️ Nenhum arco entra em X.")
+                #     print(f"⚠️ Nenhum arco entra em X.")
                 #     continue
 
                 min_weight = get_minimum_weight_cut(arcs)
@@ -153,16 +141,3 @@ def phase2_find_minimum_arborescence(D_original, r0, A_zero):
                 Arb.add_edge(u, v, **edge_data)
                 break  # Reinicia o loop após adicionar uma aresta
     return Arb
-            
-
-def main(G, r0="r0"):
-    if has_arborescence(G, "r0"):
-        print("O grafo possui uma arborescência.")
-        A_zero = phase1_find_minimum_arborescence(G, "r0")
-        print("A_zero:", A_zero)
-        minimum_arborescence_phase_2 = phase2_find_minimum_arborescence(G, "r0", A_zero)
-        print("Arborescência mínima encontrada:", minimum_arborescence_phase_2.edges(data=True))
-    else:
-        print("O grafo não possui uma arborescência.")
-
-main(G, r0="r0")
