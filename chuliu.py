@@ -215,7 +215,7 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None, log
         F_prime = find_optimum_arborescence(G_arb, r0, level + 1, draw_fn=draw_fn, log=log)
 
         # Identifica o vértice do ciclo que recebeu a única aresta de entrada da arborescência
-        in_edge = next(F_prime.in_edges(contracted_label, data="w"), None)
+        in_edge = next(iter(F_prime.in_edges(contracted_label, data="w")), None)
         assert in_edge, f"find_optimum_arborescence: Nenhuma aresta encontrada entrando no vértice '{contracted_label}'."
         u, _, w = in_edge
 
