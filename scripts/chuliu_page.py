@@ -1,6 +1,6 @@
 import networkx as nx
 from networkx.readwrite import json_graph
-from js import Blob, URL, document, alert
+from js import Blob, URL, document, alert, FileReader
 from pyscript import document, when, display
 import json
 import matplotlib as mpl
@@ -97,10 +97,13 @@ def draw_step(G: nx.DiGraph, id=1, title="Passo do Algoritmo"):
     plt.close()
 
 G = nx.DiGraph()
+O = nx.DiGraph()
+T = nx.DiGraph()
 
 @when("click", "#add-edge")
 def add_edge():
     global G
+    global O
     source = document.getElementById("source").value
     target = document.getElementById("target").value
     weight = document.getElementById("weight").value
@@ -108,18 +111,22 @@ def add_edge():
         G.add_edge(source, target, w=float(weight))
         log_in_box(f"Aresta adicionada: {source} → {target} (peso={weight})")
         draw_graph(G, "Grafo com Arestas", append=False, target="original-graph-area")
+        O = G.copy()
+    else:
+        log_in_box("[ERRO] Preencha todos os campos para adicionar uma aresta.")
 
 @when("click", "#reset-graph")
 def reset_graph():
     global G
+    global O
     G.clear()
+    O.clear()
     document.getElementById("log-output").value = ""
     draw_graph(G, "Grafo Resetado", append=False)
     log_in_box("Grafo resetado.")
 
-def export_graph(event):
+def export_graph(G):
     log_in_box("Exportando grafo...")
-    global G
     if G.number_of_nodes() == 0:
         log_in_box("[ERRO] O grafo está vazio.")
         return
@@ -132,7 +139,7 @@ def export_graph(event):
     blob = Blob.new([json_data], {"type": "application/json"})
     url = URL.createObjectURL(blob)
 
-    # Configura e dispara o download
+    # Configura e sdispara o download
     link = document.createElement("a")
     link.href = url
     link.download = "graph.json"
@@ -144,26 +151,48 @@ def export_graph(event):
 @when("click", "#export-graph-arborescencia")
 def export_arborescencia_graph(event):
     log_in_box("Botão 'Exportar Arborescência' clicado.")
-    export_graph()
+    global T
+    export_graph(T)
 
-# @when("click", "#export-graph-original")
-# def export_original_graph(event):
-#     log_in_box("Botão 'Exportar Original' clicado.")
-#     export_graph()
+@when("click", "#export-graph-original")
+def export_original_graph(event):
+    log_in_box("Botão 'Exportar grafo original' clicado.")
+    global O
+    export_graph(O)
+
+@when("click", "#import-graph")
+def open_file_selector(evt):
+    document.getElementById("file-input").click()
+
+# Lê o arquivo quando for selecionado
+@when("change", "#file-input")
+def handle_file_upload(evt):
+    file = evt.target.files.item(0)
+    if not file:
+        return
+
+    reader = FileReader.new()
+
+    def onload(e):
+        contents = e.target.result
+        data = json.loads(contents) 
+        global G
+        global O
+        G.clear()
+        G = json_graph.node_link_graph(data, edges="links")
+        O = G.copy()
+        draw_graph(G, "Grafo Importado", append=False, target="original-graph-area")
+        log_in_box("Grafo importado com sucesso.")
+
+    reader.onload = onload
+    reader.readAsText(file)
 
 @when("click", "#load-test-graph")
 def load_test_graph(event):
     global G
+    global O
     G.clear()
-    # G.add_edge("r0", "B", w=10)
-    # G.add_edge("r0", "A", w=2)
-    # G.add_edge("r0", "C", w=10)
-    # G.add_edge("B", "A", w=1)
-    # G.add_edge("A", "C", w=4)
-    # G.add_edge("C", "D", w=2)
-    # G.add_edge("D", "B", w=2)
-    # G.add_edge("B", "E", w=8)
-    # G.add_edge("C", "E", w=4)
+    O.clear()
     G.add_edges_from([('0', '1', {"w": 3}),
                     ('0', '2', {"w": 6}),
                     ('1', '2', {"w": 1}),
@@ -179,16 +208,18 @@ def load_test_graph(event):
                     ('7', '8', {'w': 4}),
                     ('8', '6', {'w': 5}),
                     ('6', '8', {'w': 2})])
+    O = G.copy()
     
     input_element = document.getElementById("root-node")
     input_element.value = "0"
 
     log_in_box("Grafo de teste carregado.")
-    draw_graph(G, "Grafo de Teste (DG)", append=False, target="original-graph-area")
+    draw_graph(G, "Grafo de Teste", append=False, target="original-graph-area")
 
 @when("click", "#run-algorithm")
 def run_algorithm(event):
     global G
+    global T
     r0 = document.getElementById("root-node").value or "r0"
     if r0 not in G:
         alert(f"[ERRO] O nó raiz '{r0}' deve existir no grafo.")
