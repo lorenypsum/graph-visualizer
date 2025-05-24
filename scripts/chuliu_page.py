@@ -1,0 +1,200 @@
+import networkx as nx
+from networkx.readwrite import json_graph
+from js import Blob, URL, document, alert
+from pyscript import document, when, display
+import json
+import matplotlib as mpl
+mpl.use('Agg')
+import matplotlib.pyplot as plt
+from chuliu_alg import find_optimum_arborescence
+
+def log_in_box(msg: str):
+    log_box = document.getElementById("log-output")
+    log_box.value += msg + "\n"
+    log_box.scrollTop = log_box.scrollHeight
+
+def draw_graph(G: nx.DiGraph, title="Digrafo", append=True, target="original-graph-area"):
+    plt.clf()  # Limpa a figura atual
+    pos = nx.planar_layout(G)  # Layout para posicionamento dos nós
+    plt.figure(figsize=(6, 4))  # Tamanho da figura
+    # Desenha os nós e arestas
+    nx.draw(
+        G,
+        pos,
+        with_labels=True,
+        node_color="lightblue",
+        edge_color="gray",
+        node_size=2000,
+        font_size=12,
+    )
+    weights = nx.get_edge_attributes(G, "w")
+    nx.draw_networkx_edge_labels(
+        G, pos, edge_labels=weights, font_color="red", font_size=12
+    )
+    plt.title(title)
+    display(title, target=target, append=append)
+    display(plt, target=target, append=append)
+    plt.close()  # Fecha a figura para liberar memória
+
+def draw_step(G: nx.DiGraph, id=1, title="Passo do Algoritmo"):
+    description = """Lorem ipsum dolor sit amet consectetur
+                            adipiscing
+                            elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium"""
+    html_content = f"""
+        <div id="step_{id}" class="mb-5">
+            <div class="btn_step grid grid-cols-10 gap-1 hover:bg-[#e3e3e3] rounded px-1 py-[1px]">
+                <div class="my-1 col-span-2">
+                    <div
+                        class="flex items-center justify-center w-5 h-5 bg-[#787486] text-white text-[12px] rounded-full">
+                        <span>{id}</span>
+                    </div>
+                </div>
+                <div class="col-span-6">
+                    <span class="flex text-base text-[#787486] justify-left">{title}</span>
+                </div>
+                <div class="my-1 col-span-2">
+                    <div class="flex justify-end items-center">
+                        <img id="step_{id}_icon" src="../assets/plus.png" alt="Contrair"
+                            class="cursor-pointer w-5 h-5 hover:opacity-80"
+                            onclick="toggleStep('step_{id}', 'step_{id}_icon')" />
+                    </div>
+                </div>
+            </div>
+            <div class="detalhes hidden transition-all duration-500 ease-in-out">
+                <div class="border-t-2 border-[#5030E5] w-full rounded-full my-2"></div>
+                <div class="my-1 gap-4 py-2 px-2 bg-white rounded-lg">
+                    <div class="flex justify-center items-center">
+                        <div id="graph-step-{id}"></div>
+                    </div>
+                    <div class="border-t-2 border-[#DBDBDB] w-full rounded-full my-2"></div>
+                    <span class="flex text-xs text-[#BDBACA] justify-left">
+                        {description}
+                    </span>
+                </div>
+            </div>
+        </div>
+    """
+    container = document.getElementById("container_step_by_step")
+    container.insertAdjacentHTML("beforeend", html_content)
+    target = f"graph-step-{id}"
+    plt.clf() 
+    pos = nx.planar_layout(G)  
+    plt.figure(figsize=(6, 4))  
+    nx.draw(
+        G,
+        pos,
+        with_labels=True,
+        node_color="lightblue",
+        edge_color="gray",
+        node_size=2000,
+        font_size=12,
+    )
+    weights = nx.get_edge_attributes(G, "w")
+    nx.draw_networkx_edge_labels(
+        G, pos, edge_labels=weights, font_color="red", font_size=12
+    )
+    display(plt, target=target, append=False)
+    plt.close()
+
+G = nx.DiGraph()
+
+@when("click", "#add-edge")
+def add_edge():
+    global G
+    source = document.getElementById("source").value
+    target = document.getElementById("target").value
+    weight = document.getElementById("weight").value
+    if source and target and weight:
+        G.add_edge(source, target, w=float(weight))
+        log_in_box(f"Aresta adicionada: {source} → {target} (peso={weight})")
+        draw_graph(G, "Grafo com Arestas", append=False, target="original-graph-area")
+
+@when("click", "#reset-graph")
+def reset_graph():
+    global G
+    G.clear()
+    document.getElementById("log-output").value = ""
+    draw_graph(G, "Grafo Resetado", append=False)
+    log_in_box("Grafo resetado.")
+
+def export_graph(event):
+    log_in_box("Exportando grafo...")
+    global G
+    if G.number_of_nodes() == 0:
+        log_in_box("[ERRO] O grafo está vazio.")
+        return
+
+    # Converte o grafo para JSON
+    data = json_graph.node_link_data(G, edges="links")
+    json_data = json.dumps(data, indent=4)
+
+    # Cria um link de download no navegador
+    blob = Blob.new([json_data], {"type": "application/json"})
+    url = URL.createObjectURL(blob)
+
+    # Configura e dispara o download
+    link = document.createElement("a")
+    link.href = url
+    link.download = "graph.json"
+    link.click()
+    URL.revokeObjectURL(url)
+
+    log_in_box("Download do grafo iniciado.")
+
+@when("click", "#export-graph-arborescencia")
+def export_arborescencia_graph(event):
+    log_in_box("Botão 'Exportar Arborescência' clicado.")
+    export_graph()
+
+# @when("click", "#export-graph-original")
+# def export_original_graph(event):
+#     log_in_box("Botão 'Exportar Original' clicado.")
+#     export_graph()
+
+@when("click", "#load-test-graph")
+def load_test_graph(event):
+    global G
+    G.clear()
+    # G.add_edge("r0", "B", w=10)
+    # G.add_edge("r0", "A", w=2)
+    # G.add_edge("r0", "C", w=10)
+    # G.add_edge("B", "A", w=1)
+    # G.add_edge("A", "C", w=4)
+    # G.add_edge("C", "D", w=2)
+    # G.add_edge("D", "B", w=2)
+    # G.add_edge("B", "E", w=8)
+    # G.add_edge("C", "E", w=4)
+    G.add_edges_from([('0', '1', {"w": 3}),
+                    ('0', '2', {"w": 6}),
+                    ('1', '2', {"w": 1}),
+                    ('2', '1', {'w': 1}),
+                    ('1', '3', {"w": 2}),
+                    ('1', '4', {"w": 10}),
+                    ('3', '4', {"w": 1}),
+                    ('4', '2', {"w": 10}),
+                    ('4', '5', {'w': 1}),
+                    ('5', '6', {'w': 1}),
+                    ('6', '4', {'w': 1}),
+                    ('6', '7', {'w': 8}),
+                    ('7', '8', {'w': 4}),
+                    ('8', '6', {'w': 5}),
+                    ('6', '8', {'w': 2})])
+    
+    input_element = document.getElementById("root-node")
+    input_element.value = "0"
+
+    log_in_box("Grafo de teste carregado.")
+    draw_graph(G, "Grafo de Teste (DG)", append=False, target="original-graph-area")
+
+@when("click", "#run-algorithm")
+def run_algorithm(event):
+    global G
+    r0 = document.getElementById("root-node").value or "r0"
+    if r0 not in G:
+        alert(f"[ERRO] O nó raiz '{r0}' deve existir no grafo.")
+        return
+
+    log_in_box("Executando algoritmo de Chu-Liu...")
+    T = find_optimum_arborescence(G, r0, draw_fn=draw_graph, draw_step=draw_step, log=log_in_box)
+    draw_graph(T, "Arborescência Ótima", append=False, target='arborescence-graph-area')
+    log_in_box("Execução concluída com sucesso.")

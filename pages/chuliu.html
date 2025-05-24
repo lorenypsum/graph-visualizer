@@ -11,6 +11,11 @@
 </head>
 
 <body class="flex min-h-screen text-gray-800 bg-gray-100">
+    <style>
+        .py-error, .py-terminal-error {
+            display: none !important;
+        }
+    </style>
     <div class="absolute top-[100px] w-full h-[1px] bg-[#DBDBDB]"></div>
 
     <!-- MENU LATERAL -->
@@ -27,9 +32,10 @@
             <div class="col-span-6 p-2">
                 <span class="text-sm text-gray-500">
                     1. Desenhe um grafo,
-                    <span id="load-test-graph" class="text-[#5A3CE5] hover:underline">carregue</span>
+                    <span id="load-test-graph" class="cursor-pointer text-[#5A3CE5] hover:underline">carregue</span>
                     um exemplo ou
-                    <span id="show-ready-arborescence" class="text-[#5A3CE5] hover:underline">importe</span>
+                    <span id="upload-graph" class="cursor-pointer text-[#5A3CE5] hover:underline">importe</span>
+                    <input type="file" id="file-input" style="display: none;" />
                     um grafo já existente.
                 </span>
                 <div class="grid grid-cols-4">
@@ -63,7 +69,6 @@
                 <span class="text-sm text-gray-500">2. Escolha o nó raiz</span>
                 <div class="mx-4 py-4 px-2">
                     <input type="text" id="root-node"
-                        value="r0"
                         class="w-full p-2 rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="node" />
                 </div>
@@ -74,7 +79,7 @@
             <div class="col-span-2 p-2">
                 <span class="text-sm text-gray-500">3. Execute o algoritmo</span>
                 <div class="py-4 px-2 flex justify-center items-center gap-1">
-                    <img src="../assets/run.png" alt="Executar" id="run-algorithm"
+                    <img id="run-algorithm" src="../assets/run.png" alt="Executar"
                         class="cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
                 </div>
             </div>
@@ -86,7 +91,7 @@
             <div class="col-span-6 p-4">
                 <span class="mb-50 text-xl text-[#9993B7]">Grafo Original</span>
                 <div class="my-3 mt-50 py-4 px-50 bg-white rounded-lg">
-                    <img id="grafo-original" src="../assets/graph_image.png" alt="Grafo Original" class="mx-auto" />
+                    <!-- <img id="grafo-original" src="../assets/graph_image.png" alt="Grafo Original" class="mx-auto" /> -->
                     <py-script id="original-graph-area"></py-script>
                 </div>
             </div>
@@ -104,8 +109,8 @@
             <div class="col-span-6 p-4">
                 <span class="mb-50 text-xl text-[#9993B7]">Arborescência</span>
                 <div class="my-3 mt-50 py-4 px-50 bg-white rounded-lg">
-                    <img id="grafo-arborescencia" src="../assets/graph_image.png" alt="Arborescência" class="mx-auto" />
-                    <py-script id="graph-area"></py-script>
+                    <!-- <img id="grafo-arborescencia" src="../assets/graph_image.png" alt="Arborescência" class="mx-auto" /> -->
+                    <py-script id="arborescence-graph-area"></py-script>
                 </div>
             </div>
             <div class="col-span-2 p-4">
@@ -133,11 +138,6 @@
                     class="p-4 bg-[#EEEEEE] text-sm text-gray-400 rounded-b-md hidden transition-all duration-500 ease-in-out">
                     <textarea id="log-output" readonly
                         class="w-full p-3 rounded h-40 bg-[#EEEEEE] text-sm text-gray-400"></textarea>
-                    <!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                        voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-                        non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p> -->
                 </div>
             </div>
         </div>
@@ -146,106 +146,8 @@
     <!-- Passo a Passo -->
     <div id="right-sidebar" class="w-80 border-l-[1px] bg-[#E5E5E5] border-[#DBDBDB]">
         <span class="flex items-center gap-6 p-8 top-6 text-lg text-[#4B4277] font-medium">Passo A Passo</span>
-        <div class="my-6 mx-4 gap-4 py-2 px-2 bg-[#F5F5F5] rounded-lg">
-            <div id="step_1" class="mb-5">
-                <div class="btn_step grid grid-cols-10 gap-1 hover:bg-[#e3e3e3] rounded px-1 py-[1px]">
-                    <div class="my-1 col-span-2">
-                        <div
-                            class="flex items-center justify-center w-5 h-5 bg-[#787486] text-white text-[12px] rounded-full">
-                            <span>1</span>
-                        </div>
-                    </div>
-                    <div class="col-span-6">
-                        <span class="flex text-base text-[#787486] justify-left">Título do passo 1</span>
-                    </div>
-                    <div class="my-1 col-span-2">
-                        <div class="flex justify-end items-center">
-                            <img id="step_1_icon" src="../assets/plus.png" alt="Contrair"
-                                class="cursor-pointer w-5 h-5 hover:opacity-80"
-                                onclick="toggleStep('step_1', 'step_1_icon')" />
-                        </div>
-                    </div>
-                </div>
-                <div class="detalhes hidden transition-all duration-500 ease-in-out">
-                    <div class="border-t-2 border-[#5030E5] w-full rounded-full my-2"></div>
-                    <div class="my-1 gap-4 py-2 px-2 bg-white rounded-lg">
-                        <div class="flex justify-center items-center">
-                            <img src="../assets/image.png" alt="Contrair" class="" />
-                        </div>
-                        <div class="border-t-2 border-[#DBDBDB] w-full rounded-full my-2"></div>
-                        <span class="flex text-xs text-[#BDBACA] justify-left">Lorem ipsum dolor sit amet consectetur
-                            adipiscing
-                            elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div id="step_2" class="mb-5">
-                <div class="btn_step grid grid-cols-10 gap-1 hover:bg-[#e3e3e3] rounded px-1 py-[1px]">
-                    <div class="my-1 col-span-2">
-                        <div
-                            class="flex items-center justify-center w-5 h-5 bg-[#787486] text-white text-[12px] rounded-full">
-                            <span>2</span>
-                        </div>
-                    </div>
-                    <div class="col-span-6">
-                        <span class="flex text-base text-[#787486] justify-left">Título do passo 2</span>
-                    </div>
-                    <div class="my-1 col-span-2">
-                        <div class="flex justify-end items-center">
-                            <img id="step_2_icon" src="../assets/plus.png" alt="Contrair"
-                                class="cursor-pointer w-5 h-5 hover:opacity-80"
-                                onclick="toggleStep('step_2', 'step_2_icon')" />
-                        </div>
-                    </div>
-                </div>
-                <div class="detalhes hidden transition-all duration-500 ease-in-out">
-                    <div class="border-t-2 border-[#5030E5] w-full rounded-full my-2"></div>
-                    <div class="my-1 gap-4 py-2 px-2 bg-white rounded-lg">
-                        <div class="flex justify-center items-center">
-                            <img src="../assets/image.png" alt="Contrair" class="" />
-                        </div>
-                        <div class="border-t-2 border-[#DBDBDB] w-full rounded-full my-2"></div>
-                        <span class="flex text-xs text-[#BDBACA] justify-left">Lorem ipsum dolor sit amet consectetur
-                            adipiscing
-                            elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div id="step_3" class="mb-5">
-                <div class="btn_step grid grid-cols-10 gap-1 hover:bg-[#e3e3e3] rounded px-1 py-[1px]">
-                    <div class="my-1 col-span-2">
-                        <div
-                            class="flex items-center justify-center w-5 h-5 bg-[#787486] text-white text-[12px] rounded-full">
-                            <span>3</span>
-                        </div>
-                    </div>
-                    <div class="col-span-6">
-                        <span class="flex text-base text-[#787486] justify-left">Título do passo 3</span>
-                    </div>
-                    <div class="my-1 col-span-2">
-                        <div class="flex justify-end items-center">
-                            <img id="step_3_icon" src="../assets/plus.png" alt="Contrair"
-                                class="cursor-pointer w-5 h-5 hover:opacity-80"
-                                onclick="toggleStep('step_3', 'step_3_icon')" />
-                        </div>
-                    </div>
-                </div>
-                <div class="detalhes hidden transition-all duration-500 ease-in-out">
-                    <div class="border-t-2 border-[#5030E5] w-full rounded-full my-2"></div>
-                    <div class="my-1 gap-4 py-2 px-2 bg-white rounded-lg">
-                        <div class="flex justify-center items-center">
-                            <img src="../assets/image.png" alt="Contrair" class="" />
-                        </div>
-                        <div class="border-t-2 border-[#DBDBDB] w-full rounded-full my-2"></div>
-                        <span class="flex text-xs text-[#BDBACA] justify-left">Lorem ipsum dolor sit amet consectetur
-                            adipiscing
-                            elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium
-                        </span>
-                    </div>
-                </div>
-            </div>
+        <div id="container_step_by_step" class="my-6 mx-4 gap-4 py-2 px-2 bg-[#F5F5F5] rounded-lg">
+            
         </div>
 
     </div>
@@ -253,7 +155,7 @@
     <!-- Scripts -->
     <script src="../scripts/sidebar.js"></script>
     <script src="../scripts/main.js"></script>
-    <script type="py" src="../scripts/chuliu.py" config="./pyscript.json"></script>
+    <script type="py" src="../scripts/chuliu_page.py" config="../scripts/pyscript.json"></script>
 </body>
 
 </html>

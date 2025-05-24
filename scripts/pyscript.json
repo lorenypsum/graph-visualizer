@@ -1,12 +1,14 @@
 {
     "packages": [
         "networkx",
-        "matplotlib"
+        "matplotlib",
+        "numpy", 
+        "pandas"
     ],
     "fetch": [{
         "files": [
-            "./chuliu.py",
-            "./andrasfrank.py"
+            "./chuliu_page.py",
+            "./chuliu_alg.py"
         ]
     }]
 }
