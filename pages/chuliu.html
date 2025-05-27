@@ -90,21 +90,22 @@
             <div class="col-span-2 p-4"></div>
             <div class="col-span-6 p-4">
                 <span class="mb-50 text-xl text-[#9993B7]">Grafo Original</span>
-                <div class="my-3 mt-50 py-4 px-50 bg-white rounded-lg">
+                <div class="my-3 mt-50 py-4 px-50 rounded-lg bg-white">
                     <!-- <img id="grafo-original" src="../assets/graph_image.png" alt="Grafo Original" class="mx-auto" /> -->
+                    <span id="draw_warning" class="text-sm font-light text-[#787486] mx-9">Desenhe ou importe um grafo.</span>
                     <py-script id="original-graph-area"></py-script>
                 </div>
             </div>
             <div class="col-span-2 p-4">
                 <div class="py-4 px-2 flex justify-left items-center gap-1">
                     <img src="../assets/download.png" alt="Download" id="export-graph-original"
-                        class="my-5 cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
+                        class="my-5 cursor-pointer w-8 h-8 rounded-lg hover:opacity-80 hidden" />
                 </div>
             </div>
 
         </div>
         <!-- Arborescência -->
-        <div class="grid grid-cols-10 gap-4 py-4 px-4">
+        <div id="arborescence-section" class="grid grid-cols-10 gap-4 py-4 px-4 hidden">
             <div class="col-span-2 p-4"></div>
             <div class="col-span-6 p-4">
                 <span class="mb-50 text-xl text-[#9993B7]">Arborescência</span>
@@ -123,7 +124,7 @@
         </div>
 
         <!-- Logs de execução -->
-        <div class="grid grid-cols-10 gap-4 py-4 px-4">
+        <div id="log-section" class="grid grid-cols-10 gap-4 py-4 px-4 hidden">
             <div class="col-span-2 p-4"></div>
             <div class="col-span-6 p-4">
                 <button id="collapser-button"
@@ -144,13 +145,18 @@
     </div>
 
     <!-- Passo a Passo -->
-    <div id="right-sidebar" class="w-80 border-l-[1px] bg-[#E5E5E5] border-[#DBDBDB]">
-        <span class="flex items-center gap-6 p-8 top-6 text-lg text-[#4B4277] font-medium">Passo A Passo</span>
-        <div id="container_step_by_step" class="my-6 mx-4 gap-4 py-2 px-2 bg-[#F5F5F5] rounded-lg">
-            
+    <div id="right-sidebar" class="w-80 transition-all duration-300 border-l-[1px] bg-[#E5E5E5] border-[#DBDBDB] overflow-hidden">
+        <div id="title_step_area" class="flex items-center gap-6 py-8 mx-4 top-6">
+            <button id="toggle-sidebar" class="text-right text-[#4B4277] hover:text-[#2d255d]">
+                <img id="collapser-icon" src="../assets/back_arrow_right.png" alt="Contrair" class="w-5 h-5 hover:opacity-80" />
+            </button>
+            <span id="title_step" class="text-lg text-[#4B4277] font-medium">Passo A Passo</span>        
         </div>
-
+        <div id="container_step_by_step" class="my-6 mx-4 gap-4 py-2 px-2 bg-[#F5F5F5] rounded-lg">
+            <span id="step_warning" class="text-sm font-light text-[#787486]">Execute o algoritmo para visualizar o passo-a-passo</span>
+        </div>
     </div>
+    
 
     <!-- Scripts -->
     <script src="../scripts/sidebar.js"></script>

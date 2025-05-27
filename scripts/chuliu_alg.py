@@ -134,7 +134,7 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, id=1, draw_fn=Non
     G_arb = G.copy()
 
     if draw_step:
-        draw_step(G_arb, id=id, title=f"Após remoção de entradas")
+        draw_step(G_arb, id=id, title = f"Após remoção de entradas", description=f"Removendo arestas de entrada de {r0} para evitar ciclos.")
 
     for v in G_arb.nodes:
         if v != r0:
@@ -142,13 +142,13 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, id=1, draw_fn=Non
 
         id=id + 1
         if draw_step:
-            draw_step(G_arb, id=id, title = f"Após ajuste de pesos")
+            draw_step(G_arb, id=id, title = f"Ajuste de pesos", description=f"Ajustando pesos das arestas de entrada de {v}")
 
     F_star = get_Fstar(G_arb, r0)
 
     id=id + 1
     if draw_step:
-        draw_step(F_star, id=id, title = f"{indent}F_star")
+        draw_step(F_star, id=id, title = f"F_star", description=f"Conjunto F* (arestas de custo zero após ajuste dos pesos de entrada de cada vértice, exceto a raiz).")
 
     if nx.is_arborescence(F_star):
         for u, v in F_star.edges:
@@ -186,6 +186,7 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, id=1, draw_fn=Non
        
         F_prime.remove_node(contracted_label)
         log(f"{indent}  Nó contraído '{contracted_label}' removido.")
+        
         # Atualiza os pesos das arestas com os pesos originais de G
         for u, v in F_prime.edges:
             F_prime[u][v]["w"] = G[u][v]["w"]
