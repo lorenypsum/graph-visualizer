@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Andras Frank</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://pyscript.net/releases/2025.3.1/core.css" />
+    <script type="module" src="https://pyscript.net/releases/2025.3.1/core.js"></script>
+</head>
+
+<body class="flex min-h-screen text-gray-800 bg-gray-100">
+    <style>
+        .py-error, .py-terminal-error {
+            display: none !important;
+        }
+    </style>
+    <div class="absolute top-[100px] w-full h-[1px] bg-[#DBDBDB]"></div>
+
+    <!-- MENU LATERAL -->
+    <div id="sidebar"></div>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div id="main-content" class="flex-1 bg-[#E5E5E5] p-6">
+        <span class="flex items-center gap-4 mb-10 text-4xl text-[#352B67]">Andras Frank</span>
+        <!-- <div class="border-t-2 border-[#DBDBDB] w-full my-4"></div> -->
+
+        <!-- Inputs -->
+        <div class="grid grid-cols-10 gap-1">
+            <!-- Coluna 1 -->
+            <div class="col-span-6 p-2">
+                <span class="text-sm text-gray-500">
+                    1. Desenhe um grafo,
+                    <span id="load-test-graph" class="cursor-pointer text-[#5A3CE5] hover:underline">carregue</span>
+                    um exemplo ou
+                    <span id="import-graph" class="cursor-pointer text-[#5A3CE5] hover:underline">importe</span>
+                    <input type="file" id="file-input" style="display: none;" />
+                    um grafo já existente.
+                </span>
+                <div class="grid grid-cols-4">
+                    <div class="col-span-1 py-4 px-2">
+                        <input type="text" id="source"
+                            class="w-full p-2 rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="origem" />
+                    </div>
+                    <div class="col-span-1 py-4 px-2">
+                        <input type="text" id="target"
+                            class="w-full p-2 rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="destino" />
+                    </div>
+                    <div class="col-span-1 py-4 px-2">
+                        <input type="number" id="weight" min="0"
+                            class="w-full p-2 rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="peso" />
+                    </div>
+                    <div class="col-span-1 flex justify-center items-center gap-1">
+                        <img src="../assets/edit.png" alt="Adicionar" id="add-edge"
+                            class="cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
+                        <img src="../assets/delete.png" alt="Excluir" id="reset-graph"
+                            class="cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Coluna 2 -->
+            <div class="col-span-2 p-2">
+                <span class="text-sm text-gray-500">2. Escolha o nó raiz</span>
+                <div class="mx-4 py-4 px-2">
+                    <input type="text" id="root-node"
+                        class="w-full p-2 rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="node" />
+                </div>
+
+            </div>
+
+            <!-- Coluna 3 -->
+            <div class="col-span-2 p-2">
+                <span class="text-sm text-gray-500">3. Execute o algoritmo</span>
+                <div class="py-4 px-2 flex justify-center items-center gap-1">
+                    <img id="run-algorithm" src="../assets/run.png" alt="Executar"
+                        class="cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Grafo original -->
+        <div class="grid grid-cols-10 gap-4 py-4 px-4">
+            <div class="col-span-2 p-4"></div>
+            <div class="col-span-6 p-4">
+                <span class="mb-50 text-xl text-[#9993B7]">Grafo Original</span>
+                <div class="my-3 mt-50 py-4 px-50 rounded-lg bg-white">
+                    <!-- <img id="grafo-original" src="../assets/graph_image.png" alt="Grafo Original" class="mx-auto" /> -->
+                    <span id="draw_warning" class="text-sm font-light text-[#787486] mx-9">Desenhe ou importe um grafo.</span>
+                    <py-script id="original-graph-area"></py-script>
+                </div>
+            </div>
+            <div class="col-span-2 p-4">
+                <div class="py-4 px-2 flex justify-left items-center gap-1">
+                    <img src="../assets/download.png" alt="Download" id="export-graph-original"
+                        class="my-5 cursor-pointer w-8 h-8 rounded-lg hover:opacity-80 hidden" />
+                </div>
+            </div>
+
+        </div>
+        <!-- Arborescência -->
+        <div id="arborescence-section" class="grid grid-cols-10 gap-4 py-4 px-4 hidden">
+            <div class="col-span-2 p-4"></div>
+            <div class="col-span-6 p-4">
+                <span class="mb-50 text-xl text-[#9993B7]">Arborescência</span>
+                <div class="my-3 mt-50 py-4 px-50 bg-white rounded-lg">
+                    <!-- <img id="grafo-arborescencia" src="../assets/graph_image.png" alt="Arborescência" class="mx-auto" /> -->
+                    <py-script id="arborescence-graph-area"></py-script>
+                </div>
+            </div>
+            <div class="col-span-2 p-4">
+                <div class="py-4 px-2 flex justify-left items-center gap-1">
+                    <img src="../assets/download.png" alt="Download" id="export-graph-arborescencia"
+                        class="my-5 cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Logs de execução -->
+        <div id="log-section" class="grid grid-cols-10 gap-4 py-4 px-4 hidden">
+            <div class="col-span-2 p-4"></div>
+            <div class="col-span-6 p-4">
+                <button id="collapser-button"
+                    class="w-full bg-[#EEEEEE] text-[#948EB3] py-2 px-4 rounded-t-md text-left flex justify-between items-center"
+                    onclick="toggleCollapser()">
+                    Log de Execução
+                    <img id="collapser-icon" src="../assets/plus.png" alt="Contrair" class="w-5 h-5 hover:opacity-80" />
+                </button>
+
+                <!-- Conteúdo colapsável -->
+                <div id="log-collapser-content"
+                    class="p-4 bg-[#EEEEEE] text-sm text-gray-400 rounded-b-md hidden transition-all duration-500 ease-in-out">
+                    <textarea id="log-output" readonly
+                        class="w-full p-3 rounded h-40 bg-[#EEEEEE] text-sm text-gray-400"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Passo a Passo -->
+    <div id="right-sidebar" class="w-80 transition-all duration-300 border-l-[1px] bg-[#E5E5E5] border-[#DBDBDB] overflow-hidden">
+        <div id="title_step_area" class="flex items-center gap-6 py-8 mx-4 top-6">
+            <button id="toggle-sidebar" class="text-right text-[#4B4277] hover:text-[#2d255d]">
+                <img id="collapser-icon" src="../assets/back_arrow_right.png" alt="Contrair" class="w-5 h-5 hover:opacity-80" />
+            </button>
+            <span id="title_step" class="text-lg text-[#4B4277] font-medium">Passo A Passo</span>        
+        </div>
+        <div id="container_step_by_step" class="my-6 mx-4 gap-4 py-2 px-2 bg-[#F5F5F5] rounded-lg">
+            <span id="step_warning" class="text-sm font-light text-[#787486]">Execute o algoritmo para visualizar o passo-a-passo</span>
+        </div>
+    </div>
+    
+
+    <!-- Scripts -->
+    <script src="../scripts/sidebar.js"></script>
+    <script src="../scripts/main.js"></script>
+    <script type="py" src="../scripts/chuliu_page.py" config="../scripts/pyscript.json"></script>
+</body>
+
+</html>
