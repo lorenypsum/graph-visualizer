@@ -8,7 +8,9 @@
     "fetch": [{
         "files": [
             "./chuliu_page.py",
-            "./chuliu_alg.py"
+            "./chuliu_alg.py",
+            "./andrasfrank_alg.py",
+            "./andrasfrank_page.py"
         ]
     }]
 }

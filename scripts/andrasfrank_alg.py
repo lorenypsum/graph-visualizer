@@ -1,18 +1,9 @@
 import networkx as nx
 
-print("Hello, I am Andras Frank.")
+id = 1
 
-G = nx.DiGraph()
-G.add_edge("r0", "A", w=2)
-G.add_edge("r0", "B", w=10)
-G.add_edge("r0", "C", w=10)
-G.add_edge("A", "C", w=4)
-G.add_edge("B", "A", w=1)
-G.add_edge("C", "D", w=2)
-G.add_edge("D", "B", w=2)
-G.add_edge("B", "E", w=8)
-G.add_edge("C", "E", w=4)
-
+def log_dummy(msg):
+    print(msg)
 
 def build_D_zero(D):
     """
@@ -74,12 +65,12 @@ def has_arborescence(D, r0):
     return tree.number_of_nodes() == D.number_of_nodes() 
 
 
-def phase1_find_minimum_arborescence(D_original, r0):
+def phase1_find_minimum_arborescence(D_original, r0, draw_step=None, log=log_dummy):
     """
     Find the minimum arborescence in a directed graph D with root r0.
     The function returns the minimum arborescence as a list of arcs.
     """
-
+    global id
     D = D_original.copy()
     A_zero = []
     D_zero, A_zero = build_D_zero(D)
@@ -90,18 +81,18 @@ def phase1_find_minimum_arborescence(D_original, r0):
     while continue_execution:
 
         iteration += 1
-        print(f"\n🔄 Iteração {iteration} ----------------------------")
+        log(f"Començando a iteração {iteration} da fase 1 do algoritmo de Andras Frank.")
 
         continue_execution = False
         for v in D.nodes():
             if v == r0:
                 continue
 
-            print(f"🔍 Verificando nó: {v}")
+            log(f"🔍 Verificando nó: {v}")
             X = nx.ancestors(D_zero, v)  # Obter ancestrais de v
 
             if r0 in X:
-                print(f"   ⚠️ {v} é ancestral de {r0}. Pulando...")
+                log(f"   ⚠️ {v} é ancestral de {r0}. Pulando...")
                 continue
 
             else:
@@ -110,36 +101,38 @@ def phase1_find_minimum_arborescence(D_original, r0):
 
                 assert X is not None, "X não pode ser vazio." # TODO: 
 
-                print(f" ↳ Conjunto X (ancestrais de {v} sem a raiz): {X}")
+                log(f" ↳ Conjunto X (ancestrais de {v} sem a raiz): {X}")
 
                 arcs = get_arcs_entering_X(D, X)
-                print(f" ↳ Arcos que entram em X: {arcs}")
-
-                # TODO:  NÃO FAZER ISSO AGORA
-                # if not arcs:
-                #     print(f"   ⚠️ Nenhum arco entra em X.")
-                #     continue
+                log(f" ↳ Arcos que entram em X: {arcs}")
 
                 min_weight = get_minimum_weight_cut(arcs)
 
-                print(f" ✅ Peso mínimo encontrado: {min_weight}")
+                log(f" ✅ Peso mínimo encontrado: {min_weight}")
                 if min_weight:
                     continue_execution = True
 
                 update_weights_in_X(D, X, min_weight, A_zero, D_zero)
-                print(f"   🔄 Pesos atualizados nos arcos que entram em X")
-           
+                log(f"   🔄 Pesos atualizados nos arcos que entram em X")
+
+            if draw_step:
+                draw_step(D.copy(), id=id, title = f"Verificando nó: {v}", description=f"Pesos atualizados nos arcos que entram em X (Interação {iteration} da fase 1)")
+                id = id + 1
+
         if iteration > len(D.edges()):
-            print("🚨 Limite de iterações excedido. Pode haver loop infinito.")
+            log("🚨 Limite de iterações excedido. Pode haver loop infinito.")
             break
 
     return A_zero
 
-def phase2_find_minimum_arborescence(D_original, r0, A_zero):
+def phase2_find_minimum_arborescence(D_original, r0, A_zero, draw_step=None, log=log_dummy):
     """
     Find the minimum arborescence in a directed graph D with root r0.
     The function returns the minimum arborescence as a DiGraph.
     """
+    global id
+    log(f"Començando a fase 2 do algoritmo de Andras Frank.")
+
     Arb = nx.DiGraph()
     
     # Adiciona-se o nó raiz
@@ -154,35 +147,30 @@ def phase2_find_minimum_arborescence(D_original, r0, A_zero):
             if u in Arb.nodes() and v not in Arb.nodes():
                 edge_data = D_original.get_edge_data(u, v)
                 Arb.add_edge(u, v, **edge_data)
+                log(f"Iteração {i+1}: Aresta adicionada: {u} -> {v} com peso {edge_data['w']}")
+                if draw_step:
+                    draw_step(Arb, id=id, title = f"Interação {i} da fase 2", description=f"Aresta adicionada: {u} -> {v} com peso {edge_data['w']}")
+                    id = id + 1
                 progress = True
                 break  # Reinicia o loop após adicionar uma aresta
+        
 
         # Se não adicionar nenhuma aresta, termina
         if not progress:
             break
+        log(f"Arborescência parcial após iteração {i+1}: {Arb.edges(data=True)}")
 
     return Arb
             
-# Construir um Digrafo, comecando com r0.
-# Ver na lista A_zero, procurar o primeiro arco da lista que tem uma ponta em r0 e outra fora.
-# Dando um nome pro conjunto, a biblioteca NetworkX deve ter uma funcao para dectectar se um arco:
-# Sendo T o original.
-# for i in range(len(A_zero)):
-#     for a in A_zero[i]:
-#         if a[0] == r0:
-#             (u, v) = a
-#             if u in T.nodes() and v not in T.nodes():
-#                 D.add_edge(u, v, **data)
-#                 return D
-
-def find_minimum_arborescence(G, r0="r0"):
+def find_minimum_arborescence(G, r0="r0", draw_step=None, log=log_dummy):
+    T = nx.DiGraph()
     if has_arborescence(G, r0):
-        print("O grafo possui uma arborescência.")
-        A_zero = phase1_find_minimum_arborescence(G, "r0")
-        print("A_zero:", A_zero)
-        minimum_arborescence_phase_2 = phase2_find_minimum_arborescence(G, "r0", A_zero)
-        print("Arborescência mínima encontrada:", minimum_arborescence_phase_2.edges(data=True))
+        log("O grafo possui uma arborescência.")
+        A_zero = phase1_find_minimum_arborescence(G, "r0", draw_step=draw_step, log=log)
+        log(f"A_zero: {A_zero}")
+        T = phase2_find_minimum_arborescence(G, "r0", A_zero, draw_step=draw_step, log=log)
+        log(f"Arborescência mínima encontrada:{T.edges(data=True)}")
     else:
-        print("O grafo não possui uma arborescência.")
+        log("O grafo não possui uma arborescência.")
 
-    return minimum_arborescence_phase_2
+    return T

@@ -6,7 +6,7 @@ import json
 import matplotlib as mpl
 mpl.use('Agg')
 import matplotlib.pyplot as plt
-from chuliu_alg import find_optimum_arborescence
+from andrasfrank_alg import find_minimum_arborescence
 
 def log_in_box(msg: str):
     log_box = document.getElementById("log-output")
@@ -202,25 +202,20 @@ def load_test_graph(event):
     global O
     G.clear()
     O.clear()
-    G.add_edges_from([('0', '1', {"w": 3}),
-                    ('0', '2', {"w": 6}),
-                    ('1', '2', {"w": 1}),
-                    ('2', '1', {'w': 1}),
-                    ('1', '3', {"w": 2}),
-                    ('1', '4', {"w": 10}),
-                    ('3', '4', {"w": 1}),
-                    ('4', '2', {"w": 10}),
-                    ('4', '5', {'w': 1}),
-                    ('5', '6', {'w': 1}),
-                    ('6', '4', {'w': 1}),
-                    ('6', '7', {'w': 8}),
-                    ('7', '8', {'w': 4}),
-                    ('8', '6', {'w': 5}),
-                    ('6', '8', {'w': 2})])
+    G = nx.DiGraph()
+    G.add_edge("r0", "A", w=2)
+    G.add_edge("r0", "B", w=10)
+    G.add_edge("r0", "C", w=10)
+    G.add_edge("A", "C", w=4)
+    G.add_edge("B", "A", w=1)
+    G.add_edge("C", "D", w=2)
+    G.add_edge("D", "B", w=2)
+    G.add_edge("B", "E", w=8)
+    G.add_edge("C", "E", w=4)
     O = G.copy()
     
     input_element = document.getElementById("root-node")
-    input_element.value = "0"
+    input_element.value = "r0"
 
     log_in_box("Grafo de teste carregado.")
     draw_graph(G, "Grafo de Teste", append=False, target="original-graph-area")
@@ -297,8 +292,11 @@ def run_algorithm(event):
         alert(f"[ERRO] O nó raiz '{r0}' deve existir no grafo.")
         return
 
-    log_in_box("Executando algoritmo de Chu-Liu...")
-    T = find_optimum_arborescence(G, r0, draw_fn=draw_graph, draw_step=draw_step, log=log_in_box)
-    draw_graph(T, "Arborescência Ótima", append=False, target='arborescence-graph-area')
-    fillScreen()
-    log_in_box("Execução concluída com sucesso.")
+    log_in_box("Executando algoritmo de Andras Frank...")
+    T = find_minimum_arborescence(G, r0, draw_step=draw_step, log=log_in_box)
+    if T.number_of_nodes() == 0:
+        log_in_box("[ERRO] O grafo não possui uma arborescência.")
+    else:
+        draw_graph(T, "Arborescência Ótima", append=False, target='arborescence-graph-area')
+        fillScreen()
+        log_in_box("Execução concluída com sucesso.")
