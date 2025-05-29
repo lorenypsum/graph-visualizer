@@ -299,6 +299,9 @@ def run_algorithm(event):
 
     log_in_box("Executando algoritmo de Chu-Liu...")
     T = find_optimum_arborescence(G, r0, draw_fn=draw_graph, draw_step=draw_step, log=log_in_box)
-    draw_graph(T, "Arborescência Ótima", append=False, target='arborescence-graph-area')
-    fillScreen()
-    log_in_box("Execução concluída com sucesso.")
+    if T.number_of_nodes() == 0:
+        log_in_box("[ERRO] O grafo não possui uma arborescência.")
+    else:
+        draw_graph(T, "Arborescência Ótima", append=False, target='arborescence-graph-area')
+        fillScreen()
+        log_in_box("Execução concluída com sucesso.")
