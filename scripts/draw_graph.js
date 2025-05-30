@@ -228,6 +228,23 @@ document.addEventListener("DOMContentLoaded", function () {
             menu.remove();
             document.removeEventListener('click', handler);
         });
+    
+        // Remove menu ao clicar fora dele
+        setTimeout(() => {
+            document.addEventListener('click', function handler(e) {
+                if (!menu.contains(e.target)) {
+                    menu.remove();
+                    document.removeEventListener('click', handler);
+                }
+            });
+        }, 0);
+
+        // Impede que o clique no menu feche ele
+        menu.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+
+        document.body.appendChild(menu);
     }
 
     // Substitua o evento do botão direito em nó:
@@ -290,6 +307,23 @@ document.addEventListener("DOMContentLoaded", function () {
             menu.remove();
             document.removeEventListener('click', handler);
         });
+
+         // Remove menu ao clicar fora dele
+        setTimeout(() => {
+            document.addEventListener('click', function handler(e) {
+                if (!menu.contains(e.target)) {
+                    menu.remove();
+                    document.removeEventListener('click', handler);
+                }
+            });
+        }, 0);
+
+        // Impede que o clique no menu feche ele
+        menu.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+
+        document.body.appendChild(menu);
     }
 
     // Substitua o evento do botão direito em aresta:
@@ -298,4 +332,20 @@ document.addEventListener("DOMContentLoaded", function () {
         const pos = evt.originalEvent;
         showEdgeMenu(edge, pos.clientX, pos.clientY);
     });
+
+    function exportGraphToJSON() {
+        return cy.json().elements;
+    }
+
+    function updatePyScriptGraph() {
+        window.graph_json = JSON.stringify(exportGraphToJSON());
+    }
+
+    // Chame updatePyScriptGraph() sempre que houver alteração no grafo:
+    cy.on('add remove data', function() {
+        updatePyScriptGraph();
+    });
+
+    // Inicialize a variável na primeira carga
+    updatePyScriptGraph();
 });
