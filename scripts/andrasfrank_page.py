@@ -17,7 +17,8 @@ def draw_graph(G: nx.DiGraph, title="Digrafo", append=True, target="original-gra
     plt.clf()  # Limpa a figura atual
     pos = nx.planar_layout(G)  # Layout para posicionamento dos nós
     bg_color = (229/255, 229/255, 229/255)
-    plt.figure(figsize=(6, 4))  # Tamanho da figura
+    # plt.figure(figsize=(6, 4))  # Tamanho da figura
+    plt.figure(figsize=(16, 12))
     # Desenha os nós e arestas
     nx.draw(
         G,
