@@ -1,85 +1,84 @@
 import networkx as nx
 from networkx.readwrite import json_graph
-from js import Blob, URL, document, alert, FileReader
+from js import Blob, URL, document, alert, FileReader, window
 from pyscript import document, when, display
 import json
-import matplotlib as mpl
-mpl.use('Agg')
-import matplotlib.pyplot as plt
-from chuliu_alg import find_optimum_arborescence
-
-def log_in_box(msg: str):
-    pass
-    # log_box = document.getElementById("log-output")
-    # log_box.value += msg + "\n"
-    # log_box.scrollTop = log_box.scrollHeight
-
-def draw_graph(G: nx.DiGraph, title="Digrafo", append=True, target="original-graph-area"):
-    plt.clf()  # Limpa a figura atual
-    pos = nx.planar_layout(G)  # Layout para posicionamento dos nós
-    bg_color = (229/255, 229/255, 229/255)
-    plt.figure(figsize=(6, 4))  # Tamanho da figura
-    # Desenha os nós e arestas
-    nx.draw(
-        G,
-        pos,
-        with_labels=True,
-        node_color="lightblue",
-        edge_color="gray",
-        node_size=2000,
-        font_size=12,
-    )
-    weights = nx.get_edge_attributes(G, "w")
-    nx.draw_networkx_edge_labels(
-        G, pos, edge_labels=weights, font_color="red", font_size=12
-    )
-    plt.title(title)
-    display(title, target=target, append=append)
-    display(plt, target=target, append=append)
-    ax = plt.gca() 
-    ax.set_facecolor("#e5e5e5")
-    plt.close()  # Fecha a figura para liberar memória
+# import matplotlib as mpl
+# mpl.use('Agg')
+# import matplotlib.pyplot as plt
 
 G = nx.DiGraph()
 O = nx.DiGraph()
 T = nx.DiGraph()
 
-@when("click", "#add-edge")
-def add_edge():
-    global G
-    global O
-    source = document.getElementById("source").value
-    target = document.getElementById("target").value
-    weight = document.getElementById("weight").value
-    if source and target and weight:
-        G.add_edge(source, target, w=float(weight))
-        log_in_box(f"Aresta adicionada: {source} → {target} (peso={weight})")
-        draw_graph(G, "Grafo com Arestas", append=False, target="original-graph-area")
-        O = G.copy()
-        fillScreen()
-    else:
-        log_in_box("[ERRO] Preencha todos os campos para adicionar uma aresta.")
-    
+def get_graph_from_js():
+    data = json.loads(window.graph_json)
+    print("Grafo recebido do JS:", data)
+    return data
+
+def cytoscape_to_networkx(data):
+    G = nx.DiGraph()
+    # Adiciona nós
+    for node in data['nodes']:
+        node_id = node['data']['id']
+        G.add_node(node_id)
+    # Adiciona arestas
+    for edge in data['edges']:
+        source = edge['data']['source']
+        target = edge['data']['target']
+        weight = edge['data'].get('weight', 1)
+        # Se o peso veio como string, converte para número
+        try:
+            weight = float(weight)
+        except Exception:
+            weight = 1
+        G.add_edge(source, target, weight=weight)
+    return G
+
+def networkx_to_cytoscape(G):
+    pos = nx.spring_layout(G)  # ou outro layout de sua preferência
+    nodes = []
+    for n in G.nodes:
+        x, y = pos[n]
+        # Escale as posições para caber melhor no Cytoscape
+        nodes.append({
+            "data": {"id": str(n)},
+            "position": {"x": float(x)*300+250, "y": float(y)*300+250}
+        })
+    edges = []
+    for u, v, d in G.edges(data=True):
+        edges.append({
+            "data": {
+                "id": f"e{u}_{v}",
+                "source": str(u),
+                "target": str(v),
+                "weight": d.get("w", d.get("weight",1))
+            }
+        })
+    return {"nodes": nodes, "edges": edges}
+
+def get_networkx_graph():
+    data = get_graph_from_js()
+    G = cytoscape_to_networkx(data)
+    return G
 
 @when("click", "#reset-graph")
 def reset_graph():
+    print('Resetando o grafo...')
     global G
-    global O
-    global T
-    
-    clearScreen()
-
-    G.clear()
-    O.clear()
-    T.clear()
-    
-    draw_graph(G, "Grafo Resetado", append=False)
-    log_in_box("Grafo resetado.")
+    G = nx.DiGraph()
+    window.graph_json = json.dumps({"nodes": [], "edges": []})
+    event = window.Event.new("graph_updated")
+    document.dispatchEvent(event)
 
 def export_graph(G):
-    log_in_box("Exportando grafo...")
+    pass
+
+@when("click", "#export-graph-original")
+def export_original_graph(event):
+    global G
+    G = get_networkx_graph()
     if G.number_of_nodes() == 0:
-        log_in_box("[ERRO] O grafo está vazio.")
         return
 
     # Converte o grafo para JSON
@@ -90,21 +89,14 @@ def export_graph(G):
     blob = Blob.new([json_data], {"type": "application/json"})
     url = URL.createObjectURL(blob)
 
-    # Configura e sdispara o download
+    # Configura e dispara o download
     link = document.createElement("a")
     link.href = url
     link.download = "graph.json"
     link.click()
     URL.revokeObjectURL(url)
 
-    log_in_box("Download do grafo iniciado.")
-
-@when("click", "#export-graph-original")
-def export_original_graph(event):
-    log_in_box("Botão 'Exportar grafo original' clicado.")
-    global O
-    export_graph(O)
-
+    
 @when("click", "#import-graph")
 def open_file_selector(evt):
     document.getElementById("file-input").click()
@@ -126,10 +118,12 @@ def handle_file_upload(evt):
         G.clear()
         G = json_graph.node_link_graph(data, edges="links")
         O = G.copy()
-        draw_graph(G, "Grafo Importado", append=False, target="original-graph-area")
-        fillScreen()
-        log_in_box("Grafo importado com sucesso.")
-
+        cyto_data = networkx_to_cytoscape(G)
+        json_str = json.dumps(cyto_data)
+        window.graph_json = json_str
+        event = window.Event.new("graph_updated")
+        document.dispatchEvent(event)
+        
     reader.onload = onload
     reader.readAsText(file)
 
@@ -155,19 +149,11 @@ def load_test_graph(event):
                     ('8', '6', {'w': 5}),
                     ('6', '8', {'w': 2})])
     O = G.copy()
-    
-    input_element = document.getElementById("root-node")
-    input_element.value = "0"
-
-    log_in_box("Grafo de teste carregado.")
-    draw_graph(G, "Grafo de Teste", append=False, target="original-graph-area")
-    fillScreen()
-
-def clearScreen():
-    document.getElementById("draw_warning").classList.remove("hidden")
-    document.getElementById("export-graph-original").classList.add("hidden")
-
-def fillScreen():
-    document.getElementById("draw_warning").classList.add("hidden")
-    document.getElementById("export-graph-original").classList.remove("hidden")
+    print("Nós do NetworkX:", list(G.nodes))
+    print("Arestas do NetworkX:", list(G.edges(data=True)))
+    cyto_data = networkx_to_cytoscape(G)
+    json_str = json.dumps(cyto_data)
+    window.graph_json = json_str
+    event = window.Event.new("graph_updated")
+    document.dispatchEvent(event)
 

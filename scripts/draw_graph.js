@@ -1,9 +1,12 @@
-document.addEventListener("DOMContentLoaded", function () {
-    let nodeId = 1; 
-    let selectedNode = null;
-    const cy = cytoscape({
+let cy = null;
+function initCytoscape(elements = []) {
+    // Destroi a instância anterior, se existir
+    if (cy) {
+        cy.destroy();
+    }
+    cy = cytoscape({
         container: document.getElementById('graph-editor'),
-        elements: [],
+        elements: elements,
         style: [
             {
                 selector: 'node',
@@ -29,6 +32,19 @@ document.addEventListener("DOMContentLoaded", function () {
         ],
         layout: { name: 'preset' }
     });
+}
+
+function enableViewMode(elements) {
+    initCytoscape(elements);
+    cy.nodes().grabify(); // permite arrastar
+    cy.userPanningEnabled(true);
+    cy.userZoomingEnabled(true);
+}
+
+function enableEditMode(elements = []) {
+    let nodeId = 1; 
+    let selectedNode = null;
+    initCytoscape(elements);
     
     // Adiciona nó ao clicar no canvas
     cy.on('tap', function (event) {
@@ -113,47 +129,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
     });
-
-    // Função para remover elemento selecionado
-    // function showDeleteMenu(ele, x, y) {
-    //     // Remove menu antigo se existir
-    //     let oldMenu = document.getElementById('cy-delete-menu');
-    //     if (oldMenu) oldMenu.remove();
-
-    //     // Cria menu simples
-    //     const menu = document.createElement('div');
-    //     menu.id = 'cy-delete-menu';
-    //     menu.style.position = 'fixed';
-    //     menu.style.left = x + 'px';
-    //     menu.style.top = y + 'px';
-    //     menu.style.background = '#fff';
-    //     menu.style.border = '1px solid #ccc';
-    //     menu.style.padding = '6px 12px';
-    //     menu.style.borderRadius = '6px';
-    //     menu.style.cursor = 'pointer';
-    //     menu.style.zIndex = 1000;
-    //     menu.innerText = 'Excluir';
-
-    //     menu.onclick = function() {
-    //         ele.remove();
-    //         menu.remove();
-    //     };
-
-    //     document.body.appendChild(menu);
-
-    //     // Remove menu ao clicar fora
-    //     document.addEventListener('click', function handler() {
-    //         menu.remove();
-    //         document.removeEventListener('click', handler);
-    //     });
-    // }
-
-    // // Botão direito em nó
-    // cy.on('cxttap', 'node', function(evt) {
-    //     const node = evt.target;
-    //     const pos = evt.originalEvent;
-    //     showDeleteMenu(node, pos.clientX, pos.clientY);
-    // });
 
     // Função para menu de contexto em nó (renomear e excluir)
     function showNodeMenu(node, x, y) {
@@ -348,4 +323,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Inicialize a variável na primeira carga
     updatePyScriptGraph();
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    enableEditMode();
+});
+
+document.addEventListener("graph_updated", function () {
+    const elements = JSON.parse(window.graph_json);
+    console.log("Atualizando grafo com elementos:", elements);
+    enableEditMode(elements);
 });

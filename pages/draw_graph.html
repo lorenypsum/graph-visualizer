@@ -7,6 +7,7 @@
     <title>Desenhe seu grafo</title>
     <link rel="icon" type="image/x-icon" href="../assets/logo.png"/>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/cytoscape@3.26.0/dist/cytoscape.min.js"></script>
     <link rel="stylesheet" href="https://pyscript.net/releases/2025.3.1/core.css" />
     <script type="module" src="https://pyscript.net/releases/2025.3.1/core.js"></script>
 </head>
@@ -25,63 +26,40 @@
     <!-- CONTEÚDO PRINCIPAL -->
     <div id="main-content" class="flex-1 bg-[#E5E5E5] p-6">
         <span class="flex items-center gap-4 mb-10 text-4xl text-[#352B67]">Desenhe seu grafo</span>
-        <!-- <div class="border-t-2 border-[#DBDBDB] w-full my-4"></div> -->
-
         <!-- Inputs -->
-        <div class="grid grid-cols-10 gap-4">
-            <div class="col-span-2 p-4"></div>
-            <div class="col-span-6 p-4">
-                <span class="text-sm text-gray-500">
-                    1. Desenhe um grafo,
-                    <span id="load-test-graph" class="cursor-pointer text-[#5A3CE5] hover:underline">carregue</span>
-                    um exemplo ou
-                    <span id="import-graph" class="cursor-pointer text-[#5A3CE5] hover:underline">importe</span>
-                    <input type="file" id="file-input" style="display: none;" />
-                    um grafo já existente.
-                </span>
-                <div class="grid grid-cols-4">
-                    <div class="col-span-1 py-4 px-2">
-                        <input type="text" id="source"
-                            class="w-full p-2 rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="origem" />
-                    </div>
-                    <div class="col-span-1 py-4 px-2">
-                        <input type="text" id="target"
-                            class="w-full p-2 rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="destino" />
-                    </div>
-                    <div class="col-span-1 py-4 px-2">
-                        <input type="number" id="weight" min="0"
-                            class="w-full p-2 rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="peso" />
-                    </div>
-                    <div class="col-span-1 flex justify-center items-center gap-1">
-                        <img src="../assets/edit.png" alt="Adicionar" id="add-edge"
-                            class="cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
-                        <img src="../assets/delete.png" alt="Excluir" id="reset-graph"
-                            class="cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
-                    </div>
+        <div class="w-full flex justify-center">
+            <div class="grid grid-cols-10 gap-4 w-full mx-auto">
+                <div class="col-span-2 p-4"></div>
+                <!-- Coluna 1 -->
+                <div class="col-span-3 p-4">
+                    <span class="text-sm text-gray-500">
+                        1. Desenhe um grafo,
+                        <span id="load-test-graph" class="cursor-pointer text-[#5A3CE5] hover:underline">carregue</span>
+                        um exemplo ou
+                        <span id="import-graph" class="cursor-pointer text-[#5A3CE5] hover:underline">importe</span>
+                        <input type="file" id="file-input" style="display: none;" />
+                        um grafo já existente.
+                    </span>
                 </div>
-
             </div>
-            <div class="col-span-2 p-4"></div>
         </div>
+        
 
         <!-- Grafo original -->
         <div class="grid grid-cols-10 gap-4 py-4 px-4">
             <div class="col-span-2 p-4"></div>
             <div class="col-span-6 p-4">
                 <span class="mb-50 text-xl text-[#9993B7]">Grafo Original</span>
-                <div class="my-3 mt-50 py-4 px-50 rounded-lg bg-white">
-                    <!-- <img id="grafo-original" src="../assets/graph_image.png" alt="Grafo Original" class="mx-auto" /> -->
-                    <span id="draw_warning" class="text-sm font-light text-[#787486] mx-9">Desenhe ou importe um grafo.</span>
-                    <py-script id="original-graph-area"></py-script>
+                <div id="graph-editor" class="my-3 mt-50 py-4 px-50 rounded-lg bg-white h-[500px]">
+                    
                 </div>
             </div>
             <div class="col-span-2 p-4">
                 <div class="py-4 px-2 flex justify-left items-center gap-1">
                     <img src="../assets/download.png" alt="Download" id="export-graph-original"
-                        class="my-5 cursor-pointer w-8 h-8 rounded-lg hover:opacity-80 hidden" />
+                        class="my-5 cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
+                    <img src="../assets/delete.png" alt="Reset" id="reset-graph"
+                        class="my-5 cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
                 </div>
             </div>
 
@@ -91,6 +69,7 @@
     <!-- Scripts -->
     <script src="../scripts/sidebar.js"></script>
     <script src="../scripts/main.js"></script>
+    <script src="../scripts/draw_graph.js"></script>
     <script type="py" src="../scripts/draw_page.py" config="../scripts/pyscript.json"></script>
 </body>
 
