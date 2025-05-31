@@ -63,7 +63,7 @@ def draw_step(G: nx.DiGraph, id=1, title="Passo do Algoritmo", description=""):
             <div class="detalhes hidden transition-all duration-500 ease-in-out">
                 <div class="border-t-2 border-[#5030E5] w-full rounded-full my-2"></div>
                 <div class="my-1 gap-4 py-2 px-2 bg-white rounded-lg">
-                    <div class="flex justify-center items-center">
+                    <div class="image-wrapper flex justify-center items-center relative">
                         <div id="graph-step-{id}"></div>
                     </div>
                     <div class="border-t-2 border-[#DBDBDB] w-full rounded-full my-2"></div>
@@ -95,6 +95,15 @@ def draw_step(G: nx.DiGraph, id=1, title="Passo do Algoritmo", description=""):
     )
     display(plt, target=target, append=False)
     plt.close()
+    img = document.querySelector(f"#{target} img")
+    if img:
+        img.id = f"img-{id}"
+    
+    btn_html = f"""<button class="expand-button absolute top-1 right-1 rounded" data-img-id="img-{id}">
+        <img src="../assets/expand.png" alt="Expandir"
+        class="cursor-pointer w-3 h-3 hover:opacity-80" hover:bg-gray-300" transition/>
+    </button>"""
+    document.getElementById(target).insertAdjacentHTML("beforeend", btn_html)
 
 G = nx.DiGraph()
 O = nx.DiGraph()
