@@ -17,6 +17,8 @@ def get_graph_from_js():
     return data
 
 def cytoscape_to_networkx(data):
+    if not data or 'nodes' not in data or 'edges' not in data:
+        return nx.DiGraph()
     G = nx.DiGraph()
     # Adiciona nós
     for node in data['nodes']:
@@ -71,14 +73,34 @@ def reset_graph():
     event = window.Event.new("graph_updated")
     document.dispatchEvent(event)
 
-def export_graph(G):
-    pass
+from pyodide.ffi import create_proxy
+
+def show_error_toast(msg="Ocorreu um erro."):
+    toast = document.getElementById("toast-danger")
+    toast_msg = document.getElementById("toast-danger-msg")
+    toast_msg.textContent = msg
+    toast.classList.remove("hidden")
+    toast.classList.remove("opacity-0")
+    toast.classList.add("opacity-100")
+
+    def hide_toast():
+        toast.classList.remove("opacity-100")
+        toast.classList.add("opacity-0")
+        # Esconde de vez após a transição (500ms)
+        def hide_final():
+            toast.classList.add("hidden")
+        proxy2 = create_proxy(hide_final)
+        window.setTimeout(proxy2, 500)
+
+    proxy = create_proxy(hide_toast)
+    window.setTimeout(proxy, 3000)
 
 @when("click", "#export-graph-original")
 def export_original_graph(event):
     global G
     G = get_networkx_graph()
     if G.number_of_nodes() == 0:
+        show_error_toast("O grafo está vazio! Carregue um exemplo ou desenhe um grafo antes de exportar.")
         return
 
     # Converte o grafo para JSON
