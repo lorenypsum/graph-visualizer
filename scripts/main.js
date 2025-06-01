@@ -12,6 +12,7 @@ function toggleCollapser() {
         icon.src = "../assets/minus.png"; // Ícone de contrair
     }
 }
+
 function toggleStep(stepId, iconId) {
     const content = document.querySelector(`#${stepId} .detalhes`);
     const icon = document.getElementById(iconId);
@@ -30,32 +31,6 @@ function toggleStep(stepId, iconId) {
         btn_step.classList.add("bg-[#f5f5f5]");
     }
 }
-
-// const popup = document.getElementById('popup');
-// const popupImg = document.getElementById('popup-img');
-
-// document.addEventListener('click', function(e) {
-//     // Clique no botão expandir
-//     let btn = e.target.closest('.expand-button');
-//     if (btn) {
-//         e.stopPropagation();
-//         const imgId = btn.getAttribute('data-img-id');
-//         const img = document.getElementById(imgId);
-//         if (img) {
-//             popupImg.src = img.src;
-//             popup.classList.add('active');
-//             popup.classList.remove('hidden');
-//         }
-//         return;
-//     }
-
-//     // Clique fora da imagem expandida (no overlay)
-//     if (e.target === popup) {
-//         popup.classList.remove('active');
-//         popup.classList.add('hidden');
-//         popupImg.src = "";
-//     }
-// });
 
 const imageModal = document.getElementById('image-modal');
 const imageModalImg = document.getElementById('image-modal-img');
