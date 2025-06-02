@@ -8,9 +8,16 @@
     "fetch": [{
         "files": [
             "./chuliu_page.py",
-            "./chuliu_alg.py",
-            "./andrasfrank_alg.py",
-            "./andrasfrank_page.py"
+            "./andrasfrank_page.py",
+            "./draw_page.py",
+            "./solver/chuliu.py",
+            "./solver/andrasfrank.py",
+            "./solver/__init__.py",
+            "./util/graph_utils.py",
+            "./util/ui_utils.py",
+            "./util/visualization_utils.py",
+            "./util/file_utils.py",
+            "./util/__init__.py"
         ]
     }]
 }
