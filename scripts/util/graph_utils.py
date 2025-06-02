@@ -27,7 +27,7 @@ def cytoscape_to_networkx(data):
             weight = float(weight)
         except Exception:
             weight = 1
-        G.add_edge(source, target, weight=weight)
+        G.add_edge(source, target, w=weight)
     return G
 
 def networkx_to_cytoscape(G):
@@ -55,6 +55,7 @@ def networkx_to_cytoscape(G):
 def get_networkx_graph():
     data = get_graph_from_js()
     G = cytoscape_to_networkx(data)
+    print(f"Convertendo grafo para a estrutura do NetworkX: {G.nodes} -> {G.edges}")
     return G
 
 def update_cytoscape_from_networkx(G):

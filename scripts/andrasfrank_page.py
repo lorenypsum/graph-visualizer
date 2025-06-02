@@ -127,7 +127,7 @@ def run_algorithm(event):
     global T
     r0 = document.getElementById("root-node").value or "r0"
     if r0 not in G:
-        alert(f"[ERRO] O nó raiz '{r0}' deve existir no grafo.")
+        log_in_box(f"[ERRO] O nó raiz '{r0}' deve existir no grafo.")
         show_error_toast(f"O nó raiz '{r0}' deve existir no grafo.")
         return
 

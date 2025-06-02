@@ -31,7 +31,7 @@ def log_in_box(msg: str):
     log_box.scrollTop = log_box.scrollHeight
 
 def clearScreen():
-    document.getElementById("draw_warning").classList.remove("hidden")
+    # document.getElementById("draw_warning").classList.remove("hidden")
     document.getElementById("step_warning").classList.remove("hidden")
     document.getElementById("export-graph-original").classList.add("hidden")
     document.getElementById("log-section").classList.add("hidden")
@@ -39,7 +39,7 @@ def clearScreen():
 
 def fillScreen(T):
     # global T
-    document.getElementById("draw_warning").classList.add("hidden")
+    # document.getElementById("draw_warning").classList.add("hidden")
     document.getElementById("step_warning").classList.add("hidden")
     document.getElementById("export-graph-original").classList.remove("hidden")
     document.getElementById("log-section").classList.remove("hidden")

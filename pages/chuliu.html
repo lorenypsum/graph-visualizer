@@ -7,7 +7,8 @@
     <title>Chu-Liu/Edmonds</title>
     <link rel="icon" type="image/x-icon" href="../assets/logo.png"/>
     <script src="https://cdn.tailwindcss.com"></script>
-
+    <script src="https://unpkg.com/cytoscape@3.26.0/dist/cytoscape.min.js"></script>
+    
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
 
@@ -85,16 +86,15 @@
             <div class="col-span-2 p-4"></div>
             <div class="col-span-6 p-4">
                 <span class="mb-50 text-xl text-[#9993B7]">Grafo Original</span>
-                <div class="my-3 mt-50 py-4 px-50 rounded-lg bg-white">
-                    <!-- <img id="grafo-original" src="../assets/graph_image.png" alt="Grafo Original" class="mx-auto" /> -->
-                    <span id="draw_warning" class="text-sm font-light text-[#787486] mx-9">Desenhe ou importe um grafo.</span>
-                    <py-script id="original-graph-area"></py-script>
+                <div id="graph-editor" class="my-3 mt-50 py-4 px-50 rounded-lg bg-white h-[500px]">
                 </div>
             </div>
             <div class="col-span-2 p-4">
                 <div class="py-4 px-2 flex justify-left items-center gap-1">
                     <img src="../assets/download.png" alt="Download" id="export-graph-original"
-                        class="my-5 cursor-pointer w-8 h-8 rounded-lg hover:opacity-80 hidden" />
+                        class="my-5 cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
+                    <img src="../assets/delete.png" alt="Reset" id="reset-graph"
+                        class="my-5 cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
                 </div>
             </div>
 
@@ -175,8 +175,9 @@
     </div>
 
     <!-- Scripts -->
-    <script src="../scripts/sidebar.js"></script>
-    <script src="../scripts/main.js"></script>
+    <script src="../scripts/js/sidebar.js"></script>
+    <script src="../scripts/js/main.js"></script>
+    <script src="../scripts/js/draw_graph.js"></script>
     <script type="py" src="../scripts/chuliu_page.py" config="../scripts/pyscript.json"></script>
 </body>
 

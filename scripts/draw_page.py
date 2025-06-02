@@ -1,11 +1,10 @@
 import networkx as nx
 from networkx.readwrite import json_graph
-from js import Blob, URL, document, alert, FileReader, window
-from pyscript import document, when, display
+from js import document, FileReader, window
+from pyscript import document, when
 import json
-from util.graph_utils import get_graph_from_js, cytoscape_to_networkx, networkx_to_cytoscape, get_networkx_graph, update_cytoscape_from_networkx
+from util.graph_utils import get_networkx_graph, update_cytoscape_from_networkx
 from util.ui_utils import show_error_toast, download_json
-# from util.file_utils import download_json
 
 G = nx.DiGraph()
 
