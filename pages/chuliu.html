@@ -7,6 +7,10 @@
     <title>Chu-Liu/Edmonds</title>
     <link rel="icon" type="image/x-icon" href="../assets/logo.png"/>
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+
     <link rel="stylesheet" href="https://pyscript.net/releases/2025.3.1/core.css" />
     <script type="module" src="https://pyscript.net/releases/2025.3.1/core.js"></script>
 </head>
@@ -25,67 +29,57 @@
     <!-- CONTEÚDO PRINCIPAL -->
     <div id="main-content" class="flex-1 bg-[#E5E5E5] p-6">
         <span class="flex items-center gap-4 mb-10 text-4xl text-[#352B67]">Chu-Liu / Edmonds</span>
-        <!-- <div class="border-t-2 border-[#DBDBDB] w-full my-4"></div> -->
-
-        <!-- Inputs -->
-        <div class="grid grid-cols-10 gap-1">
-            <!-- Coluna 1 -->
-            <div class="col-span-6 p-2">
-                <span class="text-sm text-gray-500">
-                    1. Desenhe um grafo,
-                    <span id="load-test-graph" class="cursor-pointer text-[#5A3CE5] hover:underline">carregue</span>
-                    um exemplo ou
-                    <span id="import-graph" class="cursor-pointer text-[#5A3CE5] hover:underline">importe</span>
-                    <input type="file" id="file-input" style="display: none;" />
-                    um grafo já existente.
-                </span>
-                <div class="grid grid-cols-4">
-                    <div class="col-span-1 py-4 px-2">
-                        <input type="text" id="source"
-                            class="w-full p-2 rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="origem" />
-                    </div>
-                    <div class="col-span-1 py-4 px-2">
-                        <input type="text" id="target"
-                            class="w-full p-2 rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="destino" />
-                    </div>
-                    <div class="col-span-1 py-4 px-2">
-                        <input type="number" id="weight" min="0"
-                            class="w-full p-2 rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="peso" />
-                    </div>
-                    <div class="col-span-1 flex justify-center items-center gap-1">
-                        <img src="../assets/edit.png" alt="Adicionar" id="add-edge"
-                            class="cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
-                        <img src="../assets/delete.png" alt="Excluir" id="reset-graph"
-                            class="cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
-                    </div>
-                </div>
-
+        <!-- Stepper -->
+        <div class="grid grid-cols-50 gap-1">
+            <div class="col-span-1 p-2">
             </div>
-
-            <!-- Coluna 2 -->
-            <div class="col-span-2 p-2">
-                <span class="text-sm text-gray-500">2. Escolha o nó raiz</span>
-                <div class="mx-4 py-4 px-2">
-                    <input type="text" id="root-node"
-                        class="w-full p-2 rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="node" />
-                </div>
-
+            <div class="col-span-9 p-2">
+                <ol class="items-start gap-4 mx-4 space-y-2 sm:flex sm:space-x-4 sm:space-y-0 rtl:space-x-reverse">
+                    <li class="flex text-gray-500 dark:text-blue-500 space-x-2.5 rtl:space-x-reverse">
+                        <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-blue-500">
+                            1
+                        </span>
+                        <span>
+                            <h3 class="font-medium leading-tight">Crie um grafo</h3>
+                            <span class="text-sm text-gray-500">
+                                Desenhe um grafo,
+                                <span id="load-test-graph" class="cursor-pointer text-[#5A3CE5] hover:underline">carregue</span>
+                                um exemplo ou <br>
+                                <span id="import-graph" class="cursor-pointer text-[#5A3CE5] hover:underline">importe</span>
+                                <input type="file" id="file-input" style="display: none;" />
+                                um grafo já existente.
+                            </span>
+                        </span>
+                    </li>
+                    <li class="flex text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
+                        <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
+                            2
+                        </span>
+                        <span>
+                            <h3 class="font-medium leading-tight">Escolha o nó raiz</h3>
+                            <!-- <p class="text-sm mb-2">Defina o ponto inicial</p> -->
+                            <input type="text" id="root-node"
+                                class="w-full p-2 mt-2 rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 border-white"
+                                placeholder="node" />
+                        </span>
+                    </li>
+                    <li class="flex text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
+                        <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
+                            3
+                        </span>
+                        <span>
+                            <h3 class="font-medium leading-tight">Execute o algoritmo</h3>
+                            <div class="mt-1 flex justify-center items-center gap-1">
+                                <img id="run-algorithm" src="../assets/run.png" alt="Executar"
+                                    class="cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
+                            </div>
+                        </span>
+                    </li>
+                </ol>
             </div>
-
-            <!-- Coluna 3 -->
-            <div class="col-span-2 p-2">
-                <span class="text-sm text-gray-500">3. Execute o algoritmo</span>
-                <div class="py-4 px-2 flex justify-center items-center gap-1">
-                    <img id="run-algorithm" src="../assets/run.png" alt="Executar"
-                        class="cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
-                </div>
+            <div class="col-span-1 p-2">
             </div>
         </div>
-
         <!-- Grafo original -->
         <div class="grid grid-cols-10 gap-4 py-4 px-4">
             <div class="col-span-2 p-4"></div>
