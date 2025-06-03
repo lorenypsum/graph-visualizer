@@ -31,14 +31,19 @@ def cytoscape_to_networkx(data):
     return G
 
 def networkx_to_cytoscape(G):
-    pos = nx.spring_layout(G)  # ou outro layout de sua preferência
+    width, height = 500, 500 
+    scale = 0.8
+    pos = nx.spring_layout(G)  
     nodes = []
     for n in G.nodes:
         x, y = pos[n]
         # Escale as posições para caber melhor no Cytoscape
         nodes.append({
             "data": {"id": str(n)},
-            "position": {"x": float(x)*300+250, "y": float(y)*300+250}
+            "position": {
+                "x": width/2 + x * (width/2) * scale,
+                "y": height/2 + y * (height/2) * scale
+            }
         })
     edges = []
     for u, v, d in G.edges(data=True):
