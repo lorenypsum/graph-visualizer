@@ -1,8 +1,9 @@
-let cy = null;
+const cyInstances = {};
+
 function initCytoscape(elements = [], containerId = 'graph-editor') {
     // Destroi a instância anterior, se existir
-    if (cy) {
-        cy.destroy();
+    if (cyInstances[containerId]) {
+        cyInstances[containerId].destroy();
     }
     cy = cytoscape({
         container: document.getElementById(containerId),
@@ -32,10 +33,11 @@ function initCytoscape(elements = [], containerId = 'graph-editor') {
         ],
         layout: { name: 'preset' }
     });
+    return cyInstances[containerId];
 }
 
 function enableViewMode(elements, containerId) {
-    initCytoscape(elements, containerId);
+    const cy = initCytoscape(elements, containerId);
     cy.nodes().grabify(); 
     cy.userPanningEnabled(true);
     cy.userZoomingEnabled(true);
@@ -44,7 +46,7 @@ function enableViewMode(elements, containerId) {
 function enableEditMode(elements = [], containerId) {
     let nodeId = 1; 
     let selectedNode = null;
-    initCytoscape(elements, containerId);
+    const cy = initCytoscape(elements, containerId);
     
     // Adiciona nó ao clicar no canvas
     cy.on('tap', function (event) {

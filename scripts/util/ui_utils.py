@@ -38,13 +38,11 @@ def clearScreen():
     document.getElementById("arborescence-section").classList.add("hidden")
 
 def fillScreen(T):
-    # global T
     # document.getElementById("draw_warning").classList.add("hidden")
     document.getElementById("step_warning").classList.add("hidden")
     document.getElementById("export-graph-original").classList.remove("hidden")
     document.getElementById("log-section").classList.remove("hidden")
-    # document.getElementById("arborescence-section").classList.remove("hidden")
-
+    
     if (T.number_of_nodes() > 0):
         document.getElementById("arborescence-section").classList.remove("hidden")
         document.getElementById("step_warning").classList.add("hidden")
