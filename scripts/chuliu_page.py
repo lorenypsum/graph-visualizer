@@ -55,7 +55,14 @@ def reset_graph():
 def export_arborescencia_graph(event):
     log_in_box("Botão 'Exportar Arborescência' clicado.")
     global T
-    export_graph(T)
+    if T.number_of_nodes() == 0:
+        show_error_toast("O grafo está vazio! Execute o algoritmo antes de exportar.")
+        return
+
+    data = json_graph.node_link_data(G, edges="links")
+    json_data = json.dumps(data, indent=4)
+    download_json(json_data, filename="graph.json")
+    
 
 @when("click", "#export-graph-original")
 def export_original_graph(event):
@@ -73,12 +80,12 @@ def export_original_graph(event):
     
 
 @when("click", "#import-graph")
-def open_file_selector(evt):
+def open_file_selector(event):
     document.getElementById("file-input").click()
 
 @when("change", "#file-input")
-def handle_file_upload(evt):
-    file = evt.target.files.item(0)
+def handle_file_upload(event):
+    file = event.target.files.item(0)
     if not file:
         return
 
@@ -134,8 +141,8 @@ def load_test_graph(event):
     fillScreen(T)
 
 @when("click", "#toggle-sidebar")
-def on_toggle_sidebar(evt):
-    toggle_sidebar(evt)
+def on_toggle_sidebar(event):
+    toggle_sidebar(event)
 
 @when("click", "#run-algorithm")
 def run_algorithm(event):
