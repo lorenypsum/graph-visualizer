@@ -35,7 +35,7 @@ function toggleStep(stepId, iconId) {
 const imageModal = document.getElementById('image-modal');
 const imageModalImg = document.getElementById('image-modal-img');
 
-document.addEventListener('click', function(e) {
+document.addEventListener('click', function (e) {
     // Clique no botão expandir
     let btn = e.target.closest('.expand-button');
     if (btn) {
@@ -54,3 +54,19 @@ document.addEventListener('click', function(e) {
         imageModalImg.src = "";
     }
 });
+
+document.getElementById("run-algorithm").addEventListener("click", function() {
+    showLoader();
+    setTimeout(() => {
+        const event = new Event("custom-event");
+        document.getElementById("run-algorithm").dispatchEvent(event);
+    }, 100);
+});
+
+function showLoader() {
+    document.getElementById('loader-modal').classList.remove('hidden');
+}
+
+function hideLoader() {
+    document.getElementById('loader-modal').classList.add('hidden');
+}

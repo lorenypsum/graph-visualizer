@@ -8,7 +8,7 @@ mpl.use('Agg')
 import matplotlib.pyplot as plt
 from solver.chuliu import find_optimum_arborescence
 from util.visualization_utils import draw_graph, draw_step
-from util.ui_utils import show_error_toast, log_in_box, toggle_sidebar, fillScreen, clearScreen, export_graph, download_json
+from util.ui_utils import show_error_toast, log_in_box, toggle_sidebar, fillScreen, clearScreen, download_json, hide_loader
 from util.graph_utils import get_networkx_graph, update_cytoscape_from_networkx
 
 G = nx.DiGraph()
@@ -126,23 +126,32 @@ def load_test_graph(event):
 def on_toggle_sidebar(event):
     toggle_sidebar(event)
 
-@when("click", "#run-algorithm")
+# @when("click", "#run-algorithm")
+@when("custom-event", "#run-algorithm")
 def run_algorithm(event):
     global G
     global T
     r0 = document.getElementById("root-node").value or "r0"
     G = get_networkx_graph()
     if r0 not in G:
+        hide_loader()
         log_in_box(f"[ERRO] O nó raiz '{r0}' deve existir no grafo.")
         show_error_toast(f"O nó raiz '{r0}' deve existir no grafo.")
         return
 
     log_in_box("Executando algoritmo de Chu-Liu...")
-    T = find_optimum_arborescence(G, r0, draw_fn=draw_graph, draw_step=draw_step, log=log_in_box)
-    if T.number_of_nodes() == 0:
-        log_in_box("[ERRO] O grafo não possui uma arborescência.")
-        show_error_toast("O grafo não possui uma arborescência.")
-    else:
-        update_cytoscape_from_networkx(T, eventName="arborescence_updated")
-        fillScreen(T)
-        log_in_box("Execução concluída com sucesso.")
+    try:
+        T = find_optimum_arborescence(G, r0, draw_fn=draw_graph, draw_step=draw_step, log=log_in_box)
+        if T.number_of_nodes() == 0:
+            log_in_box("[ERRO] O grafo não possui uma arborescência.")
+            show_error_toast("O grafo não possui uma arborescência.")
+        else:
+            update_cytoscape_from_networkx(T, eventName="arborescence_updated")
+            fillScreen(T)
+            log_in_box("Execução concluída com sucesso.")
+    except Exception as e:
+        log_in_box(f"[ERRO] Ocorreu um erro ao executar o algoritmo: {str(e)}")
+        show_error_toast(f"Ocorreu um erro ao executar o algoritmo")
+        print(f"Erro ao executar o algoritmo: {e}")
+    finally:
+        hide_loader()

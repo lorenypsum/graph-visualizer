@@ -2,8 +2,7 @@ from js import document, window
 from pyodide.ffi import create_proxy
 import networkx as nx
 from networkx.readwrite import json_graph
-from js import Blob, URL, document, alert, FileReader
-from pyscript import document, when, display
+from js import Blob, URL, document
 import json
 
 def show_error_toast(msg="Ocorreu um erro."):
@@ -109,3 +108,11 @@ def download_json(data, filename="graph.json"):
     link.download = filename
     link.click()
     URL.revokeObjectURL(url)
+
+def show_loader():
+    print("Exibindo loader...")
+    document.getElementById("loader-modal").classList.remove("hidden")
+
+def hide_loader():
+    print("Escondendo loader...")
+    document.getElementById("loader-modal").classList.add("hidden")
