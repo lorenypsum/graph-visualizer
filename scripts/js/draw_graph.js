@@ -324,7 +324,6 @@ function enableEditMode(elements = [], containerId) {
         updatePyScriptGraph();
     });
 
-    // Inicialize a variável na primeira carga
     updatePyScriptGraph();
 }
 
