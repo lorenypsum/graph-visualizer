@@ -1,11 +1,11 @@
 let cy = null;
-function initCytoscape(elements = []) {
+function initCytoscape(elements = [], containerId = 'graph-editor') {
     // Destroi a instância anterior, se existir
     if (cy) {
         cy.destroy();
     }
     cy = cytoscape({
-        container: document.getElementById('graph-editor'),
+        container: document.getElementById(containerId),
         elements: elements,
         style: [
             {
@@ -34,17 +34,17 @@ function initCytoscape(elements = []) {
     });
 }
 
-function enableViewMode(elements) {
-    initCytoscape(elements);
-    cy.nodes().grabify(); // permite arrastar
+function enableViewMode(elements, containerId) {
+    initCytoscape(elements, containerId);
+    cy.nodes().grabify(); 
     cy.userPanningEnabled(true);
     cy.userZoomingEnabled(true);
 }
 
-function enableEditMode(elements = []) {
+function enableEditMode(elements = [], containerId) {
     let nodeId = 1; 
     let selectedNode = null;
-    initCytoscape(elements);
+    initCytoscape(elements, containerId);
     
     // Adiciona nó ao clicar no canvas
     cy.on('tap', function (event) {
@@ -329,8 +329,18 @@ document.addEventListener("DOMContentLoaded", function () {
     enableEditMode();
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+    enableViewMode();
+});
+
 document.addEventListener("graph_updated", function () {
     const elements = JSON.parse(window.graph_json);
     console.log("Atualizando grafo com elementos:", elements);
-    enableEditMode(elements);
+    enableEditMode(elements, 'graph-editor');
+});
+
+document.addEventListener("arborescence_updated", function () {
+    const elements = JSON.parse(window.arborescence_json);
+    console.log("Recebendo arborescencia com elementos:", elements);
+    enableViewMode(elements, 'arborescence-viewer');
 });

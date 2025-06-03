@@ -58,10 +58,16 @@ def get_networkx_graph():
     print(f"Convertendo grafo para a estrutura do NetworkX: {G.nodes} -> {G.edges}")
     return G
 
-def update_cytoscape_from_networkx(G):
+def update_cytoscape_from_networkx(G, eventName="graph_updated"):
     cyto_data = networkx_to_cytoscape(G)
+    print('Convertendo NetworkX para Cytoscape:', cyto_data)
     json_str = json.dumps(cyto_data)
-    window.graph_json = json_str
-    event = window.Event.new("graph_updated")
+    if eventName == "graph_updated":
+        window.graph_json = json_str
+    elif eventName == "arborescence_updated":
+        window.arborescence_json = json_str
+    else:
+        print(f"[ERRO] Evento desconhecido: {eventName}")
+    event = window.Event.new(eventName)
     document.dispatchEvent(event)
 

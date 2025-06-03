@@ -60,7 +60,7 @@
                             <h3 class="font-medium leading-tight">Escolha o nó raiz</h3>
                             <!-- <p class="text-sm mb-2">Defina o ponto inicial</p> -->
                             <input type="text" id="root-node"
-                                class="w-full p-2 mt-2 rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 border-white"
+                                class="w-full p-2 mt-2 rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 border-transparent"
                                 placeholder="node" />
                         </span>
                     </li>
@@ -72,7 +72,7 @@
                             <h3 class="font-medium leading-tight">Execute o algoritmo</h3>
                             <div class="mt-1 flex justify-center items-center gap-1">
                                 <img id="run-algorithm" src="../assets/run.png" alt="Executar"
-                                    class="cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
+                                    class="cursor-pointer w-8 h-8 rounded-lg hover:opacity-80 mt-2" />
                             </div>
                         </span>
                     </li>
@@ -104,9 +104,7 @@
             <div class="col-span-2 p-4"></div>
             <div class="col-span-6 p-4">
                 <span class="mb-50 text-xl text-[#9993B7]">Arborescência</span>
-                <div class="my-3 mt-50 py-4 px-50 bg-white rounded-lg">
-                    <!-- <img id="grafo-arborescencia" src="../assets/graph_image.png" alt="Arborescência" class="mx-auto" /> -->
-                    <py-script id="arborescence-graph-area"></py-script>
+                <div id="arborescence-viewer" class="my-3 mt-50 py-4 px-50 rounded-lg bg-white h-[500px]">
                 </div>
             </div>
             <div class="col-span-2 p-4">
@@ -115,7 +113,6 @@
                         class="my-5 cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
                 </div>
             </div>
-
         </div>
 
         <!-- Logs de execução -->

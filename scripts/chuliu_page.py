@@ -157,6 +157,7 @@ def run_algorithm(event):
         log_in_box("[ERRO] O grafo não possui uma arborescência.")
         show_error_toast("O grafo não possui uma arborescência.")
     else:
-        draw_graph(T, "Arborescência Ótima", append=False, target='arborescence-graph-area')
+        #draw_graph(T, "Arborescência Ótima", append=False, target='arborescence-graph-area')
+        update_cytoscape_from_networkx(T, eventName="arborescence_updated")
         fillScreen(T)
         log_in_box("Execução concluída com sucesso.")
