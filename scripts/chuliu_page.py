@@ -76,7 +76,6 @@ def export_original_graph(event):
 def open_file_selector(evt):
     document.getElementById("file-input").click()
 
-# Lê o arquivo quando for selecionado
 @when("change", "#file-input")
 def handle_file_upload(evt):
     file = evt.target.files.item(0)
@@ -94,7 +93,6 @@ def handle_file_upload(evt):
         G.clear()
         G = json_graph.node_link_graph(data, edges="links")
         O = G.copy()
-        # draw_graph(G, "Grafo Importado", append=False, target="original-graph-area")
         update_cytoscape_from_networkx(G)
         fillScreen(T)
         log_in_box("Grafo importado com sucesso.")
@@ -133,7 +131,6 @@ def load_test_graph(event):
     print("Nós do NetworkX:", list(G.nodes))
     print("Arestas do NetworkX:", list(G.edges(data=True)))
     update_cytoscape_from_networkx(G)
-    # draw_graph(G, "Grafo de Teste", append=False, target="original-graph-area")
     fillScreen(T)
 
 @when("click", "#toggle-sidebar")
@@ -157,7 +154,6 @@ def run_algorithm(event):
         log_in_box("[ERRO] O grafo não possui uma arborescência.")
         show_error_toast("O grafo não possui uma arborescência.")
     else:
-        #draw_graph(T, "Arborescência Ótima", append=False, target='arborescence-graph-area')
         update_cytoscape_from_networkx(T, eventName="arborescence_updated")
         fillScreen(T)
         log_in_box("Execução concluída com sucesso.")
