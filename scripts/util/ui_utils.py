@@ -29,12 +29,22 @@ def log_in_box(msg: str):
     log_box.value += msg + "\n"
     log_box.scrollTop = log_box.scrollHeight
 
+def clearArboArea():
+    container = document.getElementById("container_step_by_step")
+    container.innerHTML = ""
+    warning = document.createElement("span")
+    warning.id = "step_warning"
+    warning.className = "text-sm font-light text-[#787486]"
+    warning.innerText = "Execute o algoritmo para visualizar o passo-a-passo"
+    container.appendChild(warning)
+    document.getElementById("arborescence-section").classList.add("hidden")
+
 def clearScreen():
     # document.getElementById("draw_warning").classList.remove("hidden")
+    clearArboArea()
     document.getElementById("step_warning").classList.remove("hidden")
     document.getElementById("export-graph-original").classList.add("hidden")
     document.getElementById("log-section").classList.add("hidden")
-    document.getElementById("arborescence-section").classList.add("hidden")
 
 def fillScreen(T):
     # document.getElementById("draw_warning").classList.add("hidden")

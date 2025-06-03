@@ -8,7 +8,7 @@ mpl.use('Agg')
 import matplotlib.pyplot as plt
 from solver.andrasfrank import find_minimum_arborescence
 from util.visualization_utils import draw_step
-from util.ui_utils import show_error_toast, log_in_box, toggle_sidebar, fillScreen, clearScreen, download_json, hide_loader
+from util.ui_utils import show_error_toast, log_in_box, toggle_sidebar, fillScreen, clearScreen, download_json, hide_loader, clearArboArea
 from util.graph_utils import get_networkx_graph, update_cytoscape_from_networkx
 
 G = nx.DiGraph()
@@ -136,6 +136,7 @@ def run_algorithm():
         return
     
     try:
+        clearArboArea()
         log_in_box("Executando algoritmo de Andras Frank...")
         T = find_minimum_arborescence(G, r0, draw_step=draw_step, log=log_in_box)
         if T.number_of_nodes() == 0:
@@ -146,6 +147,7 @@ def run_algorithm():
             fillScreen(T)
             log_in_box("Execução concluída com sucesso.")
     except Exception as e:
+        clearArboArea()
         log_in_box(f"[ERRO] Ocorreu um erro ao executar o algoritmo: {str(e)}")
         show_error_toast(f"Ocorreu um erro ao executar o algoritmo")
         print(f"Erro ao executar o algoritmo: {e}")

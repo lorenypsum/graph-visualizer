@@ -8,7 +8,7 @@ mpl.use('Agg')
 import matplotlib.pyplot as plt
 from solver.chuliu import find_optimum_arborescence
 from util.visualization_utils import draw_graph, draw_step
-from util.ui_utils import show_error_toast, log_in_box, toggle_sidebar, fillScreen, clearScreen, download_json, hide_loader
+from util.ui_utils import show_error_toast, log_in_box, toggle_sidebar, fillScreen, clearScreen, download_json, hide_loader, clearArboArea
 from util.graph_utils import get_networkx_graph, update_cytoscape_from_networkx
 
 G = nx.DiGraph()
@@ -141,6 +141,7 @@ def run_algorithm(event):
 
     log_in_box("Executando algoritmo de Chu-Liu...")
     try:
+        clearArboArea()
         T = find_optimum_arborescence(G, r0, draw_fn=draw_graph, draw_step=draw_step, log=log_in_box)
         if T.number_of_nodes() == 0:
             log_in_box("[ERRO] O grafo não possui uma arborescência.")
@@ -150,6 +151,7 @@ def run_algorithm(event):
             fillScreen(T)
             log_in_box("Execução concluída com sucesso.")
     except Exception as e:
+        clearArboArea()
         log_in_box(f"[ERRO] Ocorreu um erro ao executar o algoritmo: {str(e)}")
         show_error_toast(f"Ocorreu um erro ao executar o algoritmo")
         print(f"Erro ao executar o algoritmo: {e}")

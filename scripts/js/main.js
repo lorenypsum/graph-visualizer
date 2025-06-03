@@ -56,6 +56,7 @@ document.addEventListener('click', function (e) {
 });
 
 document.getElementById("run-algorithm").addEventListener("click", function() {
+    
     showLoader();
     setTimeout(() => {
         const event = new Event("custom-event");
