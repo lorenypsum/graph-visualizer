@@ -14,24 +14,6 @@ from util.graph_utils import get_networkx_graph, update_cytoscape_from_networkx
 G = nx.DiGraph()
 O = nx.DiGraph()
 T = nx.DiGraph()
-
-@when("click", "#add-edge")
-def add_edge():
-    global G
-    global O
-    global T
-    source = document.getElementById("source").value
-    target = document.getElementById("target").value
-    weight = document.getElementById("weight").value
-    if source and target and weight:
-        G.add_edge(source, target, w=float(weight))
-        log_in_box(f"Aresta adicionada: {source} → {target} (peso={weight})")
-        draw_graph(G, "Grafo com Arestas", append=False, target="original-graph-area")
-        O = G.copy()
-        fillScreen(T)
-    else:
-        log_in_box("[ERRO] Preencha todos os campos para adicionar uma aresta.")
-        show_error_toast("Preencha todos os campos para adicionar uma aresta.")
     
 @when("click", "#reset-graph")
 def reset_graph():
