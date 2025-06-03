@@ -33,7 +33,8 @@ function initCytoscape(elements = [], containerId = 'graph-editor') {
         ],
         layout: { name: 'preset' }
     });
-    return cyInstances[containerId];
+    cyInstances[containerId] = cy;
+    return cy;
 }
 
 function enableViewMode(elements, containerId) {
@@ -328,11 +329,9 @@ function enableEditMode(elements = [], containerId) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    enableEditMode();
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-    enableViewMode();
+    elements = [];
+    enableEditMode(elements, 'graph-editor');
+    enableViewMode(elements, 'arborescence-viewer');
 });
 
 document.addEventListener("graph_updated", function () {
