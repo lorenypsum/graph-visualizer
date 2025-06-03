@@ -31,38 +31,54 @@
     <div id="main-content" class="flex-1 bg-[#E5E5E5] p-6">
         <span class="flex items-center gap-4 mb-10 text-4xl text-[#352B67]">Andras Frank</span>
         
-        <!-- Inputs -->
-        <div class="grid grid-cols-10 gap-1">
-            <!-- Coluna 1 -->
-            <div class="col-span-6 p-2">
-                <span class="text-sm text-gray-500">
-                    1. Desenhe um grafo,
-                    <span id="load-test-graph" class="cursor-pointer text-[#5A3CE5] hover:underline">carregue</span>
-                    um exemplo ou
-                    <span id="import-graph" class="cursor-pointer text-[#5A3CE5] hover:underline">importe</span>
-                    <input type="file" id="file-input" style="display: none;" />
-                    um grafo já existente.
-                </span>
+        <div class="grid grid-cols-50 gap-1">
+            <div class="col-span-1 p-2">
             </div>
-
-            <!-- Coluna 2 -->
-            <div class="col-span-2 p-2">
-                <span class="text-sm text-gray-500">2. Escolha o nó raiz</span>
-                <div class="mx-4 py-4 px-2">
-                    <input type="text" id="root-node"
-                        class="w-full p-2 rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="node" />
-                </div>
-
+            <div class="col-span-9 p-2">
+                <ol class="items-start gap-4 mx-4 space-y-2 sm:flex sm:space-x-4 sm:space-y-0 rtl:space-x-reverse">
+                    <li class="flex text-gray-500 dark:text-blue-500 space-x-2.5 rtl:space-x-reverse">
+                        <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-blue-500">
+                            1
+                        </span>
+                        <span>
+                            <h3 class="font-medium leading-tight">Crie um grafo</h3>
+                            <span class="text-sm text-gray-500">
+                                Desenhe um grafo,
+                                <span id="load-test-graph" class="cursor-pointer text-[#5A3CE5] hover:underline">carregue</span>
+                                um exemplo ou <br>
+                                <span id="import-graph" class="cursor-pointer text-[#5A3CE5] hover:underline">importe</span>
+                                <input type="file" id="file-input" style="display: none;" />
+                                um grafo já existente.
+                            </span>
+                        </span>
+                    </li>
+                    <li class="flex text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
+                        <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
+                            2
+                        </span>
+                        <span>
+                            <h3 class="font-medium leading-tight">Escolha o nó raiz</h3>
+                            <!-- <p class="text-sm mb-2">Defina o ponto inicial</p> -->
+                            <input type="text" id="root-node"
+                                class="w-full p-2 mt-2 rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 border-transparent"
+                                placeholder="node" />
+                        </span>
+                    </li>
+                    <li class="flex text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
+                        <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
+                            3
+                        </span>
+                        <span>
+                            <h3 class="font-medium leading-tight">Execute o algoritmo</h3>
+                            <div class="mt-1 flex justify-center items-center gap-1">
+                                <img id="run-algorithm" src="../assets/run.png" alt="Executar"
+                                    class="cursor-pointer w-8 h-8 rounded-lg hover:opacity-80 mt-2" />
+                            </div>
+                        </span>
+                    </li>
+                </ol>
             </div>
-
-            <!-- Coluna 3 -->
-            <div class="col-span-2 p-2">
-                <span class="text-sm text-gray-500">3. Execute o algoritmo</span>
-                <div class="py-4 px-2 flex justify-center items-center gap-1">
-                    <img id="run-algorithm" src="../assets/run.png" alt="Executar"
-                        class="cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
-                </div>
+            <div class="col-span-1 p-2">
             </div>
         </div>
 
@@ -72,8 +88,9 @@
             <div class="col-span-6 p-4">
                 <span class="mb-50 text-xl text-[#9993B7]">Grafo Original</span>
                 <div class="my-3 mt-50 py-4 px-50 rounded-lg bg-white">
-                    <span id="draw_warning" class="text-sm font-light text-[#787486] mx-9">Desenhe ou importe um grafo.</span>
-                    <py-script id="original-graph-area"></py-script>
+                    <!-- <span id="draw_warning" class="text-sm font-light text-[#787486] mx-9">Desenhe ou importe um grafo.</span> -->
+                    <div id="graph-editor" class="my-3 mt-50 py-4 px-50 rounded-lg bg-white h-[500px]">
+                    </div>
                 </div>
             </div>
             <div class="col-span-2 p-4">
@@ -89,9 +106,7 @@
             <div class="col-span-2 p-4"></div>
             <div class="col-span-6 p-4">
                 <span class="mb-50 text-xl text-[#9993B7]">Arborescência</span>
-                <div class="my-3 mt-50 py-4 px-50 bg-white rounded-lg">
-                    <!-- <img id="grafo-arborescencia" src="../assets/graph_image.png" alt="Arborescência" class="mx-auto" /> -->
-                    <py-script id="arborescence-graph-area"></py-script>
+                <div id="arborescence-viewer" class="my-3 mt-50 py-4 px-50 bg-white rounded-lg h-[500px]">
                 </div>
             </div>
             <div class="col-span-2 p-4">
