@@ -180,6 +180,18 @@
         </div>
     </div>
 
+    <!-- Modal para peso da aresta -->
+    <div id="edge-weight-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-80">
+            <h3 class="text-lg font-semibold mb-4 text-gray-800">Peso da aresta</h3>
+            <input id="edge-weight-input" type="number" min="1" class="w-full p-2 border rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Digite o peso" />
+            <div class="flex justify-end gap-2">
+            <button id="edge-weight-cancel" class="px-4 py-2 rounded bg-gray-200 text-gray-700 hover:bg-gray-300">Cancelar</button>
+            <button id="edge-weight-ok" class="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">OK</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="../scripts/js/sidebar.js"></script>
     <script src="../scripts/js/main.js"></script>

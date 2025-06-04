@@ -62,6 +62,7 @@ function enableEditMode(elements = [], containerId) {
         }
     });
 
+
     cy.on('tap', 'node', function(evt) {
         const node = evt.target;
         if (!selectedNode) {
@@ -69,23 +70,24 @@ function enableEditMode(elements = [], containerId) {
             node.style('border-color', '#F59E42');
             node.style('border-width', '4px');
         } else if (selectedNode.id() !== node.id()) {
-            // Pergunta o peso da aresta
-            const weight = prompt('Peso da aresta:', '1');
-            if (weight !== null) {
-                cy.add({
-                    group: 'edges',
-                    data: {
-                        id: `e${selectedNode.id()}_${node.id()}`,
-                        source: selectedNode.id(),
-                        target: node.id(),
-                        weight: weight
-                    }
-                });
-            }
-            // Reseta seleção visual
-            selectedNode.style('border-color', '#5A3CE5');
-            selectedNode.style('border-width', '0px');
-            selectedNode = null;
+            // Usa o modal estilizado
+            showEdgeWeightModal('1').then(weight => {
+                if (weight !== null) {
+                    cy.add({
+                        group: 'edges',
+                        data: {
+                            id: `e${selectedNode.id()}_${node.id()}`,
+                            source: selectedNode.id(),
+                            target: node.id(),
+                            weight: weight
+                        }
+                    });
+                }
+                // Reseta seleção visual
+                selectedNode.style('border-color', '#5A3CE5');
+                selectedNode.style('border-width', '0px');
+                selectedNode = null;
+            });
         } else {
             // Clique duplo no mesmo nó: desmarca
             selectedNode.style('border-color', '#5A3CE5');
@@ -258,10 +260,11 @@ function enableEditMode(elements = [], containerId) {
         edit.onmouseout = () => edit.style.background = '#fff';
         edit.onclick = function() {
             menu.remove();
-            const newWeight = prompt('Novo peso:', edge.data('weight'));
-            if (newWeight !== null) {
-                edge.data('weight', newWeight);
-            }
+            showEdgeWeightModal(edge.data('weight')).then(newWeight => {
+                if (newWeight !== null) {
+                    edge.data('weight', newWeight);
+                }
+            });
         };
         menu.appendChild(edit);
 
@@ -344,3 +347,45 @@ document.addEventListener("arborescence_updated", function () {
     console.log("Recebendo arborescencia com elementos:", elements);
     enableViewMode(elements, 'arborescence-viewer');
 });
+
+function showEdgeWeightModal(defaultValue = "1") {
+    return new Promise((resolve) => {
+        const modal = document.getElementById('edge-weight-modal');
+        const input = document.getElementById('edge-weight-input');
+        const okBtn = document.getElementById('edge-weight-ok');
+        const cancelBtn = document.getElementById('edge-weight-cancel');
+
+        input.value = defaultValue;
+        modal.classList.remove('hidden');
+        input.focus();
+
+        function cleanup() {
+            modal.classList.add('hidden');
+            okBtn.removeEventListener('click', onOk);
+            cancelBtn.removeEventListener('click', onCancel);
+        }
+
+        function onOk() {
+            cleanup();
+            resolve(input.value);
+        }
+        function onCancel() {
+            cleanup();
+            resolve(null);
+        }
+
+        okBtn.addEventListener('click', onOk);
+        cancelBtn.addEventListener('click', onCancel);
+
+        input.addEventListener('keydown', function handler(e) {
+            if (e.key === "Enter") {
+                onOk();
+                input.removeEventListener('keydown', handler);
+            }
+            if (e.key === "Escape") {
+                onCancel();
+                input.removeEventListener('keydown', handler);
+            }
+        });
+    });
+}
