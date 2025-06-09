@@ -128,7 +128,6 @@ def phase2_find_minimum_arborescence_v2(r0, A_zero):
     The function returns the minimum arborescence as a DiGraph.
     """
     D = nx.DiGraph()
-    
     for (i, a) in enumerate(A_zero):
         D.add_edge(a[0], a[1], w=i)
     V = {r0}  # Conjunto de vértices visitados, começando com a raiz
