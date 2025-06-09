@@ -122,41 +122,26 @@ def phase1_find_minimum_arborescence(D_original, r0):
 
     return A_zero
 
-#def fase 2(arcs, r0):
- 
-  # D = digrafo com conjunto de arcos arcs (que veio do parametro)
-    # for (i, a) in enumerate(arcs):
-        #D.add_edge (a, i) -> onde o i é indice do enumerate que vira o peso do arco
-       # V = {r)} um conjunto que comeca com r
-         # q = priority queue
-          # for (a, i) in D. out_edges(r):
-          #   q.add(a,i)
-        # A := Digraph
-#         while q: (enquanto a fila n for vazia)
-#             (u, v) = q.remove_min()
-#             if v e V : continue
-#             A.add_edge(u, v)           
-#             V.add(v) := V + {v} 
-#             for (a, i) in D.out_edges(v):
-#                q.add(a, i)
-# return A
-
-def phase2_find_minimum_arborescence(D_original, r0, A_zero):
+def phase2_find_minimum_arborescence_v2(r0, A_zero):
     """
     Find the minimum arborescence in a directed graph D with root r0.
     The function returns the minimum arborescence as a DiGraph.
     """
-    Arb = nx.DiGraph()
+    D = nx.DiGraph()
     
-    # Adiciona-se o nó raiz
-    Arb.add_node(r0)
-    n = len(D_original.nodes())
-
-    # Enquanto houver arcos a serem considerados
-    for i in range(n - 1):
-        for u, v in A_zero:
-            if u in Arb.nodes() and v not in Arb.nodes():
-                edge_data = D_original.get_edge_data(u, v)
-                Arb.add_edge(u, v, **edge_data)
-                break  # Reinicia o loop após adicionar uma aresta
-    return Arb
+    for (i, a) in enumerate(A_zero):
+        D.add_edge(a[0], a[1], w=i)
+    V = {r0}  # Conjunto de vértices visitados, começando com a raiz
+    q = []  # Fila de prioridade para armazenar os arcos
+    for (a, i) in D.out_edges(r0, data=True):
+        q.append((a, i['w']))  # Adiciona os arcos de saída da raiz à fila de prioridade
+    A = nx.DiGraph()  # Arborescência resultante
+    while q:  # Enquanto a fila não estiver vazia
+        u, v = min(q, key=lambda x: x[1])  # Remove o arco com o menor peso
+        q.remove((u, v))
+        if v in V:  # Se o vértice já foi visitado, continua
+            continue
+        A.add_edge(u, v)  # Adiciona o arco à arborescência
+        V.add(v)  # Marca o vértice como visitado
+        for (a, i) in D.out_edges(v, data=True):
+            q.append((a, i['w']))  # Adiciona os arcos de saída do vértice visitado à fila de prioridade
