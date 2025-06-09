@@ -142,10 +142,6 @@ def phase2_find_minimum_arborescence(D_original, r0, A_zero):
                 break  # Reinicia o loop após adicionar uma aresta
     return Arb
 
-# pseudocodigo
-
-# arcs que vem da fase 1
-
 #def fase 2(arcs, r0):
  
   # D = digrafo com conjunto de arcos arcs (que veio do parametro)
@@ -169,6 +165,3 @@ def phase2_find_minimum_arborescence(D_original, r0, A_zero):
 # _prime = find_optimum_arborescence(G_arb, r0, level + 1, draw_fn=draw_fn, log=log)
 # Esse parametro level+1 é justamente pra realizar a nomeação do ciclo.
 
-# TODO: 
-# Uma boa alternativa seria permitir que o usuário dê o nome que quiser, 
-# mas a gente renomeia para números de 0..n-1
