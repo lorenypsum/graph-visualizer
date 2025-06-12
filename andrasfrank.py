@@ -1,4 +1,5 @@
 import networkx as nx
+import random
 
 print("Hello, I am Andras Frank.")
 
@@ -141,3 +142,11 @@ def phase2_find_minimum_arborescence(D_original, r0, A_zero):
                 Arb.add_edge(u, v, **edge_data)
                 break  # Reinicia o loop após adicionar uma aresta
     return Arb
+
+A_zero = phase1_find_minimum_arborescence(D1.copy(), "r0")
+
+A_arborescencia = phase2_find_minimum_arborescence(D1.copy(), "r0", A_zero)
+
+print("\n🌲 Arborescência mínima (arestas):")
+for u, v, data in A_arborescencia.edges(data=True):
+    print(f"{u} -> {v} (peso: {data.get('w', 0)})")

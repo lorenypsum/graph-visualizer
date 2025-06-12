@@ -1,40 +1,7 @@
 import networkx as nx
 import heapq
-import random
 
-print("Hello, I am Andras Frank.")
-
-def build_rooted_digraph(n=10, m=None, r0="r0", peso_min=1, peso_max=10):
-    """
-    Cria um grafo direcionado com n vértices, m arestas.
-    """
-    if m is None:
-        m = 2 * n  # número de arestas default
-
-    D = nx.DiGraph()
-    D.add_node(r0)
-    nodes = [f"v{i}" for i in range(n - 1)]
-    all_nodes = [r0] + nodes
-
-    # Conecta o vértice raiz a todos os outros vértices
-    reached = {r0}
-    remaining = set(nodes)
-
-    while remaining:
-        v = remaining.pop()
-        u = random.choice(list(reached))
-        D.add_edge(u, v, w=random.randint(peso_min, peso_max))
-        reached.add(v)
-
-    # Adiciona arestas extras aleatórias
-    while D.number_of_edges() < m:
-        u, v = random.sample(all_nodes, 2)
-        if not D.has_edge(u, v) and u != v:
-            D.add_edge(u, v, w=random.randint(peso_min, peso_max))
-
-    return D
-
-D1 = build_rooted_digraph(10, 20, "r0", 1, 10)
+print("Hello, I am Andras Frank V2.")
 
 def build_D_zero(D):
     """
@@ -162,24 +129,22 @@ def phase2_find_minimum_arborescence_v2(r0, A_zero):
     The function returns the minimum arborescence as a DiGraph.
     """
     D = nx.DiGraph()
-    for (i, a) in enumerate(A_zero):
-        D.add_edge(a[0], a[1], w=i)
+    for i, (u, v) in enumerate(A_zero):
+        D.add_edge(u, v, w=i)
     V = {r0}  # Conjunto de vértices visitados, começando com a raiz
     q = []  # Fila de prioridade para armazenar os arcos
-    for (a, i) in D.out_edges(r0, data=True):
-        heapq.heappush(q, (a, i['w']))  # Adiciona os arcos de saída da raiz à fila de prioridade
+    for (u, v, data) in D.out_edges(r0, data=True):
+        heapq.heappush(q, (data["w"], u, v))  # Adiciona os arcos de saída da raiz à fila de prioridade
+    
     A = nx.DiGraph()  # Arborescência resultante
+    
     while q:  # Enquanto a fila não estiver vazia
-        u, v = min(q, key=lambda x: x[1])  # Remove o arco com o menor peso
-        heapq.heappop(q)
+        #u, v = min(q, key=lambda x: x[1])  # Remove o arco com o menor peso
+        w, u, v = heapq.heappop(q)
         if v in V:  # Se o vértice já foi visitado, continua
             continue
-        A.add_edge(u, v)  # Adiciona o arco à arborescência
+        A.add_edge(u, v, w=w)  # Adiciona o arco à arborescência
         V.add(v)  # Marca o vértice como visitado
-        for (a, i) in D.out_edges(v, data=True):
-            heapq.heappush(q, (a, i['w']))  # Adiciona os arcos de saída do vértice visitado à fila de prioridade
+        for (x, y, data) in D.out_edges(v, data=True):
+            heapq.heappush(q, (data["w"], x, y))  # Adiciona os arcos de saída do vértice visitado à fila de prioridade
     return A  # Retorna a arborescência resultante
-
-A_zero = phase1_find_minimum_arborescence(D1.copy(), "r0")
-
-A_arborescencia = phase2_find_minimum_arborescence_v2("r0", A_zero)
