@@ -1,5 +1,6 @@
 import networkx as nx
 import random
+import heapq
 from chuliu import find_optimum_arborescence, remove_edges_to_r0
 from andrasfrank import phase1_find_minimum_arborescence, phase2_find_minimum_arborescence
 
