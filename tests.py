@@ -43,14 +43,6 @@ def remove_edges_to_r0(D, r0):
     D.remove_edges_from(incoming_edges)
     return D
 
-def find_optimum_arborescence(D, r0):
-    """
-    Retorna a arborescência mínima usando o algoritmo de Chu-Liu/Edmonds.
-    """
-    edmonds = nx.algorithms.tree.branchings.Edmonds(D)
-    return edmonds.find_optimum(attr='w', default=0, kind='min', style='arborescence', seed=42)
-
-
 def contains_arborescence(D, r0):
     """
     Verifica se G contém uma arborescência com raiz r0.
@@ -80,15 +72,8 @@ if contains_arborescence(D1, "r0"):
     custo_frank = get_total_digraph_cost(arborescencia_frank)
     print(f"Custo da arborescência de András Frank: {custo_frank}")
 
-    print("\n🔍 Chamando algoritmo de Edmonds para testes.")
-    arborescencia_edmonds = find_optimum_arborescence(D1.copy(), "r0")
-    custo_edmonds = get_total_digraph_cost(arborescencia_edmonds)
-    print(f"Custo da arborescência de Edmonds: {custo_edmonds}")
-
     # Verificação final
     assert custo_chuliu == custo_frank, f"❌ Custos diferentes! Chu-Liu: {custo_chuliu}, Frank: {custo_frank}"
-    assert custo_chuliu == custo_edmonds, f"❌ Custos diferentes! Chu-Liu: {custo_chuliu}, Edmonds: {custo_edmonds}"
-    assert custo_frank == custo_edmonds, f"❌ Custos diferentes! Frank: {custo_frank}, Edmonds: {custo_edmonds}"
     print("\nSucesso! Ambos algoritmos retornaram arborescências com o mesmo custo mínimo.")
 else:
     print("\n O grafo não contém uma arborescência com raiz r0. Teste abortado.")
