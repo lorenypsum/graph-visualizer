@@ -39,18 +39,10 @@ def get_Fstar(G: nx.DiGraph, r0: str):
     F_star = nx.DiGraph()
 
     for v in G.nodes():
-        # Mais fácil: Se v =/ r0, jogar todas arestas de custo zero ao invés de apenas uma (com o next).
-        # Isso pode fazer o algoritmo executar menos passos.
-        # Mas, precisaria mudar a forma de verificar se F_star é uma arborescência.
-        # Verificar se F_star contém uma arborescência, mas a biblioteca parece não ter essa função.
-        if v != r0:
+        if v != r0: 
             in_edges = list(G.in_edges(v, data="w"))
             if not in_edges:
                 continue  # Nenhuma aresta entra em v
-            # Tenta encontrar uma aresta com custo 0
-            for u, _, w in in_edges:
-                if w == 0:
-                    F_star.add_edge(u, v, w=w)
             u = next((u for u, _, w in in_edges if w == 0), None)
             if u:
                 F_star.add_edge(u, v, w=0)
@@ -220,7 +212,8 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None, log
         u, _, w = in_edge
 
         # Identifica o vértice do ciclo que recebeu a aresta de entrada
-        v = next((v for v, (u_out, _) in out_edges.items() if u_out == u), None)
+        v = next((v_ciclo for v_ciclo, (u_out, _) in out_edges.items() if u_out == u), None)
+
         assert v, f"find_optimum_arborescence: Nenhum vértice do ciclo encontrado que recebeu a aresta de entrada de '{u}'."
 
         # Remove a aresta que entra no vértice `v` do ciclo
