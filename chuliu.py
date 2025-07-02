@@ -63,7 +63,7 @@ def find_cycle(F_star: nx.DiGraph):
         for u, v, _ in nx.find_cycle(F_star, orientation="original"):
             nodes_in_cycle.update([u, v])
         # Retorna o subgrafo contendo apenas o ciclo
-        return F_star.subgraph(nodes_in_cycle)
+        return F_star.subgraph(nodes_in_cycle).copy()
     except nx.NetworkXNoCycle:
         # Se não houver ciclo, retorna None
         return None
