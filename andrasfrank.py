@@ -1,5 +1,4 @@
 import networkx as nx
-import random
 import heapq
 
 print("Hello, I am Andras Frank.")

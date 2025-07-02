@@ -58,12 +58,15 @@ def find_cycle(F_star: nx.DiGraph):
     """
     
     # Tenta encontrar um ciclo no grafo
-    nodes_in_cycle = set()
-    for u, v, _ in nx.find_cycle(F_star, orientation="original"):
-        nodes_in_cycle.update([u, v])
-
-    # Retorna o subgrafo contendo apenas o ciclo
-    return F_star.subgraph(nodes_in_cycle)
+    try:
+        nodes_in_cycle = set()
+        for u, v, _ in nx.find_cycle(F_star, orientation="original"):
+            nodes_in_cycle.update([u, v])
+        # Retorna o subgrafo contendo apenas o ciclo
+        return F_star.subgraph(nodes_in_cycle)
+    except nx.NetworkXNoCycle:
+        # Se não houver ciclo, retorna None
+        return None
 
 # Função auxiliar para contrair um ciclo
 def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
@@ -77,44 +80,44 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
     
     cycle_nodes: set[str] = set(C.nodes())
     
-    # Armazena o vértice u fora do ciclo e o vértive v dentro do ciclo que recebe a aresta de menor peso
-    out_edges: dict[str, tuple[str, float]] = {}
+    # Armazena o vértice u fora do ciclo e o vértice v dentro do ciclo que recebe a aresta de menor peso
+    in_to_cycle: dict[str, tuple[str, float]] = {}
 
     for u in G.nodes:
         if u not in cycle_nodes: 
             # Encontra a aresta de menor peso de u para algum vértice em C
-            out_edge = min(
+            min_weight_edge_to_cycle = min(
                 ((v, w) for _, v, w in G.out_edges(u, data="w") if v in cycle_nodes),
                 key=lambda x: x[1],
                 default=None,
             )
-            if out_edge:
-                out_edges[u] = out_edge
+            if min_weight_edge_to_cycle:
+                in_to_cycle[u] = min_weight_edge_to_cycle
 
-    for u, (v, w) in out_edges.items():
+    for u, (v, w) in in_to_cycle.items():
         G.add_edge(u, label, w=w)
 
-    # Armazena o vértice v fora do ciclo que recebe a aresta de de menor peso de um vértice u dentro do ciclo
-    in_edges: dict[str, tuple[str, float]] = {}
+    # Armazena o vértice v fora do ciclo que recebe a aresta de menor peso de um vértice u dentro do ciclo
+    out_from_cycle: dict[str, tuple[str, float]] = {}
 
     for v in G.nodes:
         if v not in cycle_nodes: 
             # Encontra a aresta de menor peso que v recebe de algum vértice em C
-            in_edge = min(
+            min_weight_edge_from_cycle = min(
                 ((u, w) for u, _, w in G.in_edges(v, data="w") if u in cycle_nodes),
                 key=lambda x: x[1],
                 default=None,
             )
-            if in_edge:
-                in_edges[v] = in_edge
+            if min_weight_edge_from_cycle:
+                out_from_cycle[v] = min_weight_edge_from_cycle
 
-    for v, (u, w) in in_edges.items():
+    for v, (u, w) in out_from_cycle.items():
         G.add_edge(label, v, w=w)      
     
     # Remove os nós do ciclo original
     G.remove_nodes_from(cycle_nodes)
 
-    return out_edges, in_edges
+    return in_to_cycle, out_from_cycle
 
 # Função auxiliar para remover arestas que entram em um vértice raiz
 def remove_edges_to_r0(G: nx.DiGraph, r0: str, logger=None):
@@ -138,24 +141,32 @@ def remove_edges_to_r0(G: nx.DiGraph, r0: str, logger=None):
     return G
 
 # Função auxiliar para remover aresta de um ciclo
-def remove_edge_from_cycle(C: nx.DiGraph, v: str):
+def remove_internal_edge_to_cycle_entry(C: nx.DiGraph, external_entry_edge: tuple):
 
     """
-    Remove do ciclo C a aresta que entra no vértice `v` (obtido de `in_edge`)
-    caso esse vértice já tenha um predecessor em C.
+    Remove do ciclo C a aresta interna que entra no vértice de entrada `v`,
+    pois `v` agora já recebe uma aresta externa do grafo.
+    
+    Parâmetros:
+    - C: subgrafo do ciclo
+    - external_entry_edge: tupla (u, v, w) — aresta externa que conecta o ciclo
+    
+    Retorna:
+    - O ciclo modificado (com uma aresta a menos)
     """
 
-    # Não levantar exceções quando se trata de erro lógico.
-    if v:
-        assert len(v) == 3, "remove_edge_from_cycle: A aresta in_edge deve ter 3 elementos (u, v, w)."
-        _, v, _ = v
+    if not external_entry_edge:
+        return C
 
-        assert v in C, f"O vértice destino '{v}' da in_edge não está presente no ciclo."
+    _, v, _ = external_entry_edge
 
-        # Procura um predecessor em C que leva até v
-        u = next((u for u, _ in C.in_edges(v)), None)
-        if u:
-            C.remove_edge(u, v)
+    assert v in C, f"O vértice '{v}' da aresta de entrada não está presente no ciclo."
+
+    # Procura uma aresta interna no ciclo que também entra em v
+    predecessor = next((u for u, _ in C.in_edges(v)), None)
+    if predecessor:
+        C.remove_edge(predecessor, v)
+
     return C
 
 
@@ -217,7 +228,7 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None, log
         assert v, f"find_optimum_arborescence: Nenhum vértice do ciclo encontrado que recebeu a aresta de entrada de '{u}'."
 
         # Remove a aresta que entra no vértice `v` do ciclo
-        C = remove_edge_from_cycle(C, (u, v, w)) # Nota: w está vindo de F_prime, não de G
+        C = remove_internal_edge_to_cycle_entry(C, (u, v, w)) # Nota: w está vindo de F_prime, não de G
 
         # 1. Adiciona a aresta externa que entra no ciclo (identificada por in_edge)
         # O peso será corrigido no final usando G
