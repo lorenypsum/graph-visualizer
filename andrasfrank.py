@@ -68,9 +68,9 @@ def phase1_find_minimum_arborescence(D_original, r0):
     The function returns the minimum arborescence as a list of arcs.
     """
 
-    D = D_original.copy()
+    D_original = D_original.copy()
     A_zero = []
-    D_zero, A_zero = build_D_zero(D)
+    D_zero, A_zero = build_D_zero(D_original)
 
     iteration = 0  # Contador de iterações
     continue_execution = True
@@ -81,7 +81,7 @@ def phase1_find_minimum_arborescence(D_original, r0):
         print(f"\n🔄 Iteração {iteration} ----------------------------")
 
         continue_execution = False
-        for v in D.nodes():
+        for v in D_original.nodes():
             if v == r0:
                 continue
 
@@ -100,7 +100,7 @@ def phase1_find_minimum_arborescence(D_original, r0):
 
                 print(f" ↳ Conjunto X (ancestrais de {v} sem a raiz): {X}")
 
-                arcs = get_arcs_entering_X(D, X)
+                arcs = get_arcs_entering_X(D_original, X)
                 print(f" ↳ Arcos que entram em X: {arcs}")
 
                 # TODO:  NÃO FAZER ISSO AGORA
@@ -114,10 +114,10 @@ def phase1_find_minimum_arborescence(D_original, r0):
                 if min_weight:
                     continue_execution = True
 
-                update_weights_in_X(D, X, min_weight, A_zero, D_zero)
+                update_weights_in_X(D_original, X, min_weight, A_zero, D_zero)
                 print(f"   🔄 Pesos atualizados nos arcos que entram em X")
            
-        if iteration > len(D.edges()):
+        if iteration > len(D_original.edges()):
             print("🚨 Limite de iterações excedido. Pode haver loop infinito.")
             break
 
@@ -143,7 +143,7 @@ def phase2_find_minimum_arborescence(D_original, r0, A_zero):
                 break  # Reinicia o loop após adicionar uma aresta
     return Arb
 
-def phase2_find_minimum_arborescence_v2(r0, A_zero):
+def phase2_find_minimum_arborescence_v2(D_original, r0, A_zero):
     """
     Find the minimum arborescence in a directed graph D with root r0.
     The function returns the minimum arborescence as a DiGraph.
@@ -164,7 +164,7 @@ def phase2_find_minimum_arborescence_v2(r0, A_zero):
         if v in V:  # Se o vértice já foi visitado, continua
             continue
         # TODO: O peso colocado aqui está errado, tem que usar o peso do grafo original.
-        A.add_edge(u, v, w = D[u][v]["w"])  # Adiciona o arco à arborescência
+        A.add_edge(u, v, w = D_original[u][v]["w"])  # Adiciona o arco à arborescência
         V.add(v)  # Marca o vértice como visitado
         for (x, y, data) in D.out_edges(v, data=True):
             heapq.heappush(q, (data["w"], x, y))  # Adiciona os arcos de saída do vértice visitado à fila de prioridade

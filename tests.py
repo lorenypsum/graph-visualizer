@@ -69,7 +69,7 @@ if contains_arborescence(D1, "r0"):
     print("\n🔍 Executando algoritmo de András Frank...")
     A_zero = phase1_find_minimum_arborescence(D1.copy(), "r0")
     arborescencia_frank = phase2_find_minimum_arborescence(D1.copy(),"r0", A_zero)
-    arborescencia_frank_v2 = phase2_find_minimum_arborescence_v2("r0", A_zero)
+    arborescencia_frank_v2 = phase2_find_minimum_arborescence_v2(D1.copy(), "r0", A_zero)
     custo_frank = get_total_digraph_cost(arborescencia_frank)
     custo_frank_v2 = get_total_digraph_cost(arborescencia_frank_v2)
     print(f"Custo da arborescência de András Frank: {custo_frank}")
