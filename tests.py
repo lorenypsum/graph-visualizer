@@ -82,5 +82,4 @@ if contains_arborescence_result:
     print("\n Sucesso! Ambos algoritmos retornaram arborescências com o mesmo custo mínimo.")
 else:
     print("\n O grafo não contém uma arborescência com raiz r0. Teste abortado.")
-
 # TODO: Implementar testagem em quantidade automaticamente. (Família robusta de testes).      
