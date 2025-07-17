@@ -47,8 +47,6 @@ def contains_arborescence(D, r0):
     """
     Verifica se G contém uma arborescência com raiz r0.
     """
-    if not nx.is_weakly_connected(D1):
-        return False
     tree = nx.dfs_tree(D, source=r0)
     return tree.number_of_nodes() == D.number_of_nodes()
 
