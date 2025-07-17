@@ -78,8 +78,8 @@ if contains_arborescence(D1, "r0"):
     # Verificação final
     assert custo_chuliu == custo_frank, f"❌ Custos diferentes! Chu-Liu: {custo_chuliu}, Frank: {custo_frank}"
     assert custo_chuliu == custo_frank_v2, f"❌ Custos diferentes! Chu-Liu: {custo_chuliu}, Frank v2: {custo_frank_v2}"
-    print("\n✅ Testes concluídos com sucesso!")
-    print("\nSucesso! Ambos algoritmos retornaram arborescências com o mesmo custo mínimo.")
+    print("\n ✅ Testes concluídos com sucesso!")
+    print("\n Sucesso! Ambos algoritmos retornaram arborescências com o mesmo custo mínimo.")
 else:
     print("\n O grafo não contém uma arborescência com raiz r0. Teste abortado.")
 
