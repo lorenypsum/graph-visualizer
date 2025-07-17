@@ -48,7 +48,7 @@ def contains_arborescence(D, r0):
     Verifica se G contém uma arborescência com raiz r0.
     """
     tree = nx.dfs_tree(D, source=r0)
-    return tree.number_of_nodes() == D.number_of_nodes()
+    return tree.number_of_nodes() == D.number_of_nodes(), tree
 
 def get_total_digraph_cost(D_arborescencia):
     """
