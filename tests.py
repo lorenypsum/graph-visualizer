@@ -56,8 +56,10 @@ def get_total_digraph_cost(D_arborescencia):
     """
     return sum(data["w"] for _, _, data in D_arborescencia.edges(data=True))
 
+contains_arborescence_result, tree_result = contains_arborescence(D1, "r0")
+
 # Executa os testes se o grafo contiver uma arborescência
-if contains_arborescence(D1, "r0"):
+if contains_arborescence_result:
     print("\n🔍 Executando algoritmo de Chu-Liu/Edmonds...")
     D1_sem_entradas = remove_edges_to_r0(D1.copy(), "r0")
     arborescencia_chuliu = find_optimum_arborescence(D1_sem_entradas, "r0")
