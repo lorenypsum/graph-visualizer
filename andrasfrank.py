@@ -163,7 +163,8 @@ def phase2_find_minimum_arborescence_v2(r0, A_zero):
         w, u, v = heapq.heappop(q)
         if v in V:  # Se o vértice já foi visitado, continua
             continue
-        A.add_edge(u, v, w=w)  # Adiciona o arco à arborescência
+        # TODO: O peso colocado aqui está errado, tem que usar o peso do grafo original.
+        A.add_edge(u, v, w = D[u][v]["w"])  # Adiciona o arco à arborescência
         V.add(v)  # Marca o vértice como visitado
         for (x, y, data) in D.out_edges(v, data=True):
             heapq.heappush(q, (data["w"], x, y))  # Adiciona os arcos de saída do vértice visitado à fila de prioridade
