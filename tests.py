@@ -50,6 +50,7 @@ def contains_arborescence(D, r0):
     tree = nx.dfs_tree(D, source=r0)
     return tree.number_of_nodes() == D.number_of_nodes(), tree
 
+#TODO: Samira... Pegar o tree_result e retornar o mundo exterior.
 def get_total_digraph_cost(D_arborescencia):
     """
     Calcula o custo total de um grafo dirigido.
