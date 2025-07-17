@@ -83,4 +83,4 @@ if contains_arborescence(D1, "r0"):
 else:
     print("\n O grafo não contém uma arborescência com raiz r0. Teste abortado.")
 
-#TODO: Implementar testagem em quantidade automaticamente.      
+#TODO: Implementar testagem em quantidade automaticamente. (Família robusta de testes).      
