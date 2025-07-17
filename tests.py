@@ -82,3 +82,5 @@ if contains_arborescence(D1, "r0"):
     print("\nSucesso! Ambos algoritmos retornaram arborescências com o mesmo custo mínimo.")
 else:
     print("\n O grafo não contém uma arborescência com raiz r0. Teste abortado.")
+
+#TODO: Implementar testagem em quantidade automaticamente.      
