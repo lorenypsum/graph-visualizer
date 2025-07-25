@@ -1,7 +1,12 @@
-import networkx as nx
 import random
+
+import networkx as nx
+
+from andrasfrank import (phase1_find_minimum_arborescence,
+                         phase2_find_minimum_arborescence,
+                         phase2_find_minimum_arborescence_v2)
 from chuliu import find_optimum_arborescence, remove_edges_to_r0
-from andrasfrank import phase1_find_minimum_arborescence, phase2_find_minimum_arborescence, phase2_find_minimum_arborescence_v2
+
 
 def build_rooted_digraph(n=10, m=None, r0="r0", peso_min=1, peso_max=10):
     """
