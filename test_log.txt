@@ -1,692 +1,732 @@
 
-=== Teste #1 - Vértices: 24, Arestas: 68 ===
-✅ Sucesso - Custo: 144
+=== Teste #1 - Vértices: 33, Arestas: 82 ===
+✅ Sucesso - Custo: 183
 
-=== Teste #2 - Vértices: 25, Arestas: 63 ===
-✅ Sucesso - Custo: 151
-
-=== Teste #3 - Vértices: 47, Arestas: 95 ===
-✅ Sucesso - Custo: 338
-
-=== Teste #4 - Vértices: 36, Arestas: 43 ===
-✅ Sucesso - Custo: 357
-
-=== Teste #5 - Vértices: 48, Arestas: 99 ===
-✅ Sucesso - Custo: 390
-
-=== Teste #6 - Vértices: 39, Arestas: 65 ===
-✅ Sucesso - Custo: 352
-
-=== Teste #7 - Vértices: 16, Arestas: 31 ===
-✅ Sucesso - Custo: 113
-
-=== Teste #8 - Vértices: 26, Arestas: 50 ===
-✅ Sucesso - Custo: 200
-
-=== Teste #9 - Vértices: 34, Arestas: 82 ===
-✅ Sucesso - Custo: 268
-
-=== Teste #10 - Vértices: 24, Arestas: 33 ===
-✅ Sucesso - Custo: 237
-
-=== Teste #11 - Vértices: 27, Arestas: 35 ===
-✅ Sucesso - Custo: 217
-
-=== Teste #12 - Vértices: 10, Arestas: 25 ===
-✅ Sucesso - Custo: 79
-
-=== Teste #13 - Vértices: 21, Arestas: 27 ===
-✅ Sucesso - Custo: 181
-
-=== Teste #14 - Vértices: 46, Arestas: 76 ===
-✅ Sucesso - Custo: 377
-
-=== Teste #15 - Vértices: 35, Arestas: 57 ===
-✅ Sucesso - Custo: 302
-
-=== Teste #16 - Vértices: 35, Arestas: 95 ===
-❌ Erro: Custos divergentes: CHULIU 192, FRANK 197, FRANK_V2 197
-Traceback (most recent call last):
-  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
-    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: Custos divergentes: CHULIU 192, FRANK 197, FRANK_V2 197
-
-=== Teste #17 - Vértices: 48, Arestas: 135 ===
-✅ Sucesso - Custo: 335
-
-=== Teste #18 - Vértices: 40, Arestas: 44 ===
-✅ Sucesso - Custo: 411
-
-=== Teste #19 - Vértices: 32, Arestas: 72 ===
-✅ Sucesso - Custo: 203
-
-=== Teste #20 - Vértices: 22, Arestas: 32 ===
-✅ Sucesso - Custo: 158
-
-=== Teste #21 - Vértices: 38, Arestas: 57 ===
-✅ Sucesso - Custo: 284
-
-=== Teste #22 - Vértices: 23, Arestas: 32 ===
-✅ Sucesso - Custo: 226
-
-=== Teste #23 - Vértices: 40, Arestas: 114 ===
-✅ Sucesso - Custo: 219
-
-=== Teste #24 - Vértices: 40, Arestas: 65 ===
-✅ Sucesso - Custo: 338
-
-=== Teste #25 - Vértices: 18, Arestas: 32 ===
-✅ Sucesso - Custo: 135
-
-=== Teste #26 - Vértices: 15, Arestas: 25 ===
-✅ Sucesso - Custo: 133
-
-=== Teste #27 - Vértices: 19, Arestas: 57 ===
-✅ Sucesso - Custo: 130
-
-=== Teste #28 - Vértices: 41, Arestas: 118 ===
-❌ Erro: Custos divergentes: CHULIU 308, FRANK 303, FRANK_V2 303
-Traceback (most recent call last):
-  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
-    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: Custos divergentes: CHULIU 308, FRANK 303, FRANK_V2 303
-
-=== Teste #29 - Vértices: 38, Arestas: 104 ===
-❌ Erro: Custos divergentes: CHULIU 240, FRANK 232, FRANK_V2 232
-Traceback (most recent call last):
-  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
-    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: Custos divergentes: CHULIU 240, FRANK 232, FRANK_V2 232
-
-=== Teste #30 - Vértices: 33, Arestas: 35 ===
-✅ Sucesso - Custo: 349
-
-=== Teste #31 - Vértices: 49, Arestas: 83 ===
-❌ Erro: Custos divergentes: CHULIU 399, FRANK 403, FRANK_V2 403
-Traceback (most recent call last):
-  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
-    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: Custos divergentes: CHULIU 399, FRANK 403, FRANK_V2 403
-
-=== Teste #32 - Vértices: 26, Arestas: 75 ===
-✅ Sucesso - Custo: 143
-
-=== Teste #33 - Vértices: 40, Arestas: 98 ===
-✅ Sucesso - Custo: 328
-
-=== Teste #34 - Vértices: 25, Arestas: 32 ===
-✅ Sucesso - Custo: 194
-
-=== Teste #35 - Vértices: 32, Arestas: 34 ===
-✅ Sucesso - Custo: 300
-
-=== Teste #36 - Vértices: 50, Arestas: 73 ===
-✅ Sucesso - Custo: 442
-
-=== Teste #37 - Vértices: 33, Arestas: 44 ===
-✅ Sucesso - Custo: 279
-
-=== Teste #38 - Vértices: 26, Arestas: 44 ===
-✅ Sucesso - Custo: 265
-
-=== Teste #39 - Vértices: 48, Arestas: 63 ===
-✅ Sucesso - Custo: 401
-
-=== Teste #40 - Vértices: 27, Arestas: 35 ===
-✅ Sucesso - Custo: 217
-
-=== Teste #41 - Vértices: 15, Arestas: 44 ===
-✅ Sucesso - Custo: 81
-
-=== Teste #42 - Vértices: 38, Arestas: 44 ===
-✅ Sucesso - Custo: 335
-
-=== Teste #43 - Vértices: 30, Arestas: 58 ===
-✅ Sucesso - Custo: 193
-
-=== Teste #44 - Vértices: 29, Arestas: 38 ===
-✅ Sucesso - Custo: 226
-
-=== Teste #45 - Vértices: 16, Arestas: 34 ===
-✅ Sucesso - Custo: 119
-
-=== Teste #46 - Vértices: 23, Arestas: 42 ===
-✅ Sucesso - Custo: 197
-
-=== Teste #47 - Vértices: 37, Arestas: 62 ===
-✅ Sucesso - Custo: 255
-
-=== Teste #48 - Vértices: 27, Arestas: 30 ===
-✅ Sucesso - Custo: 258
-
-=== Teste #49 - Vértices: 38, Arestas: 111 ===
-✅ Sucesso - Custo: 252
-
-=== Teste #50 - Vértices: 30, Arestas: 87 ===
-✅ Sucesso - Custo: 133
-
-=== Teste #51 - Vértices: 18, Arestas: 29 ===
-✅ Sucesso - Custo: 118
-
-=== Teste #52 - Vértices: 35, Arestas: 42 ===
-✅ Sucesso - Custo: 360
-
-=== Teste #53 - Vértices: 37, Arestas: 60 ===
-✅ Sucesso - Custo: 264
-
-=== Teste #54 - Vértices: 24, Arestas: 62 ===
-✅ Sucesso - Custo: 125
-
-=== Teste #55 - Vértices: 17, Arestas: 45 ===
-❌ Erro: Custos divergentes: CHULIU 104, FRANK 100, FRANK_V2 100
-Traceback (most recent call last):
-  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
-    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: Custos divergentes: CHULIU 104, FRANK 100, FRANK_V2 100
-
-=== Teste #56 - Vértices: 50, Arestas: 147 ===
-❌ Erro: Custos divergentes: CHULIU 303, FRANK 304, FRANK_V2 304
-Traceback (most recent call last):
-  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
-    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: Custos divergentes: CHULIU 303, FRANK 304, FRANK_V2 304
-
-=== Teste #57 - Vértices: 41, Arestas: 72 ===
-✅ Sucesso - Custo: 403
-
-=== Teste #58 - Vértices: 50, Arestas: 59 ===
-✅ Sucesso - Custo: 461
-
-=== Teste #59 - Vértices: 45, Arestas: 122 ===
-✅ Sucesso - Custo: 286
-
-=== Teste #60 - Vértices: 19, Arestas: 34 ===
-✅ Sucesso - Custo: 145
-
-=== Teste #61 - Vértices: 28, Arestas: 48 ===
-✅ Sucesso - Custo: 218
-
-=== Teste #62 - Vértices: 44, Arestas: 79 ===
-✅ Sucesso - Custo: 348
-
-=== Teste #63 - Vértices: 18, Arestas: 34 ===
-✅ Sucesso - Custo: 97
-
-=== Teste #64 - Vértices: 24, Arestas: 56 ===
-✅ Sucesso - Custo: 139
-
-=== Teste #65 - Vértices: 30, Arestas: 72 ===
-✅ Sucesso - Custo: 175
-
-=== Teste #66 - Vértices: 45, Arestas: 86 ===
-✅ Sucesso - Custo: 338
-
-=== Teste #67 - Vértices: 42, Arestas: 120 ===
-❌ Erro: Custos divergentes: CHULIU 268, FRANK 266, FRANK_V2 266
-Traceback (most recent call last):
-  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
-    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: Custos divergentes: CHULIU 268, FRANK 266, FRANK_V2 266
-
-=== Teste #68 - Vértices: 24, Arestas: 63 ===
-❌ Erro: Custos divergentes: CHULIU 139, FRANK 137, FRANK_V2 137
-Traceback (most recent call last):
-  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
-    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: Custos divergentes: CHULIU 139, FRANK 137, FRANK_V2 137
-
-=== Teste #69 - Vértices: 21, Arestas: 36 ===
-✅ Sucesso - Custo: 186
-
-=== Teste #70 - Vértices: 19, Arestas: 57 ===
-✅ Sucesso - Custo: 110
-
-=== Teste #71 - Vértices: 17, Arestas: 34 ===
-✅ Sucesso - Custo: 131
-
-=== Teste #72 - Vértices: 35, Arestas: 87 ===
-✅ Sucesso - Custo: 221
-
-=== Teste #73 - Vértices: 33, Arestas: 72 ===
-✅ Sucesso - Custo: 260
-
-=== Teste #74 - Vértices: 31, Arestas: 73 ===
-✅ Sucesso - Custo: 205
-
-=== Teste #75 - Vértices: 39, Arestas: 66 ===
-✅ Sucesso - Custo: 328
-
-=== Teste #76 - Vértices: 46, Arestas: 92 ===
-✅ Sucesso - Custo: 337
-
-=== Teste #77 - Vértices: 39, Arestas: 114 ===
-✅ Sucesso - Custo: 221
-
-=== Teste #78 - Vértices: 20, Arestas: 21 ===
-✅ Sucesso - Custo: 191
-
-=== Teste #79 - Vértices: 24, Arestas: 67 ===
-✅ Sucesso - Custo: 129
-
-=== Teste #80 - Vértices: 17, Arestas: 33 ===
-✅ Sucesso - Custo: 99
-
-=== Teste #81 - Vértices: 46, Arestas: 87 ===
-❌ Erro: Custos divergentes: CHULIU 361, FRANK 363, FRANK_V2 363
-Traceback (most recent call last):
-  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
-    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: Custos divergentes: CHULIU 361, FRANK 363, FRANK_V2 363
-
-=== Teste #82 - Vértices: 10, Arestas: 30 ===
-✅ Sucesso - Custo: 55
-
-=== Teste #83 - Vértices: 45, Arestas: 92 ===
-✅ Sucesso - Custo: 392
-
-=== Teste #84 - Vértices: 34, Arestas: 86 ===
-✅ Sucesso - Custo: 227
-
-=== Teste #85 - Vértices: 26, Arestas: 50 ===
-✅ Sucesso - Custo: 209
-
-=== Teste #86 - Vértices: 12, Arestas: 29 ===
-✅ Sucesso - Custo: 98
-
-=== Teste #87 - Vértices: 43, Arestas: 103 ===
-✅ Sucesso - Custo: 260
-
-=== Teste #88 - Vértices: 25, Arestas: 63 ===
-❌ Erro: Custos divergentes: CHULIU 184, FRANK 185, FRANK_V2 185
-Traceback (most recent call last):
-  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
-    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: Custos divergentes: CHULIU 184, FRANK 185, FRANK_V2 185
-
-=== Teste #89 - Vértices: 39, Arestas: 65 ===
-✅ Sucesso - Custo: 346
-
-=== Teste #90 - Vértices: 18, Arestas: 38 ===
-✅ Sucesso - Custo: 126
-
-=== Teste #91 - Vértices: 38, Arestas: 79 ===
-✅ Sucesso - Custo: 273
-
-=== Teste #92 - Vértices: 44, Arestas: 92 ===
-❌ Erro: Custos divergentes: CHULIU 326, FRANK 330, FRANK_V2 330
-Traceback (most recent call last):
-  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
-    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: Custos divergentes: CHULIU 326, FRANK 330, FRANK_V2 330
-
-=== Teste #93 - Vértices: 12, Arestas: 12 ===
-✅ Sucesso - Custo: 112
-
-=== Teste #94 - Vértices: 44, Arestas: 108 ===
-✅ Sucesso - Custo: 271
-
-=== Teste #95 - Vértices: 35, Arestas: 43 ===
-✅ Sucesso - Custo: 371
-
-=== Teste #96 - Vértices: 34, Arestas: 77 ===
-✅ Sucesso - Custo: 236
-
-=== Teste #97 - Vértices: 15, Arestas: 22 ===
-✅ Sucesso - Custo: 122
-
-=== Teste #98 - Vértices: 41, Arestas: 111 ===
-✅ Sucesso - Custo: 284
-
-=== Teste #99 - Vértices: 38, Arestas: 58 ===
-✅ Sucesso - Custo: 293
-
-=== Teste #100 - Vértices: 24, Arestas: 53 ===
-✅ Sucesso - Custo: 184
-
-=== Teste #101 - Vértices: 37, Arestas: 108 ===
-✅ Sucesso - Custo: 217
-
-=== Teste #102 - Vértices: 35, Arestas: 59 ===
-✅ Sucesso - Custo: 303
-
-=== Teste #103 - Vértices: 24, Arestas: 53 ===
-✅ Sucesso - Custo: 169
-
-=== Teste #104 - Vértices: 41, Arestas: 71 ===
-✅ Sucesso - Custo: 353
-
-=== Teste #105 - Vértices: 40, Arestas: 43 ===
-✅ Sucesso - Custo: 377
-
-=== Teste #106 - Vértices: 14, Arestas: 17 ===
-✅ Sucesso - Custo: 111
-
-=== Teste #107 - Vértices: 19, Arestas: 55 ===
-✅ Sucesso - Custo: 105
-
-=== Teste #108 - Vértices: 36, Arestas: 80 ===
-✅ Sucesso - Custo: 341
-
-=== Teste #109 - Vértices: 38, Arestas: 105 ===
-✅ Sucesso - Custo: 292
-
-=== Teste #110 - Vértices: 17, Arestas: 51 ===
-✅ Sucesso - Custo: 95
-
-=== Teste #111 - Vértices: 14, Arestas: 40 ===
-❌ Erro: Custos divergentes: CHULIU 96, FRANK 106, FRANK_V2 106
-Traceback (most recent call last):
-  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
-    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: Custos divergentes: CHULIU 96, FRANK 106, FRANK_V2 106
-
-=== Teste #112 - Vértices: 27, Arestas: 47 ===
-✅ Sucesso - Custo: 250
-
-=== Teste #113 - Vértices: 41, Arestas: 97 ===
-✅ Sucesso - Custo: 303
-
-=== Teste #114 - Vértices: 12, Arestas: 20 ===
-✅ Sucesso - Custo: 77
-
-=== Teste #115 - Vértices: 46, Arestas: 59 ===
-✅ Sucesso - Custo: 371
-
-=== Teste #116 - Vértices: 12, Arestas: 28 ===
-✅ Sucesso - Custo: 98
-
-=== Teste #117 - Vértices: 44, Arestas: 90 ===
-✅ Sucesso - Custo: 352
-
-=== Teste #118 - Vértices: 19, Arestas: 42 ===
-✅ Sucesso - Custo: 119
-
-=== Teste #119 - Vértices: 22, Arestas: 30 ===
-✅ Sucesso - Custo: 200
-
-=== Teste #120 - Vértices: 40, Arestas: 54 ===
-✅ Sucesso - Custo: 346
-
-=== Teste #121 - Vértices: 26, Arestas: 32 ===
-✅ Sucesso - Custo: 254
-
-=== Teste #122 - Vértices: 47, Arestas: 139 ===
-❌ Erro: Custos divergentes: CHULIU 299, FRANK 300, FRANK_V2 300
-Traceback (most recent call last):
-  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
-    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: Custos divergentes: CHULIU 299, FRANK 300, FRANK_V2 300
-
-=== Teste #123 - Vértices: 41, Arestas: 48 ===
-✅ Sucesso - Custo: 404
-
-=== Teste #124 - Vértices: 30, Arestas: 38 ===
-✅ Sucesso - Custo: 300
-
-=== Teste #125 - Vértices: 21, Arestas: 52 ===
-✅ Sucesso - Custo: 156
-
-=== Teste #126 - Vértices: 38, Arestas: 64 ===
-✅ Sucesso - Custo: 261
-
-=== Teste #127 - Vértices: 24, Arestas: 57 ===
-✅ Sucesso - Custo: 184
-
-=== Teste #128 - Vértices: 39, Arestas: 84 ===
-✅ Sucesso - Custo: 305
-
-=== Teste #129 - Vértices: 23, Arestas: 49 ===
-✅ Sucesso - Custo: 149
-
-=== Teste #130 - Vértices: 15, Arestas: 17 ===
-✅ Sucesso - Custo: 187
-
-=== Teste #131 - Vértices: 12, Arestas: 35 ===
-✅ Sucesso - Custo: 76
-
-=== Teste #132 - Vértices: 43, Arestas: 50 ===
-✅ Sucesso - Custo: 455
-
-=== Teste #133 - Vértices: 48, Arestas: 117 ===
-✅ Sucesso - Custo: 356
-
-=== Teste #134 - Vértices: 42, Arestas: 45 ===
-✅ Sucesso - Custo: 431
-
-=== Teste #135 - Vértices: 28, Arestas: 72 ===
-✅ Sucesso - Custo: 179
-
-=== Teste #136 - Vértices: 32, Arestas: 34 ===
-✅ Sucesso - Custo: 285
-
-=== Teste #137 - Vértices: 48, Arestas: 71 ===
-✅ Sucesso - Custo: 440
-
-=== Teste #138 - Vértices: 21, Arestas: 28 ===
-✅ Sucesso - Custo: 198
-
-=== Teste #139 - Vértices: 32, Arestas: 94 ===
-✅ Sucesso - Custo: 164
-
-=== Teste #140 - Vértices: 14, Arestas: 24 ===
-✅ Sucesso - Custo: 108
-
-=== Teste #141 - Vértices: 12, Arestas: 35 ===
-✅ Sucesso - Custo: 78
-
-=== Teste #142 - Vértices: 27, Arestas: 71 ===
-✅ Sucesso - Custo: 177
-
-=== Teste #143 - Vértices: 14, Arestas: 39 ===
-✅ Sucesso - Custo: 64
-
-=== Teste #144 - Vértices: 50, Arestas: 103 ===
-✅ Sucesso - Custo: 399
-
-=== Teste #145 - Vértices: 14, Arestas: 42 ===
-✅ Sucesso - Custo: 75
-
-=== Teste #146 - Vértices: 14, Arestas: 33 ===
-✅ Sucesso - Custo: 81
-
-=== Teste #147 - Vértices: 31, Arestas: 76 ===
-✅ Sucesso - Custo: 230
-
-=== Teste #148 - Vértices: 15, Arestas: 41 ===
-✅ Sucesso - Custo: 110
-
-=== Teste #149 - Vértices: 31, Arestas: 61 ===
-✅ Sucesso - Custo: 237
-
-=== Teste #150 - Vértices: 33, Arestas: 83 ===
+=== Teste #2 - Vértices: 34, Arestas: 80 ===
 ✅ Sucesso - Custo: 248
 
-=== Teste #151 - Vértices: 12, Arestas: 27 ===
-✅ Sucesso - Custo: 83
-
-=== Teste #152 - Vértices: 28, Arestas: 78 ===
-✅ Sucesso - Custo: 169
-
-=== Teste #153 - Vértices: 31, Arestas: 36 ===
-✅ Sucesso - Custo: 243
-
-=== Teste #154 - Vértices: 17, Arestas: 26 ===
-✅ Sucesso - Custo: 133
-
-=== Teste #155 - Vértices: 31, Arestas: 45 ===
-✅ Sucesso - Custo: 289
-
-=== Teste #156 - Vértices: 16, Arestas: 20 ===
-✅ Sucesso - Custo: 162
-
-=== Teste #157 - Vértices: 47, Arestas: 57 ===
-✅ Sucesso - Custo: 486
-
-=== Teste #158 - Vértices: 13, Arestas: 14 ===
-✅ Sucesso - Custo: 85
-
-=== Teste #159 - Vértices: 18, Arestas: 45 ===
-❌ Erro: Custos divergentes: CHULIU 101, FRANK 104, FRANK_V2 104
+=== Teste #3 - Vértices: 29, Arestas: 63 ===
+❌ Erro: Custos divergentes: CHULIU 250, FRANK 243, FRANK_V2 243
 Traceback (most recent call last):
   File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
     assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
            ^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: Custos divergentes: CHULIU 101, FRANK 104, FRANK_V2 104
+AssertionError: Custos divergentes: CHULIU 250, FRANK 243, FRANK_V2 243
 
-=== Teste #160 - Vértices: 43, Arestas: 123 ===
-✅ Sucesso - Custo: 237
+=== Teste #4 - Vértices: 28, Arestas: 33 ===
+✅ Sucesso - Custo: 239
 
-=== Teste #161 - Vértices: 20, Arestas: 59 ===
-✅ Sucesso - Custo: 135
+=== Teste #5 - Vértices: 34, Arestas: 78 ===
+✅ Sucesso - Custo: 248
 
-=== Teste #162 - Vértices: 21, Arestas: 41 ===
-✅ Sucesso - Custo: 180
-
-=== Teste #163 - Vértices: 44, Arestas: 91 ===
-✅ Sucesso - Custo: 246
-
-=== Teste #164 - Vértices: 40, Arestas: 103 ===
-✅ Sucesso - Custo: 198
-
-=== Teste #165 - Vértices: 24, Arestas: 42 ===
-✅ Sucesso - Custo: 191
-
-=== Teste #166 - Vértices: 40, Arestas: 66 ===
-✅ Sucesso - Custo: 310
-
-=== Teste #167 - Vértices: 45, Arestas: 98 ===
-✅ Sucesso - Custo: 366
-
-=== Teste #168 - Vértices: 12, Arestas: 14 ===
-✅ Sucesso - Custo: 120
-
-=== Teste #169 - Vértices: 39, Arestas: 47 ===
-✅ Sucesso - Custo: 430
-
-=== Teste #170 - Vértices: 15, Arestas: 43 ===
-✅ Sucesso - Custo: 95
-
-=== Teste #171 - Vértices: 17, Arestas: 29 ===
-✅ Sucesso - Custo: 136
-
-=== Teste #172 - Vértices: 44, Arestas: 123 ===
-❌ Erro: Custos divergentes: CHULIU 339, FRANK 335, FRANK_V2 335
+=== Teste #6 - Vértices: 48, Arestas: 86 ===
+❌ Erro: Custos divergentes: CHULIU 389, FRANK 376, FRANK_V2 376
 Traceback (most recent call last):
   File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
     assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
            ^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: Custos divergentes: CHULIU 339, FRANK 335, FRANK_V2 335
+AssertionError: Custos divergentes: CHULIU 389, FRANK 376, FRANK_V2 376
 
-=== Teste #173 - Vértices: 45, Arestas: 61 ===
-✅ Sucesso - Custo: 428
+=== Teste #7 - Vértices: 42, Arestas: 103 ===
+❌ Erro: Custos divergentes: CHULIU 288, FRANK 287, FRANK_V2 287
+Traceback (most recent call last):
+  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
+    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Custos divergentes: CHULIU 288, FRANK 287, FRANK_V2 287
 
-=== Teste #174 - Vértices: 31, Arestas: 64 ===
-✅ Sucesso - Custo: 222
+=== Teste #8 - Vértices: 31, Arestas: 87 ===
+❌ Erro: Custos divergentes: CHULIU 165, FRANK 167, FRANK_V2 167
+Traceback (most recent call last):
+  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
+    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Custos divergentes: CHULIU 165, FRANK 167, FRANK_V2 167
 
-=== Teste #175 - Vértices: 40, Arestas: 86 ===
+=== Teste #9 - Vértices: 21, Arestas: 21 ===
+✅ Sucesso - Custo: 212
+
+=== Teste #10 - Vértices: 35, Arestas: 71 ===
 ✅ Sucesso - Custo: 276
 
-=== Teste #176 - Vértices: 10, Arestas: 25 ===
-✅ Sucesso - Custo: 42
+=== Teste #11 - Vértices: 30, Arestas: 86 ===
+✅ Sucesso - Custo: 211
 
-=== Teste #177 - Vértices: 14, Arestas: 33 ===
-❌ Erro: Custos divergentes: CHULIU 81, FRANK 75, FRANK_V2 75
-Traceback (most recent call last):
-  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
-    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: Custos divergentes: CHULIU 81, FRANK 75, FRANK_V2 75
+=== Teste #12 - Vértices: 35, Arestas: 99 ===
+✅ Sucesso - Custo: 241
 
-=== Teste #178 - Vértices: 44, Arestas: 124 ===
-❌ Erro: Custos divergentes: CHULIU 291, FRANK 292, FRANK_V2 292
-Traceback (most recent call last):
-  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
-    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: Custos divergentes: CHULIU 291, FRANK 292, FRANK_V2 292
+=== Teste #13 - Vértices: 14, Arestas: 39 ===
+✅ Sucesso - Custo: 66
 
-=== Teste #179 - Vértices: 22, Arestas: 23 ===
-✅ Sucesso - Custo: 189
+=== Teste #14 - Vértices: 27, Arestas: 63 ===
+✅ Sucesso - Custo: 209
 
-=== Teste #180 - Vértices: 44, Arestas: 47 ===
-✅ Sucesso - Custo: 429
+=== Teste #15 - Vértices: 26, Arestas: 51 ===
+✅ Sucesso - Custo: 214
 
-=== Teste #181 - Vértices: 38, Arestas: 77 ===
-✅ Sucesso - Custo: 270
+=== Teste #16 - Vértices: 10, Arestas: 14 ===
+✅ Sucesso - Custo: 61
 
-=== Teste #182 - Vértices: 11, Arestas: 18 ===
-✅ Sucesso - Custo: 97
+=== Teste #17 - Vértices: 23, Arestas: 35 ===
+✅ Sucesso - Custo: 233
 
-=== Teste #183 - Vértices: 34, Arestas: 70 ===
-✅ Sucesso - Custo: 207
+=== Teste #18 - Vértices: 42, Arestas: 45 ===
+✅ Sucesso - Custo: 414
 
-=== Teste #184 - Vértices: 47, Arestas: 84 ===
-✅ Sucesso - Custo: 323
+=== Teste #19 - Vértices: 17, Arestas: 19 ===
+✅ Sucesso - Custo: 187
 
-=== Teste #185 - Vértices: 50, Arestas: 56 ===
-✅ Sucesso - Custo: 538
+=== Teste #20 - Vértices: 18, Arestas: 18 ===
+✅ Sucesso - Custo: 165
 
-=== Teste #186 - Vértices: 21, Arestas: 29 ===
+=== Teste #21 - Vértices: 30, Arestas: 64 ===
+✅ Sucesso - Custo: 219
+
+=== Teste #22 - Vértices: 18, Arestas: 41 ===
+✅ Sucesso - Custo: 111
+
+=== Teste #23 - Vértices: 35, Arestas: 83 ===
+✅ Sucesso - Custo: 297
+
+=== Teste #24 - Vértices: 36, Arestas: 51 ===
+✅ Sucesso - Custo: 356
+
+=== Teste #25 - Vértices: 11, Arestas: 23 ===
+✅ Sucesso - Custo: 88
+
+=== Teste #26 - Vértices: 33, Arestas: 63 ===
+✅ Sucesso - Custo: 200
+
+=== Teste #27 - Vértices: 32, Arestas: 45 ===
+✅ Sucesso - Custo: 300
+
+=== Teste #28 - Vértices: 19, Arestas: 19 ===
+✅ Sucesso - Custo: 180
+
+=== Teste #29 - Vértices: 23, Arestas: 30 ===
+✅ Sucesso - Custo: 257
+
+=== Teste #30 - Vértices: 23, Arestas: 36 ===
+✅ Sucesso - Custo: 181
+
+=== Teste #31 - Vértices: 20, Arestas: 59 ===
+✅ Sucesso - Custo: 135
+
+=== Teste #32 - Vértices: 32, Arestas: 56 ===
+✅ Sucesso - Custo: 255
+
+=== Teste #33 - Vértices: 10, Arestas: 23 ===
+✅ Sucesso - Custo: 81
+
+=== Teste #34 - Vértices: 26, Arestas: 78 ===
+✅ Sucesso - Custo: 161
+
+=== Teste #35 - Vértices: 49, Arestas: 93 ===
+✅ Sucesso - Custo: 452
+
+=== Teste #36 - Vértices: 24, Arestas: 48 ===
+✅ Sucesso - Custo: 208
+
+=== Teste #37 - Vértices: 21, Arestas: 36 ===
 ✅ Sucesso - Custo: 213
 
-=== Teste #187 - Vértices: 41, Arestas: 79 ===
-✅ Sucesso - Custo: 316
+=== Teste #38 - Vértices: 40, Arestas: 109 ===
+✅ Sucesso - Custo: 244
 
-=== Teste #188 - Vértices: 46, Arestas: 135 ===
-✅ Sucesso - Custo: 321
+=== Teste #39 - Vértices: 45, Arestas: 124 ===
+✅ Sucesso - Custo: 248
 
-=== Teste #189 - Vértices: 17, Arestas: 24 ===
-✅ Sucesso - Custo: 177
+=== Teste #40 - Vértices: 17, Arestas: 23 ===
+✅ Sucesso - Custo: 186
 
-=== Teste #190 - Vértices: 21, Arestas: 28 ===
-✅ Sucesso - Custo: 229
+=== Teste #41 - Vértices: 20, Arestas: 26 ===
+✅ Sucesso - Custo: 172
 
-=== Teste #191 - Vértices: 21, Arestas: 34 ===
-✅ Sucesso - Custo: 167
+=== Teste #42 - Vértices: 28, Arestas: 58 ===
+✅ Sucesso - Custo: 210
 
-=== Teste #192 - Vértices: 13, Arestas: 14 ===
-✅ Sucesso - Custo: 105
+=== Teste #43 - Vértices: 13, Arestas: 32 ===
+✅ Sucesso - Custo: 76
 
-=== Teste #193 - Vértices: 43, Arestas: 81 ===
-✅ Sucesso - Custo: 330
+=== Teste #44 - Vértices: 17, Arestas: 44 ===
+✅ Sucesso - Custo: 115
 
-=== Teste #194 - Vértices: 48, Arestas: 53 ===
-✅ Sucesso - Custo: 498
+=== Teste #45 - Vértices: 50, Arestas: 117 ===
+✅ Sucesso - Custo: 366
 
-=== Teste #195 - Vértices: 30, Arestas: 31 ===
-✅ Sucesso - Custo: 333
+=== Teste #46 - Vértices: 24, Arestas: 34 ===
+✅ Sucesso - Custo: 208
 
-=== Teste #196 - Vértices: 50, Arestas: 123 ===
-✅ Sucesso - Custo: 353
+=== Teste #47 - Vértices: 46, Arestas: 74 ===
+✅ Sucesso - Custo: 421
 
-=== Teste #197 - Vértices: 35, Arestas: 37 ===
-✅ Sucesso - Custo: 376
+=== Teste #48 - Vértices: 32, Arestas: 45 ===
+✅ Sucesso - Custo: 244
 
-=== Teste #198 - Vértices: 23, Arestas: 61 ===
-❌ Erro: Custos divergentes: CHULIU 134, FRANK 131, FRANK_V2 131
+=== Teste #49 - Vértices: 33, Arestas: 54 ===
+✅ Sucesso - Custo: 248
+
+=== Teste #50 - Vértices: 33, Arestas: 45 ===
+✅ Sucesso - Custo: 307
+
+=== Teste #51 - Vértices: 30, Arestas: 43 ===
+✅ Sucesso - Custo: 270
+
+=== Teste #52 - Vértices: 46, Arestas: 89 ===
+✅ Sucesso - Custo: 343
+
+=== Teste #53 - Vértices: 21, Arestas: 63 ===
+✅ Sucesso - Custo: 126
+
+=== Teste #54 - Vértices: 32, Arestas: 57 ===
+✅ Sucesso - Custo: 255
+
+=== Teste #55 - Vértices: 37, Arestas: 111 ===
+✅ Sucesso - Custo: 244
+
+=== Teste #56 - Vértices: 41, Arestas: 59 ===
+✅ Sucesso - Custo: 369
+
+=== Teste #57 - Vértices: 22, Arestas: 27 ===
+✅ Sucesso - Custo: 251
+
+=== Teste #58 - Vértices: 34, Arestas: 84 ===
+❌ Erro: Custos divergentes: CHULIU 251, FRANK 252, FRANK_V2 252
 Traceback (most recent call last):
   File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
     assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
            ^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: Custos divergentes: CHULIU 134, FRANK 131, FRANK_V2 131
+AssertionError: Custos divergentes: CHULIU 251, FRANK 252, FRANK_V2 252
 
-=== Teste #199 - Vértices: 18, Arestas: 34 ===
-✅ Sucesso - Custo: 138
+=== Teste #59 - Vértices: 33, Arestas: 45 ===
+✅ Sucesso - Custo: 255
 
-=== Teste #200 - Vértices: 18, Arestas: 39 ===
-✅ Sucesso - Custo: 130
+=== Teste #60 - Vértices: 37, Arestas: 110 ===
+✅ Sucesso - Custo: 221
+
+=== Teste #61 - Vértices: 35, Arestas: 98 ===
+✅ Sucesso - Custo: 227
+
+=== Teste #62 - Vértices: 22, Arestas: 49 ===
+❌ Erro: Custos divergentes: CHULIU 162, FRANK 149, FRANK_V2 149
+Traceback (most recent call last):
+  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
+    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Custos divergentes: CHULIU 162, FRANK 149, FRANK_V2 149
+
+=== Teste #63 - Vértices: 42, Arestas: 48 ===
+✅ Sucesso - Custo: 381
+
+=== Teste #64 - Vértices: 12, Arestas: 31 ===
+✅ Sucesso - Custo: 66
+
+=== Teste #65 - Vértices: 47, Arestas: 69 ===
+✅ Sucesso - Custo: 383
+
+=== Teste #66 - Vértices: 17, Arestas: 46 ===
+✅ Sucesso - Custo: 124
+
+=== Teste #67 - Vértices: 35, Arestas: 82 ===
+❌ Erro: Custos divergentes: CHULIU 239, FRANK 243, FRANK_V2 243
+Traceback (most recent call last):
+  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
+    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Custos divergentes: CHULIU 239, FRANK 243, FRANK_V2 243
+
+=== Teste #68 - Vértices: 40, Arestas: 90 ===
+✅ Sucesso - Custo: 353
+
+=== Teste #69 - Vértices: 37, Arestas: 82 ===
+❌ Erro: Custos divergentes: CHULIU 256, FRANK 254, FRANK_V2 254
+Traceback (most recent call last):
+  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
+    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Custos divergentes: CHULIU 256, FRANK 254, FRANK_V2 254
+
+=== Teste #70 - Vértices: 11, Arestas: 15 ===
+✅ Sucesso - Custo: 108
+
+=== Teste #71 - Vértices: 24, Arestas: 66 ===
+✅ Sucesso - Custo: 126
+
+=== Teste #72 - Vértices: 21, Arestas: 51 ===
+✅ Sucesso - Custo: 152
+
+=== Teste #73 - Vértices: 16, Arestas: 42 ===
+✅ Sucesso - Custo: 96
+
+=== Teste #74 - Vértices: 41, Arestas: 101 ===
+✅ Sucesso - Custo: 233
+
+=== Teste #75 - Vértices: 41, Arestas: 81 ===
+✅ Sucesso - Custo: 290
+
+=== Teste #76 - Vértices: 46, Arestas: 51 ===
+✅ Sucesso - Custo: 475
+
+=== Teste #77 - Vértices: 34, Arestas: 69 ===
+✅ Sucesso - Custo: 285
+
+=== Teste #78 - Vértices: 34, Arestas: 50 ===
+✅ Sucesso - Custo: 307
+
+=== Teste #79 - Vértices: 27, Arestas: 32 ===
+✅ Sucesso - Custo: 235
+
+=== Teste #80 - Vértices: 42, Arestas: 51 ===
+✅ Sucesso - Custo: 417
+
+=== Teste #81 - Vértices: 36, Arestas: 103 ===
+❌ Erro: Custos divergentes: CHULIU 232, FRANK 228, FRANK_V2 228
+Traceback (most recent call last):
+  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
+    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Custos divergentes: CHULIU 232, FRANK 228, FRANK_V2 228
+
+=== Teste #82 - Vértices: 11, Arestas: 15 ===
+✅ Sucesso - Custo: 111
+
+=== Teste #83 - Vértices: 20, Arestas: 31 ===
+✅ Sucesso - Custo: 149
+
+=== Teste #84 - Vértices: 28, Arestas: 34 ===
+✅ Sucesso - Custo: 316
+
+=== Teste #85 - Vértices: 19, Arestas: 53 ===
+✅ Sucesso - Custo: 91
+
+=== Teste #86 - Vértices: 30, Arestas: 71 ===
+✅ Sucesso - Custo: 238
+
+=== Teste #87 - Vértices: 23, Arestas: 43 ===
+❌ Erro: Custos divergentes: CHULIU 166, FRANK 165, FRANK_V2 165
+Traceback (most recent call last):
+  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
+    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Custos divergentes: CHULIU 166, FRANK 165, FRANK_V2 165
+
+=== Teste #88 - Vértices: 26, Arestas: 26 ===
+✅ Sucesso - Custo: 286
+
+=== Teste #89 - Vértices: 15, Arestas: 36 ===
+✅ Sucesso - Custo: 98
+
+=== Teste #90 - Vértices: 24, Arestas: 25 ===
+✅ Sucesso - Custo: 236
+
+=== Teste #91 - Vértices: 19, Arestas: 28 ===
+✅ Sucesso - Custo: 184
+
+=== Teste #92 - Vértices: 46, Arestas: 86 ===
+✅ Sucesso - Custo: 411
+
+=== Teste #93 - Vértices: 25, Arestas: 39 ===
+✅ Sucesso - Custo: 209
+
+=== Teste #94 - Vértices: 28, Arestas: 30 ===
+✅ Sucesso - Custo: 331
+
+=== Teste #95 - Vértices: 48, Arestas: 55 ===
+✅ Sucesso - Custo: 488
+
+=== Teste #96 - Vértices: 14, Arestas: 21 ===
+✅ Sucesso - Custo: 103
+
+=== Teste #97 - Vértices: 20, Arestas: 39 ===
+❌ Erro: Custos divergentes: CHULIU 168, FRANK 162, FRANK_V2 162
+Traceback (most recent call last):
+  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
+    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Custos divergentes: CHULIU 168, FRANK 162, FRANK_V2 162
+
+=== Teste #98 - Vértices: 23, Arestas: 58 ===
+✅ Sucesso - Custo: 131
+
+=== Teste #99 - Vértices: 17, Arestas: 26 ===
+✅ Sucesso - Custo: 172
+
+=== Teste #100 - Vértices: 17, Arestas: 33 ===
+✅ Sucesso - Custo: 147
+
+=== Teste #101 - Vértices: 36, Arestas: 92 ===
+✅ Sucesso - Custo: 253
+
+=== Teste #102 - Vértices: 37, Arestas: 83 ===
+✅ Sucesso - Custo: 275
+
+=== Teste #103 - Vértices: 34, Arestas: 38 ===
+✅ Sucesso - Custo: 287
+
+=== Teste #104 - Vértices: 47, Arestas: 67 ===
+✅ Sucesso - Custo: 376
+
+=== Teste #105 - Vértices: 36, Arestas: 74 ===
+✅ Sucesso - Custo: 297
+
+=== Teste #106 - Vértices: 10, Arestas: 13 ===
+✅ Sucesso - Custo: 88
+
+=== Teste #107 - Vértices: 21, Arestas: 56 ===
+✅ Sucesso - Custo: 164
+
+=== Teste #108 - Vértices: 14, Arestas: 21 ===
+✅ Sucesso - Custo: 74
+
+=== Teste #109 - Vértices: 36, Arestas: 98 ===
+✅ Sucesso - Custo: 273
+
+=== Teste #110 - Vértices: 14, Arestas: 14 ===
+✅ Sucesso - Custo: 105
+
+=== Teste #111 - Vértices: 33, Arestas: 75 ===
+✅ Sucesso - Custo: 245
+
+=== Teste #112 - Vértices: 47, Arestas: 80 ===
+✅ Sucesso - Custo: 341
+
+=== Teste #113 - Vértices: 41, Arestas: 72 ===
+❌ Erro: Custos divergentes: CHULIU 422, FRANK 416, FRANK_V2 416
+Traceback (most recent call last):
+  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
+    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Custos divergentes: CHULIU 422, FRANK 416, FRANK_V2 416
+
+=== Teste #114 - Vértices: 18, Arestas: 29 ===
+✅ Sucesso - Custo: 177
+
+=== Teste #115 - Vértices: 34, Arestas: 101 ===
+❌ Erro: Custos divergentes: CHULIU 187, FRANK 189, FRANK_V2 189
+Traceback (most recent call last):
+  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
+    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Custos divergentes: CHULIU 187, FRANK 189, FRANK_V2 189
+
+=== Teste #116 - Vértices: 38, Arestas: 61 ===
+✅ Sucesso - Custo: 343
+
+=== Teste #117 - Vértices: 34, Arestas: 41 ===
+✅ Sucesso - Custo: 310
+
+=== Teste #118 - Vértices: 22, Arestas: 28 ===
+✅ Sucesso - Custo: 217
+
+=== Teste #119 - Vértices: 15, Arestas: 41 ===
+❌ Erro: Custos divergentes: CHULIU 86, FRANK 79, FRANK_V2 79
+Traceback (most recent call last):
+  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
+    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Custos divergentes: CHULIU 86, FRANK 79, FRANK_V2 79
+
+=== Teste #120 - Vértices: 37, Arestas: 49 ===
+✅ Sucesso - Custo: 304
+
+=== Teste #121 - Vértices: 49, Arestas: 104 ===
+✅ Sucesso - Custo: 393
+
+=== Teste #122 - Vértices: 25, Arestas: 63 ===
+✅ Sucesso - Custo: 142
+
+=== Teste #123 - Vértices: 17, Arestas: 48 ===
+✅ Sucesso - Custo: 90
+
+=== Teste #124 - Vértices: 39, Arestas: 57 ===
+✅ Sucesso - Custo: 263
+
+=== Teste #125 - Vértices: 35, Arestas: 77 ===
+✅ Sucesso - Custo: 235
+
+=== Teste #126 - Vértices: 26, Arestas: 39 ===
+✅ Sucesso - Custo: 201
+
+=== Teste #127 - Vértices: 21, Arestas: 35 ===
+✅ Sucesso - Custo: 197
+
+=== Teste #128 - Vértices: 29, Arestas: 32 ===
+✅ Sucesso - Custo: 271
+
+=== Teste #129 - Vértices: 30, Arestas: 77 ===
+✅ Sucesso - Custo: 214
+
+=== Teste #130 - Vértices: 47, Arestas: 136 ===
+❌ Erro: Custos divergentes: CHULIU 268, FRANK 267, FRANK_V2 267
+Traceback (most recent call last):
+  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
+    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Custos divergentes: CHULIU 268, FRANK 267, FRANK_V2 267
+
+=== Teste #131 - Vértices: 21, Arestas: 41 ===
+✅ Sucesso - Custo: 150
+
+=== Teste #132 - Vértices: 36, Arestas: 98 ===
+✅ Sucesso - Custo: 211
+
+=== Teste #133 - Vértices: 29, Arestas: 34 ===
+✅ Sucesso - Custo: 281
+
+=== Teste #134 - Vértices: 43, Arestas: 49 ===
+✅ Sucesso - Custo: 423
+
+=== Teste #135 - Vértices: 19, Arestas: 46 ===
+✅ Sucesso - Custo: 119
+
+=== Teste #136 - Vértices: 14, Arestas: 31 ===
+❌ Erro: Custos divergentes: CHULIU 110, FRANK 109, FRANK_V2 109
+Traceback (most recent call last):
+  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
+    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Custos divergentes: CHULIU 110, FRANK 109, FRANK_V2 109
+
+=== Teste #137 - Vértices: 30, Arestas: 40 ===
+✅ Sucesso - Custo: 285
+
+=== Teste #138 - Vértices: 28, Arestas: 34 ===
+✅ Sucesso - Custo: 263
+
+=== Teste #139 - Vértices: 39, Arestas: 87 ===
+❌ Erro: Custos divergentes: CHULIU 280, FRANK 284, FRANK_V2 284
+Traceback (most recent call last):
+  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
+    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Custos divergentes: CHULIU 280, FRANK 284, FRANK_V2 284
+
+=== Teste #140 - Vértices: 48, Arestas: 135 ===
+❌ Erro: Custos divergentes: CHULIU 335, FRANK 328, FRANK_V2 328
+Traceback (most recent call last):
+  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
+    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Custos divergentes: CHULIU 335, FRANK 328, FRANK_V2 328
+
+=== Teste #141 - Vértices: 22, Arestas: 29 ===
+✅ Sucesso - Custo: 175
+
+=== Teste #142 - Vértices: 39, Arestas: 80 ===
+✅ Sucesso - Custo: 278
+
+=== Teste #143 - Vértices: 21, Arestas: 49 ===
+✅ Sucesso - Custo: 146
+
+=== Teste #144 - Vértices: 43, Arestas: 87 ===
+✅ Sucesso - Custo: 349
+
+=== Teste #145 - Vértices: 50, Arestas: 80 ===
+✅ Sucesso - Custo: 338
+
+=== Teste #146 - Vértices: 35, Arestas: 45 ===
+✅ Sucesso - Custo: 343
+
+=== Teste #147 - Vértices: 40, Arestas: 98 ===
+✅ Sucesso - Custo: 295
+
+=== Teste #148 - Vértices: 28, Arestas: 34 ===
+✅ Sucesso - Custo: 205
+
+=== Teste #149 - Vértices: 50, Arestas: 86 ===
+✅ Sucesso - Custo: 397
+
+=== Teste #150 - Vértices: 11, Arestas: 27 ===
+✅ Sucesso - Custo: 79
+
+=== Teste #151 - Vértices: 17, Arestas: 18 ===
+✅ Sucesso - Custo: 117
+
+=== Teste #152 - Vértices: 27, Arestas: 55 ===
+✅ Sucesso - Custo: 201
+
+=== Teste #153 - Vértices: 20, Arestas: 52 ===
+✅ Sucesso - Custo: 163
+
+=== Teste #154 - Vértices: 12, Arestas: 16 ===
+✅ Sucesso - Custo: 141
+
+=== Teste #155 - Vértices: 16, Arestas: 21 ===
+✅ Sucesso - Custo: 113
+
+=== Teste #156 - Vértices: 11, Arestas: 16 ===
+✅ Sucesso - Custo: 89
+
+=== Teste #157 - Vértices: 28, Arestas: 33 ===
+✅ Sucesso - Custo: 221
+
+=== Teste #158 - Vértices: 23, Arestas: 50 ===
+✅ Sucesso - Custo: 167
+
+=== Teste #159 - Vértices: 30, Arestas: 77 ===
+✅ Sucesso - Custo: 183
+
+=== Teste #160 - Vértices: 49, Arestas: 63 ===
+✅ Sucesso - Custo: 387
+
+=== Teste #161 - Vértices: 39, Arestas: 104 ===
+❌ Erro: Custos divergentes: CHULIU 271, FRANK 273, FRANK_V2 273
+Traceback (most recent call last):
+  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
+    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Custos divergentes: CHULIU 271, FRANK 273, FRANK_V2 273
+
+=== Teste #162 - Vértices: 37, Arestas: 48 ===
+✅ Sucesso - Custo: 399
+
+=== Teste #163 - Vértices: 49, Arestas: 88 ===
+✅ Sucesso - Custo: 406
+
+=== Teste #164 - Vértices: 35, Arestas: 60 ===
+✅ Sucesso - Custo: 314
+
+=== Teste #165 - Vértices: 43, Arestas: 123 ===
+✅ Sucesso - Custo: 244
+
+=== Teste #166 - Vértices: 46, Arestas: 51 ===
+✅ Sucesso - Custo: 405
+
+=== Teste #167 - Vértices: 43, Arestas: 123 ===
+✅ Sucesso - Custo: 236
+
+=== Teste #168 - Vértices: 15, Arestas: 44 ===
+✅ Sucesso - Custo: 107
+
+=== Teste #169 - Vértices: 37, Arestas: 45 ===
+✅ Sucesso - Custo: 362
+
+=== Teste #170 - Vértices: 29, Arestas: 48 ===
+✅ Sucesso - Custo: 245
+
+=== Teste #171 - Vértices: 18, Arestas: 29 ===
+✅ Sucesso - Custo: 154
+
+=== Teste #172 - Vértices: 49, Arestas: 113 ===
+✅ Sucesso - Custo: 263
+
+=== Teste #173 - Vértices: 49, Arestas: 140 ===
+❌ Erro: Custos divergentes: CHULIU 293, FRANK 297, FRANK_V2 297
+Traceback (most recent call last):
+  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
+    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Custos divergentes: CHULIU 293, FRANK 297, FRANK_V2 297
+
+=== Teste #174 - Vértices: 43, Arestas: 64 ===
+✅ Sucesso - Custo: 402
+
+=== Teste #175 - Vértices: 42, Arestas: 122 ===
+✅ Sucesso - Custo: 244
+
+=== Teste #176 - Vértices: 37, Arestas: 93 ===
+❌ Erro: Custos divergentes: CHULIU 300, FRANK 291, FRANK_V2 291
+Traceback (most recent call last):
+  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
+    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Custos divergentes: CHULIU 300, FRANK 291, FRANK_V2 291
+
+=== Teste #177 - Vértices: 30, Arestas: 68 ===
+❌ Erro: Custos divergentes: CHULIU 207, FRANK 194, FRANK_V2 194
+Traceback (most recent call last):
+  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
+    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Custos divergentes: CHULIU 207, FRANK 194, FRANK_V2 194
+
+=== Teste #178 - Vértices: 10, Arestas: 26 ===
+❌ Erro: Custos divergentes: CHULIU 77, FRANK 76, FRANK_V2 76
+Traceback (most recent call last):
+  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
+    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Custos divergentes: CHULIU 77, FRANK 76, FRANK_V2 76
+
+=== Teste #179 - Vértices: 42, Arestas: 64 ===
+✅ Sucesso - Custo: 354
+
+=== Teste #180 - Vértices: 23, Arestas: 54 ===
+✅ Sucesso - Custo: 184
+
+=== Teste #181 - Vértices: 16, Arestas: 26 ===
+✅ Sucesso - Custo: 129
+
+=== Teste #182 - Vértices: 43, Arestas: 73 ===
+❌ Erro: Custos divergentes: CHULIU 399, FRANK 401, FRANK_V2 401
+Traceback (most recent call last):
+  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
+    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Custos divergentes: CHULIU 399, FRANK 401, FRANK_V2 401
+
+=== Teste #183 - Vértices: 31, Arestas: 67 ===
+✅ Sucesso - Custo: 213
+
+=== Teste #184 - Vértices: 36, Arestas: 102 ===
+❌ Erro: Custos divergentes: CHULIU 184, FRANK 180, FRANK_V2 180
+Traceback (most recent call last):
+  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
+    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Custos divergentes: CHULIU 184, FRANK 180, FRANK_V2 180
+
+=== Teste #185 - Vértices: 26, Arestas: 78 ===
+✅ Sucesso - Custo: 115
+
+=== Teste #186 - Vértices: 48, Arestas: 124 ===
+✅ Sucesso - Custo: 328
+
+=== Teste #187 - Vértices: 15, Arestas: 21 ===
+✅ Sucesso - Custo: 114
+
+=== Teste #188 - Vértices: 23, Arestas: 40 ===
+✅ Sucesso - Custo: 185
+
+=== Teste #189 - Vértices: 11, Arestas: 14 ===
+✅ Sucesso - Custo: 111
+
+=== Teste #190 - Vértices: 31, Arestas: 55 ===
+✅ Sucesso - Custo: 288
+
+=== Teste #191 - Vértices: 50, Arestas: 67 ===
+✅ Sucesso - Custo: 488
+
+=== Teste #192 - Vértices: 17, Arestas: 51 ===
+✅ Sucesso - Custo: 89
+
+=== Teste #193 - Vértices: 35, Arestas: 84 ===
+✅ Sucesso - Custo: 255
+
+=== Teste #194 - Vértices: 40, Arestas: 57 ===
+✅ Sucesso - Custo: 317
+
+=== Teste #195 - Vértices: 35, Arestas: 35 ===
+✅ Sucesso - Custo: 385
+
+=== Teste #196 - Vértices: 41, Arestas: 66 ===
+❌ Erro: Custos divergentes: CHULIU 349, FRANK 356, FRANK_V2 356
+Traceback (most recent call last):
+  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 106, in <module>
+    assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Custos divergentes: CHULIU 349, FRANK 356, FRANK_V2 356
+
+=== Teste #197 - Vértices: 42, Arestas: 43 ===
+✅ Sucesso - Custo: 440
+
+=== Teste #198 - Vértices: 47, Arestas: 125 ===
+✅ Sucesso - Custo: 258
+
+=== Teste #199 - Vértices: 13, Arestas: 27 ===
+✅ Sucesso - Custo: 81
+
+=== Teste #200 - Vértices: 17, Arestas: 36 ===
+✅ Sucesso - Custo: 96
 
 🧪 Testagem em volume finalizada.

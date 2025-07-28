@@ -95,12 +95,12 @@ for i in range(1, NUM_TESTS + 1):
         arbo1 = find_optimum_arborescence(D1, ROOT)
         custo1 = get_total_cost(arbo1)
 
-        A_zero = phase1_find_minimum_arborescence(D.copy(), ROOT)
+        A_zero = phase1_find_minimum_arborescence(D1, ROOT)
 
-        arbo2 = phase2_find_minimum_arborescence(D.copy(), ROOT, A_zero)
+        arbo2 = phase2_find_minimum_arborescence(D1, ROOT, A_zero)
         custo2 = get_total_cost(arbo2)
 
-        arbo3 = phase2_find_minimum_arborescence_v2(D.copy(), ROOT, A_zero)
+        arbo3 = phase2_find_minimum_arborescence_v2(D1, ROOT, A_zero)
         custo3 = get_total_cost(arbo3)
 
         assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
