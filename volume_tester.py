@@ -6,13 +6,15 @@ import traceback
 
 import networkx as nx
 
-from andrasfrank import (phase1_find_minimum_arborescence,
-                         phase2_find_minimum_arborescence,
-                         phase2_find_minimum_arborescence_v2)
+from andrasfrank import (
+    phase1_find_minimum_arborescence,
+    phase2_find_minimum_arborescence,
+    phase2_find_minimum_arborescence_v2,
+)
 from chuliu import find_optimum_arborescence
 
 # Parâmetros gerais
-NUM_TESTS = 200
+NUM_TESTS = 2000
 MIN_VERTICES = 10
 MAX_VERTICES = 50
 LOG_CSV_PATH = "test_results.csv"
@@ -25,10 +27,12 @@ if os.path.exists(LOG_CSV_PATH):
 if os.path.exists(LOG_TXT_PATH):
     os.remove(LOG_TXT_PATH)
 
+
 def log_console_and_file(msg):
     print(msg)
     with open(LOG_TXT_PATH, "a") as f:
         f.write(msg + "\n")
+
 
 def build_rooted_digraph(n, m, r0, peso_min=1, peso_max=20):
     if m is None:
@@ -55,12 +59,15 @@ def build_rooted_digraph(n, m, r0, peso_min=1, peso_max=20):
 
     return D
 
+
 def get_total_cost(G):
     return sum(data["w"] for _, _, data in G.edges(data=True))
+
 
 def contains_arborescence(D, r0):
     tree = nx.dfs_tree(D, source=r0)
     return tree.number_of_nodes() == D.number_of_nodes()
+
 
 def remove_edges_to_r0(D, r0):
     D.remove_edges_from(list(D.in_edges(r0)))
@@ -70,10 +77,19 @@ def remove_edges_to_r0(D, r0):
 with open(LOG_CSV_PATH, "w", newline="") as csvfile:
     writer = csv.writer(csvfile)
     writer.writerow([
-        "Teste", "Vértices", "Arestas",
-        "Custo_ChuLiu", "Custo_Frank1", "Custo_Frank2",
-        "Sucesso", "Erro", "Tempo_execucao_seg"
+        "Teste",
+        "Vértices",
+        "Arestas",
+        "Custo_ChuLiu",
+        "Custo_Frank1",
+        "Custo_Frank2",
+        "Sucesso",
+        "Erro",
+        "Tempo_execucao_seg",
     ])
+
+success_count = 0
+failure_count = 0
 
 for i in range(1, NUM_TESTS + 1):
     n = random.randint(MIN_VERTICES, MAX_VERTICES)
@@ -90,8 +106,10 @@ for i in range(1, NUM_TESTS + 1):
         if not contains_arborescence(D, ROOT):
             raise Exception("Grafo gerado não tem arborescência com raiz.")
 
+        # Remover arestas que entram em ROOT para uniformizar a entrada
         D1 = D.copy()
         D1 = remove_edges_to_r0(D1, ROOT)
+
         arbo1 = find_optimum_arborescence(D1, ROOT)
         custo1 = get_total_cost(arbo1)
 
@@ -103,10 +121,11 @@ for i in range(1, NUM_TESTS + 1):
         arbo3 = phase2_find_minimum_arborescence_v2(D1, ROOT, A_zero)
         custo3 = get_total_cost(arbo3)
 
-        assert custo1 == custo2 == custo3, f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
+        assert custo1 == custo2 == custo3, (
+            f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
+        )
         success = True
         log_console_and_file(f"✅ Sucesso - Custo: {custo1}")
-
     except Exception as e:
         erro = str(e)
         log_console_and_file(f"❌ Erro: {erro}")
@@ -118,8 +137,25 @@ for i in range(1, NUM_TESTS + 1):
     with open(LOG_CSV_PATH, "a", newline="") as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow([
-            i, n, m, custo1, custo2, custo3,
-            "OK" if success else "FAIL", erro, elapsed
+            i,
+            n,
+            m,
+            custo1,
+            custo2,
+            custo3,
+            "OK" if success else "FAIL",
+            erro,
+            elapsed,
         ])
 
-log_console_and_file("\n🧪 Testagem em volume finalizada.")
+    # Atualiza contadores
+    if success:
+        success_count += 1
+    else:
+        failure_count += 1
+
+# Registro final de totais de sucesso e falha
+log_console_and_file(
+    f"\n🧪 Testagem em volume finalizada. Sucessos: {success_count}, Falhas: {failure_count}."
+)
+
