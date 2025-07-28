@@ -36,8 +36,9 @@ def get_minimum_weight_cut(arcs):
     Get the minimum weight arcs from a list of arcs.
     The function returns a list of tuples representing the minimum weight arcs.
     """
-    min_weight = min(data["w"] for _, _, data in arcs)
-    return min_weight
+    if not arcs:
+        return 0
+    return min(data["w"] for _, _, data in arcs)
 
 
 def update_weights_in_X(D, X, min_weight, A_zero, D_zero):
@@ -111,14 +112,15 @@ def phase1_find_minimum_arborescence(D_original, r0):
                 #     continue
 
                 min_weight = get_minimum_weight_cut(arcs)
-
                 print(f" ✅ Peso mínimo encontrado: {min_weight}")
-                if min_weight:
-                    continue_execution = True
-
+                
+                prev_len = len(A_zero)
                 update_weights_in_X(D_original, X, min_weight, A_zero, D_zero)
-                print(f"   🔄 Pesos atualizados nos arcos que entram em X")
-           
+                print(f"🔄 Pesos atualizados nos arcos que entram em X")
+
+                if min_weight > 0 or len(A_zero) > prev_len:
+                    continue_execution = True
+                
         if iteration > len(D_original.edges()):
             print("🚨 Limite de iterações excedido. Pode haver loop infinito.")
             break
