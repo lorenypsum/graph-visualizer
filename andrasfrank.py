@@ -48,8 +48,8 @@ def update_weights_in_X(D, X, min_weight, A_zero, D_zero):
     """
     for u, v, data in D.edges(data=True):
         #TODO: verificar essa alteração.
-        if u not in X and v in X:
-        # if v in X:
+        #if u not in X and v in X:
+        if v in X:
             D[u][v]["w"] -= min_weight
             if D[u][v]["w"] == 0:
                 A_zero.append((u, v)) # TODO: Não precisa adicionar a informação do peso, pois é zero.
