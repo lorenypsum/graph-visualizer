@@ -47,12 +47,12 @@ def update_weights_in_X(D, X, min_weight, A_zero, D_zero):
     ATTENTION: The function produces collateral effect in the provided directed graph by updating its arcs weights.
     """
     for u, v, data in D.edges(data=True):
-        #TODO: verificar essa alteração.
+        #TODO: verificar se n precisa fazer essa alteração.
         #if u not in X and v in X:
         if v in X:
             D[u][v]["w"] -= min_weight
             if D[u][v]["w"] == 0:
-                A_zero.append((u, v)) # TODO: Não precisa adicionar a informação do peso, pois é zero.
+                A_zero.append((u, v))
                 D_zero.add_edge(u, v, **data)
 
 def has_arborescence(D, r0):
@@ -70,7 +70,6 @@ def phase1_find_minimum_arborescence(D_original, r0):
     Find the minimum arborescence in a directed graph D with root r0.
     The function returns the minimum arborescence as a list of arcs.
     """
-
     D_original = D_original.copy()
     A_zero = []
     D_zero, A_zero = build_D_zero(D_original)
@@ -139,7 +138,7 @@ def phase2_find_minimum_arborescence(D_original, r0, A_zero):
     n = len(D_original.nodes())
 
     # Enquanto houver arcos a serem considerados
-    for i in range(n - 1):
+    for _ in range(n - 1):
         for u, v in A_zero:
             if u in Arb.nodes() and v not in Arb.nodes():
                 edge_data = D_original.get_edge_data(u, v)
@@ -164,10 +163,9 @@ def phase2_find_minimum_arborescence_v2(D_original, r0, A_zero):
     
     while q:  # Enquanto a fila não estiver vazia
         #u, v = min(q, key=lambda x: x[1])  # Remove o arco com o menor peso
-        w, u, v = heapq.heappop(q)
+        _, u, v = heapq.heappop(q)
         if v in V:  # Se o vértice já foi visitado, continua
             continue
-        # TODO: O peso colocado aqui está errado, tem que usar o peso do grafo original.
         A.add_edge(u, v, w = D_original[u][v]["w"])  # Adiciona o arco à arborescência
         V.add(v)  # Marca o vértice como visitado
         for (x, y, data) in D.out_edges(v, data=True):
