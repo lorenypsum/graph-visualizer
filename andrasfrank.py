@@ -10,14 +10,14 @@ def build_D_zero(D):
     The function also returns a list of tuples representing the edges with weight zero in D_zero.
     """
     D_zero = nx.DiGraph()
-    A_zero = []
+    # A_zero = []
     for v in D.nodes():
         D_zero.add_node(v)
-    for u, v, data in D.edges(data=True):
-        if data["w"] == 0:
-            D_zero.add_edge(u, v, **data)
-            A_zero.append((u, v))
-    return D_zero, A_zero
+    # for u, v, data in D.edges(data=True):
+    #    if data["w"] == 0:
+    #        D_zero.add_edge(u, v, **data)
+    #        A_zero.append((u, v))
+    return D_zero
 
 def get_arcs_entering_X(D, X):
     """
@@ -72,7 +72,7 @@ def phase1_find_minimum_arborescence(D_original, r0):
     """
     D_original = D_original.copy()
     A_zero = []
-    D_zero, A_zero = build_D_zero(D_original)
+    D_zero = build_D_zero(D_original)
 
     iteration = 0  # Contador de iterações
     continue_execution = True
