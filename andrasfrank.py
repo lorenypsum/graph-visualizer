@@ -36,8 +36,6 @@ def get_minimum_weight_cut(arcs):
     Get the minimum weight arcs from a list of arcs.
     The function returns a list of tuples representing the minimum weight arcs.
     """
-    if not arcs:
-        return 0
     return min(data["w"] for _, _, data in arcs)
 
 
