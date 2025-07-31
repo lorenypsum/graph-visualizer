@@ -89,6 +89,8 @@ with open(LOG_CSV_PATH, "w", newline="") as csvfile:
 
 success_count = 0
 failure_count = 0
+chuliu_greater_than_frank = 0
+frank_greater_than_chuliu = 0
 
 for i in range(1, NUM_TESTS + 1):
     n = random.randint(MIN_VERTICES, MAX_VERTICES)
@@ -156,9 +158,14 @@ for i in range(1, NUM_TESTS + 1):
         success_count += 1
     else:
         failure_count += 1
+        if custo1 > custo2:
+            chuliu_greater_than_frank += 1
+        else:
+            frank_greater_than_chuliu += 1  
 
 # Registro final de totais de sucesso e falha
 log_console_and_file(
     f"\n🧪 Testagem em volume finalizada. Sucessos: {success_count}, Falhas: {failure_count}."
+    f"\n🧪 ChuLiu > Frank: {chuliu_greater_than_frank}, Frank > ChuLiu: {frank_greater_than_chuliu}."
 )
 
