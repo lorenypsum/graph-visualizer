@@ -227,8 +227,6 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None, log
             log(f"{indent}  Adicionando aresta do ciclo: ({u_c}, {v_c})")
 
         # 3. Adiciona as arestas que saem do ciclo
-        # Para cada aresta (contracted_label, z) em F_prime,
-        # encontrar a aresta original (u_cycle, z) que a originou usando in_edges.
         for _, z, _ in F_prime.out_edges(contracted_label, data=True):
             # in_edges[z] = (u_cycle, original_weight)
             assert z in out_from_cycle, f"find_optimum_arborescence: Nenhuma aresta de saída encontrada para o vértice '{z}'."
