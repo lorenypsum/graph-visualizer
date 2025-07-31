@@ -33,7 +33,6 @@ def log_console_and_file(msg):
     with open(LOG_TXT_PATH, "a") as f:
         f.write(msg + "\n")
 
-
 def build_rooted_digraph(n, m, r0, peso_min=1, peso_max=20):
     if m is None:
         m = 2 * n  # número de arestas default
@@ -59,10 +58,8 @@ def build_rooted_digraph(n, m, r0, peso_min=1, peso_max=20):
 
     return D
 
-
 def get_total_cost(G):
     return sum(data["w"] for _, _, data in G.edges(data=True))
-
 
 def contains_arborescence(D, r0):
     tree = nx.dfs_tree(D, source=r0)
@@ -168,4 +165,3 @@ log_console_and_file(
     f"\n🧪 Testagem em volume finalizada. Sucessos: {success_count}, Falhas: {failure_count}."
     f"\n🧪 ChuLiu > Frank: {chuliu_greater_than_frank}, Frank > ChuLiu: {frank_greater_than_chuliu}."
 )
-
