@@ -71,7 +71,7 @@ def phase1_find_minimum_arborescence(D_original, r0):
     
     while True:
         iteration += 1
-        print(f"\n🔄 Iteração {iteration} ----------------------------")
+        print(f"\n 🔄 Iteração {iteration} ----------------------------")
         C = nx.condensation(D_zero) # Calcula os componentes fortemente conexos do grafo D_zero.
         sources = [x for x in C.nodes() if C.in_degree(x) == 0] # As fontes é onde não nenhum arco entrando, o R0 sempre é uma fonte.
         print('Fontes: ', sources)
@@ -83,9 +83,9 @@ def phase1_find_minimum_arborescence(D_original, r0):
                 continue
             arcs = get_arcs_entering_X(D_copy, X)
             min_weight = get_minimum_weight_cut(arcs)
-            print(f"✅ Peso mínimo encontrado: {min_weight}")
+            print(f"\n ✅ Peso mínimo encontrado: {min_weight}")
             update_weights_in_X(D_copy, arcs, min_weight, A_zero, D_zero)
-            print(f"🔄 Pesos atualizados nos arcos que entram em X")
+            print(f"\n 🔄 Pesos atualizados nos arcos que entram em X")
     return A_zero
 
 def phase2_find_minimum_arborescence(D_original, r0, A_zero):
