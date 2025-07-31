@@ -47,11 +47,10 @@ def update_weights_in_X(D, arcs, min_weight, A_zero, D_zero):
     for u, v, _ in arcs:
         #TODO: verificar se n precisa fazer essa alteração.
         #if u not in X and v in X:
-        if v in arcs:
-            D[u][v]["w"] -= min_weight
-            if D[u][v]["w"] == 0:
-                A_zero.append((u, v))
-                D_zero.add_edge(u, v, **data)
+        D[u][v]["w"] -= min_weight
+        if D[u][v]["w"] == 0:
+            x, y = u, v
+    return (x, y)
 
 def has_arborescence(D, r0):
     """
