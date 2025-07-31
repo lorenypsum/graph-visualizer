@@ -154,8 +154,7 @@ def remove_internal_edge_to_cycle_entry(C: nx.DiGraph, v):
     - O ciclo modificado (com uma aresta a menos)
     """
     predecessor = next((u for u, _ in C.in_edges(v)), None)
-    if predecessor:
-        C.remove_edge(predecessor, v)
+    C.remove_edge(predecessor, v)
     return C
 
 
