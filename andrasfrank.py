@@ -89,65 +89,6 @@ def phase1_find_minimum_arborescence(D_original, r0):
             print(f"🔄 Pesos atualizados nos arcos que entram em X")
     return A_zero
 
-
-# def phase1_find_minimum_arborescence(D_original, r0):
-#     """
-#     Find the minimum arborescence in a directed graph D with root r0.
-#     The function returns the minimum arborescence as a list of arcs.
-#     """
-#     D_copy = D_original.copy()
-#     A_zero = []
-#     D_zero = build_D_zero(D_copy)
-
-#     iteration = 0  # Contador de iterações
-#     continue_execution = True
-
-#     while continue_execution:
-
-#         iteration += 1
-#         print(f"\n🔄 Iteração {iteration} ----------------------------")
-
-#         continue_execution = False
-#         for v in D_copy.nodes():
-#             if v == r0:
-#                 continue
-
-#             print(f"🔍 Verificando nó: {v}")
-#             X = nx.ancestors(D_zero, v)  # Obter ancestrais de v
-
-#             if r0 in X:
-#                 print(f"⚠️ {v} é ancestral de {r0}. Pulando...")
-#                 continue
-
-#             else:
-#                 X.add(v)  # Conjunto de ancestrais de v
-
-#                 assert X is not None, "X não pode ser vazio." # TODO: 
-
-#                 print(f" ↳ Conjunto X (ancestrais de {v} sem a raiz): {X}")
-
-#                 arcs = get_arcs_entering_X(D_copy, X)
-#                 print(f" ↳ Arcos que entram em X: {arcs}")
-
-#                 # TODO:  NÃO FAZER ISSO AGORA
-#                 # if not arcs:
-#                 #     print(f"⚠️ Nenhum arco entra em X.")
-#                 #     continue
-
-#                 min_weight = get_minimum_weight_cut(arcs)
-#                 print(f" ✅ Peso mínimo encontrado: {min_weight}")
-
-#                 update_weights_in_X(D_copy, arcs, min_weight, A_zero, D_zero)
-#                 print(f"🔄 Pesos atualizados nos arcos que entram em X")
-
-#                 continue_execution = True
-                
-#         if iteration > len(D_copy.edges()):
-#             print("🚨 Limite de iterações excedido. Pode haver loop infinito.")
-#             break
-
-#     return A_zero
-
 def phase2_find_minimum_arborescence(D_original, r0, A_zero):
     """
     Find the minimum arborescence in a directed graph D with root r0.
