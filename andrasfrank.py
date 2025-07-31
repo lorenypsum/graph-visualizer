@@ -123,7 +123,7 @@ def phase2_find_minimum_arborescence_v2(D_original, r0, A_zero):
     A = nx.DiGraph()  # Arborescência resultante
     
     while q:  # Enquanto a fila não estiver vazia
-        #u, v = min(q, key=lambda x: x[1])  # Remove o arco com o menor peso
+        # u, v = min(q, key=lambda x: x[1])  # Remove o arco com o menor peso
         _, u, v = heapq.heappop(q)
         if v in V:  # Se o vértice já foi visitado, continua
             continue
