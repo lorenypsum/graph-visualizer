@@ -214,7 +214,7 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None, log
         assert v is not None, f"find_optimum_arborescence: Nenhum vértice do ciclo encontrado que recebeu a aresta de entrada de '{u}'."
 
         # Remove a aresta que entra no vértice `v` do ciclo
-        C = remove_internal_edge_to_cycle_entry(C, v) # Nota: w está vindo de F_prime, não de G
+        remove_internal_edge_to_cycle_entry(C, v) # Nota: w está vindo de F_prime, não de G
 
         # 1. Adiciona a aresta externa que entra no ciclo (identificada por in_edge)
         # O peso será corrigido no final usando G
