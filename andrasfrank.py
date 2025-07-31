@@ -111,11 +111,10 @@ def phase1_find_minimum_arborescence(D_original, r0):
                 min_weight = get_minimum_weight_cut(arcs)
                 print(f" ✅ Peso mínimo encontrado: {min_weight}")
                 
-                prev_len = len(A_zero)
                 update_weights_in_X(D_original, X, min_weight, A_zero, D_zero)
                 print(f"🔄 Pesos atualizados nos arcos que entram em X")
 
-                if min_weight > 0 or len(A_zero) > prev_len:
+                if min_weight > 0:
                     continue_execution = True
                 
         if iteration > len(D_original.edges()):
