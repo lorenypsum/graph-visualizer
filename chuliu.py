@@ -155,7 +155,6 @@ def remove_internal_edge_to_cycle_entry(C: nx.DiGraph, v):
     """
     predecessor = next((u for u, _ in C.in_edges(v)), None)
     C.remove_edge(predecessor, v)
-    return C
 
 
 # Algoritmo de Chu-Liu
