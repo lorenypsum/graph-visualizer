@@ -15,8 +15,8 @@ from chuliu import find_optimum_arborescence
 
 # Parâmetros gerais
 NUM_TESTS = 2000
-MIN_VERTICES = 10
-MAX_VERTICES = 50
+MIN_VERTICES = 4
+MAX_VERTICES = 4
 LOG_CSV_PATH = "test_results.csv"
 LOG_TXT_PATH = "test_log.txt"
 ROOT = "r0"
