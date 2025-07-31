@@ -70,7 +70,6 @@ def phase1_find_minimum_arborescence(D_original, r0):
     iteration = 0  # Contador de iterações
     
     while True:
-
         iteration += 1
         print(f"\n🔄 Iteração {iteration} ----------------------------")
         C = nx.condensation(D_zero) # Calcula os componentes fortemente conexos do grafo D_zero.
