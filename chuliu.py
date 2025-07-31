@@ -221,17 +221,7 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None, log
         assert in_edge, f"find_optimum_arborescence: Nenhuma aresta encontrada entrando no vértice '{contracted_label}'."
         u, _, w = in_edge
 
-        # Identifica o vértice do ciclo que recebeu a aresta de entrada
-        # v = next((v_ciclo for v_ciclo, (u_out, _) in in_to_cycle.items() if u_out == u), None)
         v, _ = in_to_cycle[u]
-
-        # # TODO: Confirmar esse trecho fallback (caso de raiz sem mapeamento explícito)
-        # if v is None:
-        #     # tenta encontrar qualquer vértice do ciclo com aresta de entrada de u
-        #     for v_ciclo in C.nodes:
-        #         if G.has_edge(u, v_ciclo):
-        #             v = v_ciclo
-        #             break
 
         assert v is not None, f"find_optimum_arborescence: Nenhum vértice do ciclo encontrado que recebeu a aresta de entrada de '{u}'."
 
