@@ -37,7 +37,6 @@ def get_minimum_weight_cut(arcs):
     """
     return min(data["w"] for _, _, data in arcs)
 
-
 def update_weights_in_X(D, arcs, min_weight, A_zero, D_zero):
     """
     Update the weights of the arcs in a directed graph D for the nodes in set X.
