@@ -39,15 +39,15 @@ def get_minimum_weight_cut(arcs):
     return min(data["w"] for _, _, data in arcs)
 
 
-def update_weights_in_X(D, X, min_weight, A_zero, D_zero):
+def update_weights_in_X(D, arcs, min_weight, A_zero, D_zero):
     """
     Update the weights of the arcs in a directed graph D for the nodes in set X.
     ATTENTION: The function produces collateral effect in the provided directed graph by updating its arcs weights.
     """
-    for u, v, data in D.edges(data=True):
+    for u, v in arcs:
         #TODO: verificar se n precisa fazer essa alteração.
         #if u not in X and v in X:
-        if v in X:
+        if v in arcs:
             D[u][v]["w"] -= min_weight
             if D[u][v]["w"] == 0:
                 A_zero.append((u, v))
@@ -111,7 +111,7 @@ def phase1_find_minimum_arborescence(D_original, r0):
                 min_weight = get_minimum_weight_cut(arcs)
                 print(f" ✅ Peso mínimo encontrado: {min_weight}")
                 
-                update_weights_in_X(D_original, X, min_weight, A_zero, D_zero)
+                update_weights_in_X(D_original, arcs, min_weight, A_zero, D_zero)
                 print(f"🔄 Pesos atualizados nos arcos que entram em X")
 
                 continue_execution = True
