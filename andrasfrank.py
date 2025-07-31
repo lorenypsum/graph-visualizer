@@ -39,7 +39,7 @@ def get_minimum_weight_cut(arcs):
     return min(data["w"] for _, _, data in arcs)
 
 
-def update_weights_in_X(D, arcs, min_weight, A_zero, D_zero):
+def update_weights_in_X(D, arcs, min_weight):
     """
     Update the weights of the arcs in a directed graph D for the nodes in set X.
     ATTENTION: The function produces collateral effect in the provided directed graph by updating its arcs weights.
@@ -67,9 +67,9 @@ def phase1_find_minimum_arborescence(D_original, r0):
     Find the minimum arborescence in a directed graph D with root r0.
     The function returns the minimum arborescence as a list of arcs.
     """
-    D_original = D_original.copy()
+    D_copy = D_original.copy()
     A_zero = []
-    D_zero = build_D_zero(D_original)
+    D_zero = build_D_zero(D_copy)
 
     iteration = 0  # Contador de iterações
     continue_execution = True
@@ -80,7 +80,7 @@ def phase1_find_minimum_arborescence(D_original, r0):
         print(f"\n🔄 Iteração {iteration} ----------------------------")
 
         continue_execution = False
-        for v in D_original.nodes():
+        for v in D_copy.nodes():
             if v == r0:
                 continue
 
@@ -99,7 +99,7 @@ def phase1_find_minimum_arborescence(D_original, r0):
 
                 print(f" ↳ Conjunto X (ancestrais de {v} sem a raiz): {X}")
 
-                arcs = get_arcs_entering_X(D_original, X)
+                arcs = get_arcs_entering_X(D, X)
                 print(f" ↳ Arcos que entram em X: {arcs}")
 
                 # TODO:  NÃO FAZER ISSO AGORA
@@ -109,13 +109,16 @@ def phase1_find_minimum_arborescence(D_original, r0):
 
                 min_weight = get_minimum_weight_cut(arcs)
                 print(f" ✅ Peso mínimo encontrado: {min_weight}")
-                
-                update_weights_in_X(D_original, arcs, min_weight, A_zero, D_zero)
+
+                x, y = update_weights_in_X(D_copy, arcs, min_weight)
                 print(f"🔄 Pesos atualizados nos arcos que entram em X")
+
+                A_zero.append((x, y))
+                D_zero.add_edge(x, y)
 
                 continue_execution = True
                 
-        if iteration > len(D_original.edges()):
+        if iteration > len(D.edges()):
             print("🚨 Limite de iterações excedido. Pode haver loop infinito.")
             break
 
