@@ -46,7 +46,6 @@ def get_Fstar(G: nx.DiGraph, r0: str):
             u = next((u for u, _, w in in_edges if w == 0), None)
             if u:
                 F_star.add_edge(u, v, w=0)
-
     return F_star
 
 # Função auxiliar para encontrar um ciclo no grafo
