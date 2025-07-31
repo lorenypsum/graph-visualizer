@@ -140,7 +140,7 @@ def remove_edges_to_r0(G: nx.DiGraph, r0: str, logger=None):
     return G
 
 # Função auxiliar para remover aresta de um ciclo
-def remove_internal_edge_to_cycle_entry(C: nx.DiGraph, external_entry_edge: tuple):
+def remove_internal_edge_to_cycle_entry(C: nx.DiGraph, v):
 
     """
     Remove do ciclo C a aresta interna que entra no vértice de entrada `v`,
@@ -153,19 +153,9 @@ def remove_internal_edge_to_cycle_entry(C: nx.DiGraph, external_entry_edge: tupl
     Retorna:
     - O ciclo modificado (com uma aresta a menos)
     """
-
-    if not external_entry_edge:
-        return C
-
-    _, v, _ = external_entry_edge
-
-    assert v in C, f"O vértice '{v}' da aresta de entrada não está presente no ciclo."
-
-    # Procura uma aresta interna no ciclo que também entra em v
     predecessor = next((u for u, _ in C.in_edges(v)), None)
     if predecessor:
         C.remove_edge(predecessor, v)
-
     return C
 
 
@@ -226,7 +216,7 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None, log
         assert v is not None, f"find_optimum_arborescence: Nenhum vértice do ciclo encontrado que recebeu a aresta de entrada de '{u}'."
 
         # Remove a aresta que entra no vértice `v` do ciclo
-        C = remove_internal_edge_to_cycle_entry(C, (u, v, w)) # Nota: w está vindo de F_prime, não de G
+        C = remove_internal_edge_to_cycle_entry(C, v) # Nota: w está vindo de F_prime, não de G
 
         # 1. Adiciona a aresta externa que entra no ciclo (identificada por in_edge)
         # O peso será corrigido no final usando G
