@@ -44,7 +44,7 @@ def update_weights_in_X(D, arcs, min_weight, A_zero, D_zero):
     Update the weights of the arcs in a directed graph D for the nodes in set X.
     ATTENTION: The function produces collateral effect in the provided directed graph by updating its arcs weights.
     """
-    for u, v in arcs:
+    for u, v, _ in arcs:
         #TODO: verificar se n precisa fazer essa alteração.
         #if u not in X and v in X:
         if v in arcs:
