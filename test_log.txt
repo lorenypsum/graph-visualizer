@@ -5943,3 +5943,570 @@ AssertionError: Custos divergentes: CHULIU 139, FRANK 140, FRANK_V2 140
 ✅ Sucesso - Custo: 183
 
 === Teste #1822 - Vértices: 31, Arestas: 46 ===
+✅ Sucesso - Custo: 265
+
+=== Teste #1823 - Vértices: 17, Arestas: 24 ===
+✅ Sucesso - Custo: 163
+
+=== Teste #1824 - Vértices: 49, Arestas: 69 ===
+✅ Sucesso - Custo: 382
+
+=== Teste #1825 - Vértices: 43, Arestas: 46 ===
+✅ Sucesso - Custo: 467
+
+=== Teste #1826 - Vértices: 14, Arestas: 19 ===
+✅ Sucesso - Custo: 98
+
+=== Teste #1827 - Vértices: 21, Arestas: 23 ===
+✅ Sucesso - Custo: 200
+
+=== Teste #1828 - Vértices: 30, Arestas: 71 ===
+✅ Sucesso - Custo: 216
+
+=== Teste #1829 - Vértices: 15, Arestas: 42 ===
+✅ Sucesso - Custo: 115
+
+=== Teste #1830 - Vértices: 10, Arestas: 13 ===
+✅ Sucesso - Custo: 95
+
+=== Teste #1831 - Vértices: 47, Arestas: 100 ===
+✅ Sucesso - Custo: 362
+
+=== Teste #1832 - Vértices: 10, Arestas: 30 ===
+✅ Sucesso - Custo: 45
+
+=== Teste #1833 - Vértices: 28, Arestas: 69 ===
+✅ Sucesso - Custo: 155
+
+=== Teste #1834 - Vértices: 13, Arestas: 17 ===
+✅ Sucesso - Custo: 149
+
+=== Teste #1835 - Vértices: 38, Arestas: 50 ===
+✅ Sucesso - Custo: 321
+
+=== Teste #1836 - Vértices: 40, Arestas: 58 ===
+✅ Sucesso - Custo: 337
+
+=== Teste #1837 - Vértices: 26, Arestas: 71 ===
+✅ Sucesso - Custo: 185
+
+=== Teste #1838 - Vértices: 34, Arestas: 53 ===
+✅ Sucesso - Custo: 278
+
+=== Teste #1839 - Vértices: 30, Arestas: 68 ===
+✅ Sucesso - Custo: 241
+
+=== Teste #1840 - Vértices: 31, Arestas: 74 ===
+✅ Sucesso - Custo: 233
+
+=== Teste #1841 - Vértices: 39, Arestas: 62 ===
+✅ Sucesso - Custo: 365
+
+=== Teste #1842 - Vértices: 38, Arestas: 89 ===
+✅ Sucesso - Custo: 247
+
+=== Teste #1843 - Vértices: 10, Arestas: 18 ===
+✅ Sucesso - Custo: 82
+
+=== Teste #1844 - Vértices: 40, Arestas: 103 ===
+✅ Sucesso - Custo: 275
+
+=== Teste #1845 - Vértices: 11, Arestas: 15 ===
+✅ Sucesso - Custo: 101
+
+=== Teste #1846 - Vértices: 23, Arestas: 58 ===
+✅ Sucesso - Custo: 169
+
+=== Teste #1847 - Vértices: 25, Arestas: 46 ===
+✅ Sucesso - Custo: 204
+
+=== Teste #1848 - Vértices: 38, Arestas: 77 ===
+✅ Sucesso - Custo: 286
+
+=== Teste #1849 - Vértices: 39, Arestas: 67 ===
+✅ Sucesso - Custo: 314
+
+=== Teste #1850 - Vértices: 48, Arestas: 49 ===
+✅ Sucesso - Custo: 475
+
+=== Teste #1851 - Vértices: 19, Arestas: 50 ===
+✅ Sucesso - Custo: 129
+
+=== Teste #1852 - Vértices: 48, Arestas: 130 ===
+✅ Sucesso - Custo: 329
+
+=== Teste #1853 - Vértices: 16, Arestas: 36 ===
+✅ Sucesso - Custo: 125
+
+=== Teste #1854 - Vértices: 25, Arestas: 32 ===
+✅ Sucesso - Custo: 221
+
+=== Teste #1855 - Vértices: 33, Arestas: 89 ===
+✅ Sucesso - Custo: 222
+
+=== Teste #1856 - Vértices: 17, Arestas: 43 ===
+✅ Sucesso - Custo: 119
+
+=== Teste #1857 - Vértices: 22, Arestas: 24 ===
+✅ Sucesso - Custo: 212
+
+=== Teste #1858 - Vértices: 45, Arestas: 74 ===
+✅ Sucesso - Custo: 342
+
+=== Teste #1859 - Vértices: 44, Arestas: 49 ===
+✅ Sucesso - Custo: 473
+
+=== Teste #1860 - Vértices: 47, Arestas: 131 ===
+✅ Sucesso - Custo: 392
+
+=== Teste #1861 - Vértices: 20, Arestas: 49 ===
+✅ Sucesso - Custo: 141
+
+=== Teste #1862 - Vértices: 38, Arestas: 45 ===
+✅ Sucesso - Custo: 360
+
+=== Teste #1863 - Vértices: 50, Arestas: 107 ===
+✅ Sucesso - Custo: 356
+
+=== Teste #1864 - Vértices: 36, Arestas: 85 ===
+✅ Sucesso - Custo: 239
+
+=== Teste #1865 - Vértices: 11, Arestas: 20 ===
+✅ Sucesso - Custo: 91
+
+=== Teste #1866 - Vértices: 50, Arestas: 103 ===
+✅ Sucesso - Custo: 357
+
+=== Teste #1867 - Vértices: 48, Arestas: 136 ===
+✅ Sucesso - Custo: 300
+
+=== Teste #1868 - Vértices: 27, Arestas: 34 ===
+✅ Sucesso - Custo: 295
+
+=== Teste #1869 - Vértices: 26, Arestas: 35 ===
+✅ Sucesso - Custo: 241
+
+=== Teste #1870 - Vértices: 46, Arestas: 51 ===
+✅ Sucesso - Custo: 440
+
+=== Teste #1871 - Vértices: 31, Arestas: 77 ===
+✅ Sucesso - Custo: 210
+
+=== Teste #1872 - Vértices: 18, Arestas: 43 ===
+✅ Sucesso - Custo: 112
+
+=== Teste #1873 - Vértices: 49, Arestas: 147 ===
+❌ Erro: Custos divergentes: CHULIU 269, FRANK 270, FRANK_V2 270
+Traceback (most recent call last):
+  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 127, in <module>
+    assert custo1 == custo2 == custo3, (
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Custos divergentes: CHULIU 269, FRANK 270, FRANK_V2 270
+
+=== Teste #1874 - Vértices: 40, Arestas: 73 ===
+✅ Sucesso - Custo: 315
+
+=== Teste #1875 - Vértices: 19, Arestas: 26 ===
+✅ Sucesso - Custo: 124
+
+=== Teste #1876 - Vértices: 25, Arestas: 36 ===
+✅ Sucesso - Custo: 201
+
+=== Teste #1877 - Vértices: 34, Arestas: 43 ===
+✅ Sucesso - Custo: 274
+
+=== Teste #1878 - Vértices: 37, Arestas: 73 ===
+✅ Sucesso - Custo: 281
+
+=== Teste #1879 - Vértices: 30, Arestas: 58 ===
+✅ Sucesso - Custo: 242
+
+=== Teste #1880 - Vértices: 33, Arestas: 42 ===
+✅ Sucesso - Custo: 318
+
+=== Teste #1881 - Vértices: 33, Arestas: 48 ===
+✅ Sucesso - Custo: 318
+
+=== Teste #1882 - Vértices: 39, Arestas: 66 ===
+✅ Sucesso - Custo: 328
+
+=== Teste #1883 - Vértices: 26, Arestas: 53 ===
+✅ Sucesso - Custo: 200
+
+=== Teste #1884 - Vértices: 21, Arestas: 42 ===
+✅ Sucesso - Custo: 196
+
+=== Teste #1885 - Vértices: 43, Arestas: 70 ===
+✅ Sucesso - Custo: 395
+
+=== Teste #1886 - Vértices: 38, Arestas: 93 ===
+✅ Sucesso - Custo: 308
+
+=== Teste #1887 - Vértices: 32, Arestas: 82 ===
+✅ Sucesso - Custo: 221
+
+=== Teste #1888 - Vértices: 43, Arestas: 73 ===
+✅ Sucesso - Custo: 391
+
+=== Teste #1889 - Vértices: 14, Arestas: 36 ===
+✅ Sucesso - Custo: 94
+
+=== Teste #1890 - Vértices: 29, Arestas: 49 ===
+✅ Sucesso - Custo: 206
+
+=== Teste #1891 - Vértices: 49, Arestas: 69 ===
+✅ Sucesso - Custo: 326
+
+=== Teste #1892 - Vértices: 14, Arestas: 37 ===
+✅ Sucesso - Custo: 103
+
+=== Teste #1893 - Vértices: 41, Arestas: 121 ===
+✅ Sucesso - Custo: 263
+
+=== Teste #1894 - Vértices: 11, Arestas: 18 ===
+✅ Sucesso - Custo: 112
+
+=== Teste #1895 - Vértices: 34, Arestas: 79 ===
+✅ Sucesso - Custo: 270
+
+=== Teste #1896 - Vértices: 16, Arestas: 32 ===
+✅ Sucesso - Custo: 123
+
+=== Teste #1897 - Vértices: 49, Arestas: 65 ===
+✅ Sucesso - Custo: 496
+
+=== Teste #1898 - Vértices: 24, Arestas: 62 ===
+✅ Sucesso - Custo: 166
+
+=== Teste #1899 - Vértices: 48, Arestas: 134 ===
+✅ Sucesso - Custo: 308
+
+=== Teste #1900 - Vértices: 11, Arestas: 29 ===
+✅ Sucesso - Custo: 58
+
+=== Teste #1901 - Vértices: 24, Arestas: 41 ===
+❌ Erro: Custos divergentes: CHULIU 182, FRANK 185, FRANK_V2 185
+Traceback (most recent call last):
+  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 127, in <module>
+    assert custo1 == custo2 == custo3, (
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Custos divergentes: CHULIU 182, FRANK 185, FRANK_V2 185
+
+=== Teste #1902 - Vértices: 44, Arestas: 76 ===
+✅ Sucesso - Custo: 395
+
+=== Teste #1903 - Vértices: 32, Arestas: 34 ===
+✅ Sucesso - Custo: 315
+
+=== Teste #1904 - Vértices: 47, Arestas: 129 ===
+✅ Sucesso - Custo: 353
+
+=== Teste #1905 - Vértices: 50, Arestas: 90 ===
+✅ Sucesso - Custo: 376
+
+=== Teste #1906 - Vértices: 49, Arestas: 87 ===
+✅ Sucesso - Custo: 483
+
+=== Teste #1907 - Vértices: 15, Arestas: 39 ===
+✅ Sucesso - Custo: 80
+
+=== Teste #1908 - Vértices: 11, Arestas: 31 ===
+✅ Sucesso - Custo: 65
+
+=== Teste #1909 - Vértices: 15, Arestas: 22 ===
+✅ Sucesso - Custo: 85
+
+=== Teste #1910 - Vértices: 46, Arestas: 77 ===
+✅ Sucesso - Custo: 356
+
+=== Teste #1911 - Vértices: 47, Arestas: 92 ===
+❌ Erro: Custos divergentes: CHULIU 418, FRANK 424, FRANK_V2 424
+Traceback (most recent call last):
+  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 127, in <module>
+    assert custo1 == custo2 == custo3, (
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Custos divergentes: CHULIU 418, FRANK 424, FRANK_V2 424
+
+=== Teste #1912 - Vértices: 44, Arestas: 54 ===
+✅ Sucesso - Custo: 431
+
+=== Teste #1913 - Vértices: 32, Arestas: 60 ===
+✅ Sucesso - Custo: 244
+
+=== Teste #1914 - Vértices: 34, Arestas: 78 ===
+✅ Sucesso - Custo: 253
+
+=== Teste #1915 - Vértices: 31, Arestas: 88 ===
+✅ Sucesso - Custo: 151
+
+=== Teste #1916 - Vértices: 29, Arestas: 32 ===
+✅ Sucesso - Custo: 256
+
+=== Teste #1917 - Vértices: 29, Arestas: 58 ===
+✅ Sucesso - Custo: 192
+
+=== Teste #1918 - Vértices: 15, Arestas: 35 ===
+❌ Erro: Custos divergentes: CHULIU 83, FRANK 84, FRANK_V2 84
+Traceback (most recent call last):
+  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 127, in <module>
+    assert custo1 == custo2 == custo3, (
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Custos divergentes: CHULIU 83, FRANK 84, FRANK_V2 84
+
+=== Teste #1919 - Vértices: 39, Arestas: 76 ===
+✅ Sucesso - Custo: 266
+
+=== Teste #1920 - Vértices: 40, Arestas: 64 ===
+✅ Sucesso - Custo: 349
+
+=== Teste #1921 - Vértices: 25, Arestas: 66 ===
+✅ Sucesso - Custo: 123
+
+=== Teste #1922 - Vértices: 27, Arestas: 78 ===
+❌ Erro: Custos divergentes: CHULIU 138, FRANK 140, FRANK_V2 140
+Traceback (most recent call last):
+  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 127, in <module>
+    assert custo1 == custo2 == custo3, (
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Custos divergentes: CHULIU 138, FRANK 140, FRANK_V2 140
+
+=== Teste #1923 - Vértices: 50, Arestas: 89 ===
+✅ Sucesso - Custo: 334
+
+=== Teste #1924 - Vértices: 16, Arestas: 39 ===
+✅ Sucesso - Custo: 132
+
+=== Teste #1925 - Vértices: 27, Arestas: 64 ===
+✅ Sucesso - Custo: 199
+
+=== Teste #1926 - Vértices: 21, Arestas: 21 ===
+✅ Sucesso - Custo: 183
+
+=== Teste #1927 - Vértices: 32, Arestas: 58 ===
+✅ Sucesso - Custo: 258
+
+=== Teste #1928 - Vértices: 15, Arestas: 29 ===
+✅ Sucesso - Custo: 109
+
+=== Teste #1929 - Vértices: 19, Arestas: 48 ===
+✅ Sucesso - Custo: 109
+
+=== Teste #1930 - Vértices: 28, Arestas: 71 ===
+✅ Sucesso - Custo: 212
+
+=== Teste #1931 - Vértices: 14, Arestas: 42 ===
+✅ Sucesso - Custo: 60
+
+=== Teste #1932 - Vértices: 35, Arestas: 52 ===
+✅ Sucesso - Custo: 312
+
+=== Teste #1933 - Vértices: 14, Arestas: 33 ===
+✅ Sucesso - Custo: 91
+
+=== Teste #1934 - Vértices: 23, Arestas: 36 ===
+✅ Sucesso - Custo: 163
+
+=== Teste #1935 - Vértices: 33, Arestas: 62 ===
+✅ Sucesso - Custo: 217
+
+=== Teste #1936 - Vértices: 43, Arestas: 97 ===
+✅ Sucesso - Custo: 258
+
+=== Teste #1937 - Vértices: 12, Arestas: 27 ===
+✅ Sucesso - Custo: 87
+
+=== Teste #1938 - Vértices: 35, Arestas: 66 ===
+✅ Sucesso - Custo: 344
+
+=== Teste #1939 - Vértices: 12, Arestas: 36 ===
+✅ Sucesso - Custo: 81
+
+=== Teste #1940 - Vértices: 15, Arestas: 17 ===
+✅ Sucesso - Custo: 175
+
+=== Teste #1941 - Vértices: 23, Arestas: 55 ===
+✅ Sucesso - Custo: 176
+
+=== Teste #1942 - Vértices: 42, Arestas: 78 ===
+✅ Sucesso - Custo: 353
+
+=== Teste #1943 - Vértices: 13, Arestas: 37 ===
+✅ Sucesso - Custo: 75
+
+=== Teste #1944 - Vértices: 35, Arestas: 61 ===
+✅ Sucesso - Custo: 258
+
+=== Teste #1945 - Vértices: 12, Arestas: 32 ===
+✅ Sucesso - Custo: 66
+
+=== Teste #1946 - Vértices: 27, Arestas: 31 ===
+✅ Sucesso - Custo: 237
+
+=== Teste #1947 - Vértices: 45, Arestas: 47 ===
+✅ Sucesso - Custo: 415
+
+=== Teste #1948 - Vértices: 13, Arestas: 28 ===
+✅ Sucesso - Custo: 64
+
+=== Teste #1949 - Vértices: 45, Arestas: 77 ===
+✅ Sucesso - Custo: 433
+
+=== Teste #1950 - Vértices: 25, Arestas: 36 ===
+✅ Sucesso - Custo: 209
+
+=== Teste #1951 - Vértices: 41, Arestas: 65 ===
+✅ Sucesso - Custo: 300
+
+=== Teste #1952 - Vértices: 42, Arestas: 71 ===
+✅ Sucesso - Custo: 295
+
+=== Teste #1953 - Vértices: 17, Arestas: 37 ===
+✅ Sucesso - Custo: 156
+
+=== Teste #1954 - Vértices: 15, Arestas: 26 ===
+✅ Sucesso - Custo: 118
+
+=== Teste #1955 - Vértices: 45, Arestas: 104 ===
+✅ Sucesso - Custo: 329
+
+=== Teste #1956 - Vértices: 44, Arestas: 79 ===
+✅ Sucesso - Custo: 420
+
+=== Teste #1957 - Vértices: 49, Arestas: 54 ===
+✅ Sucesso - Custo: 445
+
+=== Teste #1958 - Vértices: 42, Arestas: 70 ===
+✅ Sucesso - Custo: 315
+
+=== Teste #1959 - Vértices: 48, Arestas: 93 ===
+✅ Sucesso - Custo: 415
+
+=== Teste #1960 - Vértices: 36, Arestas: 72 ===
+✅ Sucesso - Custo: 302
+
+=== Teste #1961 - Vértices: 25, Arestas: 61 ===
+✅ Sucesso - Custo: 162
+
+=== Teste #1962 - Vértices: 41, Arestas: 90 ===
+✅ Sucesso - Custo: 298
+
+=== Teste #1963 - Vértices: 35, Arestas: 69 ===
+✅ Sucesso - Custo: 282
+
+=== Teste #1964 - Vértices: 30, Arestas: 80 ===
+✅ Sucesso - Custo: 178
+
+=== Teste #1965 - Vértices: 15, Arestas: 36 ===
+✅ Sucesso - Custo: 88
+
+=== Teste #1966 - Vértices: 34, Arestas: 53 ===
+✅ Sucesso - Custo: 272
+
+=== Teste #1967 - Vértices: 40, Arestas: 98 ===
+✅ Sucesso - Custo: 277
+
+=== Teste #1968 - Vértices: 47, Arestas: 87 ===
+✅ Sucesso - Custo: 382
+
+=== Teste #1969 - Vértices: 18, Arestas: 25 ===
+✅ Sucesso - Custo: 159
+
+=== Teste #1970 - Vértices: 20, Arestas: 60 ===
+✅ Sucesso - Custo: 92
+
+=== Teste #1971 - Vértices: 50, Arestas: 89 ===
+✅ Sucesso - Custo: 438
+
+=== Teste #1972 - Vértices: 37, Arestas: 108 ===
+✅ Sucesso - Custo: 233
+
+=== Teste #1973 - Vértices: 42, Arestas: 84 ===
+✅ Sucesso - Custo: 306
+
+=== Teste #1974 - Vértices: 34, Arestas: 85 ===
+✅ Sucesso - Custo: 247
+
+=== Teste #1975 - Vértices: 18, Arestas: 38 ===
+✅ Sucesso - Custo: 149
+
+=== Teste #1976 - Vértices: 12, Arestas: 23 ===
+✅ Sucesso - Custo: 64
+
+=== Teste #1977 - Vértices: 35, Arestas: 58 ===
+❌ Erro: Custos divergentes: CHULIU 269, FRANK 270, FRANK_V2 270
+Traceback (most recent call last):
+  File "/Users/lorenypsum/Library/Mobile Documents/com~apple~CloudDocs/repo/graph-visualizer.nosync/volume_tester.py", line 127, in <module>
+    assert custo1 == custo2 == custo3, (
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Custos divergentes: CHULIU 269, FRANK 270, FRANK_V2 270
+
+=== Teste #1978 - Vértices: 15, Arestas: 18 ===
+✅ Sucesso - Custo: 147
+
+=== Teste #1979 - Vértices: 13, Arestas: 16 ===
+✅ Sucesso - Custo: 138
+
+=== Teste #1980 - Vértices: 33, Arestas: 68 ===
+✅ Sucesso - Custo: 228
+
+=== Teste #1981 - Vértices: 21, Arestas: 31 ===
+✅ Sucesso - Custo: 143
+
+=== Teste #1982 - Vértices: 10, Arestas: 10 ===
+✅ Sucesso - Custo: 84
+
+=== Teste #1983 - Vértices: 29, Arestas: 59 ===
+✅ Sucesso - Custo: 227
+
+=== Teste #1984 - Vértices: 31, Arestas: 82 ===
+✅ Sucesso - Custo: 199
+
+=== Teste #1985 - Vértices: 23, Arestas: 26 ===
+✅ Sucesso - Custo: 228
+
+=== Teste #1986 - Vértices: 50, Arestas: 120 ===
+✅ Sucesso - Custo: 366
+
+=== Teste #1987 - Vértices: 31, Arestas: 34 ===
+✅ Sucesso - Custo: 260
+
+=== Teste #1988 - Vértices: 18, Arestas: 39 ===
+✅ Sucesso - Custo: 167
+
+=== Teste #1989 - Vértices: 12, Arestas: 35 ===
+✅ Sucesso - Custo: 77
+
+=== Teste #1990 - Vértices: 46, Arestas: 66 ===
+✅ Sucesso - Custo: 427
+
+=== Teste #1991 - Vértices: 24, Arestas: 42 ===
+✅ Sucesso - Custo: 184
+
+=== Teste #1992 - Vértices: 32, Arestas: 62 ===
+✅ Sucesso - Custo: 263
+
+=== Teste #1993 - Vértices: 46, Arestas: 127 ===
+✅ Sucesso - Custo: 308
+
+=== Teste #1994 - Vértices: 33, Arestas: 44 ===
+✅ Sucesso - Custo: 261
+
+=== Teste #1995 - Vértices: 14, Arestas: 32 ===
+✅ Sucesso - Custo: 79
+
+=== Teste #1996 - Vértices: 42, Arestas: 46 ===
+✅ Sucesso - Custo: 462
+
+=== Teste #1997 - Vértices: 30, Arestas: 73 ===
+✅ Sucesso - Custo: 199
+
+=== Teste #1998 - Vértices: 33, Arestas: 77 ===
+✅ Sucesso - Custo: 242
+
+=== Teste #1999 - Vértices: 37, Arestas: 57 ===
+✅ Sucesso - Custo: 277
+
+=== Teste #2000 - Vértices: 42, Arestas: 105 ===
+✅ Sucesso - Custo: 240
+
+🧪 Testagem em volume finalizada. Sucessos: 1898, Falhas: 102.
