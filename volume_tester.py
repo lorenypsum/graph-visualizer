@@ -15,8 +15,8 @@ from chuliu import find_optimum_arborescence
 
 # Parâmetros gerais
 NUM_TESTS = 2000
-MIN_VERTICES = 10
-MAX_VERTICES = 50
+MIN_VERTICES = 4
+MAX_VERTICES = 4
 LOG_CSV_PATH = "test_results.csv"
 LOG_TXT_PATH = "test_log.txt"
 ROOT = "r0"
@@ -102,6 +102,7 @@ for i in range(1, NUM_TESTS + 1):
 
     try:
         D = build_rooted_digraph(n=n, m=m, r0=ROOT)
+        print(f"🔍 Grafo original: {D.edges(data=True)}")
         if not contains_arborescence(D, ROOT):
             raise Exception("Grafo gerado não tem arborescência com raiz.")
 
@@ -111,14 +112,17 @@ for i in range(1, NUM_TESTS + 1):
 
         arbo1 = find_optimum_arborescence(D1, ROOT)
         custo1 = get_total_cost(arbo1)
+        print(f"🔍Custo ChuLiu:{custo1} Arbo ChuLiu: {arbo1.edges(data=True)}")
 
         A_zero = phase1_find_minimum_arborescence(D1, ROOT)
 
         arbo2 = phase2_find_minimum_arborescence(D1, ROOT, A_zero)
         custo2 = get_total_cost(arbo2)
+        print(f"Custo Frank: {custo2} 🔍 Arbo Frank: {arbo2.edges(data=True)}")
 
         arbo3 = phase2_find_minimum_arborescence_v2(D1, ROOT, A_zero)
         custo3 = get_total_cost(arbo3)
+        print(f"Custo Frank V2: {custo3} 🔍 Arbo Frank V2: {arbo3.edges(data=True)}")
 
         assert custo1 == custo2 == custo3, (
             f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
