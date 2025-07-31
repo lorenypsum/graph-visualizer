@@ -222,7 +222,8 @@ def find_optimum_arborescence(G: nx.DiGraph, r0: str, level=0, draw_fn=None, log
         u, _, w = in_edge
 
         # Identifica o vértice do ciclo que recebeu a aresta de entrada
-        v = next((v_ciclo for v_ciclo, (u_out, _) in in_to_cycle.items() if u_out == u), None)
+        # v = next((v_ciclo for v_ciclo, (u_out, _) in in_to_cycle.items() if u_out == u), None)
+        v, _ = in_to_cycle.get(u, (None, None))
 
         # TODO: Confirmar esse trecho fallback (caso de raiz sem mapeamento explícito)
         if v is None:
