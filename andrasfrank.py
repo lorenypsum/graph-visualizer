@@ -73,10 +73,10 @@ def phase1_find_minimum_arborescence(D_original, r0):
 
         iteration += 1
         print(f"\n🔄 Iteração {iteration} ----------------------------")
-        C = nx.condensation(D_zero)
-        sources = [x for x in C.nodes() if C.in_degree(x) == 0]
+        C = nx.condensation(D_zero) # Calcula os componentes fortemente conexos do grafo D_zero.
+        sources = [x for x in C.nodes() if C.in_degree(x) == 0] # As fontes é onde não nenhum arco entrando, o R0 sempre é uma fonte.
         print('Fontes: ', sources)
-        if len(sources) == 1:
+        if len(sources) == 1: # Se houver apenas uma fonte, significa que é o R0 e não há mais arcos a serem processados.
             break
         for u in sources:
             X = C.nodes[u]['members']
