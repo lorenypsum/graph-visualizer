@@ -30,7 +30,6 @@ def get_arcs_entering_X(D, X):
             arcs.append((u, v, data))
     return arcs
 
-
 def get_minimum_weight_cut(arcs):
     """
     Get the minimum weight arcs from a list of arcs.
@@ -59,7 +58,6 @@ def has_arborescence(D, r0):
     tree = nx.dfs_tree(D, r0) 
     return tree.number_of_nodes() == D.number_of_nodes() 
 
-
 def phase1_find_minimum_arborescence(D_original, r0):
     """
     Find the minimum arborescence in a directed graph D with root r0.
@@ -70,53 +68,85 @@ def phase1_find_minimum_arborescence(D_original, r0):
     D_zero = build_D_zero(D_copy)
 
     iteration = 0  # Contador de iterações
-    continue_execution = True
-
-    while continue_execution:
+    
+    while True:
 
         iteration += 1
         print(f"\n🔄 Iteração {iteration} ----------------------------")
-
-        continue_execution = False
-        for v in D_copy.nodes():
-            if v == r0:
-                continue
-
-            print(f"🔍 Verificando nó: {v}")
-            X = nx.ancestors(D_zero, v)  # Obter ancestrais de v
-
-            if r0 in X:
-                print(f"⚠️ {v} é ancestral de {r0}. Pulando...")
-                continue
-
-            else:
-                X.add(v)  # Conjunto de ancestrais de v
-
-                assert X is not None, "X não pode ser vazio." # TODO: 
-
-                print(f" ↳ Conjunto X (ancestrais de {v} sem a raiz): {X}")
-
-                arcs = get_arcs_entering_X(D_copy, X)
-                print(f" ↳ Arcos que entram em X: {arcs}")
-
-                # TODO:  NÃO FAZER ISSO AGORA
-                # if not arcs:
-                #     print(f"⚠️ Nenhum arco entra em X.")
-                #     continue
-
-                min_weight = get_minimum_weight_cut(arcs)
-                print(f" ✅ Peso mínimo encontrado: {min_weight}")
-
-                update_weights_in_X(D_copy, arcs, min_weight, A_zero, D_zero)
-                print(f"🔄 Pesos atualizados nos arcos que entram em X")
-
-                continue_execution = True
-                
-        if iteration > len(D_copy.edges()):
-            print("🚨 Limite de iterações excedido. Pode haver loop infinito.")
+        C = nx.condensation(D_zero)
+        sources = [x for x in C.nodes() if C.in_degree(x) == 0]
+        print('Fontes: ', sources)
+        if len(sources) == 1:
             break
-
+        for u in sources:
+            X = C.nodes[u]['members']
+            if r0 in X:
+                continue
+            arcs = get_arcs_entering_X(D_copy, X)
+            min_weight = get_minimum_weight_cut(arcs)
+            print(f" ✅ Peso mínimo encontrado: {min_weight}")
+            update_weights_in_X(D_copy, arcs, min_weight, A_zero, D_zero)
+            print(f"🔄 Pesos atualizados nos arcos que entram em X")
     return A_zero
+
+
+# def phase1_find_minimum_arborescence(D_original, r0):
+#     """
+#     Find the minimum arborescence in a directed graph D with root r0.
+#     The function returns the minimum arborescence as a list of arcs.
+#     """
+#     D_copy = D_original.copy()
+#     A_zero = []
+#     D_zero = build_D_zero(D_copy)
+
+#     iteration = 0  # Contador de iterações
+#     continue_execution = True
+
+#     while continue_execution:
+
+#         iteration += 1
+#         print(f"\n🔄 Iteração {iteration} ----------------------------")
+
+#         continue_execution = False
+#         for v in D_copy.nodes():
+#             if v == r0:
+#                 continue
+
+#             print(f"🔍 Verificando nó: {v}")
+#             X = nx.ancestors(D_zero, v)  # Obter ancestrais de v
+
+#             if r0 in X:
+#                 print(f"⚠️ {v} é ancestral de {r0}. Pulando...")
+#                 continue
+
+#             else:
+#                 X.add(v)  # Conjunto de ancestrais de v
+
+#                 assert X is not None, "X não pode ser vazio." # TODO: 
+
+#                 print(f" ↳ Conjunto X (ancestrais de {v} sem a raiz): {X}")
+
+#                 arcs = get_arcs_entering_X(D_copy, X)
+#                 print(f" ↳ Arcos que entram em X: {arcs}")
+
+#                 # TODO:  NÃO FAZER ISSO AGORA
+#                 # if not arcs:
+#                 #     print(f"⚠️ Nenhum arco entra em X.")
+#                 #     continue
+
+#                 min_weight = get_minimum_weight_cut(arcs)
+#                 print(f" ✅ Peso mínimo encontrado: {min_weight}")
+
+#                 update_weights_in_X(D_copy, arcs, min_weight, A_zero, D_zero)
+#                 print(f"🔄 Pesos atualizados nos arcos que entram em X")
+
+#                 continue_execution = True
+                
+#         if iteration > len(D_copy.edges()):
+#             print("🚨 Limite de iterações excedido. Pode haver loop infinito.")
+#             break
+
+#     return A_zero
 
 def phase2_find_minimum_arborescence(D_original, r0, A_zero):
     """
