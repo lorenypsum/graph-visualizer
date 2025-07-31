@@ -99,7 +99,7 @@ def phase1_find_minimum_arborescence(D_original, r0):
 
                 print(f" ↳ Conjunto X (ancestrais de {v} sem a raiz): {X}")
 
-                arcs = get_arcs_entering_X(D, X)
+                arcs = get_arcs_entering_X(D_copy, X)
                 print(f" ↳ Arcos que entram em X: {arcs}")
 
                 # TODO:  NÃO FAZER ISSO AGORA
@@ -118,7 +118,7 @@ def phase1_find_minimum_arborescence(D_original, r0):
 
                 continue_execution = True
                 
-        if iteration > len(D.edges()):
+        if iteration > len(D_copy.edges()):
             print("🚨 Limite de iterações excedido. Pode haver loop infinito.")
             break
 
