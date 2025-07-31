@@ -68,7 +68,6 @@ def contains_arborescence(D, r0):
     tree = nx.dfs_tree(D, source=r0)
     return tree.number_of_nodes() == D.number_of_nodes()
 
-
 def remove_edges_to_r0(D, r0):
     D.remove_edges_from(list(D.in_edges(r0)))
     return D
