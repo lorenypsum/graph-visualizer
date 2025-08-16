@@ -143,7 +143,7 @@ def phase2_find_minimum_arborescence_v2(D_original, r0, A_zero):
 # empacotar as chamadas em função.
 def andras_frank_algorithm(D1):
     print("\n🔍 Executando algoritmo de András Frank...")
-    A_zero = phase1_find_minimum_arborescence(D1, "r0")
+    A_zero, Dual_list = phase1_find_minimum_arborescence(D1, "r0")
     arborescencia_frank = phase2_find_minimum_arborescence(D1,"r0", A_zero)
     arborescencia_frank_v2 = phase2_find_minimum_arborescence_v2(D1, "r0", A_zero)
     return arborescencia_frank, arborescencia_frank_v2
