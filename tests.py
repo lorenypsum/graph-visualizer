@@ -2,9 +2,7 @@ import random
 
 import networkx as nx
 
-from andrasfrank import (phase1_find_minimum_arborescence,
-                         phase2_find_minimum_arborescence,
-                         phase2_find_minimum_arborescence_v2)
+from andrasfrank import (andras_frank_algorithm)
 from chuliu import find_optimum_arborescence, remove_edges_to_r0
 
 
@@ -73,9 +71,7 @@ if contains_arborescence_result:
     print(f"Custo da arborescência de Chu-Liu/Edmonds: {custo_chuliu}")
 
     print("\n🔍 Executando algoritmo de András Frank...")
-    A_zero = phase1_find_minimum_arborescence(D1.copy(), "r0")
-    arborescencia_frank = phase2_find_minimum_arborescence(D1.copy(),"r0", A_zero)
-    arborescencia_frank_v2 = phase2_find_minimum_arborescence_v2(D1.copy(), "r0", A_zero)
+    arborescencia_frank, arborescencia_frank_v2 = andras_frank_algorithm(D1.copy())
     custo_frank = get_total_digraph_cost(arborescencia_frank)
     custo_frank_v2 = get_total_digraph_cost(arborescencia_frank_v2)
     print(f"Custo da arborescência de András Frank: {custo_frank}")

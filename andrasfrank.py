@@ -64,6 +64,7 @@ def phase1_find_minimum_arborescence(D_original, r0):
     """
     D_copy = D_original.copy()
     A_zero = []
+    Dual_list = []  # Lista para armazenar os pares (X, min_weight)
     D_zero = build_D_zero(D_copy)
 
     iteration = 0  # Contador de iterações
@@ -82,10 +83,15 @@ def phase1_find_minimum_arborescence(D_original, r0):
                 continue
             arcs = get_arcs_entering_X(D_copy, X)
             min_weight = get_minimum_weight_cut(arcs)
+            # Se o min_weight for zero ignora
+            if min_weight == 0:
+                continue
+            # Caso contrário que a lista dual onde entra o X e o min_weight
+            Dual_list.append((X, min_weight))
             print(f"\n ✅ Peso mínimo encontrado: {min_weight}")
             update_weights_in_X(D_copy, arcs, min_weight, A_zero, D_zero)
             print(f"\n 🔄 Pesos atualizados nos arcos que entram em X")
-    return A_zero
+    return A_zero, Dual_list
 
 def phase2_find_minimum_arborescence(D_original, r0, A_zero):
     """
@@ -132,3 +138,64 @@ def phase2_find_minimum_arborescence_v2(D_original, r0, A_zero):
         for (x, y, data) in D.out_edges(v, data=True):
             heapq.heappush(q, (data["w"], x, y))  # Adiciona os arcos de saída do vértice visitado à fila de prioridade
     return A  # Retorna a arborescência resultante
+
+# Escrever uma função para chamar a fase 1 e a fase 2, 
+# empacotar as chamadas em função.
+def andras_frank_algorithm(D1):
+    print("\n🔍 Executando algoritmo de András Frank...")
+    A_zero = phase1_find_minimum_arborescence(D1, "r0")
+    arborescencia_frank = phase2_find_minimum_arborescence(D1,"r0", A_zero)
+    arborescencia_frank_v2 = phase2_find_minimum_arborescence_v2(D1, "r0", A_zero)
+    return arborescencia_frank, arborescencia_frank_v2
+
+# O conjunto X devolvido na linha 80
+# prega o caso no qual o r0 n # pertence ao conjunto X, ou seja, o r0 é uma fonte.
+# Pega o par X, minweight em uma lista de pares
+# Além do A_zero tem que devolver essa lista
+# Pois essa lista constitui uma solução para o problema dual
+# Ai na fase 2, pegamos essa lista que é solução para o dual
+# que estamos chamado de lista dual D = [x1, y1; x2, y2; ...]
+# E construimos a fase 2. A fase 2 devolve uma arborescencia
+# Precisamos criar uma função para checar se as soluçoes estão corretas
+# O algoritmo prova que é uma arboreescencia
+# Checar que a solucáo é correta
+# 1. Arb tem que ser uma arborescencia
+# 2. Para cada xi, yi em D, tem que existir um arco de arb que entra em xi e apenas um
+# Escrever uma função para verificar essas condições estão sendo satisfeitas
+# basicamente checar a seguinte condição:
+# z(X) > 0 implies ϱF (X)= 1.
+
+
+# def check_solution(Arb, D, A_zero):
+#     """
+#     Check if the solution is a valid arborescence.
+#     The function checks if Arb is an arborescence and if each (x, y) in A_zero has an incoming arc in Arb.
+#     """
+#     # Check if Arb is an arborescence
+#     if not has_arborescence(Arb, list(Arb.nodes())[0]):
+#         return False
+    
+#     # Check if each (x, y) in A_zero has an incoming arc in Arb
+#     for u, v in A_zero:
+#         if not Arb.has_edge(u, v):
+#             return False
+    
+#     return True
+
+# basicamente checar a seguinte condição:
+# z(X) > 0 implies ϱF (X)= 1.
+
+# Para cada cara que o zi deu maior que zero, deve ter exatamente um arco
+# da arborescencia que entra em xi
+# [(x1, z1), (x2, z2), ... ]
+# Na implementação devemos não colocar na lista quando o min-weight for zero.
+# Na linha 86 do código, quando o min-weight for zero, não devemos adicionar o arco na lista A_zero.
+# Talvez a melhor ideia pode ser colocar e ignorar, se o min-weight for zero, dá um continue.
+# Se não fazemos o update_weights_in_X, não atualiza o D_zero, e não adiciona o arco na lista A_
+# Esse X é o min_weight, do algoritmo.
+
+# Fazemos primeiro essa versão do Frank
+# E depois fazemos na versão do Edmonds, que é mais dificil, pois precisa ficar descontraindo
+# Verificar essas coisas prova a corretude.
+
+
