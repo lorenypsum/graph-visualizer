@@ -201,14 +201,14 @@ def phase2_find_minimum_arborescence_v3(D_original, r0, Dual_list):
             print(f"len(incoming_edges) {x}: {len(incoming_edges)}")
             len_incoming_edges = len(incoming_edges)
             for u, v in incoming_edges:
-                 if u == 'r0':
+                 if u == r0:
                      len_incoming_edges = len(incoming_edges) - 1
+            #TODO: alterar a condição para verificar se o x recebe apenas um arco          
             if len_incoming_edges == 1:  # Se há exatamente um arco entrando em x
                 u, v = incoming_edges[0]
                 edge_data = D_original.get_edge_data(u, v)
                 Arb.add_edge(u, v, **edge_data)
     return Arb
-
 
 # empacotar as chamadas em função.
 def andras_frank_algorithm(D1):
