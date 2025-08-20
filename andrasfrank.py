@@ -168,6 +168,10 @@ def phase2_find_minimum_arborescence_v2(D_original, r0, A_zero):
             heapq.heappush(q, (data["w"], x, y))  # Adiciona os arcos de saída do vértice visitado à fila de prioridade
     return A  # Retorna a arborescência resultante
 
+#TODO: Implementar a fase 2 usando a lista dual
+#TODO: Fazer mais uma função de verificação da informação
+# --> falta isso: E construimos a fase 2. 
+# --> A fase 2 devolve uma arborescencia
 def phase2_find_minimum_arborescence_dual(Arb, Dual_list):
 
     # 2. Para cada xi, yi em Dual_list, tem que existir um arco de arb que entra em xi e apenas um
@@ -202,20 +206,22 @@ def andras_frank_algorithm(D1):
 andras_frank_algorithm(D1)
 
     # O conjunto X devolvido na linha 80
-    # pega o caso no qual o r0 não pertence ao conjunto X, ou seja, o r0 é uma fonte.
-    # Pega o par X, minweight em uma lista de pares
-    # Além do A_zero tem que devolver essa lista
-    # Pois essa lista constitui uma solução para o problema dual
-    # Ai na fase 2, pegamos essa lista que é solução para o dual
-    # que estamos chamado de lista dual D = [x1, y1; x2, y2; ...]
-    # E construimos a fase 2. 
-    # A fase 2 devolve uma arborescencia
-    # Precisamos criar uma função para checar se as soluçoes estão corretas
+    # -- pega o caso no qual o r0 não pertence ao conjunto X, ou seja, o r0 é uma fonte.
+    # ok Pega o par X, minweight em uma lista de pares
+    # ok Além do A_zero tem que devolver essa lista
+    # --> Pois essa lista constitui uma solução para o problema dual
+    # ok Ai na fase 2, pegamos essa lista que é solução para o dual
+    # ok que estamos chamado de lista dual D = [x1, y1; x2, y2; ...]
+    # --> falta isso: E construimos a fase 2. 
+    # --> A fase 2 devolve uma arborescencia
+    # ok Precisamos criar uma função para checar se as soluçoes estão corretas
     # O algoritmo prova que é uma arboreescencia
     # Checar que a solucáo é correta
-    # 1. Arb tem que ser uma arborescencia
+    # ok 1. Arb tem que ser uma arborescencia
+
+
         # Na implementação devemos não colocar na lista quando o min-weight for zero.
-    # 2. Para cada xi, yi em Dual_list, tem que existir um arco de arb que entra em xi e apenas um
+    # ok 2. Para cada xi, yi em Dual_list, tem que existir um arco de arb que entra em xi e apenas um
         # Escrever uma função para verificar essas condições estão sendo satisfeitas:
         # z(X) > 0 implies ϱF (X)= 1.
     # Para cada cara que o zi deu maior que zero, deve ter exatamente um arco
