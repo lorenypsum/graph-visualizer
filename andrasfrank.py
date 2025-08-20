@@ -147,12 +147,12 @@ def phase2_find_minimum_arborescence_v2(D_original, r0, A_zero):
     Find the minimum arborescence in a directed graph D with root r0.
     The function returns the minimum arborescence as a DiGraph.
     """
-    D = nx.DiGraph()
+    Arb = nx.DiGraph()
     for i, (u, v) in enumerate(A_zero):
-        D.add_edge(u, v, w=i)
+        Arb.add_edge(u, v, w=i)
     V = {r0}  # Conjunto de vértices visitados, começando com a raiz
     q = []  # Fila de prioridade para armazenar os arcos
-    for (u, v, data) in D.out_edges(r0, data=True):
+    for (u, v, data) in Arb.out_edges(r0, data=True):
         heapq.heappush(q, (data["w"], u, v))  # Adiciona os arcos de saída da raiz à fila de prioridade
     
     A = nx.DiGraph()  # Arborescência resultante
@@ -164,29 +164,51 @@ def phase2_find_minimum_arborescence_v2(D_original, r0, A_zero):
             continue
         A.add_edge(u, v, w = D_original[u][v]["w"])  # Adiciona o arco à arborescência
         V.add(v)  # Marca o vértice como visitado
-        for (x, y, data) in D.out_edges(v, data=True):
+        for (x, y, data) in Arb.out_edges(v, data=True):
             heapq.heappush(q, (data["w"], x, y))  # Adiciona os arcos de saída do vértice visitado à fila de prioridade
     return A  # Retorna a arborescência resultante
 
 #TODO: Implementar a fase 2 usando a lista dual
 #TODO: Fazer mais uma função de verificação da informação
 # --> falta isso: E construimos a fase 2. 
-# --> A fase 2 devolve uma arborescencia
-def phase2_find_minimum_arborescence_dual(Arb, Dual_list):
+# --> A fase 2 devolve uma arborescencia:
+# Para cada xi, yi em Dual_list, tem que existir um arco de arb 
+# que entra em xi e apenas um
+# Escrever uma função para verificar essas condições 
+# estão sendo satisfeitas:
+# z(X) > 0 implies ϱF (X)= 1.
+# Para cada cara que o zi deu maior que zero, 
+# deve ter exatamente um arco
+# da arborescencia que entra em xi
+    # [(x1, z1), (x2, z2), ... ]  
+def phase2_find_minimum_arborescence_v3(D_original, r0, Dual_list):
+    """
+    Find the minimum arborescence in a directed graph D with root r0.
+    The function returns the minimum arborescence as a DiGraph.
+    """
+    Arb = nx.DiGraph()
 
-    # 2. Para cada xi, yi em Dual_list, tem que existir um arco de arb que entra em xi e apenas um
-    # Escrever uma função para verificar essas condições estão sendo satisfeitas:
-    # z(X) > 0 implies ϱF (X)= 1.
-    # Para cada cara que o zi deu maior que zero, deve ter exatamente um arco
-    # da arborescencia que entra em xi
-    # [(x1, z1), (x2, z2), ... ]
+    # Adiciona-se o nó raiz
+    Arb.add_node(r0)
+
+    # Enquanto houver arcos a serem considerados
     for (x, z) in Dual_list:
-        if z > 0:
-            # Verifica se existe exatamente um arco que entra em x
-            incoming_edges = [e for e in Arb.in_edges(x)]
-            if len(incoming_edges) != 1:
-                return False
-    return True
+        # Para cada cara que o zi deu maior que zero, deve ter exatamente um arco da arborescencia que entra em xi [(x1, z1), (x2, z2), ... ]
+        print(f"Verificando o par (x={x}, z={z})")
+        if z >= 0:
+            incoming_edges = [e for e in D_original.in_edges(x)]
+            print(f"Incoming Edges {x}: {incoming_edges}")
+            print(f"len(incoming_edges) {x}: {len(incoming_edges)}")
+            len_incoming_edges = len(incoming_edges)
+            for u, v in incoming_edges:
+                 if u == 'r0':
+                     len_incoming_edges = len(incoming_edges) - 1
+            if len_incoming_edges == 1:  # Se há exatamente um arco entrando em x
+                u, v = incoming_edges[0]
+                edge_data = D_original.get_edge_data(u, v)
+                Arb.add_edge(u, v, **edge_data)
+    return Arb
+
 
 # empacotar as chamadas em função.
 def andras_frank_algorithm(D1):
@@ -199,11 +221,12 @@ def andras_frank_algorithm(D1):
         return None, None
     arborescencia_frank = phase2_find_minimum_arborescence(D1,"r0", A_zero)
     arborescencia_frank_v2 = phase2_find_minimum_arborescence_v2(D1, "r0", A_zero)
+    arborescencia_frank_v3 = phase2_find_minimum_arborescence_v3(D1, "r0", Dual_list)
 
-    return arborescencia_frank, arborescencia_frank_v2
+    return arborescencia_frank, arborescencia_frank_v2, arborescencia_frank_v3
 
 
-andras_frank_algorithm(D1)
+v1, v2, v3 = andras_frank_algorithm(D1)
 
     # O conjunto X devolvido na linha 80
     # -- pega o caso no qual o r0 não pertence ao conjunto X, ou seja, o r0 é uma fonte.
@@ -214,13 +237,15 @@ andras_frank_algorithm(D1)
     # ok que estamos chamado de lista dual D = [x1, y1; x2, y2; ...]
     # --> falta isso: E construimos a fase 2. 
     # --> A fase 2 devolve uma arborescencia
+
+
     # ok Precisamos criar uma função para checar se as soluçoes estão corretas
     # O algoritmo prova que é uma arboreescencia
     # Checar que a solucáo é correta
     # ok 1. Arb tem que ser uma arborescencia
 
 
-        # Na implementação devemos não colocar na lista quando o min-weight for zero.
+    # Na implementação devemos não colocar na lista quando o min-weight for zero.
     # ok 2. Para cada xi, yi em Dual_list, tem que existir um arco de arb que entra em xi e apenas um
         # Escrever uma função para verificar essas condições estão sendo satisfeitas:
         # z(X) > 0 implies ϱF (X)= 1.
@@ -235,5 +260,10 @@ andras_frank_algorithm(D1)
     # E depois fazemos na versão do Edmonds, que é mais dificil, pois precisa ficar descontraindo
     # Verificar essas coisas prova a corretude.
 
-
+print("____________________________________________________________")
+print("v1:", v1.edges(data=True))
+print("____________________________________________________________")
+print("v2:", v2.edges(data=True))
+print("____________________________________________________________")
+print("v3:", v3.edges(data=True))
 
