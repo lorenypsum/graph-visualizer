@@ -7,9 +7,11 @@ import traceback
 import networkx as nx
 
 from andrasfrank import (
+    andras_frank_algorithm,
+    build_rooted_digraph,
     phase1_find_minimum_arborescence,
     phase2_find_minimum_arborescence,
-    phase2_find_minimum_arborescence_v2,
+    phase2_find_minimum_arborescence_v2
 )
 from chuliu import find_optimum_arborescence
 
@@ -32,6 +34,7 @@ def log_console_and_file(msg):
     print(msg)
     with open(LOG_TXT_PATH, "a") as f:
         f.write(msg + "\n")
+
 
 def build_rooted_digraph(n, m, r0, peso_min=1, peso_max=20):
     if m is None:
@@ -58,36 +61,43 @@ def build_rooted_digraph(n, m, r0, peso_min=1, peso_max=20):
 
     return D
 
+
 def get_total_cost(G):
     return sum(data["w"] for _, _, data in G.edges(data=True))
+
 
 def contains_arborescence(D, r0):
     tree = nx.dfs_tree(D, source=r0)
     return tree.number_of_nodes() == D.number_of_nodes()
 
+
 def remove_edges_to_r0(D, r0):
     D.remove_edges_from(list(D.in_edges(r0)))
     return D
 
+
 # Header do CSV
 with open(LOG_CSV_PATH, "w", newline="") as csvfile:
     writer = csv.writer(csvfile)
-    writer.writerow([
-        "Teste",
-        "Vértices",
-        "Arestas",
-        "Custo_ChuLiu",
-        "Custo_Frank1",
-        "Custo_Frank2",
-        "Sucesso",
-        "Erro",
-        "Tempo_execucao_seg",
-    ])
+    writer.writerow(
+        [
+            "Teste",
+            "Vértices",
+            "Arestas",
+            "Custo_ChuLiu",
+            "Custo_Frank1",
+            "Custo_Frank2",
+            "Sucesso",
+            "Erro",
+            "Tempo_execucao_seg",
+        ]
+    )
 
 success_count = 0
 failure_count = 0
 chuliu_greater_than_frank = 0
 frank_greater_than_chuliu = 0
+b1 = b2 = None
 
 for i in range(1, NUM_TESTS + 1):
     n = random.randint(MIN_VERTICES, MAX_VERTICES)
@@ -123,14 +133,21 @@ for i in range(1, NUM_TESTS + 1):
         custo3 = get_total_cost(arbo3)
         print(f"Custo Frank V2: {custo3} 🔍 Arbo Frank V2: {arbo3.edges(data=True)}")
 
-        assert custo1 == custo2 == custo3, (
-            f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
-        )
+        arbo1, arbo2, b1, b2 = andras_frank_algorithm(D1)
+
+        assert b1, "❌ Condição dual falhou para András Frank."
+        assert b2, "❌ Condição dual falhou para András Frank v2."
+
+        assert (
+            custo1 == custo2 == custo3
+        ), f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
         success = True
         log_console_and_file(f"✅ Sucesso - Custo: {custo1}")
+   
     except Exception as e:
         erro = str(e)
         log_console_and_file(f"❌ Erro: {erro}")
+        print(e)
         traceback.print_exc(file=open(LOG_TXT_PATH, "a"))
 
     elapsed = round(time.time() - start_time, 4)
@@ -138,17 +155,21 @@ for i in range(1, NUM_TESTS + 1):
     # Escreve no CSV
     with open(LOG_CSV_PATH, "a", newline="") as csvfile:
         writer = csv.writer(csvfile)
-        writer.writerow([
-            i,
-            n,
-            m,
-            custo1,
-            custo2,
-            custo3,
-            "OK" if success else "FAIL",
-            erro,
-            elapsed,
-        ])
+        writer.writerow(
+            [
+                i,
+                n,
+                m,
+                custo1,
+                custo2,
+                custo3,
+                "OK" if success else "FAIL",
+                erro,
+                elapsed,
+                b1,
+                b2,
+            ]
+        )
 
     # Atualiza contadores
     if success:
@@ -158,7 +179,7 @@ for i in range(1, NUM_TESTS + 1):
         if custo1 > custo2:
             chuliu_greater_than_frank += 1
         else:
-            frank_greater_than_chuliu += 1  
+            frank_greater_than_chuliu += 1
 
 # Registro final de totais de sucesso e falha
 log_console_and_file(

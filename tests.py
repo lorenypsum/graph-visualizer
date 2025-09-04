@@ -2,7 +2,7 @@ import random
 
 import networkx as nx
 
-from andrasfrank import (andras_frank_algorithm)
+from andrasfrank import andras_frank_algorithm
 from chuliu import find_optimum_arborescence, remove_edges_to_r0
 
 
@@ -71,7 +71,7 @@ if contains_arborescence_result:
     print(f"Custo da arborescência de Chu-Liu/Edmonds: {custo_chuliu}")
 
     print("\n🔍 Executando algoritmo de András Frank...")
-    arborescencia_frank, arborescencia_frank_v2 = andras_frank_algorithm(D1.copy())
+    arborescencia_frank, arborescencia_frank_v2, b1, b2 = andras_frank_algorithm(D1.copy())
     custo_frank = get_total_digraph_cost(arborescencia_frank)
     custo_frank_v2 = get_total_digraph_cost(arborescencia_frank_v2)
     print(f"Custo da arborescência de András Frank: {custo_frank}")
@@ -80,6 +80,8 @@ if contains_arborescence_result:
     # Verificação final
     assert custo_chuliu == custo_frank, f"❌ Custos diferentes! Chu-Liu: {custo_chuliu}, Frank: {custo_frank}"
     assert custo_chuliu == custo_frank_v2, f"❌ Custos diferentes! Chu-Liu: {custo_chuliu}, Frank v2: {custo_frank_v2}"
+    assert b1, "❌ Condição dual falhou para András Frank."
+    assert b2, "❌ Condição dual falhou para András Frank v2."
     print("\n ✅ Testes concluídos com sucesso!")
     print("\n Sucesso! Ambos algoritmos retornaram arborescências com o mesmo custo mínimo.")
 else:
