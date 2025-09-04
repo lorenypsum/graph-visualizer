@@ -179,14 +179,13 @@ def check_dual_optimality_condition(Arb, Dual_list, r0):
     Verifica a condição dual: z(X) > 0 implica que exatamente uma aresta de Arb entra em X.
     """
     for X, z in Dual_list:
-        if z > 0:
-            count = 0
-            for u, v in Arb.edges():
-                if u not in X and v in X:
-                    count += 1
-            if count != 1:
-                print(f"❌ Falha na condição dual para X={X} com z(X)={z}. Arcos entrando: {count}")
-                return False
+        count = 0
+        for u, v in Arb.edges():
+            if u not in X and v in X:
+                count += 1
+        if count != 1:
+            print(f"❌ Falha na condição dual para X={X} com z(X)={z}. Arcos entrando: {count}")
+            return False
     return True
 
 # empacotar as chamadas em função.
