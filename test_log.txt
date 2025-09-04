@@ -1,10 +1,6003 @@
 
-=== Teste #1 - Vértices: 157, Arestas: 240 ===
-❌ Erro: too many values to unpack (expected 2)
-Traceback (most recent call last):
-  File "/Users/lorenypsum/Desktop/Repositórios/GraphVisualizer.nosync/volume_tester.py", line 128, in <module>
-    arbo2 = phase2_find_minimum_arborescence(D1, ROOT, A_zero)
-  File "/Users/lorenypsum/Desktop/Repositórios/GraphVisualizer.nosync/andrasfrank.py", line 138, in phase2_find_minimum_arborescence
-    for u, v in A_zero:
-        ^^^^
-ValueError: too many values to unpack (expected 2)
+=== Teste #1 - Vértices: 169, Arestas: 305 ===
+✅ Sucesso - Custo: 1489
+
+=== Teste #2 - Vértices: 160, Arestas: 256 ===
+✅ Sucesso - Custo: 1490
+
+=== Teste #3 - Vértices: 193, Arestas: 477 ===
+✅ Sucesso - Custo: 1380
+
+=== Teste #4 - Vértices: 192, Arestas: 223 ===
+✅ Sucesso - Custo: 1952
+
+=== Teste #5 - Vértices: 108, Arestas: 141 ===
+✅ Sucesso - Custo: 1035
+
+=== Teste #6 - Vértices: 195, Arestas: 558 ===
+✅ Sucesso - Custo: 1326
+
+=== Teste #7 - Vértices: 195, Arestas: 435 ===
+✅ Sucesso - Custo: 1393
+
+=== Teste #8 - Vértices: 178, Arestas: 490 ===
+✅ Sucesso - Custo: 1140
+
+=== Teste #9 - Vértices: 164, Arestas: 380 ===
+✅ Sucesso - Custo: 1356
+
+=== Teste #10 - Vértices: 151, Arestas: 193 ===
+✅ Sucesso - Custo: 1489
+
+=== Teste #11 - Vértices: 165, Arestas: 375 ===
+✅ Sucesso - Custo: 1073
+
+=== Teste #12 - Vértices: 107, Arestas: 260 ===
+✅ Sucesso - Custo: 741
+
+=== Teste #13 - Vértices: 118, Arestas: 319 ===
+✅ Sucesso - Custo: 777
+
+=== Teste #14 - Vértices: 130, Arestas: 275 ===
+✅ Sucesso - Custo: 1005
+
+=== Teste #15 - Vértices: 134, Arestas: 226 ===
+✅ Sucesso - Custo: 1184
+
+=== Teste #16 - Vértices: 143, Arestas: 275 ===
+✅ Sucesso - Custo: 1099
+
+=== Teste #17 - Vértices: 164, Arestas: 238 ===
+✅ Sucesso - Custo: 1414
+
+=== Teste #18 - Vértices: 140, Arestas: 278 ===
+✅ Sucesso - Custo: 1139
+
+=== Teste #19 - Vértices: 107, Arestas: 289 ===
+✅ Sucesso - Custo: 617
+
+=== Teste #20 - Vértices: 165, Arestas: 415 ===
+✅ Sucesso - Custo: 1156
+
+=== Teste #21 - Vértices: 143, Arestas: 202 ===
+✅ Sucesso - Custo: 1237
+
+=== Teste #22 - Vértices: 156, Arestas: 265 ===
+✅ Sucesso - Custo: 1331
+
+=== Teste #23 - Vértices: 141, Arestas: 344 ===
+✅ Sucesso - Custo: 973
+
+=== Teste #24 - Vértices: 126, Arestas: 251 ===
+✅ Sucesso - Custo: 973
+
+=== Teste #25 - Vértices: 119, Arestas: 270 ===
+✅ Sucesso - Custo: 826
+
+=== Teste #26 - Vértices: 154, Arestas: 294 ===
+✅ Sucesso - Custo: 1194
+
+=== Teste #27 - Vértices: 101, Arestas: 156 ===
+✅ Sucesso - Custo: 943
+
+=== Teste #28 - Vértices: 145, Arestas: 293 ===
+✅ Sucesso - Custo: 1069
+
+=== Teste #29 - Vértices: 135, Arestas: 391 ===
+✅ Sucesso - Custo: 850
+
+=== Teste #30 - Vértices: 119, Arestas: 273 ===
+✅ Sucesso - Custo: 868
+
+=== Teste #31 - Vértices: 193, Arestas: 363 ===
+✅ Sucesso - Custo: 1605
+
+=== Teste #32 - Vértices: 144, Arestas: 245 ===
+✅ Sucesso - Custo: 1201
+
+=== Teste #33 - Vértices: 151, Arestas: 207 ===
+✅ Sucesso - Custo: 1449
+
+=== Teste #34 - Vértices: 107, Arestas: 205 ===
+✅ Sucesso - Custo: 774
+
+=== Teste #35 - Vértices: 119, Arestas: 304 ===
+✅ Sucesso - Custo: 851
+
+=== Teste #36 - Vértices: 135, Arestas: 404 ===
+✅ Sucesso - Custo: 824
+
+=== Teste #37 - Vértices: 166, Arestas: 346 ===
+✅ Sucesso - Custo: 1266
+
+=== Teste #38 - Vértices: 180, Arestas: 461 ===
+✅ Sucesso - Custo: 1365
+
+=== Teste #39 - Vértices: 188, Arestas: 559 ===
+✅ Sucesso - Custo: 1271
+
+=== Teste #40 - Vértices: 132, Arestas: 349 ===
+✅ Sucesso - Custo: 835
+
+=== Teste #41 - Vértices: 199, Arestas: 527 ===
+✅ Sucesso - Custo: 1390
+
+=== Teste #42 - Vértices: 128, Arestas: 258 ===
+✅ Sucesso - Custo: 1005
+
+=== Teste #43 - Vértices: 104, Arestas: 305 ===
+✅ Sucesso - Custo: 588
+
+=== Teste #44 - Vértices: 129, Arestas: 281 ===
+✅ Sucesso - Custo: 949
+
+=== Teste #45 - Vértices: 194, Arestas: 353 ===
+✅ Sucesso - Custo: 1645
+
+=== Teste #46 - Vértices: 197, Arestas: 418 ===
+✅ Sucesso - Custo: 1444
+
+=== Teste #47 - Vértices: 156, Arestas: 205 ===
+✅ Sucesso - Custo: 1450
+
+=== Teste #48 - Vértices: 108, Arestas: 188 ===
+✅ Sucesso - Custo: 987
+
+=== Teste #49 - Vértices: 162, Arestas: 429 ===
+✅ Sucesso - Custo: 1014
+
+=== Teste #50 - Vértices: 189, Arestas: 297 ===
+✅ Sucesso - Custo: 1690
+
+=== Teste #51 - Vértices: 174, Arestas: 478 ===
+✅ Sucesso - Custo: 1299
+
+=== Teste #52 - Vértices: 164, Arestas: 412 ===
+✅ Sucesso - Custo: 1110
+
+=== Teste #53 - Vértices: 117, Arestas: 130 ===
+✅ Sucesso - Custo: 1136
+
+=== Teste #54 - Vértices: 159, Arestas: 224 ===
+✅ Sucesso - Custo: 1491
+
+=== Teste #55 - Vértices: 142, Arestas: 244 ===
+✅ Sucesso - Custo: 1182
+
+=== Teste #56 - Vértices: 123, Arestas: 329 ===
+✅ Sucesso - Custo: 794
+
+=== Teste #57 - Vértices: 186, Arestas: 356 ===
+✅ Sucesso - Custo: 1432
+
+=== Teste #58 - Vértices: 119, Arestas: 345 ===
+✅ Sucesso - Custo: 737
+
+=== Teste #59 - Vértices: 179, Arestas: 372 ===
+✅ Sucesso - Custo: 1392
+
+=== Teste #60 - Vértices: 111, Arestas: 133 ===
+✅ Sucesso - Custo: 1073
+
+=== Teste #61 - Vértices: 104, Arestas: 298 ===
+✅ Sucesso - Custo: 603
+
+=== Teste #62 - Vértices: 110, Arestas: 306 ===
+✅ Sucesso - Custo: 749
+
+=== Teste #63 - Vértices: 169, Arestas: 381 ===
+✅ Sucesso - Custo: 1251
+
+=== Teste #64 - Vértices: 182, Arestas: 404 ===
+✅ Sucesso - Custo: 1436
+
+=== Teste #65 - Vértices: 127, Arestas: 186 ===
+✅ Sucesso - Custo: 1079
+
+=== Teste #66 - Vértices: 153, Arestas: 408 ===
+✅ Sucesso - Custo: 989
+
+=== Teste #67 - Vértices: 162, Arestas: 375 ===
+✅ Sucesso - Custo: 1258
+
+=== Teste #68 - Vértices: 179, Arestas: 180 ===
+✅ Sucesso - Custo: 1860
+
+=== Teste #69 - Vértices: 135, Arestas: 314 ===
+✅ Sucesso - Custo: 963
+
+=== Teste #70 - Vértices: 120, Arestas: 285 ===
+✅ Sucesso - Custo: 905
+
+=== Teste #71 - Vértices: 116, Arestas: 251 ===
+✅ Sucesso - Custo: 943
+
+=== Teste #72 - Vértices: 107, Arestas: 137 ===
+✅ Sucesso - Custo: 917
+
+=== Teste #73 - Vértices: 114, Arestas: 115 ===
+✅ Sucesso - Custo: 1242
+
+=== Teste #74 - Vértices: 179, Arestas: 519 ===
+✅ Sucesso - Custo: 1098
+
+=== Teste #75 - Vértices: 172, Arestas: 197 ===
+✅ Sucesso - Custo: 1804
+
+=== Teste #76 - Vértices: 116, Arestas: 148 ===
+✅ Sucesso - Custo: 1099
+
+=== Teste #77 - Vértices: 111, Arestas: 306 ===
+✅ Sucesso - Custo: 748
+
+=== Teste #78 - Vértices: 157, Arestas: 179 ===
+✅ Sucesso - Custo: 1486
+
+=== Teste #79 - Vértices: 124, Arestas: 314 ===
+✅ Sucesso - Custo: 813
+
+=== Teste #80 - Vértices: 141, Arestas: 402 ===
+✅ Sucesso - Custo: 894
+
+=== Teste #81 - Vértices: 127, Arestas: 240 ===
+✅ Sucesso - Custo: 1043
+
+=== Teste #82 - Vértices: 125, Arestas: 266 ===
+✅ Sucesso - Custo: 969
+
+=== Teste #83 - Vértices: 108, Arestas: 116 ===
+✅ Sucesso - Custo: 989
+
+=== Teste #84 - Vértices: 149, Arestas: 232 ===
+✅ Sucesso - Custo: 1471
+
+=== Teste #85 - Vértices: 173, Arestas: 452 ===
+✅ Sucesso - Custo: 1247
+
+=== Teste #86 - Vértices: 115, Arestas: 118 ===
+✅ Sucesso - Custo: 1275
+
+=== Teste #87 - Vértices: 155, Arestas: 179 ===
+✅ Sucesso - Custo: 1500
+
+=== Teste #88 - Vértices: 150, Arestas: 188 ===
+✅ Sucesso - Custo: 1547
+
+=== Teste #89 - Vértices: 185, Arestas: 355 ===
+✅ Sucesso - Custo: 1449
+
+=== Teste #90 - Vértices: 128, Arestas: 359 ===
+✅ Sucesso - Custo: 834
+
+=== Teste #91 - Vértices: 166, Arestas: 418 ===
+✅ Sucesso - Custo: 1050
+
+=== Teste #92 - Vértices: 197, Arestas: 376 ===
+✅ Sucesso - Custo: 1643
+
+=== Teste #93 - Vértices: 118, Arestas: 195 ===
+✅ Sucesso - Custo: 974
+
+=== Teste #94 - Vértices: 116, Arestas: 306 ===
+✅ Sucesso - Custo: 763
+
+=== Teste #95 - Vértices: 145, Arestas: 382 ===
+✅ Sucesso - Custo: 922
+
+=== Teste #96 - Vértices: 154, Arestas: 309 ===
+✅ Sucesso - Custo: 1234
+
+=== Teste #97 - Vértices: 177, Arestas: 375 ===
+✅ Sucesso - Custo: 1395
+
+=== Teste #98 - Vértices: 123, Arestas: 170 ===
+✅ Sucesso - Custo: 1137
+
+=== Teste #99 - Vértices: 190, Arestas: 387 ===
+✅ Sucesso - Custo: 1537
+
+=== Teste #100 - Vértices: 101, Arestas: 166 ===
+✅ Sucesso - Custo: 811
+
+=== Teste #101 - Vértices: 164, Arestas: 293 ===
+✅ Sucesso - Custo: 1422
+
+=== Teste #102 - Vértices: 160, Arestas: 205 ===
+✅ Sucesso - Custo: 1522
+
+=== Teste #103 - Vértices: 104, Arestas: 226 ===
+✅ Sucesso - Custo: 759
+
+=== Teste #104 - Vértices: 162, Arestas: 468 ===
+✅ Sucesso - Custo: 1009
+
+=== Teste #105 - Vértices: 149, Arestas: 272 ===
+✅ Sucesso - Custo: 1227
+
+=== Teste #106 - Vértices: 139, Arestas: 189 ===
+✅ Sucesso - Custo: 1230
+
+=== Teste #107 - Vértices: 154, Arestas: 240 ===
+✅ Sucesso - Custo: 1438
+
+=== Teste #108 - Vértices: 170, Arestas: 333 ===
+✅ Sucesso - Custo: 1422
+
+=== Teste #109 - Vértices: 152, Arestas: 283 ===
+✅ Sucesso - Custo: 1219
+
+=== Teste #110 - Vértices: 177, Arestas: 241 ===
+✅ Sucesso - Custo: 1577
+
+=== Teste #111 - Vértices: 130, Arestas: 207 ===
+✅ Sucesso - Custo: 1120
+
+=== Teste #112 - Vértices: 132, Arestas: 279 ===
+✅ Sucesso - Custo: 1028
+
+=== Teste #113 - Vértices: 164, Arestas: 319 ===
+✅ Sucesso - Custo: 1296
+
+=== Teste #114 - Vértices: 128, Arestas: 304 ===
+✅ Sucesso - Custo: 914
+
+=== Teste #115 - Vértices: 179, Arestas: 397 ===
+✅ Sucesso - Custo: 1376
+
+=== Teste #116 - Vértices: 116, Arestas: 249 ===
+✅ Sucesso - Custo: 783
+
+=== Teste #117 - Vértices: 147, Arestas: 386 ===
+✅ Sucesso - Custo: 955
+
+=== Teste #118 - Vértices: 197, Arestas: 499 ===
+✅ Sucesso - Custo: 1359
+
+=== Teste #119 - Vértices: 186, Arestas: 231 ===
+✅ Sucesso - Custo: 1778
+
+=== Teste #120 - Vértices: 127, Arestas: 296 ===
+✅ Sucesso - Custo: 948
+
+=== Teste #121 - Vértices: 187, Arestas: 284 ===
+✅ Sucesso - Custo: 1534
+
+=== Teste #122 - Vértices: 176, Arestas: 430 ===
+✅ Sucesso - Custo: 1300
+
+=== Teste #123 - Vértices: 157, Arestas: 196 ===
+✅ Sucesso - Custo: 1448
+
+=== Teste #124 - Vértices: 179, Arestas: 513 ===
+✅ Sucesso - Custo: 1069
+
+=== Teste #125 - Vértices: 159, Arestas: 240 ===
+✅ Sucesso - Custo: 1317
+
+=== Teste #126 - Vértices: 167, Arestas: 342 ===
+✅ Sucesso - Custo: 1286
+
+=== Teste #127 - Vértices: 159, Arestas: 407 ===
+✅ Sucesso - Custo: 1104
+
+=== Teste #128 - Vértices: 151, Arestas: 342 ===
+✅ Sucesso - Custo: 1116
+
+=== Teste #129 - Vértices: 183, Arestas: 464 ===
+✅ Sucesso - Custo: 1240
+
+=== Teste #130 - Vértices: 192, Arestas: 526 ===
+✅ Sucesso - Custo: 1257
+
+=== Teste #131 - Vértices: 141, Arestas: 189 ===
+✅ Sucesso - Custo: 1336
+
+=== Teste #132 - Vértices: 141, Arestas: 380 ===
+✅ Sucesso - Custo: 920
+
+=== Teste #133 - Vértices: 185, Arestas: 403 ===
+✅ Sucesso - Custo: 1382
+
+=== Teste #134 - Vértices: 137, Arestas: 306 ===
+✅ Sucesso - Custo: 1053
+
+=== Teste #135 - Vértices: 169, Arestas: 408 ===
+✅ Sucesso - Custo: 1312
+
+=== Teste #136 - Vértices: 102, Arestas: 169 ===
+✅ Sucesso - Custo: 830
+
+=== Teste #137 - Vértices: 156, Arestas: 430 ===
+✅ Sucesso - Custo: 1044
+
+=== Teste #138 - Vértices: 181, Arestas: 400 ===
+✅ Sucesso - Custo: 1336
+
+=== Teste #139 - Vértices: 200, Arestas: 455 ===
+✅ Sucesso - Custo: 1489
+
+=== Teste #140 - Vértices: 148, Arestas: 174 ===
+✅ Sucesso - Custo: 1471
+
+=== Teste #141 - Vértices: 169, Arestas: 214 ===
+✅ Sucesso - Custo: 1557
+
+=== Teste #142 - Vértices: 196, Arestas: 574 ===
+✅ Sucesso - Custo: 1118
+
+=== Teste #143 - Vértices: 128, Arestas: 346 ===
+✅ Sucesso - Custo: 863
+
+=== Teste #144 - Vértices: 143, Arestas: 385 ===
+✅ Sucesso - Custo: 840
+
+=== Teste #145 - Vértices: 111, Arestas: 214 ===
+✅ Sucesso - Custo: 795
+
+=== Teste #146 - Vértices: 186, Arestas: 242 ===
+✅ Sucesso - Custo: 1673
+
+=== Teste #147 - Vértices: 140, Arestas: 295 ===
+✅ Sucesso - Custo: 995
+
+=== Teste #148 - Vértices: 190, Arestas: 365 ===
+✅ Sucesso - Custo: 1603
+
+=== Teste #149 - Vértices: 101, Arestas: 272 ===
+✅ Sucesso - Custo: 648
+
+=== Teste #150 - Vértices: 183, Arestas: 347 ===
+✅ Sucesso - Custo: 1499
+
+=== Teste #151 - Vértices: 175, Arestas: 226 ===
+✅ Sucesso - Custo: 1645
+
+=== Teste #152 - Vértices: 173, Arestas: 432 ===
+✅ Sucesso - Custo: 1171
+
+=== Teste #153 - Vértices: 178, Arestas: 281 ===
+✅ Sucesso - Custo: 1455
+
+=== Teste #154 - Vértices: 144, Arestas: 430 ===
+✅ Sucesso - Custo: 901
+
+=== Teste #155 - Vértices: 134, Arestas: 267 ===
+✅ Sucesso - Custo: 1050
+
+=== Teste #156 - Vértices: 144, Arestas: 300 ===
+✅ Sucesso - Custo: 1140
+
+=== Teste #157 - Vértices: 160, Arestas: 328 ===
+✅ Sucesso - Custo: 1161
+
+=== Teste #158 - Vértices: 184, Arestas: 486 ===
+✅ Sucesso - Custo: 1308
+
+=== Teste #159 - Vértices: 166, Arestas: 270 ===
+✅ Sucesso - Custo: 1352
+
+=== Teste #160 - Vértices: 192, Arestas: 390 ===
+✅ Sucesso - Custo: 1353
+
+=== Teste #161 - Vértices: 154, Arestas: 229 ===
+✅ Sucesso - Custo: 1521
+
+=== Teste #162 - Vértices: 194, Arestas: 382 ===
+✅ Sucesso - Custo: 1493
+
+=== Teste #163 - Vértices: 160, Arestas: 451 ===
+✅ Sucesso - Custo: 1076
+
+=== Teste #164 - Vértices: 154, Arestas: 273 ===
+✅ Sucesso - Custo: 1236
+
+=== Teste #165 - Vértices: 115, Arestas: 291 ===
+✅ Sucesso - Custo: 818
+
+=== Teste #166 - Vértices: 159, Arestas: 302 ===
+✅ Sucesso - Custo: 1304
+
+=== Teste #167 - Vértices: 193, Arestas: 443 ===
+✅ Sucesso - Custo: 1454
+
+=== Teste #168 - Vértices: 140, Arestas: 153 ===
+✅ Sucesso - Custo: 1380
+
+=== Teste #169 - Vértices: 144, Arestas: 408 ===
+✅ Sucesso - Custo: 985
+
+=== Teste #170 - Vértices: 139, Arestas: 252 ===
+✅ Sucesso - Custo: 1059
+
+=== Teste #171 - Vértices: 165, Arestas: 332 ===
+✅ Sucesso - Custo: 1288
+
+=== Teste #172 - Vértices: 104, Arestas: 209 ===
+✅ Sucesso - Custo: 871
+
+=== Teste #173 - Vértices: 161, Arestas: 188 ===
+✅ Sucesso - Custo: 1572
+
+=== Teste #174 - Vértices: 170, Arestas: 401 ===
+✅ Sucesso - Custo: 1120
+
+=== Teste #175 - Vértices: 172, Arestas: 266 ===
+✅ Sucesso - Custo: 1636
+
+=== Teste #176 - Vértices: 156, Arestas: 451 ===
+✅ Sucesso - Custo: 947
+
+=== Teste #177 - Vértices: 164, Arestas: 416 ===
+✅ Sucesso - Custo: 1177
+
+=== Teste #178 - Vértices: 178, Arestas: 258 ===
+✅ Sucesso - Custo: 1570
+
+=== Teste #179 - Vértices: 101, Arestas: 111 ===
+✅ Sucesso - Custo: 874
+
+=== Teste #180 - Vértices: 200, Arestas: 568 ===
+✅ Sucesso - Custo: 1262
+
+=== Teste #181 - Vértices: 144, Arestas: 161 ===
+✅ Sucesso - Custo: 1419
+
+=== Teste #182 - Vértices: 161, Arestas: 394 ===
+✅ Sucesso - Custo: 1166
+
+=== Teste #183 - Vértices: 146, Arestas: 339 ===
+✅ Sucesso - Custo: 1000
+
+=== Teste #184 - Vértices: 132, Arestas: 276 ===
+✅ Sucesso - Custo: 1031
+
+=== Teste #185 - Vértices: 132, Arestas: 180 ===
+✅ Sucesso - Custo: 1233
+
+=== Teste #186 - Vértices: 109, Arestas: 290 ===
+✅ Sucesso - Custo: 736
+
+=== Teste #187 - Vértices: 154, Arestas: 170 ===
+✅ Sucesso - Custo: 1533
+
+=== Teste #188 - Vértices: 170, Arestas: 352 ===
+✅ Sucesso - Custo: 1236
+
+=== Teste #189 - Vértices: 179, Arestas: 245 ===
+✅ Sucesso - Custo: 1713
+
+=== Teste #190 - Vértices: 146, Arestas: 173 ===
+✅ Sucesso - Custo: 1451
+
+=== Teste #191 - Vértices: 194, Arestas: 309 ===
+✅ Sucesso - Custo: 1665
+
+=== Teste #192 - Vértices: 124, Arestas: 234 ===
+✅ Sucesso - Custo: 1098
+
+=== Teste #193 - Vértices: 111, Arestas: 128 ===
+✅ Sucesso - Custo: 1135
+
+=== Teste #194 - Vértices: 144, Arestas: 281 ===
+✅ Sucesso - Custo: 1163
+
+=== Teste #195 - Vértices: 174, Arestas: 316 ===
+✅ Sucesso - Custo: 1457
+
+=== Teste #196 - Vértices: 140, Arestas: 148 ===
+✅ Sucesso - Custo: 1369
+
+=== Teste #197 - Vértices: 174, Arestas: 221 ===
+✅ Sucesso - Custo: 1649
+
+=== Teste #198 - Vértices: 158, Arestas: 170 ===
+✅ Sucesso - Custo: 1653
+
+=== Teste #199 - Vértices: 154, Arestas: 392 ===
+✅ Sucesso - Custo: 951
+
+=== Teste #200 - Vértices: 175, Arestas: 355 ===
+✅ Sucesso - Custo: 1235
+
+=== Teste #201 - Vértices: 143, Arestas: 276 ===
+✅ Sucesso - Custo: 1185
+
+=== Teste #202 - Vértices: 195, Arestas: 531 ===
+✅ Sucesso - Custo: 1273
+
+=== Teste #203 - Vértices: 141, Arestas: 416 ===
+✅ Sucesso - Custo: 860
+
+=== Teste #204 - Vértices: 185, Arestas: 333 ===
+✅ Sucesso - Custo: 1527
+
+=== Teste #205 - Vértices: 172, Arestas: 353 ===
+✅ Sucesso - Custo: 1282
+
+=== Teste #206 - Vértices: 164, Arestas: 489 ===
+✅ Sucesso - Custo: 881
+
+=== Teste #207 - Vértices: 158, Arestas: 207 ===
+✅ Sucesso - Custo: 1527
+
+=== Teste #208 - Vértices: 138, Arestas: 347 ===
+✅ Sucesso - Custo: 860
+
+=== Teste #209 - Vértices: 130, Arestas: 312 ===
+✅ Sucesso - Custo: 895
+
+=== Teste #210 - Vértices: 173, Arestas: 275 ===
+✅ Sucesso - Custo: 1564
+
+=== Teste #211 - Vértices: 173, Arestas: 385 ===
+✅ Sucesso - Custo: 1332
+
+=== Teste #212 - Vértices: 141, Arestas: 417 ===
+✅ Sucesso - Custo: 810
+
+=== Teste #213 - Vértices: 176, Arestas: 396 ===
+✅ Sucesso - Custo: 1153
+
+=== Teste #214 - Vértices: 180, Arestas: 228 ===
+✅ Sucesso - Custo: 1694
+
+=== Teste #215 - Vértices: 182, Arestas: 190 ===
+✅ Sucesso - Custo: 1780
+
+=== Teste #216 - Vértices: 194, Arestas: 363 ===
+✅ Sucesso - Custo: 1500
+
+=== Teste #217 - Vértices: 103, Arestas: 259 ===
+✅ Sucesso - Custo: 772
+
+=== Teste #218 - Vértices: 164, Arestas: 219 ===
+✅ Sucesso - Custo: 1478
+
+=== Teste #219 - Vértices: 172, Arestas: 249 ===
+✅ Sucesso - Custo: 1546
+
+=== Teste #220 - Vértices: 163, Arestas: 339 ===
+✅ Sucesso - Custo: 1187
+
+=== Teste #221 - Vértices: 182, Arestas: 364 ===
+✅ Sucesso - Custo: 1378
+
+=== Teste #222 - Vértices: 140, Arestas: 252 ===
+✅ Sucesso - Custo: 1185
+
+=== Teste #223 - Vértices: 156, Arestas: 221 ===
+✅ Sucesso - Custo: 1384
+
+=== Teste #224 - Vértices: 103, Arestas: 233 ===
+✅ Sucesso - Custo: 739
+
+=== Teste #225 - Vértices: 106, Arestas: 117 ===
+✅ Sucesso - Custo: 1159
+
+=== Teste #226 - Vértices: 193, Arestas: 513 ===
+✅ Sucesso - Custo: 1296
+
+=== Teste #227 - Vértices: 118, Arestas: 125 ===
+✅ Sucesso - Custo: 1188
+
+=== Teste #228 - Vértices: 143, Arestas: 185 ===
+✅ Sucesso - Custo: 1265
+
+=== Teste #229 - Vértices: 131, Arestas: 237 ===
+✅ Sucesso - Custo: 1085
+
+=== Teste #230 - Vértices: 187, Arestas: 278 ===
+✅ Sucesso - Custo: 1653
+
+=== Teste #231 - Vértices: 147, Arestas: 269 ===
+✅ Sucesso - Custo: 1164
+
+=== Teste #232 - Vértices: 173, Arestas: 245 ===
+✅ Sucesso - Custo: 1601
+
+=== Teste #233 - Vértices: 191, Arestas: 465 ===
+✅ Sucesso - Custo: 1262
+
+=== Teste #234 - Vértices: 193, Arestas: 472 ===
+✅ Sucesso - Custo: 1490
+
+=== Teste #235 - Vértices: 192, Arestas: 544 ===
+✅ Sucesso - Custo: 1177
+
+=== Teste #236 - Vértices: 145, Arestas: 267 ===
+✅ Sucesso - Custo: 1227
+
+=== Teste #237 - Vértices: 109, Arestas: 300 ===
+✅ Sucesso - Custo: 659
+
+=== Teste #238 - Vértices: 120, Arestas: 313 ===
+✅ Sucesso - Custo: 803
+
+=== Teste #239 - Vértices: 192, Arestas: 519 ===
+✅ Sucesso - Custo: 1302
+
+=== Teste #240 - Vértices: 178, Arestas: 263 ===
+✅ Sucesso - Custo: 1561
+
+=== Teste #241 - Vértices: 128, Arestas: 140 ===
+✅ Sucesso - Custo: 1279
+
+=== Teste #242 - Vértices: 186, Arestas: 483 ===
+✅ Sucesso - Custo: 1309
+
+=== Teste #243 - Vértices: 176, Arestas: 382 ===
+✅ Sucesso - Custo: 1204
+
+=== Teste #244 - Vértices: 124, Arestas: 266 ===
+✅ Sucesso - Custo: 984
+
+=== Teste #245 - Vértices: 124, Arestas: 271 ===
+✅ Sucesso - Custo: 858
+
+=== Teste #246 - Vértices: 193, Arestas: 198 ===
+✅ Sucesso - Custo: 1827
+
+=== Teste #247 - Vértices: 146, Arestas: 364 ===
+✅ Sucesso - Custo: 965
+
+=== Teste #248 - Vértices: 103, Arestas: 290 ===
+✅ Sucesso - Custo: 662
+
+=== Teste #249 - Vértices: 149, Arestas: 250 ===
+✅ Sucesso - Custo: 1325
+
+=== Teste #250 - Vértices: 119, Arestas: 342 ===
+✅ Sucesso - Custo: 835
+
+=== Teste #251 - Vértices: 155, Arestas: 167 ===
+✅ Sucesso - Custo: 1629
+
+=== Teste #252 - Vértices: 141, Arestas: 402 ===
+✅ Sucesso - Custo: 795
+
+=== Teste #253 - Vértices: 166, Arestas: 382 ===
+✅ Sucesso - Custo: 1172
+
+=== Teste #254 - Vértices: 145, Arestas: 272 ===
+✅ Sucesso - Custo: 1175
+
+=== Teste #255 - Vértices: 191, Arestas: 305 ===
+✅ Sucesso - Custo: 1645
+
+=== Teste #256 - Vértices: 101, Arestas: 273 ===
+✅ Sucesso - Custo: 633
+
+=== Teste #257 - Vértices: 143, Arestas: 277 ===
+✅ Sucesso - Custo: 1116
+
+=== Teste #258 - Vértices: 164, Arestas: 489 ===
+✅ Sucesso - Custo: 961
+
+=== Teste #259 - Vértices: 143, Arestas: 385 ===
+✅ Sucesso - Custo: 989
+
+=== Teste #260 - Vértices: 129, Arestas: 368 ===
+✅ Sucesso - Custo: 786
+
+=== Teste #261 - Vértices: 174, Arestas: 252 ===
+✅ Sucesso - Custo: 1449
+
+=== Teste #262 - Vértices: 122, Arestas: 155 ===
+✅ Sucesso - Custo: 1196
+
+=== Teste #263 - Vértices: 159, Arestas: 302 ===
+✅ Sucesso - Custo: 1358
+
+=== Teste #264 - Vértices: 176, Arestas: 378 ===
+✅ Sucesso - Custo: 1335
+
+=== Teste #265 - Vértices: 175, Arestas: 482 ===
+✅ Sucesso - Custo: 1158
+
+=== Teste #266 - Vértices: 180, Arestas: 331 ===
+✅ Sucesso - Custo: 1526
+
+=== Teste #267 - Vértices: 168, Arestas: 371 ===
+✅ Sucesso - Custo: 1284
+
+=== Teste #268 - Vértices: 178, Arestas: 331 ===
+✅ Sucesso - Custo: 1492
+
+=== Teste #269 - Vértices: 140, Arestas: 146 ===
+✅ Sucesso - Custo: 1486
+
+=== Teste #270 - Vértices: 195, Arestas: 369 ===
+✅ Sucesso - Custo: 1606
+
+=== Teste #271 - Vértices: 189, Arestas: 536 ===
+✅ Sucesso - Custo: 1247
+
+=== Teste #272 - Vértices: 110, Arestas: 147 ===
+✅ Sucesso - Custo: 973
+
+=== Teste #273 - Vértices: 108, Arestas: 120 ===
+✅ Sucesso - Custo: 1141
+
+=== Teste #274 - Vértices: 194, Arestas: 211 ===
+✅ Sucesso - Custo: 2017
+
+=== Teste #275 - Vértices: 173, Arestas: 454 ===
+✅ Sucesso - Custo: 1067
+
+=== Teste #276 - Vértices: 105, Arestas: 301 ===
+✅ Sucesso - Custo: 635
+
+=== Teste #277 - Vértices: 187, Arestas: 337 ===
+✅ Sucesso - Custo: 1584
+
+=== Teste #278 - Vértices: 171, Arestas: 233 ===
+✅ Sucesso - Custo: 1554
+
+=== Teste #279 - Vértices: 170, Arestas: 403 ===
+✅ Sucesso - Custo: 1182
+
+=== Teste #280 - Vértices: 129, Arestas: 161 ===
+✅ Sucesso - Custo: 1328
+
+=== Teste #281 - Vértices: 183, Arestas: 213 ===
+✅ Sucesso - Custo: 1707
+
+=== Teste #282 - Vértices: 132, Arestas: 274 ===
+✅ Sucesso - Custo: 1019
+
+=== Teste #283 - Vértices: 194, Arestas: 574 ===
+✅ Sucesso - Custo: 1109
+
+=== Teste #284 - Vértices: 124, Arestas: 166 ===
+✅ Sucesso - Custo: 1084
+
+=== Teste #285 - Vértices: 108, Arestas: 317 ===
+✅ Sucesso - Custo: 616
+
+=== Teste #286 - Vértices: 152, Arestas: 368 ===
+✅ Sucesso - Custo: 1064
+
+=== Teste #287 - Vértices: 190, Arestas: 430 ===
+✅ Sucesso - Custo: 1368
+
+=== Teste #288 - Vértices: 187, Arestas: 553 ===
+✅ Sucesso - Custo: 1209
+
+=== Teste #289 - Vértices: 161, Arestas: 297 ===
+✅ Sucesso - Custo: 1444
+
+=== Teste #290 - Vértices: 167, Arestas: 369 ===
+✅ Sucesso - Custo: 1270
+
+=== Teste #291 - Vértices: 168, Arestas: 454 ===
+✅ Sucesso - Custo: 1088
+
+=== Teste #292 - Vértices: 178, Arestas: 388 ===
+✅ Sucesso - Custo: 1175
+
+=== Teste #293 - Vértices: 194, Arestas: 285 ===
+✅ Sucesso - Custo: 1736
+
+=== Teste #294 - Vértices: 130, Arestas: 191 ===
+✅ Sucesso - Custo: 1177
+
+=== Teste #295 - Vértices: 194, Arestas: 339 ===
+✅ Sucesso - Custo: 1647
+
+=== Teste #296 - Vértices: 112, Arestas: 151 ===
+✅ Sucesso - Custo: 1118
+
+=== Teste #297 - Vértices: 198, Arestas: 545 ===
+✅ Sucesso - Custo: 1115
+
+=== Teste #298 - Vértices: 110, Arestas: 258 ===
+✅ Sucesso - Custo: 791
+
+=== Teste #299 - Vértices: 184, Arestas: 459 ===
+✅ Sucesso - Custo: 1294
+
+=== Teste #300 - Vértices: 200, Arestas: 497 ===
+✅ Sucesso - Custo: 1432
+
+=== Teste #301 - Vértices: 134, Arestas: 237 ===
+✅ Sucesso - Custo: 1150
+
+=== Teste #302 - Vértices: 138, Arestas: 398 ===
+✅ Sucesso - Custo: 885
+
+=== Teste #303 - Vértices: 197, Arestas: 347 ===
+✅ Sucesso - Custo: 1657
+
+=== Teste #304 - Vértices: 166, Arestas: 350 ===
+✅ Sucesso - Custo: 1249
+
+=== Teste #305 - Vértices: 190, Arestas: 566 ===
+✅ Sucesso - Custo: 1031
+
+=== Teste #306 - Vértices: 156, Arestas: 249 ===
+✅ Sucesso - Custo: 1367
+
+=== Teste #307 - Vértices: 124, Arestas: 250 ===
+✅ Sucesso - Custo: 925
+
+=== Teste #308 - Vértices: 130, Arestas: 344 ===
+✅ Sucesso - Custo: 916
+
+=== Teste #309 - Vértices: 103, Arestas: 219 ===
+✅ Sucesso - Custo: 744
+
+=== Teste #310 - Vértices: 164, Arestas: 421 ===
+✅ Sucesso - Custo: 1070
+
+=== Teste #311 - Vértices: 169, Arestas: 300 ===
+✅ Sucesso - Custo: 1505
+
+=== Teste #312 - Vértices: 103, Arestas: 186 ===
+✅ Sucesso - Custo: 876
+
+=== Teste #313 - Vértices: 152, Arestas: 238 ===
+✅ Sucesso - Custo: 1345
+
+=== Teste #314 - Vértices: 147, Arestas: 425 ===
+✅ Sucesso - Custo: 919
+
+=== Teste #315 - Vértices: 165, Arestas: 169 ===
+✅ Sucesso - Custo: 1711
+
+=== Teste #316 - Vértices: 168, Arestas: 479 ===
+✅ Sucesso - Custo: 997
+
+=== Teste #317 - Vértices: 196, Arestas: 349 ===
+✅ Sucesso - Custo: 1547
+
+=== Teste #318 - Vértices: 149, Arestas: 401 ===
+✅ Sucesso - Custo: 986
+
+=== Teste #319 - Vértices: 175, Arestas: 253 ===
+✅ Sucesso - Custo: 1581
+
+=== Teste #320 - Vértices: 102, Arestas: 248 ===
+✅ Sucesso - Custo: 719
+
+=== Teste #321 - Vértices: 186, Arestas: 314 ===
+✅ Sucesso - Custo: 1583
+
+=== Teste #322 - Vértices: 112, Arestas: 116 ===
+✅ Sucesso - Custo: 1200
+
+=== Teste #323 - Vértices: 122, Arestas: 179 ===
+✅ Sucesso - Custo: 1117
+
+=== Teste #324 - Vértices: 137, Arestas: 345 ===
+✅ Sucesso - Custo: 973
+
+=== Teste #325 - Vértices: 185, Arestas: 306 ===
+✅ Sucesso - Custo: 1472
+
+=== Teste #326 - Vértices: 142, Arestas: 226 ===
+✅ Sucesso - Custo: 1210
+
+=== Teste #327 - Vértices: 155, Arestas: 355 ===
+✅ Sucesso - Custo: 1185
+
+=== Teste #328 - Vértices: 200, Arestas: 325 ===
+✅ Sucesso - Custo: 1698
+
+=== Teste #329 - Vértices: 154, Arestas: 169 ===
+✅ Sucesso - Custo: 1457
+
+=== Teste #330 - Vértices: 106, Arestas: 289 ===
+✅ Sucesso - Custo: 693
+
+=== Teste #331 - Vértices: 134, Arestas: 260 ===
+✅ Sucesso - Custo: 1124
+
+=== Teste #332 - Vértices: 199, Arestas: 532 ===
+✅ Sucesso - Custo: 1367
+
+=== Teste #333 - Vértices: 179, Arestas: 424 ===
+✅ Sucesso - Custo: 1218
+
+=== Teste #334 - Vértices: 160, Arestas: 439 ===
+✅ Sucesso - Custo: 1148
+
+=== Teste #335 - Vértices: 110, Arestas: 139 ===
+✅ Sucesso - Custo: 1066
+
+=== Teste #336 - Vértices: 115, Arestas: 256 ===
+✅ Sucesso - Custo: 819
+
+=== Teste #337 - Vértices: 159, Arestas: 425 ===
+✅ Sucesso - Custo: 1072
+
+=== Teste #338 - Vértices: 102, Arestas: 298 ===
+✅ Sucesso - Custo: 632
+
+=== Teste #339 - Vértices: 125, Arestas: 164 ===
+✅ Sucesso - Custo: 1246
+
+=== Teste #340 - Vértices: 130, Arestas: 248 ===
+✅ Sucesso - Custo: 1036
+
+=== Teste #341 - Vértices: 150, Arestas: 273 ===
+✅ Sucesso - Custo: 1227
+
+=== Teste #342 - Vértices: 128, Arestas: 159 ===
+✅ Sucesso - Custo: 1261
+
+=== Teste #343 - Vértices: 137, Arestas: 222 ===
+✅ Sucesso - Custo: 1221
+
+=== Teste #344 - Vértices: 144, Arestas: 282 ===
+✅ Sucesso - Custo: 1164
+
+=== Teste #345 - Vértices: 106, Arestas: 133 ===
+✅ Sucesso - Custo: 979
+
+=== Teste #346 - Vértices: 155, Arestas: 425 ===
+✅ Sucesso - Custo: 1009
+
+=== Teste #347 - Vértices: 100, Arestas: 288 ===
+✅ Sucesso - Custo: 596
+
+=== Teste #348 - Vértices: 155, Arestas: 355 ===
+✅ Sucesso - Custo: 1191
+
+=== Teste #349 - Vértices: 159, Arestas: 257 ===
+✅ Sucesso - Custo: 1352
+
+=== Teste #350 - Vértices: 157, Arestas: 174 ===
+✅ Sucesso - Custo: 1588
+
+=== Teste #351 - Vértices: 154, Arestas: 418 ===
+✅ Sucesso - Custo: 1157
+
+=== Teste #352 - Vértices: 129, Arestas: 364 ===
+✅ Sucesso - Custo: 903
+
+=== Teste #353 - Vértices: 189, Arestas: 483 ===
+✅ Sucesso - Custo: 1273
+
+=== Teste #354 - Vértices: 181, Arestas: 297 ===
+✅ Sucesso - Custo: 1492
+
+=== Teste #355 - Vértices: 142, Arestas: 204 ===
+✅ Sucesso - Custo: 1209
+
+=== Teste #356 - Vértices: 173, Arestas: 208 ===
+✅ Sucesso - Custo: 1673
+
+=== Teste #357 - Vértices: 138, Arestas: 298 ===
+✅ Sucesso - Custo: 1039
+
+=== Teste #358 - Vértices: 121, Arestas: 323 ===
+✅ Sucesso - Custo: 790
+
+=== Teste #359 - Vértices: 103, Arestas: 292 ===
+✅ Sucesso - Custo: 644
+
+=== Teste #360 - Vértices: 143, Arestas: 369 ===
+✅ Sucesso - Custo: 834
+
+=== Teste #361 - Vértices: 164, Arestas: 208 ===
+✅ Sucesso - Custo: 1588
+
+=== Teste #362 - Vértices: 108, Arestas: 298 ===
+✅ Sucesso - Custo: 669
+
+=== Teste #363 - Vértices: 109, Arestas: 212 ===
+✅ Sucesso - Custo: 874
+
+=== Teste #364 - Vértices: 132, Arestas: 154 ===
+✅ Sucesso - Custo: 1426
+
+=== Teste #365 - Vértices: 148, Arestas: 252 ===
+✅ Sucesso - Custo: 1313
+
+=== Teste #366 - Vértices: 163, Arestas: 311 ===
+✅ Sucesso - Custo: 1331
+
+=== Teste #367 - Vértices: 140, Arestas: 341 ===
+✅ Sucesso - Custo: 1041
+
+=== Teste #368 - Vértices: 155, Arestas: 182 ===
+✅ Sucesso - Custo: 1567
+
+=== Teste #369 - Vértices: 181, Arestas: 329 ===
+✅ Sucesso - Custo: 1533
+
+=== Teste #370 - Vértices: 134, Arestas: 258 ===
+✅ Sucesso - Custo: 984
+
+=== Teste #371 - Vértices: 127, Arestas: 270 ===
+✅ Sucesso - Custo: 986
+
+=== Teste #372 - Vértices: 169, Arestas: 194 ===
+✅ Sucesso - Custo: 1674
+
+=== Teste #373 - Vértices: 129, Arestas: 137 ===
+✅ Sucesso - Custo: 1350
+
+=== Teste #374 - Vértices: 118, Arestas: 140 ===
+✅ Sucesso - Custo: 1130
+
+=== Teste #375 - Vértices: 118, Arestas: 236 ===
+✅ Sucesso - Custo: 925
+
+=== Teste #376 - Vértices: 116, Arestas: 182 ===
+✅ Sucesso - Custo: 1017
+
+=== Teste #377 - Vértices: 130, Arestas: 141 ===
+✅ Sucesso - Custo: 1341
+
+=== Teste #378 - Vértices: 116, Arestas: 152 ===
+✅ Sucesso - Custo: 1090
+
+=== Teste #379 - Vértices: 122, Arestas: 239 ===
+✅ Sucesso - Custo: 1111
+
+=== Teste #380 - Vértices: 114, Arestas: 187 ===
+✅ Sucesso - Custo: 913
+
+=== Teste #381 - Vértices: 131, Arestas: 283 ===
+✅ Sucesso - Custo: 987
+
+=== Teste #382 - Vértices: 157, Arestas: 375 ===
+✅ Sucesso - Custo: 1131
+
+=== Teste #383 - Vértices: 116, Arestas: 235 ===
+✅ Sucesso - Custo: 954
+
+=== Teste #384 - Vértices: 100, Arestas: 247 ===
+✅ Sucesso - Custo: 702
+
+=== Teste #385 - Vértices: 182, Arestas: 242 ===
+✅ Sucesso - Custo: 1648
+
+=== Teste #386 - Vértices: 107, Arestas: 167 ===
+✅ Sucesso - Custo: 977
+
+=== Teste #387 - Vértices: 181, Arestas: 217 ===
+✅ Sucesso - Custo: 1898
+
+=== Teste #388 - Vértices: 113, Arestas: 195 ===
+✅ Sucesso - Custo: 925
+
+=== Teste #389 - Vértices: 146, Arestas: 400 ===
+✅ Sucesso - Custo: 857
+
+=== Teste #390 - Vértices: 162, Arestas: 344 ===
+✅ Sucesso - Custo: 1286
+
+=== Teste #391 - Vértices: 195, Arestas: 288 ===
+✅ Sucesso - Custo: 1679
+
+=== Teste #392 - Vértices: 116, Arestas: 263 ===
+✅ Sucesso - Custo: 917
+
+=== Teste #393 - Vértices: 179, Arestas: 189 ===
+✅ Sucesso - Custo: 1864
+
+=== Teste #394 - Vértices: 178, Arestas: 508 ===
+✅ Sucesso - Custo: 1156
+
+=== Teste #395 - Vértices: 163, Arestas: 223 ===
+✅ Sucesso - Custo: 1606
+
+=== Teste #396 - Vértices: 133, Arestas: 135 ===
+✅ Sucesso - Custo: 1347
+
+=== Teste #397 - Vértices: 168, Arestas: 445 ===
+✅ Sucesso - Custo: 1031
+
+=== Teste #398 - Vértices: 167, Arestas: 260 ===
+✅ Sucesso - Custo: 1486
+
+=== Teste #399 - Vértices: 123, Arestas: 301 ===
+✅ Sucesso - Custo: 855
+
+=== Teste #400 - Vértices: 155, Arestas: 341 ===
+✅ Sucesso - Custo: 1215
+
+=== Teste #401 - Vértices: 193, Arestas: 441 ===
+✅ Sucesso - Custo: 1353
+
+=== Teste #402 - Vértices: 158, Arestas: 275 ===
+✅ Sucesso - Custo: 1357
+
+=== Teste #403 - Vértices: 157, Arestas: 321 ===
+✅ Sucesso - Custo: 1191
+
+=== Teste #404 - Vértices: 196, Arestas: 297 ===
+✅ Sucesso - Custo: 1716
+
+=== Teste #405 - Vértices: 168, Arestas: 198 ===
+✅ Sucesso - Custo: 1564
+
+=== Teste #406 - Vértices: 120, Arestas: 251 ===
+✅ Sucesso - Custo: 878
+
+=== Teste #407 - Vértices: 176, Arestas: 361 ===
+✅ Sucesso - Custo: 1311
+
+=== Teste #408 - Vértices: 185, Arestas: 299 ===
+✅ Sucesso - Custo: 1655
+
+=== Teste #409 - Vértices: 168, Arestas: 211 ===
+✅ Sucesso - Custo: 1518
+
+=== Teste #410 - Vértices: 148, Arestas: 161 ===
+✅ Sucesso - Custo: 1430
+
+=== Teste #411 - Vértices: 199, Arestas: 260 ===
+✅ Sucesso - Custo: 1788
+
+=== Teste #412 - Vértices: 149, Arestas: 298 ===
+✅ Sucesso - Custo: 1245
+
+=== Teste #413 - Vértices: 112, Arestas: 317 ===
+✅ Sucesso - Custo: 708
+
+=== Teste #414 - Vértices: 183, Arestas: 534 ===
+✅ Sucesso - Custo: 1140
+
+=== Teste #415 - Vértices: 137, Arestas: 256 ===
+✅ Sucesso - Custo: 1096
+
+=== Teste #416 - Vértices: 163, Arestas: 468 ===
+✅ Sucesso - Custo: 896
+
+=== Teste #417 - Vértices: 114, Arestas: 159 ===
+✅ Sucesso - Custo: 1117
+
+=== Teste #418 - Vértices: 131, Arestas: 335 ===
+✅ Sucesso - Custo: 831
+
+=== Teste #419 - Vértices: 135, Arestas: 260 ===
+✅ Sucesso - Custo: 1046
+
+=== Teste #420 - Vértices: 155, Arestas: 299 ===
+✅ Sucesso - Custo: 1246
+
+=== Teste #421 - Vértices: 124, Arestas: 164 ===
+✅ Sucesso - Custo: 1169
+
+=== Teste #422 - Vértices: 103, Arestas: 276 ===
+✅ Sucesso - Custo: 642
+
+=== Teste #423 - Vértices: 177, Arestas: 322 ===
+✅ Sucesso - Custo: 1493
+
+=== Teste #424 - Vértices: 157, Arestas: 368 ===
+✅ Sucesso - Custo: 1146
+
+=== Teste #425 - Vértices: 171, Arestas: 203 ===
+✅ Sucesso - Custo: 1696
+
+=== Teste #426 - Vértices: 156, Arestas: 211 ===
+✅ Sucesso - Custo: 1374
+
+=== Teste #427 - Vértices: 172, Arestas: 260 ===
+✅ Sucesso - Custo: 1552
+
+=== Teste #428 - Vértices: 129, Arestas: 211 ===
+✅ Sucesso - Custo: 1148
+
+=== Teste #429 - Vértices: 184, Arestas: 334 ===
+✅ Sucesso - Custo: 1521
+
+=== Teste #430 - Vértices: 107, Arestas: 192 ===
+✅ Sucesso - Custo: 882
+
+=== Teste #431 - Vértices: 194, Arestas: 498 ===
+✅ Sucesso - Custo: 1341
+
+=== Teste #432 - Vértices: 152, Arestas: 211 ===
+✅ Sucesso - Custo: 1386
+
+=== Teste #433 - Vértices: 187, Arestas: 367 ===
+✅ Sucesso - Custo: 1414
+
+=== Teste #434 - Vértices: 154, Arestas: 332 ===
+✅ Sucesso - Custo: 1180
+
+=== Teste #435 - Vértices: 189, Arestas: 493 ===
+✅ Sucesso - Custo: 1215
+
+=== Teste #436 - Vértices: 103, Arestas: 234 ===
+✅ Sucesso - Custo: 691
+
+=== Teste #437 - Vértices: 113, Arestas: 173 ===
+✅ Sucesso - Custo: 1039
+
+=== Teste #438 - Vértices: 116, Arestas: 331 ===
+✅ Sucesso - Custo: 648
+
+=== Teste #439 - Vértices: 118, Arestas: 221 ===
+✅ Sucesso - Custo: 943
+
+=== Teste #440 - Vértices: 133, Arestas: 370 ===
+✅ Sucesso - Custo: 814
+
+=== Teste #441 - Vértices: 120, Arestas: 187 ===
+✅ Sucesso - Custo: 1074
+
+=== Teste #442 - Vértices: 193, Arestas: 475 ===
+✅ Sucesso - Custo: 1293
+
+=== Teste #443 - Vértices: 123, Arestas: 149 ===
+✅ Sucesso - Custo: 1176
+
+=== Teste #444 - Vértices: 187, Arestas: 543 ===
+✅ Sucesso - Custo: 1110
+
+=== Teste #445 - Vértices: 157, Arestas: 408 ===
+✅ Sucesso - Custo: 1008
+
+=== Teste #446 - Vértices: 149, Arestas: 424 ===
+✅ Sucesso - Custo: 889
+
+=== Teste #447 - Vértices: 111, Arestas: 306 ===
+✅ Sucesso - Custo: 675
+
+=== Teste #448 - Vértices: 113, Arestas: 336 ===
+✅ Sucesso - Custo: 684
+
+=== Teste #449 - Vértices: 141, Arestas: 420 ===
+✅ Sucesso - Custo: 780
+
+=== Teste #450 - Vértices: 171, Arestas: 267 ===
+✅ Sucesso - Custo: 1585
+
+=== Teste #451 - Vértices: 114, Arestas: 339 ===
+✅ Sucesso - Custo: 661
+
+=== Teste #452 - Vértices: 177, Arestas: 510 ===
+✅ Sucesso - Custo: 1023
+
+=== Teste #453 - Vértices: 137, Arestas: 352 ===
+✅ Sucesso - Custo: 855
+
+=== Teste #454 - Vértices: 160, Arestas: 265 ===
+✅ Sucesso - Custo: 1428
+
+=== Teste #455 - Vértices: 170, Arestas: 418 ===
+✅ Sucesso - Custo: 1229
+
+=== Teste #456 - Vértices: 195, Arestas: 349 ===
+✅ Sucesso - Custo: 1546
+
+=== Teste #457 - Vértices: 184, Arestas: 405 ===
+✅ Sucesso - Custo: 1393
+
+=== Teste #458 - Vértices: 139, Arestas: 348 ===
+✅ Sucesso - Custo: 1049
+
+=== Teste #459 - Vértices: 112, Arestas: 216 ===
+✅ Sucesso - Custo: 942
+
+=== Teste #460 - Vértices: 191, Arestas: 221 ===
+✅ Sucesso - Custo: 1970
+
+=== Teste #461 - Vértices: 160, Arestas: 367 ===
+✅ Sucesso - Custo: 1131
+
+=== Teste #462 - Vértices: 198, Arestas: 392 ===
+✅ Sucesso - Custo: 1565
+
+=== Teste #463 - Vértices: 134, Arestas: 163 ===
+✅ Sucesso - Custo: 1241
+
+=== Teste #464 - Vértices: 147, Arestas: 300 ===
+✅ Sucesso - Custo: 1092
+
+=== Teste #465 - Vértices: 168, Arestas: 287 ===
+✅ Sucesso - Custo: 1419
+
+=== Teste #466 - Vértices: 108, Arestas: 144 ===
+✅ Sucesso - Custo: 1101
+
+=== Teste #467 - Vértices: 177, Arestas: 368 ===
+✅ Sucesso - Custo: 1413
+
+=== Teste #468 - Vértices: 172, Arestas: 329 ===
+✅ Sucesso - Custo: 1341
+
+=== Teste #469 - Vértices: 131, Arestas: 168 ===
+✅ Sucesso - Custo: 1268
+
+=== Teste #470 - Vértices: 155, Arestas: 236 ===
+✅ Sucesso - Custo: 1460
+
+=== Teste #471 - Vértices: 196, Arestas: 276 ===
+✅ Sucesso - Custo: 1709
+
+=== Teste #472 - Vértices: 187, Arestas: 329 ===
+✅ Sucesso - Custo: 1560
+
+=== Teste #473 - Vértices: 190, Arestas: 233 ===
+✅ Sucesso - Custo: 1808
+
+=== Teste #474 - Vértices: 126, Arestas: 313 ===
+✅ Sucesso - Custo: 817
+
+=== Teste #475 - Vértices: 121, Arestas: 224 ===
+✅ Sucesso - Custo: 997
+
+=== Teste #476 - Vértices: 184, Arestas: 471 ===
+✅ Sucesso - Custo: 1414
+
+=== Teste #477 - Vértices: 107, Arestas: 112 ===
+✅ Sucesso - Custo: 1109
+
+=== Teste #478 - Vértices: 165, Arestas: 305 ===
+✅ Sucesso - Custo: 1246
+
+=== Teste #479 - Vértices: 198, Arestas: 581 ===
+✅ Sucesso - Custo: 1221
+
+=== Teste #480 - Vértices: 190, Arestas: 431 ===
+✅ Sucesso - Custo: 1335
+
+=== Teste #481 - Vértices: 143, Arestas: 405 ===
+✅ Sucesso - Custo: 982
+
+=== Teste #482 - Vértices: 141, Arestas: 259 ===
+✅ Sucesso - Custo: 1242
+
+=== Teste #483 - Vértices: 114, Arestas: 237 ===
+✅ Sucesso - Custo: 986
+
+=== Teste #484 - Vértices: 137, Arestas: 294 ===
+✅ Sucesso - Custo: 1076
+
+=== Teste #485 - Vértices: 117, Arestas: 274 ===
+✅ Sucesso - Custo: 813
+
+=== Teste #486 - Vértices: 189, Arestas: 314 ===
+✅ Sucesso - Custo: 1703
+
+=== Teste #487 - Vértices: 181, Arestas: 219 ===
+✅ Sucesso - Custo: 1546
+
+=== Teste #488 - Vértices: 100, Arestas: 271 ===
+✅ Sucesso - Custo: 652
+
+=== Teste #489 - Vértices: 118, Arestas: 152 ===
+✅ Sucesso - Custo: 1191
+
+=== Teste #490 - Vértices: 196, Arestas: 466 ===
+✅ Sucesso - Custo: 1300
+
+=== Teste #491 - Vértices: 175, Arestas: 472 ===
+✅ Sucesso - Custo: 1167
+
+=== Teste #492 - Vértices: 101, Arestas: 171 ===
+✅ Sucesso - Custo: 866
+
+=== Teste #493 - Vértices: 110, Arestas: 236 ===
+✅ Sucesso - Custo: 871
+
+=== Teste #494 - Vértices: 200, Arestas: 258 ===
+✅ Sucesso - Custo: 1845
+
+=== Teste #495 - Vértices: 131, Arestas: 333 ===
+✅ Sucesso - Custo: 953
+
+=== Teste #496 - Vértices: 184, Arestas: 505 ===
+✅ Sucesso - Custo: 1112
+
+=== Teste #497 - Vértices: 148, Arestas: 290 ===
+✅ Sucesso - Custo: 1183
+
+=== Teste #498 - Vértices: 122, Arestas: 179 ===
+✅ Sucesso - Custo: 1116
+
+=== Teste #499 - Vértices: 180, Arestas: 426 ===
+✅ Sucesso - Custo: 1157
+
+=== Teste #500 - Vértices: 179, Arestas: 421 ===
+✅ Sucesso - Custo: 1165
+
+=== Teste #501 - Vértices: 176, Arestas: 297 ===
+✅ Sucesso - Custo: 1445
+
+=== Teste #502 - Vértices: 126, Arestas: 184 ===
+✅ Sucesso - Custo: 1080
+
+=== Teste #503 - Vértices: 132, Arestas: 172 ===
+✅ Sucesso - Custo: 1348
+
+=== Teste #504 - Vértices: 156, Arestas: 450 ===
+✅ Sucesso - Custo: 1006
+
+=== Teste #505 - Vértices: 122, Arestas: 217 ===
+✅ Sucesso - Custo: 1050
+
+=== Teste #506 - Vértices: 111, Arestas: 186 ===
+✅ Sucesso - Custo: 924
+
+=== Teste #507 - Vértices: 161, Arestas: 377 ===
+✅ Sucesso - Custo: 1193
+
+=== Teste #508 - Vértices: 184, Arestas: 328 ===
+✅ Sucesso - Custo: 1461
+
+=== Teste #509 - Vértices: 148, Arestas: 244 ===
+✅ Sucesso - Custo: 1271
+
+=== Teste #510 - Vértices: 138, Arestas: 214 ===
+✅ Sucesso - Custo: 1245
+
+=== Teste #511 - Vértices: 189, Arestas: 339 ===
+✅ Sucesso - Custo: 1538
+
+=== Teste #512 - Vértices: 113, Arestas: 279 ===
+✅ Sucesso - Custo: 822
+
+=== Teste #513 - Vértices: 187, Arestas: 375 ===
+✅ Sucesso - Custo: 1476
+
+=== Teste #514 - Vértices: 186, Arestas: 519 ===
+✅ Sucesso - Custo: 1191
+
+=== Teste #515 - Vértices: 121, Arestas: 302 ===
+✅ Sucesso - Custo: 823
+
+=== Teste #516 - Vértices: 125, Arestas: 230 ===
+✅ Sucesso - Custo: 938
+
+=== Teste #517 - Vértices: 133, Arestas: 203 ===
+✅ Sucesso - Custo: 1162
+
+=== Teste #518 - Vértices: 130, Arestas: 326 ===
+✅ Sucesso - Custo: 966
+
+=== Teste #519 - Vértices: 187, Arestas: 291 ===
+✅ Sucesso - Custo: 1706
+
+=== Teste #520 - Vértices: 194, Arestas: 573 ===
+✅ Sucesso - Custo: 1137
+
+=== Teste #521 - Vértices: 199, Arestas: 453 ===
+✅ Sucesso - Custo: 1473
+
+=== Teste #522 - Vértices: 142, Arestas: 334 ===
+✅ Sucesso - Custo: 979
+
+=== Teste #523 - Vértices: 192, Arestas: 245 ===
+✅ Sucesso - Custo: 1708
+
+=== Teste #524 - Vértices: 105, Arestas: 130 ===
+✅ Sucesso - Custo: 1095
+
+=== Teste #525 - Vértices: 170, Arestas: 352 ===
+✅ Sucesso - Custo: 1299
+
+=== Teste #526 - Vértices: 200, Arestas: 579 ===
+✅ Sucesso - Custo: 1252
+
+=== Teste #527 - Vértices: 192, Arestas: 412 ===
+✅ Sucesso - Custo: 1478
+
+=== Teste #528 - Vértices: 191, Arestas: 296 ===
+✅ Sucesso - Custo: 1699
+
+=== Teste #529 - Vértices: 135, Arestas: 363 ===
+✅ Sucesso - Custo: 865
+
+=== Teste #530 - Vértices: 129, Arestas: 333 ===
+✅ Sucesso - Custo: 850
+
+=== Teste #531 - Vértices: 143, Arestas: 272 ===
+✅ Sucesso - Custo: 1036
+
+=== Teste #532 - Vértices: 193, Arestas: 441 ===
+✅ Sucesso - Custo: 1339
+
+=== Teste #533 - Vértices: 144, Arestas: 146 ===
+✅ Sucesso - Custo: 1501
+
+=== Teste #534 - Vértices: 194, Arestas: 279 ===
+✅ Sucesso - Custo: 1861
+
+=== Teste #535 - Vértices: 135, Arestas: 269 ===
+✅ Sucesso - Custo: 1074
+
+=== Teste #536 - Vértices: 153, Arestas: 270 ===
+✅ Sucesso - Custo: 1320
+
+=== Teste #537 - Vértices: 101, Arestas: 214 ===
+✅ Sucesso - Custo: 750
+
+=== Teste #538 - Vértices: 192, Arestas: 238 ===
+✅ Sucesso - Custo: 1953
+
+=== Teste #539 - Vértices: 181, Arestas: 497 ===
+✅ Sucesso - Custo: 1179
+
+=== Teste #540 - Vértices: 181, Arestas: 278 ===
+✅ Sucesso - Custo: 1481
+
+=== Teste #541 - Vértices: 117, Arestas: 160 ===
+✅ Sucesso - Custo: 1065
+
+=== Teste #542 - Vértices: 167, Arestas: 310 ===
+✅ Sucesso - Custo: 1286
+
+=== Teste #543 - Vértices: 117, Arestas: 186 ===
+✅ Sucesso - Custo: 940
+
+=== Teste #544 - Vértices: 193, Arestas: 501 ===
+✅ Sucesso - Custo: 1230
+
+=== Teste #545 - Vértices: 166, Arestas: 247 ===
+✅ Sucesso - Custo: 1543
+
+=== Teste #546 - Vértices: 178, Arestas: 464 ===
+✅ Sucesso - Custo: 1061
+
+=== Teste #547 - Vértices: 178, Arestas: 179 ===
+✅ Sucesso - Custo: 1852
+
+=== Teste #548 - Vértices: 163, Arestas: 438 ===
+✅ Sucesso - Custo: 1142
+
+=== Teste #549 - Vértices: 110, Arestas: 226 ===
+✅ Sucesso - Custo: 848
+
+=== Teste #550 - Vértices: 167, Arestas: 367 ===
+✅ Sucesso - Custo: 1253
+
+=== Teste #551 - Vértices: 103, Arestas: 215 ===
+✅ Sucesso - Custo: 730
+
+=== Teste #552 - Vértices: 119, Arestas: 211 ===
+✅ Sucesso - Custo: 1017
+
+=== Teste #553 - Vértices: 192, Arestas: 553 ===
+✅ Sucesso - Custo: 1208
+
+=== Teste #554 - Vértices: 179, Arestas: 457 ===
+✅ Sucesso - Custo: 1183
+
+=== Teste #555 - Vértices: 183, Arestas: 301 ===
+✅ Sucesso - Custo: 1500
+
+=== Teste #556 - Vértices: 121, Arestas: 182 ===
+✅ Sucesso - Custo: 1044
+
+=== Teste #557 - Vértices: 147, Arestas: 309 ===
+✅ Sucesso - Custo: 1145
+
+=== Teste #558 - Vértices: 126, Arestas: 290 ===
+✅ Sucesso - Custo: 952
+
+=== Teste #559 - Vértices: 130, Arestas: 300 ===
+✅ Sucesso - Custo: 991
+
+=== Teste #560 - Vértices: 141, Arestas: 296 ===
+✅ Sucesso - Custo: 1110
+
+=== Teste #561 - Vértices: 111, Arestas: 223 ===
+✅ Sucesso - Custo: 804
+
+=== Teste #562 - Vértices: 108, Arestas: 212 ===
+✅ Sucesso - Custo: 755
+
+=== Teste #563 - Vértices: 199, Arestas: 509 ===
+✅ Sucesso - Custo: 1302
+
+=== Teste #564 - Vértices: 190, Arestas: 233 ===
+✅ Sucesso - Custo: 1911
+
+=== Teste #565 - Vértices: 135, Arestas: 339 ===
+✅ Sucesso - Custo: 1003
+
+=== Teste #566 - Vértices: 141, Arestas: 408 ===
+✅ Sucesso - Custo: 864
+
+=== Teste #567 - Vértices: 122, Arestas: 177 ===
+✅ Sucesso - Custo: 1132
+
+=== Teste #568 - Vértices: 107, Arestas: 247 ===
+✅ Sucesso - Custo: 715
+
+=== Teste #569 - Vértices: 163, Arestas: 340 ===
+✅ Sucesso - Custo: 1255
+
+=== Teste #570 - Vértices: 134, Arestas: 162 ===
+✅ Sucesso - Custo: 1369
+
+=== Teste #571 - Vértices: 156, Arestas: 324 ===
+✅ Sucesso - Custo: 1190
+
+=== Teste #572 - Vértices: 110, Arestas: 126 ===
+✅ Sucesso - Custo: 1173
+
+=== Teste #573 - Vértices: 190, Arestas: 340 ===
+✅ Sucesso - Custo: 1499
+
+=== Teste #574 - Vértices: 117, Arestas: 220 ===
+✅ Sucesso - Custo: 902
+
+=== Teste #575 - Vértices: 199, Arestas: 369 ===
+✅ Sucesso - Custo: 1626
+
+=== Teste #576 - Vértices: 170, Arestas: 294 ===
+✅ Sucesso - Custo: 1353
+
+=== Teste #577 - Vértices: 156, Arestas: 423 ===
+✅ Sucesso - Custo: 1077
+
+=== Teste #578 - Vértices: 188, Arestas: 425 ===
+✅ Sucesso - Custo: 1451
+
+=== Teste #579 - Vértices: 126, Arestas: 341 ===
+✅ Sucesso - Custo: 812
+
+=== Teste #580 - Vértices: 152, Arestas: 387 ===
+✅ Sucesso - Custo: 993
+
+=== Teste #581 - Vértices: 137, Arestas: 223 ===
+✅ Sucesso - Custo: 1080
+
+=== Teste #582 - Vértices: 189, Arestas: 535 ===
+✅ Sucesso - Custo: 1254
+
+=== Teste #583 - Vértices: 193, Arestas: 573 ===
+✅ Sucesso - Custo: 1252
+
+=== Teste #584 - Vértices: 128, Arestas: 172 ===
+✅ Sucesso - Custo: 1153
+
+=== Teste #585 - Vértices: 117, Arestas: 183 ===
+✅ Sucesso - Custo: 897
+
+=== Teste #586 - Vértices: 132, Arestas: 132 ===
+✅ Sucesso - Custo: 1338
+
+=== Teste #587 - Vértices: 168, Arestas: 494 ===
+✅ Sucesso - Custo: 1078
+
+=== Teste #588 - Vértices: 179, Arestas: 463 ===
+✅ Sucesso - Custo: 1333
+
+=== Teste #589 - Vértices: 123, Arestas: 238 ===
+✅ Sucesso - Custo: 1022
+
+=== Teste #590 - Vértices: 186, Arestas: 427 ===
+✅ Sucesso - Custo: 1277
+
+=== Teste #591 - Vértices: 156, Arestas: 411 ===
+✅ Sucesso - Custo: 928
+
+=== Teste #592 - Vértices: 144, Arestas: 316 ===
+✅ Sucesso - Custo: 1165
+
+=== Teste #593 - Vértices: 195, Arestas: 449 ===
+✅ Sucesso - Custo: 1428
+
+=== Teste #594 - Vértices: 174, Arestas: 227 ===
+✅ Sucesso - Custo: 1630
+
+=== Teste #595 - Vértices: 129, Arestas: 366 ===
+✅ Sucesso - Custo: 840
+
+=== Teste #596 - Vértices: 141, Arestas: 397 ===
+✅ Sucesso - Custo: 956
+
+=== Teste #597 - Vértices: 175, Arestas: 457 ===
+✅ Sucesso - Custo: 1205
+
+=== Teste #598 - Vértices: 155, Arestas: 281 ===
+✅ Sucesso - Custo: 1250
+
+=== Teste #599 - Vértices: 107, Arestas: 154 ===
+✅ Sucesso - Custo: 987
+
+=== Teste #600 - Vértices: 111, Arestas: 231 ===
+✅ Sucesso - Custo: 912
+
+=== Teste #601 - Vértices: 181, Arestas: 282 ===
+✅ Sucesso - Custo: 1561
+
+=== Teste #602 - Vértices: 196, Arestas: 542 ===
+✅ Sucesso - Custo: 1335
+
+=== Teste #603 - Vértices: 138, Arestas: 234 ===
+✅ Sucesso - Custo: 1137
+
+=== Teste #604 - Vértices: 191, Arestas: 474 ===
+✅ Sucesso - Custo: 1273
+
+=== Teste #605 - Vértices: 157, Arestas: 246 ===
+✅ Sucesso - Custo: 1531
+
+=== Teste #606 - Vértices: 118, Arestas: 233 ===
+✅ Sucesso - Custo: 891
+
+=== Teste #607 - Vértices: 169, Arestas: 492 ===
+✅ Sucesso - Custo: 1053
+
+=== Teste #608 - Vértices: 124, Arestas: 182 ===
+✅ Sucesso - Custo: 1147
+
+=== Teste #609 - Vértices: 151, Arestas: 304 ===
+✅ Sucesso - Custo: 1150
+
+=== Teste #610 - Vértices: 189, Arestas: 357 ===
+✅ Sucesso - Custo: 1407
+
+=== Teste #611 - Vértices: 178, Arestas: 489 ===
+✅ Sucesso - Custo: 1191
+
+=== Teste #612 - Vértices: 125, Arestas: 225 ===
+✅ Sucesso - Custo: 983
+
+=== Teste #613 - Vértices: 106, Arestas: 131 ===
+✅ Sucesso - Custo: 991
+
+=== Teste #614 - Vértices: 143, Arestas: 261 ===
+✅ Sucesso - Custo: 1218
+
+=== Teste #615 - Vértices: 124, Arestas: 147 ===
+✅ Sucesso - Custo: 1307
+
+=== Teste #616 - Vértices: 140, Arestas: 391 ===
+✅ Sucesso - Custo: 863
+
+=== Teste #617 - Vértices: 148, Arestas: 394 ===
+✅ Sucesso - Custo: 968
+
+=== Teste #618 - Vértices: 174, Arestas: 404 ===
+✅ Sucesso - Custo: 1171
+
+=== Teste #619 - Vértices: 186, Arestas: 440 ===
+✅ Sucesso - Custo: 1478
+
+=== Teste #620 - Vértices: 147, Arestas: 336 ===
+✅ Sucesso - Custo: 991
+
+=== Teste #621 - Vértices: 153, Arestas: 353 ===
+✅ Sucesso - Custo: 1088
+
+=== Teste #622 - Vértices: 177, Arestas: 251 ===
+✅ Sucesso - Custo: 1663
+
+=== Teste #623 - Vértices: 139, Arestas: 416 ===
+✅ Sucesso - Custo: 793
+
+=== Teste #624 - Vértices: 145, Arestas: 285 ===
+✅ Sucesso - Custo: 1112
+
+=== Teste #625 - Vértices: 169, Arestas: 297 ===
+✅ Sucesso - Custo: 1515
+
+=== Teste #626 - Vértices: 171, Arestas: 443 ===
+✅ Sucesso - Custo: 1050
+
+=== Teste #627 - Vértices: 182, Arestas: 304 ===
+✅ Sucesso - Custo: 1608
+
+=== Teste #628 - Vértices: 136, Arestas: 333 ===
+✅ Sucesso - Custo: 905
+
+=== Teste #629 - Vértices: 197, Arestas: 508 ===
+✅ Sucesso - Custo: 1330
+
+=== Teste #630 - Vértices: 168, Arestas: 251 ===
+✅ Sucesso - Custo: 1658
+
+=== Teste #631 - Vértices: 192, Arestas: 343 ===
+✅ Sucesso - Custo: 1556
+
+=== Teste #632 - Vértices: 126, Arestas: 235 ===
+✅ Sucesso - Custo: 946
+
+=== Teste #633 - Vértices: 107, Arestas: 184 ===
+✅ Sucesso - Custo: 871
+
+=== Teste #634 - Vértices: 136, Arestas: 382 ===
+✅ Sucesso - Custo: 880
+
+=== Teste #635 - Vértices: 149, Arestas: 293 ===
+✅ Sucesso - Custo: 1222
+
+=== Teste #636 - Vértices: 175, Arestas: 434 ===
+✅ Sucesso - Custo: 1249
+
+=== Teste #637 - Vértices: 106, Arestas: 245 ===
+✅ Sucesso - Custo: 715
+
+=== Teste #638 - Vértices: 133, Arestas: 358 ===
+✅ Sucesso - Custo: 902
+
+=== Teste #639 - Vértices: 189, Arestas: 531 ===
+✅ Sucesso - Custo: 1207
+
+=== Teste #640 - Vértices: 149, Arestas: 163 ===
+✅ Sucesso - Custo: 1542
+
+=== Teste #641 - Vértices: 151, Arestas: 309 ===
+✅ Sucesso - Custo: 1231
+
+=== Teste #642 - Vértices: 153, Arestas: 423 ===
+✅ Sucesso - Custo: 1086
+
+=== Teste #643 - Vértices: 182, Arestas: 223 ===
+✅ Sucesso - Custo: 1751
+
+=== Teste #644 - Vértices: 120, Arestas: 279 ===
+✅ Sucesso - Custo: 795
+
+=== Teste #645 - Vértices: 116, Arestas: 175 ===
+✅ Sucesso - Custo: 1133
+
+=== Teste #646 - Vértices: 133, Arestas: 304 ===
+✅ Sucesso - Custo: 946
+
+=== Teste #647 - Vértices: 130, Arestas: 232 ===
+✅ Sucesso - Custo: 1121
+
+=== Teste #648 - Vértices: 172, Arestas: 226 ===
+✅ Sucesso - Custo: 1678
+
+=== Teste #649 - Vértices: 193, Arestas: 313 ===
+✅ Sucesso - Custo: 1777
+
+=== Teste #650 - Vértices: 115, Arestas: 196 ===
+✅ Sucesso - Custo: 971
+
+=== Teste #651 - Vértices: 164, Arestas: 424 ===
+✅ Sucesso - Custo: 1099
+
+=== Teste #652 - Vértices: 181, Arestas: 241 ===
+✅ Sucesso - Custo: 1708
+
+=== Teste #653 - Vértices: 172, Arestas: 231 ===
+✅ Sucesso - Custo: 1597
+
+=== Teste #654 - Vértices: 159, Arestas: 328 ===
+✅ Sucesso - Custo: 1218
+
+=== Teste #655 - Vértices: 121, Arestas: 238 ===
+✅ Sucesso - Custo: 958
+
+=== Teste #656 - Vértices: 143, Arestas: 284 ===
+✅ Sucesso - Custo: 1117
+
+=== Teste #657 - Vértices: 108, Arestas: 162 ===
+✅ Sucesso - Custo: 972
+
+=== Teste #658 - Vértices: 200, Arestas: 460 ===
+✅ Sucesso - Custo: 1411
+
+=== Teste #659 - Vértices: 154, Arestas: 163 ===
+✅ Sucesso - Custo: 1606
+
+=== Teste #660 - Vértices: 163, Arestas: 285 ===
+✅ Sucesso - Custo: 1343
+
+=== Teste #661 - Vértices: 146, Arestas: 157 ===
+✅ Sucesso - Custo: 1428
+
+=== Teste #662 - Vértices: 111, Arestas: 304 ===
+✅ Sucesso - Custo: 736
+
+=== Teste #663 - Vértices: 103, Arestas: 209 ===
+✅ Sucesso - Custo: 887
+
+=== Teste #664 - Vértices: 140, Arestas: 267 ===
+✅ Sucesso - Custo: 1106
+
+=== Teste #665 - Vértices: 100, Arestas: 259 ===
+✅ Sucesso - Custo: 715
+
+=== Teste #666 - Vértices: 181, Arestas: 364 ===
+✅ Sucesso - Custo: 1437
+
+=== Teste #667 - Vértices: 158, Arestas: 373 ===
+✅ Sucesso - Custo: 1036
+
+=== Teste #668 - Vértices: 194, Arestas: 368 ===
+✅ Sucesso - Custo: 1590
+
+=== Teste #669 - Vértices: 131, Arestas: 311 ===
+✅ Sucesso - Custo: 952
+
+=== Teste #670 - Vértices: 168, Arestas: 258 ===
+✅ Sucesso - Custo: 1384
+
+=== Teste #671 - Vértices: 124, Arestas: 182 ===
+✅ Sucesso - Custo: 1212
+
+=== Teste #672 - Vértices: 181, Arestas: 473 ===
+✅ Sucesso - Custo: 1213
+
+=== Teste #673 - Vértices: 111, Arestas: 306 ===
+✅ Sucesso - Custo: 698
+
+=== Teste #674 - Vértices: 118, Arestas: 121 ===
+✅ Sucesso - Custo: 1298
+
+=== Teste #675 - Vértices: 169, Arestas: 393 ===
+✅ Sucesso - Custo: 1268
+
+=== Teste #676 - Vértices: 173, Arestas: 235 ===
+✅ Sucesso - Custo: 1704
+
+=== Teste #677 - Vértices: 188, Arestas: 452 ===
+✅ Sucesso - Custo: 1414
+
+=== Teste #678 - Vértices: 108, Arestas: 183 ===
+✅ Sucesso - Custo: 859
+
+=== Teste #679 - Vértices: 162, Arestas: 280 ===
+✅ Sucesso - Custo: 1392
+
+=== Teste #680 - Vértices: 147, Arestas: 170 ===
+✅ Sucesso - Custo: 1488
+
+=== Teste #681 - Vértices: 180, Arestas: 204 ===
+✅ Sucesso - Custo: 1845
+
+=== Teste #682 - Vértices: 120, Arestas: 229 ===
+✅ Sucesso - Custo: 963
+
+=== Teste #683 - Vértices: 113, Arestas: 125 ===
+✅ Sucesso - Custo: 1144
+
+=== Teste #684 - Vértices: 142, Arestas: 419 ===
+✅ Sucesso - Custo: 842
+
+=== Teste #685 - Vértices: 137, Arestas: 253 ===
+✅ Sucesso - Custo: 997
+
+=== Teste #686 - Vértices: 181, Arestas: 371 ===
+✅ Sucesso - Custo: 1381
+
+=== Teste #687 - Vértices: 112, Arestas: 228 ===
+✅ Sucesso - Custo: 934
+
+=== Teste #688 - Vértices: 131, Arestas: 354 ===
+✅ Sucesso - Custo: 781
+
+=== Teste #689 - Vértices: 145, Arestas: 241 ===
+✅ Sucesso - Custo: 1308
+
+=== Teste #690 - Vértices: 165, Arestas: 407 ===
+✅ Sucesso - Custo: 1149
+
+=== Teste #691 - Vértices: 154, Arestas: 294 ===
+✅ Sucesso - Custo: 1263
+
+=== Teste #692 - Vértices: 125, Arestas: 289 ===
+✅ Sucesso - Custo: 914
+
+=== Teste #693 - Vértices: 137, Arestas: 405 ===
+✅ Sucesso - Custo: 843
+
+=== Teste #694 - Vértices: 123, Arestas: 166 ===
+✅ Sucesso - Custo: 1162
+
+=== Teste #695 - Vértices: 101, Arestas: 108 ===
+✅ Sucesso - Custo: 1126
+
+=== Teste #696 - Vértices: 200, Arestas: 505 ===
+✅ Sucesso - Custo: 1409
+
+=== Teste #697 - Vértices: 108, Arestas: 271 ===
+✅ Sucesso - Custo: 709
+
+=== Teste #698 - Vértices: 190, Arestas: 424 ===
+✅ Sucesso - Custo: 1405
+
+=== Teste #699 - Vértices: 138, Arestas: 404 ===
+✅ Sucesso - Custo: 871
+
+=== Teste #700 - Vértices: 125, Arestas: 284 ===
+✅ Sucesso - Custo: 839
+
+=== Teste #701 - Vértices: 140, Arestas: 288 ===
+✅ Sucesso - Custo: 1079
+
+=== Teste #702 - Vértices: 100, Arestas: 224 ===
+✅ Sucesso - Custo: 747
+
+=== Teste #703 - Vértices: 152, Arestas: 391 ===
+✅ Sucesso - Custo: 1015
+
+=== Teste #704 - Vértices: 193, Arestas: 502 ===
+✅ Sucesso - Custo: 1347
+
+=== Teste #705 - Vértices: 189, Arestas: 429 ===
+✅ Sucesso - Custo: 1383
+
+=== Teste #706 - Vértices: 158, Arestas: 261 ===
+✅ Sucesso - Custo: 1252
+
+=== Teste #707 - Vértices: 144, Arestas: 377 ===
+✅ Sucesso - Custo: 955
+
+=== Teste #708 - Vértices: 166, Arestas: 219 ===
+✅ Sucesso - Custo: 1522
+
+=== Teste #709 - Vértices: 123, Arestas: 317 ===
+✅ Sucesso - Custo: 768
+
+=== Teste #710 - Vértices: 164, Arestas: 324 ===
+✅ Sucesso - Custo: 1284
+
+=== Teste #711 - Vértices: 160, Arestas: 406 ===
+✅ Sucesso - Custo: 1150
+
+=== Teste #712 - Vértices: 193, Arestas: 245 ===
+✅ Sucesso - Custo: 1905
+
+=== Teste #713 - Vértices: 196, Arestas: 501 ===
+✅ Sucesso - Custo: 1340
+
+=== Teste #714 - Vértices: 120, Arestas: 301 ===
+✅ Sucesso - Custo: 782
+
+=== Teste #715 - Vértices: 123, Arestas: 133 ===
+✅ Sucesso - Custo: 1375
+
+=== Teste #716 - Vértices: 165, Arestas: 359 ===
+✅ Sucesso - Custo: 1237
+
+=== Teste #717 - Vértices: 181, Arestas: 385 ===
+✅ Sucesso - Custo: 1322
+
+=== Teste #718 - Vértices: 117, Arestas: 345 ===
+✅ Sucesso - Custo: 777
+
+=== Teste #719 - Vértices: 134, Arestas: 293 ===
+✅ Sucesso - Custo: 960
+
+=== Teste #720 - Vértices: 194, Arestas: 285 ===
+✅ Sucesso - Custo: 1688
+
+=== Teste #721 - Vértices: 169, Arestas: 460 ===
+✅ Sucesso - Custo: 1090
+
+=== Teste #722 - Vértices: 157, Arestas: 253 ===
+✅ Sucesso - Custo: 1407
+
+=== Teste #723 - Vértices: 167, Arestas: 324 ===
+✅ Sucesso - Custo: 1294
+
+=== Teste #724 - Vértices: 179, Arestas: 288 ===
+✅ Sucesso - Custo: 1633
+
+=== Teste #725 - Vértices: 123, Arestas: 309 ===
+✅ Sucesso - Custo: 805
+
+=== Teste #726 - Vértices: 193, Arestas: 215 ===
+✅ Sucesso - Custo: 2034
+
+=== Teste #727 - Vértices: 131, Arestas: 172 ===
+✅ Sucesso - Custo: 1227
+
+=== Teste #728 - Vértices: 156, Arestas: 422 ===
+✅ Sucesso - Custo: 1088
+
+=== Teste #729 - Vértices: 157, Arestas: 366 ===
+✅ Sucesso - Custo: 1064
+
+=== Teste #730 - Vértices: 125, Arestas: 168 ===
+✅ Sucesso - Custo: 1111
+
+=== Teste #731 - Vértices: 171, Arestas: 342 ===
+✅ Sucesso - Custo: 1252
+
+=== Teste #732 - Vértices: 106, Arestas: 166 ===
+✅ Sucesso - Custo: 939
+
+=== Teste #733 - Vértices: 162, Arestas: 162 ===
+✅ Sucesso - Custo: 1594
+
+=== Teste #734 - Vértices: 169, Arestas: 471 ===
+✅ Sucesso - Custo: 1079
+
+=== Teste #735 - Vértices: 185, Arestas: 317 ===
+✅ Sucesso - Custo: 1459
+
+=== Teste #736 - Vértices: 157, Arestas: 428 ===
+✅ Sucesso - Custo: 1040
+
+=== Teste #737 - Vértices: 152, Arestas: 167 ===
+✅ Sucesso - Custo: 1648
+
+=== Teste #738 - Vértices: 139, Arestas: 306 ===
+✅ Sucesso - Custo: 1028
+
+=== Teste #739 - Vértices: 100, Arestas: 277 ===
+✅ Sucesso - Custo: 643
+
+=== Teste #740 - Vértices: 108, Arestas: 248 ===
+✅ Sucesso - Custo: 712
+
+=== Teste #741 - Vértices: 113, Arestas: 156 ===
+✅ Sucesso - Custo: 1158
+
+=== Teste #742 - Vértices: 147, Arestas: 213 ===
+✅ Sucesso - Custo: 1431
+
+=== Teste #743 - Vértices: 200, Arestas: 422 ===
+✅ Sucesso - Custo: 1527
+
+=== Teste #744 - Vértices: 139, Arestas: 369 ===
+✅ Sucesso - Custo: 956
+
+=== Teste #745 - Vértices: 189, Arestas: 355 ===
+✅ Sucesso - Custo: 1497
+
+=== Teste #746 - Vértices: 171, Arestas: 267 ===
+✅ Sucesso - Custo: 1538
+
+=== Teste #747 - Vértices: 173, Arestas: 428 ===
+✅ Sucesso - Custo: 1193
+
+=== Teste #748 - Vértices: 186, Arestas: 311 ===
+✅ Sucesso - Custo: 1610
+
+=== Teste #749 - Vértices: 146, Arestas: 178 ===
+✅ Sucesso - Custo: 1474
+
+=== Teste #750 - Vértices: 148, Arestas: 370 ===
+✅ Sucesso - Custo: 953
+
+=== Teste #751 - Vértices: 115, Arestas: 263 ===
+✅ Sucesso - Custo: 783
+
+=== Teste #752 - Vértices: 158, Arestas: 291 ===
+✅ Sucesso - Custo: 1306
+
+=== Teste #753 - Vértices: 111, Arestas: 149 ===
+✅ Sucesso - Custo: 1098
+
+=== Teste #754 - Vértices: 195, Arestas: 457 ===
+✅ Sucesso - Custo: 1430
+
+=== Teste #755 - Vértices: 168, Arestas: 292 ===
+✅ Sucesso - Custo: 1501
+
+=== Teste #756 - Vértices: 160, Arestas: 252 ===
+✅ Sucesso - Custo: 1494
+
+=== Teste #757 - Vértices: 141, Arestas: 323 ===
+✅ Sucesso - Custo: 1064
+
+=== Teste #758 - Vértices: 139, Arestas: 300 ===
+✅ Sucesso - Custo: 1003
+
+=== Teste #759 - Vértices: 138, Arestas: 396 ===
+✅ Sucesso - Custo: 893
+
+=== Teste #760 - Vértices: 182, Arestas: 452 ===
+✅ Sucesso - Custo: 1178
+
+=== Teste #761 - Vértices: 191, Arestas: 508 ===
+✅ Sucesso - Custo: 1288
+
+=== Teste #762 - Vértices: 200, Arestas: 393 ===
+✅ Sucesso - Custo: 1665
+
+=== Teste #763 - Vértices: 100, Arestas: 181 ===
+✅ Sucesso - Custo: 779
+
+=== Teste #764 - Vértices: 181, Arestas: 242 ===
+✅ Sucesso - Custo: 1827
+
+=== Teste #765 - Vértices: 155, Arestas: 418 ===
+✅ Sucesso - Custo: 965
+
+=== Teste #766 - Vértices: 146, Arestas: 175 ===
+✅ Sucesso - Custo: 1365
+
+=== Teste #767 - Vértices: 105, Arestas: 118 ===
+✅ Sucesso - Custo: 969
+
+=== Teste #768 - Vértices: 117, Arestas: 224 ===
+✅ Sucesso - Custo: 992
+
+=== Teste #769 - Vértices: 191, Arestas: 395 ===
+✅ Sucesso - Custo: 1499
+
+=== Teste #770 - Vértices: 155, Arestas: 420 ===
+✅ Sucesso - Custo: 1042
+
+=== Teste #771 - Vértices: 186, Arestas: 487 ===
+✅ Sucesso - Custo: 1188
+
+=== Teste #772 - Vértices: 106, Arestas: 299 ===
+✅ Sucesso - Custo: 633
+
+=== Teste #773 - Vértices: 170, Arestas: 173 ===
+✅ Sucesso - Custo: 1670
+
+=== Teste #774 - Vértices: 142, Arestas: 298 ===
+✅ Sucesso - Custo: 1178
+
+=== Teste #775 - Vértices: 117, Arestas: 189 ===
+✅ Sucesso - Custo: 996
+
+=== Teste #776 - Vértices: 127, Arestas: 172 ===
+✅ Sucesso - Custo: 1192
+
+=== Teste #777 - Vértices: 177, Arestas: 214 ===
+✅ Sucesso - Custo: 1894
+
+=== Teste #778 - Vértices: 192, Arestas: 487 ===
+✅ Sucesso - Custo: 1196
+
+=== Teste #779 - Vértices: 114, Arestas: 126 ===
+✅ Sucesso - Custo: 1185
+
+=== Teste #780 - Vértices: 166, Arestas: 194 ===
+✅ Sucesso - Custo: 1735
+
+=== Teste #781 - Vértices: 118, Arestas: 146 ===
+✅ Sucesso - Custo: 1128
+
+=== Teste #782 - Vértices: 181, Arestas: 509 ===
+✅ Sucesso - Custo: 1124
+
+=== Teste #783 - Vértices: 174, Arestas: 225 ===
+✅ Sucesso - Custo: 1676
+
+=== Teste #784 - Vértices: 185, Arestas: 355 ===
+✅ Sucesso - Custo: 1379
+
+=== Teste #785 - Vértices: 118, Arestas: 298 ===
+✅ Sucesso - Custo: 767
+
+=== Teste #786 - Vértices: 174, Arestas: 345 ===
+✅ Sucesso - Custo: 1362
+
+=== Teste #787 - Vértices: 103, Arestas: 155 ===
+✅ Sucesso - Custo: 888
+
+=== Teste #788 - Vértices: 104, Arestas: 275 ===
+✅ Sucesso - Custo: 666
+
+=== Teste #789 - Vértices: 126, Arestas: 142 ===
+✅ Sucesso - Custo: 1265
+
+=== Teste #790 - Vértices: 134, Arestas: 241 ===
+✅ Sucesso - Custo: 1147
+
+=== Teste #791 - Vértices: 150, Arestas: 161 ===
+✅ Sucesso - Custo: 1573
+
+=== Teste #792 - Vértices: 187, Arestas: 275 ===
+✅ Sucesso - Custo: 1685
+
+=== Teste #793 - Vértices: 164, Arestas: 208 ===
+✅ Sucesso - Custo: 1622
+
+=== Teste #794 - Vértices: 107, Arestas: 143 ===
+✅ Sucesso - Custo: 969
+
+=== Teste #795 - Vértices: 156, Arestas: 395 ===
+✅ Sucesso - Custo: 1038
+
+=== Teste #796 - Vértices: 137, Arestas: 246 ===
+✅ Sucesso - Custo: 1105
+
+=== Teste #797 - Vértices: 182, Arestas: 213 ===
+✅ Sucesso - Custo: 1769
+
+=== Teste #798 - Vértices: 173, Arestas: 362 ===
+✅ Sucesso - Custo: 1313
+
+=== Teste #799 - Vértices: 185, Arestas: 280 ===
+✅ Sucesso - Custo: 1602
+
+=== Teste #800 - Vértices: 118, Arestas: 270 ===
+✅ Sucesso - Custo: 888
+
+=== Teste #801 - Vértices: 177, Arestas: 297 ===
+✅ Sucesso - Custo: 1412
+
+=== Teste #802 - Vértices: 185, Arestas: 505 ===
+✅ Sucesso - Custo: 1112
+
+=== Teste #803 - Vértices: 196, Arestas: 386 ===
+✅ Sucesso - Custo: 1598
+
+=== Teste #804 - Vértices: 146, Arestas: 298 ===
+✅ Sucesso - Custo: 1187
+
+=== Teste #805 - Vértices: 138, Arestas: 353 ===
+✅ Sucesso - Custo: 894
+
+=== Teste #806 - Vértices: 110, Arestas: 278 ===
+✅ Sucesso - Custo: 900
+
+=== Teste #807 - Vértices: 190, Arestas: 329 ===
+✅ Sucesso - Custo: 1573
+
+=== Teste #808 - Vértices: 110, Arestas: 158 ===
+✅ Sucesso - Custo: 952
+
+=== Teste #809 - Vértices: 108, Arestas: 166 ===
+✅ Sucesso - Custo: 1000
+
+=== Teste #810 - Vértices: 109, Arestas: 126 ===
+✅ Sucesso - Custo: 1051
+
+=== Teste #811 - Vértices: 104, Arestas: 189 ===
+✅ Sucesso - Custo: 869
+
+=== Teste #812 - Vértices: 100, Arestas: 249 ===
+✅ Sucesso - Custo: 717
+
+=== Teste #813 - Vértices: 113, Arestas: 245 ===
+✅ Sucesso - Custo: 918
+
+=== Teste #814 - Vértices: 128, Arestas: 179 ===
+✅ Sucesso - Custo: 1118
+
+=== Teste #815 - Vértices: 164, Arestas: 468 ===
+✅ Sucesso - Custo: 1075
+
+=== Teste #816 - Vértices: 199, Arestas: 359 ===
+✅ Sucesso - Custo: 1650
+
+=== Teste #817 - Vértices: 142, Arestas: 292 ===
+✅ Sucesso - Custo: 1133
+
+=== Teste #818 - Vértices: 131, Arestas: 324 ===
+✅ Sucesso - Custo: 998
+
+=== Teste #819 - Vértices: 190, Arestas: 399 ===
+✅ Sucesso - Custo: 1241
+
+=== Teste #820 - Vértices: 163, Arestas: 483 ===
+✅ Sucesso - Custo: 975
+
+=== Teste #821 - Vértices: 139, Arestas: 302 ===
+✅ Sucesso - Custo: 1073
+
+=== Teste #822 - Vértices: 134, Arestas: 381 ===
+✅ Sucesso - Custo: 875
+
+=== Teste #823 - Vértices: 129, Arestas: 311 ===
+✅ Sucesso - Custo: 859
+
+=== Teste #824 - Vértices: 112, Arestas: 227 ===
+✅ Sucesso - Custo: 857
+
+=== Teste #825 - Vértices: 106, Arestas: 154 ===
+✅ Sucesso - Custo: 934
+
+=== Teste #826 - Vértices: 169, Arestas: 186 ===
+✅ Sucesso - Custo: 1816
+
+=== Teste #827 - Vértices: 195, Arestas: 426 ===
+✅ Sucesso - Custo: 1582
+
+=== Teste #828 - Vértices: 161, Arestas: 169 ===
+✅ Sucesso - Custo: 1600
+
+=== Teste #829 - Vértices: 122, Arestas: 156 ===
+✅ Sucesso - Custo: 1098
+
+=== Teste #830 - Vértices: 106, Arestas: 218 ===
+✅ Sucesso - Custo: 853
+
+=== Teste #831 - Vértices: 109, Arestas: 232 ===
+✅ Sucesso - Custo: 799
+
+=== Teste #832 - Vértices: 114, Arestas: 244 ===
+✅ Sucesso - Custo: 887
+
+=== Teste #833 - Vértices: 110, Arestas: 297 ===
+✅ Sucesso - Custo: 776
+
+=== Teste #834 - Vértices: 163, Arestas: 410 ===
+✅ Sucesso - Custo: 1162
+
+=== Teste #835 - Vértices: 103, Arestas: 190 ===
+✅ Sucesso - Custo: 853
+
+=== Teste #836 - Vértices: 170, Arestas: 408 ===
+✅ Sucesso - Custo: 1162
+
+=== Teste #837 - Vértices: 110, Arestas: 243 ===
+✅ Sucesso - Custo: 849
+
+=== Teste #838 - Vértices: 178, Arestas: 450 ===
+✅ Sucesso - Custo: 1164
+
+=== Teste #839 - Vértices: 103, Arestas: 104 ===
+✅ Sucesso - Custo: 1174
+
+=== Teste #840 - Vértices: 126, Arestas: 237 ===
+✅ Sucesso - Custo: 1016
+
+=== Teste #841 - Vértices: 182, Arestas: 504 ===
+✅ Sucesso - Custo: 1083
+
+=== Teste #842 - Vértices: 180, Arestas: 401 ===
+✅ Sucesso - Custo: 1206
+
+=== Teste #843 - Vértices: 136, Arestas: 284 ===
+✅ Sucesso - Custo: 1080
+
+=== Teste #844 - Vértices: 179, Arestas: 235 ===
+✅ Sucesso - Custo: 1742
+
+=== Teste #845 - Vértices: 124, Arestas: 251 ===
+✅ Sucesso - Custo: 931
+
+=== Teste #846 - Vértices: 195, Arestas: 324 ===
+✅ Sucesso - Custo: 1637
+
+=== Teste #847 - Vértices: 170, Arestas: 193 ===
+✅ Sucesso - Custo: 1696
+
+=== Teste #848 - Vértices: 126, Arestas: 302 ===
+✅ Sucesso - Custo: 834
+
+=== Teste #849 - Vértices: 107, Arestas: 125 ===
+✅ Sucesso - Custo: 1077
+
+=== Teste #850 - Vértices: 134, Arestas: 350 ===
+✅ Sucesso - Custo: 959
+
+=== Teste #851 - Vértices: 167, Arestas: 442 ===
+✅ Sucesso - Custo: 1152
+
+=== Teste #852 - Vértices: 146, Arestas: 371 ===
+✅ Sucesso - Custo: 931
+
+=== Teste #853 - Vértices: 106, Arestas: 196 ===
+✅ Sucesso - Custo: 864
+
+=== Teste #854 - Vértices: 182, Arestas: 484 ===
+✅ Sucesso - Custo: 1162
+
+=== Teste #855 - Vértices: 176, Arestas: 329 ===
+✅ Sucesso - Custo: 1558
+
+=== Teste #856 - Vértices: 122, Arestas: 304 ===
+✅ Sucesso - Custo: 781
+
+=== Teste #857 - Vértices: 118, Arestas: 345 ===
+✅ Sucesso - Custo: 742
+
+=== Teste #858 - Vértices: 120, Arestas: 265 ===
+✅ Sucesso - Custo: 880
+
+=== Teste #859 - Vértices: 133, Arestas: 240 ===
+✅ Sucesso - Custo: 1142
+
+=== Teste #860 - Vértices: 105, Arestas: 213 ===
+✅ Sucesso - Custo: 851
+
+=== Teste #861 - Vértices: 153, Arestas: 334 ===
+✅ Sucesso - Custo: 1238
+
+=== Teste #862 - Vértices: 145, Arestas: 217 ===
+✅ Sucesso - Custo: 1354
+
+=== Teste #863 - Vértices: 116, Arestas: 271 ===
+✅ Sucesso - Custo: 875
+
+=== Teste #864 - Vértices: 186, Arestas: 411 ===
+✅ Sucesso - Custo: 1333
+
+=== Teste #865 - Vértices: 178, Arestas: 368 ===
+✅ Sucesso - Custo: 1271
+
+=== Teste #866 - Vértices: 110, Arestas: 228 ===
+✅ Sucesso - Custo: 888
+
+=== Teste #867 - Vértices: 184, Arestas: 422 ===
+✅ Sucesso - Custo: 1408
+
+=== Teste #868 - Vértices: 153, Arestas: 352 ===
+✅ Sucesso - Custo: 1134
+
+=== Teste #869 - Vértices: 115, Arestas: 239 ===
+✅ Sucesso - Custo: 867
+
+=== Teste #870 - Vértices: 157, Arestas: 448 ===
+✅ Sucesso - Custo: 1104
+
+=== Teste #871 - Vértices: 111, Arestas: 139 ===
+✅ Sucesso - Custo: 1122
+
+=== Teste #872 - Vértices: 200, Arestas: 528 ===
+✅ Sucesso - Custo: 1393
+
+=== Teste #873 - Vértices: 150, Arestas: 339 ===
+✅ Sucesso - Custo: 1021
+
+=== Teste #874 - Vértices: 169, Arestas: 330 ===
+✅ Sucesso - Custo: 1301
+
+=== Teste #875 - Vértices: 172, Arestas: 371 ===
+✅ Sucesso - Custo: 1338
+
+=== Teste #876 - Vértices: 153, Arestas: 173 ===
+✅ Sucesso - Custo: 1457
+
+=== Teste #877 - Vértices: 145, Arestas: 411 ===
+✅ Sucesso - Custo: 960
+
+=== Teste #878 - Vértices: 194, Arestas: 297 ===
+✅ Sucesso - Custo: 1698
+
+=== Teste #879 - Vértices: 169, Arestas: 375 ===
+✅ Sucesso - Custo: 1254
+
+=== Teste #880 - Vértices: 111, Arestas: 155 ===
+✅ Sucesso - Custo: 952
+
+=== Teste #881 - Vértices: 150, Arestas: 310 ===
+✅ Sucesso - Custo: 1162
+
+=== Teste #882 - Vértices: 158, Arestas: 383 ===
+✅ Sucesso - Custo: 1104
+
+=== Teste #883 - Vértices: 186, Arestas: 258 ===
+✅ Sucesso - Custo: 1730
+
+=== Teste #884 - Vértices: 134, Arestas: 140 ===
+✅ Sucesso - Custo: 1463
+
+=== Teste #885 - Vértices: 130, Arestas: 251 ===
+✅ Sucesso - Custo: 1077
+
+=== Teste #886 - Vértices: 115, Arestas: 175 ===
+✅ Sucesso - Custo: 1037
+
+=== Teste #887 - Vértices: 175, Arestas: 237 ===
+✅ Sucesso - Custo: 1598
+
+=== Teste #888 - Vértices: 147, Arestas: 286 ===
+✅ Sucesso - Custo: 1087
+
+=== Teste #889 - Vértices: 100, Arestas: 111 ===
+✅ Sucesso - Custo: 914
+
+=== Teste #890 - Vértices: 150, Arestas: 383 ===
+✅ Sucesso - Custo: 897
+
+=== Teste #891 - Vértices: 176, Arestas: 416 ===
+✅ Sucesso - Custo: 1354
+
+=== Teste #892 - Vértices: 170, Arestas: 176 ===
+✅ Sucesso - Custo: 1860
+
+=== Teste #893 - Vértices: 108, Arestas: 158 ===
+✅ Sucesso - Custo: 966
+
+=== Teste #894 - Vértices: 173, Arestas: 463 ===
+✅ Sucesso - Custo: 1100
+
+=== Teste #895 - Vértices: 128, Arestas: 147 ===
+✅ Sucesso - Custo: 1225
+
+=== Teste #896 - Vértices: 111, Arestas: 255 ===
+✅ Sucesso - Custo: 875
+
+=== Teste #897 - Vértices: 187, Arestas: 411 ===
+✅ Sucesso - Custo: 1393
+
+=== Teste #898 - Vértices: 193, Arestas: 554 ===
+✅ Sucesso - Custo: 1178
+
+=== Teste #899 - Vértices: 167, Arestas: 368 ===
+✅ Sucesso - Custo: 1280
+
+=== Teste #900 - Vértices: 164, Arestas: 368 ===
+✅ Sucesso - Custo: 1208
+
+=== Teste #901 - Vértices: 112, Arestas: 198 ===
+✅ Sucesso - Custo: 946
+
+=== Teste #902 - Vértices: 180, Arestas: 498 ===
+✅ Sucesso - Custo: 1191
+
+=== Teste #903 - Vértices: 169, Arestas: 302 ===
+✅ Sucesso - Custo: 1405
+
+=== Teste #904 - Vértices: 129, Arestas: 216 ===
+✅ Sucesso - Custo: 1119
+
+=== Teste #905 - Vértices: 106, Arestas: 161 ===
+✅ Sucesso - Custo: 1005
+
+=== Teste #906 - Vértices: 154, Arestas: 310 ===
+✅ Sucesso - Custo: 1263
+
+=== Teste #907 - Vértices: 188, Arestas: 284 ===
+✅ Sucesso - Custo: 1719
+
+=== Teste #908 - Vértices: 187, Arestas: 503 ===
+✅ Sucesso - Custo: 1132
+
+=== Teste #909 - Vértices: 110, Arestas: 294 ===
+✅ Sucesso - Custo: 738
+
+=== Teste #910 - Vértices: 149, Arestas: 269 ===
+✅ Sucesso - Custo: 1234
+
+=== Teste #911 - Vértices: 135, Arestas: 277 ===
+✅ Sucesso - Custo: 1039
+
+=== Teste #912 - Vértices: 106, Arestas: 159 ===
+✅ Sucesso - Custo: 959
+
+=== Teste #913 - Vértices: 149, Arestas: 437 ===
+✅ Sucesso - Custo: 1008
+
+=== Teste #914 - Vértices: 160, Arestas: 192 ===
+✅ Sucesso - Custo: 1705
+
+=== Teste #915 - Vértices: 104, Arestas: 227 ===
+✅ Sucesso - Custo: 843
+
+=== Teste #916 - Vértices: 108, Arestas: 286 ===
+✅ Sucesso - Custo: 690
+
+=== Teste #917 - Vértices: 107, Arestas: 195 ===
+✅ Sucesso - Custo: 905
+
+=== Teste #918 - Vértices: 158, Arestas: 242 ===
+✅ Sucesso - Custo: 1305
+
+=== Teste #919 - Vértices: 196, Arestas: 223 ===
+✅ Sucesso - Custo: 1833
+
+=== Teste #920 - Vértices: 114, Arestas: 128 ===
+✅ Sucesso - Custo: 1187
+
+=== Teste #921 - Vértices: 187, Arestas: 398 ===
+✅ Sucesso - Custo: 1338
+
+=== Teste #922 - Vértices: 117, Arestas: 316 ===
+✅ Sucesso - Custo: 658
+
+=== Teste #923 - Vértices: 191, Arestas: 365 ===
+✅ Sucesso - Custo: 1441
+
+=== Teste #924 - Vértices: 181, Arestas: 524 ===
+✅ Sucesso - Custo: 1089
+
+=== Teste #925 - Vértices: 157, Arestas: 238 ===
+✅ Sucesso - Custo: 1403
+
+=== Teste #926 - Vértices: 190, Arestas: 478 ===
+✅ Sucesso - Custo: 1413
+
+=== Teste #927 - Vértices: 145, Arestas: 159 ===
+✅ Sucesso - Custo: 1465
+
+=== Teste #928 - Vértices: 122, Arestas: 226 ===
+✅ Sucesso - Custo: 1023
+
+=== Teste #929 - Vértices: 171, Arestas: 302 ===
+✅ Sucesso - Custo: 1325
+
+=== Teste #930 - Vértices: 119, Arestas: 186 ===
+✅ Sucesso - Custo: 928
+
+=== Teste #931 - Vértices: 127, Arestas: 348 ===
+✅ Sucesso - Custo: 891
+
+=== Teste #932 - Vértices: 182, Arestas: 213 ===
+✅ Sucesso - Custo: 1858
+
+=== Teste #933 - Vértices: 162, Arestas: 382 ===
+✅ Sucesso - Custo: 1150
+
+=== Teste #934 - Vértices: 121, Arestas: 153 ===
+✅ Sucesso - Custo: 1162
+
+=== Teste #935 - Vértices: 167, Arestas: 489 ===
+✅ Sucesso - Custo: 1058
+
+=== Teste #936 - Vértices: 174, Arestas: 507 ===
+✅ Sucesso - Custo: 1130
+
+=== Teste #937 - Vértices: 178, Arestas: 334 ===
+✅ Sucesso - Custo: 1460
+
+=== Teste #938 - Vértices: 136, Arestas: 243 ===
+✅ Sucesso - Custo: 1183
+
+=== Teste #939 - Vértices: 198, Arestas: 353 ===
+✅ Sucesso - Custo: 1632
+
+=== Teste #940 - Vértices: 101, Arestas: 140 ===
+✅ Sucesso - Custo: 997
+
+=== Teste #941 - Vértices: 107, Arestas: 292 ===
+✅ Sucesso - Custo: 745
+
+=== Teste #942 - Vértices: 200, Arestas: 483 ===
+✅ Sucesso - Custo: 1384
+
+=== Teste #943 - Vértices: 102, Arestas: 169 ===
+✅ Sucesso - Custo: 919
+
+=== Teste #944 - Vértices: 107, Arestas: 309 ===
+✅ Sucesso - Custo: 700
+
+=== Teste #945 - Vértices: 145, Arestas: 156 ===
+✅ Sucesso - Custo: 1585
+
+=== Teste #946 - Vértices: 180, Arestas: 246 ===
+✅ Sucesso - Custo: 1729
+
+=== Teste #947 - Vértices: 190, Arestas: 198 ===
+✅ Sucesso - Custo: 1915
+
+=== Teste #948 - Vértices: 109, Arestas: 196 ===
+✅ Sucesso - Custo: 853
+
+=== Teste #949 - Vértices: 117, Arestas: 156 ===
+✅ Sucesso - Custo: 1066
+
+=== Teste #950 - Vértices: 101, Arestas: 256 ===
+✅ Sucesso - Custo: 648
+
+=== Teste #951 - Vértices: 152, Arestas: 261 ===
+✅ Sucesso - Custo: 1269
+
+=== Teste #952 - Vértices: 176, Arestas: 312 ===
+✅ Sucesso - Custo: 1457
+
+=== Teste #953 - Vértices: 177, Arestas: 320 ===
+✅ Sucesso - Custo: 1440
+
+=== Teste #954 - Vértices: 116, Arestas: 255 ===
+✅ Sucesso - Custo: 879
+
+=== Teste #955 - Vértices: 162, Arestas: 165 ===
+✅ Sucesso - Custo: 1690
+
+=== Teste #956 - Vértices: 130, Arestas: 251 ===
+✅ Sucesso - Custo: 981
+
+=== Teste #957 - Vértices: 199, Arestas: 492 ===
+✅ Sucesso - Custo: 1430
+
+=== Teste #958 - Vértices: 133, Arestas: 289 ===
+✅ Sucesso - Custo: 939
+
+=== Teste #959 - Vértices: 138, Arestas: 315 ===
+✅ Sucesso - Custo: 1025
+
+=== Teste #960 - Vértices: 102, Arestas: 295 ===
+✅ Sucesso - Custo: 622
+
+=== Teste #961 - Vértices: 193, Arestas: 311 ===
+✅ Sucesso - Custo: 1678
+
+=== Teste #962 - Vértices: 184, Arestas: 242 ===
+✅ Sucesso - Custo: 1715
+
+=== Teste #963 - Vértices: 124, Arestas: 214 ===
+✅ Sucesso - Custo: 1081
+
+=== Teste #964 - Vértices: 177, Arestas: 342 ===
+✅ Sucesso - Custo: 1389
+
+=== Teste #965 - Vértices: 162, Arestas: 396 ===
+✅ Sucesso - Custo: 1168
+
+=== Teste #966 - Vértices: 147, Arestas: 157 ===
+✅ Sucesso - Custo: 1529
+
+=== Teste #967 - Vértices: 158, Arestas: 269 ===
+✅ Sucesso - Custo: 1312
+
+=== Teste #968 - Vértices: 128, Arestas: 331 ===
+✅ Sucesso - Custo: 941
+
+=== Teste #969 - Vértices: 189, Arestas: 553 ===
+✅ Sucesso - Custo: 1105
+
+=== Teste #970 - Vértices: 150, Arestas: 248 ===
+✅ Sucesso - Custo: 1376
+
+=== Teste #971 - Vértices: 131, Arestas: 251 ===
+✅ Sucesso - Custo: 1057
+
+=== Teste #972 - Vértices: 143, Arestas: 303 ===
+✅ Sucesso - Custo: 974
+
+=== Teste #973 - Vértices: 198, Arestas: 240 ===
+✅ Sucesso - Custo: 1842
+
+=== Teste #974 - Vértices: 157, Arestas: 410 ===
+✅ Sucesso - Custo: 1018
+
+=== Teste #975 - Vértices: 156, Arestas: 294 ===
+✅ Sucesso - Custo: 1270
+
+=== Teste #976 - Vértices: 105, Arestas: 171 ===
+✅ Sucesso - Custo: 977
+
+=== Teste #977 - Vértices: 101, Arestas: 273 ===
+✅ Sucesso - Custo: 673
+
+=== Teste #978 - Vértices: 103, Arestas: 150 ===
+✅ Sucesso - Custo: 963
+
+=== Teste #979 - Vértices: 135, Arestas: 364 ===
+✅ Sucesso - Custo: 863
+
+=== Teste #980 - Vértices: 173, Arestas: 403 ===
+✅ Sucesso - Custo: 1311
+
+=== Teste #981 - Vértices: 143, Arestas: 217 ===
+✅ Sucesso - Custo: 1262
+
+=== Teste #982 - Vértices: 155, Arestas: 383 ===
+✅ Sucesso - Custo: 999
+
+=== Teste #983 - Vértices: 148, Arestas: 227 ===
+✅ Sucesso - Custo: 1373
+
+=== Teste #984 - Vértices: 179, Arestas: 249 ===
+✅ Sucesso - Custo: 1713
+
+=== Teste #985 - Vértices: 167, Arestas: 187 ===
+✅ Sucesso - Custo: 1776
+
+=== Teste #986 - Vértices: 185, Arestas: 549 ===
+✅ Sucesso - Custo: 1127
+
+=== Teste #987 - Vértices: 180, Arestas: 434 ===
+✅ Sucesso - Custo: 1201
+
+=== Teste #988 - Vértices: 102, Arestas: 128 ===
+✅ Sucesso - Custo: 990
+
+=== Teste #989 - Vértices: 192, Arestas: 289 ===
+✅ Sucesso - Custo: 1686
+
+=== Teste #990 - Vértices: 163, Arestas: 180 ===
+✅ Sucesso - Custo: 1649
+
+=== Teste #991 - Vértices: 107, Arestas: 129 ===
+✅ Sucesso - Custo: 1175
+
+=== Teste #992 - Vértices: 176, Arestas: 323 ===
+✅ Sucesso - Custo: 1326
+
+=== Teste #993 - Vértices: 196, Arestas: 548 ===
+✅ Sucesso - Custo: 1196
+
+=== Teste #994 - Vértices: 149, Arestas: 333 ===
+✅ Sucesso - Custo: 1107
+
+=== Teste #995 - Vértices: 169, Arestas: 283 ===
+✅ Sucesso - Custo: 1519
+
+=== Teste #996 - Vértices: 128, Arestas: 272 ===
+✅ Sucesso - Custo: 1064
+
+=== Teste #997 - Vértices: 155, Arestas: 175 ===
+✅ Sucesso - Custo: 1572
+
+=== Teste #998 - Vértices: 158, Arestas: 202 ===
+✅ Sucesso - Custo: 1591
+
+=== Teste #999 - Vértices: 200, Arestas: 201 ===
+✅ Sucesso - Custo: 2024
+
+=== Teste #1000 - Vértices: 102, Arestas: 242 ===
+✅ Sucesso - Custo: 658
+
+=== Teste #1001 - Vértices: 137, Arestas: 257 ===
+✅ Sucesso - Custo: 1063
+
+=== Teste #1002 - Vértices: 116, Arestas: 206 ===
+✅ Sucesso - Custo: 899
+
+=== Teste #1003 - Vértices: 143, Arestas: 149 ===
+✅ Sucesso - Custo: 1505
+
+=== Teste #1004 - Vértices: 131, Arestas: 341 ===
+✅ Sucesso - Custo: 827
+
+=== Teste #1005 - Vértices: 100, Arestas: 251 ===
+✅ Sucesso - Custo: 768
+
+=== Teste #1006 - Vértices: 144, Arestas: 232 ===
+✅ Sucesso - Custo: 1279
+
+=== Teste #1007 - Vértices: 147, Arestas: 288 ===
+✅ Sucesso - Custo: 1182
+
+=== Teste #1008 - Vértices: 114, Arestas: 197 ===
+✅ Sucesso - Custo: 915
+
+=== Teste #1009 - Vértices: 144, Arestas: 349 ===
+✅ Sucesso - Custo: 1047
+
+=== Teste #1010 - Vértices: 127, Arestas: 204 ===
+✅ Sucesso - Custo: 1180
+
+=== Teste #1011 - Vértices: 109, Arestas: 317 ===
+✅ Sucesso - Custo: 708
+
+=== Teste #1012 - Vértices: 168, Arestas: 455 ===
+✅ Sucesso - Custo: 1176
+
+=== Teste #1013 - Vértices: 169, Arestas: 411 ===
+✅ Sucesso - Custo: 1218
+
+=== Teste #1014 - Vértices: 194, Arestas: 220 ===
+✅ Sucesso - Custo: 1804
+
+=== Teste #1015 - Vértices: 198, Arestas: 410 ===
+✅ Sucesso - Custo: 1436
+
+=== Teste #1016 - Vértices: 161, Arestas: 346 ===
+✅ Sucesso - Custo: 1209
+
+=== Teste #1017 - Vértices: 193, Arestas: 367 ===
+✅ Sucesso - Custo: 1514
+
+=== Teste #1018 - Vértices: 147, Arestas: 391 ===
+✅ Sucesso - Custo: 957
+
+=== Teste #1019 - Vértices: 111, Arestas: 140 ===
+✅ Sucesso - Custo: 1078
+
+=== Teste #1020 - Vértices: 154, Arestas: 302 ===
+✅ Sucesso - Custo: 1253
+
+=== Teste #1021 - Vértices: 132, Arestas: 340 ===
+✅ Sucesso - Custo: 957
+
+=== Teste #1022 - Vértices: 198, Arestas: 531 ===
+✅ Sucesso - Custo: 1420
+
+=== Teste #1023 - Vértices: 175, Arestas: 352 ===
+✅ Sucesso - Custo: 1471
+
+=== Teste #1024 - Vértices: 108, Arestas: 138 ===
+✅ Sucesso - Custo: 938
+
+=== Teste #1025 - Vértices: 145, Arestas: 373 ===
+✅ Sucesso - Custo: 975
+
+=== Teste #1026 - Vértices: 104, Arestas: 308 ===
+✅ Sucesso - Custo: 695
+
+=== Teste #1027 - Vértices: 176, Arestas: 309 ===
+✅ Sucesso - Custo: 1574
+
+=== Teste #1028 - Vértices: 118, Arestas: 243 ===
+✅ Sucesso - Custo: 845
+
+=== Teste #1029 - Vértices: 136, Arestas: 243 ===
+✅ Sucesso - Custo: 1178
+
+=== Teste #1030 - Vértices: 143, Arestas: 226 ===
+✅ Sucesso - Custo: 1268
+
+=== Teste #1031 - Vértices: 101, Arestas: 169 ===
+✅ Sucesso - Custo: 959
+
+=== Teste #1032 - Vértices: 155, Arestas: 232 ===
+✅ Sucesso - Custo: 1473
+
+=== Teste #1033 - Vértices: 111, Arestas: 156 ===
+✅ Sucesso - Custo: 987
+
+=== Teste #1034 - Vértices: 162, Arestas: 213 ===
+✅ Sucesso - Custo: 1550
+
+=== Teste #1035 - Vértices: 110, Arestas: 176 ===
+✅ Sucesso - Custo: 1062
+
+=== Teste #1036 - Vértices: 183, Arestas: 211 ===
+✅ Sucesso - Custo: 1752
+
+=== Teste #1037 - Vértices: 134, Arestas: 189 ===
+✅ Sucesso - Custo: 1180
+
+=== Teste #1038 - Vértices: 124, Arestas: 137 ===
+✅ Sucesso - Custo: 1225
+
+=== Teste #1039 - Vértices: 153, Arestas: 362 ===
+✅ Sucesso - Custo: 1013
+
+=== Teste #1040 - Vértices: 155, Arestas: 182 ===
+✅ Sucesso - Custo: 1517
+
+=== Teste #1041 - Vértices: 178, Arestas: 480 ===
+✅ Sucesso - Custo: 1190
+
+=== Teste #1042 - Vértices: 168, Arestas: 220 ===
+✅ Sucesso - Custo: 1678
+
+=== Teste #1043 - Vértices: 125, Arestas: 177 ===
+✅ Sucesso - Custo: 1204
+
+=== Teste #1044 - Vértices: 177, Arestas: 255 ===
+✅ Sucesso - Custo: 1650
+
+=== Teste #1045 - Vértices: 127, Arestas: 244 ===
+✅ Sucesso - Custo: 1056
+
+=== Teste #1046 - Vértices: 189, Arestas: 260 ===
+✅ Sucesso - Custo: 1908
+
+=== Teste #1047 - Vértices: 122, Arestas: 309 ===
+✅ Sucesso - Custo: 842
+
+=== Teste #1048 - Vértices: 126, Arestas: 201 ===
+✅ Sucesso - Custo: 1168
+
+=== Teste #1049 - Vértices: 102, Arestas: 222 ===
+✅ Sucesso - Custo: 793
+
+=== Teste #1050 - Vértices: 154, Arestas: 320 ===
+✅ Sucesso - Custo: 1087
+
+=== Teste #1051 - Vértices: 147, Arestas: 396 ===
+✅ Sucesso - Custo: 1019
+
+=== Teste #1052 - Vértices: 138, Arestas: 253 ===
+✅ Sucesso - Custo: 1233
+
+=== Teste #1053 - Vértices: 120, Arestas: 152 ===
+✅ Sucesso - Custo: 1041
+
+=== Teste #1054 - Vértices: 196, Arestas: 410 ===
+✅ Sucesso - Custo: 1416
+
+=== Teste #1055 - Vértices: 109, Arestas: 241 ===
+✅ Sucesso - Custo: 659
+
+=== Teste #1056 - Vértices: 141, Arestas: 407 ===
+✅ Sucesso - Custo: 812
+
+=== Teste #1057 - Vértices: 178, Arestas: 295 ===
+✅ Sucesso - Custo: 1418
+
+=== Teste #1058 - Vértices: 141, Arestas: 204 ===
+✅ Sucesso - Custo: 1163
+
+=== Teste #1059 - Vértices: 165, Arestas: 387 ===
+✅ Sucesso - Custo: 1107
+
+=== Teste #1060 - Vértices: 184, Arestas: 315 ===
+✅ Sucesso - Custo: 1521
+
+=== Teste #1061 - Vértices: 117, Arestas: 279 ===
+✅ Sucesso - Custo: 740
+
+=== Teste #1062 - Vértices: 146, Arestas: 263 ===
+✅ Sucesso - Custo: 1233
+
+=== Teste #1063 - Vértices: 164, Arestas: 480 ===
+✅ Sucesso - Custo: 1007
+
+=== Teste #1064 - Vértices: 166, Arestas: 331 ===
+✅ Sucesso - Custo: 1206
+
+=== Teste #1065 - Vértices: 199, Arestas: 489 ===
+✅ Sucesso - Custo: 1531
+
+=== Teste #1066 - Vértices: 189, Arestas: 347 ===
+✅ Sucesso - Custo: 1570
+
+=== Teste #1067 - Vértices: 102, Arestas: 212 ===
+✅ Sucesso - Custo: 885
+
+=== Teste #1068 - Vértices: 186, Arestas: 459 ===
+✅ Sucesso - Custo: 1295
+
+=== Teste #1069 - Vértices: 197, Arestas: 292 ===
+✅ Sucesso - Custo: 1747
+
+=== Teste #1070 - Vértices: 145, Arestas: 285 ===
+✅ Sucesso - Custo: 1194
+
+=== Teste #1071 - Vértices: 199, Arestas: 594 ===
+✅ Sucesso - Custo: 1298
+
+=== Teste #1072 - Vértices: 106, Arestas: 200 ===
+✅ Sucesso - Custo: 815
+
+=== Teste #1073 - Vértices: 144, Arestas: 379 ===
+✅ Sucesso - Custo: 953
+
+=== Teste #1074 - Vértices: 186, Arestas: 329 ===
+✅ Sucesso - Custo: 1684
+
+=== Teste #1075 - Vértices: 165, Arestas: 389 ===
+✅ Sucesso - Custo: 1187
+
+=== Teste #1076 - Vértices: 105, Arestas: 287 ===
+✅ Sucesso - Custo: 720
+
+=== Teste #1077 - Vértices: 177, Arestas: 494 ===
+✅ Sucesso - Custo: 1131
+
+=== Teste #1078 - Vértices: 124, Arestas: 357 ===
+✅ Sucesso - Custo: 816
+
+=== Teste #1079 - Vértices: 174, Arestas: 209 ===
+✅ Sucesso - Custo: 1655
+
+=== Teste #1080 - Vértices: 140, Arestas: 309 ===
+✅ Sucesso - Custo: 1086
+
+=== Teste #1081 - Vértices: 124, Arestas: 343 ===
+✅ Sucesso - Custo: 761
+
+=== Teste #1082 - Vértices: 136, Arestas: 191 ===
+✅ Sucesso - Custo: 1255
+
+=== Teste #1083 - Vértices: 141, Arestas: 162 ===
+✅ Sucesso - Custo: 1417
+
+=== Teste #1084 - Vértices: 111, Arestas: 243 ===
+✅ Sucesso - Custo: 753
+
+=== Teste #1085 - Vértices: 176, Arestas: 399 ===
+✅ Sucesso - Custo: 1334
+
+=== Teste #1086 - Vértices: 169, Arestas: 215 ===
+✅ Sucesso - Custo: 1556
+
+=== Teste #1087 - Vértices: 183, Arestas: 446 ===
+✅ Sucesso - Custo: 1388
+
+=== Teste #1088 - Vértices: 186, Arestas: 374 ===
+✅ Sucesso - Custo: 1492
+
+=== Teste #1089 - Vértices: 176, Arestas: 337 ===
+✅ Sucesso - Custo: 1372
+
+=== Teste #1090 - Vértices: 100, Arestas: 168 ===
+✅ Sucesso - Custo: 859
+
+=== Teste #1091 - Vértices: 128, Arestas: 270 ===
+✅ Sucesso - Custo: 995
+
+=== Teste #1092 - Vértices: 148, Arestas: 175 ===
+✅ Sucesso - Custo: 1415
+
+=== Teste #1093 - Vértices: 172, Arestas: 217 ===
+✅ Sucesso - Custo: 1542
+
+=== Teste #1094 - Vértices: 180, Arestas: 448 ===
+✅ Sucesso - Custo: 1182
+
+=== Teste #1095 - Vértices: 162, Arestas: 406 ===
+✅ Sucesso - Custo: 1027
+
+=== Teste #1096 - Vértices: 155, Arestas: 414 ===
+✅ Sucesso - Custo: 1062
+
+=== Teste #1097 - Vértices: 169, Arestas: 472 ===
+✅ Sucesso - Custo: 1166
+
+=== Teste #1098 - Vértices: 173, Arestas: 488 ===
+✅ Sucesso - Custo: 1154
+
+=== Teste #1099 - Vértices: 111, Arestas: 323 ===
+✅ Sucesso - Custo: 724
+
+=== Teste #1100 - Vértices: 107, Arestas: 300 ===
+✅ Sucesso - Custo: 710
+
+=== Teste #1101 - Vértices: 159, Arestas: 320 ===
+✅ Sucesso - Custo: 1128
+
+=== Teste #1102 - Vértices: 146, Arestas: 378 ===
+✅ Sucesso - Custo: 957
+
+=== Teste #1103 - Vértices: 137, Arestas: 325 ===
+✅ Sucesso - Custo: 1022
+
+=== Teste #1104 - Vértices: 110, Arestas: 151 ===
+✅ Sucesso - Custo: 1005
+
+=== Teste #1105 - Vértices: 110, Arestas: 283 ===
+✅ Sucesso - Custo: 716
+
+=== Teste #1106 - Vértices: 196, Arestas: 331 ===
+✅ Sucesso - Custo: 1733
+
+=== Teste #1107 - Vértices: 155, Arestas: 280 ===
+✅ Sucesso - Custo: 1367
+
+=== Teste #1108 - Vértices: 108, Arestas: 314 ===
+✅ Sucesso - Custo: 682
+
+=== Teste #1109 - Vértices: 118, Arestas: 122 ===
+✅ Sucesso - Custo: 1269
+
+=== Teste #1110 - Vértices: 164, Arestas: 290 ===
+✅ Sucesso - Custo: 1313
+
+=== Teste #1111 - Vértices: 198, Arestas: 547 ===
+✅ Sucesso - Custo: 1376
+
+=== Teste #1112 - Vértices: 117, Arestas: 286 ===
+✅ Sucesso - Custo: 884
+
+=== Teste #1113 - Vértices: 111, Arestas: 160 ===
+✅ Sucesso - Custo: 1034
+
+=== Teste #1114 - Vértices: 157, Arestas: 165 ===
+✅ Sucesso - Custo: 1539
+
+=== Teste #1115 - Vértices: 127, Arestas: 360 ===
+✅ Sucesso - Custo: 762
+
+=== Teste #1116 - Vértices: 117, Arestas: 328 ===
+✅ Sucesso - Custo: 774
+
+=== Teste #1117 - Vértices: 156, Arestas: 228 ===
+✅ Sucesso - Custo: 1335
+
+=== Teste #1118 - Vértices: 123, Arestas: 252 ===
+✅ Sucesso - Custo: 909
+
+=== Teste #1119 - Vértices: 199, Arestas: 566 ===
+✅ Sucesso - Custo: 1355
+
+=== Teste #1120 - Vértices: 190, Arestas: 548 ===
+✅ Sucesso - Custo: 1166
+
+=== Teste #1121 - Vértices: 194, Arestas: 515 ===
+✅ Sucesso - Custo: 1431
+
+=== Teste #1122 - Vértices: 107, Arestas: 188 ===
+✅ Sucesso - Custo: 823
+
+=== Teste #1123 - Vértices: 121, Arestas: 197 ===
+✅ Sucesso - Custo: 1084
+
+=== Teste #1124 - Vértices: 141, Arestas: 264 ===
+✅ Sucesso - Custo: 1177
+
+=== Teste #1125 - Vértices: 144, Arestas: 286 ===
+✅ Sucesso - Custo: 1118
+
+=== Teste #1126 - Vértices: 144, Arestas: 371 ===
+✅ Sucesso - Custo: 1084
+
+=== Teste #1127 - Vértices: 105, Arestas: 124 ===
+✅ Sucesso - Custo: 1098
+
+=== Teste #1128 - Vértices: 130, Arestas: 292 ===
+✅ Sucesso - Custo: 1037
+
+=== Teste #1129 - Vértices: 111, Arestas: 277 ===
+✅ Sucesso - Custo: 809
+
+=== Teste #1130 - Vértices: 132, Arestas: 308 ===
+✅ Sucesso - Custo: 1001
+
+=== Teste #1131 - Vértices: 190, Arestas: 500 ===
+✅ Sucesso - Custo: 1311
+
+=== Teste #1132 - Vértices: 133, Arestas: 290 ===
+✅ Sucesso - Custo: 976
+
+=== Teste #1133 - Vértices: 117, Arestas: 256 ===
+✅ Sucesso - Custo: 820
+
+=== Teste #1134 - Vértices: 103, Arestas: 246 ===
+✅ Sucesso - Custo: 686
+
+=== Teste #1135 - Vértices: 116, Arestas: 257 ===
+✅ Sucesso - Custo: 826
+
+=== Teste #1136 - Vértices: 199, Arestas: 304 ===
+✅ Sucesso - Custo: 1777
+
+=== Teste #1137 - Vértices: 116, Arestas: 207 ===
+✅ Sucesso - Custo: 934
+
+=== Teste #1138 - Vértices: 114, Arestas: 250 ===
+✅ Sucesso - Custo: 847
+
+=== Teste #1139 - Vértices: 163, Arestas: 168 ===
+✅ Sucesso - Custo: 1694
+
+=== Teste #1140 - Vértices: 131, Arestas: 139 ===
+✅ Sucesso - Custo: 1350
+
+=== Teste #1141 - Vértices: 164, Arestas: 227 ===
+✅ Sucesso - Custo: 1471
+
+=== Teste #1142 - Vértices: 115, Arestas: 160 ===
+✅ Sucesso - Custo: 1115
+
+=== Teste #1143 - Vértices: 123, Arestas: 206 ===
+✅ Sucesso - Custo: 1017
+
+=== Teste #1144 - Vértices: 102, Arestas: 279 ===
+✅ Sucesso - Custo: 711
+
+=== Teste #1145 - Vértices: 194, Arestas: 432 ===
+✅ Sucesso - Custo: 1366
+
+=== Teste #1146 - Vértices: 158, Arestas: 403 ===
+✅ Sucesso - Custo: 945
+
+=== Teste #1147 - Vértices: 132, Arestas: 178 ===
+✅ Sucesso - Custo: 1292
+
+=== Teste #1148 - Vértices: 173, Arestas: 465 ===
+✅ Sucesso - Custo: 1190
+
+=== Teste #1149 - Vértices: 148, Arestas: 313 ===
+✅ Sucesso - Custo: 1155
+
+=== Teste #1150 - Vértices: 188, Arestas: 428 ===
+✅ Sucesso - Custo: 1382
+
+=== Teste #1151 - Vértices: 174, Arestas: 244 ===
+✅ Sucesso - Custo: 1579
+
+=== Teste #1152 - Vértices: 124, Arestas: 208 ===
+✅ Sucesso - Custo: 1057
+
+=== Teste #1153 - Vértices: 163, Arestas: 215 ===
+✅ Sucesso - Custo: 1557
+
+=== Teste #1154 - Vértices: 140, Arestas: 257 ===
+✅ Sucesso - Custo: 1096
+
+=== Teste #1155 - Vértices: 189, Arestas: 427 ===
+✅ Sucesso - Custo: 1441
+
+=== Teste #1156 - Vértices: 111, Arestas: 139 ===
+✅ Sucesso - Custo: 1022
+
+=== Teste #1157 - Vértices: 185, Arestas: 404 ===
+✅ Sucesso - Custo: 1384
+
+=== Teste #1158 - Vértices: 173, Arestas: 424 ===
+✅ Sucesso - Custo: 1236
+
+=== Teste #1159 - Vértices: 102, Arestas: 275 ===
+✅ Sucesso - Custo: 607
+
+=== Teste #1160 - Vértices: 189, Arestas: 251 ===
+✅ Sucesso - Custo: 1848
+
+=== Teste #1161 - Vértices: 186, Arestas: 434 ===
+✅ Sucesso - Custo: 1292
+
+=== Teste #1162 - Vértices: 145, Arestas: 200 ===
+✅ Sucesso - Custo: 1294
+
+=== Teste #1163 - Vértices: 122, Arestas: 264 ===
+✅ Sucesso - Custo: 972
+
+=== Teste #1164 - Vértices: 172, Arestas: 217 ===
+✅ Sucesso - Custo: 1685
+
+=== Teste #1165 - Vértices: 142, Arestas: 337 ===
+✅ Sucesso - Custo: 1083
+
+=== Teste #1166 - Vértices: 101, Arestas: 197 ===
+✅ Sucesso - Custo: 778
+
+=== Teste #1167 - Vértices: 191, Arestas: 467 ===
+✅ Sucesso - Custo: 1345
+
+=== Teste #1168 - Vértices: 135, Arestas: 234 ===
+✅ Sucesso - Custo: 1221
+
+=== Teste #1169 - Vértices: 197, Arestas: 245 ===
+✅ Sucesso - Custo: 1930
+
+=== Teste #1170 - Vértices: 192, Arestas: 523 ===
+✅ Sucesso - Custo: 1147
+
+=== Teste #1171 - Vértices: 174, Arestas: 390 ===
+✅ Sucesso - Custo: 1376
+
+=== Teste #1172 - Vértices: 151, Arestas: 443 ===
+✅ Sucesso - Custo: 880
+
+=== Teste #1173 - Vértices: 106, Arestas: 192 ===
+✅ Sucesso - Custo: 933
+
+=== Teste #1174 - Vértices: 116, Arestas: 260 ===
+✅ Sucesso - Custo: 788
+
+=== Teste #1175 - Vértices: 182, Arestas: 374 ===
+✅ Sucesso - Custo: 1560
+
+=== Teste #1176 - Vértices: 162, Arestas: 364 ===
+✅ Sucesso - Custo: 1250
+
+=== Teste #1177 - Vértices: 198, Arestas: 268 ===
+✅ Sucesso - Custo: 1922
+
+=== Teste #1178 - Vértices: 183, Arestas: 510 ===
+✅ Sucesso - Custo: 1215
+
+=== Teste #1179 - Vértices: 139, Arestas: 167 ===
+✅ Sucesso - Custo: 1366
+
+=== Teste #1180 - Vértices: 108, Arestas: 201 ===
+✅ Sucesso - Custo: 850
+
+=== Teste #1181 - Vértices: 198, Arestas: 287 ===
+✅ Sucesso - Custo: 1826
+
+=== Teste #1182 - Vértices: 114, Arestas: 223 ===
+✅ Sucesso - Custo: 957
+
+=== Teste #1183 - Vértices: 166, Arestas: 238 ===
+✅ Sucesso - Custo: 1497
+
+=== Teste #1184 - Vértices: 193, Arestas: 482 ===
+✅ Sucesso - Custo: 1329
+
+=== Teste #1185 - Vértices: 185, Arestas: 451 ===
+✅ Sucesso - Custo: 1333
+
+=== Teste #1186 - Vértices: 114, Arestas: 276 ===
+✅ Sucesso - Custo: 745
+
+=== Teste #1187 - Vértices: 158, Arestas: 344 ===
+✅ Sucesso - Custo: 1170
+
+=== Teste #1188 - Vértices: 154, Arestas: 300 ===
+✅ Sucesso - Custo: 1109
+
+=== Teste #1189 - Vértices: 151, Arestas: 332 ===
+✅ Sucesso - Custo: 1154
+
+=== Teste #1190 - Vértices: 189, Arestas: 440 ===
+✅ Sucesso - Custo: 1322
+
+=== Teste #1191 - Vértices: 152, Arestas: 402 ===
+✅ Sucesso - Custo: 1054
+
+=== Teste #1192 - Vértices: 179, Arestas: 520 ===
+✅ Sucesso - Custo: 1115
+
+=== Teste #1193 - Vértices: 179, Arestas: 230 ===
+✅ Sucesso - Custo: 1718
+
+=== Teste #1194 - Vértices: 139, Arestas: 361 ===
+✅ Sucesso - Custo: 874
+
+=== Teste #1195 - Vértices: 167, Arestas: 477 ===
+✅ Sucesso - Custo: 1030
+
+=== Teste #1196 - Vértices: 195, Arestas: 576 ===
+✅ Sucesso - Custo: 1155
+
+=== Teste #1197 - Vértices: 172, Arestas: 472 ===
+✅ Sucesso - Custo: 1126
+
+=== Teste #1198 - Vértices: 148, Arestas: 252 ===
+✅ Sucesso - Custo: 1204
+
+=== Teste #1199 - Vértices: 194, Arestas: 363 ===
+✅ Sucesso - Custo: 1576
+
+=== Teste #1200 - Vértices: 165, Arestas: 192 ===
+✅ Sucesso - Custo: 1591
+
+=== Teste #1201 - Vértices: 132, Arestas: 196 ===
+✅ Sucesso - Custo: 1171
+
+=== Teste #1202 - Vértices: 176, Arestas: 306 ===
+✅ Sucesso - Custo: 1496
+
+=== Teste #1203 - Vértices: 195, Arestas: 363 ===
+✅ Sucesso - Custo: 1565
+
+=== Teste #1204 - Vértices: 111, Arestas: 113 ===
+✅ Sucesso - Custo: 1101
+
+=== Teste #1205 - Vértices: 113, Arestas: 200 ===
+✅ Sucesso - Custo: 961
+
+=== Teste #1206 - Vértices: 120, Arestas: 319 ===
+✅ Sucesso - Custo: 752
+
+=== Teste #1207 - Vértices: 165, Arestas: 385 ===
+✅ Sucesso - Custo: 1272
+
+=== Teste #1208 - Vértices: 172, Arestas: 435 ===
+✅ Sucesso - Custo: 1198
+
+=== Teste #1209 - Vértices: 173, Arestas: 493 ===
+✅ Sucesso - Custo: 1108
+
+=== Teste #1210 - Vértices: 146, Arestas: 350 ===
+✅ Sucesso - Custo: 1088
+
+=== Teste #1211 - Vértices: 164, Arestas: 373 ===
+✅ Sucesso - Custo: 1283
+
+=== Teste #1212 - Vértices: 189, Arestas: 305 ===
+✅ Sucesso - Custo: 1644
+
+=== Teste #1213 - Vértices: 182, Arestas: 540 ===
+✅ Sucesso - Custo: 1082
+
+=== Teste #1214 - Vértices: 200, Arestas: 269 ===
+✅ Sucesso - Custo: 1757
+
+=== Teste #1215 - Vértices: 116, Arestas: 255 ===
+✅ Sucesso - Custo: 886
+
+=== Teste #1216 - Vértices: 116, Arestas: 309 ===
+✅ Sucesso - Custo: 752
+
+=== Teste #1217 - Vértices: 102, Arestas: 269 ===
+✅ Sucesso - Custo: 698
+
+=== Teste #1218 - Vértices: 106, Arestas: 214 ===
+✅ Sucesso - Custo: 815
+
+=== Teste #1219 - Vértices: 164, Arestas: 492 ===
+✅ Sucesso - Custo: 1107
+
+=== Teste #1220 - Vértices: 169, Arestas: 448 ===
+✅ Sucesso - Custo: 1196
+
+=== Teste #1221 - Vértices: 191, Arestas: 207 ===
+✅ Sucesso - Custo: 1862
+
+=== Teste #1222 - Vértices: 105, Arestas: 180 ===
+✅ Sucesso - Custo: 795
+
+=== Teste #1223 - Vértices: 192, Arestas: 192 ===
+✅ Sucesso - Custo: 2012
+
+=== Teste #1224 - Vértices: 104, Arestas: 245 ===
+✅ Sucesso - Custo: 737
+
+=== Teste #1225 - Vértices: 153, Arestas: 341 ===
+✅ Sucesso - Custo: 1171
+
+=== Teste #1226 - Vértices: 195, Arestas: 216 ===
+✅ Sucesso - Custo: 1976
+
+=== Teste #1227 - Vértices: 116, Arestas: 343 ===
+✅ Sucesso - Custo: 678
+
+=== Teste #1228 - Vértices: 170, Arestas: 376 ===
+✅ Sucesso - Custo: 1173
+
+=== Teste #1229 - Vértices: 192, Arestas: 576 ===
+✅ Sucesso - Custo: 1176
+
+=== Teste #1230 - Vértices: 130, Arestas: 268 ===
+✅ Sucesso - Custo: 1008
+
+=== Teste #1231 - Vértices: 198, Arestas: 516 ===
+✅ Sucesso - Custo: 1425
+
+=== Teste #1232 - Vértices: 155, Arestas: 328 ===
+✅ Sucesso - Custo: 1151
+
+=== Teste #1233 - Vértices: 181, Arestas: 406 ===
+✅ Sucesso - Custo: 1293
+
+=== Teste #1234 - Vértices: 135, Arestas: 332 ===
+✅ Sucesso - Custo: 811
+
+=== Teste #1235 - Vértices: 178, Arestas: 328 ===
+✅ Sucesso - Custo: 1374
+
+=== Teste #1236 - Vértices: 115, Arestas: 287 ===
+✅ Sucesso - Custo: 802
+
+=== Teste #1237 - Vértices: 200, Arestas: 241 ===
+✅ Sucesso - Custo: 1899
+
+=== Teste #1238 - Vértices: 147, Arestas: 173 ===
+✅ Sucesso - Custo: 1401
+
+=== Teste #1239 - Vértices: 177, Arestas: 438 ===
+✅ Sucesso - Custo: 1233
+
+=== Teste #1240 - Vértices: 113, Arestas: 279 ===
+✅ Sucesso - Custo: 757
+
+=== Teste #1241 - Vértices: 120, Arestas: 229 ===
+✅ Sucesso - Custo: 871
+
+=== Teste #1242 - Vértices: 142, Arestas: 413 ===
+✅ Sucesso - Custo: 933
+
+=== Teste #1243 - Vértices: 172, Arestas: 293 ===
+✅ Sucesso - Custo: 1529
+
+=== Teste #1244 - Vértices: 134, Arestas: 185 ===
+✅ Sucesso - Custo: 1332
+
+=== Teste #1245 - Vértices: 199, Arestas: 205 ===
+✅ Sucesso - Custo: 2190
+
+=== Teste #1246 - Vértices: 157, Arestas: 200 ===
+✅ Sucesso - Custo: 1476
+
+=== Teste #1247 - Vértices: 172, Arestas: 258 ===
+✅ Sucesso - Custo: 1527
+
+=== Teste #1248 - Vértices: 108, Arestas: 173 ===
+✅ Sucesso - Custo: 922
+
+=== Teste #1249 - Vértices: 189, Arestas: 341 ===
+✅ Sucesso - Custo: 1661
+
+=== Teste #1250 - Vértices: 187, Arestas: 400 ===
+✅ Sucesso - Custo: 1473
+
+=== Teste #1251 - Vértices: 160, Arestas: 443 ===
+✅ Sucesso - Custo: 1098
+
+=== Teste #1252 - Vértices: 155, Arestas: 227 ===
+✅ Sucesso - Custo: 1424
+
+=== Teste #1253 - Vértices: 130, Arestas: 323 ===
+✅ Sucesso - Custo: 935
+
+=== Teste #1254 - Vértices: 166, Arestas: 462 ===
+✅ Sucesso - Custo: 1017
+
+=== Teste #1255 - Vértices: 181, Arestas: 281 ===
+✅ Sucesso - Custo: 1598
+
+=== Teste #1256 - Vértices: 131, Arestas: 326 ===
+✅ Sucesso - Custo: 891
+
+=== Teste #1257 - Vértices: 103, Arestas: 152 ===
+✅ Sucesso - Custo: 884
+
+=== Teste #1258 - Vértices: 155, Arestas: 196 ===
+✅ Sucesso - Custo: 1461
+
+=== Teste #1259 - Vértices: 127, Arestas: 295 ===
+✅ Sucesso - Custo: 967
+
+=== Teste #1260 - Vértices: 138, Arestas: 297 ===
+✅ Sucesso - Custo: 926
+
+=== Teste #1261 - Vértices: 166, Arestas: 307 ===
+✅ Sucesso - Custo: 1337
+
+=== Teste #1262 - Vértices: 106, Arestas: 163 ===
+✅ Sucesso - Custo: 918
+
+=== Teste #1263 - Vértices: 165, Arestas: 422 ===
+✅ Sucesso - Custo: 1024
+
+=== Teste #1264 - Vértices: 197, Arestas: 402 ===
+✅ Sucesso - Custo: 1437
+
+=== Teste #1265 - Vértices: 139, Arestas: 163 ===
+✅ Sucesso - Custo: 1370
+
+=== Teste #1266 - Vértices: 191, Arestas: 371 ===
+✅ Sucesso - Custo: 1471
+
+=== Teste #1267 - Vértices: 181, Arestas: 185 ===
+✅ Sucesso - Custo: 2020
+
+=== Teste #1268 - Vértices: 169, Arestas: 301 ===
+✅ Sucesso - Custo: 1365
+
+=== Teste #1269 - Vértices: 129, Arestas: 385 ===
+✅ Sucesso - Custo: 879
+
+=== Teste #1270 - Vértices: 122, Arestas: 188 ===
+✅ Sucesso - Custo: 1155
+
+=== Teste #1271 - Vértices: 104, Arestas: 244 ===
+✅ Sucesso - Custo: 713
+
+=== Teste #1272 - Vértices: 200, Arestas: 563 ===
+✅ Sucesso - Custo: 1322
+
+=== Teste #1273 - Vértices: 153, Arestas: 247 ===
+✅ Sucesso - Custo: 1248
+
+=== Teste #1274 - Vértices: 196, Arestas: 299 ===
+✅ Sucesso - Custo: 1754
+
+=== Teste #1275 - Vértices: 151, Arestas: 212 ===
+✅ Sucesso - Custo: 1398
+
+=== Teste #1276 - Vértices: 153, Arestas: 324 ===
+✅ Sucesso - Custo: 1247
+
+=== Teste #1277 - Vértices: 199, Arestas: 560 ===
+✅ Sucesso - Custo: 1338
+
+=== Teste #1278 - Vértices: 121, Arestas: 172 ===
+✅ Sucesso - Custo: 1129
+
+=== Teste #1279 - Vértices: 167, Arestas: 461 ===
+✅ Sucesso - Custo: 1083
+
+=== Teste #1280 - Vértices: 143, Arestas: 325 ===
+✅ Sucesso - Custo: 1009
+
+=== Teste #1281 - Vértices: 197, Arestas: 469 ===
+✅ Sucesso - Custo: 1421
+
+=== Teste #1282 - Vértices: 113, Arestas: 235 ===
+✅ Sucesso - Custo: 762
+
+=== Teste #1283 - Vértices: 133, Arestas: 378 ===
+✅ Sucesso - Custo: 850
+
+=== Teste #1284 - Vértices: 166, Arestas: 352 ===
+✅ Sucesso - Custo: 1217
+
+=== Teste #1285 - Vértices: 155, Arestas: 369 ===
+✅ Sucesso - Custo: 1132
+
+=== Teste #1286 - Vértices: 161, Arestas: 334 ===
+✅ Sucesso - Custo: 1200
+
+=== Teste #1287 - Vértices: 159, Arestas: 177 ===
+✅ Sucesso - Custo: 1468
+
+=== Teste #1288 - Vértices: 197, Arestas: 304 ===
+✅ Sucesso - Custo: 1788
+
+=== Teste #1289 - Vértices: 106, Arestas: 173 ===
+✅ Sucesso - Custo: 918
+
+=== Teste #1290 - Vértices: 101, Arestas: 176 ===
+✅ Sucesso - Custo: 855
+
+=== Teste #1291 - Vértices: 167, Arestas: 284 ===
+✅ Sucesso - Custo: 1430
+
+=== Teste #1292 - Vértices: 118, Arestas: 320 ===
+✅ Sucesso - Custo: 789
+
+=== Teste #1293 - Vértices: 164, Arestas: 276 ===
+✅ Sucesso - Custo: 1452
+
+=== Teste #1294 - Vértices: 129, Arestas: 135 ===
+✅ Sucesso - Custo: 1299
+
+=== Teste #1295 - Vértices: 151, Arestas: 394 ===
+✅ Sucesso - Custo: 1067
+
+=== Teste #1296 - Vértices: 111, Arestas: 251 ===
+✅ Sucesso - Custo: 695
+
+=== Teste #1297 - Vértices: 139, Arestas: 218 ===
+✅ Sucesso - Custo: 1229
+
+=== Teste #1298 - Vértices: 191, Arestas: 253 ===
+✅ Sucesso - Custo: 1752
+
+=== Teste #1299 - Vértices: 187, Arestas: 494 ===
+✅ Sucesso - Custo: 1287
+
+=== Teste #1300 - Vértices: 114, Arestas: 277 ===
+✅ Sucesso - Custo: 843
+
+=== Teste #1301 - Vértices: 114, Arestas: 190 ===
+✅ Sucesso - Custo: 887
+
+=== Teste #1302 - Vértices: 112, Arestas: 289 ===
+✅ Sucesso - Custo: 817
+
+=== Teste #1303 - Vértices: 151, Arestas: 327 ===
+✅ Sucesso - Custo: 1174
+
+=== Teste #1304 - Vértices: 199, Arestas: 460 ===
+✅ Sucesso - Custo: 1436
+
+=== Teste #1305 - Vértices: 189, Arestas: 451 ===
+✅ Sucesso - Custo: 1427
+
+=== Teste #1306 - Vértices: 118, Arestas: 118 ===
+✅ Sucesso - Custo: 1267
+
+=== Teste #1307 - Vértices: 148, Arestas: 288 ===
+✅ Sucesso - Custo: 1151
+
+=== Teste #1308 - Vértices: 164, Arestas: 392 ===
+✅ Sucesso - Custo: 1033
+
+=== Teste #1309 - Vértices: 186, Arestas: 459 ===
+✅ Sucesso - Custo: 1300
+
+=== Teste #1310 - Vértices: 199, Arestas: 234 ===
+✅ Sucesso - Custo: 1981
+
+=== Teste #1311 - Vértices: 186, Arestas: 453 ===
+✅ Sucesso - Custo: 1216
+
+=== Teste #1312 - Vértices: 186, Arestas: 347 ===
+✅ Sucesso - Custo: 1511
+
+=== Teste #1313 - Vértices: 107, Arestas: 220 ===
+✅ Sucesso - Custo: 816
+
+=== Teste #1314 - Vértices: 192, Arestas: 217 ===
+✅ Sucesso - Custo: 2044
+
+=== Teste #1315 - Vértices: 166, Arestas: 227 ===
+✅ Sucesso - Custo: 1576
+
+=== Teste #1316 - Vértices: 107, Arestas: 306 ===
+✅ Sucesso - Custo: 692
+
+=== Teste #1317 - Vértices: 192, Arestas: 343 ===
+✅ Sucesso - Custo: 1503
+
+=== Teste #1318 - Vértices: 192, Arestas: 498 ===
+✅ Sucesso - Custo: 1328
+
+=== Teste #1319 - Vértices: 196, Arestas: 328 ===
+✅ Sucesso - Custo: 1866
+
+=== Teste #1320 - Vértices: 165, Arestas: 195 ===
+✅ Sucesso - Custo: 1675
+
+=== Teste #1321 - Vértices: 126, Arestas: 262 ===
+✅ Sucesso - Custo: 913
+
+=== Teste #1322 - Vértices: 156, Arestas: 203 ===
+✅ Sucesso - Custo: 1553
+
+=== Teste #1323 - Vértices: 137, Arestas: 309 ===
+✅ Sucesso - Custo: 1096
+
+=== Teste #1324 - Vértices: 112, Arestas: 176 ===
+✅ Sucesso - Custo: 954
+
+=== Teste #1325 - Vértices: 117, Arestas: 169 ===
+✅ Sucesso - Custo: 1117
+
+=== Teste #1326 - Vértices: 121, Arestas: 322 ===
+✅ Sucesso - Custo: 846
+
+=== Teste #1327 - Vértices: 103, Arestas: 230 ===
+✅ Sucesso - Custo: 786
+
+=== Teste #1328 - Vértices: 172, Arestas: 407 ===
+✅ Sucesso - Custo: 1246
+
+=== Teste #1329 - Vértices: 112, Arestas: 207 ===
+✅ Sucesso - Custo: 1018
+
+=== Teste #1330 - Vértices: 142, Arestas: 283 ===
+✅ Sucesso - Custo: 1099
+
+=== Teste #1331 - Vértices: 154, Arestas: 216 ===
+✅ Sucesso - Custo: 1409
+
+=== Teste #1332 - Vértices: 113, Arestas: 315 ===
+✅ Sucesso - Custo: 707
+
+=== Teste #1333 - Vértices: 103, Arestas: 218 ===
+✅ Sucesso - Custo: 853
+
+=== Teste #1334 - Vértices: 108, Arestas: 302 ===
+✅ Sucesso - Custo: 642
+
+=== Teste #1335 - Vértices: 114, Arestas: 250 ===
+✅ Sucesso - Custo: 826
+
+=== Teste #1336 - Vértices: 121, Arestas: 232 ===
+✅ Sucesso - Custo: 910
+
+=== Teste #1337 - Vértices: 132, Arestas: 315 ===
+✅ Sucesso - Custo: 895
+
+=== Teste #1338 - Vértices: 150, Arestas: 208 ===
+✅ Sucesso - Custo: 1354
+
+=== Teste #1339 - Vértices: 158, Arestas: 159 ===
+✅ Sucesso - Custo: 1494
+
+=== Teste #1340 - Vértices: 117, Arestas: 348 ===
+✅ Sucesso - Custo: 713
+
+=== Teste #1341 - Vértices: 168, Arestas: 177 ===
+✅ Sucesso - Custo: 1690
+
+=== Teste #1342 - Vértices: 182, Arestas: 482 ===
+✅ Sucesso - Custo: 1298
+
+=== Teste #1343 - Vértices: 124, Arestas: 318 ===
+✅ Sucesso - Custo: 828
+
+=== Teste #1344 - Vértices: 164, Arestas: 329 ===
+✅ Sucesso - Custo: 1224
+
+=== Teste #1345 - Vértices: 108, Arestas: 323 ===
+✅ Sucesso - Custo: 646
+
+=== Teste #1346 - Vértices: 177, Arestas: 279 ===
+✅ Sucesso - Custo: 1544
+
+=== Teste #1347 - Vértices: 119, Arestas: 211 ===
+✅ Sucesso - Custo: 956
+
+=== Teste #1348 - Vértices: 177, Arestas: 256 ===
+✅ Sucesso - Custo: 1512
+
+=== Teste #1349 - Vértices: 139, Arestas: 283 ===
+✅ Sucesso - Custo: 978
+
+=== Teste #1350 - Vértices: 146, Arestas: 394 ===
+✅ Sucesso - Custo: 982
+
+=== Teste #1351 - Vértices: 182, Arestas: 546 ===
+✅ Sucesso - Custo: 1129
+
+=== Teste #1352 - Vértices: 197, Arestas: 552 ===
+✅ Sucesso - Custo: 1262
+
+=== Teste #1353 - Vértices: 140, Arestas: 187 ===
+✅ Sucesso - Custo: 1452
+
+=== Teste #1354 - Vértices: 195, Arestas: 384 ===
+✅ Sucesso - Custo: 1687
+
+=== Teste #1355 - Vértices: 123, Arestas: 211 ===
+✅ Sucesso - Custo: 1013
+
+=== Teste #1356 - Vértices: 125, Arestas: 351 ===
+✅ Sucesso - Custo: 823
+
+=== Teste #1357 - Vértices: 178, Arestas: 206 ===
+✅ Sucesso - Custo: 1873
+
+=== Teste #1358 - Vértices: 137, Arestas: 182 ===
+✅ Sucesso - Custo: 1299
+
+=== Teste #1359 - Vértices: 195, Arestas: 384 ===
+✅ Sucesso - Custo: 1621
+
+=== Teste #1360 - Vértices: 184, Arestas: 194 ===
+✅ Sucesso - Custo: 1919
+
+=== Teste #1361 - Vértices: 106, Arestas: 243 ===
+✅ Sucesso - Custo: 738
+
+=== Teste #1362 - Vértices: 190, Arestas: 245 ===
+✅ Sucesso - Custo: 1828
+
+=== Teste #1363 - Vértices: 189, Arestas: 507 ===
+✅ Sucesso - Custo: 1363
+
+=== Teste #1364 - Vértices: 105, Arestas: 163 ===
+✅ Sucesso - Custo: 870
+
+=== Teste #1365 - Vértices: 149, Arestas: 227 ===
+✅ Sucesso - Custo: 1256
+
+=== Teste #1366 - Vértices: 103, Arestas: 105 ===
+✅ Sucesso - Custo: 1055
+
+=== Teste #1367 - Vértices: 113, Arestas: 272 ===
+✅ Sucesso - Custo: 795
+
+=== Teste #1368 - Vértices: 110, Arestas: 165 ===
+✅ Sucesso - Custo: 992
+
+=== Teste #1369 - Vértices: 119, Arestas: 282 ===
+✅ Sucesso - Custo: 811
+
+=== Teste #1370 - Vértices: 106, Arestas: 300 ===
+✅ Sucesso - Custo: 667
+
+=== Teste #1371 - Vértices: 155, Arestas: 179 ===
+✅ Sucesso - Custo: 1515
+
+=== Teste #1372 - Vértices: 108, Arestas: 212 ===
+✅ Sucesso - Custo: 875
+
+=== Teste #1373 - Vértices: 157, Arestas: 291 ===
+✅ Sucesso - Custo: 1197
+
+=== Teste #1374 - Vértices: 156, Arestas: 417 ===
+✅ Sucesso - Custo: 1085
+
+=== Teste #1375 - Vértices: 106, Arestas: 218 ===
+✅ Sucesso - Custo: 899
+
+=== Teste #1376 - Vértices: 129, Arestas: 276 ===
+✅ Sucesso - Custo: 964
+
+=== Teste #1377 - Vértices: 172, Arestas: 470 ===
+✅ Sucesso - Custo: 1072
+
+=== Teste #1378 - Vértices: 131, Arestas: 324 ===
+✅ Sucesso - Custo: 963
+
+=== Teste #1379 - Vértices: 193, Arestas: 574 ===
+✅ Sucesso - Custo: 1168
+
+=== Teste #1380 - Vértices: 161, Arestas: 327 ===
+✅ Sucesso - Custo: 1261
+
+=== Teste #1381 - Vértices: 140, Arestas: 159 ===
+✅ Sucesso - Custo: 1309
+
+=== Teste #1382 - Vértices: 147, Arestas: 213 ===
+✅ Sucesso - Custo: 1331
+
+=== Teste #1383 - Vértices: 133, Arestas: 178 ===
+✅ Sucesso - Custo: 1336
+
+=== Teste #1384 - Vértices: 142, Arestas: 365 ===
+✅ Sucesso - Custo: 1005
+
+=== Teste #1385 - Vértices: 197, Arestas: 280 ===
+✅ Sucesso - Custo: 1872
+
+=== Teste #1386 - Vértices: 185, Arestas: 459 ===
+✅ Sucesso - Custo: 1271
+
+=== Teste #1387 - Vértices: 145, Arestas: 192 ===
+✅ Sucesso - Custo: 1310
+
+=== Teste #1388 - Vértices: 140, Arestas: 280 ===
+✅ Sucesso - Custo: 1049
+
+=== Teste #1389 - Vértices: 136, Arestas: 294 ===
+✅ Sucesso - Custo: 1092
+
+=== Teste #1390 - Vértices: 154, Arestas: 380 ===
+✅ Sucesso - Custo: 1148
+
+=== Teste #1391 - Vértices: 186, Arestas: 407 ===
+✅ Sucesso - Custo: 1344
+
+=== Teste #1392 - Vértices: 194, Arestas: 436 ===
+✅ Sucesso - Custo: 1383
+
+=== Teste #1393 - Vértices: 187, Arestas: 210 ===
+✅ Sucesso - Custo: 1838
+
+=== Teste #1394 - Vértices: 154, Arestas: 355 ===
+✅ Sucesso - Custo: 1155
+
+=== Teste #1395 - Vértices: 125, Arestas: 208 ===
+✅ Sucesso - Custo: 1151
+
+=== Teste #1396 - Vértices: 103, Arestas: 231 ===
+✅ Sucesso - Custo: 718
+
+=== Teste #1397 - Vértices: 190, Arestas: 282 ===
+✅ Sucesso - Custo: 1755
+
+=== Teste #1398 - Vértices: 168, Arestas: 244 ===
+✅ Sucesso - Custo: 1531
+
+=== Teste #1399 - Vértices: 164, Arestas: 321 ===
+✅ Sucesso - Custo: 1282
+
+=== Teste #1400 - Vértices: 163, Arestas: 168 ===
+✅ Sucesso - Custo: 1635
+
+=== Teste #1401 - Vértices: 107, Arestas: 312 ===
+✅ Sucesso - Custo: 688
+
+=== Teste #1402 - Vértices: 191, Arestas: 498 ===
+✅ Sucesso - Custo: 1283
+
+=== Teste #1403 - Vértices: 100, Arestas: 287 ===
+✅ Sucesso - Custo: 603
+
+=== Teste #1404 - Vértices: 191, Arestas: 307 ===
+✅ Sucesso - Custo: 1620
+
+=== Teste #1405 - Vértices: 166, Arestas: 440 ===
+✅ Sucesso - Custo: 1167
+
+=== Teste #1406 - Vértices: 197, Arestas: 584 ===
+✅ Sucesso - Custo: 1237
+
+=== Teste #1407 - Vértices: 167, Arestas: 461 ===
+✅ Sucesso - Custo: 1032
+
+=== Teste #1408 - Vértices: 143, Arestas: 270 ===
+✅ Sucesso - Custo: 1185
+
+=== Teste #1409 - Vértices: 163, Arestas: 295 ===
+✅ Sucesso - Custo: 1376
+
+=== Teste #1410 - Vértices: 194, Arestas: 257 ===
+✅ Sucesso - Custo: 1924
+
+=== Teste #1411 - Vértices: 135, Arestas: 191 ===
+✅ Sucesso - Custo: 1242
+
+=== Teste #1412 - Vértices: 184, Arestas: 502 ===
+✅ Sucesso - Custo: 1221
+
+=== Teste #1413 - Vértices: 200, Arestas: 434 ===
+✅ Sucesso - Custo: 1516
+
+=== Teste #1414 - Vértices: 197, Arestas: 430 ===
+✅ Sucesso - Custo: 1390
+
+=== Teste #1415 - Vértices: 134, Arestas: 179 ===
+✅ Sucesso - Custo: 1293
+
+=== Teste #1416 - Vértices: 189, Arestas: 382 ===
+✅ Sucesso - Custo: 1457
+
+=== Teste #1417 - Vértices: 195, Arestas: 461 ===
+✅ Sucesso - Custo: 1411
+
+=== Teste #1418 - Vértices: 166, Arestas: 369 ===
+✅ Sucesso - Custo: 1211
+
+=== Teste #1419 - Vértices: 177, Arestas: 344 ===
+✅ Sucesso - Custo: 1393
+
+=== Teste #1420 - Vértices: 168, Arestas: 191 ===
+✅ Sucesso - Custo: 1674
+
+=== Teste #1421 - Vértices: 113, Arestas: 142 ===
+✅ Sucesso - Custo: 1098
+
+=== Teste #1422 - Vértices: 128, Arestas: 161 ===
+✅ Sucesso - Custo: 1144
+
+=== Teste #1423 - Vértices: 110, Arestas: 298 ===
+✅ Sucesso - Custo: 773
+
+=== Teste #1424 - Vértices: 104, Arestas: 150 ===
+✅ Sucesso - Custo: 944
+
+=== Teste #1425 - Vértices: 189, Arestas: 291 ===
+✅ Sucesso - Custo: 1493
+
+=== Teste #1426 - Vértices: 137, Arestas: 350 ===
+✅ Sucesso - Custo: 959
+
+=== Teste #1427 - Vértices: 198, Arestas: 288 ===
+✅ Sucesso - Custo: 1697
+
+=== Teste #1428 - Vértices: 173, Arestas: 517 ===
+✅ Sucesso - Custo: 1116
+
+=== Teste #1429 - Vértices: 138, Arestas: 376 ===
+✅ Sucesso - Custo: 770
+
+=== Teste #1430 - Vértices: 126, Arestas: 247 ===
+✅ Sucesso - Custo: 1021
+
+=== Teste #1431 - Vértices: 138, Arestas: 331 ===
+✅ Sucesso - Custo: 1048
+
+=== Teste #1432 - Vértices: 177, Arestas: 435 ===
+✅ Sucesso - Custo: 1266
+
+=== Teste #1433 - Vértices: 126, Arestas: 306 ===
+✅ Sucesso - Custo: 927
+
+=== Teste #1434 - Vértices: 191, Arestas: 237 ===
+✅ Sucesso - Custo: 1789
+
+=== Teste #1435 - Vértices: 133, Arestas: 223 ===
+✅ Sucesso - Custo: 1165
+
+=== Teste #1436 - Vértices: 136, Arestas: 266 ===
+✅ Sucesso - Custo: 986
+
+=== Teste #1437 - Vértices: 176, Arestas: 415 ===
+✅ Sucesso - Custo: 1392
+
+=== Teste #1438 - Vértices: 143, Arestas: 291 ===
+✅ Sucesso - Custo: 1149
+
+=== Teste #1439 - Vértices: 152, Arestas: 271 ===
+✅ Sucesso - Custo: 1369
+
+=== Teste #1440 - Vértices: 165, Arestas: 353 ===
+✅ Sucesso - Custo: 1239
+
+=== Teste #1441 - Vértices: 149, Arestas: 396 ===
+✅ Sucesso - Custo: 916
+
+=== Teste #1442 - Vértices: 127, Arestas: 224 ===
+✅ Sucesso - Custo: 999
+
+=== Teste #1443 - Vértices: 101, Arestas: 173 ===
+✅ Sucesso - Custo: 853
+
+=== Teste #1444 - Vértices: 199, Arestas: 240 ===
+✅ Sucesso - Custo: 2058
+
+=== Teste #1445 - Vértices: 165, Arestas: 472 ===
+✅ Sucesso - Custo: 1003
+
+=== Teste #1446 - Vértices: 148, Arestas: 281 ===
+✅ Sucesso - Custo: 1187
+
+=== Teste #1447 - Vértices: 178, Arestas: 477 ===
+✅ Sucesso - Custo: 1164
+
+=== Teste #1448 - Vértices: 198, Arestas: 249 ===
+✅ Sucesso - Custo: 1848
+
+=== Teste #1449 - Vértices: 145, Arestas: 283 ===
+✅ Sucesso - Custo: 1106
+
+=== Teste #1450 - Vértices: 104, Arestas: 289 ===
+✅ Sucesso - Custo: 767
+
+=== Teste #1451 - Vértices: 155, Arestas: 156 ===
+✅ Sucesso - Custo: 1590
+
+=== Teste #1452 - Vértices: 104, Arestas: 224 ===
+✅ Sucesso - Custo: 735
+
+=== Teste #1453 - Vértices: 140, Arestas: 359 ===
+✅ Sucesso - Custo: 996
+
+=== Teste #1454 - Vértices: 133, Arestas: 265 ===
+✅ Sucesso - Custo: 1076
+
+=== Teste #1455 - Vértices: 165, Arestas: 228 ===
+✅ Sucesso - Custo: 1473
+
+=== Teste #1456 - Vértices: 181, Arestas: 472 ===
+✅ Sucesso - Custo: 1278
+
+=== Teste #1457 - Vértices: 105, Arestas: 227 ===
+✅ Sucesso - Custo: 718
+
+=== Teste #1458 - Vértices: 158, Arestas: 331 ===
+✅ Sucesso - Custo: 1218
+
+=== Teste #1459 - Vértices: 186, Arestas: 251 ===
+✅ Sucesso - Custo: 1660
+
+=== Teste #1460 - Vértices: 125, Arestas: 223 ===
+✅ Sucesso - Custo: 1023
+
+=== Teste #1461 - Vértices: 154, Arestas: 428 ===
+✅ Sucesso - Custo: 938
+
+=== Teste #1462 - Vértices: 145, Arestas: 420 ===
+✅ Sucesso - Custo: 932
+
+=== Teste #1463 - Vértices: 112, Arestas: 230 ===
+✅ Sucesso - Custo: 851
+
+=== Teste #1464 - Vértices: 107, Arestas: 191 ===
+✅ Sucesso - Custo: 851
+
+=== Teste #1465 - Vértices: 115, Arestas: 299 ===
+✅ Sucesso - Custo: 767
+
+=== Teste #1466 - Vértices: 160, Arestas: 178 ===
+✅ Sucesso - Custo: 1654
+
+=== Teste #1467 - Vértices: 195, Arestas: 538 ===
+✅ Sucesso - Custo: 1292
+
+=== Teste #1468 - Vértices: 180, Arestas: 490 ===
+✅ Sucesso - Custo: 1191
+
+=== Teste #1469 - Vértices: 147, Arestas: 324 ===
+✅ Sucesso - Custo: 1142
+
+=== Teste #1470 - Vértices: 147, Arestas: 340 ===
+✅ Sucesso - Custo: 1035
+
+=== Teste #1471 - Vértices: 158, Arestas: 440 ===
+✅ Sucesso - Custo: 1103
+
+=== Teste #1472 - Vértices: 109, Arestas: 162 ===
+✅ Sucesso - Custo: 1030
+
+=== Teste #1473 - Vértices: 131, Arestas: 331 ===
+✅ Sucesso - Custo: 822
+
+=== Teste #1474 - Vértices: 181, Arestas: 208 ===
+✅ Sucesso - Custo: 1659
+
+=== Teste #1475 - Vértices: 153, Arestas: 201 ===
+✅ Sucesso - Custo: 1533
+
+=== Teste #1476 - Vértices: 106, Arestas: 272 ===
+✅ Sucesso - Custo: 681
+
+=== Teste #1477 - Vértices: 162, Arestas: 465 ===
+✅ Sucesso - Custo: 1028
+
+=== Teste #1478 - Vértices: 156, Arestas: 462 ===
+✅ Sucesso - Custo: 970
+
+=== Teste #1479 - Vértices: 183, Arestas: 280 ===
+✅ Sucesso - Custo: 1636
+
+=== Teste #1480 - Vértices: 167, Arestas: 413 ===
+✅ Sucesso - Custo: 1229
+
+=== Teste #1481 - Vértices: 134, Arestas: 247 ===
+✅ Sucesso - Custo: 1120
+
+=== Teste #1482 - Vértices: 164, Arestas: 187 ===
+✅ Sucesso - Custo: 1702
+
+=== Teste #1483 - Vértices: 124, Arestas: 322 ===
+✅ Sucesso - Custo: 842
+
+=== Teste #1484 - Vértices: 113, Arestas: 283 ===
+✅ Sucesso - Custo: 780
+
+=== Teste #1485 - Vértices: 192, Arestas: 487 ===
+✅ Sucesso - Custo: 1217
+
+=== Teste #1486 - Vértices: 192, Arestas: 299 ===
+✅ Sucesso - Custo: 1736
+
+=== Teste #1487 - Vértices: 175, Arestas: 454 ===
+✅ Sucesso - Custo: 1156
+
+=== Teste #1488 - Vértices: 146, Arestas: 151 ===
+✅ Sucesso - Custo: 1449
+
+=== Teste #1489 - Vértices: 200, Arestas: 467 ===
+✅ Sucesso - Custo: 1406
+
+=== Teste #1490 - Vértices: 194, Arestas: 194 ===
+✅ Sucesso - Custo: 1932
+
+=== Teste #1491 - Vértices: 186, Arestas: 334 ===
+✅ Sucesso - Custo: 1517
+
+=== Teste #1492 - Vértices: 161, Arestas: 467 ===
+✅ Sucesso - Custo: 1068
+
+=== Teste #1493 - Vértices: 118, Arestas: 236 ===
+✅ Sucesso - Custo: 957
+
+=== Teste #1494 - Vértices: 105, Arestas: 271 ===
+✅ Sucesso - Custo: 738
+
+=== Teste #1495 - Vértices: 126, Arestas: 280 ===
+✅ Sucesso - Custo: 937
+
+=== Teste #1496 - Vértices: 161, Arestas: 247 ===
+✅ Sucesso - Custo: 1376
+
+=== Teste #1497 - Vértices: 116, Arestas: 137 ===
+✅ Sucesso - Custo: 1073
+
+=== Teste #1498 - Vértices: 200, Arestas: 351 ===
+✅ Sucesso - Custo: 1696
+
+=== Teste #1499 - Vértices: 167, Arestas: 367 ===
+✅ Sucesso - Custo: 1275
+
+=== Teste #1500 - Vértices: 174, Arestas: 379 ===
+✅ Sucesso - Custo: 1302
+
+=== Teste #1501 - Vértices: 107, Arestas: 245 ===
+✅ Sucesso - Custo: 759
+
+=== Teste #1502 - Vértices: 198, Arestas: 475 ===
+✅ Sucesso - Custo: 1255
+
+=== Teste #1503 - Vértices: 116, Arestas: 300 ===
+✅ Sucesso - Custo: 786
+
+=== Teste #1504 - Vértices: 176, Arestas: 493 ===
+✅ Sucesso - Custo: 1125
+
+=== Teste #1505 - Vértices: 151, Arestas: 261 ===
+✅ Sucesso - Custo: 1204
+
+=== Teste #1506 - Vértices: 160, Arestas: 368 ===
+✅ Sucesso - Custo: 1113
+
+=== Teste #1507 - Vértices: 131, Arestas: 262 ===
+✅ Sucesso - Custo: 931
+
+=== Teste #1508 - Vértices: 193, Arestas: 514 ===
+✅ Sucesso - Custo: 1341
+
+=== Teste #1509 - Vértices: 131, Arestas: 373 ===
+✅ Sucesso - Custo: 875
+
+=== Teste #1510 - Vértices: 116, Arestas: 279 ===
+✅ Sucesso - Custo: 836
+
+=== Teste #1511 - Vértices: 189, Arestas: 317 ===
+✅ Sucesso - Custo: 1643
+
+=== Teste #1512 - Vértices: 120, Arestas: 168 ===
+✅ Sucesso - Custo: 1165
+
+=== Teste #1513 - Vértices: 170, Arestas: 191 ===
+✅ Sucesso - Custo: 1760
+
+=== Teste #1514 - Vértices: 107, Arestas: 262 ===
+✅ Sucesso - Custo: 727
+
+=== Teste #1515 - Vértices: 163, Arestas: 435 ===
+✅ Sucesso - Custo: 998
+
+=== Teste #1516 - Vértices: 105, Arestas: 117 ===
+✅ Sucesso - Custo: 998
+
+=== Teste #1517 - Vértices: 155, Arestas: 266 ===
+✅ Sucesso - Custo: 1337
+
+=== Teste #1518 - Vértices: 177, Arestas: 389 ===
+✅ Sucesso - Custo: 1328
+
+=== Teste #1519 - Vértices: 126, Arestas: 228 ===
+✅ Sucesso - Custo: 1094
+
+=== Teste #1520 - Vértices: 193, Arestas: 405 ===
+✅ Sucesso - Custo: 1499
+
+=== Teste #1521 - Vértices: 188, Arestas: 291 ===
+✅ Sucesso - Custo: 1721
+
+=== Teste #1522 - Vértices: 197, Arestas: 395 ===
+✅ Sucesso - Custo: 1445
+
+=== Teste #1523 - Vértices: 116, Arestas: 255 ===
+✅ Sucesso - Custo: 870
+
+=== Teste #1524 - Vértices: 146, Arestas: 256 ===
+✅ Sucesso - Custo: 1232
+
+=== Teste #1525 - Vértices: 106, Arestas: 247 ===
+✅ Sucesso - Custo: 756
+
+=== Teste #1526 - Vértices: 150, Arestas: 271 ===
+✅ Sucesso - Custo: 1161
+
+=== Teste #1527 - Vértices: 125, Arestas: 201 ===
+✅ Sucesso - Custo: 985
+
+=== Teste #1528 - Vértices: 120, Arestas: 353 ===
+✅ Sucesso - Custo: 744
+
+=== Teste #1529 - Vértices: 157, Arestas: 226 ===
+✅ Sucesso - Custo: 1440
+
+=== Teste #1530 - Vértices: 168, Arestas: 173 ===
+✅ Sucesso - Custo: 1790
+
+=== Teste #1531 - Vértices: 193, Arestas: 474 ===
+✅ Sucesso - Custo: 1406
+
+=== Teste #1532 - Vértices: 180, Arestas: 292 ===
+✅ Sucesso - Custo: 1564
+
+=== Teste #1533 - Vértices: 193, Arestas: 429 ===
+✅ Sucesso - Custo: 1426
+
+=== Teste #1534 - Vértices: 141, Arestas: 399 ===
+✅ Sucesso - Custo: 915
+
+=== Teste #1535 - Vértices: 147, Arestas: 173 ===
+✅ Sucesso - Custo: 1485
+
+=== Teste #1536 - Vértices: 194, Arestas: 505 ===
+✅ Sucesso - Custo: 1394
+
+=== Teste #1537 - Vértices: 128, Arestas: 150 ===
+✅ Sucesso - Custo: 1343
+
+=== Teste #1538 - Vértices: 118, Arestas: 239 ===
+✅ Sucesso - Custo: 894
+
+=== Teste #1539 - Vértices: 113, Arestas: 284 ===
+✅ Sucesso - Custo: 748
+
+=== Teste #1540 - Vértices: 132, Arestas: 208 ===
+✅ Sucesso - Custo: 1129
+
+=== Teste #1541 - Vértices: 168, Arestas: 262 ===
+✅ Sucesso - Custo: 1501
+
+=== Teste #1542 - Vértices: 155, Arestas: 438 ===
+✅ Sucesso - Custo: 968
+
+=== Teste #1543 - Vértices: 168, Arestas: 485 ===
+✅ Sucesso - Custo: 998
+
+=== Teste #1544 - Vértices: 133, Arestas: 167 ===
+✅ Sucesso - Custo: 1248
+
+=== Teste #1545 - Vértices: 181, Arestas: 284 ===
+✅ Sucesso - Custo: 1586
+
+=== Teste #1546 - Vértices: 160, Arestas: 260 ===
+✅ Sucesso - Custo: 1368
+
+=== Teste #1547 - Vértices: 107, Arestas: 298 ===
+✅ Sucesso - Custo: 647
+
+=== Teste #1548 - Vértices: 110, Arestas: 325 ===
+✅ Sucesso - Custo: 693
+
+=== Teste #1549 - Vértices: 137, Arestas: 245 ===
+✅ Sucesso - Custo: 1184
+
+=== Teste #1550 - Vértices: 192, Arestas: 316 ===
+✅ Sucesso - Custo: 1621
+
+=== Teste #1551 - Vértices: 104, Arestas: 175 ===
+✅ Sucesso - Custo: 879
+
+=== Teste #1552 - Vértices: 152, Arestas: 297 ===
+✅ Sucesso - Custo: 1166
+
+=== Teste #1553 - Vértices: 161, Arestas: 173 ===
+✅ Sucesso - Custo: 1678
+
+=== Teste #1554 - Vértices: 128, Arestas: 255 ===
+✅ Sucesso - Custo: 948
+
+=== Teste #1555 - Vértices: 164, Arestas: 380 ===
+✅ Sucesso - Custo: 1245
+
+=== Teste #1556 - Vértices: 128, Arestas: 300 ===
+✅ Sucesso - Custo: 938
+
+=== Teste #1557 - Vértices: 192, Arestas: 324 ===
+✅ Sucesso - Custo: 1643
+
+=== Teste #1558 - Vértices: 200, Arestas: 587 ===
+✅ Sucesso - Custo: 1132
+
+=== Teste #1559 - Vértices: 138, Arestas: 235 ===
+✅ Sucesso - Custo: 1107
+
+=== Teste #1560 - Vértices: 142, Arestas: 413 ===
+✅ Sucesso - Custo: 914
+
+=== Teste #1561 - Vértices: 154, Arestas: 195 ===
+✅ Sucesso - Custo: 1486
+
+=== Teste #1562 - Vértices: 196, Arestas: 463 ===
+✅ Sucesso - Custo: 1451
+
+=== Teste #1563 - Vértices: 153, Arestas: 229 ===
+✅ Sucesso - Custo: 1437
+
+=== Teste #1564 - Vértices: 132, Arestas: 194 ===
+✅ Sucesso - Custo: 1249
+
+=== Teste #1565 - Vértices: 142, Arestas: 361 ===
+✅ Sucesso - Custo: 1004
+
+=== Teste #1566 - Vértices: 136, Arestas: 403 ===
+✅ Sucesso - Custo: 821
+
+=== Teste #1567 - Vértices: 107, Arestas: 301 ===
+✅ Sucesso - Custo: 692
+
+=== Teste #1568 - Vértices: 133, Arestas: 159 ===
+✅ Sucesso - Custo: 1360
+
+=== Teste #1569 - Vértices: 181, Arestas: 207 ===
+✅ Sucesso - Custo: 1824
+
+=== Teste #1570 - Vértices: 188, Arestas: 394 ===
+✅ Sucesso - Custo: 1387
+
+=== Teste #1571 - Vértices: 155, Arestas: 219 ===
+✅ Sucesso - Custo: 1442
+
+=== Teste #1572 - Vértices: 132, Arestas: 335 ===
+✅ Sucesso - Custo: 896
+
+=== Teste #1573 - Vértices: 105, Arestas: 269 ===
+✅ Sucesso - Custo: 703
+
+=== Teste #1574 - Vértices: 164, Arestas: 208 ===
+✅ Sucesso - Custo: 1475
+
+=== Teste #1575 - Vértices: 182, Arestas: 197 ===
+✅ Sucesso - Custo: 1877
+
+=== Teste #1576 - Vértices: 148, Arestas: 325 ===
+✅ Sucesso - Custo: 1055
+
+=== Teste #1577 - Vértices: 173, Arestas: 219 ===
+✅ Sucesso - Custo: 1762
+
+=== Teste #1578 - Vértices: 200, Arestas: 591 ===
+✅ Sucesso - Custo: 1220
+
+=== Teste #1579 - Vértices: 185, Arestas: 314 ===
+✅ Sucesso - Custo: 1602
+
+=== Teste #1580 - Vértices: 138, Arestas: 242 ===
+✅ Sucesso - Custo: 1275
+
+=== Teste #1581 - Vértices: 120, Arestas: 183 ===
+✅ Sucesso - Custo: 939
+
+=== Teste #1582 - Vértices: 136, Arestas: 373 ===
+✅ Sucesso - Custo: 902
+
+=== Teste #1583 - Vértices: 104, Arestas: 171 ===
+✅ Sucesso - Custo: 960
+
+=== Teste #1584 - Vértices: 117, Arestas: 274 ===
+✅ Sucesso - Custo: 934
+
+=== Teste #1585 - Vértices: 120, Arestas: 289 ===
+✅ Sucesso - Custo: 862
+
+=== Teste #1586 - Vértices: 192, Arestas: 199 ===
+✅ Sucesso - Custo: 2115
+
+=== Teste #1587 - Vértices: 103, Arestas: 156 ===
+✅ Sucesso - Custo: 1005
+
+=== Teste #1588 - Vértices: 184, Arestas: 490 ===
+✅ Sucesso - Custo: 1147
+
+=== Teste #1589 - Vértices: 159, Arestas: 463 ===
+✅ Sucesso - Custo: 1024
+
+=== Teste #1590 - Vértices: 118, Arestas: 276 ===
+✅ Sucesso - Custo: 896
+
+=== Teste #1591 - Vértices: 117, Arestas: 271 ===
+✅ Sucesso - Custo: 811
+
+=== Teste #1592 - Vértices: 119, Arestas: 265 ===
+✅ Sucesso - Custo: 869
+
+=== Teste #1593 - Vértices: 183, Arestas: 306 ===
+✅ Sucesso - Custo: 1720
+
+=== Teste #1594 - Vértices: 185, Arestas: 378 ===
+✅ Sucesso - Custo: 1401
+
+=== Teste #1595 - Vértices: 159, Arestas: 346 ===
+✅ Sucesso - Custo: 1199
+
+=== Teste #1596 - Vértices: 104, Arestas: 272 ===
+✅ Sucesso - Custo: 616
+
+=== Teste #1597 - Vértices: 183, Arestas: 416 ===
+✅ Sucesso - Custo: 1405
+
+=== Teste #1598 - Vértices: 137, Arestas: 284 ===
+✅ Sucesso - Custo: 1038
+
+=== Teste #1599 - Vértices: 199, Arestas: 230 ===
+✅ Sucesso - Custo: 2072
+
+=== Teste #1600 - Vértices: 137, Arestas: 239 ===
+✅ Sucesso - Custo: 1192
+
+=== Teste #1601 - Vértices: 187, Arestas: 539 ===
+✅ Sucesso - Custo: 1233
+
+=== Teste #1602 - Vértices: 143, Arestas: 181 ===
+✅ Sucesso - Custo: 1461
+
+=== Teste #1603 - Vértices: 164, Arestas: 281 ===
+✅ Sucesso - Custo: 1423
+
+=== Teste #1604 - Vértices: 147, Arestas: 295 ===
+✅ Sucesso - Custo: 1138
+
+=== Teste #1605 - Vértices: 161, Arestas: 363 ===
+✅ Sucesso - Custo: 1143
+
+=== Teste #1606 - Vértices: 197, Arestas: 301 ===
+✅ Sucesso - Custo: 1811
+
+=== Teste #1607 - Vértices: 183, Arestas: 322 ===
+✅ Sucesso - Custo: 1548
+
+=== Teste #1608 - Vértices: 143, Arestas: 375 ===
+✅ Sucesso - Custo: 980
+
+=== Teste #1609 - Vértices: 101, Arestas: 258 ===
+✅ Sucesso - Custo: 644
+
+=== Teste #1610 - Vértices: 145, Arestas: 271 ===
+✅ Sucesso - Custo: 1164
+
+=== Teste #1611 - Vértices: 154, Arestas: 238 ===
+✅ Sucesso - Custo: 1320
+
+=== Teste #1612 - Vértices: 170, Arestas: 285 ===
+✅ Sucesso - Custo: 1496
+
+=== Teste #1613 - Vértices: 112, Arestas: 296 ===
+✅ Sucesso - Custo: 754
+
+=== Teste #1614 - Vértices: 192, Arestas: 225 ===
+✅ Sucesso - Custo: 1965
+
+=== Teste #1615 - Vértices: 168, Arestas: 473 ===
+✅ Sucesso - Custo: 1067
+
+=== Teste #1616 - Vértices: 191, Arestas: 409 ===
+✅ Sucesso - Custo: 1427
+
+=== Teste #1617 - Vértices: 115, Arestas: 208 ===
+✅ Sucesso - Custo: 934
+
+=== Teste #1618 - Vértices: 131, Arestas: 215 ===
+✅ Sucesso - Custo: 1123
+
+=== Teste #1619 - Vértices: 191, Arestas: 216 ===
+✅ Sucesso - Custo: 1693
+
+=== Teste #1620 - Vértices: 110, Arestas: 307 ===
+✅ Sucesso - Custo: 720
+
+=== Teste #1621 - Vértices: 193, Arestas: 374 ===
+✅ Sucesso - Custo: 1543
+
+=== Teste #1622 - Vértices: 136, Arestas: 230 ===
+✅ Sucesso - Custo: 1171
+
+=== Teste #1623 - Vértices: 109, Arestas: 187 ===
+✅ Sucesso - Custo: 893
+
+=== Teste #1624 - Vértices: 182, Arestas: 474 ===
+✅ Sucesso - Custo: 1276
+
+=== Teste #1625 - Vértices: 106, Arestas: 314 ===
+✅ Sucesso - Custo: 705
+
+=== Teste #1626 - Vértices: 133, Arestas: 328 ===
+✅ Sucesso - Custo: 917
+
+=== Teste #1627 - Vértices: 129, Arestas: 291 ===
+✅ Sucesso - Custo: 948
+
+=== Teste #1628 - Vértices: 118, Arestas: 295 ===
+✅ Sucesso - Custo: 802
+
+=== Teste #1629 - Vértices: 129, Arestas: 225 ===
+✅ Sucesso - Custo: 1015
+
+=== Teste #1630 - Vértices: 180, Arestas: 422 ===
+✅ Sucesso - Custo: 1308
+
+=== Teste #1631 - Vértices: 150, Arestas: 382 ===
+✅ Sucesso - Custo: 1054
+
+=== Teste #1632 - Vértices: 118, Arestas: 159 ===
+✅ Sucesso - Custo: 1100
+
+=== Teste #1633 - Vértices: 189, Arestas: 197 ===
+✅ Sucesso - Custo: 1902
+
+=== Teste #1634 - Vértices: 144, Arestas: 421 ===
+✅ Sucesso - Custo: 956
+
+=== Teste #1635 - Vértices: 173, Arestas: 439 ===
+✅ Sucesso - Custo: 1247
+
+=== Teste #1636 - Vértices: 176, Arestas: 501 ===
+✅ Sucesso - Custo: 1089
+
+=== Teste #1637 - Vértices: 157, Arestas: 427 ===
+✅ Sucesso - Custo: 1048
+
+=== Teste #1638 - Vértices: 169, Arestas: 366 ===
+✅ Sucesso - Custo: 1178
+
+=== Teste #1639 - Vértices: 186, Arestas: 353 ===
+✅ Sucesso - Custo: 1436
+
+=== Teste #1640 - Vértices: 142, Arestas: 242 ===
+✅ Sucesso - Custo: 1214
+
+=== Teste #1641 - Vértices: 116, Arestas: 227 ===
+✅ Sucesso - Custo: 915
+
+=== Teste #1642 - Vértices: 126, Arestas: 226 ===
+✅ Sucesso - Custo: 993
+
+=== Teste #1643 - Vértices: 150, Arestas: 361 ===
+✅ Sucesso - Custo: 1075
+
+=== Teste #1644 - Vértices: 192, Arestas: 215 ===
+✅ Sucesso - Custo: 1911
+
+=== Teste #1645 - Vértices: 117, Arestas: 350 ===
+✅ Sucesso - Custo: 741
+
+=== Teste #1646 - Vértices: 109, Arestas: 306 ===
+✅ Sucesso - Custo: 705
+
+=== Teste #1647 - Vértices: 168, Arestas: 223 ===
+✅ Sucesso - Custo: 1576
+
+=== Teste #1648 - Vértices: 102, Arestas: 168 ===
+✅ Sucesso - Custo: 906
+
+=== Teste #1649 - Vértices: 172, Arestas: 485 ===
+✅ Sucesso - Custo: 1128
+
+=== Teste #1650 - Vértices: 172, Arestas: 495 ===
+✅ Sucesso - Custo: 1140
+
+=== Teste #1651 - Vértices: 143, Arestas: 272 ===
+✅ Sucesso - Custo: 1116
+
+=== Teste #1652 - Vértices: 126, Arestas: 222 ===
+✅ Sucesso - Custo: 1022
+
+=== Teste #1653 - Vértices: 103, Arestas: 257 ===
+✅ Sucesso - Custo: 745
+
+=== Teste #1654 - Vértices: 154, Arestas: 214 ===
+✅ Sucesso - Custo: 1418
+
+=== Teste #1655 - Vértices: 195, Arestas: 494 ===
+✅ Sucesso - Custo: 1307
+
+=== Teste #1656 - Vértices: 138, Arestas: 286 ===
+✅ Sucesso - Custo: 1065
+
+=== Teste #1657 - Vértices: 136, Arestas: 176 ===
+✅ Sucesso - Custo: 1358
+
+=== Teste #1658 - Vértices: 148, Arestas: 329 ===
+✅ Sucesso - Custo: 1176
+
+=== Teste #1659 - Vértices: 159, Arestas: 192 ===
+✅ Sucesso - Custo: 1568
+
+=== Teste #1660 - Vértices: 151, Arestas: 307 ===
+✅ Sucesso - Custo: 1140
+
+=== Teste #1661 - Vértices: 187, Arestas: 207 ===
+✅ Sucesso - Custo: 1878
+
+=== Teste #1662 - Vértices: 155, Arestas: 370 ===
+✅ Sucesso - Custo: 1118
+
+=== Teste #1663 - Vértices: 186, Arestas: 224 ===
+✅ Sucesso - Custo: 1873
+
+=== Teste #1664 - Vértices: 112, Arestas: 242 ===
+✅ Sucesso - Custo: 878
+
+=== Teste #1665 - Vértices: 142, Arestas: 264 ===
+✅ Sucesso - Custo: 1102
+
+=== Teste #1666 - Vértices: 127, Arestas: 213 ===
+✅ Sucesso - Custo: 994
+
+=== Teste #1667 - Vértices: 112, Arestas: 195 ===
+✅ Sucesso - Custo: 1032
+
+=== Teste #1668 - Vértices: 198, Arestas: 560 ===
+✅ Sucesso - Custo: 1189
+
+=== Teste #1669 - Vértices: 199, Arestas: 360 ===
+✅ Sucesso - Custo: 1707
+
+=== Teste #1670 - Vértices: 135, Arestas: 363 ===
+✅ Sucesso - Custo: 845
+
+=== Teste #1671 - Vértices: 140, Arestas: 384 ===
+✅ Sucesso - Custo: 919
+
+=== Teste #1672 - Vértices: 110, Arestas: 236 ===
+✅ Sucesso - Custo: 768
+
+=== Teste #1673 - Vértices: 125, Arestas: 325 ===
+✅ Sucesso - Custo: 821
+
+=== Teste #1674 - Vértices: 120, Arestas: 333 ===
+✅ Sucesso - Custo: 885
+
+=== Teste #1675 - Vértices: 120, Arestas: 259 ===
+✅ Sucesso - Custo: 809
+
+=== Teste #1676 - Vértices: 133, Arestas: 219 ===
+✅ Sucesso - Custo: 1200
+
+=== Teste #1677 - Vértices: 108, Arestas: 304 ===
+✅ Sucesso - Custo: 778
+
+=== Teste #1678 - Vértices: 200, Arestas: 503 ===
+✅ Sucesso - Custo: 1484
+
+=== Teste #1679 - Vértices: 198, Arestas: 570 ===
+✅ Sucesso - Custo: 1191
+
+=== Teste #1680 - Vértices: 147, Arestas: 191 ===
+✅ Sucesso - Custo: 1310
+
+=== Teste #1681 - Vértices: 111, Arestas: 313 ===
+✅ Sucesso - Custo: 675
+
+=== Teste #1682 - Vértices: 163, Arestas: 275 ===
+✅ Sucesso - Custo: 1321
+
+=== Teste #1683 - Vértices: 183, Arestas: 185 ===
+✅ Sucesso - Custo: 1885
+
+=== Teste #1684 - Vértices: 112, Arestas: 291 ===
+✅ Sucesso - Custo: 720
+
+=== Teste #1685 - Vértices: 144, Arestas: 305 ===
+✅ Sucesso - Custo: 1151
+
+=== Teste #1686 - Vértices: 112, Arestas: 202 ===
+✅ Sucesso - Custo: 868
+
+=== Teste #1687 - Vértices: 178, Arestas: 449 ===
+✅ Sucesso - Custo: 1319
+
+=== Teste #1688 - Vértices: 110, Arestas: 174 ===
+✅ Sucesso - Custo: 916
+
+=== Teste #1689 - Vértices: 106, Arestas: 108 ===
+✅ Sucesso - Custo: 1047
+
+=== Teste #1690 - Vértices: 136, Arestas: 317 ===
+✅ Sucesso - Custo: 990
+
+=== Teste #1691 - Vértices: 121, Arestas: 288 ===
+✅ Sucesso - Custo: 967
+
+=== Teste #1692 - Vértices: 171, Arestas: 279 ===
+✅ Sucesso - Custo: 1335
+
+=== Teste #1693 - Vértices: 158, Arestas: 227 ===
+✅ Sucesso - Custo: 1369
+
+=== Teste #1694 - Vértices: 153, Arestas: 360 ===
+✅ Sucesso - Custo: 1034
+
+=== Teste #1695 - Vértices: 112, Arestas: 223 ===
+✅ Sucesso - Custo: 847
+
+=== Teste #1696 - Vértices: 112, Arestas: 254 ===
+✅ Sucesso - Custo: 802
+
+=== Teste #1697 - Vértices: 150, Arestas: 355 ===
+✅ Sucesso - Custo: 1097
+
+=== Teste #1698 - Vértices: 185, Arestas: 445 ===
+✅ Sucesso - Custo: 1329
+
+=== Teste #1699 - Vértices: 106, Arestas: 316 ===
+✅ Sucesso - Custo: 716
+
+=== Teste #1700 - Vértices: 154, Arestas: 181 ===
+✅ Sucesso - Custo: 1510
+
+=== Teste #1701 - Vértices: 172, Arestas: 455 ===
+✅ Sucesso - Custo: 1252
+
+=== Teste #1702 - Vértices: 129, Arestas: 322 ===
+✅ Sucesso - Custo: 799
+
+=== Teste #1703 - Vértices: 135, Arestas: 167 ===
+✅ Sucesso - Custo: 1330
+
+=== Teste #1704 - Vértices: 117, Arestas: 142 ===
+✅ Sucesso - Custo: 1218
+
+=== Teste #1705 - Vértices: 123, Arestas: 285 ===
+✅ Sucesso - Custo: 944
+
+=== Teste #1706 - Vértices: 177, Arestas: 447 ===
+✅ Sucesso - Custo: 1204
+
+=== Teste #1707 - Vértices: 174, Arestas: 244 ===
+✅ Sucesso - Custo: 1654
+
+=== Teste #1708 - Vértices: 149, Arestas: 153 ===
+✅ Sucesso - Custo: 1587
+
+=== Teste #1709 - Vértices: 177, Arestas: 230 ===
+✅ Sucesso - Custo: 1706
+
+=== Teste #1710 - Vértices: 170, Arestas: 260 ===
+✅ Sucesso - Custo: 1544
+
+=== Teste #1711 - Vértices: 143, Arestas: 185 ===
+✅ Sucesso - Custo: 1463
+
+=== Teste #1712 - Vértices: 188, Arestas: 276 ===
+✅ Sucesso - Custo: 1765
+
+=== Teste #1713 - Vértices: 169, Arestas: 431 ===
+✅ Sucesso - Custo: 1123
+
+=== Teste #1714 - Vértices: 145, Arestas: 205 ===
+✅ Sucesso - Custo: 1445
+
+=== Teste #1715 - Vértices: 151, Arestas: 171 ===
+✅ Sucesso - Custo: 1516
+
+=== Teste #1716 - Vértices: 102, Arestas: 167 ===
+✅ Sucesso - Custo: 906
+
+=== Teste #1717 - Vértices: 132, Arestas: 272 ===
+✅ Sucesso - Custo: 1076
+
+=== Teste #1718 - Vértices: 140, Arestas: 234 ===
+✅ Sucesso - Custo: 1130
+
+=== Teste #1719 - Vértices: 199, Arestas: 279 ===
+✅ Sucesso - Custo: 1795
+
+=== Teste #1720 - Vértices: 153, Arestas: 286 ===
+✅ Sucesso - Custo: 1152
+
+=== Teste #1721 - Vértices: 134, Arestas: 192 ===
+✅ Sucesso - Custo: 1218
+
+=== Teste #1722 - Vértices: 169, Arestas: 365 ===
+✅ Sucesso - Custo: 1190
+
+=== Teste #1723 - Vértices: 135, Arestas: 401 ===
+✅ Sucesso - Custo: 796
+
+=== Teste #1724 - Vértices: 157, Arestas: 355 ===
+✅ Sucesso - Custo: 1223
+
+=== Teste #1725 - Vértices: 178, Arestas: 257 ===
+✅ Sucesso - Custo: 1583
+
+=== Teste #1726 - Vértices: 163, Arestas: 354 ===
+✅ Sucesso - Custo: 1347
+
+=== Teste #1727 - Vértices: 174, Arestas: 354 ===
+✅ Sucesso - Custo: 1368
+
+=== Teste #1728 - Vértices: 109, Arestas: 160 ===
+✅ Sucesso - Custo: 866
+
+=== Teste #1729 - Vértices: 148, Arestas: 438 ===
+✅ Sucesso - Custo: 857
+
+=== Teste #1730 - Vértices: 195, Arestas: 409 ===
+✅ Sucesso - Custo: 1566
+
+=== Teste #1731 - Vértices: 122, Arestas: 359 ===
+✅ Sucesso - Custo: 711
+
+=== Teste #1732 - Vértices: 165, Arestas: 466 ===
+✅ Sucesso - Custo: 1072
+
+=== Teste #1733 - Vértices: 152, Arestas: 366 ===
+✅ Sucesso - Custo: 1028
+
+=== Teste #1734 - Vértices: 188, Arestas: 216 ===
+✅ Sucesso - Custo: 1793
+
+=== Teste #1735 - Vértices: 148, Arestas: 397 ===
+✅ Sucesso - Custo: 1042
+
+=== Teste #1736 - Vértices: 169, Arestas: 224 ===
+✅ Sucesso - Custo: 1556
+
+=== Teste #1737 - Vértices: 193, Arestas: 383 ===
+✅ Sucesso - Custo: 1508
+
+=== Teste #1738 - Vértices: 106, Arestas: 240 ===
+✅ Sucesso - Custo: 838
+
+=== Teste #1739 - Vértices: 187, Arestas: 239 ===
+✅ Sucesso - Custo: 1752
+
+=== Teste #1740 - Vértices: 189, Arestas: 462 ===
+✅ Sucesso - Custo: 1446
+
+=== Teste #1741 - Vértices: 119, Arestas: 230 ===
+✅ Sucesso - Custo: 1014
+
+=== Teste #1742 - Vértices: 137, Arestas: 302 ===
+✅ Sucesso - Custo: 1007
+
+=== Teste #1743 - Vértices: 138, Arestas: 156 ===
+✅ Sucesso - Custo: 1346
+
+=== Teste #1744 - Vértices: 127, Arestas: 211 ===
+✅ Sucesso - Custo: 1013
+
+=== Teste #1745 - Vértices: 184, Arestas: 290 ===
+✅ Sucesso - Custo: 1721
+
+=== Teste #1746 - Vértices: 191, Arestas: 458 ===
+✅ Sucesso - Custo: 1380
+
+=== Teste #1747 - Vértices: 125, Arestas: 253 ===
+✅ Sucesso - Custo: 949
+
+=== Teste #1748 - Vértices: 191, Arestas: 224 ===
+✅ Sucesso - Custo: 1946
+
+=== Teste #1749 - Vértices: 195, Arestas: 444 ===
+✅ Sucesso - Custo: 1378
+
+=== Teste #1750 - Vértices: 127, Arestas: 237 ===
+✅ Sucesso - Custo: 989
+
+=== Teste #1751 - Vértices: 128, Arestas: 362 ===
+✅ Sucesso - Custo: 812
+
+=== Teste #1752 - Vértices: 136, Arestas: 190 ===
+✅ Sucesso - Custo: 1229
+
+=== Teste #1753 - Vértices: 122, Arestas: 176 ===
+✅ Sucesso - Custo: 1074
+
+=== Teste #1754 - Vértices: 137, Arestas: 360 ===
+✅ Sucesso - Custo: 841
+
+=== Teste #1755 - Vértices: 186, Arestas: 454 ===
+✅ Sucesso - Custo: 1376
+
+=== Teste #1756 - Vértices: 192, Arestas: 488 ===
+✅ Sucesso - Custo: 1355
+
+=== Teste #1757 - Vértices: 192, Arestas: 278 ===
+✅ Sucesso - Custo: 1785
+
+=== Teste #1758 - Vértices: 143, Arestas: 290 ===
+✅ Sucesso - Custo: 1118
+
+=== Teste #1759 - Vértices: 147, Arestas: 214 ===
+✅ Sucesso - Custo: 1355
+
+=== Teste #1760 - Vértices: 152, Arestas: 251 ===
+✅ Sucesso - Custo: 1243
+
+=== Teste #1761 - Vértices: 162, Arestas: 234 ===
+✅ Sucesso - Custo: 1477
+
+=== Teste #1762 - Vértices: 148, Arestas: 345 ===
+✅ Sucesso - Custo: 993
+
+=== Teste #1763 - Vértices: 182, Arestas: 239 ===
+✅ Sucesso - Custo: 1633
+
+=== Teste #1764 - Vértices: 144, Arestas: 181 ===
+✅ Sucesso - Custo: 1368
+
+=== Teste #1765 - Vértices: 148, Arestas: 405 ===
+✅ Sucesso - Custo: 954
+
+=== Teste #1766 - Vértices: 159, Arestas: 364 ===
+✅ Sucesso - Custo: 1194
+
+=== Teste #1767 - Vértices: 135, Arestas: 172 ===
+✅ Sucesso - Custo: 1382
+
+=== Teste #1768 - Vértices: 123, Arestas: 303 ===
+✅ Sucesso - Custo: 962
+
+=== Teste #1769 - Vértices: 160, Arestas: 235 ===
+✅ Sucesso - Custo: 1416
+
+=== Teste #1770 - Vértices: 113, Arestas: 182 ===
+✅ Sucesso - Custo: 1011
+
+=== Teste #1771 - Vértices: 165, Arestas: 489 ===
+✅ Sucesso - Custo: 1029
+
+=== Teste #1772 - Vértices: 122, Arestas: 366 ===
+✅ Sucesso - Custo: 732
+
+=== Teste #1773 - Vértices: 131, Arestas: 230 ===
+✅ Sucesso - Custo: 1039
+
+=== Teste #1774 - Vértices: 121, Arestas: 242 ===
+✅ Sucesso - Custo: 887
+
+=== Teste #1775 - Vértices: 198, Arestas: 523 ===
+✅ Sucesso - Custo: 1407
+
+=== Teste #1776 - Vértices: 177, Arestas: 374 ===
+✅ Sucesso - Custo: 1256
+
+=== Teste #1777 - Vértices: 199, Arestas: 319 ===
+✅ Sucesso - Custo: 1785
+
+=== Teste #1778 - Vértices: 194, Arestas: 394 ===
+✅ Sucesso - Custo: 1551
+
+=== Teste #1779 - Vértices: 102, Arestas: 249 ===
+✅ Sucesso - Custo: 711
+
+=== Teste #1780 - Vértices: 195, Arestas: 487 ===
+✅ Sucesso - Custo: 1315
+
+=== Teste #1781 - Vértices: 132, Arestas: 303 ===
+✅ Sucesso - Custo: 992
+
+=== Teste #1782 - Vértices: 112, Arestas: 254 ===
+✅ Sucesso - Custo: 777
+
+=== Teste #1783 - Vértices: 153, Arestas: 333 ===
+✅ Sucesso - Custo: 1082
+
+=== Teste #1784 - Vértices: 116, Arestas: 276 ===
+✅ Sucesso - Custo: 817
+
+=== Teste #1785 - Vértices: 152, Arestas: 276 ===
+✅ Sucesso - Custo: 1151
+
+=== Teste #1786 - Vértices: 117, Arestas: 333 ===
+✅ Sucesso - Custo: 801
+
+=== Teste #1787 - Vértices: 167, Arestas: 378 ===
+✅ Sucesso - Custo: 1087
+
+=== Teste #1788 - Vértices: 126, Arestas: 371 ===
+✅ Sucesso - Custo: 819
+
+=== Teste #1789 - Vértices: 110, Arestas: 226 ===
+✅ Sucesso - Custo: 848
+
+=== Teste #1790 - Vértices: 128, Arestas: 275 ===
+✅ Sucesso - Custo: 938
+
+=== Teste #1791 - Vértices: 187, Arestas: 331 ===
+✅ Sucesso - Custo: 1506
+
+=== Teste #1792 - Vértices: 190, Arestas: 495 ===
+✅ Sucesso - Custo: 1331
+
+=== Teste #1793 - Vértices: 181, Arestas: 373 ===
+✅ Sucesso - Custo: 1401
+
+=== Teste #1794 - Vértices: 179, Arestas: 365 ===
+✅ Sucesso - Custo: 1430
+
+=== Teste #1795 - Vértices: 121, Arestas: 358 ===
+✅ Sucesso - Custo: 665
+
+=== Teste #1796 - Vértices: 148, Arestas: 361 ===
+✅ Sucesso - Custo: 938
+
+=== Teste #1797 - Vértices: 126, Arestas: 162 ===
+✅ Sucesso - Custo: 1247
+
+=== Teste #1798 - Vértices: 143, Arestas: 208 ===
+✅ Sucesso - Custo: 1228
+
+=== Teste #1799 - Vértices: 187, Arestas: 301 ===
+✅ Sucesso - Custo: 1760
+
+=== Teste #1800 - Vértices: 152, Arestas: 446 ===
+✅ Sucesso - Custo: 921
+
+=== Teste #1801 - Vértices: 155, Arestas: 280 ===
+✅ Sucesso - Custo: 1180
+
+=== Teste #1802 - Vértices: 165, Arestas: 310 ===
+✅ Sucesso - Custo: 1360
+
+=== Teste #1803 - Vértices: 157, Arestas: 266 ===
+✅ Sucesso - Custo: 1373
+
+=== Teste #1804 - Vértices: 192, Arestas: 497 ===
+✅ Sucesso - Custo: 1286
+
+=== Teste #1805 - Vértices: 112, Arestas: 137 ===
+✅ Sucesso - Custo: 1102
+
+=== Teste #1806 - Vértices: 196, Arestas: 530 ===
+✅ Sucesso - Custo: 1367
+
+=== Teste #1807 - Vértices: 195, Arestas: 230 ===
+✅ Sucesso - Custo: 1913
+
+=== Teste #1808 - Vértices: 123, Arestas: 154 ===
+✅ Sucesso - Custo: 1110
+
+=== Teste #1809 - Vértices: 139, Arestas: 282 ===
+✅ Sucesso - Custo: 1088
+
+=== Teste #1810 - Vértices: 168, Arestas: 473 ===
+✅ Sucesso - Custo: 1194
+
+=== Teste #1811 - Vértices: 137, Arestas: 383 ===
+✅ Sucesso - Custo: 900
+
+=== Teste #1812 - Vértices: 100, Arestas: 185 ===
+✅ Sucesso - Custo: 787
+
+=== Teste #1813 - Vértices: 118, Arestas: 158 ===
+✅ Sucesso - Custo: 1060
+
+=== Teste #1814 - Vértices: 167, Arestas: 269 ===
+✅ Sucesso - Custo: 1424
+
+=== Teste #1815 - Vértices: 193, Arestas: 313 ===
+✅ Sucesso - Custo: 1718
+
+=== Teste #1816 - Vértices: 127, Arestas: 310 ===
+✅ Sucesso - Custo: 883
+
+=== Teste #1817 - Vértices: 199, Arestas: 326 ===
+✅ Sucesso - Custo: 1645
+
+=== Teste #1818 - Vértices: 191, Arestas: 247 ===
+✅ Sucesso - Custo: 1908
+
+=== Teste #1819 - Vértices: 101, Arestas: 156 ===
+✅ Sucesso - Custo: 876
+
+=== Teste #1820 - Vértices: 189, Arestas: 400 ===
+✅ Sucesso - Custo: 1306
+
+=== Teste #1821 - Vértices: 150, Arestas: 314 ===
+✅ Sucesso - Custo: 1120
+
+=== Teste #1822 - Vértices: 151, Arestas: 199 ===
+✅ Sucesso - Custo: 1381
+
+=== Teste #1823 - Vértices: 109, Arestas: 281 ===
+✅ Sucesso - Custo: 750
+
+=== Teste #1824 - Vértices: 190, Arestas: 298 ===
+✅ Sucesso - Custo: 1621
+
+=== Teste #1825 - Vértices: 176, Arestas: 440 ===
+✅ Sucesso - Custo: 1255
+
+=== Teste #1826 - Vértices: 198, Arestas: 442 ===
+✅ Sucesso - Custo: 1367
+
+=== Teste #1827 - Vértices: 107, Arestas: 319 ===
+✅ Sucesso - Custo: 684
+
+=== Teste #1828 - Vértices: 152, Arestas: 194 ===
+✅ Sucesso - Custo: 1560
+
+=== Teste #1829 - Vértices: 190, Arestas: 420 ===
+✅ Sucesso - Custo: 1336
+
+=== Teste #1830 - Vértices: 139, Arestas: 249 ===
+✅ Sucesso - Custo: 1182
+
+=== Teste #1831 - Vértices: 138, Arestas: 160 ===
+✅ Sucesso - Custo: 1406
+
+=== Teste #1832 - Vértices: 192, Arestas: 423 ===
+✅ Sucesso - Custo: 1578
+
+=== Teste #1833 - Vértices: 142, Arestas: 349 ===
+✅ Sucesso - Custo: 984
+
+=== Teste #1834 - Vértices: 198, Arestas: 220 ===
+✅ Sucesso - Custo: 1924
+
+=== Teste #1835 - Vértices: 159, Arestas: 161 ===
+✅ Sucesso - Custo: 1676
+
+=== Teste #1836 - Vértices: 194, Arestas: 442 ===
+✅ Sucesso - Custo: 1330
+
+=== Teste #1837 - Vértices: 132, Arestas: 232 ===
+✅ Sucesso - Custo: 1238
+
+=== Teste #1838 - Vértices: 185, Arestas: 440 ===
+✅ Sucesso - Custo: 1320
+
+=== Teste #1839 - Vértices: 182, Arestas: 385 ===
+✅ Sucesso - Custo: 1442
+
+=== Teste #1840 - Vértices: 108, Arestas: 208 ===
+✅ Sucesso - Custo: 895
+
+=== Teste #1841 - Vértices: 147, Arestas: 289 ===
+✅ Sucesso - Custo: 1163
+
+=== Teste #1842 - Vértices: 129, Arestas: 129 ===
+✅ Sucesso - Custo: 1371
+
+=== Teste #1843 - Vértices: 159, Arestas: 358 ===
+✅ Sucesso - Custo: 1138
+
+=== Teste #1844 - Vértices: 144, Arestas: 316 ===
+✅ Sucesso - Custo: 1063
+
+=== Teste #1845 - Vértices: 109, Arestas: 252 ===
+✅ Sucesso - Custo: 745
+
+=== Teste #1846 - Vértices: 198, Arestas: 387 ===
+✅ Sucesso - Custo: 1557
+
+=== Teste #1847 - Vértices: 183, Arestas: 441 ===
+✅ Sucesso - Custo: 1222
+
+=== Teste #1848 - Vértices: 118, Arestas: 233 ===
+✅ Sucesso - Custo: 872
+
+=== Teste #1849 - Vértices: 110, Arestas: 207 ===
+✅ Sucesso - Custo: 898
+
+=== Teste #1850 - Vértices: 122, Arestas: 161 ===
+✅ Sucesso - Custo: 1077
+
+=== Teste #1851 - Vértices: 144, Arestas: 320 ===
+✅ Sucesso - Custo: 1118
+
+=== Teste #1852 - Vértices: 108, Arestas: 116 ===
+✅ Sucesso - Custo: 1200
+
+=== Teste #1853 - Vértices: 125, Arestas: 335 ===
+✅ Sucesso - Custo: 786
+
+=== Teste #1854 - Vértices: 105, Arestas: 281 ===
+✅ Sucesso - Custo: 694
+
+=== Teste #1855 - Vértices: 120, Arestas: 166 ===
+✅ Sucesso - Custo: 1151
+
+=== Teste #1856 - Vértices: 159, Arestas: 333 ===
+✅ Sucesso - Custo: 1238
+
+=== Teste #1857 - Vértices: 129, Arestas: 158 ===
+✅ Sucesso - Custo: 1165
+
+=== Teste #1858 - Vértices: 158, Arestas: 304 ===
+✅ Sucesso - Custo: 1278
+
+=== Teste #1859 - Vértices: 123, Arestas: 245 ===
+✅ Sucesso - Custo: 1024
+
+=== Teste #1860 - Vértices: 126, Arestas: 311 ===
+✅ Sucesso - Custo: 880
+
+=== Teste #1861 - Vértices: 130, Arestas: 155 ===
+✅ Sucesso - Custo: 1275
+
+=== Teste #1862 - Vértices: 153, Arestas: 362 ===
+✅ Sucesso - Custo: 1031
+
+=== Teste #1863 - Vértices: 120, Arestas: 353 ===
+✅ Sucesso - Custo: 726
+
+=== Teste #1864 - Vértices: 127, Arestas: 156 ===
+✅ Sucesso - Custo: 1058
+
+=== Teste #1865 - Vértices: 189, Arestas: 558 ===
+✅ Sucesso - Custo: 1133
+
+=== Teste #1866 - Vértices: 179, Arestas: 245 ===
+✅ Sucesso - Custo: 1730
+
+=== Teste #1867 - Vértices: 135, Arestas: 347 ===
+✅ Sucesso - Custo: 864
+
+=== Teste #1868 - Vértices: 169, Arestas: 470 ===
+✅ Sucesso - Custo: 1117
+
+=== Teste #1869 - Vértices: 122, Arestas: 162 ===
+✅ Sucesso - Custo: 1176
+
+=== Teste #1870 - Vértices: 142, Arestas: 353 ===
+✅ Sucesso - Custo: 920
+
+=== Teste #1871 - Vértices: 189, Arestas: 302 ===
+✅ Sucesso - Custo: 1670
+
+=== Teste #1872 - Vértices: 174, Arestas: 436 ===
+✅ Sucesso - Custo: 1134
+
+=== Teste #1873 - Vértices: 144, Arestas: 270 ===
+✅ Sucesso - Custo: 1145
+
+=== Teste #1874 - Vértices: 161, Arestas: 293 ===
+✅ Sucesso - Custo: 1414
+
+=== Teste #1875 - Vértices: 128, Arestas: 257 ===
+✅ Sucesso - Custo: 960
+
+=== Teste #1876 - Vértices: 191, Arestas: 285 ===
+✅ Sucesso - Custo: 1670
+
+=== Teste #1877 - Vértices: 125, Arestas: 306 ===
+✅ Sucesso - Custo: 880
+
+=== Teste #1878 - Vértices: 162, Arestas: 402 ===
+✅ Sucesso - Custo: 1163
+
+=== Teste #1879 - Vértices: 139, Arestas: 146 ===
+✅ Sucesso - Custo: 1407
+
+=== Teste #1880 - Vértices: 181, Arestas: 269 ===
+✅ Sucesso - Custo: 1636
+
+=== Teste #1881 - Vértices: 183, Arestas: 286 ===
+✅ Sucesso - Custo: 1676
+
+=== Teste #1882 - Vértices: 116, Arestas: 317 ===
+✅ Sucesso - Custo: 634
+
+=== Teste #1883 - Vértices: 181, Arestas: 341 ===
+✅ Sucesso - Custo: 1530
+
+=== Teste #1884 - Vértices: 101, Arestas: 248 ===
+✅ Sucesso - Custo: 699
+
+=== Teste #1885 - Vértices: 188, Arestas: 223 ===
+✅ Sucesso - Custo: 1820
+
+=== Teste #1886 - Vértices: 154, Arestas: 190 ===
+✅ Sucesso - Custo: 1529
+
+=== Teste #1887 - Vértices: 117, Arestas: 139 ===
+✅ Sucesso - Custo: 1197
+
+=== Teste #1888 - Vértices: 143, Arestas: 351 ===
+✅ Sucesso - Custo: 927
+
+=== Teste #1889 - Vértices: 102, Arestas: 111 ===
+✅ Sucesso - Custo: 1045
+
+=== Teste #1890 - Vértices: 137, Arestas: 349 ===
+✅ Sucesso - Custo: 1037
+
+=== Teste #1891 - Vértices: 186, Arestas: 348 ===
+✅ Sucesso - Custo: 1576
+
+=== Teste #1892 - Vértices: 101, Arestas: 154 ===
+✅ Sucesso - Custo: 890
+
+=== Teste #1893 - Vértices: 124, Arestas: 203 ===
+✅ Sucesso - Custo: 1118
+
+=== Teste #1894 - Vértices: 161, Arestas: 321 ===
+✅ Sucesso - Custo: 1361
+
+=== Teste #1895 - Vértices: 137, Arestas: 145 ===
+✅ Sucesso - Custo: 1476
+
+=== Teste #1896 - Vértices: 164, Arestas: 411 ===
+✅ Sucesso - Custo: 1001
+
+=== Teste #1897 - Vértices: 134, Arestas: 253 ===
+✅ Sucesso - Custo: 1085
+
+=== Teste #1898 - Vértices: 109, Arestas: 246 ===
+✅ Sucesso - Custo: 686
+
+=== Teste #1899 - Vértices: 185, Arestas: 196 ===
+✅ Sucesso - Custo: 1942
+
+=== Teste #1900 - Vértices: 197, Arestas: 510 ===
+✅ Sucesso - Custo: 1206
+
+=== Teste #1901 - Vértices: 142, Arestas: 250 ===
+✅ Sucesso - Custo: 1269
+
+=== Teste #1902 - Vértices: 184, Arestas: 552 ===
+✅ Sucesso - Custo: 1189
+
+=== Teste #1903 - Vértices: 131, Arestas: 292 ===
+✅ Sucesso - Custo: 1086
+
+=== Teste #1904 - Vértices: 158, Arestas: 284 ===
+✅ Sucesso - Custo: 1238
+
+=== Teste #1905 - Vértices: 145, Arestas: 243 ===
+✅ Sucesso - Custo: 1201
+
+=== Teste #1906 - Vértices: 184, Arestas: 251 ===
+✅ Sucesso - Custo: 1703
+
+=== Teste #1907 - Vértices: 124, Arestas: 360 ===
+✅ Sucesso - Custo: 826
+
+=== Teste #1908 - Vértices: 189, Arestas: 204 ===
+✅ Sucesso - Custo: 1940
+
+=== Teste #1909 - Vértices: 177, Arestas: 447 ===
+✅ Sucesso - Custo: 1185
+
+=== Teste #1910 - Vértices: 156, Arestas: 422 ===
+✅ Sucesso - Custo: 945
+
+=== Teste #1911 - Vértices: 164, Arestas: 305 ===
+✅ Sucesso - Custo: 1404
+
+=== Teste #1912 - Vértices: 154, Arestas: 174 ===
+✅ Sucesso - Custo: 1361
+
+=== Teste #1913 - Vértices: 149, Arestas: 324 ===
+✅ Sucesso - Custo: 1105
+
+=== Teste #1914 - Vértices: 167, Arestas: 368 ===
+✅ Sucesso - Custo: 1297
+
+=== Teste #1915 - Vértices: 125, Arestas: 334 ===
+✅ Sucesso - Custo: 801
+
+=== Teste #1916 - Vértices: 115, Arestas: 309 ===
+✅ Sucesso - Custo: 679
+
+=== Teste #1917 - Vértices: 115, Arestas: 135 ===
+✅ Sucesso - Custo: 1190
+
+=== Teste #1918 - Vértices: 161, Arestas: 207 ===
+✅ Sucesso - Custo: 1633
+
+=== Teste #1919 - Vértices: 138, Arestas: 294 ===
+✅ Sucesso - Custo: 1106
+
+=== Teste #1920 - Vértices: 131, Arestas: 302 ===
+✅ Sucesso - Custo: 915
+
+=== Teste #1921 - Vértices: 193, Arestas: 471 ===
+✅ Sucesso - Custo: 1366
+
+=== Teste #1922 - Vértices: 160, Arestas: 359 ===
+✅ Sucesso - Custo: 1133
+
+=== Teste #1923 - Vértices: 118, Arestas: 179 ===
+✅ Sucesso - Custo: 952
+
+=== Teste #1924 - Vértices: 155, Arestas: 368 ===
+✅ Sucesso - Custo: 1024
+
+=== Teste #1925 - Vértices: 123, Arestas: 185 ===
+✅ Sucesso - Custo: 1078
+
+=== Teste #1926 - Vértices: 106, Arestas: 278 ===
+✅ Sucesso - Custo: 676
+
+=== Teste #1927 - Vértices: 168, Arestas: 326 ===
+✅ Sucesso - Custo: 1292
+
+=== Teste #1928 - Vértices: 100, Arestas: 177 ===
+✅ Sucesso - Custo: 857
+
+=== Teste #1929 - Vértices: 192, Arestas: 574 ===
+✅ Sucesso - Custo: 1214
+
+=== Teste #1930 - Vértices: 120, Arestas: 226 ===
+✅ Sucesso - Custo: 966
+
+=== Teste #1931 - Vértices: 100, Arestas: 156 ===
+✅ Sucesso - Custo: 804
+
+=== Teste #1932 - Vértices: 121, Arestas: 241 ===
+✅ Sucesso - Custo: 982
+
+=== Teste #1933 - Vértices: 162, Arestas: 262 ===
+✅ Sucesso - Custo: 1400
+
+=== Teste #1934 - Vértices: 103, Arestas: 154 ===
+✅ Sucesso - Custo: 888
+
+=== Teste #1935 - Vértices: 154, Arestas: 429 ===
+✅ Sucesso - Custo: 1028
+
+=== Teste #1936 - Vértices: 111, Arestas: 302 ===
+✅ Sucesso - Custo: 682
+
+=== Teste #1937 - Vértices: 200, Arestas: 441 ===
+✅ Sucesso - Custo: 1461
+
+=== Teste #1938 - Vértices: 128, Arestas: 343 ===
+✅ Sucesso - Custo: 852
+
+=== Teste #1939 - Vértices: 118, Arestas: 191 ===
+✅ Sucesso - Custo: 1099
+
+=== Teste #1940 - Vértices: 152, Arestas: 204 ===
+✅ Sucesso - Custo: 1488
+
+=== Teste #1941 - Vértices: 183, Arestas: 446 ===
+✅ Sucesso - Custo: 1204
+
+=== Teste #1942 - Vértices: 122, Arestas: 136 ===
+✅ Sucesso - Custo: 1300
+
+=== Teste #1943 - Vértices: 198, Arestas: 222 ===
+✅ Sucesso - Custo: 1989
+
+=== Teste #1944 - Vértices: 182, Arestas: 187 ===
+✅ Sucesso - Custo: 1931
+
+=== Teste #1945 - Vértices: 149, Arestas: 256 ===
+✅ Sucesso - Custo: 1367
+
+=== Teste #1946 - Vértices: 152, Arestas: 173 ===
+✅ Sucesso - Custo: 1435
+
+=== Teste #1947 - Vértices: 116, Arestas: 237 ===
+✅ Sucesso - Custo: 966
+
+=== Teste #1948 - Vértices: 180, Arestas: 258 ===
+✅ Sucesso - Custo: 1645
+
+=== Teste #1949 - Vértices: 162, Arestas: 397 ===
+✅ Sucesso - Custo: 1213
+
+=== Teste #1950 - Vértices: 154, Arestas: 380 ===
+✅ Sucesso - Custo: 1101
+
+=== Teste #1951 - Vértices: 144, Arestas: 349 ===
+✅ Sucesso - Custo: 950
+
+=== Teste #1952 - Vértices: 153, Arestas: 334 ===
+✅ Sucesso - Custo: 1118
+
+=== Teste #1953 - Vértices: 123, Arestas: 273 ===
+✅ Sucesso - Custo: 936
+
+=== Teste #1954 - Vértices: 176, Arestas: 376 ===
+✅ Sucesso - Custo: 1261
+
+=== Teste #1955 - Vértices: 160, Arestas: 265 ===
+✅ Sucesso - Custo: 1338
+
+=== Teste #1956 - Vértices: 184, Arestas: 523 ===
+✅ Sucesso - Custo: 1100
+
+=== Teste #1957 - Vértices: 114, Arestas: 233 ===
+✅ Sucesso - Custo: 955
+
+=== Teste #1958 - Vértices: 154, Arestas: 357 ===
+✅ Sucesso - Custo: 1098
+
+=== Teste #1959 - Vértices: 104, Arestas: 119 ===
+✅ Sucesso - Custo: 1107
+
+=== Teste #1960 - Vértices: 123, Arestas: 356 ===
+✅ Sucesso - Custo: 792
+
+=== Teste #1961 - Vértices: 199, Arestas: 245 ===
+✅ Sucesso - Custo: 1925
+
+=== Teste #1962 - Vértices: 200, Arestas: 493 ===
+✅ Sucesso - Custo: 1427
+
+=== Teste #1963 - Vértices: 187, Arestas: 250 ===
+✅ Sucesso - Custo: 1762
+
+=== Teste #1964 - Vértices: 101, Arestas: 144 ===
+✅ Sucesso - Custo: 994
+
+=== Teste #1965 - Vértices: 148, Arestas: 265 ===
+✅ Sucesso - Custo: 1187
+
+=== Teste #1966 - Vértices: 104, Arestas: 138 ===
+✅ Sucesso - Custo: 975
+
+=== Teste #1967 - Vértices: 149, Arestas: 323 ===
+✅ Sucesso - Custo: 1067
+
+=== Teste #1968 - Vértices: 105, Arestas: 220 ===
+✅ Sucesso - Custo: 770
+
+=== Teste #1969 - Vértices: 167, Arestas: 228 ===
+✅ Sucesso - Custo: 1513
+
+=== Teste #1970 - Vértices: 108, Arestas: 113 ===
+✅ Sucesso - Custo: 1124
+
+=== Teste #1971 - Vértices: 139, Arestas: 260 ===
+✅ Sucesso - Custo: 1099
+
+=== Teste #1972 - Vértices: 103, Arestas: 265 ===
+✅ Sucesso - Custo: 679
+
+=== Teste #1973 - Vértices: 161, Arestas: 425 ===
+✅ Sucesso - Custo: 1047
+
+=== Teste #1974 - Vértices: 149, Arestas: 369 ===
+✅ Sucesso - Custo: 1011
+
+=== Teste #1975 - Vértices: 123, Arestas: 359 ===
+✅ Sucesso - Custo: 808
+
+=== Teste #1976 - Vértices: 188, Arestas: 533 ===
+✅ Sucesso - Custo: 1217
+
+=== Teste #1977 - Vértices: 136, Arestas: 281 ===
+✅ Sucesso - Custo: 1071
+
+=== Teste #1978 - Vértices: 157, Arestas: 169 ===
+✅ Sucesso - Custo: 1600
+
+=== Teste #1979 - Vértices: 144, Arestas: 263 ===
+✅ Sucesso - Custo: 1342
+
+=== Teste #1980 - Vértices: 187, Arestas: 516 ===
+✅ Sucesso - Custo: 1141
+
+=== Teste #1981 - Vértices: 146, Arestas: 327 ===
+✅ Sucesso - Custo: 1047
+
+=== Teste #1982 - Vértices: 128, Arestas: 345 ===
+✅ Sucesso - Custo: 769
+
+=== Teste #1983 - Vértices: 113, Arestas: 235 ===
+✅ Sucesso - Custo: 817
+
+=== Teste #1984 - Vértices: 121, Arestas: 182 ===
+✅ Sucesso - Custo: 1036
+
+=== Teste #1985 - Vértices: 108, Arestas: 198 ===
+✅ Sucesso - Custo: 864
+
+=== Teste #1986 - Vértices: 200, Arestas: 255 ===
+✅ Sucesso - Custo: 1719
+
+=== Teste #1987 - Vértices: 105, Arestas: 304 ===
+✅ Sucesso - Custo: 695
+
+=== Teste #1988 - Vértices: 158, Arestas: 296 ===
+✅ Sucesso - Custo: 1336
+
+=== Teste #1989 - Vértices: 157, Arestas: 467 ===
+✅ Sucesso - Custo: 1002
+
+=== Teste #1990 - Vértices: 185, Arestas: 295 ===
+✅ Sucesso - Custo: 1573
+
+=== Teste #1991 - Vértices: 105, Arestas: 166 ===
+✅ Sucesso - Custo: 963
+
+=== Teste #1992 - Vértices: 125, Arestas: 337 ===
+✅ Sucesso - Custo: 857
+
+=== Teste #1993 - Vértices: 171, Arestas: 286 ===
+✅ Sucesso - Custo: 1547
+
+=== Teste #1994 - Vértices: 139, Arestas: 162 ===
+✅ Sucesso - Custo: 1269
+
+=== Teste #1995 - Vértices: 173, Arestas: 278 ===
+✅ Sucesso - Custo: 1430
+
+=== Teste #1996 - Vértices: 108, Arestas: 261 ===
+✅ Sucesso - Custo: 740
+
+=== Teste #1997 - Vértices: 168, Arestas: 361 ===
+✅ Sucesso - Custo: 1256
+
+=== Teste #1998 - Vértices: 154, Arestas: 346 ===
+✅ Sucesso - Custo: 1037
+
+=== Teste #1999 - Vértices: 132, Arestas: 162 ===
+✅ Sucesso - Custo: 1303
+
+=== Teste #2000 - Vértices: 142, Arestas: 390 ===
+✅ Sucesso - Custo: 1013
+
+🧪 Testagem em volume finalizada. Sucessos: 2000, Falhas: 0.
+🧪 ChuLiu > Frank: 0, Frank > ChuLiu: 0.

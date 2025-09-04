@@ -123,7 +123,7 @@ for i in range(1, NUM_TESTS + 1):
         custo1 = get_total_cost(arbo1)
         print(f"🔍Custo ChuLiu:{custo1} Arbo ChuLiu: {arbo1.edges(data=True)}")
 
-        A_zero = phase1_find_minimum_arborescence(D1, ROOT)
+        A_zero, _ = phase1_find_minimum_arborescence(D1, ROOT)
 
         arbo2 = phase2_find_minimum_arborescence(D1, ROOT, A_zero)
         custo2 = get_total_cost(arbo2)
@@ -186,3 +186,5 @@ log_console_and_file(
     f"\n🧪 Testagem em volume finalizada. Sucessos: {success_count}, Falhas: {failure_count}."
     f"\n🧪 ChuLiu > Frank: {chuliu_greater_than_frank}, Frank > ChuLiu: {frank_greater_than_chuliu}."
 )
+
+
