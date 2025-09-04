@@ -202,17 +202,18 @@ def andras_frank_algorithm(D1):
         return None, None
     arborescencia_frank = phase2_find_minimum_arborescence(D1,"r0", A_zero)
     arborescencia_frank_v2 = phase2_find_minimum_arborescence_v2(D1, "r0", A_zero)
+    dual_frank = check_dual_optimality_condition(arborescencia_frank, Dual_list, "r0")
+    dual_frank_v2 = check_dual_optimality_condition(arborescencia_frank_v2, Dual_list, "r0")
 
-    return arborescencia_frank, arborescencia_frank_v2
+    return arborescencia_frank, arborescencia_frank_v2, dual_frank, dual_frank_v2
 
-v1, v2, v3 = andras_frank_algorithm(D1)
+v1, v2, b1, b2 = andras_frank_algorithm(D1)
 
 print("____________________________________________________________")
 print("v1:", v1.edges(data=True))
 print("____________________________________________________________")
 print("v2:", v2.edges(data=True))
 print("____________________________________________________________")
-print("v3:", v3.edges(data=True))
 
 # TODO: Implementar a fase 2 usando a lista dual
 # TODO: Fazer mais uma função de verificação da informação
