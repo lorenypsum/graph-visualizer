@@ -214,6 +214,10 @@ print("v1:", v1.edges(data=True))
 print("____________________________________________________________")
 print("v2:", v2.edges(data=True))
 print("____________________________________________________________")
+print("b1:", b1)
+print("____________________________________________________________")
+print("b2:", b2)
+print("____________________________________________________________")
 
 # TODO: Implementar a fase 2 usando a lista dual
 # TODO: Fazer mais uma função de verificação da informação
