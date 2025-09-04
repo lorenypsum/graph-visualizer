@@ -187,6 +187,9 @@ def check_dual_optimality_condition(Arb, Dual_list, r0):
             print(f"❌ Falha na condição dual para X={X} com z(X)={z}. Arcos entrando: {count}")
             return False
     return True
+# TODO: A checagem acima é muito custosa.
+# Fixa o conjunto X e testa todos os arcos da arborescência.
+# Precisa achar um jeito mais eficiente de fazer isso.
 
 # empacotar as chamadas em função.
 def andras_frank_algorithm(D1):
