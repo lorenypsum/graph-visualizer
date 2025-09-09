@@ -2,8 +2,6 @@ import networkx as nx
 import heapq
 import random
 
-print("Hello, I am Andras Frank.")
-
 def build_rooted_digraph(n=10, m=None, r0="r0", peso_min=1, peso_max=10):
     """
     Cria um grafo direcionado com n vértices, m arestas.
@@ -179,13 +177,13 @@ def check_dual_optimality_condition(Arb, Dual_list, r0):
     Verifica a condição dual: z(X) > 0 implica que exatamente uma aresta de Arb entra em X.
     """
     for X, z in Dual_list:
-        count = 0
         for u, v in Arb.edges():
+            count = 0
             if u not in X and v in X:
                 count += 1
-        if count != 1:
-            print(f"❌ Falha na condição dual para X={X} com z(X)={z}. Arcos entrando: {count}")
-            return False
+                if count > 1:
+                    print(f"❌ Falha na condição dual para X={X} com z(X)={z}. Arcos entrando: {count}")
+                    return False
     return True
 # TODO: A checagem acima é muito custosa.
 # Fixa o conjunto X e testa todos os arcos da arborescência.
