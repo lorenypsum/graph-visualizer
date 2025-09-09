@@ -1,24 +1,16 @@
 import networkx as nx
 
-# from js import console
-
-
-def logger(message: str):
-    print(f"[LOG] {message}")
-
-
-# console.log(message)
-
-
 def normalize_incoming_edge_weights(G: nx.DiGraph, node: str):
     """
     Change the weights of incoming edges into the `node`
     by subtracting the minimum incoming weight from each in the Graph G.
+
     Parameters:
-    - G: A directed graph (networkx.DiGraph)
-    - node: The target node whose incoming edges will be adjusted
+        - G: A directed graph (networkx.DiGraph)
+        - node: The target node whose incoming edges will be adjusted
+
     Returns:
-    - None (the graph G is modified in place)
+        - None (the graph G is modified in place)
     """
 
     assert node in G, f"change_edge_weight: O vértice '{node}' não existe no grafo."
@@ -41,11 +33,13 @@ def get_Fstar(G: nx.DiGraph, r0: str):
     """
     Creates the set F_star from graph G and root r0.
     An returns a directed graph F_star.
+
     Parameters:
-    - G: A directed graph (networkx.DiGraph)
-    - r0: The root node
+        - G: A directed graph (networkx.DiGraph)
+        - r0: The root node
+
     Returns:
-    - F_star: A directed graph (networkx.DiGraph) representing F*
+        - F_star: A directed graph (networkx.DiGraph) representing F*
     """
 
     assert r0 in G, f"get_Fstar: O vértice raiz '{r0}' não existe no grafo."
@@ -68,10 +62,12 @@ def find_cycle(F_star: nx.DiGraph):
     """
     Finds a directed cycle in the graph.
     Returns a subgraph containing the cycle, or None if there is none.
+
     Parameters:
-    - F_star: A directed graph (networkx.DiGraph)
+        - F_star: A directed graph (networkx.DiGraph)
+
     Returns:
-    - A directed graph (networkx.DiGraph) representing the cycle, or None if no cycle is found.
+        - A directed graph (networkx.DiGraph) representing the cycle, or None if no cycle is found.
     """
 
     try:
@@ -81,6 +77,7 @@ def find_cycle(F_star: nx.DiGraph):
             nodes_in_cycle.update([u, v])
         # Create a subgraph containing only the cycle
         return F_star.subgraph(nodes_in_cycle).copy()
+
     except nx.NetworkXNoCycle:
         return None
 
@@ -89,13 +86,15 @@ def contract_cycle(G: nx.DiGraph, C: nx.DiGraph, label: str):
     """
     Contract a cycle C in graph G, replacing it with a supernode labeled `label`.
     Returns the modified graph G' with the contracted cycle, the list of incoming edges (in_edge), and outgoing edges (out_edge).
+
     Parameters:
-    - G: A directed graph (networkx.DiGraph)
-    - C: A directed graph (networkx.DiGraph) representing the cycle to be contracted
-    - label: The label for the new supernode
+        - G: A directed graph (networkx.DiGraph)
+        - C: A directed graph (networkx.DiGraph) representing the cycle to be contracted
+        - label: The label for the new supernode
+
     Returns:
-    - in_to_cycle: A dictionary mapping nodes outside the cycle to tuples (node_in_cycle, weight)
-    - out_from_cycle: A dictionary mapping nodes outside the cycle to tuples (node_in_cycle, weight)
+        - in_to_cycle: A dictionary mapping nodes outside the cycle to tuples (node_in_cycle, weight)
+        - out_from_cycle: A dictionary mapping nodes outside the cycle to tuples (node_in_cycle, weight)
     """
 
     assert (
@@ -148,12 +147,14 @@ def remove_edges_to_r0(G: nx.DiGraph, r0: str, log=None, boilerplate: bool = Tru
     """
     Remove all edges entering the root vertex r0 in graph G.
     Returns the updated graph.
+
     Parameters:
-    - G: A directed graph (networkx.DiGraph)
-    - r0: The root node
-    - logger: Optional logging function to log information
+        - G: A directed graph (networkx.DiGraph)
+        - r0: The root node
+        - logger: Optional logging function to log information
+
     Returns:
-    - G: The updated directed graph (networkx.DiGraph) with edges to r0 removed
+        - G: The updated directed graph (networkx.DiGraph) with edges to r0 removed
     """
 
     # Verify that r0 exists in G
@@ -177,14 +178,15 @@ def remove_internal_edge_to_cycle_entry(C: nx.DiGraph, v):
     since `v` now receives an external edge from the graph.
 
     Parameters:
-    - C: subgraph of the cycle
-    - external_entry_edge: tuple (u, v, w) — external edge connecting to the cycle
+        - C: subgraph of the cycle
+        - external_entry_edge: tuple (u, v, w) — external edge connecting to the cycle
 
     Returns:
-    - The modified cycle (with one less edge)
+        - The modified cycle (with one less edge)
     """
 
     predecessor = next((u for u, _ in C.in_edges(v)), None)
+
     C.remove_edge(predecessor, v)
 
 
@@ -194,25 +196,29 @@ def find_optimum_arborescence(
 ):
     """
     Finds the optimum arborescence in a directed graph G with root r0 using the Chu-Liu/Edmonds algorithm.
+
     Parameters:
-    - G: A directed graph (networkx.DiGraph)
-    - r0: The root node
-    - level: The current recursion level (used for logging and visualization)
-    - draw_fn: Optional function to visualize the graph at each step
-    - log: Optional logging function to log information
+        - G: A directed graph (networkx.DiGraph)
+        - r0: The root node
+        - level: The current recursion level (used for logging and visualization)
+        - draw_fn: Optional function to visualize the graph at each step
+        - log: Optional logging function to log information
+
     Returns:
-    - A directed graph (networkx.DiGraph) representing the optimum arborescence
+        - A directed graph (networkx.DiGraph) representing the optimum arborescence
+
     Raises:
-    - AssertionError: If the root node r0 is not in the graph G
-    - AssertionError: If no cycle is found in F_star when expected
-    - AssertionError: If the contracted label already exists in the graph G
-    - AssertionError: If no incoming edge is found for the contracted node in F_prime
-    - AssertionError: If no vertex in the cycle is found to receive the incoming edge
-    - AssertionError: If the contracted label is not found in F_prime
-    - AssertionError: If vertices u or v are not found in the original graph G
+        - AssertionError: If the root node r0 is not in the graph G
+        - AssertionError: If no cycle is found in F_star when expected
+        - AssertionError: If the contracted label already exists in the graph G
+        - AssertionError: If no incoming edge is found for the contracted node in F_prime
+        - AssertionError: If no vertex in the cycle is found to receive the incoming edge
+        - AssertionError: If the contracted label is not found in F_prime
+        - AssertionError: If vertices u or v are not found in the original graph G
     """
 
     indent = "  " * level
+
     if boilerplate:
         if log:
             log(f"{indent}Iniciando nível {level}")
@@ -237,7 +243,7 @@ def find_optimum_arborescence(
             if draw_fn:
                 draw_fn(G_arb, f"{indent}Após ajuste de pesos")
 
-    # Construindo F_star
+    # Build F_star
     F_star = get_Fstar(G_arb, r0)
 
     if boilerplate:
@@ -268,6 +274,7 @@ def find_optimum_arborescence(
 
         # Identify the vertex in the cycle that received the only incoming edge from the arborescence
         in_edge = next(iter(F_prime.in_edges(contracted_label, data="w")), None)
+
         assert (
             in_edge
         ), f"find_optimum_arborescence: Nenhuma aresta encontrada entrando no vértice '{contracted_label}'."
@@ -320,5 +327,9 @@ def find_optimum_arborescence(
             ), f"find_optimum_arborescence: Vértice '{u}' ou '{v}' não encontrado no grafo original."
             F_prime[u][v]["w"] = G[u][v]["w"]
 
-        print("Arborescência final:", list(F_prime.edges))
+        if boilerplate:
+            log("Arborescência final:", list(F_prime.edges))
+            if draw_fn:
+                draw_fn(F_prime, f"{indent}Arborescência final")
+
         return F_prime

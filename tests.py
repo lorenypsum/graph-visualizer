@@ -5,10 +5,20 @@ import networkx as nx
 from andrasfrank import andras_frank_algorithm
 from chuliu import find_optimum_arborescence, remove_edges_to_r0
 
+def logger(message: str):
+    print(f"[LOG] {message}")
 
 def build_rooted_digraph(n=10, m=None, r0="r0", peso_min=1, peso_max=10):
     """
-    Cria um grafo direcionado com n vértices, m arestas.
+    Create a directed graph with n vertices, m edges.
+    Parameters:
+    - n: número de vértices (default: 10)
+    - m: número de arestas (default: 2*n)
+    - r0: rótulo do vértice raiz (default: "r0")
+    - peso_min: peso mínimo das arestas (default: 1)
+    - peso_max: peso máximo das arestas (default: 10)
+    Returns:
+    - D: grafo direcionado (DiGraph) criado 
     """
     if m is None:
         m = 2 * n  # número de arestas default
