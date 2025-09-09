@@ -58,10 +58,3 @@ To visualize the algorithms in the browser, you need to open the `index.html` fi
    ```
 
    Then open your web browser and go to `http://localhost:8000/index.html`.
-
-## TODO:
-
-- Melhorar a checagem de dualidade.
-- Limpar o código.
-- Melhorar os testes (incluir condicional de boilerplate).
-- Começar escrever o texto.
