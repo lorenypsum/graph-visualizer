@@ -310,7 +310,8 @@ def find_optimum_arborescence(
             contracted_label in F_prime
         ), f"Vértice '{contracted_label}' não encontrado no grafo."
         F_prime.remove_node(contracted_label)
-        log(f"{indent}  Vértice contraído '{contracted_label}' removido.")
+        if boilerplate:
+            log(f"{indent}  Vértice contraído '{contracted_label}' removido.")
 
         # Update the edge weights with the original weights from G
         for u, v in F_prime.edges:
