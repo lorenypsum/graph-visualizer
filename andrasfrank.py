@@ -307,24 +307,24 @@ def check_dual_optimality_condition(Arb, Dual_list, log=None, boilerplate: bool 
     return True
 
 # empacotar as chamadas em função.
-def andras_frank_algorithm(D1, draw_fn=None, log=None, boilerplate: bool = True):
+def andras_frank_algorithm(D, draw_fn=None, log=None, boilerplate: bool = True):
     if boilerplate:
         if log:
             log(f"\n🔍 Executando algoritmo de András Frank...")
-    A_zero, Dual_list = phase1_find_minimum_arborescence(D1, "r0", draw_fn=draw_fn, log=log, boilerplate=boilerplate)
+    A_zero, Dual_list = phase1_find_minimum_arborescence(D, "r0", draw_fn=draw_fn, log=log, boilerplate=boilerplate)
     if boilerplate:
         if log:
             log(f"A_zero: {A_zero}")
             log(f"Dual_list: {Dual_list}")
-    if not has_arborescence(D1, "r0"):
+    if not has_arborescence(D, "r0"):
         if boilerplate:
             if log:
                 log(f"O grafo não contém uma arborescência com raiz r0.")
         return None, None
     
 
-    arborescencia_frank = phase2_find_minimum_arborescence(D1, "r0", A_zero)
-    arborescencia_frank_v2 = phase2_find_minimum_arborescence_v2(D1, "r0", A_zero)
+    arborescencia_frank = phase2_find_minimum_arborescence(D, "r0", A_zero)
+    arborescencia_frank_v2 = phase2_find_minimum_arborescence_v2(D, "r0", A_zero)
     dual_frank = check_dual_optimality_condition(arborescencia_frank, Dual_list, "r0")
     dual_frank_v2 = check_dual_optimality_condition(
         arborescencia_frank_v2, Dual_list, "r0"
