@@ -5,6 +5,7 @@ from test import build_rooted_digraph
 
 D1 = build_rooted_digraph(10, 20, "r0", 1, 10)
 
+
 # TODO: Verificar se precisa mesmo dessa função
 def build_D_zero(D):
     """
@@ -48,6 +49,7 @@ def get_arcs_entering_X(D, X):
 
     return arcs
 
+
 def get_minimum_weight_cut(arcs):
     """
     Get the minimum weight arcs from a list of arcs.
@@ -61,6 +63,7 @@ def get_minimum_weight_cut(arcs):
     """
 
     return min(data["w"] for _, _, data in arcs)
+
 
 def update_weights_in_X(D, arcs, min_weight, A_zero, D_zero):
     """
@@ -104,7 +107,9 @@ def has_arborescence(D, r0):
     return tree.number_of_nodes() == D.number_of_nodes()
 
 
-def phase1_find_minimum_arborescence(D_original, r0, draw_fn=None, log=None, boilerplate: bool = True):
+def phase1_find_minimum_arborescence(
+    D_original, r0, draw_fn=None, log=None, boilerplate: bool = True
+):
     """
     Find the minimum arborescence in a directed graph D with root r0.
     The function returns the minimum arborescence as a list of arcs.
@@ -130,27 +135,26 @@ def phase1_find_minimum_arborescence(D_original, r0, draw_fn=None, log=None, boi
         if boilerplate:
             if log:
                 log(f"\n 🔄 Iteração {iteration} ----------------------------")
-        
+
         # Calculate the strongly connected components of the graph D_zero.
-        C = nx.condensation(
-            D_zero
-        )  
+        C = nx.condensation(D_zero)
         if boilerplate:
             if log:
                 log(f"\n Componentes fortemente conexos em D_zero:")
                 if draw_fn:
-                    draw_fn(C, title=f"Componentes fortemente conexos em D_zero - Iteração {iteration}")
+                    draw_fn(
+                        C,
+                        title=f"Componentes fortemente conexos em D_zero - Iteração {iteration}",
+                    )
 
         # The sources are where there are no incoming arcs, R0 is always a source.
-        sources = [
-            x for x in C.nodes() if C.in_degree(x) == 0
-        ]
+        sources = [x for x in C.nodes() if C.in_degree(x) == 0]
 
         if boilerplate:
             if log:
                 log(f"Fontes: {sources}")
 
-        if (len(sources) == 1):  
+        if len(sources) == 1:
             # If there is only one source, it means it is R0 and there are no more arcs to be processed.
             break
 
@@ -166,13 +170,13 @@ def phase1_find_minimum_arborescence(D_original, r0, draw_fn=None, log=None, boi
                     log(f"\n Conjunto X: {X}")
                     log(f"Arestas que entram em X: {arcs}")
                     log(f"Peso mínimo encontrado: {min_weight}")
-            
+
             update_weights_in_X(D_copy, arcs, min_weight, A_zero, D_zero)
 
             if boilerplate:
                 if log:
                     log(f"\n Pesos atualizados nos arcos que entram em X")
-            
+
             # If min_weight is zero, ignore
             if min_weight == 0:
                 continue
@@ -182,7 +186,9 @@ def phase1_find_minimum_arborescence(D_original, r0, draw_fn=None, log=None, boi
     return A_zero, Dual_list
 
 
-def phase2_find_minimum_arborescence(D_original, r0, A_zero, draw_fn=None, log=None, boilerplate: bool = True):
+def phase2_find_minimum_arborescence(
+    D_original, r0, A_zero, draw_fn=None, log=None, boilerplate: bool = True
+):
     """
     Find the minimum arborescence in a directed graph D with root r0.
     The function returns the minimum arborescence as a DiGraph.
@@ -213,11 +219,13 @@ def phase2_find_minimum_arborescence(D_original, r0, A_zero, draw_fn=None, log=N
             if log:
                 log(f"\n Arborescência parcial:")
                 if draw_fn:
-                    draw_fn(Arb, title=f"Arborescência parcial - Iteração {_+1}")     
+                    draw_fn(Arb, title=f"Arborescência parcial - Iteração {_+1}")
     return Arb
 
 
-def phase2_find_minimum_arborescence_v2(D_original, r0, A_zero, draw_fn=None, log=None, boilerplate: bool = True):
+def phase2_find_minimum_arborescence_v2(
+    D_original, r0, A_zero, draw_fn=None, log=None, boilerplate: bool = True
+):
     """
     Find the minimum arborescence in a directed graph D with root r0.
     The function returns the minimum arborescence as a DiGraph.
@@ -236,15 +244,13 @@ def phase2_find_minimum_arborescence_v2(D_original, r0, A_zero, draw_fn=None, lo
 
     # Set of visited vertices, starting with the root
     V = {r0}
-    
+
     # Priority queue to store the edges
     q = []
     for u, v, data in Arb.out_edges(r0, data=True):
 
         # Add edges to the priority queue with their weights
-        heapq.heappush(
-            q, (data["w"], u, v)
-        )
+        heapq.heappush(q, (data["w"], u, v))
 
     A = nx.DiGraph()  # Arborescência resultante
 
@@ -264,20 +270,18 @@ def phase2_find_minimum_arborescence_v2(D_original, r0, A_zero, draw_fn=None, lo
         # Add the edge to the arborescence
         A.add_edge(u, v, w=D_original[u][v]["w"])
 
-        # Mark the vertex as visited  
+        # Mark the vertex as visited
         V.add(v)
 
-        # Add the outgoing edges of the visited vertex to the priority queue  
+        # Add the outgoing edges of the visited vertex to the priority queue
         for x, y, data in Arb.out_edges(v, data=True):
-            heapq.heappush(
-                q, (data["w"], x, y)
-            )
+            heapq.heappush(q, (data["w"], x, y))
 
     if boilerplate:
         if log:
             log(f"\n Arborescência final:")
             if draw_fn:
-                draw_fn(A, title=f"Arborescência final - Fase 2")        
+                draw_fn(A, title=f"Arborescência final - Fase 2")
     # Return the resulting arborescence
     return A
 
@@ -302,32 +306,41 @@ def check_dual_optimality_condition(Arb, Dual_list, log=None, boilerplate: bool 
                 if count > 1:
                     if boilerplate:
                         if log:
-                            log(f"❌ Falha na condição dual para X={X} com z(X)={z}. Arcos entrando: {count}")
+                            log(
+                                f"❌ Falha na condição dual para X={X} com z(X)={z}. Arcos entrando: {count}"
+                            )
                     return False
     return True
+
 
 # empacotar as chamadas em função.
 def andras_frank_algorithm(D, draw_fn=None, log=None, boilerplate: bool = True):
     if boilerplate:
         if log:
             log(f"\n🔍 Executando algoritmo de András Frank...")
-    A_zero, Dual_list = phase1_find_minimum_arborescence(D, "r0", draw_fn=draw_fn, log=log, boilerplate=boilerplate)
+    
+    A_zero, Dual_list = phase1_find_minimum_arborescence(
+        D, "r0", draw_fn=draw_fn, log=log, boilerplate=boilerplate
+    )
+    
     if boilerplate:
         if log:
             log(f"A_zero: {A_zero}")
             log(f"Dual_list: {Dual_list}")
+    
     if not has_arborescence(D, "r0"):
         if boilerplate:
             if log:
                 log(f"O grafo não contém uma arborescência com raiz r0.")
         return None, None
-    
 
-    arborescencia_frank = phase2_find_minimum_arborescence(D, "r0", A_zero)
-    arborescencia_frank_v2 = phase2_find_minimum_arborescence_v2(D, "r0", A_zero)
-    dual_frank = check_dual_optimality_condition(arborescencia_frank, Dual_list, "r0")
+    arborescence_frank = phase2_find_minimum_arborescence(D, "r0", A_zero)
+    arborescence_frank_v2 = phase2_find_minimum_arborescence_v2(D, "r0", A_zero)
+
+    dual_frank = check_dual_optimality_condition(arborescence_frank, Dual_list, "r0")
+    
     dual_frank_v2 = check_dual_optimality_condition(
-        arborescencia_frank_v2, Dual_list, "r0"
+        arborescence_frank_v2, Dual_list, "r0"
     )
 
     if boilerplate:
@@ -336,11 +349,14 @@ def andras_frank_algorithm(D, draw_fn=None, log=None, boilerplate: bool = True):
                 log(f"✅ Condição dual satisfeita para András Frank.")
             else:
                 log(f"❌ Condição dual falhou para András Frank.")
+        
         if draw_fn:
-            draw_fn(arborescencia_frank, title="Arborescência de András Frank - Método 1")
-            draw_fn(arborescencia_frank_v2, title="Arborescência de András Frank - Método 2")        
+            draw_fn(
+                arborescence_frank, title="Arborescência de András Frank - Método 1"
+            )
+            
+            draw_fn(
+                arborescence_frank_v2, title="Arborescência de András Frank - Método 2"
+            )
 
-    return arborescencia_frank, arborescencia_frank_v2, dual_frank, dual_frank_v2
-
-
-
+    return arborescence_frank, arborescence_frank_v2, dual_frank, dual_frank_v2
