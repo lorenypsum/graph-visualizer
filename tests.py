@@ -9,10 +9,23 @@ import networkx as nx
 from andrasfrank import andras_frank_algorithm
 from chuliu import find_optimum_arborescence_chuliu, remove_edges_to_r0
 
+# Deafult parameters
+NUM_TESTS = 2000
+MIN_VERTICES = 100
+MAX_VERTICES = 200
+PESO_MIN = 1
+PESO_MAX = 20
+LOG_CSV_PATH = "test_results.csv"
+LOG_TXT_PATH = "test_log.txt"
+ROOT = "r0"
 
 def logger(message: str):
     print(f"[LOG] {message}")
 
+def log_console_and_file(msg, log_txt_path=LOG_TXT_PATH):
+    print(msg)
+    with open(log_txt_path, "a") as f:
+        f.write(msg + "\n")
 
 def build_rooted_digraph(n=10, m=None, root="r0", peso_min=1, peso_max=10):
     """
@@ -54,7 +67,6 @@ def build_rooted_digraph(n=10, m=None, root="r0", peso_min=1, peso_max=10):
 
     return D
 
-
 def remove_edges_to_r0(D, r0):
     """
     Remove all incoming edges to the root node r0 in the directed graph D.
@@ -63,7 +75,6 @@ def remove_edges_to_r0(D, r0):
     D.remove_edges_from(incoming_edges)
     return D
 
-
 def contains_arborescence(D, r0):
     """
     Check if G contains an arborescence with root r0.
@@ -71,106 +82,11 @@ def contains_arborescence(D, r0):
     tree = nx.dfs_tree(D, source=r0)
     return tree.number_of_nodes() == D.number_of_nodes(), tree
 
-
 def get_total_digraph_cost(D_arborescencia):
     """
     Calculate the total cost of a directed graph.
     """
     return sum(data["w"] for _, _, data in D_arborescencia.edges(data=True))
-
-
-# def testar_algoritmos_arborescencia(draw_fn=None, log=None, boilerplate: bool = True):
-
-#     D1 = build_rooted_digraph(10, 20, "r0", 1, 10)
-#     r0 = "r0"
-
-#     contains_arborescence_result, tree_result = contains_arborescence(D1, r0)
-
-#     if contains_arborescence_result:
-#         if boilerplate:
-#             if log:
-#                 log(
-#                     f"\n✅ O grafo contém uma arborescência com raiz {r0}. Iniciando os testes..."
-#                 )
-#             if draw_fn:
-#                 draw_fn(tree_result)
-
-#         D1_sem_entradas = remove_edges_to_r0(D1.copy(), r0)
-#         arborescencia_chuliu = find_optimum_arborescence_chuliu(
-#             D1_sem_entradas,
-#             r0,
-#             level=0,
-#             draw_fn=None,
-#             log=log,
-#             boilerplate=boilerplate,
-#         )
-
-#         custo_chuliu = get_total_digraph_cost(arborescencia_chuliu)
-
-#         if boilerplate:
-#             if log:
-#                 log("\n🔍 Executando algoritmo de Chu-Liu/Edmonds...")
-#                 log(f"Custo da arborescência de Chu-Liu/Edmonds: {custo_chuliu}")
-#             if draw_fn:
-#                 draw_fn(arborescencia_chuliu)
-
-#         arborescencia_frank, arborescencia_frank_v2, b1, b2 = andras_frank_algorithm(
-#             D1.copy(), draw_fn=None, log=log, boilerplate=boilerplate
-#         )
-#         custo_frank = get_total_digraph_cost(arborescencia_frank)
-#         custo_frank_v2 = get_total_digraph_cost(arborescencia_frank_v2)
-
-#         if boilerplate:
-#             if log:
-#                 log(f"Custo da arborescência de András Frank: {custo_frank}")
-#                 log(f"Custo da arborescência de András Frank (v2): {custo_frank_v2}")
-
-#         # Verifying that both algorithms yield the same cost
-#         assert (
-#             custo_chuliu == custo_frank
-#         ), f"❌ Custos diferentes! Chu-Liu: {custo_chuliu}, Frank: {custo_frank}"
-
-#         assert (
-#             custo_chuliu == custo_frank_v2
-#         ), f"❌ Custos diferentes! Chu-Liu: {custo_chuliu}, Frank v2: {custo_frank_v2}"
-
-#         assert b1, "❌ Condição dual falhou para András Frank."
-#         assert b2, "❌ Condição dual falhou para András Frank v2."
-
-#         if boilerplate:
-#             if log:
-#                 log("\n ✅ Testes concluídos com sucesso!")
-#                 log(
-#                     "\n Sucesso! Ambos algoritmos retornaram arborescências com o mesmo custo mínimo."
-#                 )
-#     else:
-#         if boilerplate:
-#             if log:
-#                 log(
-#                     "\n O grafo não contém uma arborescência com raiz r0. Teste abortado."
-#                 )
-#             if draw_fn:
-#                 draw_fn(D1)
-
-
-# # Exemplo de uso:
-# testar_algoritmos_arborescencia(log=logger, boilerplate=True)
-
-# Parâmetros gerais
-NUM_TESTS = 2000
-MIN_VERTICES = 100
-MAX_VERTICES = 200
-PESO_MIN = 1
-PESO_MAX = 20
-LOG_CSV_PATH = "test_results.csv"
-LOG_TXT_PATH = "test_log.txt"
-ROOT = "r0"
-
-
-def log_console_and_file(msg, log_txt_path=LOG_TXT_PATH):
-    print(msg)
-    with open(log_txt_path, "a") as f:
-        f.write(msg + "\n")
 
 def volume_tester(
     num_tests,
@@ -238,7 +154,6 @@ def volume_tester(
             D1_copy = D.copy()
 
             contains_arborescence_result, tree_result = contains_arborescence(D1_copy, root)
-            # Remover arestas que entram em ROOT para uniformizar a entrada
 
             if contains_arborescence_result:
                 if boilerplate:
@@ -251,7 +166,7 @@ def volume_tester(
 
             D1_filtered = remove_edges_to_r0(D1_copy, root)
 
-            # Algoritmo de Chu-Liu/Edmonds
+            # Chu-Liu/Edmonds Algorithm
             arbo_chuliu = find_optimum_arborescence_chuliu(D1_filtered, root)
             custo_chuliu = get_total_digraph_cost(arbo_chuliu)
             
@@ -262,7 +177,7 @@ def volume_tester(
                 if draw_fn:
                     draw_fn(arbo_chuliu)
 
-            # Algoritmo de Frank - Fase 1
+            # Frank's Algorithm
             arbo_frank_v1, arbo_frank_v2, b1, b2 = andras_frank_algorithm(
                 D1_filtered, draw_fn=None, log=log, boilerplate=boilerplate
             )
@@ -314,7 +229,7 @@ def volume_tester(
 
         elapsed = round(time.time() - start_time, 4)
 
-        # Atualiza contadores
+        # Update counters
         if success:
             success_count += 1
         else:
@@ -324,7 +239,7 @@ def volume_tester(
             else:
                 frank_greater_than_chuliu += 1
 
-        # Escreve no CSV
+        # Write to CSV
         with open(LOG_CSV_PATH, "a", newline="") as csvfile:
             writer = csv.writer(csvfile)
             writer.writerow(
