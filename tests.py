@@ -89,14 +89,14 @@ def get_total_digraph_cost(D_arborescencia):
     return sum(data["w"] for _, _, data in D_arborescencia.edges(data=True))
 
 def volume_tester(
-    num_tests,
-    min_vertices,
-    max_vertices,
-    root,
-    peso_min,
-    peso_max,
-    log_csv_path,
-    log_txt_path,
+    num_tests=NUM_TESTS,
+    min_vertices=MIN_VERTICES,
+    max_vertices=MAX_VERTICES,
+    root=ROOT,
+    peso_min=PESO_MIN,
+    peso_max=PESO_MAX,
+    log_csv_path=LOG_CSV_PATH,
+    log_txt_path=LOG_TXT_PATH,
     draw_fn=None,
     log=None,
     boilerplate=True,
@@ -136,8 +136,8 @@ def volume_tester(
             ]
         )
 
-    for i in range(1, NUM_TESTS + 1):
-        n = random.randint(MIN_VERTICES, MAX_VERTICES)
+    for i in range(1, num_tests + 1):
+        n = random.randint(min_vertices, max_vertices)
         m = random.randint(n, 3 * n)
 
         log_console_and_file(f"\n=== Teste #{i} - Vértices: {n}, Arestas: {m} ===")
