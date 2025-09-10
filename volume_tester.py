@@ -11,9 +11,9 @@ from andrasfrank import (
     build_rooted_digraph,
     phase1_find_minimum_arborescence,
     phase2_find_minimum_arborescence,
-    phase2_find_minimum_arborescence_v2
+    phase2_find_minimum_arborescence_v2,
 )
-from chuliu import find_optimum_arborescence
+from chuliu import find_optimum_arborescence_chuliu
 
 # Parâmetros gerais
 NUM_TESTS = 2000
@@ -119,7 +119,7 @@ for i in range(1, NUM_TESTS + 1):
         D1 = D.copy()
         D1 = remove_edges_to_r0(D1, ROOT)
 
-        arbo1 = find_optimum_arborescence(D1, ROOT)
+        arbo1 = find_optimum_arborescence_chuliu(D1, ROOT)
         custo1 = get_total_cost(arbo1)
         print(f"🔍Custo ChuLiu:{custo1} Arbo ChuLiu: {arbo1.edges(data=True)}")
 
@@ -143,7 +143,7 @@ for i in range(1, NUM_TESTS + 1):
         ), f"Custos divergentes: CHULIU {custo1}, FRANK {custo2}, FRANK_V2 {custo3}"
         success = True
         log_console_and_file(f"✅ Sucesso - Custo: {custo1}")
-   
+
     except Exception as e:
         erro = str(e)
         log_console_and_file(f"❌ Erro: {erro}")
@@ -186,5 +186,3 @@ log_console_and_file(
     f"\n🧪 Testagem em volume finalizada. Sucessos: {success_count}, Falhas: {failure_count}."
     f"\n🧪 ChuLiu > Frank: {chuliu_greater_than_frank}, Frank > ChuLiu: {frank_greater_than_chuliu}."
 )
-
-

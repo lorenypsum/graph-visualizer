@@ -1,11 +1,6 @@
 import networkx as nx
 import heapq
 
-from test import build_rooted_digraph
-
-D1 = build_rooted_digraph(10, 20, "r0", 1, 10)
-
-
 # TODO: Verificar se precisa mesmo dessa função
 def build_D_zero(D):
     """
@@ -360,3 +355,5 @@ def andras_frank_algorithm(D, draw_fn=None, log=None, boilerplate: bool = True):
             )
 
     return arborescence_frank, arborescence_frank_v2, dual_frank, dual_frank_v2
+
+andras_frank_algorithm

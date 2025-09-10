@@ -191,7 +191,7 @@ def remove_internal_edge_to_cycle_entry(C: nx.DiGraph, v):
 
 
 # Chu-Liu Algorithm
-def find_optimum_arborescence(
+def find_optimum_arborescence_chuliu(
     G: nx.DiGraph, r0: str, level=0, draw_fn=None, log=None, boilerplate: bool = True
 ):
     """
@@ -230,7 +230,8 @@ def find_optimum_arborescence(
     G_arb = G.copy()
 
     if boilerplate:
-        log(f"{indent}Removendo arestas que entram em '{r0}'")
+        if log:
+            log(f"{indent}Removendo arestas que entram em '{r0}'")
         if draw_fn:
             draw_fn(G_arb, f"{indent}Após remoção de entradas")
 
@@ -239,7 +240,8 @@ def find_optimum_arborescence(
             normalize_incoming_edge_weights(G_arb, v)
 
         if boilerplate:
-            log(f"{indent}Normalizando pesos de arestas de entrada para '{v}'")
+            if log:
+                log(f"{indent}Normalizando pesos de arestas de entrada para '{v}'")
             if draw_fn:
                 draw_fn(G_arb, f"{indent}Após ajuste de pesos")
 
@@ -247,7 +249,8 @@ def find_optimum_arborescence(
     F_star = get_Fstar(G_arb, r0)
 
     if boilerplate:
-        log(f"{indent}Construindo F_star")
+        if log:
+            log(f"{indent}Construindo F_star")
         if draw_fn:
             draw_fn(F_star, f"{indent}F_star")
 
@@ -258,7 +261,8 @@ def find_optimum_arborescence(
 
     else:
         if boilerplate:
-            log(f"{indent}F_star não é uma arborescência. Continuando...")
+            if log:
+                log(f"{indent}F_star não é uma arborescência. Continuando...")
 
         C: nx.DiGraph = find_cycle(F_star)
 
@@ -268,8 +272,8 @@ def find_optimum_arborescence(
         in_to_cycle, out_from_cycle = contract_cycle(G_arb, C, contracted_label)
 
         # Recursive call
-        F_prime = find_optimum_arborescence(
-            G_arb, r0, level + 1, draw_fn=draw_fn, log=log
+        F_prime = find_optimum_arborescence_chuliu(
+            G_arb, r0, level + 1, draw_fn=None, log=None, boilerplate=boilerplate
         )
 
         # Identify the vertex in the cycle that received the only incoming edge from the arborescence
@@ -294,13 +298,15 @@ def find_optimum_arborescence(
         # Add the external edge entering the cycle (identified by in_edge), the weight will be corrected at the end using G
         F_prime.add_edge(u, v)
         if boilerplate:
-            log(f"{indent}Adicionando aresta de entrada ao ciclo: ({u}, {v})")
+            if log:
+                log(f"{indent}Adicionando aresta de entrada ao ciclo: ({u}, {v})")
 
         # Add the remaining edges of the modified cycle C
         for u_c, v_c in C.edges:
             F_prime.add_edge(u_c, v_c)
             if boilerplate:
-                log(f"{indent}  Adicionando aresta do ciclo: ({u_c}, {v_c})")
+                if log:
+                    log(f"{indent}  Adicionando aresta do ciclo: ({u_c}, {v_c})")
 
         # Add the external edges leaving the cycle
         for _, z, _ in F_prime.out_edges(contracted_label, data=True):
@@ -309,16 +315,20 @@ def find_optimum_arborescence(
             ), f"find_optimum_arborescence: Nenhuma aresta de saída encontrada para o vértice '{z}'."
             u_cycle, _ = out_from_cycle[z]
             F_prime.add_edge(u_cycle, z)
+
             if boilerplate:
-                log(f"{indent}  Adicionando aresta externa de saída: ({u_cycle}, {z})")
+                if log:
+                    log(f"{indent}  Adicionando aresta externa de saída: ({u_cycle}, {z})")
 
         # Remove the contracted node
         assert (
             contracted_label in F_prime
         ), f"Vértice '{contracted_label}' não encontrado no grafo."
         F_prime.remove_node(contracted_label)
+
         if boilerplate:
-            log(f"{indent}  Vértice contraído '{contracted_label}' removido.")
+            if log:
+                log(f"{indent}  Vértice contraído '{contracted_label}' removido.")
 
         # Update the edge weights with the original weights from G
         for u, v in F_prime.edges:
@@ -328,7 +338,8 @@ def find_optimum_arborescence(
             F_prime[u][v]["w"] = G[u][v]["w"]
 
         if boilerplate:
-            log("Arborescência final:", list(F_prime.edges))
+            if log:
+                log("Arborescência final:", list(F_prime.edges))
             if draw_fn:
                 draw_fn(F_prime, f"{indent}Arborescência final")
 
