@@ -1,3 +1,3 @@
 Teste,Vértices,Arestas,Custo_ChuLiu,Custo_Frank1,Custo_Frank2,Sucesso,Erro,Tempo_execucao_seg,Condicao_dual_Frank1,Condicao_dual_Frank2,Total_sucessos,Total_falhas,ChuLiu_maior_que_Frank,Frank_maior_que_ChuLiu
-1,169,449,-,-,-,OK,,0.0707,True,True,1,0,0,0
-2,140,420,-,-,-,OK,,0.0583,True,True,2,0,0,0
+1,178,530,-,-,-,OK,,0.069,True,True,1,0,0,0
+2,135,260,-,-,-,OK,,0.0394,True,True,2,0,0,0

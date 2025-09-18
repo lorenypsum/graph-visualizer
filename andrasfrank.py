@@ -1,7 +1,6 @@
 import networkx as nx
 import heapq
 
-
 # TODO: Verificar se precisa mesmo dessa função
 def build_D_zero(D):
     """
@@ -42,7 +41,6 @@ def get_arcs_entering_X(D, X):
     for u, v, data in D.edges(data=True):
         if u not in X and v in X:
             arcs.append((u, v, data))
-
     return arcs
 
 
@@ -136,9 +134,9 @@ def phase1_find_minimum_arborescence(
         iteration += 1
         if boilerplate and log:
             if lang == "en":
-                log(f"\n 🔄 Iteration {iteration} ----------------------------")
+                log(f"\n Iteration {iteration} ----------------------------")
             elif lang == "pt":
-                log(f"\n 🔄 Iteração {iteration} ----------------------------")
+                log(f"\n Iteração {iteration} ----------------------------")
 
         # Calculate the strongly connected components of the graph D_zero.
         C = nx.condensation(D_zero)
@@ -167,9 +165,9 @@ def phase1_find_minimum_arborescence(
             # If there is only one source, it means it is R0 and there are no more arcs to be processed.
             if boilerplate and log:
                 if lang == "en":
-                    log(f"\n ✅ Only one source found, algorithm finished.")
+                    log(f"\n Only one source found, algorithm finished.")
                 elif lang == "pt":
-                    log(f"\n ✅ Apenas uma fonte encontrada, algoritmo finalizado.")
+                    log(f"\n Apenas uma fonte encontrada, algoritmo finalizado.")
             break
 
         for u in sources:
@@ -330,11 +328,11 @@ def check_dual_optimality_condition(
                     if boilerplate and log:
                         if lang == "en":
                             log(
-                                f"❌ Dual condition failed for X={X} with z(X)={z}. Incoming arcs: {count}"
+                                f"\n Dual condition failed for X={X} with z(X)={z}. Incoming arcs: {count}"
                             )
                         elif lang == "pt":
                             log(
-                                f"❌ Falha na condição dual para X={X} com z(X)={z}. Arcos entrando: {count}"
+                                f"\n Falha na condição dual para X={X} com z(X)={z}. Arcos entrando: {count}"
                             )
                     return False
     return True
@@ -346,9 +344,9 @@ def andras_frank_algorithm(
 ):
     if boilerplate and log:
         if lang == "en":
-            log(f"\n🔍 Executando algoritmo de András Frank...")
+            log(f"\n Executing András Frank algorithm...")
         elif lang == "pt":
-            log(f"\n🔍 Executando algoritmo de András Frank...")
+            log(f"\n Executando algoritmo de András Frank...")
 
     A_zero, Dual_list = phase1_find_minimum_arborescence(
         D, "r0", draw_fn=draw_fn, log=log, boilerplate=boilerplate, lang=lang
@@ -361,9 +359,9 @@ def andras_frank_algorithm(
     if not has_arborescence(D, "r0"):
         if boilerplate and log:
             if lang == "en":
-                log(f"The graph does not contain an arborescence with root r0.")
+                log(f"\n The graph does not contain an arborescence with root r0.")
             elif lang == "pt":
-                log(f"O grafo não contém uma arborescência com raiz r0.")
+                log(f"\n O grafo não contém uma arborescência com raiz r0.")
         return None, None
 
     arborescence_frank = phase2_find_minimum_arborescence(
