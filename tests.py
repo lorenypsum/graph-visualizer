@@ -18,6 +18,7 @@ PESO_MAX = 20
 LOG_CSV_PATH = "test_results.csv"
 LOG_TXT_PATH = "test_log.txt"
 ROOT = "r0"
+LANG = "pt"  # Change to "en" for English logs
 
 def log_console_and_file(msg, log_txt_path=LOG_TXT_PATH):
     print(msg)
@@ -89,6 +90,7 @@ def volume_tester(
     draw_fn=None,
     log=None,
     boilerplate=True,
+    lang=LANG,
 ):
 
     success_count = 0
@@ -98,7 +100,6 @@ def volume_tester(
     b1 = b2 = None
 
     # Garante saída limpa
-    # Ensure clean output
     if os.path.exists(log_csv_path):
         os.remove(log_csv_path)
     if os.path.exists(log_txt_path):
@@ -130,7 +131,12 @@ def volume_tester(
         n = random.randint(min_vertices, max_vertices)
         m = random.randint(n, 3 * n)
 
-        log_console_and_file(f"\n=== Teste #{i} - Vértices: {n}, Arestas: {m} ===")
+        if boilerplate and log:
+            if lang == "en":
+                log_console_and_file(f"\n=== Test #{i} - Vertices: {n}, Edges: {m} ===")
+            elif lang == "pt":
+                log_console_and_file(f"\n=== Teste #{i} - Vértices: {n}, Arestas: {m} ===")
+
         success = False
         erro = ""
         custo1 = custo2 = custo3 = "-"
@@ -146,70 +152,106 @@ def volume_tester(
             contains_arborescence_result, tree_result = contains_arborescence(D1_copy, root)
 
             if contains_arborescence_result:
-                if boilerplate:
-                    if log:
+                if boilerplate and log:
+                    if lang == "en":
                         log(
-                            f"\n✅ O grafo original contém uma arborescência com raiz {root}. Iniciando os testes..."
+                         f"\n The original graph contains an arborescence with root {root}. Starting tests..."
                         )
-                    if draw_fn:
-                        draw_fn(tree_result)
+                        if draw_fn:
+                            draw_fn(tree_result, title=f"Original Arborescence with root {root}")
+                    elif lang == "pt":
+                        log(
+                            f"\n O grafo original contém uma arborescência com raiz {root}. Iniciando os testes..."
+                            )
+                        if draw_fn:
+                            draw_fn(tree_result, title=f"Arborescência Original com raiz {root}")
 
-            D1_filtered = remove_edges_to_r0(D1_copy, root, log=log, boilerplate=boilerplate, lang="pt")
+            if lang == "en":
+                D1_filtered = remove_edges_to_r0(D1_copy, root, log=log, boilerplate=boilerplate, lang="en")
+            elif lang == "pt":
+                D1_filtered = remove_edges_to_r0(D1_copy, root, log=log, boilerplate=boilerplate, lang="pt")
 
             # Chu-Liu/Edmonds Algorithm
             arbo_chuliu = find_optimum_arborescence_chuliu(D1_filtered, root, draw_fn=draw_fn, log=log, boilerplate=boilerplate)
             custo_chuliu = get_total_digraph_cost(arbo_chuliu)
             
-            if boilerplate:
-                if log:
-                    log("\n🔍 Executando algoritmo de Chu-Liu/Edmonds...")
-                    log(f"\n Custo da arborescência de Chu-Liu/Edmonds: {custo_chuliu}")
-                if draw_fn:
-                    draw_fn(arbo_chuliu)
+            if boilerplate and log:
+                    if lang == "en":
+                        log("\n Executing Chu-Liu/Edmonds algorithm...")
+                        log(f"\n Cost of Chu-Liu/Edmonds arborescence: {custo_chuliu}")
+                        if draw_fn:
+                            draw_fn(arbo_chuliu, title="Chu-Liu/Edmonds Arborescence")
+                    elif lang == "pt":
+                        log("\n Executando algoritmo de Chu-Liu/Edmonds...")
+                        log(f"\n Custo da arborescência de Chu-Liu/Edmonds: {custo_chuliu}")
+                        if draw_fn:
+                            draw_fn(arbo_chuliu, title="Arborescência de Chu-Liu/Edmonds")
+            
 
-            # Frank's Algorithm
-            arbo_frank_v1, arbo_frank_v2, b1, b2 = andras_frank_algorithm(
-                D1_filtered, draw_fn=None, log=log, boilerplate=boilerplate, lang="pt"
-            )
+            if lang == "en":
+                # Frank's Algorithm
+                arbo_frank_v1, arbo_frank_v2, b1, b2 = andras_frank_algorithm(
+                    D1_filtered, draw_fn=None, log=log, boilerplate=boilerplate, lang="en"
+                )
+            elif lang == "pt":
+                # Algoritmo de Frank
+                arbo_frank_v1, arbo_frank_v2, b1, b2 = andras_frank_algorithm(
+                    D1_filtered, draw_fn=None, log=log, boilerplate=boilerplate, lang="pt"
+                )    
 
             custo_frank = get_total_digraph_cost(arbo_frank_v1)
             custo_frank_v2 = get_total_digraph_cost(arbo_frank_v2)
 
-            # Verifying that both algorithms yield the same cost
+                        # Verifying that both algorithms yield the same cost
             assert (
                 custo_chuliu == custo_frank
-            ), f"❌ Custos diferentes! Chu-Liu: {custo_chuliu}, Frank: {custo_frank}"
+            ), f"\n ❌ Custos diferentes! Chu-Liu: {custo_chuliu}, Frank: {custo_frank}"
 
             assert (
                 custo_chuliu == custo_frank_v2
-            ), f"❌ Custos diferentes! Chu-Liu: {custo_chuliu}, Frank v2: {custo_frank_v2}"
+            ), f"\n ❌ Custos diferentes! Chu-Liu: {custo_chuliu}, Frank v2: {custo_frank_v2}"
 
-            if boilerplate:
-                if log:
-                    log(f"Custo da arborescência de Chu-Liu/Edmonds: {custo_chuliu}")
-                    log(f"Custo da arborescência de András Frank: {custo_frank}")
-                    log(f"Custo da arborescência de András Frank (v2): {custo_frank_v2}")
+            if boilerplate and log:
+                if lang == "en":
+                    log(f"\n Cost of Andras Frank arborescence: {custo_frank}")
+                    log(f"\n Cost of Andras Frank arborescence (v2): {custo_frank_v2}")
+                    if draw_fn:
+                        draw_fn(arbo_frank_v1, title="Andras Frank Arborescence")
+                        draw_fn(arbo_frank_v2, title="Andras Frank Arborescence (v2)")
+                elif lang == "pt":
+                    log(f"\n Custo da arborescência de Andras Frank: {custo_frank}")
+                    log(f"\n Custo da arborescência de Andras Frank (v2): {custo_frank_v2}")
+                    if draw_fn:
+                        draw_fn(arbo_frank_v1, title="Arborescência de Andras Frank")
+                        draw_fn(arbo_frank_v2, title="Arborescência de Andras Frank (v2)")
                     
+                if lang == "en":
+                    assert b1, "\n ❌ Dual condition failed for Andras Frank."
+                    assert b2, "\n ❌ Dual condition failed for Andras Frank v2."
+                elif lang == "pt":
+                    assert b1, "\n ❌ Falha na condição dual para Andras Frank."
+                    assert b2, "\n ❌ Falha na condição dual para Andras Frank v2."
 
-            assert b1, "❌ Condição dual falhou para András Frank."
-            assert b2, "❌ Condição dual falhou para András Frank v2."
+                success = True
+        
+                if boilerplate and log:
+                    if lang == "en":
+                        log("\n✅ Tests completed successfully! Both algorithms returned arborescences with the same minimum cost.")
+                    elif lang == "pt":
+                        log("\n✅ Testes concluídos com sucesso! Ambos algoritmos retornaram arborescências com o mesmo custo mínimo.")
 
-            success = True
-
-            if boilerplate:
-                if log:
-                    log("\n ✅ Testes concluídos com sucesso!")
-                    log(
-                        "\n Sucesso! Ambos algoritmos retornaram arborescências com o mesmo custo mínimo."
-                    )
             else:
-                if boilerplate:
-                    if log:
+                if boilerplate and log:
+                    if lang == "en":
+                        log(
+                            "\n The graph does not contain an arborescence with root r0. Test aborted."
+                        )
+                    elif lang == "pt":
                         log(
                             "\n O grafo não contém uma arborescência com raiz r0. Teste abortado."
                         )
-                    if draw_fn:
-                        draw_fn(D1_filtered)
+                if draw_fn:
+                    draw_fn(D1_filtered)
 
         except Exception as e:
             erro = str(e)
@@ -253,14 +295,13 @@ def volume_tester(
             )
 
 
-    if boilerplate:
-        if log:
-            log_console_and_file("\n=== Resumo dos Testes ===")
-            log_console_and_file(f"Total de testes: {NUM_TESTS}")
-            log_console_and_file(f"Testes bem-sucedidos: {success_count}")
-            log_console_and_file(f"Testes com falha: {failure_count}")
-            log_console_and_file(f"Custo ChuLiu > Frank: {chuliu_greater_than_frank}")
-            log_console_and_file(f"Custo Frank > ChuLiu: {frank_greater_than_chuliu}")
+    if boilerplate and log:
+        log_console_and_file("\n=== Resumo dos Testes ===")
+        log_console_and_file(f"\n Total de testes: {NUM_TESTS}")
+        log_console_and_file(f"\n Testes bem-sucedidos: {success_count}")
+        log_console_and_file(f"\n Testes com falha: {failure_count}")
+        log_console_and_file(f"\n Custo ChuLiu > Frank: {chuliu_greater_than_frank}")
+        log_console_and_file(f"\n Custo Frank > ChuLiu: {frank_greater_than_chuliu}")
 
 volume_tester(
     num_tests=NUM_TESTS,
@@ -274,4 +315,5 @@ volume_tester(
     draw_fn=None,
     log=log_console_and_file,
     boilerplate=True,
+    lang="pt"
 )

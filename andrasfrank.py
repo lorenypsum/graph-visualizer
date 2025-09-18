@@ -134,9 +134,9 @@ def phase1_find_minimum_arborescence(
         iteration += 1
         if boilerplate and log:
             if lang == "en":
-                log(f"\n Iteration {iteration} ----------------------------")
+                log(f"\nIteration {iteration} ----------------------------")
             elif lang == "pt":
-                log(f"\n Iteração {iteration} ----------------------------")
+                log(f"\nIteração {iteration} ----------------------------")
 
         # Calculate the strongly connected components of the graph D_zero.
         C = nx.condensation(D_zero)
@@ -157,17 +157,17 @@ def phase1_find_minimum_arborescence(
 
         if boilerplate and log:
             if lang == "en":
-                log(f"\n Sources: {sources}")
+                log(f"\nSources: {sources}")
             elif lang == "pt":
-                log(f"\n Fontes: {sources}")
+                log(f"\nFontes: {sources}")
 
         if len(sources) == 1:
             # If there is only one source, it means it is R0 and there are no more arcs to be processed.
             if boilerplate and log:
                 if lang == "en":
-                    log(f"\n Only one source found, algorithm finished.")
+                    log(f"\nOnly one source found, algorithm finished.")
                 elif lang == "pt":
-                    log(f"\n Apenas uma fonte encontrada, algoritmo finalizado.")
+                    log(f"\nApenas uma fonte encontrada, algoritmo finalizado.")
             break
 
         for u in sources:
@@ -179,21 +179,21 @@ def phase1_find_minimum_arborescence(
 
             if boilerplate and log:
                 if lang == "en":
-                    log(f"\n Set X: {X}")
-                    log(f"\n Arcs entering X: {arcs}")
-                    log(f"\n Minimum weight found: {min_weight}")
+                    log(f"\nSet X: {X}")
+                    log(f"\nArcs entering X: {arcs}")
+                    log(f"\nMinimum weight found: {min_weight}")
                 elif lang == "pt":
-                    log(f"\n Conjunto X: {X}")
-                    log(f"\n Arestas que entram em X: {arcs}")
-                    log(f"\n Peso mínimo encontrado: {min_weight}")
+                    log(f"\nConjunto X: {X}")
+                    log(f"\nArestas que entram em X: {arcs}")
+                    log(f"\nPeso mínimo encontrado: {min_weight}")
 
             update_weights_in_X(D_copy, arcs, min_weight, A_zero, D_zero)
 
             if boilerplate and log:
                 if lang == "en":
-                    log(f"\n Updated weights in arcs entering X")
+                    log(f"\nUpdated weights in arcs entering X")
                 elif lang == "pt":
-                    log(f"\n Pesos atualizados nos arcos que entram em X")
+                    log(f"\nPesos atualizados nos arcos que entram em X")
 
             # If min_weight is zero, ignore
             if min_weight == 0:
@@ -328,11 +328,11 @@ def check_dual_optimality_condition(
                     if boilerplate and log:
                         if lang == "en":
                             log(
-                                f"\n Dual condition failed for X={X} with z(X)={z}. Incoming arcs: {count}"
+                                f"\nDual condition failed for X={X} with z(X)={z}. Incoming arcs: {count}"
                             )
                         elif lang == "pt":
                             log(
-                                f"\n Falha na condição dual para X={X} com z(X)={z}. Arcos entrando: {count}"
+                                f"\nFalha na condição dual para X={X} com z(X)={z}. Arcos entrando: {count}"
                             )
                     return False
     return True
@@ -344,9 +344,9 @@ def andras_frank_algorithm(
 ):
     if boilerplate and log:
         if lang == "en":
-            log(f"\n Executing András Frank algorithm...")
+            log(f"\nExecuting András Frank algorithm...")
         elif lang == "pt":
-            log(f"\n Executando algoritmo de András Frank...")
+            log(f"\nExecutando algoritmo de András Frank...")
 
     A_zero, Dual_list = phase1_find_minimum_arborescence(
         D, "r0", draw_fn=draw_fn, log=log, boilerplate=boilerplate, lang=lang
@@ -359,9 +359,9 @@ def andras_frank_algorithm(
     if not has_arborescence(D, "r0"):
         if boilerplate and log:
             if lang == "en":
-                log(f"\n The graph does not contain an arborescence with root r0.")
+                log(f"\nThe graph does not contain an arborescence with root r0.")
             elif lang == "pt":
-                log(f"\n O grafo não contém uma arborescência com raiz r0.")
+                log(f"\nO grafo não contém uma arborescência com raiz r0.")
         return None, None
 
     arborescence_frank = phase2_find_minimum_arborescence(
@@ -382,15 +382,15 @@ def andras_frank_algorithm(
     if dual_frank and dual_frank_v2:
         if boilerplate and log:
             if lang == "en":
-                log(f"✅ Dual condition satisfied for András Frank.")
+                log(f"\n✅ Dual condition satisfied for András Frank.")
             elif lang == "pt":
-                log(f"✅ Condição dual satisfeita para András Frank.")
+                log(f"\n✅ Condição dual satisfeita para András Frank.")
     else:
         if boilerplate and log:
             if lang == "en":
-                log(f"❌ Dual condition failed for András Frank.")
+                log(f"\n❌ Dual condition failed for András Frank.")
             elif lang == "pt":
-                log(f"❌ Condição dual falhou para András Frank.")
+                log(f"\n❌ Condição dual falhou para András Frank.")
 
         if draw_fn:
             if boilerplate and draw_fn:
