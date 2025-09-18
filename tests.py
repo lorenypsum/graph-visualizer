@@ -10,7 +10,7 @@ from andrasfrank import andras_frank_algorithm
 from chuliu import find_optimum_arborescence_chuliu, remove_edges_to_r0
 
 # Deafult parameters
-NUM_TESTS = 2
+NUM_TESTS = 2000
 MIN_VERTICES = 100
 MAX_VERTICES = 200
 PESO_MIN = 1
