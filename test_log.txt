@@ -1,9 +1,9 @@
 
-=== Teste #1 - Vértices: 113, Arestas: 335 ===
+=== Teste #1 - Vértices: 169, Arestas: 449 ===
 
 ✅ O grafo original contém uma arborescência com raiz r0. Iniciando os testes...
 
- remove_edges_to_r0: Removidas 1 arestas entrando em 'r0'.
+ remove_edges_to_r0: Removidas 2 arestas entrando em 'r0'.
 
  find_optimum_arborescence_chuliu:Iniciando nível 0
 
@@ -11,964 +11,1469 @@
 
  find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'r0'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v69'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v84'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v103'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v104'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v79'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v141'
 
  find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v95'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v71'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v82'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v27'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v20'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v87'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v30'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v44'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v78'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v1'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v47'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v57'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v77'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v84'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v59'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v10'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v55'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v89'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v75'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v68'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v86'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v4'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v0'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v26'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v40'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v85'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v58'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v22'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v21'
 
  find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v2'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v28'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v57'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v65'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v61'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v62'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v126'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v50'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v55'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v51'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v151'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v13'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v43'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v21'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v127'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v73'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v91'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v8'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v111'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v93'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v56'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v35'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v64'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v41'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v66'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v34'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v39'
 
  find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v90'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v102'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v12'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v3'
 
  find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v97'
 
  find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v36'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v24'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v96'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v81'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v45'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v43'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v11'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v29'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v100'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v49'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v19'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v9'
-
  find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v60'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v108'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v149'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v38'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v24'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v17'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v85'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v63'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v163'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v31'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v28'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v76'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v47'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v25'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v113'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v110'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v71'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v109'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v48'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v98'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v106'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v23'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v67'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v80'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v14'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v33'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v37'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v65'
 
  find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v88'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v74'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v106'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v42'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v152'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v83'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v80'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v54'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v52'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v39'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v16'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v7'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v61'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v101'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v53'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v99'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v32'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v94'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v46'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v105'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v18'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v6'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v108'
 
  find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v15'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v70'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v22'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v130'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v45'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v77'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v32'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v156'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v78'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v20'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v6'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v10'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v99'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v91'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v75'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v142'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v112'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v48'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v102'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v81'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v103'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v153'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v41'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v143'
 
  find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v107'
 
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v34'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v37'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v38'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v109'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v4'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v162'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v117'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v121'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v74'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v129'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v25'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v119'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v125'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v33'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v73'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v159'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v69'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v66'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v111'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v42'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v44'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v86'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v164'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v124'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v29'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v161'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v18'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v27'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v137'
+
  find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v5'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v145'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v8'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v40'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v68'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v11'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v136'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v114'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v63'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v166'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v93'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v104'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v101'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v19'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v147'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v79'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v139'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v98'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v132'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v89'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v82'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v17'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v58'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v12'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v30'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v51'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v140'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v64'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v144'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v122'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v157'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v160'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v70'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v123'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v67'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v83'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v133'
 
  find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v72'
 
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v128'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v23'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v118'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v165'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v148'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v146'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v59'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v105'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v115'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v87'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v35'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v7'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v110'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v94'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v16'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v155'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v0'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v138'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v52'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v49'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v167'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v134'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v3'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v62'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v150'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v13'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v76'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v154'
+
  find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v92'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v31'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v116'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v120'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v100'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v135'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v131'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v50'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v1'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v14'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v54'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v96'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v46'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v53'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v9'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v26'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v56'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v158'
 
  find_optimum_arborescence_chuliu:Construindo F_star
 
  find_optimum_arborescence_chuliu:F_star não é uma arborescência. Continuando...
 
- find_optimum_arborescence_chuliu:Adicionando aresta de entrada ao ciclo: (v87, v1)
+ find_optimum_arborescence_chuliu:Adicionando aresta de entrada ao ciclo: (v112, v136)
 
- find_optimum_arborescence_chuliu:Adicionando aresta do ciclo: (v1, v84)
+ find_optimum_arborescence_chuliu:Adicionando aresta do ciclo: (v141, v90)
 
- find_optimum_arborescence_chuliu:Adicionando aresta externa de saída: (v1, v69)
+ find_optimum_arborescence_chuliu:Adicionando aresta do ciclo: (v37, v39)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta do ciclo: (v90, v73)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta do ciclo: (v11, v125)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta do ciclo: (v101, v37)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta do ciclo: (v136, v141)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta do ciclo: (v44, v101)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta do ciclo: (v126, v130)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta do ciclo: (v125, v126)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta do ciclo: (v130, v44)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta do ciclo: (v73, v11)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta externa de saída: (v126, v28)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta externa de saída: (v90, v47)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta externa de saída: (v126, v20)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta externa de saída: (v73, v86)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta externa de saída: (v126, v145)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta externa de saída: (v11, v139)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta externa de saída: (v39, v98)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta externa de saída: (v136, v89)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta externa de saída: (v136, v82)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta externa de saída: (v130, v59)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta externa de saída: (v39, v87)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta externa de saída: (v141, v94)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta externa de saída: (v126, v62)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta externa de saída: (v101, v100)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta externa de saída: (v37, v38)
 
  find_optimum_arborescence_chuliu:Vértice contraído '
  n*0' removido.
 
- find_optimum_arborescence_chuliu:Arborescência final: [('v69', 'v68'), ('v69', 'v28'), ('v69', 'v51'), ('v47', 'v103'), ('v103', 'v71'), ('v103', 'v87'), ('v103', 'v109'), ('r0', 'v104'), ('r0', 'v90'), ('r0', 'v19'), ('v104', 'v50'), ('v104', 'v8'), ('v104', 'v100'), ('v93', 'v79'), ('v93', 'v72'), ('v79', 'v86'), ('v80', 'v95'), ('v80', 'v59'), ('v95', 'v10'), ('v71', 'v75'), ('v71', 'v53'), ('v35', 'v82'), ('v35', 'v76'), ('v35', 'v110'), ('v35', 'v15'), ('v82', 'v2'), ('v82', 'v14'), ('v89', 'v27'), ('v89', 'v67'), ('v27', 'v97'), ('v90', 'v20'), ('v90', 'v64'), ('v90', 'v43'), ('v90', 'v32'), ('v20', 'v30'), ('v20', 'v94'), ('v87', 'v78'), ('v87', 'v1'), ('v30', 'v47'), ('v7', 'v44'), ('v44', 'v55'), ('v44', 'v45'), ('v78', 'v77'), ('v78', 'v6'), ('v43', 'v57'), ('v43', 'v35'), ('v57', 'v60'), ('v57', 'v101'), ('v10', 'v0'), ('v55', 'v102'), ('v55', 'v9'), ('v55', 'v42'), ('v54', 'v89'), ('v68', 'v96'), ('v86', 'v40'), ('v86', 'v70'), ('v0', 'v66'), ('v74', 'v26'), ('v26', 'v85'), ('v26', 'v24'), ('v40', 'v36'), ('v85', 'v12'), ('v15', 'v58'), ('v58', 'v13'), ('v102', 'v22'), ('v2', 'v39'), ('v2', 'v16'), ('v2', 'v105'), ('v92', 'v65'), ('v65', 'v21'), ('v65', 'v107'), ('v94', 'v62'), ('v62', 'v3'), ('v62', 'v33'), ('v13', 'v111'), ('v13', 'v81'), ('v13', 'v54'), ('v21', 'v108'), ('v99', 'v73'), ('v73', 'v80'), ('v8', 'v83'), ('v111', 'v34'), ('v109', 'v93'), ('v14', 'v56'), ('v56', 'v106'), ('v64', 'v29'), ('v19', 'v41'), ('v19', 'v99'), ('v41', 'v98'), ('v34', 'v17'), ('v97', 'v7'), ('v36', 'v88'), ('v24', 'v11'), ('v96', 'v38'), ('v29', 'v63'), ('v38', 'v74'), ('v38', 'v18'), ('v76', 'v48'), ('v76', 'v37'), ('v88', 'v25'), ('v98', 'v61'), ('v106', 'v92'), ('v42', 'v46'), ('v61', 'v52'), ('v100', 'v91'), ('v100', 'v23'), ('v91', 'v49'), ('v49', 'v31'), ('v49', 'v5'), ('v31', 'v4'), ('v1', 'v84'), ('v1', 'v69')]
+ find_optimum_arborescence_chuliu:Arborescência final: [('r0', 'v84'), ('r0', 'v24'), ('r0', 'v49'), ('v84', 'v95'), ('v84', 'v55'), ('v84', 'v4'), ('v84', 'v123'), ('v84', 'v110'), ('v84', 'v155'), ('v95', 'v45'), ('v32', 'v21'), ('v32', 'v114'), ('v21', 'v149'), ('v21', 'v161'), ('v155', 'v2'), ('v2', 'v32'), ('v162', 'v57'), ('v57', 'v80'), ('v57', 'v153'), ('v55', 'v91'), ('v55', 'v54'), ('v71', 'v151'), ('v71', 'v108'), ('v71', 'v129'), ('v151', 'v166'), ('v166', 'v127'), ('v166', 'v64'), ('v166', 'v72'), ('v127', 'v113'), ('v97', 'v22'), ('v97', 'v35'), ('v160', 'v36'), ('v160', 'v10'), ('v36', 'v60'), ('v60', 'v132'), ('v60', 'v50'), ('v149', 'v162'), ('v24', 'v146'), ('v24', 'v7'), ('v94', 'v163'), ('v94', 'v52'), ('v94', 'v53'), ('v163', 'v121'), ('v163', 'v25'), ('v163', 'v115'), ('v47', 'v75'), ('v65', 'v71'), ('v65', 'v111'), ('v65', 'v140'), ('v16', 'v65'), ('v16', 'v105'), ('v16', 'v46'), ('v33', 'v88'), ('v88', 'v147'), ('v8', 'v106'), ('v106', 'v122'), ('v15', 'v152'), ('v15', 'v18'), ('v108', 'v77'), ('v108', 'v76'), ('v29', 'v15'), ('v22', 'v99'), ('v22', 'v120'), ('v45', 'v78'), ('v45', 'v41'), ('v25', 'v156'), ('v156', 'v33'), ('v156', 'v58'), ('v78', 'v103'), ('v78', 'v16'), ('v20', 'v8'), ('v6', 'v144'), ('v91', 'v143'), ('v91', 'v117'), ('v50', 'v142'), ('v142', 'v48'), ('v142', 'v159'), ('v48', 'v34'), ('v48', 'v42'), ('v146', 'v102'), ('v146', 'v79'), ('v103', 'v164'), ('v153', 'v66'), ('v153', 'v83'), ('v153', 'v1'), ('v153', 'v96'), ('v143', 'v26'), ('v105', 'v107'), ('v107', 'v51'), ('v109', 'v63'), ('v4', 'v69'), ('v4', 'v19'), ('v4', 'v31'), ('v51', 'v74'), ('v74', 'v148'), ('v129', 'v118'), ('v129', 'v167'), ('v159', 'v67'), ('v159', 'v23'), ('v66', 'v5'), ('v66', 'v104'), ('v64', 'v29'), ('v161', 'v150'), ('v18', 'v154'), ('v139', 'v27'), ('v27', 'v134'), ('v5', 'v133'), ('v145', 'v56'), ('v150', 'v40'), ('v40', 'v0'), ('v114', 'v70'), ('v35', 'v93'), ('v19', 'v165'), ('v19', 'v158'), ('v82', 'v92'), ('v12', 'v138'), ('v3', 'v30'), ('v46', 'v157'), ('v49', 'v160'), ('v87', 'v3'), ('v87', 'v131'), ('v9', 'v135'), ('v26', 'v9'), ('v68', 'v81'), ('v68', 'v13'), ('v68', 'v116'), ('v81', 'v61'), ('v61', 'v43'), ('v61', 'v12'), ('v43', 'v85'), ('v43', 'v97'), ('v43', 'v109'), ('v38', 'v137'), ('v137', 'v17'), ('v17', 'v68'), ('v133', 'v119'), ('v119', 'v112'), ('v119', 'v14'), ('v112', 'v124'), ('v112', 'v136'), ('v124', 'v6'), ('v124', 'v128'), ('v136', 'v141'), ('v136', 'v89'), ('v136', 'v82'), ('v141', 'v90'), ('v141', 'v94'), ('v90', 'v73'), ('v90', 'v47'), ('v37', 'v39'), ('v37', 'v38'), ('v39', 'v98'), ('v39', 'v87'), ('v73', 'v11'), ('v73', 'v86'), ('v11', 'v125'), ('v11', 'v139'), ('v125', 'v126'), ('v101', 'v37'), ('v101', 'v100'), ('v44', 'v101'), ('v126', 'v130'), ('v126', 'v28'), ('v126', 'v20'), ('v126', 'v145'), ('v126', 'v62'), ('v130', 'v44'), ('v130', 'v59')]
 
 🔍 Executando algoritmo de Chu-Liu/Edmonds...
-Custo da arborescência de Chu-Liu/Edmonds: 694
+
+ Custo da arborescência de Chu-Liu/Edmonds: 1138
 
 🔍 Executando algoritmo de András Frank...
+
+ Construindo D_zero inicialmente:
 
  🔄 Iteração 1 ----------------------------
 
  Componentes fortemente conexos em D_zero:
-Fontes: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112]
+Fontes: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168]
 
- Conjunto X: {'v69'}
-Arestas que entram em X: [('r0', 'v69', {'w': 12}), ('v20', 'v69', {'w': 9}), ('v1', 'v69', {'w': 5})]
+ Conjunto X: {'v84'}
+Arestas que entram em X: [('r0', 'v84', {'w': 4}), ('v39', 'v84', {'w': 14}), ('v111', 'v84', {'w': 9})]
+Peso mínimo encontrado: 4
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v141'}
+Arestas que entram em X: [('r0', 'v141', {'w': 17}), ('v151', 'v141', {'w': 15}), ('v153', 'v141', {'w': 14}), ('v41', 'v141', {'w': 7}), ('v136', 'v141', {'w': 5}), ('v158', 'v141', {'w': 16})]
 Peso mínimo encontrado: 5
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v103'}
-Arestas que entram em X: [('v69', 'v103', {'w': 20}), ('v47', 'v103', {'w': 5}), ('v77', 'v103', {'w': 19}), ('v67', 'v103', {'w': 15}), ('v16', 'v103', {'w': 9})]
-Peso mínimo encontrado: 5
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v104'}
-Arestas que entram em X: [('r0', 'v104', {'w': 1})]
-Peso mínimo encontrado: 1
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v79'}
-Arestas que entram em X: [('v103', 'v79', {'w': 13}), ('v93', 'v79', {'w': 7}), ('v97', 'v79', {'w': 12})]
-Peso mínimo encontrado: 7
 
  Pesos atualizados nos arcos que entram em X
 
  Conjunto X: {'v95'}
-Arestas que entram em X: [('r0', 'v95', {'w': 16}), ('v80', 'v95', {'w': 8})]
-Peso mínimo encontrado: 8
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v71'}
-Arestas que entram em X: [('v103', 'v71', {'w': 11}), ('v93', 'v71', {'w': 20}), ('v35', 'v71', {'w': 11})]
-Peso mínimo encontrado: 11
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v82'}
-Arestas que entram em X: [('v104', 'v82', {'w': 17}), ('v35', 'v82', {'w': 16})]
-Peso mínimo encontrado: 16
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v27'}
-Arestas que entram em X: [('v79', 'v27', {'w': 16}), ('v89', 'v27', {'w': 9}), ('v58', 'v27', {'w': 19}), ('v83', 'v27', {'w': 12})]
-Peso mínimo encontrado: 9
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v20'}
-Arestas que entram em X: [('r0', 'v20', {'w': 16}), ('v75', 'v20', {'w': 13}), ('v90', 'v20', {'w': 7})]
-Peso mínimo encontrado: 7
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v87'}
-Arestas que entram em X: [('v103', 'v87', {'w': 9})]
-Peso mínimo encontrado: 9
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v30'}
-Arestas que entram em X: [('v20', 'v30', {'w': 20})]
-Peso mínimo encontrado: 20
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v44'}
-Arestas que entram em X: [('r0', 'v44', {'w': 15}), ('v1', 'v44', {'w': 18}), ('v21', 'v44', {'w': 20}), ('v7', 'v44', {'w': 6})]
-Peso mínimo encontrado: 6
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v78'}
-Arestas que entram em X: [('v87', 'v78', {'w': 5}), ('v30', 'v78', {'w': 13}), ('v36', 'v78', {'w': 15})]
-Peso mínimo encontrado: 5
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v1'}
-Arestas que entram em X: [('v104', 'v1', {'w': 18}), ('v87', 'v1', {'w': 12}), ('v84', 'v1', {'w': 2}), ('v0', 'v1', {'w': 14}), ('v40', 'v1', {'w': 19}), ('v97', 'v1', {'w': 20}), ('v24', 'v1', {'w': 15})]
-Peso mínimo encontrado: 2
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v47'}
-Arestas que entram em X: [('v30', 'v47', {'w': 2})]
-Peso mínimo encontrado: 2
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v57'}
-Arestas que entram em X: [('v87', 'v57', {'w': 17}), ('v84', 'v57', {'w': 15}), ('v43', 'v57', {'w': 12})]
-Peso mínimo encontrado: 12
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v77'}
-Arestas que entram em X: [('v78', 'v77', {'w': 2}), ('v48', 'v77', {'w': 4}), ('v61', 'v77', {'w': 20})]
-Peso mínimo encontrado: 2
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v84'}
-Arestas que entram em X: [('v1', 'v84', {'w': 2}), ('v49', 'v84', {'w': 12})]
-Peso mínimo encontrado: 2
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v59'}
-Arestas que entram em X: [('v1', 'v59', {'w': 20}), ('v80', 'v59', {'w': 2})]
-Peso mínimo encontrado: 2
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v10'}
-Arestas que entram em X: [('v69', 'v10', {'w': 8}), ('v95', 'v10', {'w': 1}), ('v66', 'v10', {'w': 3}), ('v37', 'v10', {'w': 13})]
+Arestas que entram em X: [('v84', 'v95', {'w': 1}), ('v74', 'v95', {'w': 1})]
 Peso mínimo encontrado: 1
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v55'}
-Arestas que entram em X: [('v20', 'v55', {'w': 10}), ('v44', 'v55', {'w': 2}), ('v29', 'v55', {'w': 2}), ('v80', 'v55', {'w': 2}), ('v32', 'v55', {'w': 9})]
-Peso mínimo encontrado: 2
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v89'}
-Arestas que entram em X: [('v104', 'v89', {'w': 15}), ('v54', 'v89', {'w': 9})]
-Peso mínimo encontrado: 9
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v75'}
-Arestas que entram em X: [('v71', 'v75', {'w': 3}), ('v90', 'v75', {'w': 18}), ('v45', 'v75', {'w': 10}), ('v110', 'v75', {'w': 18}), ('v54', 'v75', {'w': 6}), ('v39', 'v75', {'w': 4}), ('v94', 'v75', {'w': 11}), ('v6', 'v75', {'w': 18})]
-Peso mínimo encontrado: 3
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v68'}
-Arestas que entram em X: [('v69', 'v68', {'w': 6}), ('v26', 'v68', {'w': 10})]
-Peso mínimo encontrado: 6
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v86'}
-Arestas que entram em X: [('v79', 'v86', {'w': 6}), ('v75', 'v86', {'w': 8}), ('v109', 'v86', {'w': 7}), ('v14', 'v86', {'w': 12})]
-Peso mínimo encontrado: 6
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v4'}
-Arestas que entram em X: [('v77', 'v4', {'w': 16}), ('v63', 'v4', {'w': 16}), ('v31', 'v4', {'w': 9})]
-Peso mínimo encontrado: 9
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v0'}
-Arestas que entram em X: [('v10', 'v0', {'w': 4}), ('v76', 'v0', {'w': 8})]
-Peso mínimo encontrado: 4
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v26'}
-Arestas que entram em X: [('v71', 'v26', {'w': 18}), ('v84', 'v26', {'w': 17}), ('v67', 'v26', {'w': 14}), ('v37', 'v26', {'w': 9}), ('v74', 'v26', {'w': 5})]
-Peso mínimo encontrado: 5
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v40'}
-Arestas que entram em X: [('v79', 'v40', {'w': 12}), ('v47', 'v40', {'w': 20}), ('v86', 'v40', {'w': 11})]
-Peso mínimo encontrado: 11
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v85'}
-Arestas que entram em X: [('v26', 'v85', {'w': 4}), ('v62', 'v85', {'w': 5}), ('v109', 'v85', {'w': 7})]
-Peso mínimo encontrado: 4
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v58'}
-Arestas que entram em X: [('v79', 'v58', {'w': 17}), ('v84', 'v58', {'w': 16}), ('v46', 'v58', {'w': 7}), ('v15', 'v58', {'w': 1})]
-Peso mínimo encontrado: 1
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v22'}
-Arestas que entram em X: [('v104', 'v22', {'w': 20}), ('v102', 'v22', {'w': 13})]
-Peso mínimo encontrado: 13
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v2'}
-Arestas que entram em X: [('v104', 'v2', {'w': 18}), ('v82', 'v2', {'w': 5}), ('v55', 'v2', {'w': 19}), ('v89', 'v2', {'w': 5}), ('v53', 'v2', {'w': 9})]
-Peso mínimo encontrado: 5
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v28'}
-Arestas que entram em X: [('v69', 'v28', {'w': 10}), ('v64', 'v28', {'w': 19})]
-Peso mínimo encontrado: 10
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v65'}
-Arestas que entram em X: [('v79', 'v65', {'w': 20}), ('v22', 'v65', {'w': 8}), ('v94', 'v65', {'w': 15}), ('v92', 'v65', {'w': 7})]
-Peso mínimo encontrado: 7
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v62'}
-Arestas que entram em X: [('v65', 'v62', {'w': 5}), ('v111', 'v62', {'w': 4}), ('v76', 'v62', {'w': 6}), ('v94', 'v62', {'w': 2})]
-Peso mínimo encontrado: 2
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v50'}
-Arestas que entram em X: [('v104', 'v50', {'w': 8}), ('v86', 'v50', {'w': 16})]
-Peso mínimo encontrado: 8
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v51'}
-Arestas que entram em X: [('v69', 'v51', {'w': 2}), ('v26', 'v51', {'w': 18}), ('v101', 'v51', {'w': 18}), ('v99', 'v51', {'w': 15})]
-Peso mínimo encontrado: 2
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v13'}
-Arestas que entram em X: [('v104', 'v13', {'w': 11}), ('v58', 'v13', {'w': 7}), ('v49', 'v13', {'w': 12})]
-Peso mínimo encontrado: 7
 
  Pesos atualizados nos arcos que entram em X
 
  Conjunto X: {'v21'}
-Arestas que entram em X: [('v65', 'v21', {'w': 3}), ('v33', 'v21', {'w': 11}), ('v39', 'v21', {'w': 7}), ('v70', 'v21', {'w': 3})]
+Arestas que entram em X: [('v141', 'v21', {'w': 5}), ('v32', 'v21', {'w': 5}), ('v134', 'v21', {'w': 16})]
+Peso mínimo encontrado: 5
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v2'}
+Arestas que entram em X: [('r0', 'v2', {'w': 5}), ('v124', 'v2', {'w': 9}), ('v155', 'v2', {'w': 1})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v57'}
+Arestas que entram em X: [('v141', 'v57', {'w': 14}), ('v127', 'v57', {'w': 15}), ('v162', 'v57', {'w': 7}), ('v17', 'v57', {'w': 15}), ('v14', 'v57', {'w': 19})]
+Peso mínimo encontrado: 7
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v61'}
+Arestas que entram em X: [('v84', 'v61', {'w': 4}), ('v81', 'v61', {'w': 3})]
 Peso mínimo encontrado: 3
 
  Pesos atualizados nos arcos que entram em X
 
- Conjunto X: {'v73'}
-Arestas que entram em X: [('v69', 'v73', {'w': 9}), ('v79', 'v73', {'w': 13}), ('v43', 'v73', {'w': 9}), ('v99', 'v73', {'w': 6})]
+ Conjunto X: {'v126'}
+Arestas que entram em X: [('v21', 'v126', {'w': 16}), ('v125', 'v126', {'w': 14})]
+Peso mínimo encontrado: 14
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v55'}
+Arestas que entram em X: [('v84', 'v55', {'w': 6}), ('v41', 'v55', {'w': 8})]
 Peso mínimo encontrado: 6
 
  Pesos atualizados nos arcos que entram em X
 
- Conjunto X: {'v91'}
-Arestas que entram em X: [('v44', 'v91', {'w': 16}), ('v62', 'v91', {'w': 6}), ('v100', 'v91', {'w': 2}), ('v74', 'v91', {'w': 3})]
-Peso mínimo encontrado: 2
+ Conjunto X: {'v151'}
+Arestas que entram em X: [('v61', 'v151', {'w': 18}), ('v71', 'v151', {'w': 7}), ('v132', 'v151', {'w': 14}), ('v54', 'v151', {'w': 11})]
+Peso mínimo encontrado: 7
 
  Pesos atualizados nos arcos que entram em X
 
- Conjunto X: {'v8'}
-Arestas que entram em X: [('v104', 'v8', {'w': 4}), ('v64', 'v8', {'w': 10}), ('v53', 'v8', {'w': 10}), ('v15', 'v8', {'w': 8})]
+ Conjunto X: {'v43'}
+Arestas que entram em X: [('v61', 'v43', {'w': 11})]
+Peso mínimo encontrado: 11
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v127'}
+Arestas que entram em X: [('v141', 'v127', {'w': 5}), ('v166', 'v127', {'w': 4})]
 Peso mínimo encontrado: 4
 
  Pesos atualizados nos arcos que entram em X
 
- Conjunto X: {'v111'}
-Arestas que entram em X: [('v13', 'v111', {'w': 9})]
-Peso mínimo encontrado: 9
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v93'}
-Arestas que entram em X: [('v0', 'v93', {'w': 15}), ('v109', 'v93', {'w': 12})]
-Peso mínimo encontrado: 12
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v56'}
-Arestas que entram em X: [('v89', 'v56', {'w': 13}), ('v110', 'v56', {'w': 8}), ('v14', 'v56', {'w': 4})]
-Peso mínimo encontrado: 4
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v35'}
-Arestas que entram em X: [('v95', 'v35', {'w': 14}), ('v43', 'v35', {'w': 2}), ('v100', 'v35', {'w': 20}), ('v63', 'v35', {'w': 6}), ('v67', 'v35', {'w': 19})]
-Peso mínimo encontrado: 2
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v64'}
-Arestas que entram em X: [('v86', 'v64', {'w': 7}), ('v90', 'v64', {'w': 2}), ('v25', 'v64', {'w': 16}), ('v6', 'v64', {'w': 11})]
-Peso mínimo encontrado: 2
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v41'}
-Arestas que entram em X: [('v22', 'v41', {'w': 17}), ('v28', 'v41', {'w': 15}), ('v19', 'v41', {'w': 10})]
-Peso mínimo encontrado: 10
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v66'}
-Arestas que entram em X: [('v0', 'v66', {'w': 6}), ('v50', 'v66', {'w': 14})]
-Peso mínimo encontrado: 6
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v34'}
-Arestas que entram em X: [('v111', 'v34', {'w': 8}), ('v6', 'v34', {'w': 14})]
-Peso mínimo encontrado: 8
+ Conjunto X: {'v39'}
+Arestas que entram em X: [('v95', 'v39', {'w': 20}), ('v126', 'v39', {'w': 15}), ('v37', 'v39', {'w': 5}), ('v115', 'v39', {'w': 16})]
+Peso mínimo encontrado: 5
 
  Pesos atualizados nos arcos que entram em X
 
  Conjunto X: {'v90'}
-Arestas que entram em X: [('r0', 'v90', {'w': 7}), ('v44', 'v90', {'w': 13})]
-Peso mínimo encontrado: 7
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v102'}
-Arestas que entram em X: [('v55', 'v102', {'w': 6}), ('v40', 'v102', {'w': 6}), ('v66', 'v102', {'w': 6}), ('v60', 'v102', {'w': 15})]
-Peso mínimo encontrado: 6
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v12'}
-Arestas que entram em X: [('v68', 'v12', {'w': 14}), ('v85', 'v12', {'w': 7}), ('v2', 'v12', {'w': 18})]
-Peso mínimo encontrado: 7
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v3'}
-Arestas que entram em X: [('v62', 'v3', {'w': 1})]
+Arestas que entram em X: [('v141', 'v90', {'w': 1}), ('v126', 'v90', {'w': 12}), ('v4', 'v90', {'w': 17}), ('v16', 'v90', {'w': 12})]
 Peso mínimo encontrado: 1
 
  Pesos atualizados nos arcos que entram em X
 
  Conjunto X: {'v97'}
-Arestas que entram em X: [('v27', 'v97', {'w': 3}), ('v35', 'v97', {'w': 5})]
-Peso mínimo encontrado: 3
+Arestas que entram em X: [('v43', 'v97', {'w': 1})]
+Peso mínimo encontrado: 1
 
  Pesos atualizados nos arcos que entram em X
 
  Conjunto X: {'v36'}
-Arestas que entram em X: [('v40', 'v36', {'w': 9}), ('v67', 'v36', {'w': 12})]
-Peso mínimo encontrado: 9
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v24'}
-Arestas que entram em X: [('v26', 'v24', {'w': 6}), ('v18', 'v24', {'w': 13})]
-Peso mínimo encontrado: 6
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v96'}
-Arestas que entram em X: [('v68', 'v96', {'w': 1}), ('v73', 'v96', {'w': 7})]
-Peso mínimo encontrado: 1
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v81'}
-Arestas que entram em X: [('v79', 'v81', {'w': 17}), ('v13', 'v81', {'w': 9}), ('v83', 'v81', {'w': 10}), ('v61', 'v81', {'w': 14})]
-Peso mínimo encontrado: 9
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v45'}
-Arestas que entram em X: [('v44', 'v45', {'w': 11}), ('v36', 'v45', {'w': 20})]
-Peso mínimo encontrado: 11
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v43'}
-Arestas que entram em X: [('v90', 'v43', {'w': 9})]
-Peso mínimo encontrado: 9
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v11'}
-Arestas que entram em X: [('v24', 'v11', {'w': 10})]
-Peso mínimo encontrado: 10
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v29'}
-Arestas que entram em X: [('v64', 'v29', {'w': 6}), ('v36', 'v29', {'w': 14}), ('v61', 'v29', {'w': 14})]
-Peso mínimo encontrado: 6
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v100'}
-Arestas que entram em X: [('v104', 'v100', {'w': 2}), ('v21', 'v100', {'w': 12}), ('v31', 'v100', {'w': 1}), ('v14', 'v100', {'w': 12})]
-Peso mínimo encontrado: 1
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v49'}
-Arestas que entram em X: [('v27', 'v49', {'w': 18}), ('v91', 'v49', {'w': 2}), ('v19', 'v49', {'w': 11}), ('v37', 'v49', {'w': 6})]
-Peso mínimo encontrado: 2
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v19'}
-Arestas que entram em X: [('r0', 'v19', {'w': 5}), ('v91', 'v19', {'w': 5}), ('v3', 'v19', {'w': 7}), ('v11', 'v19', {'w': 12})]
-Peso mínimo encontrado: 5
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v9'}
-Arestas que entram em X: [('v77', 'v9', {'w': 19}), ('v55', 'v9', {'w': 7}), ('v85', 'v9', {'w': 11}), ('v109', 'v9', {'w': 9})]
-Peso mínimo encontrado: 7
+Arestas que entram em X: [('v43', 'v36', {'w': 7}), ('v25', 'v36', {'w': 19}), ('v27', 'v36', {'w': 19}), ('v160', 'v36', {'w': 3})]
+Peso mínimo encontrado: 3
 
  Pesos atualizados nos arcos que entram em X
 
  Conjunto X: {'v60'}
-Arestas que entram em X: [('v57', 'v60', {'w': 11})]
-Peso mínimo encontrado: 11
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v108'}
-Arestas que entram em X: [('v87', 'v108', {'w': 6}), ('v26', 'v108', {'w': 15}), ('v13', 'v108', {'w': 13}), ('v21', 'v108', {'w': 1})]
+Arestas que entram em X: [('v36', 'v60', {'w': 1})]
 Peso mínimo encontrado: 1
 
  Pesos atualizados nos arcos que entram em X
 
- Conjunto X: {'v38'}
-Arestas que entram em X: [('v104', 'v38', {'w': 14}), ('v4', 'v38', {'w': 17}), ('v0', 'v38', {'w': 4}), ('v65', 'v38', {'w': 11}), ('v8', 'v38', {'w': 15}), ('v96', 'v38', {'w': 2}), ('v42', 'v38', {'w': 13})]
-Peso mínimo encontrado: 2
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v17'}
-Arestas que entram em X: [('v34', 'v17', {'w': 11}), ('v32', 'v17', {'w': 17})]
-Peso mínimo encontrado: 11
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v63'}
-Arestas que entram em X: [('v102', 'v63', {'w': 11}), ('v29', 'v63', {'w': 7})]
-Peso mínimo encontrado: 7
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v31'}
-Arestas que entram em X: [('v78', 'v31', {'w': 15}), ('v4', 'v31', {'w': 12}), ('v24', 'v31', {'w': 10}), ('v45', 'v31', {'w': 9}), ('v49', 'v31', {'w': 3}), ('v7', 'v31', {'w': 4})]
-Peso mínimo encontrado: 3
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v76'}
-Arestas que entram em X: [('v22', 'v76', {'w': 14}), ('v35', 'v76', {'w': 4}), ('v34', 'v76', {'w': 10}), ('v29', 'v76', {'w': 20}), ('v106', 'v76', {'w': 16})]
-Peso mínimo encontrado: 4
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v25'}
-Arestas que entram em X: [('v64', 'v25', {'w': 10}), ('v88', 'v25', {'w': 5})]
-Peso mínimo encontrado: 5
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v110'}
-Arestas que entram em X: [('v35', 'v110', {'w': 15})]
+ Conjunto X: {'v149'}
+Arestas que entram em X: [('v21', 'v149', {'w': 15}), ('v127', 'v149', {'w': 19})]
 Peso mínimo encontrado: 15
 
  Pesos atualizados nos arcos que entram em X
 
- Conjunto X: {'v109'}
-Arestas que entram em X: [('v103', 'v109', {'w': 4}), ('v46', 'v109', {'w': 16}), ('v107', 'v109', {'w': 19})]
-Peso mínimo encontrado: 4
+ Conjunto X: {'v24'}
+Arestas que entram em X: [('r0', 'v24', {'w': 7}), ('v68', 'v24', {'w': 8})]
+Peso mínimo encontrado: 7
 
  Pesos atualizados nos arcos que entram em X
 
- Conjunto X: {'v48'}
-Arestas que entram em X: [('v55', 'v48', {'w': 13}), ('v24', 'v48', {'w': 12}), ('v60', 'v48', {'w': 12}), ('v76', 'v48', {'w': 3}), ('v53', 'v48', {'w': 19})]
+ Conjunto X: {'v85'}
+Arestas que entram em X: [('v43', 'v85', {'w': 6}), ('v77', 'v85', {'w': 15})]
+Peso mínimo encontrado: 6
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v163'}
+Arestas que entram em X: [('v21', 'v163', {'w': 8}), ('v40', 'v163', {'w': 20}), ('v139', 'v163', {'w': 7}), ('v94', 'v163', {'w': 5})]
+Peso mínimo encontrado: 5
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v28'}
+Arestas que entram em X: [('v2', 'v28', {'w': 13}), ('v126', 'v28', {'w': 8})]
+Peso mínimo encontrado: 8
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v47'}
+Arestas que entram em X: [('v90', 'v47', {'w': 14}), ('v140', 'v47', {'w': 20})]
+Peso mínimo encontrado: 14
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v113'}
+Arestas que entram em X: [('v127', 'v113', {'w': 14}), ('v167', 'v113', {'w': 20})]
+Peso mínimo encontrado: 14
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v71'}
+Arestas que entram em X: [('v60', 'v71', {'w': 19}), ('v65', 'v71', {'w': 3}), ('v12', 'v71', {'w': 5})]
 Peso mínimo encontrado: 3
 
  Pesos atualizados nos arcos que entram em X
 
- Conjunto X: {'v98'}
-Arestas que entram em X: [('v41', 'v98', {'w': 2}), ('v76', 'v98', {'w': 9})]
+ Conjunto X: {'v65'}
+Arestas que entram em X: [('v55', 'v65', {'w': 13}), ('v16', 'v65', {'w': 10})]
+Peso mínimo encontrado: 10
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v88'}
+Arestas que entram em X: [('v127', 'v88', {'w': 16}), ('v85', 'v88', {'w': 15}), ('v45', 'v88', {'w': 15}), ('v33', 'v88', {'w': 2}), ('v105', 'v88', {'w': 18}), ('v1', 'v88', {'w': 19})]
 Peso mínimo encontrado: 2
 
  Pesos atualizados nos arcos que entram em X
 
  Conjunto X: {'v106'}
-Arestas que entram em X: [('v56', 'v106', {'w': 14})]
-Peso mínimo encontrado: 14
+Arestas que entram em X: [('v36', 'v106', {'w': 15}), ('v8', 'v106', {'w': 1}), ('v11', 'v106', {'w': 18}), ('v136', 'v106', {'w': 11})]
+Peso mínimo encontrado: 1
 
  Pesos atualizados nos arcos que entram em X
 
- Conjunto X: {'v23'}
-Arestas que entram em X: [('v82', 'v23', {'w': 20}), ('v97', 'v23', {'w': 10}), ('v100', 'v23', {'w': 9})]
-Peso mínimo encontrado: 9
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v67'}
-Arestas que entram em X: [('v103', 'v67', {'w': 12}), ('v89', 'v67', {'w': 7}), ('v81', 'v67', {'w': 11}), ('v23', 'v67', {'w': 8})]
-Peso mínimo encontrado: 7
+ Conjunto X: {'v152'}
+Arestas que entram em X: [('v57', 'v152', {'w': 13}), ('v88', 'v152', {'w': 17}), ('v80', 'v152', {'w': 16}), ('v15', 'v152', {'w': 2}), ('v104', 'v152', {'w': 20})]
+Peso mínimo encontrado: 2
 
  Pesos atualizados nos arcos que entram em X
 
  Conjunto X: {'v80'}
-Arestas que entram em X: [('v10', 'v80', {'w': 16}), ('v73', 'v80', {'w': 13})]
-Peso mínimo encontrado: 13
+Arestas que entram em X: [('v57', 'v80', {'w': 19}), ('v60', 'v80', {'w': 19})]
+Peso mínimo encontrado: 19
 
  Pesos atualizados nos arcos que entram em X
 
- Conjunto X: {'v14'}
-Arestas que entram em X: [('v82', 'v14', {'w': 4}), ('v30', 'v14', {'w': 16}), ('v64', 'v14', {'w': 19}), ('v37', 'v14', {'w': 5})]
-Peso mínimo encontrado: 4
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v33'}
-Arestas que entram em X: [('v62', 'v33', {'w': 11}), ('v9', 'v33', {'w': 19})]
-Peso mínimo encontrado: 11
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v37'}
-Arestas que entram em X: [('v76', 'v37', {'w': 2}), ('v5', 'v37', {'w': 7})]
-Peso mínimo encontrado: 2
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v88'}
-Arestas que entram em X: [('v36', 'v88', {'w': 9}), ('v14', 'v88', {'w': 13})]
-Peso mínimo encontrado: 9
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v74'}
-Arestas que entram em X: [('v38', 'v74', {'w': 13}), ('v110', 'v74', {'w': 15}), ('v106', 'v74', {'w': 17}), ('v80', 'v74', {'w': 20})]
-Peso mínimo encontrado: 13
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v42'}
-Arestas que entram em X: [('v95', 'v42', {'w': 15}), ('v44', 'v42', {'w': 13}), ('v55', 'v42', {'w': 5}), ('v2', 'v42', {'w': 6})]
-Peso mínimo encontrado: 5
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v83'}
-Arestas que entram em X: [('v1', 'v83', {'w': 15}), ('v84', 'v83', {'w': 16}), ('v50', 'v83', {'w': 13}), ('v8', 'v83', {'w': 8})]
-Peso mínimo encontrado: 8
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v54'}
-Arestas que entram em X: [('v10', 'v54', {'w': 10}), ('v13', 'v54', {'w': 4})]
-Peso mínimo encontrado: 4
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v52'}
-Arestas que entram em X: [('v109', 'v52', {'w': 20}), ('v61', 'v52', {'w': 5})]
-Peso mínimo encontrado: 5
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v39'}
-Arestas que entram em X: [('v2', 'v39', {'w': 14}), ('v54', 'v39', {'w': 20})]
-Peso mínimo encontrado: 14
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v16'}
-Arestas que entram em X: [('v2', 'v16', {'w': 1}), ('v66', 'v16', {'w': 1}), ('v100', 'v16', {'w': 3}), ('v31', 'v16', {'w': 19})]
-Peso mínimo encontrado: 1
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v7'}
-Arestas que entram em X: [('v97', 'v7', {'w': 1}), ('v18', 'v7', {'w': 15})]
-Peso mínimo encontrado: 1
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v61'}
-Arestas que entram em X: [('v104', 'v61', {'w': 9}), ('v87', 'v61', {'w': 9}), ('v57', 'v61', {'w': 11}), ('v98', 'v61', {'w': 2})]
-Peso mínimo encontrado: 2
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v101'}
-Arestas que entram em X: [('v57', 'v101', {'w': 3}), ('v77', 'v101', {'w': 8}), ('v19', 'v101', {'w': 3})]
-Peso mínimo encontrado: 3
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v53'}
-Arestas que entram em X: [('v71', 'v53', {'w': 8}), ('v12', 'v53', {'w': 11}), ('v67', 'v53', {'w': 20})]
-Peso mínimo encontrado: 8
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v99'}
-Arestas que entram em X: [('v19', 'v99', {'w': 6})]
-Peso mínimo encontrado: 6
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v32'}
-Arestas que entram em X: [('v90', 'v32', {'w': 2}), ('v74', 'v32', {'w': 5})]
-Peso mínimo encontrado: 2
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v94'}
-Arestas que entram em X: [('v20', 'v94', {'w': 5}), ('v65', 'v94', {'w': 18}), ('v9', 'v94', {'w': 7})]
-Peso mínimo encontrado: 5
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v46'}
-Arestas que entram em X: [('v63', 'v46', {'w': 15}), ('v42', 'v46', {'w': 10})]
-Peso mínimo encontrado: 10
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v105'}
-Arestas que entram em X: [('v2', 'v105', {'w': 12}), ('v93', 'v105', {'w': 14})]
-Peso mínimo encontrado: 12
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v18'}
-Arestas que entram em X: [('v38', 'v18', {'w': 4}), ('v76', 'v18', {'w': 4})]
-Peso mínimo encontrado: 4
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v6'}
-Arestas que entram em X: [('v78', 'v6', {'w': 2})]
+ Conjunto X: {'v108'}
+Arestas que entram em X: [('v71', 'v108', {'w': 2}), ('v156', 'v108', {'w': 18}), ('v98', 'v108', {'w': 7})]
 Peso mínimo encontrado: 2
 
  Pesos atualizados nos arcos que entram em X
 
  Conjunto X: {'v15'}
-Arestas que entram em X: [('v20', 'v15', {'w': 9}), ('v22', 'v15', {'w': 10}), ('v35', 'v15', {'w': 1}), ('v19', 'v15', {'w': 6}), ('v83', 'v15', {'w': 10})]
+Arestas que entram em X: [('v88', 'v15', {'w': 3}), ('v29', 'v15', {'w': 2}), ('v101', 'v15', {'w': 10}), ('v14', 'v15', {'w': 12})]
+Peso mínimo encontrado: 2
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v22'}
+Arestas que entram em X: [('v97', 'v22', {'w': 7})]
+Peso mínimo encontrado: 7
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v130'}
+Arestas que entram em X: [('v126', 'v130', {'w': 1}), ('v38', 'v130', {'w': 12}), ('v162', 'v130', {'w': 8}), ('v50', 'v130', {'w': 13})]
 Peso mínimo encontrado: 1
 
  Pesos atualizados nos arcos que entram em X
 
- Conjunto X: {'v70'}
-Arestas que entram em X: [('v86', 'v70', {'w': 1}), ('v74', 'v70', {'w': 8}), ('v6', 'v70', {'w': 19})]
+ Conjunto X: {'v45'}
+Arestas que entram em X: [('r0', 'v45', {'w': 18}), ('v95', 'v45', {'w': 1}), ('v127', 'v45', {'w': 4}), ('v8', 'v45', {'w': 16}), ('v132', 'v45', {'w': 9})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v77'}
+Arestas que entram em X: [('v108', 'v77', {'w': 1})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v32'}
+Arestas que entram em X: [('v2', 'v32', {'w': 10}), ('v91', 'v32', {'w': 13}), ('v153', 'v32', {'w': 11})]
+Peso mínimo encontrado: 10
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v156'}
+Arestas que entram em X: [('v84', 'v156', {'w': 11}), ('v25', 'v156', {'w': 9})]
+Peso mínimo encontrado: 9
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v78'}
+Arestas que entram em X: [('v45', 'v78', {'w': 1}), ('v35', 'v78', {'w': 9})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v20'}
+Arestas que entram em X: [('v126', 'v20', {'w': 4}), ('v11', 'v20', {'w': 18}), ('v14', 'v20', {'w': 15}), ('v158', 'v20', {'w': 11})]
+Peso mínimo encontrado: 4
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v6'}
+Arestas que entram em X: [('v127', 'v6', {'w': 11}), ('v124', 'v6', {'w': 7}), ('v63', 'v6', {'w': 12})]
+Peso mínimo encontrado: 7
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v10'}
+Arestas que entram em X: [('v141', 'v10', {'w': 7}), ('v18', 'v10', {'w': 19}), ('v104', 'v10', {'w': 17}), ('v160', 'v10', {'w': 3})]
+Peso mínimo encontrado: 3
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v99'}
+Arestas que entram em X: [('v84', 'v99', {'w': 10}), ('v22', 'v99', {'w': 3}), ('v87', 'v99', {'w': 14})]
+Peso mínimo encontrado: 3
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v91'}
+Arestas que entram em X: [('v84', 'v91', {'w': 17}), ('v55', 'v91', {'w': 1}), ('v43', 'v91', {'w': 3}), ('v143', 'v91', {'w': 19}), ('v53', 'v91', {'w': 7})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v75'}
+Arestas que entram em X: [('v47', 'v75', {'w': 13})]
+Peso mínimo encontrado: 13
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v142'}
+Arestas que entram em X: [('v45', 'v142', {'w': 14}), ('v50', 'v142', {'w': 1}), ('v1', 'v142', {'w': 16})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v112'}
+Arestas que entram em X: [('v85', 'v112', {'w': 16}), ('v106', 'v112', {'w': 9}), ('v119', 'v112', {'w': 6}), ('v124', 'v112', {'w': 7})]
+Peso mínimo encontrado: 6
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v48'}
+Arestas que entram em X: [('v142', 'v48', {'w': 7})]
+Peso mínimo encontrado: 7
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v102'}
+Arestas que entram em X: [('v163', 'v102', {'w': 10}), ('v146', 'v102', {'w': 9})]
+Peso mínimo encontrado: 9
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v81'}
+Arestas que entram em X: [('v60', 'v81', {'w': 16}), ('v24', 'v81', {'w': 2}), ('v68', 'v81', {'w': 1}), ('v52', 'v81', {'w': 15})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v103'}
+Arestas que entram em X: [('v32', 'v103', {'w': 19}), ('v78', 'v103', {'w': 1}), ('v136', 'v103', {'w': 11})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v153'}
+Arestas que entram em X: [('v57', 'v153', {'w': 16})]
+Peso mínimo encontrado: 16
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v41'}
+Arestas que entram em X: [('v45', 'v41', {'w': 16})]
+Peso mínimo encontrado: 16
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v143'}
+Arestas que entram em X: [('v91', 'v143', {'w': 1}), ('v5', 'v143', {'w': 14}), ('v31', 'v143', {'w': 8})]
 Peso mínimo encontrado: 1
 
  Pesos atualizados nos arcos que entram em X
 
  Conjunto X: {'v107'}
-Arestas que entram em X: [('v65', 'v107', {'w': 12}), ('v67', 'v107', {'w': 16})]
-Peso mínimo encontrado: 12
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v5'}
-Arestas que entram em X: [('v49', 'v5', {'w': 6}), ('v52', 'v5', {'w': 12})]
+Arestas que entram em X: [('v84', 'v107', {'w': 8}), ('v32', 'v107', {'w': 18}), ('v109', 'v107', {'w': 13}), ('v72', 'v107', {'w': 12}), ('v105', 'v107', {'w': 6})]
 Peso mínimo encontrado: 6
 
  Pesos atualizados nos arcos que entram em X
 
- Conjunto X: {'v72'}
-Arestas que entram em X: [('v10', 'v72', {'w': 13}), ('v93', 'v72', {'w': 4}), ('v45', 'v72', {'w': 12}), ('v92', 'v72', {'w': 14})]
+ Conjunto X: {'v34'}
+Arestas que entram em X: [('v95', 'v34', {'w': 14}), ('v48', 'v34', {'w': 11})]
+Peso mínimo encontrado: 11
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v37'}
+Arestas que entram em X: [('v84', 'v37', {'w': 5}), ('v101', 'v37', {'w': 1}), ('v67', 'v37', {'w': 6})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v38'}
+Arestas que entram em X: [('v77', 'v38', {'w': 17}), ('v37', 'v38', {'w': 5}), ('v17', 'v38', {'w': 3})]
+Peso mínimo encontrado: 3
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v109'}
+Arestas que entram em X: [('v43', 'v109', {'w': 9}), ('v132', 'v109', {'w': 13})]
+Peso mínimo encontrado: 9
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v4'}
+Arestas que entram em X: [('v84', 'v4', {'w': 14}), ('v71', 'v4', {'w': 18}), ('v160', 'v4', {'w': 19})]
+Peso mínimo encontrado: 14
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v162'}
+Arestas que entram em X: [('v149', 'v162', {'w': 12})]
+Peso mínimo encontrado: 12
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v117'}
+Arestas que entram em X: [('v141', 'v117', {'w': 5}), ('v10', 'v117', {'w': 19}), ('v91', 'v117', {'w': 5}), ('v67', 'v117', {'w': 5})]
+Peso mínimo encontrado: 5
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v121'}
+Arestas que entram em X: [('v163', 'v121', {'w': 16})]
+Peso mínimo encontrado: 16
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v74'}
+Arestas que entram em X: [('v71', 'v74', {'w': 19}), ('v99', 'v74', {'w': 4}), ('v51', 'v74', {'w': 2})]
+Peso mínimo encontrado: 2
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v129'}
+Arestas que entram em X: [('v71', 'v129', {'w': 14})]
+Peso mínimo encontrado: 14
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v25'}
+Arestas que entram em X: [('v163', 'v25', {'w': 4}), ('v152', 'v25', {'w': 6}), ('v142', 'v25', {'w': 20}), ('v46', 'v25', {'w': 14})]
 Peso mínimo encontrado: 4
 
  Pesos atualizados nos arcos que entram em X
 
- Conjunto X: {'v92'}
-Arestas que entram em X: [('v55', 'v92', {'w': 8}), ('v2', 'v92', {'w': 7}), ('v106', 'v92', {'w': 3}), ('v101', 'v92', {'w': 13})]
+ Conjunto X: {'v119'}
+Arestas que entram em X: [('v65', 'v119', {'w': 20}), ('v133', 'v119', {'w': 10})]
+Peso mínimo encontrado: 10
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v125'}
+Arestas que entram em X: [('v109', 'v125', {'w': 17}), ('v11', 'v125', {'w': 15})]
+Peso mínimo encontrado: 15
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v33'}
+Arestas que entram em X: [('v163', 'v33', {'w': 19}), ('v65', 'v33', {'w': 13}), ('v156', 'v33', {'w': 3})]
 Peso mínimo encontrado: 3
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v73'}
+Arestas que entram em X: [('v90', 'v73', {'w': 11})]
+Peso mínimo encontrado: 11
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v159'}
+Arestas que entram em X: [('v142', 'v159', {'w': 5}), ('v112', 'v159', {'w': 18}), ('v81', 'v159', {'w': 8})]
+Peso mínimo encontrado: 5
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v69'}
+Arestas que entram em X: [('v36', 'v69', {'w': 16}), ('v4', 'v69', {'w': 11}), ('v27', 'v69', {'w': 20})]
+Peso mínimo encontrado: 11
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v66'}
+Arestas que entram em X: [('v153', 'v66', {'w': 6})]
+Peso mínimo encontrado: 6
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v111'}
+Arestas que entram em X: [('v65', 'v111', {'w': 9}), ('v110', 'v111', {'w': 20})]
+Peso mínimo encontrado: 9
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v42'}
+Arestas que entram em X: [('v48', 'v42', {'w': 14})]
+Peso mínimo encontrado: 14
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v44'}
+Arestas que entram em X: [('v130', 'v44', {'w': 20})]
+Peso mínimo encontrado: 20
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v86'}
+Arestas que entram em X: [('v47', 'v86', {'w': 9}), ('v78', 'v86', {'w': 13}), ('v73', 'v86', {'w': 5}), ('v160', 'v86', {'w': 18})]
+Peso mínimo encontrado: 5
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v164'}
+Arestas que entram em X: [('v61', 'v164', {'w': 11}), ('v55', 'v164', {'w': 4}), ('v103', 'v164', {'w': 1}), ('v101', 'v164', {'w': 17}), ('v70', 'v164', {'w': 19}), ('v16', 'v164', {'w': 20}), ('v9', 'v164', {'w': 15})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v124'}
+Arestas que entram em X: [('v112', 'v124', {'w': 20})]
+Peso mínimo encontrado: 20
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v29'}
+Arestas que entram em X: [('v71', 'v29', {'w': 12}), ('v166', 'v29', {'w': 7}), ('v98', 'v29', {'w': 4}), ('v64', 'v29', {'w': 1})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v161'}
+Arestas que entram em X: [('v21', 'v161', {'w': 3})]
+Peso mínimo encontrado: 3
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v18'}
+Arestas que entram em X: [('v61', 'v18', {'w': 9}), ('v15', 'v18', {'w': 2}), ('v103', 'v18', {'w': 20}), ('v140', 'v18', {'w': 9}), ('v49', 'v18', {'w': 11})]
+Peso mínimo encontrado: 2
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v27'}
+Arestas que entram em X: [('v55', 'v27', {'w': 12}), ('v101', 'v27', {'w': 15}), ('v139', 'v27', {'w': 7})]
+Peso mínimo encontrado: 7
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v137'}
+Arestas que entram em X: [('v151', 'v137', {'w': 18}), ('v38', 'v137', {'w': 13})]
+Peso mínimo encontrado: 13
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v5'}
+Arestas que entram em X: [('v66', 'v5', {'w': 2}), ('v16', 'v5', {'w': 4})]
+Peso mínimo encontrado: 2
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v145'}
+Arestas que entram em X: [('v126', 'v145', {'w': 4}), ('v113', 'v145', {'w': 20}), ('v107', 'v145', {'w': 16})]
+Peso mínimo encontrado: 4
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v8'}
+Arestas que entram em X: [('v97', 'v8', {'w': 18}), ('v20', 'v8', {'w': 15})]
+Peso mínimo encontrado: 15
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v40'}
+Arestas que entram em X: [('v77', 'v40', {'w': 15}), ('v111', 'v40', {'w': 10}), ('v59', 'v40', {'w': 15}), ('v150', 'v40', {'w': 8})]
+Peso mínimo encontrado: 8
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v68'}
+Arestas que entram em X: [('v130', 'v68', {'w': 18}), ('v17', 'v68', {'w': 1})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v11'}
+Arestas que entram em X: [('r0', 'v11', {'w': 9}), ('v73', 'v11', {'w': 5})]
+Peso mínimo encontrado: 5
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v136'}
+Arestas que entram em X: [('v39', 'v136', {'w': 11}), ('v85', 'v136', {'w': 11}), ('v112', 'v136', {'w': 11}), ('v109', 'v136', {'w': 16})]
+Peso mínimo encontrado: 11
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v114'}
+Arestas que entram em X: [('v32', 'v114', {'w': 7}), ('v86', 'v114', {'w': 7})]
+Peso mínimo encontrado: 7
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v63'}
+Arestas que entram em X: [('v109', 'v63', {'w': 12})]
+Peso mínimo encontrado: 12
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v166'}
+Arestas que entram em X: [('v151', 'v166', {'w': 17})]
+Peso mínimo encontrado: 17
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v93'}
+Arestas que entram em X: [('v130', 'v93', {'w': 16}), ('v35', 'v93', {'w': 6})]
+Peso mínimo encontrado: 6
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v104'}
+Arestas que entram em X: [('v39', 'v104', {'w': 17}), ('v66', 'v104', {'w': 6}), ('v120', 'v104', {'w': 16})]
+Peso mínimo encontrado: 6
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v101'}
+Arestas que entram em X: [('v44', 'v101', {'w': 1}), ('v140', 'v101', {'w': 2})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v19'}
+Arestas que entram em X: [('v4', 'v19', {'w': 1})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v147'}
+Arestas que entram em X: [('v88', 'v147', {'w': 7}), ('v49', 'v147', {'w': 17})]
+Peso mínimo encontrado: 7
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v79'}
+Arestas que entram em X: [('v28', 'v79', {'w': 18}), ('v146', 'v79', {'w': 6})]
+Peso mínimo encontrado: 6
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v139'}
+Arestas que entram em X: [('v11', 'v139', {'w': 19})]
+Peso mínimo encontrado: 19
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v98'}
+Arestas que entram em X: [('v57', 'v98', {'w': 9}), ('v39', 'v98', {'w': 7}), ('v88', 'v98', {'w': 8}), ('v152', 'v98', {'w': 13}), ('v138', 'v98', {'w': 19})]
+Peso mínimo encontrado: 7
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v132'}
+Arestas que entram em X: [('v60', 'v132', {'w': 18})]
+Peso mínimo encontrado: 18
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v89'}
+Arestas que entram em X: [('v32', 'v89', {'w': 12}), ('v136', 'v89', {'w': 3}), ('v82', 'v89', {'w': 13})]
+Peso mínimo encontrado: 3
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v82'}
+Arestas que entram em X: [('v15', 'v82', {'w': 15}), ('v136', 'v82', {'w': 14})]
+Peso mínimo encontrado: 14
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v17'}
+Arestas que entram em X: [('v137', 'v17', {'w': 20})]
+Peso mínimo encontrado: 20
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v58'}
+Arestas que entram em X: [('v65', 'v58', {'w': 19}), ('v156', 'v58', {'w': 8})]
+Peso mínimo encontrado: 8
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v12'}
+Arestas que entram em X: [('v61', 'v12', {'w': 9})]
+Peso mínimo encontrado: 9
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v30'}
+Arestas que entram em X: [('v106', 'v30', {'w': 13}), ('v3', 'v30', {'w': 11})]
+Peso mínimo encontrado: 11
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v51'}
+Arestas que entram em X: [('v163', 'v51', {'w': 16}), ('v107', 'v51', {'w': 2}), ('v70', 'v51', {'w': 13})]
+Peso mínimo encontrado: 2
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v140'}
+Arestas que entram em X: [('v65', 'v140', {'w': 9})]
+Peso mínimo encontrado: 9
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v64'}
+Arestas que entram em X: [('v127', 'v64', {'w': 15}), ('v166', 'v64', {'w': 12})]
+Peso mínimo encontrado: 12
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v144'}
+Arestas que entram em X: [('v6', 'v144', {'w': 12}), ('v137', 'v144', {'w': 19}), ('v52', 'v144', {'w': 12})]
+Peso mínimo encontrado: 12
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v122'}
+Arestas que entram em X: [('v106', 'v122', {'w': 14})]
+Peso mínimo encontrado: 14
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v157'}
+Arestas que entram em X: [('v86', 'v157', {'w': 10}), ('v27', 'v157', {'w': 18}), ('v46', 'v157', {'w': 4})]
+Peso mínimo encontrado: 4
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v160'}
+Arestas que entram em X: [('v12', 'v160', {'w': 17}), ('v49', 'v160', {'w': 7}), ('v154', 'v160', {'w': 7})]
+Peso mínimo encontrado: 7
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v70'}
+Arestas que entram em X: [('v44', 'v70', {'w': 14}), ('v86', 'v70', {'w': 18}), ('v114', 'v70', {'w': 3}), ('v122', 'v70', {'w': 17})]
+Peso mínimo encontrado: 3
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v123'}
+Arestas que entram em X: [('v84', 'v123', {'w': 2}), ('v162', 'v123', {'w': 10}), ('v64', 'v123', {'w': 8})]
+Peso mínimo encontrado: 2
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v67'}
+Arestas que entram em X: [('v80', 'v67', {'w': 17}), ('v159', 'v67', {'w': 10})]
+Peso mínimo encontrado: 10
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v83'}
+Arestas que entram em X: [('v153', 'v83', {'w': 2})]
+Peso mínimo encontrado: 2
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v133'}
+Arestas que entram em X: [('v39', 'v133', {'w': 20}), ('v124', 'v133', {'w': 16}), ('v5', 'v133', {'w': 18})]
+Peso mínimo encontrado: 16
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v72'}
+Arestas que entram em X: [('v143', 'v72', {'w': 7}), ('v107', 'v72', {'w': 5}), ('v166', 'v72', {'w': 2}), ('v122', 'v72', {'w': 7}), ('v70', 'v72', {'w': 3})]
+Peso mínimo encontrado: 2
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v128'}
+Arestas que entram em X: [('v36', 'v128', {'w': 3}), ('v124', 'v128', {'w': 1}), ('v40', 'v128', {'w': 16}), ('v134', 'v128', {'w': 3}), ('v100', 'v128', {'w': 5})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v23'}
+Arestas que entram em X: [('v159', 'v23', {'w': 9}), ('v145', 'v23', {'w': 9})]
+Peso mínimo encontrado: 9
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v118'}
+Arestas que entram em X: [('v129', 'v118', {'w': 16})]
+Peso mínimo encontrado: 16
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v165'}
+Arestas que entram em X: [('v19', 'v165', {'w': 9}), ('v123', 'v165', {'w': 9})]
+Peso mínimo encontrado: 9
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v148'}
+Arestas que entram em X: [('v152', 'v148', {'w': 6}), ('v74', 'v148', {'w': 2})]
+Peso mínimo encontrado: 2
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v146'}
+Arestas que entram em X: [('v24', 'v146', {'w': 5})]
+Peso mínimo encontrado: 5
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v59'}
+Arestas que entram em X: [('v130', 'v59', {'w': 5}), ('v41', 'v59', {'w': 14})]
+Peso mínimo encontrado: 5
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v105'}
+Arestas que entram em X: [('v142', 'v105', {'w': 18}), ('v16', 'v105', {'w': 14})]
+Peso mínimo encontrado: 14
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v115'}
+Arestas que entram em X: [('v36', 'v115', {'w': 20}), ('v163', 'v115', {'w': 3}), ('v48', 'v115', {'w': 5}), ('v155', 'v115', {'w': 10})]
+Peso mínimo encontrado: 3
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v87'}
+Arestas que entram em X: [('v39', 'v87', {'w': 3}), ('v107', 'v87', {'w': 9}), ('v40', 'v87', {'w': 15})]
+Peso mínimo encontrado: 3
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v35'}
+Arestas que entram em X: [('v97', 'v35', {'w': 4}), ('v12', 'v35', {'w': 4})]
+Peso mínimo encontrado: 4
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v7'}
+Arestas que entram em X: [('v24', 'v7', {'w': 4}), ('v65', 'v7', {'w': 19}), ('v35', 'v7', {'w': 7}), ('v13', 'v7', {'w': 18})]
+Peso mínimo encontrado: 4
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v110'}
+Arestas que entram em X: [('v84', 'v110', {'w': 3})]
+Peso mínimo encontrado: 3
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v94'}
+Arestas que entram em X: [('v141', 'v94', {'w': 3}), ('v129', 'v94', {'w': 11}), ('v23', 'v94', {'w': 4})]
+Peso mínimo encontrado: 3
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v16'}
+Arestas que entram em X: [('v78', 'v16', {'w': 13}), ('v93', 'v16', {'w': 14}), ('v128', 'v16', {'w': 13})]
+Peso mínimo encontrado: 13
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v155'}
+Arestas que entram em X: [('v84', 'v155', {'w': 18})]
+Peso mínimo encontrado: 18
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v0'}
+Arestas que entram em X: [('v55', 'v0', {'w': 19}), ('v111', 'v0', {'w': 13}), ('v40', 'v0', {'w': 3})]
+Peso mínimo encontrado: 3
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v138'}
+Arestas que entram em X: [('v90', 'v138', {'w': 20}), ('v85', 'v138', {'w': 7}), ('v12', 'v138', {'w': 5}), ('v158', 'v138', {'w': 15})]
+Peso mínimo encontrado: 5
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v52'}
+Arestas que entram em X: [('v94', 'v52', {'w': 4})]
+Peso mínimo encontrado: 4
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v49'}
+Arestas que entram em X: [('r0', 'v49', {'w': 4})]
+Peso mínimo encontrado: 4
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v167'}
+Arestas que entram em X: [('v43', 'v167', {'w': 18}), ('v142', 'v167', {'w': 20}), ('v129', 'v167', {'w': 5}), ('v82', 'v167', {'w': 9})]
+Peso mínimo encontrado: 5
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v134'}
+Arestas que entram em X: [('v27', 'v134', {'w': 11})]
+Peso mínimo encontrado: 11
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v3'}
+Arestas que entram em X: [('v87', 'v3', {'w': 2})]
+Peso mínimo encontrado: 2
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v62'}
+Arestas que entram em X: [('v126', 'v62', {'w': 3}), ('v71', 'v62', {'w': 6})]
+Peso mínimo encontrado: 3
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v150'}
+Arestas que entram em X: [('v38', 'v150', {'w': 9}), ('v109', 'v150', {'w': 12}), ('v4', 'v150', {'w': 14}), ('v161', 'v150', {'w': 8})]
+Peso mínimo encontrado: 8
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v13'}
+Arestas que entram em X: [('v68', 'v13', {'w': 4})]
+Peso mínimo encontrado: 4
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v76'}
+Arestas que entram em X: [('v108', 'v76', {'w': 8}), ('v19', 'v76', {'w': 12}), ('v146', 'v76', {'w': 15})]
+Peso mínimo encontrado: 8
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v154'}
+Arestas que entram em X: [('v32', 'v154', {'w': 20}), ('v125', 'v154', {'w': 16}), ('v18', 'v154', {'w': 1}), ('v12', 'v154', {'w': 7})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v92'}
+Arestas que entram em X: [('v36', 'v92', {'w': 4}), ('v32', 'v92', {'w': 4}), ('v101', 'v92', {'w': 12}), ('v82', 'v92', {'w': 2})]
+Peso mínimo encontrado: 2
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v31'}
+Arestas que entram em X: [('v71', 'v31', {'w': 9}), ('v4', 'v31', {'w': 7}), ('v93', 'v31', {'w': 19})]
+Peso mínimo encontrado: 7
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v116'}
+Arestas que entram em X: [('v40', 'v116', {'w': 10}), ('v68', 'v116', {'w': 2}), ('v146', 'v116', {'w': 19}), ('v134', 'v116', {'w': 15})]
+Peso mínimo encontrado: 2
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v120'}
+Arestas que entram em X: [('v24', 'v120', {'w': 17}), ('v22', 'v120', {'w': 8}), ('v4', 'v120', {'w': 9}), ('v121', 'v120', {'w': 12})]
+Peso mínimo encontrado: 8
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v100'}
+Arestas que entram em X: [('v74', 'v100', {'w': 14}), ('v101', 'v100', {'w': 2}), ('v115', 'v100', {'w': 10}), ('v3', 'v100', {'w': 16})]
+Peso mínimo encontrado: 2
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v135'}
+Arestas que entram em X: [('v39', 'v135', {'w': 11}), ('v9', 'v135', {'w': 3})]
+Peso mínimo encontrado: 3
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v131'}
+Arestas que entram em X: [('v97', 'v131', {'w': 17}), ('v148', 'v131', {'w': 9}), ('v146', 'v131', {'w': 17}), ('v87', 'v131', {'w': 8})]
+Peso mínimo encontrado: 8
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v50'}
+Arestas que entram em X: [('v60', 'v50', {'w': 7}), ('v25', 'v50', {'w': 17}), ('v29', 'v50', {'w': 14}), ('v8', 'v50', {'w': 20})]
+Peso mínimo encontrado: 7
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v1'}
+Arestas que entram em X: [('v153', 'v1', {'w': 11}), ('v3', 'v1', {'w': 17})]
+Peso mínimo encontrado: 11
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v14'}
+Arestas que entram em X: [('v156', 'v14', {'w': 11}), ('v107', 'v14', {'w': 12}), ('v119', 'v14', {'w': 2}), ('v70', 'v14', {'w': 14})]
+Peso mínimo encontrado: 2
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v54'}
+Arestas que entram em X: [('v55', 'v54', {'w': 7}), ('v64', 'v54', {'w': 9})]
+Peso mínimo encontrado: 7
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v96'}
+Arestas que entram em X: [('v153', 'v96', {'w': 12}), ('v25', 'v96', {'w': 17})]
+Peso mínimo encontrado: 12
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v46'}
+Arestas que entram em X: [('v16', 'v46', {'w': 2})]
+Peso mínimo encontrado: 2
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v53'}
+Arestas que entram em X: [('v163', 'v53', {'w': 6}), ('v161', 'v53', {'w': 14}), ('v94', 'v53', {'w': 1}), ('v1', 'v53', {'w': 6})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v9'}
+Arestas que entram em X: [('v119', 'v9', {'w': 16}), ('v89', 'v9', {'w': 10}), ('v64', 'v9', {'w': 15}), ('v131', 'v9', {'w': 13}), ('v26', 'v9', {'w': 7})]
+Peso mínimo encontrado: 7
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v26'}
+Arestas que entram em X: [('v6', 'v26', {'w': 8}), ('v143', 'v26', {'w': 1}), ('v140', 'v26', {'w': 18}), ('v122', 'v26', {'w': 11}), ('v50', 'v26', {'w': 20})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v56'}
+Arestas que entram em X: [('v39', 'v56', {'w': 16}), ('v109', 'v56', {'w': 18}), ('v145', 'v56', {'w': 6})]
+Peso mínimo encontrado: 6
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v158'}
+Arestas que entram em X: [('v15', 'v158', {'w': 16}), ('v153', 'v158', {'w': 11}), ('v19', 'v158', {'w': 2}), ('v9', 'v158', {'w': 8})]
+Peso mínimo encontrado: 2
 
  Pesos atualizados nos arcos que entram em X
 
  🔄 Iteração 2 ----------------------------
 
  Componentes fortemente conexos em D_zero:
-Fontes: [91, 104, 108]
+Fontes: [85, 140, 145]
 
- Conjunto X: {'v1', 'v84'}
-Arestas que entram em X: [('v104', 'v1', {'w': 16}), ('v87', 'v1', {'w': 10}), ('v0', 'v1', {'w': 12}), ('v40', 'v1', {'w': 17}), ('v97', 'v1', {'w': 18}), ('v24', 'v1', {'w': 13}), ('v49', 'v84', {'w': 10})]
-Peso mínimo encontrado: 10
+ Conjunto X: {'v124', 'v133', 'v119', 'v112'}
+Arestas que entram em X: [('v39', 'v133', {'w': 4}), ('v85', 'v112', {'w': 10}), ('v65', 'v119', {'w': 10}), ('v106', 'v112', {'w': 3}), ('v5', 'v133', {'w': 2})]
+Peso mínimo encontrado: 2
 
  Pesos atualizados nos arcos que entram em X
 
- Conjunto X: {'v31', 'v91', 'v100', 'v49'}
-Arestas que entram em X: [('v104', 'v100', {'w': 1}), ('v27', 'v49', {'w': 16}), ('v44', 'v91', {'w': 14}), ('v78', 'v31', {'w': 12}), ('v4', 'v31', {'w': 9}), ('v62', 'v91', {'w': 4}), ('v21', 'v100', {'w': 11}), ('v24', 'v31', {'w': 7}), ('v45', 'v31', {'w': 6}), ('v19', 'v49', {'w': 9}), ('v14', 'v100', {'w': 11}), ('v37', 'v49', {'w': 4}), ('v74', 'v91', {'w': 1}), ('v7', 'v31', {'w': 1})]
-Peso mínimo encontrado: 1
+ Conjunto X: {'v137', 'v17', 'v38'}
+Arestas que entram em X: [('v151', 'v137', {'w': 5}), ('v77', 'v38', {'w': 14}), ('v37', 'v38', {'w': 2})]
+Peso mínimo encontrado: 2
 
  Pesos atualizados nos arcos que entram em X
 
  🔄 Iteração 3 ----------------------------
 
  Componentes fortemente conexos em D_zero:
-Fontes: [102]
-A_zero: [('v1', 'v69'), ('v47', 'v103'), ('r0', 'v104'), ('v93', 'v79'), ('v80', 'v95'), ('v103', 'v71'), ('v35', 'v71'), ('v35', 'v82'), ('v89', 'v27'), ('v90', 'v20'), ('v103', 'v87'), ('v20', 'v30'), ('v7', 'v44'), ('v87', 'v78'), ('v84', 'v1'), ('v30', 'v47'), ('v43', 'v57'), ('v78', 'v77'), ('v1', 'v84'), ('v80', 'v59'), ('v95', 'v10'), ('v44', 'v55'), ('v29', 'v55'), ('v80', 'v55'), ('v54', 'v89'), ('v71', 'v75'), ('v69', 'v68'), ('v79', 'v86'), ('v31', 'v4'), ('v10', 'v0'), ('v74', 'v26'), ('v86', 'v40'), ('v26', 'v85'), ('v15', 'v58'), ('v102', 'v22'), ('v82', 'v2'), ('v89', 'v2'), ('v69', 'v28'), ('v92', 'v65'), ('v94', 'v62'), ('v104', 'v50'), ('v69', 'v51'), ('v58', 'v13'), ('v65', 'v21'), ('v70', 'v21'), ('v99', 'v73'), ('v100', 'v91'), ('v104', 'v8'), ('v13', 'v111'), ('v109', 'v93'), ('v14', 'v56'), ('v43', 'v35'), ('v90', 'v64'), ('v19', 'v41'), ('v0', 'v66'), ('v111', 'v34'), ('r0', 'v90'), ('v55', 'v102'), ('v40', 'v102'), ('v66', 'v102'), ('v85', 'v12'), ('v62', 'v3'), ('v27', 'v97'), ('v40', 'v36'), ('v26', 'v24'), ('v68', 'v96'), ('v13', 'v81'), ('v44', 'v45'), ('v90', 'v43'), ('v24', 'v11'), ('v64', 'v29'), ('v31', 'v100'), ('v91', 'v49'), ('r0', 'v19'), ('v91', 'v19'), ('v55', 'v9'), ('v57', 'v60'), ('v21', 'v108'), ('v96', 'v38'), ('v34', 'v17'), ('v29', 'v63'), ('v49', 'v31'), ('v35', 'v76'), ('v88', 'v25'), ('v35', 'v110'), ('v103', 'v109'), ('v76', 'v48'), ('v41', 'v98'), ('v56', 'v106'), ('v100', 'v23'), ('v89', 'v67'), ('v73', 'v80'), ('v82', 'v14'), ('v62', 'v33'), ('v76', 'v37'), ('v36', 'v88'), ('v38', 'v74'), ('v55', 'v42'), ('v8', 'v83'), ('v13', 'v54'), ('v61', 'v52'), ('v2', 'v39'), ('v2', 'v16'), ('v66', 'v16'), ('v97', 'v7'), ('v98', 'v61'), ('v57', 'v101'), ('v19', 'v101'), ('v71', 'v53'), ('v19', 'v99'), ('v90', 'v32'), ('v20', 'v94'), ('v42', 'v46'), ('v2', 'v105'), ('v38', 'v18'), ('v76', 'v18'), ('v78', 'v6'), ('v35', 'v15'), ('v86', 'v70'), ('v65', 'v107'), ('v49', 'v5'), ('v93', 'v72'), ('v106', 'v92'), ('v87', 'v1'), ('v49', 'v84'), ('v104', 'v100'), ('v74', 'v91'), ('v7', 'v31')]
-Dual_list: [({'v69'}, 5), ({'v103'}, 5), ({'v104'}, 1), ({'v79'}, 7), ({'v95'}, 8), ({'v71'}, 11), ({'v82'}, 16), ({'v27'}, 9), ({'v20'}, 7), ({'v87'}, 9), ({'v30'}, 20), ({'v44'}, 6), ({'v78'}, 5), ({'v1'}, 2), ({'v47'}, 2), ({'v57'}, 12), ({'v77'}, 2), ({'v84'}, 2), ({'v59'}, 2), ({'v10'}, 1), ({'v55'}, 2), ({'v89'}, 9), ({'v75'}, 3), ({'v68'}, 6), ({'v86'}, 6), ({'v4'}, 9), ({'v0'}, 4), ({'v26'}, 5), ({'v40'}, 11), ({'v85'}, 4), ({'v58'}, 1), ({'v22'}, 13), ({'v2'}, 5), ({'v28'}, 10), ({'v65'}, 7), ({'v62'}, 2), ({'v50'}, 8), ({'v51'}, 2), ({'v13'}, 7), ({'v21'}, 3), ({'v73'}, 6), ({'v91'}, 2), ({'v8'}, 4), ({'v111'}, 9), ({'v93'}, 12), ({'v56'}, 4), ({'v35'}, 2), ({'v64'}, 2), ({'v41'}, 10), ({'v66'}, 6), ({'v34'}, 8), ({'v90'}, 7), ({'v102'}, 6), ({'v12'}, 7), ({'v3'}, 1), ({'v97'}, 3), ({'v36'}, 9), ({'v24'}, 6), ({'v96'}, 1), ({'v81'}, 9), ({'v45'}, 11), ({'v43'}, 9), ({'v11'}, 10), ({'v29'}, 6), ({'v100'}, 1), ({'v49'}, 2), ({'v19'}, 5), ({'v9'}, 7), ({'v60'}, 11), ({'v108'}, 1), ({'v38'}, 2), ({'v17'}, 11), ({'v63'}, 7), ({'v31'}, 3), ({'v76'}, 4), ({'v25'}, 5), ({'v110'}, 15), ({'v109'}, 4), ({'v48'}, 3), ({'v98'}, 2), ({'v106'}, 14), ({'v23'}, 9), ({'v67'}, 7), ({'v80'}, 13), ({'v14'}, 4), ({'v33'}, 11), ({'v37'}, 2), ({'v88'}, 9), ({'v74'}, 13), ({'v42'}, 5), ({'v83'}, 8), ({'v54'}, 4), ({'v52'}, 5), ({'v39'}, 14), ({'v16'}, 1), ({'v7'}, 1), ({'v61'}, 2), ({'v101'}, 3), ({'v53'}, 8), ({'v99'}, 6), ({'v32'}, 2), ({'v94'}, 5), ({'v46'}, 10), ({'v105'}, 12), ({'v18'}, 4), ({'v6'}, 2), ({'v15'}, 1), ({'v70'}, 1), ({'v107'}, 12), ({'v5'}, 6), ({'v72'}, 4), ({'v92'}, 3), ({'v1', 'v84'}, 10), ({'v31', 'v91', 'v100', 'v49'}, 1)]
+Fontes: [131]
+
+ ✅ Apenas uma fonte encontrada, algoritmo finalizado.
+A_zero: [('r0', 'v84'), ('v136', 'v141'), ('v84', 'v95'), ('v74', 'v95'), ('v141', 'v21'), ('v32', 'v21'), ('v155', 'v2'), ('v162', 'v57'), ('v81', 'v61'), ('v125', 'v126'), ('v84', 'v55'), ('v71', 'v151'), ('v61', 'v43'), ('v166', 'v127'), ('v37', 'v39'), ('v141', 'v90'), ('v43', 'v97'), ('v160', 'v36'), ('v36', 'v60'), ('v21', 'v149'), ('r0', 'v24'), ('v43', 'v85'), ('v94', 'v163'), ('v126', 'v28'), ('v90', 'v47'), ('v127', 'v113'), ('v65', 'v71'), ('v16', 'v65'), ('v33', 'v88'), ('v8', 'v106'), ('v15', 'v152'), ('v57', 'v80'), ('v60', 'v80'), ('v71', 'v108'), ('v29', 'v15'), ('v97', 'v22'), ('v126', 'v130'), ('v95', 'v45'), ('v108', 'v77'), ('v2', 'v32'), ('v25', 'v156'), ('v45', 'v78'), ('v126', 'v20'), ('v124', 'v6'), ('v160', 'v10'), ('v22', 'v99'), ('v55', 'v91'), ('v47', 'v75'), ('v50', 'v142'), ('v119', 'v112'), ('v142', 'v48'), ('v146', 'v102'), ('v68', 'v81'), ('v78', 'v103'), ('v57', 'v153'), ('v45', 'v41'), ('v91', 'v143'), ('v105', 'v107'), ('v48', 'v34'), ('v101', 'v37'), ('v17', 'v38'), ('v43', 'v109'), ('v84', 'v4'), ('v149', 'v162'), ('v141', 'v117'), ('v91', 'v117'), ('v67', 'v117'), ('v163', 'v121'), ('v51', 'v74'), ('v71', 'v129'), ('v163', 'v25'), ('v133', 'v119'), ('v11', 'v125'), ('v156', 'v33'), ('v90', 'v73'), ('v142', 'v159'), ('v4', 'v69'), ('v153', 'v66'), ('v65', 'v111'), ('v48', 'v42'), ('v130', 'v44'), ('v73', 'v86'), ('v103', 'v164'), ('v112', 'v124'), ('v64', 'v29'), ('v21', 'v161'), ('v15', 'v18'), ('v139', 'v27'), ('v38', 'v137'), ('v66', 'v5'), ('v126', 'v145'), ('v20', 'v8'), ('v150', 'v40'), ('v17', 'v68'), ('v73', 'v11'), ('v39', 'v136'), ('v85', 'v136'), ('v112', 'v136'), ('v32', 'v114'), ('v86', 'v114'), ('v109', 'v63'), ('v151', 'v166'), ('v35', 'v93'), ('v66', 'v104'), ('v44', 'v101'), ('v4', 'v19'), ('v88', 'v147'), ('v146', 'v79'), ('v11', 'v139'), ('v39', 'v98'), ('v60', 'v132'), ('v136', 'v89'), ('v136', 'v82'), ('v137', 'v17'), ('v156', 'v58'), ('v61', 'v12'), ('v3', 'v30'), ('v107', 'v51'), ('v65', 'v140'), ('v166', 'v64'), ('v6', 'v144'), ('v52', 'v144'), ('v106', 'v122'), ('v46', 'v157'), ('v49', 'v160'), ('v154', 'v160'), ('v114', 'v70'), ('v84', 'v123'), ('v159', 'v67'), ('v153', 'v83'), ('v124', 'v133'), ('v166', 'v72'), ('v124', 'v128'), ('v159', 'v23'), ('v145', 'v23'), ('v129', 'v118'), ('v19', 'v165'), ('v123', 'v165'), ('v74', 'v148'), ('v24', 'v146'), ('v130', 'v59'), ('v16', 'v105'), ('v163', 'v115'), ('v39', 'v87'), ('v97', 'v35'), ('v12', 'v35'), ('v24', 'v7'), ('v84', 'v110'), ('v141', 'v94'), ('v78', 'v16'), ('v128', 'v16'), ('v84', 'v155'), ('v40', 'v0'), ('v12', 'v138'), ('v94', 'v52'), ('r0', 'v49'), ('v129', 'v167'), ('v27', 'v134'), ('v87', 'v3'), ('v126', 'v62'), ('v161', 'v150'), ('v68', 'v13'), ('v108', 'v76'), ('v18', 'v154'), ('v82', 'v92'), ('v4', 'v31'), ('v68', 'v116'), ('v22', 'v120'), ('v101', 'v100'), ('v9', 'v135'), ('v87', 'v131'), ('v60', 'v50'), ('v153', 'v1'), ('v119', 'v14'), ('v55', 'v54'), ('v153', 'v96'), ('v16', 'v46'), ('v94', 'v53'), ('v26', 'v9'), ('v143', 'v26'), ('v145', 'v56'), ('v19', 'v158'), ('v5', 'v133'), ('v37', 'v38')]
+Dual_list: [({'v84'}, 4), ({'v141'}, 5), ({'v95'}, 1), ({'v21'}, 5), ({'v2'}, 1), ({'v57'}, 7), ({'v61'}, 3), ({'v126'}, 14), ({'v55'}, 6), ({'v151'}, 7), ({'v43'}, 11), ({'v127'}, 4), ({'v39'}, 5), ({'v90'}, 1), ({'v97'}, 1), ({'v36'}, 3), ({'v60'}, 1), ({'v149'}, 15), ({'v24'}, 7), ({'v85'}, 6), ({'v163'}, 5), ({'v28'}, 8), ({'v47'}, 14), ({'v113'}, 14), ({'v71'}, 3), ({'v65'}, 10), ({'v88'}, 2), ({'v106'}, 1), ({'v152'}, 2), ({'v80'}, 19), ({'v108'}, 2), ({'v15'}, 2), ({'v22'}, 7), ({'v130'}, 1), ({'v45'}, 1), ({'v77'}, 1), ({'v32'}, 10), ({'v156'}, 9), ({'v78'}, 1), ({'v20'}, 4), ({'v6'}, 7), ({'v10'}, 3), ({'v99'}, 3), ({'v91'}, 1), ({'v75'}, 13), ({'v142'}, 1), ({'v112'}, 6), ({'v48'}, 7), ({'v102'}, 9), ({'v81'}, 1), ({'v103'}, 1), ({'v153'}, 16), ({'v41'}, 16), ({'v143'}, 1), ({'v107'}, 6), ({'v34'}, 11), ({'v37'}, 1), ({'v38'}, 3), ({'v109'}, 9), ({'v4'}, 14), ({'v162'}, 12), ({'v117'}, 5), ({'v121'}, 16), ({'v74'}, 2), ({'v129'}, 14), ({'v25'}, 4), ({'v119'}, 10), ({'v125'}, 15), ({'v33'}, 3), ({'v73'}, 11), ({'v159'}, 5), ({'v69'}, 11), ({'v66'}, 6), ({'v111'}, 9), ({'v42'}, 14), ({'v44'}, 20), ({'v86'}, 5), ({'v164'}, 1), ({'v124'}, 20), ({'v29'}, 1), ({'v161'}, 3), ({'v18'}, 2), ({'v27'}, 7), ({'v137'}, 13), ({'v5'}, 2), ({'v145'}, 4), ({'v8'}, 15), ({'v40'}, 8), ({'v68'}, 1), ({'v11'}, 5), ({'v136'}, 11), ({'v114'}, 7), ({'v63'}, 12), ({'v166'}, 17), ({'v93'}, 6), ({'v104'}, 6), ({'v101'}, 1), ({'v19'}, 1), ({'v147'}, 7), ({'v79'}, 6), ({'v139'}, 19), ({'v98'}, 7), ({'v132'}, 18), ({'v89'}, 3), ({'v82'}, 14), ({'v17'}, 20), ({'v58'}, 8), ({'v12'}, 9), ({'v30'}, 11), ({'v51'}, 2), ({'v140'}, 9), ({'v64'}, 12), ({'v144'}, 12), ({'v122'}, 14), ({'v157'}, 4), ({'v160'}, 7), ({'v70'}, 3), ({'v123'}, 2), ({'v67'}, 10), ({'v83'}, 2), ({'v133'}, 16), ({'v72'}, 2), ({'v128'}, 1), ({'v23'}, 9), ({'v118'}, 16), ({'v165'}, 9), ({'v148'}, 2), ({'v146'}, 5), ({'v59'}, 5), ({'v105'}, 14), ({'v115'}, 3), ({'v87'}, 3), ({'v35'}, 4), ({'v7'}, 4), ({'v110'}, 3), ({'v94'}, 3), ({'v16'}, 13), ({'v155'}, 18), ({'v0'}, 3), ({'v138'}, 5), ({'v52'}, 4), ({'v49'}, 4), ({'v167'}, 5), ({'v134'}, 11), ({'v3'}, 2), ({'v62'}, 3), ({'v150'}, 8), ({'v13'}, 4), ({'v76'}, 8), ({'v154'}, 1), ({'v92'}, 2), ({'v31'}, 7), ({'v116'}, 2), ({'v120'}, 8), ({'v100'}, 2), ({'v135'}, 3), ({'v131'}, 8), ({'v50'}, 7), ({'v1'}, 11), ({'v14'}, 2), ({'v54'}, 7), ({'v96'}, 12), ({'v46'}, 2), ({'v53'}, 1), ({'v9'}, 7), ({'v26'}, 1), ({'v56'}, 6), ({'v158'}, 2), ({'v124', 'v133', 'v119', 'v112'}, 2), ({'v137', 'v17', 'v38'}, 2)]
+
+ Construindo arborescência usando fila de prioridade:
+
+ Arborescência final:
 ✅ Condição dual satisfeita para András Frank.
-Custo da arborescência de Chu-Liu/Edmonds: 694
-Custo da arborescência de András Frank: 694
-Custo da arborescência de András Frank (v2): 694
+Custo da arborescência de Chu-Liu/Edmonds: 1138
+Custo da arborescência de András Frank: 1138
+Custo da arborescência de András Frank (v2): 1138
 
  ✅ Testes concluídos com sucesso!
 
  Sucesso! Ambos algoritmos retornaram arborescências com o mesmo custo mínimo.
 
-=== Teste #2 - Vértices: 117, Arestas: 339 ===
+=== Teste #2 - Vértices: 140, Arestas: 420 ===
 
 ✅ O grafo original contém uma arborescência com raiz r0. Iniciando os testes...
 
- remove_edges_to_r0: Removidas 3 arestas entrando em 'r0'.
+ remove_edges_to_r0: Removidas 2 arestas entrando em 'r0'.
 
  find_optimum_arborescence_chuliu:Iniciando nível 0
 
@@ -976,956 +1481,1193 @@ Custo da arborescência de András Frank (v2): 694
 
  find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'r0'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v69'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v114'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v103'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v104'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v79'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v84'
 
  find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v95'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v71'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v82'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v27'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v20'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v87'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v30'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v44'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v78'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v1'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v47'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v57'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v77'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v84'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v59'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v10'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v55'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v89'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v75'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v68'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v86'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v4'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v0'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v26'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v40'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v85'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v58'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v22'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v21'
 
  find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v2'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v28'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v57'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v65'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v61'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v115'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v126'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v62'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v55'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v50'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v43'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v51'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v127'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v13'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v21'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v73'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v91'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v8'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v111'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v93'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v56'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v35'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v64'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v41'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v66'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v34'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v39'
 
  find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v90'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v102'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v12'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v3'
 
  find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v97'
 
  find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v36'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v24'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v96'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v81'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v45'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v43'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v11'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v29'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v100'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v49'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v19'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v9'
-
  find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v60'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v108'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v24'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v38'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v85'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v17'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v28'
 
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v63'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v31'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v76'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v25'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v110'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v109'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v48'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v98'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v106'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v23'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v67'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v80'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v14'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v33'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v37'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v88'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v74'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v42'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v83'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v54'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v52'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v112'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v39'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v16'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v7'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v61'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v101'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v53'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v99'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v32'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v94'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v46'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v105'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v18'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v6'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v15'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v70'
-
- find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v107'
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v47'
 
  find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v113'
 
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v71'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v65'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v88'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v106'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v80'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v108'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v15'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v22'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v130'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v45'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v77'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v32'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v78'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v20'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v6'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v10'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v99'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v91'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v75'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v112'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v48'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v102'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v81'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v103'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v41'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v107'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v34'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v37'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v38'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v109'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v4'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v117'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v121'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v74'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v129'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v25'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v119'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v125'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v33'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v73'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v69'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v66'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v111'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v42'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v44'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v86'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v124'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v29'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v18'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v27'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v137'
+
  find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v5'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v8'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v40'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v68'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v11'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v136'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v114'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v63'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v93'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v104'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v101'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v19'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v79'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v98'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v132'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v89'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v82'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v17'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v58'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v12'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v30'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v51'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v64'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v122'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v70'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v123'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v67'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v83'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v133'
 
  find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v72'
 
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v128'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v23'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v118'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v59'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v105'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v115'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v87'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v35'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v7'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v110'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v94'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v16'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v0'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v138'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v52'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v49'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v134'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v3'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v62'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v13'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v76'
+
  find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v92'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v31'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v116'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v120'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v100'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v135'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v131'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v50'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v1'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v14'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v54'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v96'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v46'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v53'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v9'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v26'
+
+ find_optimum_arborescence_chuliu:Normalizando pesos de arestas de entrada para 'v56'
 
  find_optimum_arborescence_chuliu:Construindo F_star
 
+ find_optimum_arborescence_chuliu:F_star não é uma arborescência. Continuando...
+
+ find_optimum_arborescence_chuliu:Adicionando aresta de entrada ao ciclo: (v61, v108)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta do ciclo: (v75, v48)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta do ciclo: (v108, v75)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta do ciclo: (v48, v70)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta externa de saída: (v108, v90)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta externa de saída: (v75, v4)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta externa de saída: (v108, v117)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta externa de saída: (v70, v72)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta externa de saída: (v75, v0)
+
+ find_optimum_arborescence_chuliu:Adicionando aresta externa de saída: (v48, v31)
+
+ find_optimum_arborescence_chuliu:Vértice contraído '
+ n*0' removido.
+
+ find_optimum_arborescence_chuliu:Arborescência final: [('v52', 'v84'), ('v52', 'v37'), ('v84', 'v60'), ('v84', 'v47'), ('v84', 'v103'), ('v84', 'v98'), ('v84', 'v106'), ('v39', 'v95'), ('v39', 'v28'), ('v39', 'v34'), ('v39', 'v124'), ('v39', 'v93'), ('v39', 'v133'), ('v95', 'v80'), ('v95', 'v77'), ('v95', 'v116'), ('v95', 'v131'), ('v99', 'v21'), ('v99', 'v137'), ('v21', 'v36'), ('v21', 'v102'), ('v21', 'v5'), ('v21', 'v1'), ('v21', 'v46'), ('r0', 'v2'), ('r0', 'v57'), ('r0', 'v63'), ('r0', 'v16'), ('v2', 'v43'), ('v2', 'v104'), ('v57', 'v61'), ('v57', 'v55'), ('v57', 'v23'), ('v61', 'v126'), ('v61', 'v85'), ('v61', 'v20'), ('v61', 'v108'), ('v55', 'v125'), ('v55', 'v3'), ('v43', 'v17'), ('v3', 'v127'), ('v127', 'v130'), ('v74', 'v39'), ('v74', 'v58'), ('v90', 'v52'), ('v10', 'v97'), ('v97', 'v71'), ('v36', 'v29'), ('v36', 'v128'), ('v36', 'v50'), ('v60', 'v22'), ('v79', 'v24'), ('v24', 'v32'), ('v24', 'v99'), ('v85', 'v59'), ('v85', 'v54'), ('v47', 'v111'), ('v47', 'v83'), ('v138', 'v113'), ('v71', 'v134'), ('v117', 'v65'), ('v65', 'v68'), ('v65', 'v138'), ('v89', 'v88'), ('v80', 'v8'), ('v12', 'v15'), ('v12', 'v76'), ('v130', 'v89'), ('v13', 'v45'), ('v45', 'v87'), ('v45', 'v135'), ('v77', 'v19'), ('v32', 'v67'), ('v0', 'v78'), ('v78', 'v112'), ('v20', 'v109'), ('v82', 'v6'), ('v6', 'v69'), ('v62', 'v10'), ('v62', 'v132'), ('v30', 'v91'), ('v30', 'v51'), ('v30', 'v14'), ('v91', 'v118'), ('v112', 'v86'), ('v102', 'v101'), ('v81', 'v123'), ('v81', 'v13'), ('v42', 'v41'), ('v41', 'v96'), ('v120', 'v107'), ('v120', 'v115'), ('v107', 'v100'), ('v34', 'v42'), ('v37', 'v79'), ('v37', 'v56'), ('v1', 'v38'), ('v38', 'v74'), ('v18', 'v121'), ('v69', 'v25'), ('v53', 'v119'), ('v100', 'v33'), ('v40', 'v73'), ('v73', 'v94'), ('v105', 'v44'), ('v29', 'v136'), ('v50', 'v18'), ('v104', 'v27'), ('v104', 'v49'), ('v104', 'v9'), ('v5', 'v62'), ('v8', 'v12'), ('v9', 'v40'), ('v76', 'v11'), ('v76', 'v120'), ('v83', 'v114'), ('v114', 'v30'), ('v63', 'v105'), ('v93', 'v26'), ('v19', 'v35'), ('v98', 'v64'), ('v26', 'v82'), ('v87', 'v122'), ('v122', 'v7'), ('v23', 'v92'), ('v131', 'v110'), ('v54', 'v53'), ('v106', 'v66'), ('v106', 'v81'), ('v66', 'v129'), ('v108', 'v75'), ('v108', 'v90'), ('v108', 'v117'), ('v75', 'v48'), ('v75', 'v4'), ('v75', 'v0'), ('v48', 'v70'), ('v48', 'v31'), ('v70', 'v72')]
+
 🔍 Executando algoritmo de Chu-Liu/Edmonds...
-Custo da arborescência de Chu-Liu/Edmonds: 713
+
+ Custo da arborescência de Chu-Liu/Edmonds: 802
 
 🔍 Executando algoritmo de András Frank...
+
+ Construindo D_zero inicialmente:
 
  🔄 Iteração 1 ----------------------------
 
  Componentes fortemente conexos em D_zero:
-Fontes: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116]
+Fontes: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139]
 
- Conjunto X: {'v69'}
-Arestas que entram em X: [('r0', 'v69', {'w': 14}), ('v105', 'v69', {'w': 10}), ('v113', 'v69', {'w': 9})]
-Peso mínimo encontrado: 9
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v114'}
-Arestas que entram em X: [('r0', 'v114', {'w': 19}), ('v25', 'v114', {'w': 9}), ('v37', 'v114', {'w': 12})]
-Peso mínimo encontrado: 9
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v103'}
-Arestas que entram em X: [('v69', 'v103', {'w': 8})]
-Peso mínimo encontrado: 8
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v104'}
-Arestas que entram em X: [('r0', 'v104', {'w': 1}), ('v40', 'v104', {'w': 2}), ('v39', 'v104', {'w': 6})]
-Peso mínimo encontrado: 1
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v79'}
-Arestas que entram em X: [('v104', 'v79', {'w': 12}), ('v59', 'v79', {'w': 13}), ('v0', 'v79', {'w': 14}), ('v24', 'v79', {'w': 13}), ('v17', 'v79', {'w': 14})]
-Peso mínimo encontrado: 12
+ Conjunto X: {'v84'}
+Arestas que entram em X: [('r0', 'v84', {'w': 19}), ('v136', 'v84', {'w': 15}), ('v52', 'v84', {'w': 14})]
+Peso mínimo encontrado: 14
 
  Pesos atualizados nos arcos que entram em X
 
  Conjunto X: {'v95'}
-Arestas que entram em X: [('v69', 'v95', {'w': 1})]
-Peso mínimo encontrado: 1
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v71'}
-Arestas que entram em X: [('v69', 'v71', {'w': 2}), ('v84', 'v71', {'w': 13}), ('v19', 'v71', {'w': 18}), ('v94', 'v71', {'w': 2})]
-Peso mínimo encontrado: 2
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v82'}
-Arestas que entram em X: [('v114', 'v82', {'w': 3}), ('v84', 'v82', {'w': 8}), ('v88', 'v82', {'w': 13})]
-Peso mínimo encontrado: 3
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v27'}
-Arestas que entram em X: [('v82', 'v27', {'w': 14}), ('v78', 'v27', {'w': 17}), ('v60', 'v27', {'w': 3}), ('v6', 'v27', {'w': 1})]
-Peso mínimo encontrado: 1
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v20'}
-Arestas que entram em X: [('v114', 'v20', {'w': 15}), ('v97', 'v20', {'w': 6})]
-Peso mínimo encontrado: 6
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v87'}
-Arestas que entram em X: [('v95', 'v87', {'w': 20}), ('v51', 'v87', {'w': 19}), ('v91', 'v87', {'w': 14}), ('v109', 'v87', {'w': 2})]
-Peso mínimo encontrado: 2
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v30'}
-Arestas que entram em X: [('v79', 'v30', {'w': 12}), ('v20', 'v30', {'w': 15}), ('v87', 'v30', {'w': 13}), ('v64', 'v30', {'w': 8})]
-Peso mínimo encontrado: 8
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v44'}
-Arestas que entram em X: [('v104', 'v44', {'w': 18}), ('v85', 'v44', {'w': 8}), ('v14', 'v44', {'w': 5})]
-Peso mínimo encontrado: 5
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v78'}
-Arestas que entram em X: [('r0', 'v78', {'w': 1})]
-Peso mínimo encontrado: 1
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v1'}
-Arestas que entram em X: [('v103', 'v1', {'w': 15}), ('v37', 'v1', {'w': 20})]
-Peso mínimo encontrado: 15
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v47'}
-Arestas que entram em X: [('v27', 'v47', {'w': 13}), ('v75', 'v47', {'w': 12}), ('v62', 'v47', {'w': 7}), ('v76', 'v47', {'w': 10}), ('v80', 'v47', {'w': 19})]
-Peso mínimo encontrado: 7
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v57'}
-Arestas que entram em X: [('v44', 'v57', {'w': 6}), ('v59', 'v57', {'w': 6})]
-Peso mínimo encontrado: 6
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v77'}
-Arestas que entram em X: [('v20', 'v77', {'w': 5}), ('v23', 'v77', {'w': 20})]
-Peso mínimo encontrado: 5
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v84'}
-Arestas que entram em X: [('v57', 'v84', {'w': 3}), ('v56', 'v84', {'w': 9})]
-Peso mínimo encontrado: 3
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v59'}
-Arestas que entram em X: [('v95', 'v59', {'w': 15}), ('v93', 'v59', {'w': 15}), ('v49', 'v59', {'w': 13}), ('v46', 'v59', {'w': 17}), ('v70', 'v59', {'w': 1})]
-Peso mínimo encontrado: 1
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v10'}
-Arestas que entram em X: [('v87', 'v10', {'w': 14}), ('v2', 'v10', {'w': 17}), ('v49', 'v10', {'w': 11}), ('v60', 'v10', {'w': 5})]
-Peso mínimo encontrado: 5
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v55'}
-Arestas que entram em X: [('v114', 'v55', {'w': 16}), ('v83', 'v55', {'w': 19}), ('v52', 'v55', {'w': 20})]
-Peso mínimo encontrado: 16
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v89'}
-Arestas que entram em X: [('v69', 'v89', {'w': 17}), ('v57', 'v89', {'w': 16}), ('v43', 'v89', {'w': 8})]
-Peso mínimo encontrado: 8
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v75'}
-Arestas que entram em X: [('v10', 'v75', {'w': 16})]
-Peso mínimo encontrado: 16
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v68'}
-Arestas que entram em X: [('v71', 'v68', {'w': 20}), ('v74', 'v68', {'w': 6}), ('v39', 'v68', {'w': 5})]
-Peso mínimo encontrado: 5
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v86'}
-Arestas que entram em X: [('v87', 'v86', {'w': 9}), ('v81', 'v86', {'w': 16})]
-Peso mínimo encontrado: 9
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v4'}
-Arestas que entram em X: [('v104', 'v4', {'w': 13}), ('v82', 'v4', {'w': 1}), ('v5', 'v4', {'w': 8})]
-Peso mínimo encontrado: 1
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v0'}
-Arestas que entram em X: [('v55', 'v0', {'w': 13}), ('v89', 'v0', {'w': 12})]
-Peso mínimo encontrado: 12
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v26'}
-Arestas que entram em X: [('v4', 'v26', {'w': 18}), ('v50', 'v26', {'w': 6}), ('v51', 'v26', {'w': 14})]
-Peso mínimo encontrado: 6
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v40'}
-Arestas que entram em X: [('r0', 'v40', {'w': 1}), ('v95', 'v40', {'w': 4}), ('v51', 'v40', {'w': 2}), ('v17', 'v40', {'w': 14}), ('v80', 'v40', {'w': 20})]
-Peso mínimo encontrado: 1
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v85'}
-Arestas que entram em X: [('v71', 'v85', {'w': 12}), ('v84', 'v85', {'w': 7}), ('v10', 'v85', {'w': 2}), ('v74', 'v85', {'w': 20})]
-Peso mínimo encontrado: 2
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v58'}
-Arestas que entram em X: [('v57', 'v58', {'w': 7})]
-Peso mínimo encontrado: 7
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v22'}
-Arestas que entram em X: [('v26', 'v22', {'w': 7}), ('v111', 'v22', {'w': 10}), ('v54', 'v22', {'w': 16})]
-Peso mínimo encontrado: 7
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v2'}
-Arestas que entram em X: [('v55', 'v2', {'w': 11}), ('v86', 'v2', {'w': 6}), ('v50', 'v2', {'w': 16}), ('v42', 'v2', {'w': 10})]
-Peso mínimo encontrado: 6
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v28'}
-Arestas que entram em X: [('v82', 'v28', {'w': 1}), ('v58', 'v28', {'w': 8}), ('v2', 'v28', {'w': 15}), ('v80', 'v28', {'w': 5}), ('v83', 'v28', {'w': 4}), ('v16', 'v28', {'w': 1})]
-Peso mínimo encontrado: 1
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v65'}
-Arestas que entram em X: [('v44', 'v65', {'w': 12})]
-Peso mínimo encontrado: 12
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v115'}
-Arestas que entram em X: [('v104', 'v115', {'w': 18}), ('v56', 'v115', {'w': 14}), ('v102', 'v115', {'w': 4}), ('v101', 'v115', {'w': 17}), ('v6', 'v115', {'w': 19})]
-Peso mínimo encontrado: 4
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v62'}
-Arestas que entram em X: [('v78', 'v62', {'w': 8}), ('v59', 'v62', {'w': 18}), ('v40', 'v62', {'w': 1}), ('v53', 'v62', {'w': 18})]
-Peso mínimo encontrado: 1
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v50'}
-Arestas que entram em X: [('v0', 'v50', {'w': 17}), ('v46', 'v50', {'w': 6})]
-Peso mínimo encontrado: 6
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v51'}
-Arestas que entram em X: [('v87', 'v51', {'w': 6}), ('v32', 'v51', {'w': 6}), ('v92', 'v51', {'w': 14})]
-Peso mínimo encontrado: 6
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v13'}
-Arestas que entram em X: [('v27', 'v13', {'w': 5}), ('v102', 'v13', {'w': 1}), ('v24', 'v13', {'w': 14}), ('v63', 'v13', {'w': 11})]
+Arestas que entram em X: [('r0', 'v95', {'w': 6}), ('v39', 'v95', {'w': 1}), ('v117', 'v95', {'w': 15})]
 Peso mínimo encontrado: 1
 
  Pesos atualizados nos arcos que entram em X
 
  Conjunto X: {'v21'}
-Arestas que entram em X: [('v104', 'v21', {'w': 2}), ('v95', 'v21', {'w': 2}), ('v30', 'v21', {'w': 8}), ('v26', 'v21', {'w': 6}), ('v58', 'v21', {'w': 18})]
+Arestas que entram em X: [('v95', 'v21', {'w': 15}), ('v99', 'v21', {'w': 2})]
 Peso mínimo encontrado: 2
 
  Pesos atualizados nos arcos que entram em X
 
- Conjunto X: {'v73'}
-Arestas que entram em X: [('v89', 'v73', {'w': 14}), ('v86', 'v73', {'w': 3}), ('v58', 'v73', {'w': 15}), ('v64', 'v73', {'w': 6})]
-Peso mínimo encontrado: 3
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v91'}
-Arestas que entram em X: [('v59', 'v91', {'w': 5}), ('v25', 'v91', {'w': 17}), ('v46', 'v91', {'w': 8})]
-Peso mínimo encontrado: 5
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v8'}
-Arestas que entram em X: [('v27', 'v8', {'w': 17})]
-Peso mínimo encontrado: 17
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v111'}
-Arestas que entram em X: [('v27', 'v111', {'w': 10})]
+ Conjunto X: {'v2'}
+Arestas que entram em X: [('r0', 'v2', {'w': 10})]
 Peso mínimo encontrado: 10
 
  Pesos atualizados nos arcos que entram em X
 
- Conjunto X: {'v93'}
-Arestas que entram em X: [('v59', 'v93', {'w': 5}), ('v37', 'v93', {'w': 10}), ('v15', 'v93', {'w': 12})]
-Peso mínimo encontrado: 5
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v56'}
-Arestas que entram em X: [('v13', 'v56', {'w': 20}), ('v113', 'v56', {'w': 3})]
-Peso mínimo encontrado: 3
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v35'}
-Arestas que entram em X: [('v77', 'v35', {'w': 3}), ('v68', 'v35', {'w': 17}), ('v109', 'v35', {'w': 4})]
-Peso mínimo encontrado: 3
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v64'}
-Arestas que entram em X: [('v57', 'v64', {'w': 16}), ('v4', 'v64', {'w': 15}), ('v85', 'v64', {'w': 20})]
-Peso mínimo encontrado: 15
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v41'}
-Arestas que entram em X: [('v86', 'v41', {'w': 5}), ('v115', 'v41', {'w': 8}), ('v36', 'v41', {'w': 14}), ('v38', 'v41', {'w': 10}), ('v32', 'v41', {'w': 9})]
-Peso mínimo encontrado: 5
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v66'}
-Arestas que entram em X: [('v85', 'v66', {'w': 15})]
-Peso mínimo encontrado: 15
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v34'}
-Arestas que entram em X: [('v41', 'v34', {'w': 8}), ('v32', 'v34', {'w': 13})]
-Peso mínimo encontrado: 8
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v90'}
-Arestas que entram em X: [('v73', 'v90', {'w': 15}), ('v111', 'v90', {'w': 14}), ('v93', 'v90', {'w': 11})]
+ Conjunto X: {'v57'}
+Arestas que entram em X: [('r0', 'v57', {'w': 11}), ('v35', 'v57', {'w': 12}), ('v50', 'v57', {'w': 16}), ('v26', 'v57', {'w': 18})]
 Peso mínimo encontrado: 11
 
  Pesos atualizados nos arcos que entram em X
 
- Conjunto X: {'v102'}
-Arestas que entram em X: [('v73', 'v102', {'w': 13})]
-Peso mínimo encontrado: 13
+ Conjunto X: {'v61'}
+Arestas que entram em X: [('v57', 'v61', {'w': 10}), ('v101', 'v61', {'w': 18})]
+Peso mínimo encontrado: 10
 
  Pesos atualizados nos arcos que entram em X
 
- Conjunto X: {'v12'}
-Arestas que entram em X: [('v1', 'v12', {'w': 7}), ('v17', 'v12', {'w': 3}), ('v48', 'v12', {'w': 17}), ('v23', 'v12', {'w': 12})]
-Peso mínimo encontrado: 3
+ Conjunto X: {'v126'}
+Arestas que entram em X: [('v61', 'v126', {'w': 2}), ('v28', 'v126', {'w': 4}), ('v14', 'v126', {'w': 20})]
+Peso mínimo encontrado: 2
 
  Pesos atualizados nos arcos que entram em X
 
- Conjunto X: {'v3'}
-Arestas que entram em X: [('v85', 'v3', {'w': 7})]
-Peso mínimo encontrado: 7
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v97'}
-Arestas que entram em X: [('r0', 'v97', {'w': 16}), ('v69', 'v97', {'w': 14}), ('v1', 'v97', {'w': 12}), ('v89', 'v97', {'w': 18}), ('v100', 'v97', {'w': 14}), ('v7', 'v97', {'w': 18})]
-Peso mínimo encontrado: 12
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v36'}
-Arestas que entram em X: [('v78', 'v36', {'w': 5}), ('v3', 'v36', {'w': 1})]
-Peso mínimo encontrado: 1
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v24'}
-Arestas que entram em X: [('v103', 'v24', {'w': 1}), ('v78', 'v24', {'w': 9}), ('v81', 'v24', {'w': 14})]
-Peso mínimo encontrado: 1
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v96'}
-Arestas que entram em X: [('v65', 'v96', {'w': 5}), ('v19', 'v96', {'w': 5}), ('v92', 'v96', {'w': 1})]
-Peso mínimo encontrado: 1
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v81'}
-Arestas que entram em X: [('v104', 'v81', {'w': 1}), ('v26', 'v81', {'w': 6}), ('v51', 'v81', {'w': 17}), ('v29', 'v81', {'w': 4})]
-Peso mínimo encontrado: 1
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v45'}
-Arestas que entram em X: [('v114', 'v45', {'w': 5})]
-Peso mínimo encontrado: 5
+ Conjunto X: {'v55'}
+Arestas que entram em X: [('v57', 'v55', {'w': 2})]
+Peso mínimo encontrado: 2
 
  Pesos atualizados nos arcos que entram em X
 
  Conjunto X: {'v43'}
-Arestas que entram em X: [('v103', 'v43', {'w': 11}), ('v115', 'v43', {'w': 3}), ('v11', 'v43', {'w': 1}), ('v32', 'v43', {'w': 15})]
-Peso mínimo encontrado: 1
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v11'}
-Arestas que entram em X: [('v86', 'v11', {'w': 20}), ('v21', 'v11', {'w': 14}), ('v37', 'v11', {'w': 20})]
-Peso mínimo encontrado: 14
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v29'}
-Arestas que entram em X: [('v10', 'v29', {'w': 4}), ('v56', 'v29', {'w': 1}), ('v100', 'v29', {'w': 1})]
-Peso mínimo encontrado: 1
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v100'}
-Arestas que entram em X: [('v4', 'v100', {'w': 10}), ('v40', 'v100', {'w': 20}), ('v56', 'v100', {'w': 19}), ('v63', 'v100', {'w': 3})]
+Arestas que entram em X: [('v2', 'v43', {'w': 3})]
 Peso mínimo encontrado: 3
 
  Pesos atualizados nos arcos que entram em X
 
- Conjunto X: {'v49'}
-Arestas que entram em X: [('v8', 'v49', {'w': 6})]
-Peso mínimo encontrado: 6
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v19'}
-Arestas que entram em X: [('v50', 'v19', {'w': 15})]
-Peso mínimo encontrado: 15
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v9'}
-Arestas que entram em X: [('v84', 'v9', {'w': 19}), ('v19', 'v9', {'w': 1})]
-Peso mínimo encontrado: 1
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v60'}
-Arestas que entram em X: [('v103', 'v60', {'w': 19}), ('v44', 'v60', {'w': 7}), ('v1', 'v60', {'w': 19})]
-Peso mínimo encontrado: 7
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v108'}
-Arestas que entram em X: [('v82', 'v108', {'w': 19}), ('v84', 'v108', {'w': 10}), ('v5', 'v108', {'w': 1})]
-Peso mínimo encontrado: 1
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v38'}
-Arestas que entram em X: [('v20', 'v38', {'w': 9}), ('v65', 'v38', {'w': 15}), ('v37', 'v38', {'w': 15}), ('v7', 'v38', {'w': 20})]
-Peso mínimo encontrado: 9
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v17'}
-Arestas que entram em X: [('v87', 'v17', {'w': 10}), ('v102', 'v17', {'w': 10})]
-Peso mínimo encontrado: 10
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v63'}
-Arestas que entram em X: [('v8', 'v63', {'w': 1}), ('v88', 'v63', {'w': 18}), ('v53', 'v63', {'w': 7})]
-Peso mínimo encontrado: 1
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v31'}
-Arestas que entram em X: [('v97', 'v31', {'w': 19}), ('v80', 'v31', {'w': 1})]
-Peso mínimo encontrado: 1
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v76'}
-Arestas que entram em X: [('v30', 'v76', {'w': 14}), ('v3', 'v76', {'w': 1})]
-Peso mínimo encontrado: 1
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v25'}
-Arestas que entram em X: [('v60', 'v25', {'w': 9}), ('v48', 'v25', {'w': 12}), ('v6', 'v25', {'w': 2})]
+ Conjunto X: {'v127'}
+Arestas que entram em X: [('v95', 'v127', {'w': 13}), ('v97', 'v127', {'w': 5}), ('v112', 'v127', {'w': 15}), ('v3', 'v127', {'w': 2})]
 Peso mínimo encontrado: 2
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v110'}
-Arestas que entram em X: [('v51', 'v110', {'w': 2})]
-Peso mínimo encontrado: 2
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v109'}
-Arestas que entram em X: [('v104', 'v109', {'w': 14}), ('v58', 'v109', {'w': 14}), ('v97', 'v109', {'w': 9}), ('v94', 'v109', {'w': 15})]
-Peso mínimo encontrado: 9
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v48'}
-Arestas que entram em X: [('v111', 'v48', {'w': 5}), ('v24', 'v48', {'w': 20}), ('v63', 'v48', {'w': 20}), ('v106', 'v48', {'w': 7})]
-Peso mínimo encontrado: 5
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v98'}
-Arestas que entram em X: [('v108', 'v98', {'w': 14}), ('v76', 'v98', {'w': 20}), ('v7', 'v98', {'w': 3})]
-Peso mínimo encontrado: 3
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v106'}
-Arestas que entram em X: [('v1', 'v106', {'w': 20}), ('v98', 'v106', {'w': 10}), ('v83', 'v106', {'w': 6})]
-Peso mínimo encontrado: 6
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v23'}
-Arestas que entram em X: [('r0', 'v23', {'w': 14}), ('v31', 'v23', {'w': 20})]
-Peso mínimo encontrado: 14
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v67'}
-Arestas que entram em X: [('v49', 'v67', {'w': 1}), ('v63', 'v67', {'w': 7}), ('v31', 'v67', {'w': 2}), ('v23', 'v67', {'w': 6})]
-Peso mínimo encontrado: 1
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v80'}
-Arestas que entram em X: [('v47', 'v80', {'w': 16}), ('v81', 'v80', {'w': 11}), ('v52', 'v80', {'w': 7})]
-Peso mínimo encontrado: 7
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v14'}
-Arestas que entram em X: [('v89', 'v14', {'w': 5}), ('v102', 'v14', {'w': 20})]
-Peso mínimo encontrado: 5
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v33'}
-Arestas que entram em X: [('v3', 'v33', {'w': 1})]
-Peso mínimo encontrado: 1
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v37'}
-Arestas que entram em X: [('v24', 'v37', {'w': 16}), ('v11', 'v37', {'w': 5})]
-Peso mínimo encontrado: 5
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v88'}
-Arestas que entram em X: [('v1', 'v88', {'w': 17}), ('v32', 'v88', {'w': 9})]
-Peso mínimo encontrado: 9
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v74'}
-Arestas que entram em X: [('v64', 'v74', {'w': 16}), ('v72', 'v74', {'w': 20})]
-Peso mínimo encontrado: 16
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v42'}
-Arestas que entram em X: [('v3', 'v42', {'w': 12}), ('v110', 'v42', {'w': 8}), ('v67', 'v42', {'w': 10}), ('v112', 'v42', {'w': 14})]
-Peso mínimo encontrado: 8
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v83'}
-Arestas que entram em X: [('v49', 'v83', {'w': 4})]
-Peso mínimo encontrado: 4
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v54'}
-Arestas que entram em X: [('v108', 'v54', {'w': 3})]
-Peso mínimo encontrado: 3
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v52'}
-Arestas que entram em X: [('v30', 'v52', {'w': 9}), ('v0', 'v52', {'w': 9}), ('v42', 'v52', {'w': 4})]
-Peso mínimo encontrado: 4
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v112'}
-Arestas que entram em X: [('v71', 'v112', {'w': 15}), ('v10', 'v112', {'w': 16}), ('v67', 'v112', {'w': 19}), ('v39', 'v112', {'w': 15})]
-Peso mínimo encontrado: 15
 
  Pesos atualizados nos arcos que entram em X
 
  Conjunto X: {'v39'}
-Arestas que entram em X: [('v95', 'v39', {'w': 18}), ('v20', 'v39', {'w': 17}), ('v62', 'v39', {'w': 18}), ('v21', 'v39', {'w': 8}), ('v67', 'v39', {'w': 2}), ('v52', 'v39', {'w': 16})]
-Peso mínimo encontrado: 2
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v16'}
-Arestas que entram em X: [('v73', 'v16', {'w': 2}), ('v98', 'v16', {'w': 4})]
-Peso mínimo encontrado: 2
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v7'}
-Arestas que entram em X: [('v3', 'v7', {'w': 14}), ('v100', 'v7', {'w': 12})]
-Peso mínimo encontrado: 12
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v61'}
-Arestas que entram em X: [('v31', 'v61', {'w': 14}), ('v80', 'v61', {'w': 10})]
+Arestas que entram em X: [('v55', 'v39', {'w': 19}), ('v107', 'v39', {'w': 11}), ('v74', 'v39', {'w': 10}), ('v115', 'v39', {'w': 15})]
 Peso mínimo encontrado: 10
 
  Pesos atualizados nos arcos que entram em X
 
- Conjunto X: {'v101'}
-Arestas que entram em X: [('v104', 'v101', {'w': 3}), ('v27', 'v101', {'w': 1}), ('v55', 'v101', {'w': 14}), ('v91', 'v101', {'w': 16}), ('v45', 'v101', {'w': 7}), ('v19', 'v101', {'w': 3})]
-Peso mínimo encontrado: 1
+ Conjunto X: {'v90'}
+Arestas que entram em X: [('v61', 'v90', {'w': 9}), ('v108', 'v90', {'w': 3}), ('v34', 'v90', {'w': 18})]
+Peso mínimo encontrado: 3
 
  Pesos atualizados nos arcos que entram em X
 
- Conjunto X: {'v53'}
-Arestas que entram em X: [('v1', 'v53', {'w': 13}), ('v10', 'v53', {'w': 8})]
+ Conjunto X: {'v97'}
+Arestas que entram em X: [('v90', 'v97', {'w': 13}), ('v88', 'v97', {'w': 16}), ('v10', 'v97', {'w': 11}), ('v44', 'v97', {'w': 20})]
+Peso mínimo encontrado: 11
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v36'}
+Arestas que entram em X: [('v21', 'v36', {'w': 3})]
+Peso mínimo encontrado: 3
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v60'}
+Arestas que entram em X: [('v84', 'v60', {'w': 4}), ('v51', 'v60', {'w': 8})]
+Peso mínimo encontrado: 4
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v24'}
+Arestas que entram em X: [('r0', 'v24', {'w': 19}), ('v79', 'v24', {'w': 4})]
+Peso mínimo encontrado: 4
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v85'}
+Arestas que entram em X: [('v61', 'v85', {'w': 8})]
 Peso mínimo encontrado: 8
 
  Pesos atualizados nos arcos que entram em X
 
- Conjunto X: {'v99'}
-Arestas que entram em X: [('v114', 'v99', {'w': 6}), ('v37', 'v99', {'w': 6}), ('v16', 'v99', {'w': 12}), ('v70', 'v99', {'w': 19})]
+ Conjunto X: {'v28'}
+Arestas que entram em X: [('v39', 'v28', {'w': 4}), ('v38', 'v28', {'w': 19})]
+Peso mínimo encontrado: 4
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v47'}
+Arestas que entram em X: [('v84', 'v47', {'w': 6}), ('v90', 'v47', {'w': 8}), ('v24', 'v47', {'w': 11})]
 Peso mínimo encontrado: 6
 
  Pesos atualizados nos arcos que entram em X
 
- Conjunto X: {'v32'}
-Arestas que entram em X: [('v47', 'v32', {'w': 17}), ('v28', 'v32', {'w': 16}), ('v93', 'v32', {'w': 12}), ('v31', 'v32', {'w': 12}), ('v48', 'v32', {'w': 1}), ('v53', 'v32', {'w': 8}), ('v99', 'v32', {'w': 9})]
+ Conjunto X: {'v113'}
+Arestas que entram em X: [('v60', 'v113', {'w': 3}), ('v75', 'v113', {'w': 16}), ('v102', 'v113', {'w': 11}), ('v138', 'v113', {'w': 1})]
 Peso mínimo encontrado: 1
 
  Pesos atualizados nos arcos que entram em X
 
- Conjunto X: {'v94'}
-Arestas que entram em X: [('v77', 'v94', {'w': 15}), ('v45', 'v94', {'w': 3}), ('v19', 'v94', {'w': 14}), ('v48', 'v94', {'w': 2})]
+ Conjunto X: {'v71'}
+Arestas que entram em X: [('v97', 'v71', {'w': 3}), ('v38', 'v71', {'w': 5}), ('v74', 'v71', {'w': 9}), ('v131', 'v71', {'w': 10})]
+Peso mínimo encontrado: 3
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v65'}
+Arestas que entram em X: [('r0', 'v65', {'w': 9}), ('v117', 'v65', {'w': 1})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v88'}
+Arestas que entram em X: [('v84', 'v88', {'w': 14}), ('v89', 'v88', {'w': 2})]
 Peso mínimo encontrado: 2
 
  Pesos atualizados nos arcos que entram em X
 
- Conjunto X: {'v46'}
-Arestas que entram em X: [('v7', 'v46', {'w': 16})]
-Peso mínimo encontrado: 16
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v105'}
-Arestas que entram em X: [('v10', 'v105', {'w': 19})]
-Peso mínimo encontrado: 19
-
- Pesos atualizados nos arcos que entram em X
-
- Conjunto X: {'v18'}
-Arestas que entram em X: [('v34', 'v18', {'w': 5}), ('v29', 'v18', {'w': 6}), ('v48', 'v18', {'w': 12})]
+ Conjunto X: {'v106'}
+Arestas que entram em X: [('v84', 'v106', {'w': 6}), ('v71', 'v106', {'w': 18}), ('v99', 'v106', {'w': 17}), ('v129', 'v106', {'w': 5})]
 Peso mínimo encontrado: 5
 
  Pesos atualizados nos arcos que entram em X
 
- Conjunto X: {'v6'}
-Arestas que entram em X: [('v17', 'v6', {'w': 16})]
+ Conjunto X: {'v80'}
+Arestas que entram em X: [('v95', 'v80', {'w': 18}), ('v45', 'v80', {'w': 18})]
+Peso mínimo encontrado: 18
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v108'}
+Arestas que entram em X: [('v61', 'v108', {'w': 19}), ('v70', 'v108', {'w': 16})]
 Peso mínimo encontrado: 16
 
  Pesos atualizados nos arcos que entram em X
 
  Conjunto X: {'v15'}
-Arestas que entram em X: [('v44', 'v15', {'w': 8}), ('v59', 'v15', {'w': 17}), ('v35', 'v15', {'w': 2}), ('v106', 'v15', {'w': 17}), ('v107', 'v15', {'w': 12})]
+Arestas que entram em X: [('v84', 'v15', {'w': 16}), ('v130', 'v15', {'w': 9}), ('v121', 'v15', {'w': 11}), ('v12', 'v15', {'w': 7})]
+Peso mínimo encontrado: 7
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v22'}
+Arestas que entram em X: [('v60', 'v22', {'w': 4}), ('v4', 'v22', {'w': 12}), ('v129', 'v22', {'w': 9}), ('v79', 'v22', {'w': 14})]
+Peso mínimo encontrado: 4
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v130'}
+Arestas que entram em X: [('v95', 'v130', {'w': 5}), ('v127', 'v130', {'w': 1})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v45'}
+Arestas que entram em X: [('v71', 'v45', {'w': 19}), ('v6', 'v45', {'w': 14}), ('v13', 'v45', {'w': 6})]
+Peso mínimo encontrado: 6
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v77'}
+Arestas que entram em X: [('v95', 'v77', {'w': 3})]
+Peso mínimo encontrado: 3
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v32'}
+Arestas que entram em X: [('v24', 'v32', {'w': 6}), ('v114', 'v32', {'w': 17}), ('v35', 'v32', {'w': 8})]
+Peso mínimo encontrado: 6
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v78'}
+Arestas que entram em X: [('v36', 'v78', {'w': 14}), ('v22', 'v78', {'w': 5}), ('v110', 'v78', {'w': 10}), ('v0', 'v78', {'w': 4})]
+Peso mínimo encontrado: 4
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v20'}
+Arestas que entram em X: [('v61', 'v20', {'w': 1}), ('v39', 'v20', {'w': 4}), ('v129', 'v20', {'w': 8})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v6'}
+Arestas que entram em X: [('v43', 'v6', {'w': 14}), ('v97', 'v6', {'w': 17}), ('v82', 'v6', {'w': 2})]
+Peso mínimo encontrado: 2
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v10'}
+Arestas que entram em X: [('v95', 'v10', {'w': 3}), ('v80', 'v10', {'w': 19}), ('v62', 'v10', {'w': 1})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v99'}
+Arestas que entram em X: [('v55', 'v99', {'w': 14}), ('v24', 'v99', {'w': 10}), ('v108', 'v99', {'w': 20})]
+Peso mínimo encontrado: 10
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v91'}
+Arestas que entram em X: [('v77', 'v91', {'w': 14}), ('v30', 'v91', {'w': 5}), ('v13', 'v91', {'w': 5})]
+Peso mínimo encontrado: 5
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v75'}
+Arestas que entram em X: [('v90', 'v75', {'w': 20}), ('v108', 'v75', {'w': 8}), ('v129', 'v75', {'w': 16})]
+Peso mínimo encontrado: 8
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v112'}
+Arestas que entram em X: [('v126', 'v112', {'w': 17}), ('v78', 'v112', {'w': 7}), ('v38', 'v112', {'w': 16}), ('v51', 'v112', {'w': 8})]
+Peso mínimo encontrado: 7
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v48'}
+Arestas que entram em X: [('v106', 'v48', {'w': 8}), ('v75', 'v48', {'w': 4})]
+Peso mínimo encontrado: 4
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v102'}
+Arestas que entram em X: [('v21', 'v102', {'w': 10}), ('v130', 'v102', {'w': 19})]
+Peso mínimo encontrado: 10
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v81'}
+Arestas que entram em X: [('v106', 'v81', {'w': 6}), ('v125', 'v81', {'w': 9})]
+Peso mínimo encontrado: 6
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v103'}
+Arestas que entram em X: [('v84', 'v103', {'w': 5}), ('v80', 'v103', {'w': 19}), ('v123', 'v103', {'w': 10}), ('v56', 'v103', {'w': 10})]
+Peso mínimo encontrado: 5
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v41'}
+Arestas que entram em X: [('v60', 'v41', {'w': 10}), ('v42', 'v41', {'w': 1}), ('v137', 'v41', {'w': 6}), ('v93', 'v41', {'w': 17})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v107'}
+Arestas que entram em X: [('v90', 'v107', {'w': 7}), ('v108', 'v107', {'w': 16}), ('v130', 'v107', {'w': 13}), ('v45', 'v107', {'w': 15}), ('v18', 'v107', {'w': 17}), ('v120', 'v107', {'w': 6})]
+Peso mínimo encontrado: 6
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v34'}
+Arestas que entram em X: [('v39', 'v34', {'w': 6}), ('v6', 'v34', {'w': 20}), ('v27', 'v34', {'w': 16})]
+Peso mínimo encontrado: 6
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v37'}
+Arestas que entram em X: [('v41', 'v37', {'w': 10}), ('v34', 'v37', {'w': 13}), ('v25', 'v37', {'w': 14}), ('v52', 'v37', {'w': 1})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v38'}
+Arestas que entram em X: [('v43', 'v38', {'w': 20}), ('v99', 'v38', {'w': 18}), ('v1', 'v38', {'w': 17})]
+Peso mínimo encontrado: 17
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v109'}
+Arestas que entram em X: [('v20', 'v109', {'w': 20})]
+Peso mínimo encontrado: 20
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v4'}
+Arestas que entram em X: [('v75', 'v4', {'w': 4}), ('v52', 'v4', {'w': 14})]
+Peso mínimo encontrado: 4
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v117'}
+Arestas que entram em X: [('v108', 'v117', {'w': 3}), ('v92', 'v117', {'w': 18})]
+Peso mínimo encontrado: 3
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v121'}
+Arestas que entram em X: [('v20', 'v121', {'w': 12}), ('v18', 'v121', {'w': 6}), ('v128', 'v121', {'w': 6}), ('v135', 'v121', {'w': 16})]
+Peso mínimo encontrado: 6
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v74'}
+Arestas que entram em X: [('v38', 'v74', {'w': 5})]
+Peso mínimo encontrado: 5
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v129'}
+Arestas que entram em X: [('v28', 'v129', {'w': 16}), ('v66', 'v129', {'w': 5}), ('v51', 'v129', {'w': 8})]
+Peso mínimo encontrado: 5
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v25'}
+Arestas que entram em X: [('v71', 'v25', {'w': 20}), ('v69', 'v25', {'w': 11})]
+Peso mínimo encontrado: 11
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v119'}
+Arestas que entram em X: [('v47', 'v119', {'w': 17}), ('v120', 'v119', {'w': 9}), ('v53', 'v119', {'w': 3})]
+Peso mínimo encontrado: 3
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v125'}
+Arestas que entram em X: [('v55', 'v125', {'w': 1}), ('v19', 'v125', {'w': 3})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v33'}
+Arestas que entram em X: [('v34', 'v33', {'w': 4}), ('v132', 'v33', {'w': 11}), ('v62', 'v33', {'w': 2}), ('v100', 'v33', {'w': 1}), ('v54', 'v33', {'w': 16})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v73'}
+Arestas que entram em X: [('v126', 'v73', {'w': 19}), ('v6', 'v73', {'w': 16}), ('v40', 'v73', {'w': 11})]
+Peso mínimo encontrado: 11
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v69'}
+Arestas que entram em X: [('v28', 'v69', {'w': 8}), ('v6', 'v69', {'w': 1})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v66'}
+Arestas que entram em X: [('v106', 'v66', {'w': 2}), ('v132', 'v66', {'w': 17})]
+Peso mínimo encontrado: 2
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v111'}
+Arestas que entram em X: [('v97', 'v111', {'w': 20}), ('v47', 'v111', {'w': 1}), ('v113', 'v111', {'w': 10}), ('v6', 'v111', {'w': 14}), ('v10', 'v111', {'w': 6}), ('v117', 'v111', {'w': 5}), ('v110', 'v111', {'w': 14})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v42'}
+Arestas que entram em X: [('v88', 'v42', {'w': 18}), ('v34', 'v42', {'w': 2}), ('v19', 'v42', {'w': 5})]
+Peso mínimo encontrado: 2
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v44'}
+Arestas que entram em X: [('v80', 'v44', {'w': 6}), ('v75', 'v44', {'w': 9}), ('v105', 'v44', {'w': 2}), ('v135', 'v44', {'w': 17})]
+Peso mínimo encontrado: 2
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v86'}
+Arestas que entram em X: [('v112', 'v86', {'w': 14})]
+Peso mínimo encontrado: 14
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v124'}
+Arestas que entram em X: [('v39', 'v124', {'w': 1}), ('v37', 'v124', {'w': 20})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v29'}
+Arestas que entram em X: [('v36', 'v29', {'w': 11}), ('v70', 'v29', {'w': 13}), ('v115', 'v29', {'w': 20})]
+Peso mínimo encontrado: 11
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v18'}
+Arestas que entram em X: [('v43', 'v18', {'w': 11}), ('v73', 'v18', {'w': 13}), ('v50', 'v18', {'w': 9})]
+Peso mínimo encontrado: 9
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v27'}
+Arestas que entram em X: [('v84', 'v27', {'w': 20}), ('v104', 'v27', {'w': 5})]
+Peso mínimo encontrado: 5
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v137'}
+Arestas que entram em X: [('v99', 'v137', {'w': 9}), ('v89', 'v137', {'w': 10}), ('v3', 'v137', {'w': 11})]
+Peso mínimo encontrado: 9
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v5'}
+Arestas que entram em X: [('v21', 'v5', {'w': 2}), ('v126', 'v5', {'w': 2}), ('v36', 'v5', {'w': 15}), ('v38', 'v5', {'w': 10}), ('v67', 'v5', {'w': 7})]
+Peso mínimo encontrado: 2
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v8'}
+Arestas que entram em X: [('v24', 'v8', {'w': 12}), ('v85', 'v8', {'w': 13}), ('v80', 'v8', {'w': 9}), ('v22', 'v8', {'w': 18})]
+Peso mínimo encontrado: 9
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v40'}
+Arestas que entram em X: [('v95', 'v40', {'w': 16}), ('v78', 'v40', {'w': 19}), ('v7', 'v40', {'w': 17}), ('v9', 'v40', {'w': 15})]
+Peso mínimo encontrado: 15
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v68'}
+Arestas que entram em X: [('v65', 'v68', {'w': 10}), ('v48', 'v68', {'w': 11}), ('v30', 'v68', {'w': 17})]
+Peso mínimo encontrado: 10
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v11'}
+Arestas que entram em X: [('v57', 'v11', {'w': 6}), ('v30', 'v11', {'w': 18}), ('v35', 'v11', {'w': 20}), ('v138', 'v11', {'w': 13}), ('v76', 'v11', {'w': 1}), ('v46', 'v11', {'w': 18})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v136'}
+Arestas que entram em X: [('v29', 'v136', {'w': 16})]
+Peso mínimo encontrado: 16
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v114'}
+Arestas que entram em X: [('v117', 'v114', {'w': 19}), ('v5', 'v114', {'w': 13}), ('v83', 'v114', {'w': 12}), ('v131', 'v114', {'w': 17})]
+Peso mínimo encontrado: 12
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v63'}
+Arestas que entram em X: [('r0', 'v63', {'w': 2}), ('v30', 'v63', {'w': 18})]
+Peso mínimo encontrado: 2
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v93'}
+Arestas que entram em X: [('v126', 'v93', {'w': 11}), ('v39', 'v93', {'w': 8}), ('v90', 'v93', {'w': 14}), ('v11', 'v93', {'w': 17})]
+Peso mínimo encontrado: 8
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v104'}
+Arestas que entram em X: [('v2', 'v104', {'w': 3}), ('v43', 'v104', {'w': 10}), ('v11', 'v104', {'w': 17})]
+Peso mínimo encontrado: 3
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v101'}
+Arestas que entram em X: [('v102', 'v101', {'w': 1}), ('v5', 'v101', {'w': 2})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v19'}
+Arestas que entram em X: [('v77', 'v19', {'w': 1}), ('v93', 'v19', {'w': 9})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v79'}
+Arestas que entram em X: [('v84', 'v79', {'w': 15}), ('v37', 'v79', {'w': 7}), ('v93', 'v79', {'w': 13})]
+Peso mínimo encontrado: 7
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v98'}
+Arestas que entram em X: [('v84', 'v98', {'w': 4}), ('v77', 'v98', {'w': 6})]
+Peso mínimo encontrado: 4
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v132'}
+Arestas que entram em X: [('v99', 'v132', {'w': 14}), ('v62', 'v132', {'w': 1})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v89'}
+Arestas que entram em X: [('v130', 'v89', {'w': 5}), ('v73', 'v89', {'w': 14}), ('v44', 'v89', {'w': 19})]
+Peso mínimo encontrado: 5
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v82'}
+Arestas que entram em X: [('v2', 'v82', {'w': 17}), ('v28', 'v82', {'w': 10}), ('v10', 'v82', {'w': 19}), ('v96', 'v82', {'w': 8}), ('v26', 'v82', {'w': 7})]
+Peso mínimo encontrado: 7
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v17'}
+Arestas que entram em X: [('v43', 'v17', {'w': 2}), ('v107', 'v17', {'w': 12}), ('v25', 'v17', {'w': 6}), ('v14', 'v17', {'w': 17})]
+Peso mínimo encontrado: 2
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v58'}
+Arestas que entram em X: [('v102', 'v58', {'w': 20}), ('v74', 'v58', {'w': 5})]
+Peso mínimo encontrado: 5
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v12'}
+Arestas que entram em X: [('v8', 'v12', {'w': 3}), ('v59', 'v12', {'w': 9})]
+Peso mínimo encontrado: 3
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v30'}
+Arestas que entram em X: [('v15', 'v30', {'w': 10}), ('v48', 'v30', {'w': 20}), ('v114', 'v30', {'w': 7})]
+Peso mínimo encontrado: 7
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v51'}
+Arestas que entram em X: [('v43', 'v51', {'w': 20}), ('v30', 'v51', {'w': 7})]
+Peso mínimo encontrado: 7
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v64'}
+Arestas que entram em X: [('v107', 'v64', {'w': 7}), ('v42', 'v64', {'w': 10}), ('v98', 'v64', {'w': 2})]
+Peso mínimo encontrado: 2
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v122'}
+Arestas que entram em X: [('v97', 'v122', {'w': 4}), ('v78', 'v122', {'w': 6}), ('v118', 'v122', {'w': 11}), ('v87', 'v122', {'w': 2}), ('v100', 'v122', {'w': 19})]
 Peso mínimo encontrado: 2
 
  Pesos atualizados nos arcos que entram em X
 
  Conjunto X: {'v70'}
-Arestas que entram em X: [('v4', 'v70', {'w': 14}), ('v56', 'v70', {'w': 14})]
-Peso mínimo encontrado: 14
+Arestas que entram em X: [('v113', 'v70', {'w': 20}), ('v78', 'v70', {'w': 13}), ('v48', 'v70', {'w': 6})]
+Peso mínimo encontrado: 6
 
  Pesos atualizados nos arcos que entram em X
 
- Conjunto X: {'v107'}
-Arestas que entram em X: [('v79', 'v107', {'w': 3}), ('v13', 'v107', {'w': 18}), ('v73', 'v107', {'w': 2}), ('v63', 'v107', {'w': 4}), ('v46', 'v107', {'w': 19})]
-Peso mínimo encontrado: 2
+ Conjunto X: {'v123'}
+Arestas que entram em X: [('v81', 'v123', {'w': 20})]
+Peso mínimo encontrado: 20
 
  Pesos atualizados nos arcos que entram em X
 
- Conjunto X: {'v113'}
-Arestas que entram em X: [('r0', 'v113', {'w': 3}), ('v79', 'v113', {'w': 8}), ('v30', 'v113', {'w': 8})]
-Peso mínimo encontrado: 3
+ Conjunto X: {'v67'}
+Arestas que entram em X: [('v24', 'v67', {'w': 20}), ('v71', 'v67', {'w': 17}), ('v32', 'v67', {'w': 12}), ('v94', 'v67', {'w': 12})]
+Peso mínimo encontrado: 12
 
  Pesos atualizados nos arcos que entram em X
 
- Conjunto X: {'v5'}
-Arestas que entram em X: [('v103', 'v5', {'w': 14}), ('v104', 'v5', {'w': 4})]
+ Conjunto X: {'v83'}
+Arestas que entram em X: [('v47', 'v83', {'w': 4}), ('v117', 'v83', {'w': 7})]
 Peso mínimo encontrado: 4
 
  Pesos atualizados nos arcos que entram em X
 
+ Conjunto X: {'v133'}
+Arestas que entram em X: [('v39', 'v133', {'w': 8}), ('v116', 'v133', {'w': 10})]
+Peso mínimo encontrado: 8
+
+ Pesos atualizados nos arcos que entram em X
+
  Conjunto X: {'v72'}
-Arestas que entram em X: [('v1', 'v72', {'w': 13}), ('v111', 'v72', {'w': 9}), ('v31', 'v72', {'w': 2}), ('v106', 'v72', {'w': 15})]
+Arestas que entram em X: [('v24', 'v72', {'w': 5}), ('v37', 'v72', {'w': 15}), ('v101', 'v72', {'w': 11}), ('v70', 'v72', {'w': 1}), ('v83', 'v72', {'w': 17})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v128'}
+Arestas que entram em X: [('v36', 'v128', {'w': 2}), ('v86', 'v128', {'w': 17}), ('v137', 'v128', {'w': 2})]
+Peso mínimo encontrado: 2
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v23'}
+Arestas que entram em X: [('v57', 'v23', {'w': 1})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v118'}
+Arestas que entram em X: [('v77', 'v118', {'w': 9}), ('v91', 'v118', {'w': 2}), ('v70', 'v118', {'w': 14}), ('v49', 'v118', {'w': 20})]
+Peso mínimo encontrado: 2
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v59'}
+Arestas que entram em X: [('v126', 'v59', {'w': 17}), ('v85', 'v59', {'w': 5}), ('v65', 'v59', {'w': 18}), ('v93', 'v59', {'w': 20})]
+Peso mínimo encontrado: 5
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v105'}
+Arestas que entram em X: [('v71', 'v105', {'w': 12}), ('v112', 'v105', {'w': 12}), ('v63', 'v105', {'w': 6})]
+Peso mínimo encontrado: 6
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v115'}
+Arestas que entram em X: [('v101', 'v115', {'w': 9}), ('v120', 'v115', {'w': 6}), ('v46', 'v115', {'w': 19}), ('v26', 'v115', {'w': 18})]
+Peso mínimo encontrado: 6
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v87'}
+Arestas que entram em X: [('v15', 'v87', {'w': 10}), ('v45', 'v87', {'w': 2}), ('v5', 'v87', {'w': 10}), ('v104', 'v87', {'w': 4})]
+Peso mínimo encontrado: 2
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v35'}
+Arestas que entram em X: [('v19', 'v35', {'w': 3}), ('v30', 'v35', {'w': 19})]
+Peso mínimo encontrado: 3
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v7'}
+Arestas que entram em X: [('v40', 'v7', {'w': 15}), ('v122', 'v7', {'w': 8})]
+Peso mínimo encontrado: 8
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v110'}
+Arestas que entram em X: [('v41', 'v110', {'w': 20}), ('v59', 'v110', {'w': 20}), ('v94', 'v110', {'w': 12}), ('v134', 'v110', {'w': 9}), ('v131', 'v110', {'w': 6})]
+Peso mínimo encontrado: 6
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v94'}
+Arestas que entram em X: [('v73', 'v94', {'w': 6}), ('v76', 'v94', {'w': 8})]
+Peso mínimo encontrado: 6
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v16'}
+Arestas que entram em X: [('r0', 'v16', {'w': 18}), ('v61', 'v16', {'w': 20})]
+Peso mínimo encontrado: 18
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v0'}
+Arestas que entram em X: [('v90', 'v0', {'w': 5}), ('v75', 'v0', {'w': 3}), ('v102', 'v0', {'w': 20}), ('v109', 'v0', {'w': 13}), ('v98', 'v0', {'w': 7})]
+Peso mínimo encontrado: 3
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v138'}
+Arestas que entram em X: [('v65', 'v138', {'w': 14}), ('v103', 'v138', {'w': 19})]
+Peso mínimo encontrado: 14
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v52'}
+Arestas que entram em X: [('v21', 'v52', {'w': 18}), ('v90', 'v52', {'w': 1}), ('v37', 'v52', {'w': 7}), ('v38', 'v52', {'w': 11}), ('v72', 'v52', {'w': 2}), ('v128', 'v52', {'w': 1})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v49'}
+Arestas que entram em X: [('v104', 'v49', {'w': 2})]
+Peso mínimo encontrado: 2
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v134'}
+Arestas que entram em X: [('v71', 'v134', {'w': 8})]
+Peso mínimo encontrado: 8
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v3'}
+Arestas que entram em X: [('v84', 'v3', {'w': 19}), ('v55', 'v3', {'w': 4}), ('v10', 'v3', {'w': 9})]
+Peso mínimo encontrado: 4
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v62'}
+Arestas que entram em X: [('v45', 'v62', {'w': 19}), ('v5', 'v62', {'w': 13}), ('v122', 'v62', {'w': 20})]
+Peso mínimo encontrado: 13
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v13'}
+Arestas que entram em X: [('v81', 'v13', {'w': 5}), ('v101', 'v13', {'w': 18}), ('v67', 'v13', {'w': 17})]
+Peso mínimo encontrado: 5
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v76'}
+Arestas que entram em X: [('v97', 'v76', {'w': 13}), ('v65', 'v76', {'w': 20}), ('v112', 'v76', {'w': 8}), ('v41', 'v76', {'w': 8}), ('v12', 'v76', {'w': 2}), ('v118', 'v76', {'w': 5}), ('v120', 'v76', {'w': 9}), ('v1', 'v76', {'w': 15})]
 Peso mínimo encontrado: 2
 
  Pesos atualizados nos arcos que entram em X
 
  Conjunto X: {'v92'}
-Arestas que entram em X: [('v110', 'v92', {'w': 18}), ('v98', 'v92', {'w': 13})]
-Peso mínimo encontrado: 13
+Arestas que entram em X: [('v23', 'v92', {'w': 9})]
+Peso mínimo encontrado: 9
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v31'}
+Arestas que entram em X: [('v24', 'v31', {'w': 6}), ('v45', 'v31', {'w': 11}), ('v48', 'v31', {'w': 1}), ('v107', 'v31', {'w': 9}), ('v122', 'v31', {'w': 10}), ('v110', 'v31', {'w': 5})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v116'}
+Arestas que entram em X: [('v95', 'v116', {'w': 12}), ('v78', 'v116', {'w': 20})]
+Peso mínimo encontrado: 12
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v120'}
+Arestas que entram em X: [('v71', 'v120', {'w': 14}), ('v81', 'v120', {'w': 19}), ('v103', 'v120', {'w': 15}), ('v70', 'v120', {'w': 10}), ('v76', 'v120', {'w': 3})]
+Peso mínimo encontrado: 3
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v100'}
+Arestas que entram em X: [('v107', 'v100', {'w': 1}), ('v128', 'v100', {'w': 15})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v135'}
+Arestas que entram em X: [('v45', 'v135', {'w': 4}), ('v134', 'v135', {'w': 11}), ('v92', 'v135', {'w': 8})]
+Peso mínimo encontrado: 4
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v131'}
+Arestas que entram em X: [('v95', 'v131', {'w': 3}), ('v63', 'v131', {'w': 12}), ('v70', 'v131', {'w': 11}), ('v23', 'v131', {'w': 7}), ('v92', 'v131', {'w': 11}), ('v120', 'v131', {'w': 13})]
+Peso mínimo encontrado: 3
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v50'}
+Arestas que entram em X: [('v61', 'v50', {'w': 11}), ('v36', 'v50', {'w': 5}), ('v79', 'v50', {'w': 7})]
+Peso mínimo encontrado: 5
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v1'}
+Arestas que entram em X: [('v21', 'v1', {'w': 2}), ('v40', 'v1', {'w': 17}), ('v105', 'v1', {'w': 19}), ('v131', 'v1', {'w': 19})]
+Peso mínimo encontrado: 2
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v14'}
+Arestas que entram em X: [('v41', 'v14', {'w': 15}), ('v30', 'v14', {'w': 10})]
+Peso mínimo encontrado: 10
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v54'}
+Arestas que entram em X: [('v85', 'v54', {'w': 2}), ('v129', 'v54', {'w': 16})]
+Peso mínimo encontrado: 2
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v96'}
+Arestas que entram em X: [('v41', 'v96', {'w': 4}), ('v7', 'v96', {'w': 18})]
+Peso mínimo encontrado: 4
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v46'}
+Arestas que entram em X: [('v21', 'v46', {'w': 10}), ('v113', 'v46', {'w': 15}), ('v37', 'v46', {'w': 18}), ('v116', 'v46', {'w': 11})]
+Peso mínimo encontrado: 10
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v53'}
+Arestas que entram em X: [('v95', 'v53', {'w': 18}), ('v69', 'v53', {'w': 8}), ('v0', 'v53', {'w': 5}), ('v54', 'v53', {'w': 4})]
+Peso mínimo encontrado: 4
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v9'}
+Arestas que entram em X: [('v85', 'v9', {'w': 3}), ('v80', 'v9', {'w': 4}), ('v104', 'v9', {'w': 2})]
+Peso mínimo encontrado: 2
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v26'}
+Arestas que entram em X: [('v93', 'v26', {'w': 19}), ('v23', 'v26', {'w': 20})]
+Peso mínimo encontrado: 19
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v56'}
+Arestas que entram em X: [('v126', 'v56', {'w': 16}), ('v108', 'v56', {'w': 18}), ('v37', 'v56', {'w': 3}), ('v73', 'v56', {'w': 19}), ('v27', 'v56', {'w': 6}), ('v93', 'v56', {'w': 19}), ('v100', 'v56', {'w': 6})]
+Peso mínimo encontrado: 3
 
  Pesos atualizados nos arcos que entram em X
 
  🔄 Iteração 2 ----------------------------
 
  Componentes fortemente conexos em D_zero:
-Fontes: [116]
-A_zero: [('v113', 'v69'), ('v25', 'v114'), ('v69', 'v103'), ('r0', 'v104'), ('v104', 'v79'), ('v69', 'v95'), ('v69', 'v71'), ('v94', 'v71'), ('v114', 'v82'), ('v6', 'v27'), ('v97', 'v20'), ('v109', 'v87'), ('v64', 'v30'), ('v14', 'v44'), ('r0', 'v78'), ('v103', 'v1'), ('v62', 'v47'), ('v44', 'v57'), ('v59', 'v57'), ('v20', 'v77'), ('v57', 'v84'), ('v70', 'v59'), ('v60', 'v10'), ('v114', 'v55'), ('v43', 'v89'), ('v10', 'v75'), ('v39', 'v68'), ('v87', 'v86'), ('v82', 'v4'), ('v89', 'v0'), ('v50', 'v26'), ('r0', 'v40'), ('v10', 'v85'), ('v57', 'v58'), ('v26', 'v22'), ('v86', 'v2'), ('v82', 'v28'), ('v16', 'v28'), ('v44', 'v65'), ('v102', 'v115'), ('v40', 'v62'), ('v46', 'v50'), ('v87', 'v51'), ('v32', 'v51'), ('v102', 'v13'), ('v104', 'v21'), ('v95', 'v21'), ('v86', 'v73'), ('v59', 'v91'), ('v27', 'v8'), ('v27', 'v111'), ('v59', 'v93'), ('v113', 'v56'), ('v77', 'v35'), ('v4', 'v64'), ('v86', 'v41'), ('v85', 'v66'), ('v41', 'v34'), ('v93', 'v90'), ('v73', 'v102'), ('v17', 'v12'), ('v85', 'v3'), ('v1', 'v97'), ('v3', 'v36'), ('v103', 'v24'), ('v92', 'v96'), ('v104', 'v81'), ('v114', 'v45'), ('v11', 'v43'), ('v21', 'v11'), ('v56', 'v29'), ('v100', 'v29'), ('v63', 'v100'), ('v8', 'v49'), ('v50', 'v19'), ('v19', 'v9'), ('v44', 'v60'), ('v5', 'v108'), ('v20', 'v38'), ('v87', 'v17'), ('v102', 'v17'), ('v8', 'v63'), ('v80', 'v31'), ('v3', 'v76'), ('v6', 'v25'), ('v51', 'v110'), ('v97', 'v109'), ('v111', 'v48'), ('v7', 'v98'), ('v83', 'v106'), ('r0', 'v23'), ('v49', 'v67'), ('v52', 'v80'), ('v89', 'v14'), ('v3', 'v33'), ('v11', 'v37'), ('v32', 'v88'), ('v64', 'v74'), ('v110', 'v42'), ('v49', 'v83'), ('v108', 'v54'), ('v42', 'v52'), ('v71', 'v112'), ('v39', 'v112'), ('v67', 'v39'), ('v73', 'v16'), ('v100', 'v7'), ('v80', 'v61'), ('v27', 'v101'), ('v10', 'v53'), ('v114', 'v99'), ('v37', 'v99'), ('v48', 'v32'), ('v48', 'v94'), ('v7', 'v46'), ('v10', 'v105'), ('v34', 'v18'), ('v17', 'v6'), ('v35', 'v15'), ('v4', 'v70'), ('v56', 'v70'), ('v73', 'v107'), ('r0', 'v113'), ('v104', 'v5'), ('v31', 'v72'), ('v98', 'v92')]
-Dual_list: [({'v69'}, 9), ({'v114'}, 9), ({'v103'}, 8), ({'v104'}, 1), ({'v79'}, 12), ({'v95'}, 1), ({'v71'}, 2), ({'v82'}, 3), ({'v27'}, 1), ({'v20'}, 6), ({'v87'}, 2), ({'v30'}, 8), ({'v44'}, 5), ({'v78'}, 1), ({'v1'}, 15), ({'v47'}, 7), ({'v57'}, 6), ({'v77'}, 5), ({'v84'}, 3), ({'v59'}, 1), ({'v10'}, 5), ({'v55'}, 16), ({'v89'}, 8), ({'v75'}, 16), ({'v68'}, 5), ({'v86'}, 9), ({'v4'}, 1), ({'v0'}, 12), ({'v26'}, 6), ({'v40'}, 1), ({'v85'}, 2), ({'v58'}, 7), ({'v22'}, 7), ({'v2'}, 6), ({'v28'}, 1), ({'v65'}, 12), ({'v115'}, 4), ({'v62'}, 1), ({'v50'}, 6), ({'v51'}, 6), ({'v13'}, 1), ({'v21'}, 2), ({'v73'}, 3), ({'v91'}, 5), ({'v8'}, 17), ({'v111'}, 10), ({'v93'}, 5), ({'v56'}, 3), ({'v35'}, 3), ({'v64'}, 15), ({'v41'}, 5), ({'v66'}, 15), ({'v34'}, 8), ({'v90'}, 11), ({'v102'}, 13), ({'v12'}, 3), ({'v3'}, 7), ({'v97'}, 12), ({'v36'}, 1), ({'v24'}, 1), ({'v96'}, 1), ({'v81'}, 1), ({'v45'}, 5), ({'v43'}, 1), ({'v11'}, 14), ({'v29'}, 1), ({'v100'}, 3), ({'v49'}, 6), ({'v19'}, 15), ({'v9'}, 1), ({'v60'}, 7), ({'v108'}, 1), ({'v38'}, 9), ({'v17'}, 10), ({'v63'}, 1), ({'v31'}, 1), ({'v76'}, 1), ({'v25'}, 2), ({'v110'}, 2), ({'v109'}, 9), ({'v48'}, 5), ({'v98'}, 3), ({'v106'}, 6), ({'v23'}, 14), ({'v67'}, 1), ({'v80'}, 7), ({'v14'}, 5), ({'v33'}, 1), ({'v37'}, 5), ({'v88'}, 9), ({'v74'}, 16), ({'v42'}, 8), ({'v83'}, 4), ({'v54'}, 3), ({'v52'}, 4), ({'v112'}, 15), ({'v39'}, 2), ({'v16'}, 2), ({'v7'}, 12), ({'v61'}, 10), ({'v101'}, 1), ({'v53'}, 8), ({'v99'}, 6), ({'v32'}, 1), ({'v94'}, 2), ({'v46'}, 16), ({'v105'}, 19), ({'v18'}, 5), ({'v6'}, 16), ({'v15'}, 2), ({'v70'}, 14), ({'v107'}, 2), ({'v113'}, 3), ({'v5'}, 4), ({'v72'}, 2), ({'v92'}, 13)]
+Fontes: [41, 117, 126]
+
+ Conjunto X: {'v66', 'v106', 'v129'}
+Arestas que entram em X: [('v84', 'v106', {'w': 1}), ('v28', 'v129', {'w': 11}), ('v71', 'v106', {'w': 13}), ('v99', 'v106', {'w': 12}), ('v132', 'v66', {'w': 15}), ('v51', 'v129', {'w': 3})]
+Peso mínimo encontrado: 1
+
+ Pesos atualizados nos arcos que entram em X
+
+ Conjunto X: {'v75', 'v70', 'v108', 'v48'}
+Arestas que entram em X: [('v61', 'v108', {'w': 3}), ('v90', 'v75', {'w': 12}), ('v113', 'v70', {'w': 14}), ('v106', 'v48', {'w': 4}), ('v78', 'v70', {'w': 7}), ('v129', 'v75', {'w': 8})]
+Peso mínimo encontrado: 3
+
+ Pesos atualizados nos arcos que entram em X
+
+ 🔄 Iteração 3 ----------------------------
+
+ Componentes fortemente conexos em D_zero:
+Fontes: [126]
+
+ ✅ Apenas uma fonte encontrada, algoritmo finalizado.
+A_zero: [('v52', 'v84'), ('v39', 'v95'), ('v99', 'v21'), ('r0', 'v2'), ('r0', 'v57'), ('v57', 'v61'), ('v61', 'v126'), ('v57', 'v55'), ('v2', 'v43'), ('v3', 'v127'), ('v74', 'v39'), ('v108', 'v90'), ('v10', 'v97'), ('v21', 'v36'), ('v84', 'v60'), ('v79', 'v24'), ('v61', 'v85'), ('v39', 'v28'), ('v84', 'v47'), ('v138', 'v113'), ('v97', 'v71'), ('v117', 'v65'), ('v89', 'v88'), ('v129', 'v106'), ('v95', 'v80'), ('v45', 'v80'), ('v70', 'v108'), ('v12', 'v15'), ('v60', 'v22'), ('v127', 'v130'), ('v13', 'v45'), ('v95', 'v77'), ('v24', 'v32'), ('v0', 'v78'), ('v61', 'v20'), ('v82', 'v6'), ('v62', 'v10'), ('v24', 'v99'), ('v30', 'v91'), ('v13', 'v91'), ('v108', 'v75'), ('v78', 'v112'), ('v75', 'v48'), ('v21', 'v102'), ('v106', 'v81'), ('v84', 'v103'), ('v42', 'v41'), ('v120', 'v107'), ('v39', 'v34'), ('v52', 'v37'), ('v1', 'v38'), ('v20', 'v109'), ('v75', 'v4'), ('v108', 'v117'), ('v18', 'v121'), ('v128', 'v121'), ('v38', 'v74'), ('v66', 'v129'), ('v69', 'v25'), ('v53', 'v119'), ('v55', 'v125'), ('v100', 'v33'), ('v40', 'v73'), ('v6', 'v69'), ('v106', 'v66'), ('v47', 'v111'), ('v34', 'v42'), ('v105', 'v44'), ('v112', 'v86'), ('v39', 'v124'), ('v36', 'v29'), ('v50', 'v18'), ('v104', 'v27'), ('v99', 'v137'), ('v21', 'v5'), ('v126', 'v5'), ('v80', 'v8'), ('v9', 'v40'), ('v65', 'v68'), ('v76', 'v11'), ('v29', 'v136'), ('v83', 'v114'), ('r0', 'v63'), ('v39', 'v93'), ('v2', 'v104'), ('v102', 'v101'), ('v77', 'v19'), ('v37', 'v79'), ('v84', 'v98'), ('v62', 'v132'), ('v130', 'v89'), ('v26', 'v82'), ('v43', 'v17'), ('v74', 'v58'), ('v8', 'v12'), ('v114', 'v30'), ('v30', 'v51'), ('v98', 'v64'), ('v87', 'v122'), ('v48', 'v70'), ('v81', 'v123'), ('v32', 'v67'), ('v94', 'v67'), ('v47', 'v83'), ('v39', 'v133'), ('v70', 'v72'), ('v36', 'v128'), ('v137', 'v128'), ('v57', 'v23'), ('v91', 'v118'), ('v85', 'v59'), ('v63', 'v105'), ('v120', 'v115'), ('v45', 'v87'), ('v19', 'v35'), ('v122', 'v7'), ('v131', 'v110'), ('v73', 'v94'), ('r0', 'v16'), ('v75', 'v0'), ('v65', 'v138'), ('v90', 'v52'), ('v128', 'v52'), ('v104', 'v49'), ('v71', 'v134'), ('v55', 'v3'), ('v5', 'v62'), ('v81', 'v13'), ('v12', 'v76'), ('v23', 'v92'), ('v48', 'v31'), ('v95', 'v116'), ('v76', 'v120'), ('v107', 'v100'), ('v45', 'v135'), ('v95', 'v131'), ('v36', 'v50'), ('v21', 'v1'), ('v30', 'v14'), ('v85', 'v54'), ('v41', 'v96'), ('v21', 'v46'), ('v54', 'v53'), ('v104', 'v9'), ('v93', 'v26'), ('v37', 'v56'), ('v84', 'v106'), ('v61', 'v108')]
+Dual_list: [({'v84'}, 14), ({'v95'}, 1), ({'v21'}, 2), ({'v2'}, 10), ({'v57'}, 11), ({'v61'}, 10), ({'v126'}, 2), ({'v55'}, 2), ({'v43'}, 3), ({'v127'}, 2), ({'v39'}, 10), ({'v90'}, 3), ({'v97'}, 11), ({'v36'}, 3), ({'v60'}, 4), ({'v24'}, 4), ({'v85'}, 8), ({'v28'}, 4), ({'v47'}, 6), ({'v113'}, 1), ({'v71'}, 3), ({'v65'}, 1), ({'v88'}, 2), ({'v106'}, 5), ({'v80'}, 18), ({'v108'}, 16), ({'v15'}, 7), ({'v22'}, 4), ({'v130'}, 1), ({'v45'}, 6), ({'v77'}, 3), ({'v32'}, 6), ({'v78'}, 4), ({'v20'}, 1), ({'v6'}, 2), ({'v10'}, 1), ({'v99'}, 10), ({'v91'}, 5), ({'v75'}, 8), ({'v112'}, 7), ({'v48'}, 4), ({'v102'}, 10), ({'v81'}, 6), ({'v103'}, 5), ({'v41'}, 1), ({'v107'}, 6), ({'v34'}, 6), ({'v37'}, 1), ({'v38'}, 17), ({'v109'}, 20), ({'v4'}, 4), ({'v117'}, 3), ({'v121'}, 6), ({'v74'}, 5), ({'v129'}, 5), ({'v25'}, 11), ({'v119'}, 3), ({'v125'}, 1), ({'v33'}, 1), ({'v73'}, 11), ({'v69'}, 1), ({'v66'}, 2), ({'v111'}, 1), ({'v42'}, 2), ({'v44'}, 2), ({'v86'}, 14), ({'v124'}, 1), ({'v29'}, 11), ({'v18'}, 9), ({'v27'}, 5), ({'v137'}, 9), ({'v5'}, 2), ({'v8'}, 9), ({'v40'}, 15), ({'v68'}, 10), ({'v11'}, 1), ({'v136'}, 16), ({'v114'}, 12), ({'v63'}, 2), ({'v93'}, 8), ({'v104'}, 3), ({'v101'}, 1), ({'v19'}, 1), ({'v79'}, 7), ({'v98'}, 4), ({'v132'}, 1), ({'v89'}, 5), ({'v82'}, 7), ({'v17'}, 2), ({'v58'}, 5), ({'v12'}, 3), ({'v30'}, 7), ({'v51'}, 7), ({'v64'}, 2), ({'v122'}, 2), ({'v70'}, 6), ({'v123'}, 20), ({'v67'}, 12), ({'v83'}, 4), ({'v133'}, 8), ({'v72'}, 1), ({'v128'}, 2), ({'v23'}, 1), ({'v118'}, 2), ({'v59'}, 5), ({'v105'}, 6), ({'v115'}, 6), ({'v87'}, 2), ({'v35'}, 3), ({'v7'}, 8), ({'v110'}, 6), ({'v94'}, 6), ({'v16'}, 18), ({'v0'}, 3), ({'v138'}, 14), ({'v52'}, 1), ({'v49'}, 2), ({'v134'}, 8), ({'v3'}, 4), ({'v62'}, 13), ({'v13'}, 5), ({'v76'}, 2), ({'v92'}, 9), ({'v31'}, 1), ({'v116'}, 12), ({'v120'}, 3), ({'v100'}, 1), ({'v135'}, 4), ({'v131'}, 3), ({'v50'}, 5), ({'v1'}, 2), ({'v14'}, 10), ({'v54'}, 2), ({'v96'}, 4), ({'v46'}, 10), ({'v53'}, 4), ({'v9'}, 2), ({'v26'}, 19), ({'v56'}, 3), ({'v66', 'v106', 'v129'}, 1), ({'v75', 'v70', 'v108', 'v48'}, 3)]
+
+ Construindo arborescência usando fila de prioridade:
+
+ Arborescência final:
 ✅ Condição dual satisfeita para András Frank.
-Custo da arborescência de Chu-Liu/Edmonds: 713
-Custo da arborescência de András Frank: 713
-Custo da arborescência de András Frank (v2): 713
+Custo da arborescência de Chu-Liu/Edmonds: 802
+Custo da arborescência de András Frank: 802
+Custo da arborescência de András Frank (v2): 802
 
  ✅ Testes concluídos com sucesso!
 

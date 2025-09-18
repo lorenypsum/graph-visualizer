@@ -163,13 +163,13 @@ def volume_tester(
             if boilerplate:
                 if log:
                     log("\n🔍 Executando algoritmo de Chu-Liu/Edmonds...")
-                    log(f"Custo da arborescência de Chu-Liu/Edmonds: {custo_chuliu}")
+                    log(f"\n Custo da arborescência de Chu-Liu/Edmonds: {custo_chuliu}")
                 if draw_fn:
                     draw_fn(arbo_chuliu)
 
             # Frank's Algorithm
             arbo_frank_v1, arbo_frank_v2, b1, b2 = andras_frank_algorithm(
-                D1_filtered, draw_fn=None, log=log, boilerplate=boilerplate
+                D1_filtered, draw_fn=None, log=log, boilerplate=boilerplate, lang="pt"
             )
 
             custo_frank = get_total_digraph_cost(arbo_frank_v1)
