@@ -10,7 +10,7 @@ from andrasfrank import andras_frank_algorithm
 from chuliu import find_optimum_arborescence_chuliu, remove_edges_to_r0
 
 # Deafult parameters
-NUM_TESTS = 2000
+NUM_TESTS = 2
 MIN_VERTICES = 100
 MAX_VERTICES = 200
 PESO_MIN = 1
@@ -18,9 +18,6 @@ PESO_MAX = 20
 LOG_CSV_PATH = "test_results.csv"
 LOG_TXT_PATH = "test_log.txt"
 ROOT = "r0"
-
-def logger(message: str):
-    print(f"[LOG] {message}")
 
 def log_console_and_file(msg, log_txt_path=LOG_TXT_PATH):
     print(msg)
@@ -67,14 +64,6 @@ def build_rooted_digraph(n=10, m=None, root="r0", peso_min=1, peso_max=10):
 
     return D
 
-def remove_edges_to_r0(D, r0):
-    """
-    Remove all incoming edges to the root node r0 in the directed graph D.
-    """
-    incoming_edges = list(D.in_edges(r0))
-    D.remove_edges_from(incoming_edges)
-    return D
-
 def contains_arborescence(D, r0):
     """
     Check if G contains an arborescence with root r0.
@@ -82,11 +71,11 @@ def contains_arborescence(D, r0):
     tree = nx.dfs_tree(D, source=r0)
     return tree.number_of_nodes() == D.number_of_nodes(), tree
 
-def get_total_digraph_cost(D_arborescencia):
+def get_total_digraph_cost(D_arbo):
     """
     Calculate the total cost of a directed graph.
     """
-    return sum(data["w"] for _, _, data in D_arborescencia.edges(data=True))
+    return sum(data["w"] for _, _, data in D_arbo.edges(data=True))
 
 def volume_tester(
     num_tests=NUM_TESTS,
@@ -109,6 +98,7 @@ def volume_tester(
     b1 = b2 = None
 
     # Garante saída limpa
+    # Ensure clean output
     if os.path.exists(log_csv_path):
         os.remove(log_csv_path)
     if os.path.exists(log_txt_path):
@@ -164,10 +154,10 @@ def volume_tester(
                     if draw_fn:
                         draw_fn(tree_result)
 
-            D1_filtered = remove_edges_to_r0(D1_copy, root)
+            D1_filtered = remove_edges_to_r0(D1_copy, root, log=log, boilerplate=boilerplate, lang="pt")
 
             # Chu-Liu/Edmonds Algorithm
-            arbo_chuliu = find_optimum_arborescence_chuliu(D1_filtered, root)
+            arbo_chuliu = find_optimum_arborescence_chuliu(D1_filtered, root, draw_fn=draw_fn, log=log, boilerplate=boilerplate)
             custo_chuliu = get_total_digraph_cost(arbo_chuliu)
             
             if boilerplate:
