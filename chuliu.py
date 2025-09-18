@@ -1,5 +1,6 @@
 import networkx as nx
 
+
 # Normalização dos pesos das arestas que entram em um vértice
 def normalize_incoming_edge_weights(D: nx.DiGraph, node: str, lang="pt"):
     """
@@ -12,7 +13,7 @@ def normalize_incoming_edge_weights(D: nx.DiGraph, node: str, lang="pt"):
         - lang: Language for error messages ("en" for English, "pt" for Portuguese)
 
     Returns:
-        - None (the graph G is modified in place)
+        - Nothing (the graph G is modified in place)
     """
 
     if lang == "en":
@@ -203,14 +204,20 @@ def remove_edges_to_r0(
             if lang == "en":
                 log(f"\n remove_edges_to_r0: No edges entering '{r0}' to remove.")
             elif lang == "pt":
-                log(f"\n remove_edges_to_r0: Nenhuma aresta entrando em '{r0}' para remover.")
+                log(
+                    f"\n remove_edges_to_r0: Nenhuma aresta entrando em '{r0}' para remover."
+                )
     else:
         D.remove_edges_from(in_edges)
         if boilerplate and log:
             if lang == "en":
-                log(f"\n remove_edges_to_r0: Removed {len(in_edges)} edges entering '{r0}'.")
+                log(
+                    f"\n remove_edges_to_r0: Removed {len(in_edges)} edges entering '{r0}'."
+                )
             elif lang == "pt":
-                log(f"\n remove_edges_to_r0: Removidas {len(in_edges)} arestas entrando em '{r0}'.")
+                log(
+                    f"\n remove_edges_to_r0: Removidas {len(in_edges)} arestas entrando em '{r0}'."
+                )
     return D
 
 
@@ -289,14 +296,24 @@ def find_optimum_arborescence_chuliu(
 
     if boilerplate and log:
         if lang == "en":
-            log(f"\n find_optimum_arborescence_chuliu:{indent}Removing edges entering '{r0}'")
+            log(
+                f"\n find_optimum_arborescence_chuliu:{indent}Removing edges entering '{r0}'"
+            )
         elif lang == "pt":
-            log(f"\n find_optimum_arborescence_chuliu:{indent}Removendo arestas que entram em '{r0}'")
+            log(
+                f"\n find_optimum_arborescence_chuliu:{indent}Removendo arestas que entram em '{r0}'"
+            )
         if draw_fn:
             if lang == "en":
-                draw_fn(D_copy, f"\n find_optimum_arborescence_chuliu:{indent}After removing incoming edges")
+                draw_fn(
+                    D_copy,
+                    f"\n find_optimum_arborescence_chuliu:{indent}After removing incoming edges",
+                )
             elif lang == "pt":
-                draw_fn(D_copy, f"\n find_optimum_arborescence_chuliu:{indent}Após remoção de entradas")
+                draw_fn(
+                    D_copy,
+                    f"\n find_optimum_arborescence_chuliu:{indent}Após remoção de entradas",
+                )
 
     for v in D_copy.nodes:
         if v != r0:
@@ -304,14 +321,24 @@ def find_optimum_arborescence_chuliu(
 
         if boilerplate and log:
             if lang == "en":
-                log(f"\n find_optimum_arborescence_chuliu:{indent}Normalizing weights of incoming edges to '{v}'")
+                log(
+                    f"\n find_optimum_arborescence_chuliu:{indent}Normalizing weights of incoming edges to '{v}'"
+                )
             elif lang == "pt":
-                log(f"\n find_optimum_arborescence_chuliu:{indent}Normalizando pesos de arestas de entrada para '{v}'")
+                log(
+                    f"\n find_optimum_arborescence_chuliu:{indent}Normalizando pesos de arestas de entrada para '{v}'"
+                )
             if draw_fn:
                 if lang == "en":
-                    draw_fn(D_copy, f"\n find_optimum_arborescence_chuliu:{indent}After weight adjustment")
+                    draw_fn(
+                        D_copy,
+                        f"\n find_optimum_arborescence_chuliu:{indent}After weight adjustment",
+                    )
                 elif lang == "pt":
-                    draw_fn(D_copy, f"\n find_optimum_arborescence_chuliu:{indent}Após ajuste de pesos")
+                    draw_fn(
+                        D_copy,
+                        f"\n find_optimum_arborescence_chuliu:{indent}Após ajuste de pesos",
+                    )
 
     # Build F_star
     F_star = get_Fstar(D_copy, r0, lang=lang)
@@ -348,7 +375,9 @@ def find_optimum_arborescence_chuliu(
         if lang == "en":
             assert C, f"\n find_optimum_arborescence_chuliu: No cycle found in F_star."
         elif lang == "pt":
-            assert C, f"\n find_optimum_arborescence_chuliu: Nenhum ciclo encontrado em F_star."
+            assert (
+                C
+            ), f"\n find_optimum_arborescence_chuliu: Nenhum ciclo encontrado em F_star."
 
         contracted_label = f"\n n*{level}"
         in_to_cycle, out_from_cycle = contract_cycle(
@@ -400,18 +429,26 @@ def find_optimum_arborescence_chuliu(
         F_prime.add_edge(u, v)
         if boilerplate and log:
             if lang == "en":
-                log(f"\n find_optimum_arborescence_chuliu:{indent}Adding incoming edge to cycle: ({u}, {v})")
+                log(
+                    f"\n find_optimum_arborescence_chuliu:{indent}Adding incoming edge to cycle: ({u}, {v})"
+                )
             elif lang == "pt":
-                log(f"\n find_optimum_arborescence_chuliu:{indent}Adicionando aresta de entrada ao ciclo: ({u}, {v})")
+                log(
+                    f"\n find_optimum_arborescence_chuliu:{indent}Adicionando aresta de entrada ao ciclo: ({u}, {v})"
+                )
 
         # Add the remaining edges of the modified cycle C
         for u_c, v_c in C.edges:
             F_prime.add_edge(u_c, v_c)
             if boilerplate and log:
                 if lang == "en":
-                    log(f"\n find_optimum_arborescence_chuliu:{indent}Adding cycle edge: ({u_c}, {v_c})")
+                    log(
+                        f"\n find_optimum_arborescence_chuliu:{indent}Adding cycle edge: ({u_c}, {v_c})"
+                    )
                 elif lang == "pt":
-                    log(f"\n find_optimum_arborescence_chuliu:{indent}Adicionando aresta do ciclo: ({u_c}, {v_c})")
+                    log(
+                        f"\n find_optimum_arborescence_chuliu:{indent}Adicionando aresta do ciclo: ({u_c}, {v_c})"
+                    )
 
         # Add the external edges leaving the cycle
         for _, z, _ in F_prime.out_edges(contracted_label, data=True):
@@ -430,7 +467,9 @@ def find_optimum_arborescence_chuliu(
 
             if boilerplate and log:
                 if lang == "en":
-                    log(f"\n find_optimum_arborescence_chuliu:{indent}Adding outgoing edge from cycle: ({u_cycle}, {z})")
+                    log(
+                        f"\n find_optimum_arborescence_chuliu:{indent}Adding outgoing edge from cycle: ({u_cycle}, {z})"
+                    )
                 elif lang == "pt":
                     log(
                         f"\n find_optimum_arborescence_chuliu:{indent}Adicionando aresta externa de saída: ({u_cycle}, {z})"
@@ -449,9 +488,13 @@ def find_optimum_arborescence_chuliu(
 
         if boilerplate and log:
             if lang == "en":
-                log(f"\n find_optimum_arborescence_chuliu:{indent}Contracted vertex '{contracted_label}' removed.")
+                log(
+                    f"\n find_optimum_arborescence_chuliu:{indent}Contracted vertex '{contracted_label}' removed."
+                )
             elif lang == "pt":
-                log(f"\n find_optimum_arborescence_chuliu:{indent}Vértice contraído '{contracted_label}' removido.")
+                log(
+                    f"\n find_optimum_arborescence_chuliu:{indent}Vértice contraído '{contracted_label}' removido."
+                )
 
         # Update the edge weights with the original weights from G
         for u, v in F_prime.edges:
@@ -467,12 +510,22 @@ def find_optimum_arborescence_chuliu(
 
         if boilerplate and log:
             if lang == "en":
-                log(f"\n find_optimum_arborescence_chuliu:{indent}Final arborescence: {list(F_prime.edges)}")
+                log(
+                    f"\n find_optimum_arborescence_chuliu:{indent}Final arborescence: {list(F_prime.edges)}"
+                )
             elif lang == "pt":
-                log(f"\n find_optimum_arborescence_chuliu:{indent}Arborescência final: {list(F_prime.edges)}")
+                log(
+                    f"\n find_optimum_arborescence_chuliu:{indent}Arborescência final: {list(F_prime.edges)}"
+                )
             if draw_fn:
                 if lang == "en":
-                    draw_fn(F_prime, f"\n find_optimum_arborescence_chuliu:{indent}Final Arborescence.")
+                    draw_fn(
+                        F_prime,
+                        f"\n find_optimum_arborescence_chuliu:{indent}Final Arborescence.",
+                    )
                 elif lang == "pt":
-                    draw_fn(F_prime, f"\n find_optimum_arborescence_chuliu:{indent}Arborescência final.")
+                    draw_fn(
+                        F_prime,
+                        f"\n find_optimum_arborescence_chuliu:{indent}Arborescência final.",
+                    )
         return F_prime
