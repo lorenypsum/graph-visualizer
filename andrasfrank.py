@@ -353,8 +353,8 @@ def andras_frank_algorithm(
     )
 
     if boilerplate and log:
-        log(f"A_zero: {A_zero}")
-        log(f"Dual_list: {Dual_list}")
+        log(f"\nA_zero: \n{A_zero}")
+        log(f"\nDual_list: \n{Dual_list}")
 
     if not has_arborescence(D, "r0"):
         if boilerplate and log:
