@@ -126,12 +126,10 @@ def phase1_find_minimum_arborescence(
 
     iteration = 0
 
-    if boilerplate and log:
+    if boilerplate and draw_fn:
         if lang == "en":
-            log(f"\n Building D_zero initially:")
+            draw_fn(D_zero, title="Initial D_zero")
         elif lang == "pt":
-            log(f"\n Construindo D_zero inicialmente:")
-        if draw_fn:
             draw_fn(D_zero, title="D_zero Inicial")
 
     while True:
@@ -144,30 +142,26 @@ def phase1_find_minimum_arborescence(
 
         # Calculate the strongly connected components of the graph D_zero.
         C = nx.condensation(D_zero)
-        if boilerplate and log:
+        if boilerplate and draw_fn:
             if lang == "en":
-                log(f"\n Strongly connected components in D_zero:")
-                if draw_fn:
-                    draw_fn(
-                        C,
-                        title=f"Strongly connected components in D_zero - Iteração {iteration}",
-                    )
+                draw_fn(
+                    C,
+                    title=f"Strongly connected components in D_zero - Iteration {iteration}",
+                )
             elif lang == "pt":
-                log(f"\n Componentes fortemente conexos em D_zero:")
-                if draw_fn:
-                    draw_fn(
-                        C,
-                        title=f"Componentes fortemente conexos em D_zero - Iteração {iteration}",
-                    )
+                draw_fn(
+                    C,
+                    title=f"Componentes fortemente conexos em D_zero - Iteração {iteration}",
+                )
 
         # The sources are where there are no incoming arcs, R0 is always a source.
         sources = [x for x in C.nodes() if C.in_degree(x) == 0]
 
         if boilerplate and log:
             if lang == "en":
-                log(f"Sources: {sources}")
+                log(f"\n Sources: {sources}")
             elif lang == "pt":
-                log(f"Fontes: {sources}")
+                log(f"\n Fontes: {sources}")
 
         if len(sources) == 1:
             # If there is only one source, it means it is R0 and there are no more arcs to be processed.
@@ -188,12 +182,12 @@ def phase1_find_minimum_arborescence(
             if boilerplate and log:
                 if lang == "en":
                     log(f"\n Set X: {X}")
-                    log(f"Arcs entering X: {arcs}")
-                    log(f"Minimum weight found: {min_weight}")
+                    log(f"\n Arcs entering X: {arcs}")
+                    log(f"\n Minimum weight found: {min_weight}")
                 elif lang == "pt":
                     log(f"\n Conjunto X: {X}")
-                    log(f"Arestas que entram em X: {arcs}")
-                    log(f"Peso mínimo encontrado: {min_weight}")
+                    log(f"\n Arestas que entram em X: {arcs}")
+                    log(f"\n Peso mínimo encontrado: {min_weight}")
 
             update_weights_in_X(D_copy, arcs, min_weight, A_zero, D_zero)
 
@@ -242,13 +236,11 @@ def phase2_find_minimum_arborescence(
                 Arb.add_edge(u, v, **edge_data)
                 # Restart the loop after adding an edge
                 break
-        if boilerplate and log:
+        if boilerplate and draw_fn:
             if lang == "en":
-                if draw_fn:
-                    draw_fn(Arb, title=f"Partial arborescence - Iteration {_+1}")
+                draw_fn(Arb, title=f"Partial arborescence - Iteration {_+1}")
             elif lang == "pt":
-                if draw_fn:
-                    draw_fn(Arb, title=f"Arborescência parcial - Iteração {_+1}")
+                draw_fn(Arb, title=f"Arborescência parcial - Iteração {_+1}")
     return Arb
 
 
@@ -283,15 +275,11 @@ def phase2_find_minimum_arborescence_v2(
 
     A = nx.DiGraph()  # Arborescência resultante
 
-    if boilerplate and log:
+    if boilerplate and draw_fn:
         if lang == "en":
-            log(f"\n Building arborescence using priority queue:")
-            if draw_fn:
-                draw_fn(Arb, title=f"Initial arborescence with weights - Phase 2")
+            draw_fn(Arb, title=f"Initial arborescence with weights - Phase 2")
         elif lang == "pt":
-            log(f"\n Construindo arborescência usando fila de prioridade:")
-            if draw_fn:
-                draw_fn(Arb, title=f"Arborescência inicial com pesos - Fase 2")
+            draw_fn(Arb, title=f"Arborescência inicial com pesos - Fase 2")
 
     # While the queue is not empty
     while q:
@@ -310,15 +298,11 @@ def phase2_find_minimum_arborescence_v2(
         for x, y, data in Arb.out_edges(v, data=True):
             heapq.heappush(q, (data["w"], x, y))
 
-    if boilerplate and log:
+    if boilerplate and draw_fn:
         if lang == "en":
-            log(f"\n Final arborescence:")
-            if draw_fn:
-                draw_fn(A, title=f"Final arborescence - Phase 2")
+            draw_fn(A, title=f"Final arborescence - Phase 2")
         elif lang == "pt":
-            log(f"\n Arborescência final:")
-            if draw_fn:
-                draw_fn(A, title=f"Arborescência final - Fase 2")
+            draw_fn(A, title=f"Arborescência final - Fase 2")
     # Return the resulting arborescence
     return A
 
@@ -376,14 +360,22 @@ def andras_frank_algorithm(
 
     if not has_arborescence(D, "r0"):
         if boilerplate and log:
-
-            log(f"O grafo não contém uma arborescência com raiz r0.")
+            if lang == "en":
+                log(f"The graph does not contain an arborescence with root r0.")
+            elif lang == "pt":
+                log(f"O grafo não contém uma arborescência com raiz r0.")
         return None, None
 
-    arborescence_frank = phase2_find_minimum_arborescence(D, "r0", A_zero, draw_fn=draw_fn, log=log, boilerplate=boilerplate, lang=lang)
-    arborescence_frank_v2 = phase2_find_minimum_arborescence_v2(D, "r0", A_zero, draw_fn=draw_fn, log=log, boilerplate=boilerplate, lang=lang)
+    arborescence_frank = phase2_find_minimum_arborescence(
+        D, "r0", A_zero, draw_fn=draw_fn, log=log, boilerplate=boilerplate, lang=lang
+    )
+    arborescence_frank_v2 = phase2_find_minimum_arborescence_v2(
+        D, "r0", A_zero, draw_fn=draw_fn, log=log, boilerplate=boilerplate, lang=lang
+    )
 
-    dual_frank = check_dual_optimality_condition(arborescence_frank, Dual_list, log=log, boilerplate=boilerplate, lang=lang)
+    dual_frank = check_dual_optimality_condition(
+        arborescence_frank, Dual_list, log=log, boilerplate=boilerplate, lang=lang
+    )
 
     dual_frank_v2 = check_dual_optimality_condition(
         arborescence_frank_v2, Dual_list, log=log, boilerplate=boilerplate, lang=lang
@@ -403,13 +395,12 @@ def andras_frank_algorithm(
                 log(f"❌ Condição dual falhou para András Frank.")
 
         if draw_fn:
-            if boilerplate and log:
+            if boilerplate and draw_fn:
                 if lang == "en":
                     draw_fn(
                         arborescence_frank,
                         title="András Frank Arborescence - Method 1",
                     )
-
                     draw_fn(
                         arborescence_frank_v2,
                         title="András Frank Arborescence - Method 2",
