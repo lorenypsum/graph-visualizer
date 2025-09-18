@@ -473,7 +473,7 @@ def find_optimum_arborescence_chuliu(
                 log(f"find_optimum_arborescence_chuliu: {indent}Arborescência final: {list(F_prime.edges)}")
             if draw_fn:
                 if lang == "en":
-                    draw_fn(F_prime, f"find_optimum_arborescence_chuliu: {indent}Final Arborescence")
+                    draw_fn(F_prime, f"find_optimum_arborescence_chuliu: {indent}Final Arborescence.")
                 elif lang == "pt":
-                    draw_fn(F_prime, f"find_optimum_arborescence_chuliu: {indent}Arborescência final")
+                    draw_fn(F_prime, f"find_optimum_arborescence_chuliu: {indent}Arborescência final.")
         return F_prime
