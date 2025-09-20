@@ -23,27 +23,27 @@
 \section{Introdução}
 
 \paragraph{}
-O problema da \textit{r-arborescência de custo mínimo} consiste em, dado um grafo dirigido com custos nas arestas, encontrar um subgrafo orientado enraizado em \(r\) que conecte \(r\) a todos os demais vértices por caminhos direcionados, minimizando a soma dos custos das arestas selecionadas.  
+O problema da \textit{r-arborescência de custo mínimo} consiste em, dado um grafo dirigido com custos nas arestas, encontrar um subgrafo orientado enraizado em um vértice \(r\) que conecte \(r\) a todos os demais vértices por caminhos direcionados, minimizando a soma dos custos das arestas selecionadas.  
 
 \paragraph{}
 Ao longo das últimas décadas, consolidaram-se duas famílias clássicas de métodos: (i) o algoritmo de Chu--Liu/Edmonds, que opera por normalização dos custos das arestas de entrada, seleção sistemática de arcos de custo zero e contração de ciclos até obter um grafo reduzido, seguido de reexpansão para reconstrução da solução \cite{chu1965,edmonds1967optimum}; e (ii) a abordagem dual em duas fases de András Frank, fundamentada em cortes dirigidos, na qual se maximiza uma função de cortes c-viável para induzir 0-arestas e, em seguida, extrai-se a arborescência apenas a partir dessas arestas \cite{frank2014}. Embora assentados em princípios distintos — contração de ciclos no plano primal versus empacotamento/dualidade por cortes —, ambos os paradigmas produzem soluções ótimas e tornam explícitas as relações estruturais em grafos dirigidos e a noção de r-arborescência.  
 
 \paragraph{}
-Neste trabalho, realiza-se a análise e implementação desses algoritmos, 
-que envolvem a busca de \textit{r-arborescência inversa de custo mínimo}, 
-A dissertação explora tanto os aspectos teóricos quanto os computacionais 
-da estrutura e dos seus respectivos algoritmos de busca.
-Adicionalmente, desenvolveu-se uma aplicação web didática com interface interativa que possibilita a visualização passo a passo da execução dos algoritmos em instâncias de diferentes grafos dirigidos, tornando-os mais acessíveis a estudantes e educadores.  
+Neste trabalho, analisamos e implementamos, em Python, duas abordagens clássicas para o problema de \textit{r-arborescência (inversa) de custo mínimo}: (i) o algoritmo de Chu--Liu/Edmonds, estruturado pela normalização dos pesos das arestas de entrada, seleção de 0-arestas, detecção/contração de ciclos e posterior reexpansão; e (ii) o método dual de András Frank em duas fases, que maximiza uma função de cortes c-viável para induzir 0-arestas (fase 1) e extrai a arborescência apenas a partir dessas arestas (fase 2). A dissertação articula os fundamentos teóricos com suas traduções algorítmicas em Python, discutindo detalhadamente as decisões de projeto e as etapas de implementação.
 
 \paragraph{}
-A proposta alia, portanto, três dimensões complementares:  
+Adicionalmente, desenvolvemos uma aplicação web com fins didáticos, utilizando o framework PyScript, e as bibliotecas NetworkX e Matplotlib, que permitem construir grafos direcionados interativamente, escolher o vértice-raiz, executar o algoritmo de Chu--Liu/Edmonds e acompanhar, passo a passo, a evolução do grafo e o registro detalhado da execução (log). A interface inclui operações de adicionar arestas com pesos, carregar um grafo de teste e exportar a instância em formato JSON, facilitando a experimentação por estudantes e educadores.  
+
+\paragraph{}
+Resumidamente, o trabalho abrange as seguintes frentes:  
+
 \begin{enumerate}
-    \item \textbf{Análise teórica}: revisão de fundamentos de grafos, arborescências e formulações primal e dual;
-    \item \textbf{Implementação computacional}: tradução das etapas dos algoritmos em código Python e validação experimental em instâncias geradas aleatoriamente;
-    \item \textbf{Aplicação pedagógica}: desenvolvimento de uma ferramenta interativa para experimentação e aprendizado visual.
+    \item \textbf{Análise teórica}: consolidação dos conceitos de dígrafos e arborescências, compondo as formulações primal (normalização de custos e contração/reexpansão de ciclos no algoritmo de Chu--Liu/Edmonds) e dual (cortes dirigidos e função c-viável no método de András Frank), destacando resultados e intuições estruturais.
+    \item \textbf{Implementação computacional}: implementação em Python das rotinas de normalização dos custos de entrada, construção de \(F^\ast\), detecção e contração de ciclos e reconstrução da solução (Chu--Liu/Edmonds), bem como das duas fases do método de András Frank; além de uma suíte de testes automatizados em larga escala sobre instâncias aleatórias com até centenas de vértices, verificando a coincidência dos custos entre os métodos e registrando resultados em CSV e log.
+    \item \textbf{Aplicação pedagógica}: desenvolvimento de uma aplicação web interativa (PyScript + NetworkX + Matplotlib) que permite montar instâncias, escolher o vértice-raiz e acompanhar, passo a passo, a execução do algoritmo com visualização do grafo e dos pesos das arestas, log textual e importação/exportação em JSON para facilitar a reprodução de experimentos.
 \end{enumerate}
 
-Dessa forma, este trabalho contribui para o aprofundamento conceitual sobre arborescências de custo mínimo, e para a produção de recursos didáticos que favorecem a compreensão e a difusão de algoritmos fundamentais da teoria dos grafos.
+Como validação empírica, realizamos testes de volume com milhares de instâncias geradas aleatoriamente, registrando resultados em arquivos CSV e de log; os custos obtidos pelo Chu--Liu/Edmonds e pelas duas variantes de András Frank coincidem, corroborando a correção das implementações. Deste modo, o trabalho entrega implementações verificadas de Chu--Liu/Edmonds e András Frank, um visualizador web interativo e testes de volume que confirmam a equivalência de custos, úteis ao estudo e ao ensino de arborescências.
 
 \section{Definições Preliminares}
 \paragraph{}
