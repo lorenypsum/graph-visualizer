@@ -1,0 +1,904 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{hyperref}
+\usepackage[backend=bibtex,style=numeric]{biblatex}
+\usepackage{csquotes}
+\usepackage[brazil]{babel}
+\usepackage{microtype}
+
+\addbibresource{referencias.bib}
+
+\title{Análise e Implementação de Algoritmos de Busca de uma r-Arborescência Inversa de Custo Mínimo em Grafos Dirigidos com Aplicação Didática Interativa}
+\author{Orientador: Mário Leston 
+\and Discentes: Lorena Silva Sampaio, Samira Haddad}
+\date{10 de Dezembro de 2024}
+
+\begin{document}
+
+\maketitle
+
+\section{Introdução}
+
+\paragraph{}
+O problema da \textit{r-arborescência de custo mínimo} consiste em, dado um grafo dirigido com custos nas arestas, encontrar um subgrafo orientado enraizado em \(r\) que conecte \(r\) a todos os demais vértices por caminhos direcionados, minimizando a soma dos custos das arestas selecionadas.  
+
+\paragraph{}
+Ao longo das últimas décadas, consolidaram-se duas famílias clássicas de métodos: (i) o algoritmo de Chu--Liu/Edmonds, que opera por normalização dos custos das arestas de entrada, seleção sistemática de arcos de custo zero e contração de ciclos até obter um grafo reduzido, seguido de reexpansão para reconstrução da solução \cite{chu1965,edmonds1967optimum}; e (ii) a abordagem dual em duas fases de András Frank, fundamentada em cortes dirigidos, na qual se maximiza uma função de cortes c-viável para induzir 0-arestas e, em seguida, extrai-se a arborescência apenas a partir dessas arestas \cite{frank2014}. Embora assentados em princípios distintos — contração de ciclos no plano primal versus empacotamento/dualidade por cortes —, ambos os paradigmas produzem soluções ótimas e tornam explícitas as relações estruturais em grafos dirigidos e a noção de r-arborescência.  
+
+\paragraph{}
+Neste trabalho, realiza-se a análise e implementação desses algoritmos, 
+que envolvem a busca de \textit{r-arborescência inversa de custo mínimo}, 
+A dissertação explora tanto os aspectos teóricos quanto os computacionais 
+da estrutura e dos seus respectivos algoritmos de busca.
+Adicionalmente, desenvolveu-se uma aplicação web didática com interface interativa que possibilita a visualização passo a passo da execução dos algoritmos em instâncias de diferentes grafos dirigidos, tornando-os mais acessíveis a estudantes e educadores.  
+
+\paragraph{}
+A proposta alia, portanto, três dimensões complementares:  
+\begin{enumerate}
+    \item \textbf{Análise teórica}: revisão de fundamentos de grafos, arborescências e formulações primal e dual;
+    \item \textbf{Implementação computacional}: tradução das etapas dos algoritmos em código Python e validação experimental em instâncias geradas aleatoriamente;
+    \item \textbf{Aplicação pedagógica}: desenvolvimento de uma ferramenta interativa para experimentação e aprendizado visual.
+\end{enumerate}
+
+Dessa forma, este trabalho contribui para o aprofundamento conceitual sobre arborescências de custo mínimo, e para a produção de recursos didáticos que favorecem a compreensão e a difusão de algoritmos fundamentais da teoria dos grafos.
+
+\section{Definições Preliminares}
+\paragraph{}
+Neste capítulo, apresentamos os conceitos essenciais para compreender o problema de obter uma r-arborescência de custo mínimo em grafos dirigidos, bem como os algoritmos empregados em sua resolução. Abordaremos, em ordem, (i) a definição de grafo dirigido e noções correlatas; (ii) caminhos, ciclos e subdigrafos; (iii) o conceito de r-arborescência; (iv) a função de custo e a formulação do problema de r-arborescência de custo mínimo; e (v) princípios de algoritmos gulosos e sua aplicação a esse problema. Na sequência, enunciamos lemas e teoremas fundamentais que embasam as ideias algorítmicas desenvolvidas nas seções posteriores.
+
+\subsection{Definições}
+\paragraph{}
+Formalmente, um \textbf{grafo dirigido} \(D\) ou abreviadamente \textbf{dígrafo} 
+\footnote{O termo é abreviado do inglês: \textit{directed graph}.} é um triplo ordenado \(D = (V(D), A(D), \varphi)\), onde:
+\begin{itemize}
+    \item \(V(D)\) é um \textbf{conjunto não vazio de vértices}, aqui nos referiremos apenas como V quando estivermos trabalhando apenas com um objeto;
+    \item \(A(D)\) é um \textbf{conjunto de arcos (ou arestas direcionadas)}, disjunto de \(V(D)\), chamaremos apenas de A, e nesse texto sempre que estivermos falando de uma estrutura em dígrafo, utilizaremos apenas o termo \textbf{aresta}, para nos referir à arcos ou arestas direcionadas;
+    \item \(\varphi: A(D) \to V(D) \times V(D)\) é \textbf{uma função de incidência} que associa a cada arco \(a \in A(D)\) um par ordenado de vértices de \(V(D)\), possivelmente repetidos (ou seja, os dois vértices não precisam ser distintos).
+\end{itemize}
+
+Um \textbf{digrafo} pode ser representado por um diagrama de pontos como vértices e setas como suas arestas. Cada seta indica a orientação da aresta, logo, conceituamos essa direção através da determinação do que vem a ser a cauda e a cabeça de uma aresta direcionada.
+
+\paragraph{}
+Seja \(a \in A\) uma aresta tal que \(\varphi(a) = (u, v)\), onde \(u, v \in V\). Nesse caso:
+\begin{itemize}
+    \item \(a\) é dito conectar \(u\) a \(v\);
+    \item \(u\) é chamado de \textbf{cauda/tail} de \(a\) se for a origem da aresta. Formalmente, \(\text{tail}: A \to V\), onde \(\text{tail}(a) = u\).
+    \item \(v\) é chamado de \textbf{cabeça/head} de \(a\), ou o destino da aresta (ponta da seta em uma representação pictográfica). Formalmente, \(\text{head}: A \to V\), onde \(\text{head}(a) = v\).
+\end{itemize}
+
+Antes de definirmos o conceito de uma r-arborescência, precisamos estabelecer o conceito de \textbf{subgrafo dirigido} ou \textbf{subdigrafo}, uma vez que uma arborescência corresponde a um subdígrafo particular.
+
+\paragraph{}
+Desse modo, um \textbf{subdigrafo} \(D'\) de um dígrafo \(D = (V(D), A(D), \varphi)\) é um dígrafo \(D' = (V(D'), A(D'), \varphi')\) tal que:
+\begin{itemize}
+    \item \(V(D') \subseteq V(D)\);
+    \item \(A(D') \subseteq A(D)\);
+    \item \(\varphi'\) é a restrição de \(\varphi\) ao conjunto \(A(D')\), ou seja, \(\varphi'(a) = \varphi(a)\) para todo \(a \in A(D')\).
+\end{itemize}
+
+\paragraph{}
+Logo, \(D'\) herda as relações de incidência do dígrafo \(D\), apresentando um subconjunto de vértices e arcos do dígrafo original \(D\), e podemos defini-lo apenas como um \textbf{subgrafo} em um dígrafo.
+
+\paragraph{}
+A definição formal de uma r-arborescência depende do conceito de ciclos; esse, por sua vez, depende da noção de caminho. Apresentamos ambas a seguir.
+
+\paragraph{}
+Um \textbf{caminho} em um dígrafo \(D = (V, A)\) é uma sequência ordenada de vértices \(v_1, v_2, \ldots, v_k\), onde:
+
+\begin{itemize}
+\item Cada par consecutivo \((v_i, v_{i+1}) \in A\) para \(1 \leq i < k\). 
+\item \(a\ \in A\) é dito conectar \(v_i\) a \(v_{i+1}\);
+\item tail(\(a\)) = \(v_i\);
+\item head(\(a\)) = \(v_{i+1}\);
+\end{itemize}
+
+\paragraph{}
+Seja \( C = (v_0, v_1, \ldots, v_n) \) \textbf{um caminho em um dígrafo} de comprimento \( n \), no qual \( v_0 = v_n = u \). Caracterizamos um \textbf{ciclo} a seguir. 
+
+\paragraph{}
+Se existir um vértice \( v \) tal que \( v \notin V(C) \), mas \( v \in V(D) \), ou seja, \( v \) pertence a \( D \), mas não a \( C \), e simultaneamente:
+
+\begin{itemize}
+    \item \( v \) recebe um arco de um vértice de \( C \) (existe um arco \( (v_i, v) \in A(D) \) para algum \( v_i \in C \));
+    \item \( v \) emite um arco para um vértice de \( C \) (existe um arco \( (v, v_{i+1}) \in A(D) \) para algum \( v_{i+1} \in C \));
+\end{itemize}
+
+então \( v \) está inserido em um \textbf{ciclo direcionado} ou \textbf{circuito} de comprimento \( n+1 \), dado por:
+
+\[
+(v_a, v_1, \ldots, v_i, v, v_{i+1}, \ldots, v_n).
+\]
+
+\paragraph{}
+Agora, já podemos caracterizar formalmente uma r-arborescência. Para isso, temos o seguinte resultado:
+
+\paragraph{}
+\textbf{Lema 2.1.1:} Um subgrafo \(T = (V, F)\) de \(G\) é uma arborescência enraizada em \(r\) se e somente se \(T\) não contém ciclos e, para cada nó \(v \neq r\), há exatamente uma aresta em \(F\) que entra em \(v\).
+
+\paragraph{}
+\textbf{Prova:} Provaremos primeiro a ida e depois a volta.
+
+\paragraph{}
+Se \(T\) é uma arborescência enraizada em \(r\), então, por definição, há um caminho único de \(r\) para qualquer nó \(v\). A última aresta desse caminho é a única que entra em \(v\), o que satisfaz a condição enunciada.
+
+\paragraph{}
+Por outro lado, supondo que \(T\) não contém ciclos e que cada nó \(v \neq r\) possua exatamente uma aresta entrando. Para provar que \(T\) é uma arborescência, basta demonstrar que há um caminho direcionado de \(r\) para cada nó \(v\). 
+
+\paragraph{}
+A prova se dá por construção, começamos em \(v\) e seguimos as arestas no sentido contrário. Como \(T\) não contém ciclos, o processo não pode continuar indefinidamente e deve terminar em um nó sem arestas de entrada. Sendo \(r\) o único nó sem arestas de entrada, isso implica que existe um caminho de \(r\) até \(v\), garantindo que \(T\) é de fato uma arborescência.
+
+\paragraph{}
+Agora que temos a definição formal de uma r-arborescência, podemos falar sobre o problema de busca de uma r-arborescência de custo mínimo, antes precisamos da definição de \textbf{função de custo total \(c(F)\)}.
+
+\paragraph{}
+Dada uma função de custo \(c: A \to \mathbb{R}^+\) associada às arestas de um grafo \(D = (V, A)\), o \textbf{custo total} de um subgrafo \(F \subseteq D\) é definido como:
+\[
+c(F) = \sum_{a \in F} c(a),
+\]
+onde \(F\) é o conjunto de arestas do subgrafo.
+
+Assim sendo, o \textbf{problema da R-arborescência de custo mínimo} consiste em determinar a \(r\)-arborescência \(F \subseteq D\) que minimiza o custo total \(c(F)\), sujeito à condição de que \(F\) seja uma \(r\)-arborescência válida.
+
+\paragraph{}
+Nesse contexto, \textbf{algoritmos gulosos} são uma heurística \footnote{método aproximado utilizado para resolver problemas de otimização ou decisão de forma eficiente, quando uma solução exata é computacionalmente inviável} comumente utilizada na resolução desse tipo de problema.
+
+\paragraph{}
+De acordo com os autores do livro Algorithm Design, um algoritmo é considerado guloso quando constrói uma solução de maneira incremental, realizando pequenas escolhas sucessivas. Em cada etapa, a decisão é tomada de forma \textit{míope}, visando otimizar algum critério subjacente de maneira local.
+
+\paragraph{}
+Dito isso, dado um digrafo \( D \) e um conjunto de custos não negativos associados às suas arestas, os autores sugeriram um algoritmo guloso de complexidade \( O(n^3)\) responsável por modificar esses custos para o mínimo possível visando garantir que \( T \), uma \( r \)-arborescência específica de \( G \), seja a arborescência mais curta, a construção dessa solução de tempo polinomial depende de algumas propriedades fundamentais sobre r-arborescências que apresentaremos na próxima seção.
+
+\subsection{Propriedades Fundamentais}
+\paragraph{}
+Agora, vamos apresentar alguns lemas que estabelecem as bases para o desenvolvimento do algoritmo guloso de múltiplas fases para encontrar uma r-arborescência específica em \(D \) de custo mínimo.
+
+\paragraph{}
+Assim, antes de buscarmos uma arborescência de custo mínimo, é necessário garantir a existência de uma r-arborescência. Para isso, tem-se o seguinte resultado:
+
+\paragraph{}
+\textbf{Lema 2.2.1:} Um digrafo \(D\) contém uma arborescência enraizada em \(r\) se e somente se há um caminho direcionado de \(r\) para cada outro nó em \(D\).
+
+\paragraph{}
+\textbf{Prova:} Suponha que \(D = (V, A)\) seja um grafo dirigido e que possua uma arborescência enraizada em um nó \(r \in V\). Por definição, uma arborescência é uma árvore geradora enraizada em r.
+
+\paragraph{}
+Provando a ida, supomos para fins de contradição, que \(\exists v \in V\) tal que não há um caminho direcionado de \(r\) até \(v\). Isso implica que \(v\) não pode ser alcançado a partir de \(r\). No entanto, como \(T = (V, F)\) é uma arborescência, ele deve conter \textbf{exatamente um caminho direcionado} de \(r\) até cada nó \(v\). A inexistência de tal caminho contradiz a própria definição de arborescência, levando a uma contradição. Assim, concluímos que deve existir um caminho direcionado de \(r\) para cada \(v \in V\).
+
+\paragraph{}
+Agora provamos a recíproca, supomos que \( D \) é um digrafo em que existe um caminho direcionado de \( r \) para cada nó \( v \in V \). Queremos provar que \( D \) contém uma arborescência \(T = (V, F) \) enraizada em \( r \).
+
+\paragraph{}
+Definimos \( F \) da seguinte forma: para cada nó \( v \neq r \), escolhemos uma única aresta \( (u, v) \) tal que \( u \) seja um nó no caminho direcionado mínimo de \( r \) para \( v \). Isso é possível porque, por hipótese, existe um caminho direcionado de \( r \) até cada \( v \), garantindo que \( v \) tem pelo menos um nó predecessor. Isso garante que cada nó \( v \neq r \) tem exatamente uma aresta de entrada em \( T \). Além disso, como \( T \) contém apenas arestas que fazem parte dos caminhos direcionados partindo de \( r \), ele não pode conter ciclos. Portanto, \( T \) é uma arborescência em \( D \)
+
+\paragraph{}
+Logo, garantimos que de fato possuímos a estrutura pretendida: r-arborescência, uma vez que acessamos todos os vértices de um dígrafo a partir de um vértice raiz r.
+
+\paragraph{}
+Esse resultado é necessário mas, não suficiente, pois é preciso encontrar uma \textbf{arborescência de custo mínimo}. Entretanto, ao selecionar um conjunto de arestas candidatas, pode ocorrer que esse conjunto não seja uma arborescência com tal característica. Então, nosso algoritmo de busca precisa garantir o seguinte:
+
+\paragraph{}
+\textbf{Conjectura 2.2.1:} Se \((V, F^*)\) é uma arborescência, então ela é uma arborescência de custo mínimo.
+
+\paragraph{}
+Essa conjectura parte da seguinte observação: toda arborescência contém exatamente uma aresta entrando em cada nó \( v \neq r \). Caso contrário, não seria uma arborescência e portanto ou conteria ciclos ou não atingiria todos os vértices do dígrafo a partir de um nó raiz.
+
+\paragraph{}
+Portanto uma vez que exploremos um dígrafo \(D\) a partir de um nó raiz e alcancemos todos os vértices, pelo lema 2.2.1, sabemos que temos uma r-arborescência, queremos encontrar uma que seja de custo mínimo. Nos restando dois casos:
+
+\begin{itemize}
+    \item O digrafo (\( D \) = \( V, A \)) não possui ciclos, e portanto possui apenas uma possibilidade de construção de uma r-arborescência digamos \( T \) = \( V, A \);
+    \item O digrafo (\( D \) = \( V, A \)) possui ciclos, e portanto possui mais uma possibilidade de construção de uma r-arborescência digamos \( T' \) = \( V, A' \) e \( T^* \) = \( V, A^* \) com \(A' \) \(\neq\) \(A^* \).
+
+\end{itemize}
+Logo, uma operação de contração de ciclos pode estar envolvida na busca por r-arborescência de custo-mínimo. Desse modo, vamos primeiro definir uma operação de contração de vértices e depois caracterizar a operação de contração de ciclos.
+
+\paragraph{}
+A \textbf{contração de vértices} é uma operação que reduz um conjunto de vértices conectados \(C\) em um digrafo \(D = (V, A)\) a um único vértice \(v_c\), preservando a estrutura das arestas adjacentes. Formalmente, para cada conjunto \(C \subseteq V\):
+\begin{itemize}
+    \item Todas as arestas que entram ou saem de \(C\) são reconfiguradas para conectar-se diretamente ao novo vértice \(v_c\);
+    \item Arestas internas em \(C\) são removidas;
+    \item O vértice \(v_c\) substitui os vértices de \(C\) no grafo resultante.
+\end{itemize}
+
+\paragraph{}
+Desse modo, se a estrutura inicial contém ciclos, precisamos removê-los através de uma operação de contração de vértices sem perder a conectividade da arborescência, essa operação envolve uma modificação de custos nas arestas com a contração do ciclo \( C \) em um único \textbf{super nó}, obtendo um grafo reduzido \( D' = (V', A') \). Aqui, \( V' \) contém os nós de \( V - C \), além de um único nó \( c^* \) que representa \( C \).
+
+\paragraph{}
+E, cada aresta \( e \in E \)  é transformada em uma aresta correspondente \( e' \in E' \), substituindo cada extremidade de \( e \) que pertence a \( C \) pelo novo nó \( c^* \). Esse processo pode gerar \textbf{arestas paralelas} (ou seja, arestas com as mesmas extremidades), o que não representa um problema, uma vez que pode-se remover os \textbf{auto-laços} de \( E' \), ou seja, arestas cujas duas extremidades são \( c^* \).
+
+\paragraph{}
+Contudo, ainda precisamos estabelecer que certas transformações nos custos das arestas, visando a contração de ciclos de forma eficiente não alteram a solução ótima. 
+
+\paragraph{}
+Portanto, se escolhermos um nó \( v \) e subtrairmos uma mesma quantidade do custo de todas as arestas que entram em \( v \), observamos que o custo total de qualquer arborescência deve mudar exatamente pelo mesmo valor.
+
+\paragraph{}
+Isso significa que o custo real da aresta mais barata que entra em \( v \) não é relevante por si só; o que importa é o custo relativo das outras arestas que entram em \( v \). Definimos, então, \( y_v \) como o menor custo de qualquer aresta que entra em \( v \):
+
+\[
+y_v = \min \{ c_a \mid a = (u, v) \in A, u \in V \}
+\]
+
+Para cada aresta \( a = (u, v) \), cujo custo original é \( c_a \geq 0 \), definimos o custo modificado \( c'_a \) como:
+
+\[
+c'_a = c_a - y_v
+\]
+
+Observamos que, como \( c_a \geq y_v \), todos os custos modificados continuam sendo não negativos:
+
+\[
+c'_a \geq 0, \quad \forall e \in A.
+\]
+
+Tendo em vista esses conceitos, é possível estabelecer o lema abaixo.
+
+\paragraph{}
+\textbf{Lema 2.2.2:} \(T\) é uma arborescência ótima em \(D\) com relação aos custos \(\{c_a\}\) se e somente se também é uma arborescência ótima com relação aos custos modificados \(\{c'_a\}\).
+
+\paragraph{}
+\textbf{Prova:} 
+Seja \( T \) uma arborescência arbitrária em \( D \). Definimos os custos originais das arestas como \( \{c_a\} \) e os custos modificados como \( \{c'_a\} \), onde cada custo modificado é dado por:
+\[
+c'_a = c_a - y_v, \quad \text{para toda aresta } a = (u, v) \in A.
+\]
+
+Queremos mostrar que o custo total de qualquer arborescência \( T \) sob \( \{c_a\} \) difere do custo sob \( \{c'_a\} \) por uma constante fixa, independentemente da escolha de \( T \).
+
+\paragraph{}
+O custo total de \( T \) sob os pesos originais é:
+
+\[
+C(T) = \sum_{a \in T} c_a.
+\]
+
+O custo total de \( T \) sob os pesos modificados é:
+
+\[
+C'(T) = \sum_{a \in T} c'_a = \sum_{a \in T} (c_a - y_v).
+\]
+
+Expandindo a soma:
+
+\[
+C(T) - C'(T) = \sum_{a \in T} c_a - \sum_{a \in T} (c_a - y_v).
+\]
+
+Distribuindo os termos:
+
+\[
+C(T) - C'(T) = \sum_{a \in T} c_a - \sum_{a \in T} c_a + \sum_{a \in T} y_v.
+\]
+
+Cancelando os termos \( c_a \):
+
+\[
+C(T) - C'(T) = \sum_{e \in T} y_v.
+\]
+
+Ou seja,  a diferença entre seu custo com os pesos \(\{c_a\}\) e os pesos modificados \(\{c'_a\}\) é dada por:
+
+\[\sum_{e \in T} c_a - \sum_{e \in T} c'_a = \sum_{v \neq r} y_v.\]
+
+Isso ocorre porque toda arborescência contém exatamente uma aresta entrando em cada nó \(v\). Como essa diferença é independente da escolha de \(T\), segue-se que \(T\) tem custo mínimo sob \(\{c_a\}\) se e somente se tem custo mínimo sob \(\{c'_a\}\).
+
+\paragraph{}
+Assim sendo, basta-se aplicar recursivamente a operação de contração de ciclos para encontrar uma arborescência ótima no grafo reduzido \( G' \), considerando os custos modificados \( \{ c'_e \} \). A arborescência retornada por essa chamada recursiva pode ser convertida em uma arborescência de \( D \) incluindo todas as arestas do ciclo \( C \), exceto uma.
+
+Baseado nessas propriedades fundamentais, apresentamos na seção seguinte uma contextualização e descrição detalhada do algoritmo.
+
+\subsection{Descrição do Algoritmo}
+
+\paragraph{}
+Em otimização combinatória, é comum o uso de uma aplicação do método primal-dual \footnote{
+A dualidade lida com pares de programas lineares e as relações entre suas soluções. Um desses problemas é chamado de \textbf{primal} e o outro, de \textbf{dual}.}, que permite resolver o problema por meio de ajustes iterativos nos custos.
+
+% \paragraph{}
+% O problema primal é definido como:
+
+% \[\text{(P)} \quad Z_{LP} = \max \{ e^T x \mid Ax \sim b, \; x \in \mathbb{R}^n \}.\]
+
+% Seu problema dual correspondente é o seguinte programa linear:
+
+% \[\text{(D)} \quad W_{LP} = \min \{ u^T b \mid u^T A \sim e^T, \; u \in \mathbb{R}^m \}.\]
+
+\paragraph{}
+Nesse contexto, o algoritmo de busca da arborescência de custo mínimo aqui abordado é uma aplicação da técnica primal-dual, o mesmo trabalha com a modificação dos custos das arestas, seleciona um conjunto candidato de arborescência e, caso necessário, contrai ciclos e repete o procedimento recursivamente, até que uma r-arborescência seja identificada. O procedimento é descrito a seguir:
+
+\begin{enumerate}
+    \item \textbf{Inicialização e alteração dos custos das arestas:}  
+    Para cada nó \( v \neq r \):
+    \begin{enumerate}
+        \item Define-se \( y_v \) como o custo mínimo de qualquer aresta que entra em \( v \).
+        \item Modificam-se os custos das arestas \( e \) que entram em \( v \) para \( c'_e = c_e - y_v \).
+    \end{enumerate}
+
+    \item \textbf{Construção da arborescência candidata:}  
+    Escolhe-se uma aresta de custo zero entrando em cada nó \( v \neq r \), formando um conjunto \( F^* \).
+
+    \item \textbf{Verificação da arborescência:}  
+    \begin{enumerate}
+        \item Se \( F^* \) forma uma arborescência, retorna-se \( F^* \) como a solução ótima.
+        \item Caso contrário, existe um ciclo dirigido \( C \subseteq F^* \).
+    \end{enumerate}
+
+    \begin{enumerate} 
+                \item Contrair \( C \) em um único \textbf{supernó} \( c^* \).
+                \item Criar um novo grafo reduzido \( G' = (V', E') \), onde:
+                \begin{itemize}
+                    \item \( V' \) contém os nós de \( V - C \) mais o supernó \( c^* \).
+                    \item Cada aresta \( e \in E \) é transformada em uma aresta correspondente \( e' \in E' \), substituindo as extremidades que pertencem a \( C \) pelo nó \( c^* \).
+                    \item Auto-laços são removidos de \( E' \).
+                \end{itemize}
+            \end{enumerate}
+
+    \item \textbf{Recursão no grafo reduzido:}  
+    Encontrar recursivamente uma arborescência ótima \( (V', F') \) em \( G' \), considerando os custos modificados \( \{c'_e\} \).
+
+    \item \textbf{Reconstrução da solução original:}  
+    Expandir \( (V', F') \) para obter uma arborescência \( (V, F) \) em \( G \), adicionando todas as arestas de \( C \) exceto uma.
+    \end{enumerate}
+
+Esse algoritmo permite uma implementação de complexidade polinomial e se encaixa na classe de algoritmos de otimização combinatória.
+
+\subsection{Correção do Algoritmo}
+\paragraph{}
+
+WIP
+
+\paragraph{}
+	extbf{Referência}: \cite{kleinberg2006}.  
+\textit{(Definição localizada em Algorithm Design, pág. 177).}
+
+\subsection{Implementação do Algoritmo}
+\paragraph{}
+
+\href{https://colab.research.google.com/drive/1w-lHR_IW0lGOpN7pGPqmFYSP_SvKeJ53?usp=sharing}{Link do colab notebook atualizado - wip}
+
+\section{Algoritmo de Fulkerson - 1973}
+
+\paragraph{}
+Nesse capítulo, trataremos do problema de busca da r-arborescência de custo mínimo, através de uma abordagem dual proposta por Fulkerson em 1973, fortemente baseada em um teorema min-max. Antes de apresentarmos tal teorema, precisamos da definição de uma função de custo \( c \), uma função de conjunto \footnote{Uma \textit{função de conjunto} é um tipo de função matemática que recebe um conjunto como entrada e retorna um valor associado a esse conjunto. Em termos formais, uma função de conjunto é uma função cuja entrada pertence ao conjunto das partes (\(\mathcal{P}(X)\)) de um conjunto \(X\) e cujo valor de saída pertence a um conjunto \(Y\):
+
+\[
+f: \mathcal{P}(X) \to Y
+\]
+} \(z \) atrelada a um conjunto \( X\) chamada, portanto, de \(z(X)\) e do que significa essa função de \(z(X)\) ser c-viável.
+
+\paragraph{}
+Comecemos pela definição da função de custo \( c \). Seja, \( c: A \to \mathbb{R}^+ \) uma função que associa um custo positivo a cada aresta do conjunto \( A \) e \( z \) uma função de conjunto, dada por:
+
+\[
+z : 2^{(V - r_0)} \to \mathbb{R}^+
+\]
+
+Em outras palavras, \( z \) é uma função que associa um valor real não negativo ao subconjunto das partes \( X \) de \( V - r_0 \), sendo definida portanto como \( z(X) \). Essa função \( z(X) \) é considerada \( c \)-viável se satisfizer a seguinte condição para todas as arestas \( a \in A \):
+
+\[
+c(a) \geq \sum_{\substack{X \subseteq V - r_0 \\ a \text{ entra em } X}} z(X)
+\]
+
+O que significa que o custo \( c(a) \) de cada aresta \( a \) que entra em um subconjunto \( X \) deve ser pelo menos igual à soma dos valores \( z(X) \) para todos os subconjuntos \( X \) nos quais essa aresta é uma entrada.
+
+\paragraph{}
+A partir dessas definições, Fulkerson estabelece que o custo mínimo necessário para construir uma arborescência que conecta todos os vértices ao nó raiz \( r_0 \) pode ser determinado pela maximização do somatório da função de conjunto \( z(X) \), desde que essa função satisfaça a condição de \( c \)-viabilidade, de acordo com o teorema abaixo:
+
+\paragraph{}
+\textbf{Teorema 3.1:} O custo mínimo de uma arborescência abrangente com raiz em \( r_0 \) é dado por:
+
+\[
+\max \left\{ \sum_{X \subseteq V - r_0} z(X) \;\middle|\; z \text{ é } c\text{-viável} \right\}
+\]
+
+\paragraph{}
+Essa equação expressa um teorema min-max, onde a minimização do custo total da arborescência é alcançada por meio da maximização da soma dos valores \( z(X) \). Isso significa que o custo ótimo da arborescência pode ser obtido maximizando uma função dual \( z \) que respeita a condição de \( c \)-viabilidade. Além disso, de acordo com o autor, se os custos \( c(a) \) forem inteiros, existe uma função \( z \) ótima que também assume apenas valores inteiros.
+
+\paragraph{}
+Outra forma de entender essa abordagem é pensar que o problema da determinação do custo mínimo de uma r-arborescência abrangente envolve encontrar um empacotamento máximo de cortes \( r \)-direcionados.
+
+\paragraph{}
+Pois, um corte \( r \)-direcionado é um subconjunto de arestas que, quando removido do grafo, separa o nó raiz \( r_0 \) de algum subconjunto de vértices. Um \textbf{empacotamento máximo de cortes \( r \)-direcionados} é aquele em que a soma total dos pesos atribuídos a esses cortes é a maior possível, respeitando as restrições impostas pela estrutura do grafo.
+
+\paragraph{}
+Em resumo, o principal problema tratado no artigo do Fulkerson consiste em construir um empacotamento máximo de cortes \( r \) - direcionados \footnote{direcionados da raíz para fora, ou seja, nenhuma aresta entra em r ou não é possível chegar em r a partir de nenhum outro vértice.} que permita determinar o custo mínimo de uma arborescência abrangente. 
+
+Na sessão seguinte, apresentaremos a descrição do algoritmo de tempo polinomial proposto pelo autor que leva em consideração o argumento do teorema 3.1.
+
+\subsection{Descrição do Algoritmo}
+
+\paragraph{}
+O algoritmo é composto por duas fases principais. A primeira fase tem como objetivo construir a função \( z(X) \) de maneira gulosa, garantindo sua \( c \)-viabilidade, enquanto a segunda fase utiliza os valores obtidos para construir a arborescência \( F \) exclusivamente a partir das arestas de custo reduzido a zero.
+
+\subsubsection{Fase 1: Construção da Função \texorpdfstring{$z(X)$}{z(X)}}
+
+\paragraph{}
+A fase 1, proposta por Fulkerson, consiste na construção da função \( z(X) \) de maneira gulosa. Durante esse processo, a função de custo é ajustada repetidamente até que cada subconjunto de vértices tenha ao menos uma aresta de custo zero entrando nele. A função de custo ajustada é denotada por \( c' \), sendo que uma aresta é chamada de \textbf{0-aresta} se seu custo atualizado for:
+
+\[c'(a) = 0\]
+
+\paragraph{}
+O procedimento consiste nos seguintes passos:
+
+\begin{enumerate}
+    \item Escolher um subconjunto mínimo \( X \subseteq V - r_0 \) que ainda não tenha uma aresta de custo zero entrando nele.
+    \item Definir \( z(X) \) como o menor custo das arestas que entram em \( X \):
+
+    \[
+    z(X) := \min \{ c'(a) \mid a \text{ entra em } X \}
+    \]
+
+    \item Atualizar a função de custo para todas as arestas \( a \) que entram em \( X \):
+
+    \[
+    c'(a) := c(a) - z(X)
+    \]
+
+    \item Repetir os passos acima até que cada subconjunto \( X \subseteq V - r_0 \) tenha pelo menos uma aresta de custo zero entrando nele.
+\end{enumerate}
+
+\paragraph{}
+Ao final da Fase 1, garantimos que a função \( z(X) \) construída seja \( c \)-viável e que todas as arestas necessárias tenham sido transformadas em 0-arestas.
+
+\subsubsection{Fase 2: Construção da Arborescência \texorpdfstring{$F$}{F}}
+
+\paragraph{}
+A fase 2, proposta por Frank, consiste na construção da arborescência \( F \) utilizando apenas as 0-arestas identificadas na fase 1. Essa fase busca garantir que todos os nós sejam conectados à raiz \( r_0 \) por meio de arestas cujo custo foi reduzido a zero na fase anterior.
+
+\paragraph{}
+O procedimento de construção de \( F \) segue os seguintes passos:
+
+\begin{enumerate}
+    \item Iniciar a arborescência em \( r_0 \).
+    \item Adicionar 0-arestas ao conjunto \( F \), garantindo que cada nova aresta conecte um novo nó à arborescência.
+    \item Se houver múltiplas opções de 0-arestas, escolher aquela que se tornou uma 0-aresta mais cedo na fase 1.
+    \item Repetir o processo até que todos os nós estejam conectados à raiz \( r_0 \).
+\end{enumerate}
+
+\paragraph{}
+A seguir, mostraremos um exemplo de como essa abordagem funciona.
+
+\subsection{Exemplo: algoritmo de Fulkerson}
+
+Consideremos o grafo direcionado \( D = (V, A) \) representado abaixo:
+
+\begin{itemize}
+    \item \textbf{Conjunto de vértices:} 
+    \[
+    V = \{ r_0, v_1, v_2, v_3, v_4 \}
+    \]
+    \item \textbf{Conjunto de arestas e seus custos:}
+    \[
+    A = \{ (r_0, v_1, 3), (r_0, v_2, 2), (v_1, v_3, 4), (v_2, v_3, 1), (v_2, v_4, 5), (v_3, v_4, 2) \}
+    \]
+\end{itemize}
+
+Cada tupla \( (u, v, c) \) representa uma aresta do vértice \( u \) para \( v \) com custo \( c \). Nosso objetivo é encontrar a \textbf{arborescência de custo mínimo enraizada em \( r_0 \)}, garantindo que cada vértice tenha um caminho único partindo de \( r_0 \).
+
+\paragraph{}
+\textbf{Passo 1: Definição da Função \( z(X) \) e \( c \)-Viabilidade}
+
+\paragraph{}
+A função de conjunto \( z(X) \) deve ser construída de maneira a respeitar a \( c \)-viabilidade. Nesse exemplo, vamos construir \( z(X) \) iterativamente, sempre escolhendo o menor custo entre as arestas que entram em \( X \).
+
+\paragraph{Escolha do primeiro conjunto \( X \):}
+Consideramos \( X = \{ v_1 \} \) e \( X = \{ v_2 \} \), pois são os primeiros vértices a serem conectados a \( r_0 \). Definimos:
+
+\[
+z(\{ v_1 \}) = \min \{ c(r_0, v_1) \} = 3, \quad z(\{ v_2 \}) = \min \{ c(r_0, v_2) \} = 2.
+\]
+
+\paragraph{Escolha do próximo conjunto \( X \):}
+Agora consideramos \( X = \{ v_3 \} \), que tem duas possíveis conexões:
+\begin{itemize}
+    \item De \( v_1 \) com custo 4
+    \item De \( v_2 \) com custo 1
+\end{itemize}
+
+Escolhemos o menor custo:
+
+\[
+z(\{ v_3 \}) = \min \{ c(v_1, v_3), c(v_2, v_3) \} = 1.
+\]
+
+\paragraph{Escolha do último conjunto \( X \):}
+Para \( X = \{ v_4 \} \), temos duas opções:
+\begin{itemize}
+    \item De \( v_2 \) com custo 5
+    \item De \( v_3 \) com custo 2
+\end{itemize}
+
+Escolhemos:
+
+\[
+z(\{ v_4 \}) = \min \{ c(v_2, v_4), c(v_3, v_4) \} = 2.
+\]
+\paragraph{}
+Agora temos a função \( z(X) \) construída:
+
+\[
+z(\{ v_1 \}) = 3, \quad z(\{ v_2 \}) = 2, \quad z(\{ v_3 \}) = 1, \quad z(\{ v_4 \}) = 2.
+\]
+
+
+
+\paragraph{}
+A soma total de \( z(X) \) é:
+
+\[
+\sum_{X \subseteq V - r_0} z(X) = 3 + 2 + 1 + 2 = 8.
+\]
+
+\paragraph{}
+Pelo \textbf{teorema 3.1}, essa soma corresponde ao custo mínimo necessário para formar uma arborescência abrangente.
+
+\paragraph{}
+\textbf{Passo 2: Construção da Arborescência \( T \) com Custo Mínimo}
+
+\paragraph{}
+Primeiro, realizamos o processo de construção das 0-arestas da seguinte forma:
+
+\begin{itemize}
+    \item \( X = \{ v_1 \} \Rightarrow z(X) = 3 \Rightarrow c'(r_0, v_1) = 3 - 3 = 0 \).
+    \item \( X = \{ v_2 \} \Rightarrow z(X) = 2 \Rightarrow c'(r_0, v_2) = 2 - 2 = 0 \).
+    \item \( X = \{ v_3 \} \Rightarrow z(X) = 1 \Rightarrow c'(v_2, v_3) = 1 - 1 = 0 \).
+    \item \( X = \{ v_3 \} \Rightarrow z(X) = 1 \Rightarrow c'(v_4, v_3) = 4 - 1 = 3 \).
+    \item \( X = \{ v_4 \} \Rightarrow z(X) = 2 \Rightarrow c'(v_2, v_4) = 5 - 2 = 3\).
+    \item \( X = \{ v_4 \} \Rightarrow z(X) = 2 \Rightarrow c'(v_3, v_4) = 2 - 2 = 0 \).
+\end{itemize}
+
+% Dúvida, isso é então refeito para 
+% Escolher um subconjunto mínimo? pode ser apenas um vértice como acima.
+% X = {v1, v2}, X = {v1, v3}, X = {v1, v4}, X = {v1, v5} 
+% X = {v2, v3}, X = {v2, v4}, X = {v2, v5}
+% X = {v3, v4}, X = {v3, v5} 
+% X = {v4, v5}
+% X = {v1, v2, v3}, X = {v1, v2, v4}, X = {v1, v2, v5}
+% X = {v2, v3, v4}, X = {v3, v4, v5}
+% X = {v1, v3, v4}, % X = {v1, v4, v5} ...
+% X = {v1, v2, v3, v4, v5} ???
+
+\paragraph{}
+Então, construímos a arborescência \( T \), escolhendo apenas as 0-arestas que foram minimizadas primeiro para os valores \( z(X) \):
+
+\[
+T = \{ (r_0, v_2), (v_2, v_3), (v_3, v_4), (r_0, v_1) \}
+\]
+
+\paragraph{}
+Essa estrutura forma uma \textbf{arborescência abrangente enraizada em \( r_0 \)} com custo total 8, que corresponde exatamente à soma da função \( z(X) \).
+
+\subsection{Implementação do Algoritmo}
+\paragraph{}
+WIP
+
+\subsection{Correção do Algoritmo}
+\paragraph{}
+WIP
+
+\section{Algoritmo Dual Guloso de Frank - 1979}
+\paragraph{}
+O algoritmo de András Frank, apresentado em sua obra sobre conexões em otimização combinatória, constitui uma abordagem alternativa ao problema da busca de uma r-arborescência de custo mínimo em um dígrafo. Diferente do algoritmo de Chu e Liu (1965), que se apoia em operações de contração de ciclos, a técnica de Frank é fundamentada em um procedimento iterativo de redução de custos que combina conceitos de cortes mínimos e propriedades de grafos dirigidos.
+
+\paragraph{}
+De modo geral, o algoritmo estrutura-se em duas fases. A primeira fase é responsável por identificar, em um grafo direcionado $D=(V,A)$ com custos não negativos, um subconjunto de arestas de custo zero, construído por meio de sucessivas reduções nos pesos das arestas incidentes a determinados subconjuntos de vértices. A segunda fase, por sua vez, utiliza esse conjunto de arestas de custo zero para reconstruir uma r-arborescência de custo mínimo, garantindo conectividade a partir do nó raiz $r$.
+
+\subsection{Descrição do Algoritmo}
+\paragraph{}
+Podemos descrever o algoritmo de Frank em duas fases principais:
+
+\begin{enumerate}
+    \item \textbf{Fase 1 – Identificação de arcos de custo zero:}
+    \begin{itemize}
+        \item Inicialmente, define-se o grafo auxiliar \(D_0\), composto pelos mesmos vértices de \(D\), mas contendo apenas arestas de custo zero.
+        \item Para cada vértice \(v \neq r\), considera-se o conjunto \(X\) formado por \(v\) e seus ancestrais em \(D_0\).
+        \item Identifica-se o corte \(\delta^-(X)\), determina-se o menor custo \(y_v\) dentre essas arestas e subtrai-se \(y_v\) de todas as arestas que entram em \(X\).
+        \item As arestas cujo custo atinge zero são adicionadas a \(A_0\) e incluídas em \(D_0\).
+    \end{itemize}
+
+    \item \textbf{Fase 2 – Construção da arborescência:}
+    \begin{itemize}
+        \item Utilizando o conjunto \(A_0\), inicia-se a construção da arborescência mínima \(T\).
+        \item Partindo do nó raiz \(r\), adicionam-se sucessivamente arestas de \(A_0\) que conectam novos vértices ainda não incluídos em \(T\).
+        \item Esse processo se repete até que todos os vértices sejam alcançados a partir de \(r\), formando uma arborescência de custo mínimo.
+    \end{itemize}
+\end{enumerate}
+
+\paragraph{}
+Dessa forma, o algoritmo evita explicitamente a contração de ciclos, substituindo-a por operações de redução de custos baseadas em cortes, o que o diferencia da abordagem de Chu e Liu.
+
+\subsection{Complexidade e Implementação - 1° versão}
+\paragraph{}
+A implementação do algoritmo de Frank pode ser realizada em tempo polinomial, com complexidade \(O(n \cdot m)\), onde \(n = |V|\) é o número de vértices e \(m = |A|\) o número de arestas. Essa eficiência decorre da aplicação sucessiva da operação de redução de custos e da verificação de ancestrais, realizada de forma incremental.
+
+\paragraph{}
+Na prática, assim como na implementação do Chu Liu, a implementação do Frank será em Python e será feita utilizando a biblioteca \texttt{NetworkX}, que oferece suporte para operações em dígrafos, detecção de ancestrais e construção de árvores. Abaixo, apresentamos um trecho da implementação desenvolvida neste trabalho:
+
+\begin{verbatim}
+def phase1_find_minimum_arborescence(D_original, r0):
+    D = D_original.copy()
+    A_zero = []
+    D_zero, A_zero = build_D_zero(D)
+    continue_execution = True
+
+    while continue_execution:
+        continue_execution = False
+        for v in D.nodes():
+            if v == r0:
+                continue
+            X = nx.ancestors(D_zero, v)
+            X.add(v)
+            arcs = get_arcs_entering_X(D, X)
+            min_weight = get_minimum_weight_cut(arcs)
+            if min_weight:
+                continue_execution = True
+            update_weights_in_X(D, X, min_weight, A_zero, D_zero)
+    return A_zero
+\end{verbatim}
+
+\paragraph{}
+A segunda fase é responsável pela reconstrução da arborescência a partir das arestas de custo zero:
+
+\begin{verbatim}
+def phase2_find_minimum_arborescence(D_original, r0, A_zero):
+    Arb = nx.DiGraph()
+    Arb.add_node(r0)
+    n = len(D_original.nodes())
+    for _ in range(n):
+        for u, v in A_zero:
+            if u in Arb.nodes() and v not in Arb.nodes():
+                edge_data = D_original.get_edge_data(u, v)
+                Arb.add_edge(u, v, **edge_data)
+                break
+    return Arb
+\end{verbatim}
+
+\paragraph{}
+Assim, o algoritmo de Frank constitui uma abordagem alternativa elegante e eficiente para a resolução do problema da r-arborescência de custo mínimo, fornecendo resultados equivalentes à técnica de Chu e Liu, mas com uma estrutura conceitual baseada em cortes mínimos.
+
+
+\section{O Problema da Arborescência Inversa - Frank, Hadju, 2021}
+\paragraph{}
+WIP
+
+\subsection{Descrição do Algoritmo}
+\paragraph{}
+WIP
+
+\subsection{Correção do Algoritmo}
+\paragraph{}
+WIP
+
+\subsection{Implementação do Algoritmo - Versão 1}
+\paragraph{}
+WIP
+
+
+
+\section{Conclusão}
+\paragraph{}
+WIP
+
+\section{Referências}
+\paragraph{}
+\begin{enumerate}
+     \item \textbf{Frank and Hajdu's Inverse Arborescence Algorithm:}
+    \begin{itemize}
+        \item Frank, A., Hajdu, G. (2014). *A Simple Algorithm and Min–Max Formula for the Inverse Arborescence Problem*. \textit{Algorithms}, 7(4), 637-647. DOI: 10.3390/a7040637.
+    \end{itemize}
+    
+    \item \textbf{Livro de Algoritmos - Teoria de Grafos:}
+    \begin{itemize}
+        \item Cormen, T. H., Leiserson, C. E., Rivest, R. L., Stein, C. (2009). *Introduction to Algorithms* (3rd edition). MIT Press.
+        \item Kleinberg, J., Tardos, É. (2006). *Algorithm Design*. Addison-Wesley.
+    \end{itemize}
+\end{enumerate}
+
+% \section{Definições}
+% \subsection{Grafo Dirigido}
+% \paragraph{} 
+% Formalmente, um \textbf{grafo dirigido} \(D\) é um triplo ordenado \(D = (V(D), A(D), \varphi)\), onde:
+% \begin{itemize}
+%     \item \(V(D)\) é um conjunto não vazio de vértices;
+%     \item \(A(D)\) é um conjunto de arcos (ou arestas direcionadas), disjunto de \(V(D)\);
+%     \item \(\varphi: A(D) \to V(D) \times V(D)\) é uma função de incidência que associa a cada arco \(a \in A(D)\) um par ordenado de vértices de \(V(D)\), possivelmente repetidos (ou seja, os dois vértices não precisam ser distintos).
+% \end{itemize}
+
+% Seja \(a \in A(D)\) um arco tal que \(\varphi(a) = (u, v)\), onde \(u, v \in V(D)\). Nesse caso:
+% \begin{itemize}
+%     \item \(a\) é dito conectar \(u\) a \(v\);
+%     \item \(u\) é chamado de \textbf{cauda/tail} de \(a\);
+%     \item \(v\) é chamado de \textbf{cabeça/head} de \(a\).
+% \end{itemize}
+
+% \paragraph{}
+% Para simplificar, utilizaremos o termo \textit{digrafo} como sinônimo de grafo dirigido.  
+% \footnote{O termo é abreviado do inglês: \textit{directed graph}.}
+
+% \paragraph{}
+% \textbf{Referência}: \cite{bondy2008graph}.  
+% \textit{(Bondy e Murty, pág. 171).}
+
+% \subsection{Subdigrafo}
+% \paragraph{}
+% Um \textbf{subdigrafo} \(D'\) de um digrafo \(D = (V(D), A(D), \varphi)\) é um digrafo \(D' = (V(D'), A(D'), \varphi')\) tal que:
+% \begin{itemize}
+%     \item \(V(D') \subseteq V(D)\);
+%     \item \(A(D') \subseteq A(D)\);
+%     \item \(\varphi'\) é a restrição de \(\varphi\) ao conjunto \(A(D')\), ou seja, \(\varphi'(a) = \varphi(a)\) para todo \(a \in A(D')\).
+% \end{itemize}
+
+% \paragraph{}
+% Assim, \(D'\) herda as relações de incidência do digrafo \(D\), mas pode ter um subconjunto de vértices e arcos.
+
+% \paragraph{}
+% \textbf{Referência}: \cite{bondy2008graph}.  
+% \textit{(Bondy e Murty - Graphy Theory with Applications, pág. 171).}
+
+% \subsection{Cabeça e Cauda de uma Aresta}
+% \paragraph{}
+% Um \textbf{digrafo} pode ser representado por um diagrama de seu grafo subjacente, juntamente com setas em suas arestas. Cada seta indica a orientação da aresta, apontando para a \textbf{cabeça} (\textit{head}) do arco correspondente. Dessa forma, a representação gráfica de um digrafo reflete tanto a estrutura do grafo subjacente quanto as direções de suas arestas.
+
+% \paragraph{}
+% \textbf{Referência}: \cite{bondy2008graph}.  
+% \textit{(Bondy e Murty - Graphy Theory with Applications, pág. 171).}
+
+% \paragraph{}
+% Assim sendo, seja \(D = (V, A)\) um grafo dirigido, onde \(A \subseteq V \times V\) é o conjunto de arestas. Para cada aresta \(a = (u, v) \in A\), definimos:
+
+% \begin{itemize}
+%     \item A \textbf{cauda} (\textit{tail}) da aresta \(a\), denotada por \(\text{tail}(a)\), como o vértice de onde a aresta se origina. Formalmente, \(\text{tail}: A \to V\), onde \(\text{tail}(a) = u\).
+%     \item A \textbf{cabeça} (\textit{head}) da aresta \(a\), denotada por \(\text{head}(a)\), como o vértice para o qual a aresta aponta. Formalmente, \(\text{head}: A \to V\), onde \(\text{head}(a) = v\).
+% \end{itemize}
+
+% Assim, cada aresta \(a = (u, v)\) pode ser interpretada como uma relação direcionada onde:
+% \[\text{tail}(a) = u \quad \text{e} \quad \text{head}(a) = v.\]
+
+% \textbf{Referência}: \cite{west2001introduction}.  
+% \textit{(Douglas B. West - Introduction to Graph Theory, 2001, pág. 53 - 54).}
+% % página 74 do PDF e notas de reunião.
+
+% \subsection{Operação de Contração de Vértices}
+% \paragraph{}
+% A \textbf{contração de vértices} é uma operação que reduz um conjunto de vértices conectados \(C\) em um grafo dirigido \(G = (V, A)\) a um único vértice \(v_c\), preservando a estrutura das arestas adjacentes. Formalmente, para cada conjunto \(C \subseteq V\):
+% \begin{itemize}
+%     \item Todas as arestas que entram ou saem de \(C\) são reconfiguradas para conectar-se diretamente ao novo vértice \(v_c\);
+%     \item Arestas internas em \(C\) são removidas;
+%     \item O vértice \(v_c\) substitui os vértices de \(C\) no grafo resultante.
+% \end{itemize}
+
+% \paragraph{}
+% Essa operação é comumente usada em algoritmos que buscam simplificar a análise de arborescências e ciclos em grafos direcionados, como nos métodos para encontrar arborescências mínimas de custo.
+
+% \paragraph{}
+% \textbf{Referência}: \cite{hu1998strongly}.  
+% \textit{(Z. Hu e Z. Liu - "A strongly polynomial algorithm for the inverse shortest arborescence problem", pág. 142).}
+
+% \subsection{Caminho}
+% \paragraph{}
+% Um \textbf{caminho} em um grafo dirigido \(D = (V, A)\) é uma sequência ordenada de vértices \(v_1, v_2, \ldots, v_k\), onde:
+
+% \begin{itemize}
+% \item Cada par consecutivo \((v_i, v_{i+1}) \in A\) para \(1 \leq i < k\). 
+% \item \(a\) é dito conectar \(v_i\) a \(v_{i+1}\);
+% \item \(v_i\) é chamado de \textbf{cauda/tail} de \(a\);
+% \item \(v_{i+1}\) é chamado de \textbf{cabeça/head} de \(a\).
+% \end{itemize}
+
+% \textbf{Referência}: \cite{none}.  
+% \textit{(Definição própria.)}
+
+% \subsection{Ciclo}
+% \paragraph{}
+% Seja \( C = (v_a, v_1, \ldots, v_n) \) um ciclo direcionado de comprimento \( n \), no qual \( v_a = v_n = u \). 
+
+% Se houver um vértice \( v \in V(D) \setminus V(C) \) que seja ao mesmo tempo:
+% \begin{itemize}
+%     \item a cabeça de um arco com cauda em \( C \), e
+%     \item a cauda de um arco com cabeça em \( C \),
+% \end{itemize}
+
+% então existem vértices adjacentes \( v_i \) e \( v_{i+1} \) em \( C \) tais que:
+% \begin{itemize}
+%     \item \( (v_i, v) \) é um arco de \( D \), e
+%     \item \( (v, v_{i+1}) \) é um arco de \( D \).
+% \end{itemize}
+
+% Nesse caso, \( u \) pertence ao ciclo direcionado de comprimento \( n+1 \), dado por:
+% \[
+% (v_a, v_1, \ldots, v_i, v, v_{i+1}, \ldots, v_n).
+% \]
+
+% \textbf{Referência}: \cite{bondy2008graph}.  
+% \textit{(Bondy e Murty - Graphy Theory with Applications, pág. 177).}
+
+% \subsection{Circuito}
+% \paragraph{}
+% Um \textbf{circuito} é uma generalização de um ciclo em um grafo dirigido, onde a orientação das arestas é respeitada. Assim, é uma sequência ordenada de vértices \(v_1, v_2, \ldots, v_k, v_1\), em que:
+% \begin{itemize}
+%     \item \((v_i, v_{i+1}) \in A\), para \(1 \leq i < k\), e \((v_k, v_1) \in A\);
+%     \item A orientação de todas as arestas segue a mesma direção ao longo do circuito.
+% \end{itemize}
+
+% \textbf{Referência}: \cite{sem referência}.  
+% \textit{(Definição própria.)}
+
+% \subsection{Componentes Fortes}
+% \paragraph{}
+% Por analogia com componentes conectados em um grafo não direcionado, podemos definir o \textit{componente fortemente conectado} que contém um nó \( s \) em um grafo direcionado como o conjunto de todos os vértices \( v \) tais que \( s \) e \( v \) são mutuamente alcançáveis. 
+
+% \textbf{Referência}: \cite{algorithm design}.  
+% \textit{(Definição localizada em Algorithm Design, pág. 99).}
+
+% Tais componentes são ditas maximais, onde:
+
+% \begin{itemize}
+%     \item Maximal implica que nenhuma aresta ou vértice pode ser adicionado ao subgrafo sem que ele deixe de ser fortemente conexo.
+%     \item Assim, cada componente forte é um subgrafo que não está estritamente contido em nenhum outro subgrafo fortemente conexo de \(D\).
+% \end{itemize}
+
+% \textbf{Referência}: \cite{sem referência}.  
+% \textit{(Notas de reunião).}
+
+% \subsection{R-arborescência}
+% \paragraph{}
+% Seja \( G = (V, E) \) um grafo direcionado no qual distinguimos um nó \( r \in V \) como a \textit{raiz}.
+% Uma \textit{arborescência} (com respeito a \( r \)) é essencialmente uma árvore geradora direcionada enraizada em \( r \). Especificamente, uma arborescência é um subgrafo \( T = (V, F) \) tal que:
+
+% \begin{enumerate}
+%     \item \( T \) é uma árvore geradora de \( G \) se ignorarmos a direção das arestas; e
+%     \item Existe um caminho em \( T \) de \( r \) para cada outro nó \( v \in V \), considerando a direção das arestas.
+% \end{enumerate}
+
+% \textbf{Referência}: \cite{algorithm design}.  
+% \textit{(Definição localizada em Algorithm Design, pág. 177).}
+
+% \subsection{Função de Custo Total \(c(F)\)}
+% \paragraph{}
+% Dada uma função de custo \(c: A \to \mathbb{R}^+\) associada às arestas de um grafo \(D = (V, A)\), o \textbf{custo total} de um subgrafo \(F \subseteq D\) é definido como:
+% \[
+% c(F) = \sum_{a \in F} c(a),
+% \]
+% onde \(F\) é o conjunto de arestas do subgrafo.
+
+% \textbf{Referência}: \cite{Connections in Combinatorial Optimization}.  
+% \textit{(Definição localizada em Connections in Combinatorial Optimization, pág. 95).}
+
+% \subsection{Problema da R-Arborescência de Custo Mínimo}
+% \paragraph{}
+% O \textbf{problema da R-arborescência de custo mínimo} consiste em determinar a \(R\)-arborescência \(F \subseteq D\) que minimiza o custo total \(c(F)\), onde:
+% \[
+% c(F) = \sum_{a \in F} c(a),
+% \]
+% sujeito à condição de que \(F\) seja uma \(R\)-arborescência válida.
+
+% \textbf{Referência}: \cite{algorithm design}.  
+% \textit{(Definição localizada em Algorithm Design, pág. 177).}
+
+% \subsection{Definição de Algoritmo Guloso}
+% \paragraph{}
+% Definir precisamente o que se entende por um \textbf{algoritmo guloso} é uma discussão em aberto. De acordo com os autores do livro Algorithm Design, um algoritmo é considerado guloso quando constrói uma solução de maneira incremental, realizando pequenas escolhas sucessivas. Em cada etapa, a decisão é tomada de forma \textit{míope}, visando otimizar algum critério subjacente de maneira local.
+
+% \textbf{Referência}: \cite{Algorithm Design}.  
+% \textit{}
+
+% \subsection{Árvore Geradora}
+
+% Uma \textbf{árvore geradora} de um grafo conexo \( G = (V, E) \) é um subgrafo \( T = (V, F) \) que satisfaz as seguintes propriedades:
+
+% \begin{itemize}
+%     \item \( T \) contém todos os vértices de \( G \), ou seja, \( T \) é um subgrafo gerador de \( G \);
+%     \item \( T \) é um grafo conexo, ou seja, existe um caminho entre quaisquer dois vértices em \( T \);
+%     \item \( T \) é acíclico, ou seja, não contém ciclos;
+%     \item \( T \) contém exatamente \( |V| - 1 \) arestas, garantindo que seja minimamente conexo.
+% \end{itemize}
+
+% \textbf{Referência}: \cite{Procurar Referência}.  
+% \textit{Falta citação}
+
+\printbibliography
+
+\end{document}
+

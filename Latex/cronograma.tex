@@ -1,0 +1,177 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{pgfgantt}
+\usepackage[brazil]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{abntex2cite}
+
+\title{Relatório I de Projeto de Graduação: Análise e Implementação de Algoritmo de Busca de uma r-Arborescência Inversa de Custo Mínimo em Grafos Dirigidos}
+\author{Orientador: Mário Leston \and Lorena Silva Sampaio - 11201812025, Samira Haddad - 11201812350}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Introdução}
+Este projeto tem como objetivo analisar o artigo "A Simple Algorithm and Min–Max Formula for the Inverse Arborescence Problem", desenvolvido por András Frank e Gergely Hajdu. O foco do estudo é na compreensão do algoritmo exposto pelos autores, o qual consiste na modificação mínima de uma função de custo em um grafo dirigido de modo que uma arborescência de entrada se torne a mais econômica. O artigo introduz uma abordagem conceitualmente mais simples e uma nova fórmula min-max para essa modificação, baseada em um teorema min-max e em um algoritmo guloso de duas fases. O projeto de graduação consiste na compreensão e implementação do problema em linguagem de programação a ser definida e validação da solução por meio de testes práticos.
+
+\section{Objetivos}
+\begin{itemize}
+    \item Compreender a teoria por trás das arborescências e o problema da arborescência inversa.
+    \item Implementar o algoritmo proposto no artigo em linguagem de programação a ser definida.
+    \item Validar a implementação através de casos de teste com diferentes grafos.
+    \item Documentar o processo e os resultados obtidos.
+\end{itemize}
+
+\section{Metodologia}
+
+\subsection{Estudo Teórico}
+\begin{itemize}
+    \item Revisão do artigo e análise do trabalho de Frank e Hajdu sobre o problema da arborescência inversa.
+    \item Análise dos teoremas e da nova fórmula min-max proposta, assim como a conexão com o algoritmo guloso de duas fases.
+\end{itemize}
+
+\subsection{Implementação}
+\begin{itemize}
+    \item Desenvolvimento do algoritmo, seguindo a abordagem proposta:
+    \begin{itemize}
+        \item Modificação da função de custo das arestas.
+        \item Aplicação da fórmula min-max para garantir a minimização dos custos.
+        \item Implementação do algoritmo guloso para encontrar a arborescência mais econômica.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Validação}
+\begin{itemize}
+    \item Criação de casos de teste com grafos de diferentes topologias e custos.
+    \item Comparação dos resultados da implementação com as expectativas teóricas e exemplos do artigo.
+\end{itemize}
+
+\subsection{Documentação}
+\begin{itemize}
+    \item Registro do processo de desenvolvimento, incluindo decisões tomadas e resultados obtidos.
+\end{itemize}
+
+\section{Divisão de Tarefas}
+O presente projeto de graduação de curso em ciência da computação será realizado de forma conjunta pelos discentes Lorena Silva Sampaio e Samira Haddad, a atribuição de atividades foi realizada conforme o descrito na tabela 1 abaixo.
+
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Capítulos | Atribuições} & \textbf{Início} & \textbf{Duração} \\
+\hline
+\multicolumn{3}{|l|}{\textbf{1. Definições | Lorena Sampaio}} \\
+\hline
+Dígrafo & 2024-12-07 & 1 dia \\
+Função de custo & 2024-12-08 & 1 dia \\
+Arcos de custo zero & 2024-12-09 & 1 dia \\
+Solução ótima & 2024-12-10 & 1 dia \\
+Definição do problema & 2024-12-11 & 1 dia \\
+Definição do problema R-Arborescência & 2024-12-12 & 1 dia \\
+Definição do problema R-Arborescência Inversa & 2024-12-13 & 1 dia \\
+Revisão das definições & 2024-12-14 & 2 dias \\
+\hline
+\multicolumn{3}{|l|}{\textbf{Algoritmo de Chu-Liu | Lorena Sampaio}} \\
+\hline
+Descrição & 2024-12-16 & 1 dia \\
+Correção e complexidade do algoritmo & 2024-12-17 & 1 dia \\
+Descrição da implementação & 2024-12-18 & 3 dias \\
+\hline
+\multicolumn{3}{|l|}{\textbf{Algoritmo de Fulkerson | Samira Haddad}} \\
+\hline
+Descrição & 2024-12-27 & 2 dias \\
+Correção e complexidade do algoritmo & 2025-01-03 & 2 dias \\
+Descrição da implementação & 2025-01-05 & 5 dias \\
+\hline
+\multicolumn{3}{|l|}{\textbf{Algoritmo Dual Guloso de Frank | Samira Haddad}} \\
+\hline
+Descrição & 2025-01-13 & 2 dias \\
+Correção e complexidade do algoritmo & 2025-01-15 & 2 dias \\
+Descrição da implementação & 2025-01-17 & 5 dias \\
+\hline
+\multicolumn{3}{|l|}{\textbf{O Problema da Arborescência Inversa | Lorena Sampaio}} \\
+\hline
+Descrição & 2025-01-17 & 2 dias \\
+Correção e complexidade do algoritmo & 2025-01-19 & 2 dias \\
+Descrição da implementação & 2025-01-21 & 2 dias \\
+\hline
+\multicolumn{3}{|l|}{\textbf{Implementação de código | Ambas de acordo o capítulo}} \\
+\hline
+Definição de estruturas de dados & 2025-01-30 & 2 semanas \\
+Definição de funções auxiliares & 2025-02-13 & 2 semanas \\
+Algoritmo de Chu-Liu & 2025-02-27 & 2 semanas \\
+Algoritmo de Fulkerson & 2025-03-12 & 2 semanas \\
+Algoritmo Dual Guloso de Frank & 2025-03-27 & 2 semanas \\
+O Problema da Arborescência Inversa & 2025-04-11 & 2 semanas \\
+\hline
+\multicolumn{3}{|l|}{\textbf{7.Corpo do artigo | Ambas}} \\
+\hline
+Introdução e justificativa & 2025-05-01 & 4 horas \\
+Objetivo & 2025-05-01 & 4 horas \\
+Metodologia & 2025-05-02 & 4 horas \\
+Conclusão & 2025-05-02 & 4 horas \\
+Referências & 2025-05-03 & 1 dia \\
+\hline
+\multicolumn{3}{|l|}{\textbf{8.Revisão}} \\
+\hline
+Textual & 2025-05-10 & 1 mês \\
+ABNT & 2025-06-10 & 1 dia \\
+\hline
+\end{tabular}
+\end{center}
+\begin{center}
+\caption{} Tabela 1: Planejamento de Atividades e Atribuições
+\end{center}
+
+\section{Cronograma}
+O planejamento deste projeto foi elaborado em etapas essenciais para sua organização e execução. Abaixo, listamos as etapas do cronograma e a sequência de tarefas necessárias:
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1\textwidth]{images/waterfall-planning-2.png}
+    \caption{Legenda da imagem.}
+    \label{fig:Cronograma}
+\end{figure}
+
+%% MERMAID: FEGAkBeyFJdnOwndZGykCNN0i7c0udFFGGjlsZNLgIU03yNPsxQIFelXsE_jFdkid6FaJtTavrIM_zvzzkxw9BqnIIJgHg8Ej40zPyeOJvoU1nMxPciFB6ZOnp8Eg4SvKtU44wZFRDRdCrqkm5A8co6urUZaVzzTTBZByLKTgYiXpmpJMkHevF
+
+\section{Considerações Finais}
+Este projeto visa a compreensão profunda do problema abordado e o estudo de suas possíveis aplicações em problemas práticos. A colaboração entre os integrantes será fundamental para o sucesso do projeto.
+
+\begin{thebibliography}{98}
+
+\bibitem{frank2014} FRANK, A.; HAJDU, G. A Simple Algorithm and Min--Max Formula for the Inverse Arborescence Problem. \textit{Algorithms}, v. 7, n. 4, p. 637--647, 2014. DOI: 10.3390/a7040637.
+
+\bibitem{hu1997strongly} HU, Z.; LIU, Z. A strongly polynomial algorithm for the inverse shortest arborescence problem. \textit{Discrete Applied Mathematics}, v. 82, n. 1--3, p. 135--154, 1998.
+
+\bibitem{cormen2009} CORMEN, T. H.; LEISERSON, C. E.; RIVEST, R. L.; STEIN, C. \textit{Introduction to Algorithms}. 3. ed. MIT Press, 2009.
+
+\bibitem{kleinberg2006} KLEINBERG, J.; TARDOS, É. \textit{Algorithm Design}. Addison-Wesley, 2006.
+
+\bibitem{bondy2008graph} BONDY, J. A.; MURTY, U. S. R. \textit{Graph Theory with Applications}. Springer, 2008.
+
+\bibitem{schrijver2003comb} SCHRIJVER, A. \textit{Combinatorial Optimization: Polyhedra and Efficiency}. Springer, 2003.
+
+\bibitem{edmonds1967optimum} EDMONDS, J. Optimum Branchings. \textit{Journal of Research of the National Bureau of Standards}, v. 71B, p. 233--240, 1967.
+
+\bibitem{west2001introduction} WEST, D. B. \textit{Introduction to Graph Theory}. 2. ed. Prentice Hall, 2001.
+
+\bibitem{diestel2017graph} DIESTEL, R. \textit{Graph Theory}. 5. ed. Springer, 2017.
+
+\bibitem{nemhauser1988} WOLSEY, L. A.; NEMHAUSER, G. L. \textit{Integer and Combinatorial Optimization}. 1. ed. Wiley-Interscience, 1988.
+
+\end{thebibliography}
+
+\end{document}
+
+
+
+
+
+
+

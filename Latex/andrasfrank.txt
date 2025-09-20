@@ -1,0 +1,289 @@
+11.4 Rooted k-connections
+Finding a cheapest strongly connected subgraph of a digraph is known to be NP-complete
+while the cheapest rooted subgraph problem in a digraph is solvable in polynomial time
+(see Section 3.2.2). More generally, it will turn out that the minimum cost rooted k-edge-
+connected subgraph problem as well as its rooted k-node-connected counterpart can be
+solved in polynomial time. These general algorithms, however, rely on the weighted matroid
+intersection algorithm and will be discussed only in Part III, similarly to the polyhedral
+description of these kinds of subgraphs. In the introduction to this chapter, we indicated that
+these algorithms can be used to solve the cheapest augmentation problems as well, since the
+min-cost augmentation problem is equivalent to the min-cost subgraph problem. In this sec-
+tion we shall show that the augmentation problem admits a much simpler solution algorithm
+in the special case when we want to increase the rooted (edge- or node-) connectivity of the
+digraph by one.
+11.4.1 Minimum-costarborescences revisited
+Let us start by investigating the special case when k= 1, when the goal is to find a cheapest
+root-connected spanning subgraph of a digraph with a specified root-node r0. For non-
+negative costs, this is equivalent to the minimum-cost spanning arborescence problem. In
+Section 3.2.2 we already described a polynomial time algorithm by Chu and Liu [50]. Here
+we show that a slight modification of the algorithm gives rise to a min-max theorem and to
+a totally dual integral description of the polyhedra of arborescences.
+Let D= (V, A) be a root-connected digraph from a root r0 and let c : A → R+ be a cost
+function. Assume that no edge enters the root. We refer to a set-function z : 2V−r0 → R+
+as c-feasible if
+c(a) ≥ z(X) : X is entered by a for every a ∈ A. (11.43)
+Theorem 11.4.1 (Fulkerson [170]) The minimum cost of a spanning r0-arborescence is
+equal to
+max [z(X) : X ⊆ V− r0] : z is c-feasible.
+Furthermore, if c is to be integer-valued, an optimal z can be chosen integer-valued.
+
+Proof. Let F be a spanning r0-arborescence and z a c-feasible function. Since each non-
+empty X ⊆ V− r0 is entered by an element of F, we have
+c(F)= [c(a) : a ∈ F] ≥ [z(X) : a enters X] : a ∈ F ≥ [z(X) : X ⊆ V− r0]
+from which max ≤ min follows. If we have equality throughout, then the given arborescence
+F is certainly of minimum cost and the given z is an optimal dual solution. These equalities
+require the following two properties called optimality criteria.
+c(a)= [z(X) : X is entered by a] for every a ∈ F, (11.44)
+z(X) > 0 implies ϱF (X)= 1. (11.45)
+The algorithm below finds a spanning r0-arborescence F and a feasible z satisfying the
+optimality criteria. It consists of two phases. The first phase, described by Fulkerson [170],
+constructs z in a greedy manner, while the second phase, due to Frank [111], also constructs
+F in a greedy manner by making use of the available z. During the course of the Phase 1,
+we revise the cost function from time to time. The current cost function is denoted by c′. We
+call an edge a a 0-edge if c′(a)= 0.
+Phase 1 Iterate the following step. Choose a minimal non-empty subset X ⊆ V− r0 with
+no entering 0-edge. Define z(X) := min{c′(a) : a enters X} and revise c′ as follows. Let
+c′(a) := c′(a)− z(X) when a enters X. The revised c′ is non-negative and its value is zero
+on at least one more edge of D. Phase 1 terminates when every set X ⊆ V− r0 admits
+an entering 0-edge, or equivalently, when there is a spanning r0-arborescence consisting of
+0-edges.
+Phase 2 Starting at r0, build up a spanning r0-arborescence F by consecutively adding
+0-edges in such a way that the currently added edge leaves the node-set of the already
+constructed arborescence. If, during this building process, there is more than one 0-edge
+leaving the arborescence already constructed, choose the one which became a 0-edge earliest
+during Phase 1.
+Obviously, function z constructed in Phase 1 is c-feasible. Furthermore, z and F satisfy
+(11.44) since F consists of 0-edges.
+Lemma 11.4.2 z and F satisfy (11.45).
+Proof. Let X be a set with z(X) > 0. If, indirectly, ϱF (X) > 1, then there is a moment
+during Phase 2 when an arborescence F′ is at hand for which ϱF′ (X)= 1 and the edge e
+currently added to F′ enters X. Due to the selection rule of Phase I, at the moment when
+z(X) became positive during Phase I, no (at that time current) 0-edge entered X but every
+proper non-empty subset of X admitted an entering 0-edge. In particular, there was a 0-edge
+f entering X− V (F′) which did not enter X. Therefore when z(X) became positive during
+Phase 1, f had already been a 0-edge while e was not. This contradicts the selection rule of
+Phase 2: edge e could not have been chosen because of f. •
+Since F and z satisfy the optimality criteria, the proof of the theorem and the correctness
+of the algorithm is complete. • •
+ 
+Preserving and improving connections
+Remark Phase 1 of the algorithm requires finding a minimal non-empty set X with no
+entering 0-edge. In Section 3.2, we pointed out (in Lemma 3.2.8) that the current digraph
+D0 of 0-edges during Phase 1 always includes a source-component X not containing r0 and
+such an X serves as a minimal subset of V− r0 with no entering 0-edge.
+Fulkerson’s theorem can be formulated in an equivalent form.
+Theorem 11.4.3 The linear system described for x ∈ RA by
+{x ≥ 0, ϱx (X) ≥ 1 for every ∅ ⊂ X ⊆ V− r0} (11.46)
+is totally dual integral. In particular, the polyhedron described by (11.46) is the convex hull
+(of the characteristic vectors) of all root-connected subgraphs of D.
+By using Cook’s theorem (Theorem 4.1.26), we immediately obtain the following.
+Corollary 11.4.4 The linear system
+{x ≥ 0, ϱx (X) ≥ 1 for every ∅ ⊂ X ⊆ V− r0, ϱx (v)= 1 for every v ∈ V− r0}
+(11.47)
+is TDI. In particular, the polytope described by (11.47) is the convex hull (of the character-
+istic vectors of) all spanning r0-arborescences of D. •
+Problems
+11.4.1 (∗) Suppose that T ⊆ V− r0 is a given set of terminals such that the head of
+every edge with positive cost is in T . Construct an algorithm for computing a cheapest
+arborescence F of root r0 such that T ⊆ V (F).
+11.4.2 (∗) Let {T1, . . . , Tq } be a system of non-empty subsets of V− r0. Devise an algo-
+rithm to decide if there is a spanning r0-arborescence that enters each Ti exactly once.
+11.4.3 Suppose that there is a spanning r0-rooted arborescence entering each Ti
+(i=1,2,. . . ,q) once. Devise an algorithm which constructs such an arborescence of minimum
+cost with respect to a given cost function.
+Heaviest branchings
+A related problem is as follows. Given a digraph D= (V, A) and a weight function w on
+A, find a maximum weight branching. We call a pair (π, y) a covering, where π : V → R+
+is a non-negative function on V and y : 2V → R+ a non-negative function on the subsets of
+V , if w(uv) ≤ π(v) + [y(Z) : u,v ∈ Z ⊆ V ] for every uv ∈ A. The value of a covering
+is [π(v) : v ∈ V ] + [y(Z)(|Z| − 1) : Z ⊆ V ].
+Theorem 11.4.5 (Edmonds [78]) The maximum weight of a branching of D is equal to the
+minimum value of a covering. If w is integer-valued, an optimal covering can be chosen to
+be integer-valued.
+Proof. Obviously, max ≤ min. To see the other direction, extend D by a new node r0 and
+new r0v-edges for every v ∈ V . Define a cost function c on the edges of the extended
+digraph D′ as follows. Let the cost of all the new edges of D′ be M := max{w(a) : a ∈
+A}, and c(a) := M− w(a) for every a ∈ A. By Theorem 11.4.1, there is a c-feasible
+
+vector z : 2V → R+ and a spanning r0-arborescence F of D′ satisfying the optimality
+criteria (11.44) and (11.45). Define π(v) := M− [z(Z) : v ∈ Z] and, for |Z| > 1, define
+y(Z) := z(Z) (Z ⊆ V ). It is straightforward that (π, y) is a covering and that its value is
+equal to the w-weight of the branching F ∩ A of D. •
+11.4.2 Ageneraltwo-phasegreedy algorithm
+In Section 10.3, we could see the benefits of extending Edmonds’ theorem on disjoint
+arborescences to an abstract setting on covering intersecting families of bi-sets by disjoint
+digraphs. Our goal in this section is to show that the two-phase approach exhibited in
+Section 11.4.1 for finding a cheapest spanning arborescence is not an individual and isolated
+algorithm either. The paper [111] included a straight generalization of this 2-phase greedy
+algorithm to compute a cheapest subset of edges of a digraph covering an intersecting
+supermodular set-system. Our present goal is to describe a two-phase greedy algorithm [133]
+for a more general problem in which the goal is to compute a cheapest subset of edges of a
+digraph covering an intersecting system of bi-sets. As a consequence, we shall have a simple
+and efficient algorithm for making a rooted (k− 1)-edge-connected (respectively, (k− 1)-
+node-connected) digraph rooted k-edge-connected (k-node-connected) by adding a set of
+new edges whose total cost is as small as possible. The cheapest arborescence problem is a
+special case when k= 1 and the starting digraph has no edges.
+We emphasize, however, that the algorithm below is not a straight generalization of the
+algorithm of Section 11.4.1 (or the algorithm of [111]). The reason why we describe a
+different two-phase greedy algorithm is that the proof of a direct extension of the algorithm
+of Section 11.4.1 to bi-set families would become a bit messy. On the other hand the
+specialization of the algorithm below to arborescences is less efficient than the variant above.
+Therefore both versions have their own advantages.
+Let D= (V, A) be a directed graph endowed with a non-negative cost function c : A →
+R+. Let F be an intersecting family of bi-sets on V so that each member of F is covered
+by D, that is, ϱD(X) ≥ 1 for every X ∈ F where ϱD(X) denotes the number of edges in D
+covering X. Recall that an edge e is said to cover or enter a bi-set X= (XO , X I ) if e enters
+both XO and X I . Given a covering F, a bi-set X is F-tight if ϱF (X)= 1.
+A non-negative bi-set-function y : F → R+ is c-feasible or, simply feasible, if
+c(a) ≥ m(y,a) for every a ∈ A (11.48)
+where
+m(y,a) := [y(X) : X ∈ F is covered by a].
+(The function y is sometimes referred to as a dual feasible solution.) An edge a satisfying
+(11.48) with equality is said to be y-tight. In the proof, the following basic properties of
+bi-sets will be used.
+(E1) If A ⊑ B ⊑ C and a covers both C and A, then a covers B.
+(E2) If a covers A ⊓ B or A ⊔ B, then a covers A or B.
+The following result and its algorithmic proof appeared in [133].
+978–0–19–920527–1 11-Andras-Frank-c11-drv Andras Frank (Typeset by SPi, Publisher Services, India) 396 of 640 December 11, 2010 15:19
+OUP CORRECTED PROOF – REVISES, 11/12/2010, SPi
+396 Preserving andimproving connections
+Theorem 11.4.6 Let D= (V, A) be a digraph endowed with a non-negative cost function
+c : A → R+ and let F be an intersecting family of bi-sets on V so that D covers F . The
+minimum cost of a subset F ⊆ A of edges covering F is equal to
+max [y(X) : X ∈ F ] : y ≥ 0 is c-feasible.
+Furthermore, if c is integer-valued, the optimal y can be chosen to be integer-valued.
+Proof. Let F ⊆ A be a subset of edges covering F and y a c-feasible function. We have
+c(F)= [c(a) : a ∈ F] ≥ [y(X) : X ∈ F is covered by a] : a ∈ F
+≥ [y(X) : X ∈ F ]
+from which max ≤ min follows. If we have equality throughout, then the given set F is a
+cheapest covering of F and the given y is an optimal c-feasible vector. These equalities are
+equivalent to requiring the following two properties, called optimality criteria:
+every element of F is y-tight, (11.49)
+y(X) > 0 implies that X is F-tight. (11.50)
+The algorithm below finds an F covering F and a feasible y satisfying the optimality
+criteria. It consists of two phases. In the first one, we construct a dual feasible solution y in
+a greedy way. In the second phase, we construct a covering F ⊆ A of F , in a greedy way,
+by using only y-tight edges.
+Phase 1 Iterate the following step for i= 1,2,... for determining a member Zi of F
+along with an edge ai ∈ A entering Zi and y(Zi ). At the beginning, let y ≡ 0, and assume
+that during the first i− 1 steps, a Z j ∈ F , an edge a j entering Z j , and y(Z j ) have been
+determined for each j (1 ≤ j ≤ i− 1). In step i (i= 1,2, . . . ), decide first if there is a
+Z ∈ F not covered by {a1, . . . ,ai−1}. If no such a Z exists, then the first phase terminates
+by letting t := i− 1 and Z := {Z1, . . . , Zt }, and we turn to Phase 2. If there is such a Z,
+then choose a smallest one, denoted by Zi . Let μi := min{c(a)− m(y,a) : a covers Zi } and
+let y(Zi )= μi . Furthermore, let ai be an edge covering Zi where the minimum is attained
+and continue Phase 1 with i := i + 1. Observe that the final y is dual feasible and that each
+ai is y-tight. (It can be the case that y(Z)= 0 for some Z ∈ Z.)
+Phase 2 At the beginning, let F = ∅. Starting with at , consider the elements ai in reverse
+order and add the current element ai to F if F does not cover Zi.
+Note that the algorithm can be used in concrete situations if a subroutine is available in
+Phase 1 to find a minimal member Z of F not covered by a given subset of edges. See
+Problem 11.4.5 below.
+To prove the validity of the algorithm we need to show two things. First, the resulting F
+covers F and, second, each Zi is F-tight. The following property is implied by the selection
+rule of Phase 1.
+Claim A If X Z j for some j= 1, . . . ,t, then there is an i < j, for which ai covers X. •
+Claim B Z is laminar.
+
+Proof. Suppose indirectly that Z j and Zh are intersecting and let j < h. Applying Claim A
+to X := Z j ⊓ Zh, we obtain that there is an edge ai for which i < j and ai covers Z j ⊓ Zh.
+But then ai must cover Z j or Zh by (E2) and this contradicts the selection rule of Phase 1
+(since i < j < h). •
+From the selection rule of Phase 1 and from the laminar property of Z we obtain:
+Claim C Zi is F-tight for every i= 1, . . . ,t.
+Proof. By the selection rule of Phase 2, we have ϱF (Zi ) ≥ 1. Suppose indirectly that there
+are two elements a j and ak ( j < k) in F which cover Zi . Then i ≤ j < k by the selection
+rule of Phase 1. Due to edge a j, Zi and Z j are intersecting, and due to edge ak , Zi and Zk
+are intersecting. The laminarity of Z and j < k imply Zi ⊑ Z j Zk. By (E1), ak covers
+Z j , and hence (by the rule of Phase 2) a j cannot be in F, a contradiction. •
+Claim D For every Z ∈ F there is a subscript j for which a j covers Z and Z j ⊑ Z.
+Proof. At the end of Phase 1, there is an edge a j covering Z. Assume that j is as small
+as possible. We show that Z j ⊑ Z. If this were not true, then X Z for X := Z j ⊓ Z. By
+Claim A, there is a subscript i < j for which ai covers X. Then ai must cover at least one
+of Z j and Z. On the other hand ai cannot cover Z j by the selection rule of Phase 1 and it
+cannot cover Z either by the minimal choice of j, and this contradiction proves the claim. •
+Claim E F covers F.
+Proof. Suppose indirectly that F has a member Z not covered by F and let Z be maximal.
+By Claim D, there is a subscript j for which a j covers Z and Z j ⊑ Z. Since Z j is F-tight
+by Claim C, we cannot have Z j= Z, and hence Z j Z. Since Z is not covered by F, a j
+is not in F and hence (by the selection rule of Phase 2) there is an edge ak ∈ F for which
+k > j, ak covers Z j , and Z j Zk . Now Z and Zk are properly intersecting since ak does
+not cover Z. The maximal choice of Z implies ϱF (Zk ⊔ Z) ≥ 1, and hence there is an edge
+aℓ ∈ F covering Zk ⊔ Z. But then aℓ covers at least one of Zk and Z which is impossible
+since Z is not covered by F, and if aℓ covers Zk , then Zk is covered by both ak and aℓ,
+contradicting Claim C. •
+Therefore we proved that the covering F ⊆ A of F and the dual feasible solution y
+constructed by the two-phase greedy algorithm satisfy the optimality criteria. Moreover,
+if c is integer-valued then so is the constructed y. • •
+Faigle and Peis [97] described extensions and further applications of the two-phase greedy
+algorithm. For other greedy algorihms concerning partially ordered sets, see the work [65]
+of Dietrich and Hoffman.
+Linear programming formulation
+Let Q be a (0,1)-matrix whose rows correspond to the elements of F while its columns to
+the edges of D. An entry corresponding to a bi-set Z ∈ F and to an edge a ∈ A is 1 when a
+covers Z and zero otherwise.
+
+Consider the following pair of primal and dual programs.
+min{cx : x ≥ 0, Qx ≥ 1} (11.51)
+max{1y : y ≥ 0, yQ ≤ c}. (11.52)
+Observe that the characteristic vector x = χF of a subset F ⊆ A meets the primal con-
+straints Qx ≥ 1 if and only if F is a covering or F . Also, an y is c-feasible if and only if
+yQ ≤ c. Therefore Theorem 11.4.6 can be formulated in the following equivalent form.
+Theorem 11.4.7 Let D and F be the same as in Theorem 11.4.6. The linear system {x ≥
+0, Qx ≥ 1} described for x ∈ RA is totally dual integral. In particular, the convex hull of
+(the characteristic vectors of) coverings of F is described by {x ∈ RA : x ≥ 0, Qx ≥ 1}.
+This result will be considerably generalized in Section 17.1.
+Application to augmenting rooted k-connection
+In the special case when k= 1 and F consists of all simple non-trivial bi-sets for which
+XO = X I ⊆ V− r0, the problem above specializes to the cheapest arborescence problem.
+(As mentioned above, the algorithm obtained in this way is different from the one exhibited
+in Section 11.4.1.) The much more general optimization problem of computing a cheapest
+rooted k-edge- or k-node-connected subgraph of a digraph will be solved via weighted
+matroid intersections in Section 13.5. In this way, we shall have an algorithm for solving the
+cheapest augmentation problem in which the target is rooted k-edge- or k-node-connectivity.
+Our present goal is to show that in the special case when the goal is to augment the rooted
+node- or edge-connectivity only by 1, the general algorithm can be avoided since the 2-phase
+algorithm discussed above can be applied. Actually, we describe a more general problem, in
+which case no matroidal approach is known.
+Cheapest augmentation of rooted k-edge-connectivity by 1 Let D0 = (V, A0) be a
+directed graph with a root-node r0 and let T ⊆ V− r0 be a non-empty set of terminal nodes
+so that D0 is rooted (k− 1)-edge-connected from r0 to T , which means that ϱD0 (X) ≥ k− 1
+holds for every subset X ⊆ V− r0 intersecting T . By Menger’s theorem this is equivalent
+to requiring that there are k− 1 edge-disjoint r0t-paths for every t ∈ T . Let D= (V, A)
+be a digraph endowed with a non-negative cost function c : A → R+ on its edges so that
+D0 + D is k-edge-connected from r0 to T . If there are no restrictions on D, then the problem
+of finding a cheapest subset of edges of D the addition of which to D0 results in a digraph
+that is rooted k-edge-connected from r0 to T is NP-complete even in the special case when
+k= 1 and A0 = ∅ since this is the Steiner arborescence problem. However, if
+the head of each edge a ∈ A with c(a) > 0 is in T , (11.53)
+then the algorithm above can be used. To see how, first observe that each edge of zero cost
+can be added freely to D0. Therefore we can assume that (∗) the head of every edge of D
+is in T .
+Let
+F := {X= (XO , X I ) : XO ⊆ V− r0, ϱD0 (XO )= k− 1, X I = T ∩ XO ̸= ∅}.
+
+Standard submodular technique implies that F is an intersecting family of bi-sets. Further-
+more, for a subset F ⊆ A of edges D0 + F is k-edge-connected from r0 to T if and only if F
+covers F . (This is where (∗) is exploited.) Therefore we can apply the two-phase algorithm
+developed above. Note that in the special case when T= V− r0, the restriction formulated
+in (11.53) holds automatically.
+Exercise 11.4.4 Show that in the special case when k= 1 the foregoing problem can be
+reduced to that of finding a cheapest spanning arborescence.
+Cheapest augmentation of rooted k-node-connectivity by 1 Given D0, D, T , and c again
+with the same properties as above, consider now the augmentation problem when D0 is
+rooted (k− 1)-node-connected from r0 to T , meaning that ϱD0 (X) + w(X) ≥ k− 1 holds
+for every bi-set X= (XO , X I ) for which X I ∩ T ̸= ∅ and XO ⊆ V− r0 where w(X)=
+|XO | − |X I |. By Menger’s theorem, this property is equivalent to requiring that there be
+k− 1 openly disjoint r0t-paths for every t ∈ T .
+Let
+F := {X= (XO , X I ∩ T ) : XO ⊆ V− r0, X I ∩ T ̸= ∅, ϱD0 (X) + w(X)= k− 1}.
+It can be shown that F is intersecting and that a subset F of edges of D covers F if and
+only if D0 + F is k-node-connected from r0 to T . Therefore, the general algorithm can be
+applied again.
+In particular, in the special case when T= V− r0, the algorithm above computes a
+cheapest subset of edges of D for which addition to D0 (which is supposed to be rooted
+(k− 1)-node-connected) results in a rooted k-node-connected digraph.
+Problem 11.4.5 Step i of Phase 1 of the general algorithm above requires deciding if there
+is a bi-set Z ∈ F not covered by {a1, . . . ,ai−1}, and if there is one, a smallest Zi is to be
+computed. Show that such a subroutine can be constructed via MFMC computations in the
+special cases of rooted edge- and node-connectivity augmentation.
