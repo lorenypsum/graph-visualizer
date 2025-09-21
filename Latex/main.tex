@@ -14,7 +14,7 @@
 \title{Análise e Implementação de Algoritmos de Busca de uma r-Arborescência Inversa de Custo Mínimo em Grafos Dirigidos com Aplicação Didática Interativa}
 \author{Orientador: Mário Leston 
 \and Discentes: Lorena Silva Sampaio, Samira Haddad}
-\date{10 de Dezembro de 2024}
+\date{\today}
 
 \begin{document}
 
@@ -23,31 +23,53 @@
 \section{Introdução}
 
 \paragraph{}
-O problema da \textit{r-arborescência de custo mínimo} consiste em, dado um grafo dirigido com custos nas arestas, encontrar um subgrafo orientado enraizado em um vértice \(r\) que conecte \(r\) a todos os demais vértices por caminhos direcionados, minimizando a soma dos custos das arestas selecionadas.  
+Encontrar uma \textit{r-arborescência inversa de custo mínimo} em grafos dirigidos é um problema estudado em ciência da computação desde os anos 1960, com formulações fundamentais apresentadas por Jack Edmonds em 1967 \cite{edmonds1967optimum}.
 
 \paragraph{}
-Ao longo das últimas décadas, consolidaram-se duas famílias clássicas de métodos: (i) o algoritmo de Chu--Liu/Edmonds, que opera por normalização dos custos das arestas de entrada, seleção sistemática de arcos de custo zero e contração de ciclos até obter um grafo reduzido, seguido de reexpansão para reconstrução da solução \cite{chu1965,edmonds1967optimum}; e (ii) a abordagem dual em duas fases de András Frank, fundamentada em cortes dirigidos, na qual se maximiza uma função de cortes c-viável para induzir 0-arestas e, em seguida, extrai-se a arborescência apenas a partir dessas arestas \cite{frank2014}. Embora assentados em princípios distintos — contração de ciclos no plano primal versus empacotamento/dualidade por cortes —, ambos os paradigmas produzem soluções ótimas e tornam explícitas as relações estruturais em grafos dirigidos e a noção de r-arborescência.  
+Essa busca dialoga com um princípio formulado na Idade Média por Guilherme de Ockham: a navalha de Occam (princípio da parcimônia), uma heurística filosófica segundo a qual, entre explicações concorrentes para um fenômeno, devemos preferir a mais simples ou a que faz menos suposições.
 
 \paragraph{}
-Neste trabalho, analisamos e implementamos, em Python, duas abordagens clássicas para o problema de \textit{r-arborescência (inversa) de custo mínimo}: (i) o algoritmo de Chu--Liu/Edmonds, estruturado pela normalização dos pesos das arestas de entrada, seleção de 0-arestas, detecção/contração de ciclos e posterior reexpansão; e (ii) o método dual de András Frank em duas fases, que maximiza uma função de cortes c-viável para induzir 0-arestas (fase 1) e extrai a arborescência apenas a partir dessas arestas (fase 2). A dissertação articula os fundamentos teóricos com suas traduções algorítmicas em Python, discutindo detalhadamente as decisões de projeto e as etapas de implementação.
+Podemos pensar na navalha de Occam como critério de escolha entre explicações por meio de uma \textit{teia explicativa mínima}: uma estrutura que conecta fatos ou observações com o mínimo de relações explicativas necessárias.
+Quando tais relações envolvem dependência ou causalidade, podemos representá-las pictograficamente como setas direcionadas entre os fatos (as hipóteses aparecem como rótulos dessas setas).
+Para refinar o modelo, associamos um custo a cada relação (por exemplo, o esforço para validar a relação ou a complexidade da explicação).
 
 \paragraph{}
-Adicionalmente, desenvolvemos uma aplicação web com fins didáticos, utilizando o framework PyScript, e as bibliotecas NetworkX e Matplotlib, que permitem construir grafos direcionados interativamente, escolher o vértice-raiz, executar o algoritmo de Chu--Liu/Edmonds e acompanhar, passo a passo, a evolução do grafo e o registro detalhado da execução (log). A interface inclui operações de adicionar arestas com pesos, carregar um grafo de teste e exportar a instância em formato JSON, facilitando a experimentação por estudantes e educadores.
+Encontrar a \textit{teia explicativa mínima} equivale, nessa metáfora, a encontrar uma \textit{r-arborescência de custo mínimo}: fixamos um vértice raiz \(r\) (a explicação inicial) e escolhemos um conjunto mínimo de relações explicativas de modo que todos os fatos tenham um caminho dirigido que leve a \(r\), minimizando o custo total das arestas.
+
+\paragraph{}
+A \textit{r-arborescência} (também chamada \textit{out-arborescência}) orienta as arestas para fora de \(r\): cada vértice \(v\neq r\) tem exatamente uma aresta de entrada, e há um caminho dirigido único de \(r\) até \(v\). Já a \textit{r-arborescência inversa} (\textit{in-arborescência}) orienta as arestas em direção a \(r\): cada \(v\neq r\) tem exatamente uma aresta de saída, e de cada vértice parte um caminho dirigido único até \(r\) \cite{edmonds1967optimum,frank2014}.
+
+\paragraph{}
+Com essa distinção em mente, este trabalho concentra-se na variante inversa. Formalmente, dado um grafo dirigido \(G=(V,E)\) com custos \(c:E\to\mathbb{R}^+\) nas arestas e um vértice raiz \(r\in V\), procura-se uma \textit{r-arborescência inversa} — isto é, uma árvore direcionada que atinja todos os vértices por caminhos dirigidos até \(r\) — que minimize o custo total das arestas selecionadas (cf. \cite{edmonds1967optimum,frank2014}).
+
+\paragraph{}
+Nosso interesse, porém, não é apenas encontrar a arborescência mínima: o percurso até ela também importa, pois revela propriedades estruturais dos dígrafos e ilumina técnicas distintas de otimização. Por isso, investigamos duas rotas clássicas e complementares: (i) o algoritmo de Chu--Liu/Edmonds, que opera por normalização dos custos das arestas de entrada, seleção sistemática de arestas de custo zero e contração de ciclos até obter um grafo reduzido, seguida pela reexpansão para reconstrução da solução \cite{chu1965,edmonds1967optimum}; e (ii) a abordagem dual, em duas fases, de András Frank, fundamentada em cortes dirigidos, na qual se maximiza uma função de cortes c-viável para induzir arestas de custo zero e, em seguida, extrai-se a arborescência apenas a partir dessas arestas \cite{frank2014}. Embora assentados em princípios distintos — contração de ciclos no plano primal versus empacotamento/dualidade por cortes —, ambos os paradigmas produzem soluções ótimas e tornam explícitas a variedade de abordagens matemáticas que podem ser empregadas para resolver o mesmo problema.
+
+\paragraph{}
+Analisamos e implementamos, em Python, essas duas abordagens, e apresentaremos detalhes das implementações, desafios enfrentados e soluções adotadas. Realizamos testes de volume com milhares de instâncias geradas aleatoriamente, registrando resultados em arquivos CSV e de log; os custos obtidos pelo Chu--Liu/Edmonds e pelas duas variantes de András Frank coincidem, corroborando a correção das implementações.
+
+\paragraph{}
+Adicionalmente, desenvolvemos uma aplicação web com fins didáticos, utilizando o framework PyScript e as bibliotecas NetworkX e Matplotlib, que permitem construir grafos dirigidos interativamente, escolher o vértice-raiz, executar o algoritmo de Chu--Liu/Edmonds e acompanhar, passo a passo, a evolução do grafo e o registro detalhado da execução (log). A interface inclui operações de adicionar arestas com pesos, carregar um grafo de teste e exportar a instância em formato JSON, facilitando a experimentação por estudantes e educadores.
 
 \subsection{Justificativa}
 
-A escolha do problema de \textit{r-arborescência de custo mínimo} se justifica pela sua relevância em diversas aplicações práticas, como otimização de redes de comunicação, planejamento de rotas e análise de estruturas hierárquicas. Além disso, a comparação entre diferentes abordagens algorítmicas para a resolução deste problema permite uma compreensão mais profunda das técnicas de otimização em grafos.
+\paragraph{}
+A busca por uma \textit{r-arborescência inversa de custo mínimo} em grafos dirigidos é um problema clássico com aplicações em diversas áreas, como redes de comunicação, planejamento de rotas, análise de dependências e modelagem de processos. Mas, não precisamos dessa justificação prática para nos interessarmos pelo problema: a riqueza estrutural dos dígrafos e a variedade de técnicas algorítmicas disponíveis o tornam um excelente caso de estudo em otimização combinatória.
+
+\paragraph{}
+Do ponto de vista didático, a metáfora da “teia explicativa mínima” torna concreto o porquê de estudarmos arborescências enraizadas: ela mapeia perguntas sobre explicação, alcance e economia de recursos para estruturas dirigidas, servindo de fio condutor nas implementações e nos experimentos que apresentamos.
 
 \subsection{Objetivos}
-O objetivo principal deste trabalho é analisar, implementar e comparar duas abordagens clássicas para o problema de \textit{r-arborescência de custo mínimo} em grafos dirigidos.
 
-Além disso, buscamos desenvolver uma aplicação web interativa que facilite o entendimento e a experimentação com o algoritmo de Chu--Liu/Edmonds e o método de András Frank, tornando-o acessível para estudantes e educadores.
+\paragraph{}
+O objetivo principal deste trabalho é analisar, implementar e comparar duas abordagens clássicas para o problema de \textit{r-arborescência de custo mínimo} em grafos dirigidos oferecendo uma aplicação web interativa que facilite o entendimento e a experimentação com o algoritmo de Chu--Liu/Edmonds e o método de András Frank, tornando-o acessível para estudantes e educadores.
 
 \subsection{Estrutura do Trabalho}
 \paragraph{}
 Resumidamente, o trabalho abrange as seguintes frentes:  
 
 \begin{enumerate}
+    \item \textbf{Fundamentação teórica}: revisão da literatura sobre arborescências em grafos dirigidos, incluindo definições, propriedades e resultados relevantes.
     \item \textbf{Análise teórica}: consolidação dos conceitos de dígrafos e arborescências, compondo as formulações primal (normalização de custos e contração/reexpansão de ciclos no algoritmo de Chu--Liu/Edmonds) e dual (cortes dirigidos e função c-viável no método de András Frank), destacando resultados e intuições estruturais.
     \item \textbf{Implementação computacional}: implementação em Python das rotinas de normalização dos custos de entrada, construção de \(F^\ast\), detecção e contração de ciclos e reconstrução da solução (Chu--Liu/Edmonds), bem como das duas fases do método de András Frank; além de uma suíte de testes automatizados em larga escala sobre instâncias aleatórias com até centenas de vértices, verificando a coincidência dos custos entre os métodos e registrando resultados em CSV e log.
     \item \textbf{Aplicação pedagógica}: desenvolvimento de uma aplicação web interativa (PyScript + NetworkX + Matplotlib) que permite montar instâncias, escolher o vértice-raiz e acompanhar, passo a passo, a execução do algoritmo com visualização do grafo e dos pesos das arestas, log textual e importação/exportação em JSON para facilitar a reprodução de experimentos.
@@ -57,30 +79,43 @@ Como validação empírica, realizamos testes de volume com milhares de instânc
 
 \section{Definições Preliminares}
 \paragraph{}
-Neste capítulo, reunimos as noções básicas de teoria dos grafos dirigidos utilizadas ao longo do texto. O objetivo é fixar notações e conceitos (conjuntos, relações, funções, dígrafos, propriedade em dígrafos, dígrafos ponderados, ramificações geradoras, arborescências, funções de custo, dualidade, problemas duais e algoritmos), até chegar à formulação do problema da r-arborescência inversa de custo mínimo e adiamos descrições algorítmicas para capítulos posteriores.
+Neste capítulo, reunimos as noções básicas de teoria dos grafos dirigidos utilizadas ao longo do texto. O objetivo é fixar notações e conceitos (conjuntos, relações, funções, dígrafos, propriedade em dígrafos, dígrafos ponderados, ramificações geradoras, arborescências, funções de custo, dualidade, problemas duais e algoritmos), até chegar à formulação do problema da r-arborescência inversa de custo mínimo e adiamos descrições algorítmicas para capítulos posteriores. Mantendo a intuição, pense o dígrafo como essa teia orientada: fixamos um vértice-raiz \(r\) e custos nas arestas; a terminologia será introduzida gradualmente.
 
 \subsection{Conjuntos}
 \paragraph{}
-
 Este trabalho depende profundamente da teoria dos conjuntos.
 Basicamente podemos dizer que todos os objetos matemáticos que iremos utilizar nessa dissertação se reduzem a conjuntos e operações entre eles.
-Um conjunto é uma agregação de objetos distintos com características bem definidas, chamados elementos ou membros do conjunto. Os conjuntos são geralmente representados por letras maiúsculas (por exemplo, \(A\), \(B\), \(C\)) e seus elementos são listados entre chaves (por exemplo, \(A = \{1, 2, 3\}\)). Dois conjuntos são iguais se contêm exatamente os mesmos elementos.
 
+\paragraph{}
+Um \textbf{conjunto} é uma agregação de objetos distintos com características bem definidas, chamados elementos ou membros do conjunto. Os conjuntos são geralmente representados por letras maiúsculas (por exemplo, \(A\), \(B\), \(C\)) e seus elementos são listados entre chaves (por exemplo, \(A = \{1, 2, 3\}\)). Dois conjuntos são iguais se contêm exatamente os mesmos elementos.
+
+\paragraph{}
 Podemos ter conjuntos de qualquer tipo de objeto, incluindo números, letras, elementos da natureza, etc. Para motivar as definições ao longo do texto, adotaremos um exemplo-mestre com organismos: árvores, plantas e fungos, usando pertinência e inclusão para guiar a intuição.
+
+\subsubsection{Subconjuntos}
+\paragraph{}
+Dizemos que \(A\) é um \textbf{subconjunto} de \(B\), denotado \(A \subseteq B\), quando todo elemento de \(A\) também pertence a \(B\). Se, além disso, \(A \neq B\), escrevemos \(A \subset B\) e chamamos \(A\) de \textbf{subconjunto próprio} de \(B\). Ex.: \( \{1,2\} \subseteq \{1,2,3\} \) e \( \{1,2\} \subset \{1,2,3\} \).Por convenção, o conjunto vazio \(\varnothing\) é subconjunto de qualquer conjunto \(X\) (isto é, \(\varnothing \subseteq X\)), e todo conjunto é subconjunto de si mesmo (\(X \subseteq X\)).
+
+\paragraph{}
+No nosso exemplo-mestre, com \(P=\{\text{todas as plantas}\}\), \(T=\{\text{todas as árvores}\}\) e \(F=\{\text{todos os fungos}\}\), temos \(T \subseteq P\) (todas as árvores são plantas), enquanto \(F \not\subseteq P\).
 
 \subsubsection{Pertinência e inclusão}
 \paragraph{}
-Começamos pela \textbf{noção de pertinência}: dizemos que um elemento \(x\) pertence a um conjunto \(X\) quando \(x \in X\) e não pertence quando \(x \notin X\).
+
+Pertinência e inclusão são os conceitos mais fundamentais da teoria dos conjuntos. 
 
 \paragraph{}
-Para ancorar ideias, fixemos um universo \(U\) de organismos e definamos três conjuntos: \(P=\{\text{todas as plantas}\}\), \(T=\{\text{todas as árvores}\}\) e \(F=\{\text{todos os fungos}\}\). Se \(x\) é um carvalho, então \(x\in T\) e, como toda árvore é uma planta, \(x\in P\). Já se \(y\) é um cogumelo, então \(y\in F\) e, na taxonomia moderna, \(y\notin T\) e \(y\notin P\). Agora, considere \(A=\{\text{árvores com folhas verdes}\}\); por definição, \(A\subseteq T\) e a pertinência fica clara: \(x\in A\) se, e somente se, \(x\) é árvore e tem folhas verdes.
+Começando pela \textbf{noção de pertinência} denotado por \(\in\): dizemos que um elemento \(x\) pertence a um conjunto \(X\) quando \(x \in X\) e não pertence quando \(x \notin X\).
 
 \paragraph{}
-Em seguida, vem a \textbf{relação de inclusão} entre conjuntos: escrevemos \(X \subseteq Y\) quando todo elemento de \(X\) também pertence a \(Y\) (e \(X\subset Y\) quando, além disso, \(X\neq Y\)). No nosso exemplo, \(A\subseteq T\subset P\) e \(T\cap F=\varnothing\) (árvores e fungos não se sobrepõem). 
+Para ancorar ideias, fixemos um universo \(U\) de organismos e definamos três conjuntos: \(P=\{\text{todas as plantas}\}\), \(T=\{\text{todas as árvores}\}\) e \(F=\{\text{todos os fungos}\}\). Se \(x\) é um carvalho, então \(x\in T\) e, como toda árvore é uma planta, \(x\in P\). Já se \(y\) é um cogumelo, então \(y\in F\) e, na taxonomia moderna, \(y\notin T\) e \(y\notin P\). Agora, considere \(A=\{\text{árvores com folhas verdes}\}\); a pertinência fica clara: \(x\in A\) se, e somente se, \(x\) é árvore e tem folhas verdes.
+
+\paragraph{}
+Continuando, vem a \textbf{relação de inclusão} entre conjuntos denotada por \(\subseteq\): escrevemos \(X \subseteq Y\) quando todo elemento de \(X\) também pertence a \(Y\) (e \(X\subset Y\) quando, além disso, \(X\neq Y\)). No nosso exemplo, \(A\subseteq T\subset P\) e \(T\cap F=\varnothing\) (árvores e fungos não se sobrepõem).
 
 \subsubsection{Operações entre conjuntos}
 \paragraph{}
-Com essas noções de pertinência e inclusão, apresentamos as operações básicas entre conjuntos, que usaremos ao longo do texto (mantendo o exemplo com \(P,T,F,A\)).
+Com essas definições de pertinência, inclusão e subconjuntos, apresentamos as operações básicas entre conjuntos, que usaremos ao longo do texto (mantendo o exemplo com \(P,T,F,A\)).
 
 Outras operações comuns entre conjuntos incluem:
 \begin{itemize}
@@ -119,16 +154,89 @@ Outras operações comuns entre conjuntos incluem:
 
 \end{itemize}
 
-
 \paragraph{Identidades úteis.}
 Usaremos livremente as propriedades clássicas de conjuntos — comutatividade e associatividade de \(\cup\) e \(\cap\), distributividade e as \textbf{leis de De Morgan} — sem prova. Quando for relevante, explicitaremos a identidade no ponto de uso. Por exemplo, no nosso universo \(U\), \((P\cup F)^c = P^c\cap F^c\).
 
- 
+\subsubsection{Coleção}
+\paragraph{}
 
+Entre os objetos que podem pertencer a um conjunto, estão também eles mesmos, outros conjuntos. Chamaremos tais conjuntos de \textbf{coleções} (ou \textbf{famílias}) de conjuntos. Por exemplo, \(\mathcal{C} = \{P, T, F\}\) é uma coleção formada pelos conjuntos de organismos já definidos: plantas \(P\), árvores \(T\) e fungos \(F\). Note que \(\mathcal{C}\) é um conjunto como outro qualquer; seus elementos são, cada um, um conjunto.
 
+\paragraph{}
+Coleções são úteis para agrupar subconjuntos relacionados de um mesmo universo. Por exemplo, considere \(\mathcal{D} = \{A, B\}\), onde \(A = \{\text{árvores com folhas verdes}\}\) e \(B = \{\text{árvores com folhas vermelhas}\}\). Assim, \(\mathcal{D} \subseteq 2^{T}\) é uma coleção de subconjuntos de \(T\).
 
+\paragraph{}
+Uma coleção \(\mathcal{F}\) é dita \textbf{laminar} quando, para quaisquer \(X, Y \in \mathcal{F}\), vale que \(X \subseteq Y\), \(Y \subseteq X\) ou \(X \cap Y = \varnothing\); isto é, quaisquer dois conjuntos são aninhados (um está contido no outro) ou são disjuntos. 
 
+\paragraph{}
+Por exemplo, na coleção \(\mathcal{C} = \{P, T, F\}\): \(P\) é o conjunto de todas as plantas, \(T\) o de todas as árvores (portanto \(T\subseteq P\)) e \(F\) o de todos os fungos (disjunto de plantas e, logo, de árvores). Assim, quaisquer dois conjuntos em \(\mathcal{C}\) são aninhados ou disjuntos, e \(\mathcal{C}\) é laminar. Na coleção \(\mathcal{D} = \{A, T\}\): \(A\) é o conjunto de árvores com folhas verdes e \(T\) o de todas as árvores; como toda árvore de \(A\) é árvore de \(T\), temos \(A\subseteq T\) e a coleção é laminar. Já em \(\mathcal{E} = \{A, R\}\): \(R\) é o conjunto de árvores frutíferas; há árvores que são ao mesmo tempo frutíferas e de folhas verdes (a interseção é não vazia), mas nenhuma das classes contém a outra, então \(\mathcal{E}\) não é laminar.
+
+\paragraph{}
+Este é um importante conceito que aparecerá no restante do trabalho. A ideia de laminaridade retornará quando tratarmos de cortes dirigidos.
+
+\subsubsection{Comparando conjuntos: cardinalidade e maximalidade}
+
+\paragraph{}
+Podemos comparar conjuntos através de relações de tamanho (cardinalidade) ou por relações de inclusão. Essas duas formas de comparação são distintas e importantes, especialmente quando lidamos com coleções de conjuntos.
+
+\paragraph{}
+A \textbf{cardinalidade} de um conjunto \(A\), denotada por \(|A|\), é o número de elementos de \(A\). Para conjuntos finitos, é simplesmente a contagem dos elementos (por exemplo, se \(A=\{1,2,3\}\), então \(|A|=3\)). Para conjuntos infinitos, a cardinalidade pode ser mais complexa, envolvendo conceitos como infinito enumerável e não enumerável. Por exemplo, o conjunto dos números naturais \(\mathbb{N}\) é infinito enumerável, enquanto o conjunto dos números reais \(\mathbb{R}\) é infinito não enumerável.
+
+\paragraph{}
+Dizemos que \(A\in\mathcal{C}\) tem \textbf{maior cardinalidade} se \(|A|\ge |B|\) para todo \(B\in\mathcal{C}\) (podendo haver empates). Esse critério não coincide, em geral, com a comparação por relação de inclusão. Em grafos, por exemplo, distinguem-se conjuntos independentes \emph{maximais} (não ampliáveis) de conjuntos independentes \emph{máximos} (de cardinalidade máxima).
+
+\paragraph{}
+Ao compararmos uma coleção \(\mathcal{C}\) de conjuntos utilizando sua relações de inclusão \((\mathcal{C},\subseteq)\), é imprescindível distinguir \textbf{maximal} de \textbf{máximo}.
+
+\paragraph{}
+Um conjunto \(A\in\mathcal{C}\) é \textbf{maximal} se não existe \(B\in\mathcal{C}\) tal que \(A\subset B\). Em palavras: não dá para ampliar \(A\) estritamente dentro da coleção. Podem haver vários elementos maximais, e eles podem ser incomparáveis entre si. Ex.: em \(\mathcal{C}=\big\{\{1\},\{2\}\big\}\), ambos \(\{1\}\) e \(\{2\}\) são maximais, mas não existe máximo.
+
+\paragraph{}
+Um conjunto \(A\in\mathcal{C}\) é \textbf{máximo} se \(B\subseteq A\) para todo \(B\in\mathcal{C}\). Se existe, é único. Ex.: em \(\mathcal{C}=\big\{\{1\},\{2\},\{1,2\}\big\}\), o conjunto \(\{1,2\}\) é o máximo.
+
+\paragraph{}
+Um bom exemplo para ilustrar a distinção entre conjuntos maximais e máximos é a coleção \(\mathcal{C}=\big\{\{1\},\{2\},\{1,2\},\{3\}\big\}\). Aqui, \(\{1,2\}\) é o único conjunto máximo (contém todos os outros), enquanto \(\{1\}\), \(\{2\}\) e \(\{3\}\) são todos maximais (não podem ser ampliados dentro da coleção).
+
+\paragraph{}
+Esses conceitos serão úteis mais adiante, quando lidarmos com coleções de cortes dirigidos e conjuntos de arestas em grafos.
+
+\subsection{Relações e Funções}
+\paragraph{}
+Quando lidamos com conjuntos, frequentemente precisamos estabelecer conexões ou associações entre seus elementos. Essas conexões são formalizadas através de \textbf{relações} e \textbf{funções}, que são conceitos fundamentais em matemática e ciência da computação.
+
+\paragraph{}
+Na matemática, uma \textbf{relação} entre dois conjuntos \(A\) e \(B\) é uma maneira de associar elementos de \(A\) com elementos de \(B\). Uma \textbf{função} é um tipo especial de relação que associa cada elemento de \(A\) a exatamente um elemento de \(B\).
+
+\paragraph{}
+Na ciëncia da computação, relações e funções são usadas para modelar conexões entre dados, estruturas de dados e operações. 
+
+\paragraph{}
+Uma \textbf{relação} \(R\) entre dois conjuntos \(A\) e \(B\) é um subconjunto do produto cartesiano \(A \times B\). Ou seja, \(R \subseteq A \times B\). Se \((a,b) \in R\), dizemos que \(a\) está relacionado a \(b\) pela relação \(R\), denotado \(aRb\).
+
+\paragraph{}
+No nosso exemplo-mestre, considere \(P=\{\text{todas as plantas}\}\) e \(F=\{\text{todos os fungos}\}\). Definimos a relação \(R\) como "é um organismo que compete com". Assim, se uma planta \(p \in P\) compete com um fungo \(f \in F\), então \((p,f) \in R\).
+
+\paragraph{}
+Em teoria dos grafos, uma relação pode representar conexões entre vértices. Por exemplo, em um grafo dirigido, a relação "existe uma aresta de \(u\) para \(v\)" pode ser representada como um conjunto de pares ordenados \((u,v)\).
+
+\paragraph{}
+Uma \textbf{função} \(f\) de um conjunto \(A\) em um conjunto \(B\) é uma relação especial que associa cada elemento de \(A\) a exatamente um elemento de \(B\). Denotamos isso como \(f: A \to B\). Se \(f(a) = b\), dizemos que \(b\) é a imagem de \(a\) sob \(f\).
+
+\paragraph{}
+No nosso exemplo-mestre, considere a função \(f: P \to \mathbb{N}\) que associa cada planta ao seu número de folhas. Se \(p \in P\) é uma árvore com 100 folhas, então \(f(p) = 100\).
+
+\paragraph{}
+Em teoria dos grafos, funções podem ser usadas para atribuir pesos ou capacidades às arestas. Por exemplo, se temos um grafo \(G\) com arestas \(e_1, e_2, \ldots, e_n\), podemos definir uma função \(c: E \to \mathbb{R}^+\) que atribui um peso \(c(e_i)\) a cada aresta \(e_i\).
+
+\paragraph{}
+Computacionalmente, relações são frequentemente implementadas como tabelas ou listas de pares, enquanto funções são frequentemente implementadas como métodos ou procedimentos que recebem entradas e retornam saídas. Elas são fundamentais para a modularidade e reutilização de código.
+\section{Considerações Finais}
 \printbibliography
 
 \end{document}
 
+% Adotaremos a notação \(\delta^+(X)\) para o conjunto de arcos que saem de \(X\) e \(\delta^-(X)\) para os que entram em \(X\) (definições formais virão na seção de dígrafos). Também fixaremos o vértice-raiz \(r\) e falaremos em \emph{cortes \(r\)-direcionados}, nos quais \(r\) fica sempre do mesmo lado do corte.
+
+% No algoritmo de Ford--Fulkerson (e em Edmonds--Karp), ao término do processo de aumento, o conjunto de vértices alcançáveis a partir de \(s\) no grafo residual define um corte dirigido mínimo; por meio da técnica de \emph{uncrossing}, coleções de cortes mínimos podem ser escolhidas laminares, o que simplifica provas e está por trás de representações como a árvore de Gomory--Hu.
+
+% No método dual de András Frank para arborescências, maximizamos uma função de cortes \emph{c-viável} sobre cortes \(r\)-direcionados. Um ótimo extremo dessa função pode ser tomado com suporte laminar; essa laminaridade induz \emph{0-arestas} de maneira estruturada e permite que, na segunda fase, a arborescência seja extraída apenas a partir dessas arestas. A mesma organização laminar reaparece em resultados de empacotamento máximo de cortes \(r\)-direcionados, que conectam diretamente dualidade e estruturas em dígrafos.
