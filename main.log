@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025/Homebrew) (preloaded format=pdflatex 2025.9.15)  21 SEP 2025 23:06
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025/Homebrew) (preloaded format=pdflatex 2025.9.15)  22 SEP 2025 03:06
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -817,13 +817,12 @@ LaTeX Font Info:    ... okay on input line 22.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 Package hyperref Info: Link coloring OFF on input line 22.
-(./main.out) (./main.out)
 \@outlinefile=\write5
 \openout5 = `main.out'.
 
 Package biblatex Info: Trying to load language 'brazil'...
 Package biblatex Info: ... file 'brazil.lbx' found.
- (/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/biblatex/lbx/brazil.lbx
+(/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/biblatex/lbx/brazil.lbx
 File: brazil.lbx 2024/03/21 v3.20 biblatex localization (PK/MW)
 Package biblatex Info: Trying to load language 'brazilian'...
 Package biblatex Info: ... file 'brazilian.lbx' found.
@@ -964,6 +963,12 @@ Overfull \hbox (30.68318pt too wide) in paragraph at lines 534--535
  []
 
 
+LaTeX Warning: Reference `fig:relacao' on page 12 undefined on input line 563.
+
+
+LaTeX Warning: Reference `fig:relacao' on page 12 undefined on input line 563.
+
+
 
 [12]
 
@@ -975,13 +980,234 @@ Overfull \hbox (30.68318pt too wide) in paragraph at lines 534--535
 
 [16]
 
-LaTeX Warning: Empty bibliography on input line 807.
-
-
-
 [17]
 
-[18] (./main.aux)
+LaTeX Warning: Citation 'chu1965' on page 18 undefined on input line 860.
+
+
+LaTeX Warning: Citation 'edmonds1967optimum' on page 18 undefined on input line 860.
+
+
+
+[18]
+
+LaTeX Warning: Citation 'frank2014' on page 19 undefined on input line 864.
+
+
+LaTeX Warning: Citation 'schrijver2003comb' on page 19 undefined on input line 864.
+
+Missing character: There is no i in font nullfont!
+Missing character: There is no k in font nullfont!
+Missing character: There is no z in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no v in font nullfont!
+Missing character: There is no / in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no y in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no = in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no k in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no u in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no z in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no = in font nullfont!
+Missing character: There is no 7 in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no = in font nullfont!
+Missing character: There is no 0 in font nullfont!
+Missing character: There is no p in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no / in font nullfont!
+Missing character: There is no . in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no y in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no = in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no m in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no t in font nullfont!
+Missing character: There is no h in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no c in font nullfont!
+Missing character: There is no k in font nullfont!
+Missing character: There is no , in font nullfont!
+Missing character: There is no d in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no w in font nullfont!
+Missing character: There is no = in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no r in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no y in font nullfont!
+Missing character: There is no ! in font nullfont!
+Missing character: There is no 7 in font nullfont!
+Missing character: There is no 0 in font nullfont!
+
+/Users/lorenypsum/Desktop/Repositórios/GraphVisualizer.nosync/main.tex:878: Package pgfkeys Error: I do not know the key '/tikz/v' and I am going to ignore it. Perhaps you misspelled it.
+
+See the pgfkeys package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.878     \node[v, fill=red!30, label=below:$v_1$]
+                                                    (v1) at (0,0) {};
+This error message was generated by an \errmessage
+command, so I can't give any explicit help.
+Pretend that you're Hercule Poirot: Examine all clues,
+and deduce the truth by order and method.
+
+
+/Users/lorenypsum/Desktop/Repositórios/GraphVisualizer.nosync/main.tex:879: Package pgfkeys Error: I do not know the key '/tikz/v' and I am going to ignore it. Perhaps you misspelled it.
+
+See the pgfkeys package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.879 ...\node[v, fill=blue!30, label=below:$v_2$]
+                                                   (v2) at (2.1,0) {};
+(That was another \errmessage.)
+
+
+/Users/lorenypsum/Desktop/Repositórios/GraphVisualizer.nosync/main.tex:880: Package pgfkeys Error: I do not know the key '/tikz/v' and I am going to ignore it. Perhaps you misspelled it.
+
+See the pgfkeys package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.880 ...node[v, fill=green!35, label=above:$v_3$]
+                                                   (v3) at (1,1.9) {};
+(That was another \errmessage.)
+
+
+/Users/lorenypsum/Desktop/Repositórios/GraphVisualizer.nosync/main.tex:881: Package pgfkeys Error: I do not know the key '/tikz/v' and I am going to ignore it. Perhaps you misspelled it.
+
+See the pgfkeys package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.881 ...ode[v, fill=orange!40, label=right:$v_4$]
+                                                   (v4) at (1,0.75) {};
+(That was another \errmessage.)
+
+
+/Users/lorenypsum/Desktop/Repositórios/GraphVisualizer.nosync/main.tex:884: Package pgfkeys Error: I do not know the key '/tikz/e' and I am going to ignore it. Perhaps you misspelled it.
+
+See the pgfkeys package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.884     \draw[e]
+                   (v1) -- (v2);
+(That was another \errmessage.)
+
+
+/Users/lorenypsum/Desktop/Repositórios/GraphVisualizer.nosync/main.tex:885: Package pgfkeys Error: I do not know the key '/tikz/e' and I am going to ignore it. Perhaps you misspelled it.
+
+See the pgfkeys package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.885     \draw[e]
+                   (v2) -- (v3);
+(That was another \errmessage.)
+
+
+/Users/lorenypsum/Desktop/Repositórios/GraphVisualizer.nosync/main.tex:886: Package pgfkeys Error: I do not know the key '/tikz/e' and I am going to ignore it. Perhaps you misspelled it.
+
+See the pgfkeys package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.886     \draw[e]
+                   (v3) -- (v1);
+(That was another \errmessage.)
+
+
+/Users/lorenypsum/Desktop/Repositórios/GraphVisualizer.nosync/main.tex:887: Package pgfkeys Error: I do not know the key '/tikz/e' and I am going to ignore it. Perhaps you misspelled it.
+
+See the pgfkeys package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.887     \draw[e]
+                   (v1) -- (v4);
+(That was another \errmessage.)
+
+
+/Users/lorenypsum/Desktop/Repositórios/GraphVisualizer.nosync/main.tex:888: Package pgfkeys Error: I do not know the key '/tikz/e' and I am going to ignore it. Perhaps you misspelled it.
+
+See the pgfkeys package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.888     \draw[e]
+                   (v2) -- (v4);
+(That was another \errmessage.)
+
+
+/Users/lorenypsum/Desktop/Repositórios/GraphVisualizer.nosync/main.tex:889: Package pgfkeys Error: I do not know the key '/tikz/e' and I am going to ignore it. Perhaps you misspelled it.
+
+See the pgfkeys package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.889     \draw[e]
+                   (v3) -- (v4);
+(That was another \errmessage.)
+
+
+LaTeX Warning: Empty bibliography on input line 902.
+
+
+
+[19] (./main.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
@@ -990,8 +1216,17 @@ L3 programming layer <2025-01-18>
 
 LaTeX Warning: There were undefined references.
 
-Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: DEA9B066663820CF37A515DD28E2480D;2764.
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package rerunfilecheck Warning: File `main.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `main.out':
+(rerunfilecheck)             Before: <no file>
+(rerunfilecheck)             After:  5B76FC124BCB7F670827BCC33B3FC76C;2905.
 
 Package biblatex Warning: Please (re)run BibTeX on the file(s):
 (biblatex)                main
@@ -1002,18 +1237,18 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 33143 strings out of 473190
- 628569 string characters out of 5704335
- 1253072 words of memory out of 5000000
- 55628 multiletter control sequences out of 15000+600000
- 576454 words of font info for 177 fonts, out of 8000000 for 9000
+ 33216 strings out of 473190
+ 629476 string characters out of 5704335
+ 1249171 words of memory out of 5000000
+ 55687 multiletter control sequences out of 15000+600000
+ 576513 words of font info for 178 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 102i,10n,107p,1934b,1652s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 102i,10n,107p,1934b,1675s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on main.pdf (18 pages, 257819 bytes).
+Output written on main.pdf (19 pages, 267699 bytes).
 PDF statistics:
- 363 PDF objects out of 1000 (max. 8388607)
- 306 compressed objects within 4 object streams
- 131 named destinations out of 1000 (max. 500000)
- 32917 words of extra memory for PDF output out of 35830 (max. 10000000)
+ 332 PDF objects out of 1000 (max. 8388607)
+ 276 compressed objects within 3 object streams
+ 147 named destinations out of 1000 (max. 500000)
+ 32781 words of extra memory for PDF output out of 35830 (max. 10000000)
 
