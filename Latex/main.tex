@@ -8,6 +8,9 @@
 \usepackage{csquotes}
 \usepackage[brazil]{babel}
 \usepackage{microtype}
+\usepackage{capt-of} % permitir legenda/label sem float
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,fit,calc}
 
 \addbibresource{referencias.bib}
 
@@ -46,7 +49,7 @@ Com essa distinção em mente, este trabalho concentra-se na variante inversa. F
 Nosso interesse, porém, não é apenas encontrar a arborescência mínima: o percurso até ela também importa, pois revela propriedades estruturais dos dígrafos e ilumina técnicas distintas de otimização. Por isso, investigamos duas rotas clássicas e complementares: (i) o algoritmo de Chu--Liu/Edmonds, que opera por normalização dos custos das arestas de entrada, seleção sistemática de arestas de custo zero e contração de ciclos até obter um grafo reduzido, seguida pela reexpansão para reconstrução da solução \cite{chu1965,edmonds1967optimum}; e (ii) a abordagem dual, em duas fases, de András Frank, fundamentada em cortes dirigidos, na qual se maximiza uma função de cortes c-viável para induzir arestas de custo zero e, em seguida, extrai-se a arborescência apenas a partir dessas arestas \cite{frank2014}. Embora assentados em princípios distintos — contração de ciclos no plano primal versus empacotamento/dualidade por cortes —, ambos os paradigmas produzem soluções ótimas e tornam explícitas a variedade de abordagens matemáticas que podem ser empregadas para resolver o mesmo problema.
 
 \paragraph{}
-Analisamos e implementamos, em Python, essas duas abordagens, e apresentaremos detalhes das implementações, desafios enfrentados e soluções adotadas. Realizamos testes de volume com milhares de instâncias geradas aleatoriamente, registrando resultados em arquivos CSV e de log; os custos obtidos pelo Chu--Liu/Edmonds e pelas duas variantes de András Frank coincidem, corroborando a correção das implementações.
+Assim sendo, analisamos e implementamos, em Python, essas duas abordagens, e apresentaremos detalhes das implementações, desafios enfrentados e soluções adotadas. Realizamos testes de volume com milhares de instâncias geradas aleatoriamente, registrando resultados em arquivos CSV e de log; os custos obtidos pelo Chu--Liu/Edmonds e pelas duas variantes de András Frank coincidem, corroborando a correção das implementações.
 
 \paragraph{}
 Adicionalmente, desenvolvemos uma aplicação web com fins didáticos, utilizando o framework PyScript e as bibliotecas NetworkX e Matplotlib, que permitem construir grafos dirigidos interativamente, escolher o vértice-raiz, executar o algoritmo de Chu--Liu/Edmonds e acompanhar, passo a passo, a evolução do grafo e o registro detalhado da execução (log). A interface inclui operações de adicionar arestas com pesos, carregar um grafo de teste e exportar a instância em formato JSON, facilitando a experimentação por estudantes e educadores.
@@ -75,29 +78,81 @@ Resumidamente, o trabalho abrange as seguintes frentes:
     \item \textbf{Aplicação pedagógica}: desenvolvimento de uma aplicação web interativa (PyScript + NetworkX + Matplotlib) que permite montar instâncias, escolher o vértice-raiz e acompanhar, passo a passo, a execução do algoritmo com visualização do grafo e dos pesos das arestas, log textual e importação/exportação em JSON para facilitar a reprodução de experimentos.
 \end{enumerate}
 
-Como validação empírica, realizamos testes de volume com milhares de instâncias geradas aleatoriamente, registrando resultados em arquivos CSV e de log; os custos obtidos pelo Chu--Liu/Edmonds e pelas duas variantes de András Frank coincidem, corroborando a correção das implementações. Deste modo, o trabalho entrega implementações verificadas de Chu--Liu/Edmonds e András Frank, um visualizador web interativo e testes de volume que confirmam a equivalência de custos, úteis ao estudo e ao ensino de arborescências.
+Deste modo, o trabalho entrega implementações verificadas de Chu--Liu/Edmonds e András Frank, um visualizador web interativo e testes de volume que confirmam a equivalência de custos, úteis ao estudo e ao ensino de arborescências.
 
 \section{Definições Preliminares}
 \paragraph{}
-Neste capítulo, reunimos as noções básicas de teoria dos grafos dirigidos utilizadas ao longo do texto. O objetivo é fixar notações e conceitos (conjuntos, relações, funções, dígrafos, propriedade em dígrafos, dígrafos ponderados, ramificações geradoras, arborescências, funções de custo, dualidade, problemas duais e algoritmos), até chegar à formulação do problema da r-arborescência inversa de custo mínimo e adiamos descrições algorítmicas para capítulos posteriores. Mantendo a intuição, pense o dígrafo como essa teia orientada: fixamos um vértice-raiz \(r\) e custos nas arestas; a terminologia será introduzida gradualmente.
+Neste capítulo, reunimos as noções matemáticas básicas necessárias para compreensão completa do texto. 
+
+Fixaremos notações e conceitos (conjuntos, relações, funções, dígrafos, propriedade em dígrafos, dígrafos ponderados, ramificações geradoras, arborescências, funções de custo, dualidade, problemas duais e algoritmos), até chegar à formulação do problema da r-arborescência inversa de custo mínimo e adiamos descrições algorítmicas para capítulos posteriores.
 
 \subsection{Conjuntos}
 \paragraph{}
-Este trabalho depende profundamente da teoria dos conjuntos.
-Basicamente podemos dizer que todos os objetos matemáticos que iremos utilizar nessa dissertação se reduzem a conjuntos e operações entre eles.
+Este trabalho depende profundamente da teoria dos conjuntos, podemos dizer que todos os objetos matemáticos que iremos utilizar nessa dissertação se reduzem a conjuntos e operações entre eles.
 
 \paragraph{}
 Um \textbf{conjunto} é uma agregação de objetos distintos com características bem definidas, chamados elementos ou membros do conjunto. Os conjuntos são geralmente representados por letras maiúsculas (por exemplo, \(A\), \(B\), \(C\)) e seus elementos são listados entre chaves (por exemplo, \(A = \{1, 2, 3\}\)). Dois conjuntos são iguais se contêm exatamente os mesmos elementos.
 
 \paragraph{}
-Podemos ter conjuntos de qualquer tipo de objeto, incluindo números, letras, elementos da natureza, etc. Para motivar as definições ao longo do texto, adotaremos um exemplo-mestre com organismos: árvores, plantas e fungos, usando pertinência e inclusão para guiar a intuição.
+Podemos ter conjuntos de qualquer tipo de objeto, incluindo números, letras e elementos da natureza. Para motivar as definições ao longo do texto, usaremos dois exemplos complementares que vamos chamar de exemplos-mestres:
+\begin{itemize}
+    \item (i) Considere um universo \(U\) composto por três conjuntos: árvores \(T\), plantas \(P\) e fungos \(F\) — para praticar pertinência, inclusão e operações; e
+    
+    \begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[scale=1]
+        % Conjuntos P, T e F
+        % P: plantas (círculo maior)
+        \draw[fill=blue!8, draw=blue!60] (0,0) circle (2);
+        \node[blue!60] at (0,2.25) {$P$};
+        % T: árvores (círculo menor dentro de P)
+        \draw[fill=blue!25, draw=blue!60] (-0.6,0) circle (0.9);
+        \node[blue!60] at (-0.6,0) {$T$};
+        % F: fungos (círculo disjunto)
+        \draw[fill=green!20, draw=green!50!black] (3.8,0) circle (1.2);
+        \node[green!50!black] at (3.8,0) {$F$};
+    \end{tikzpicture}
+    \caption{Relações entre os conjuntos de organismos: $T\subseteq P$ (toda árvore é planta) e $F$ é disjunto de $P$.}
+    \label{fig:organismos}
+    \end{figure}
 
+    \item (ii) exemplo inspirado na navalha de Occam, com três famílias: evidências \(E\), hipóteses \(H\) e explicações \(\mathcal{M} \subseteq 2^{H}\). Nesse segundo exemplo, privilegiaremos explicações parcimoniosas: entre as que cobrem \(E\), preferimos as minimais por inclusão.
+\end{itemize}
+
+\paragraph{}
+No segundo exemplo, consideremos \(E=\{\text{queda de temperatura},\, \text{céu nublado}\}\) e \(H=\{H_A, H_B\}\), em que \(H_A\) significa “frente fria” e \(H_B\), “ilha de calor”. Tanto \(\{H_A\}\) quanto \(\{H_A,H_B\}\) explicam \(E\) (cobrem ambas as evidências), mas, por parcimônia, preferimos \(\{H_A\}\), por ser estritamente menor do que \(\{H_A,H_B\}\) (\(\{H_A\} \subset \{H_A,H_B\}\)). Ao longo do texto, recorreremos às noções de pertinência (por exemplo, \(H_A\in H\)), de inclusão e às operações usuais sobre conjuntos (união, interseção etc.) para comparar explicações.
+
+ \begin{figure}[htbp]
+        \centering
+        \begin{tikzpicture}[>=Stealth, node distance=1.6cm]
+            % Evidências
+            \node[draw, rounded corners, fill=gray!10, minimum width=3.8cm] (E1) {queda de temperatura};
+            \node[draw, rounded corners, fill=gray!10, minimum width=3.8cm, below=of E1] (E2) {céu nublado};
+            % Hipóteses
+            \node[draw, rounded corners, fill=orange!20, left=4.2cm of E1, minimum width=3.2cm] (HA) {$H_A$: frente fria};
+            \node[draw, rounded corners, fill=orange!10, below=of HA, minimum width=3.2cm] (HB) {$H_B$: ilha de calor};
+            % Setas de cobertura
+            \draw[->, thick] (HA.east) -- (E1.west);
+            \draw[->, thick] (HA.east) -- (E2.west);
+            \draw[->, dashed] (HB.east) -- (E2.west);
+            % Nota de parcimônia
+            \node[align=center, font=\small, below=1.0cm of E2] (nota) {Ambas as opções \emph{H\_A} e \emph{H\_A + H\_B} cobrem $E$;\\ por parcimônia, preferimos apenas \emph{H\_A}.};
+        \end{tikzpicture}
+        \caption{Exemplo inspirado na navalha de Occam: $H_A$ cobre ambas as evidências ($E$), enquanto $H_B$ seria redundante; prefere-se a explicação menor.}
+        \label{fig:occam-exemplo}
+    \end{figure}
+
+\paragraph{}    
 \subsubsection{Subconjuntos}
 \paragraph{}
 Dizemos que \(A\) é um \textbf{subconjunto} de \(B\), denotado \(A \subseteq B\), quando todo elemento de \(A\) também pertence a \(B\). Se, além disso, \(A \neq B\), escrevemos \(A \subset B\) e chamamos \(A\) de \textbf{subconjunto próprio} de \(B\). Ex.: \( \{1,2\} \subseteq \{1,2,3\} \) e \( \{1,2\} \subset \{1,2,3\} \).Por convenção, o conjunto vazio \(\varnothing\) é subconjunto de qualquer conjunto \(X\) (isto é, \(\varnothing \subseteq X\)), e todo conjunto é subconjunto de si mesmo (\(X \subseteq X\)).
 
 \paragraph{}
-No nosso exemplo-mestre, com \(P=\{\text{todas as plantas}\}\), \(T=\{\text{todas as árvores}\}\) e \(F=\{\text{todos os fungos}\}\), temos \(T \subseteq P\) (todas as árvores são plantas), enquanto \(F \not\subseteq P\).
+No primeiro exemplo-mestre, sejam \(P\) o conjunto de plantas, \(T\) o de árvores e \(F\) o de fungos; então \(T \subseteq P\) (toda árvore é planta), ao passo que \(F \not\subseteq P\).
+
+\paragraph{}
+No segundo, seja \(H=\{H_A, H_B\}\) e \(E=\{\text{queda de temperatura},\, \text{céu nublado}\}\), vale \(\{H_A\} \subset \{H_A,H_B\} \subseteq H\); ambas as opções explicam \(E\), mas, 
+por parcimônia, preferimos \(\{H_A\}\).
 
 \subsubsection{Pertinência e inclusão}
 \paragraph{}
@@ -108,10 +163,52 @@ Pertinência e inclusão são os conceitos mais fundamentais da teoria dos conju
 Começando pela \textbf{noção de pertinência} denotado por \(\in\): dizemos que um elemento \(x\) pertence a um conjunto \(X\) quando \(x \in X\) e não pertence quando \(x \notin X\).
 
 \paragraph{}
-Para ancorar ideias, fixemos um universo \(U\) de organismos e definamos três conjuntos: \(P=\{\text{todas as plantas}\}\), \(T=\{\text{todas as árvores}\}\) e \(F=\{\text{todos os fungos}\}\). Se \(x\) é um carvalho, então \(x\in T\) e, como toda árvore é uma planta, \(x\in P\). Já se \(y\) é um cogumelo, então \(y\in F\) e, na taxonomia moderna, \(y\notin T\) e \(y\notin P\). Agora, considere \(A=\{\text{árvores com folhas verdes}\}\); a pertinência fica clara: \(x\in A\) se, e somente se, \(x\) é árvore e tem folhas verdes.
+Seja o nosso universo \(U\) de organismos: \(P=\{\text{todas as plantas}\}\), \(T=\{\text{todas as árvores}\}\) e \(F=\{\text{todos os fungos}\}\). Se \(x\) é um carvalho, então \(x\in T\) e, como toda árvore é uma planta, \(x\in P\). Já se \(y\) é um cogumelo, então \(y\in F\) e, na taxonomia moderna, \(y\notin T\) e \(y\notin P\). Agora, considere \(A=\{\text{árvores com folhas verdes}\}\); a pertinência fica clara: \(x\in A\) se, e somente se, \(x\) é árvore e tem folhas verdes.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[scale=1]
+        % P: plantas (círculo maior)
+        \draw[fill=blue!8, draw=blue!60] (0,0) circle (2);
+        \node[blue!60] at (0,2.25) {$P$};
+        % T: árvores (círculo menor dentro de P)
+        \draw[fill=blue!25, draw=blue!60] (-0.6,0) circle (0.9);
+        \node[blue!60] at (-0.6,-0.45) {$T$};
+        % F: fungos (círculo disjunto)
+        \draw[fill=green!20, draw=green!50!black] (3.8,0) circle (1.2);
+        \node[green!50!black] at (3.8,-0.55) {$F$};
+        % Pontos de pertinência
+        \fill[red!70] (-0.9,0.2) circle (2pt);
+        \node[anchor=east, text=red!70] at (-1.05,0.2) {$x$};
+        \fill[black] (3.6,0.4) circle (2pt);
+        \node[anchor=west] at (3.72,0.4) {$y$};
+    \end{tikzpicture}
+    \caption{Pertinência: $x\in T\subseteq P$ (ponto vermelho dentro de $T$) e $y\in F$ (ponto preto); logo $y\notin P$ e $y\notin T$.}
+    \label{fig:pertinencia}
+\end{figure}
 
 \paragraph{}
 Continuando, vem a \textbf{relação de inclusão} entre conjuntos denotada por \(\subseteq\): escrevemos \(X \subseteq Y\) quando todo elemento de \(X\) também pertence a \(Y\) (e \(X\subset Y\) quando, além disso, \(X\neq Y\)). No nosso exemplo, \(A\subseteq T\subset P\) e \(T\cap F=\varnothing\) (árvores e fungos não se sobrepõem).
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[scale=1]
+        % P: conjunto maior
+        \draw[fill=blue!8, draw=blue!60] (0,0) circle (2);
+        \node[blue!60] at (0,2.25) {$P$};
+        % T: subconjunto de P
+        \draw[fill=blue!25, draw=blue!60] (-0.6,0) circle (0.9);
+        \node[blue!60] at (-0.6,0) {$T$};
+        % A: subconjunto de T
+        \draw[fill=blue!45, draw=blue!70] (-0.9,0.1) circle (0.45);
+        \node[blue!70] at (-0.9,0.1) {$A$};
+        % F: disjunto de P (e portanto de T e A)
+        \draw[fill=green!20, draw=green!50!black] (3.8,0) circle (1.2);
+        \node[green!50!black] at (3.8,0) {$F$};
+    \end{tikzpicture}
+    \caption{Inclusão: $A\subseteq T\subset P$ (círculos aninhados) e $T\cap F=\varnothing$ (círculos disjuntos).}
+    \label{fig:inclusao}
+\end{figure}
 
 \subsubsection{Operações entre conjuntos}
 \paragraph{}
@@ -122,44 +219,187 @@ Outras operações comuns entre conjuntos incluem:
     \item \textbf{União} (\(A \cup B\)): o conjunto de todos os elementos que pertencem a \(A\), a \(B\), ou ambos.
     
     Exemplo: \(T \cup F\) é o conjunto de todos os organismos que são árvores ou fungos (ou ambos, se existissem tais organismos).
+    \begin{center}
+    \begin{tikzpicture}[scale=0.95]
+        % União T ∪ F com sobreposição visível (intersecção)
+        \def\r{1.2}
+        \coordinate (LT) at (-0.9,0);
+        \coordinate (LF) at (0.9,0);
+        % Preenchimento semitransparente para evidenciar a intersecção
+        \fill[blue!35, opacity=0.45] (LT) circle (\r);
+        \fill[green!35, opacity=0.45] (LF) circle (\r);
+        % Contornos e rótulos
+        \draw[thick, blue!60] (LT) circle (\r) node[left=6pt] {$T$};
+        \draw[thick, green!50!black] (LF) circle (\r) node[right=6pt] {$F$};
+    \end{tikzpicture}
+    \captionof{figure}{União: a área colorida representa $T\cup F$; a sobreposição evidencia a intersecção $T\cap F$ (hipotética).}
+    \label{fig:op-uniao}
+    \end{center}
     
+    \paragraph{}
     \item \textbf{União disjunta} (\(A \uplus B\)): o conjunto de todos os elementos que pertencem a \(A\) ou a \(B\), mas não a ambos; é igual a \(A \cup B\) quando \(A\) e \(B\) são disjuntos.
     
     Exemplo: \(T \uplus F\) é o conjunto de todos os organismos que são árvores ou fungos, mas não ambos (o que é trivialmente igual a \(T \cup F\) pois \(T\) e \(F\) são disjuntos).
+    \begin{center}
+    \begin{tikzpicture}[scale=0.95]
+        \def\r{1.1}
+        \coordinate (LT) at (-1.8,0);
+        \coordinate (LF) at (1.8,0);
+        \fill[blue!20] (LT) circle (\r);
+        \fill[green!20] (LF) circle (\r);
+        \draw[thick, blue!60] (LT) circle (\r) node[left=6pt] {$T$};
+        \draw[thick, green!50!black] (LF) circle (\r) node[right=6pt] {$F$};
+    \end{tikzpicture}
+    \captionof{figure}{União disjunta: como $T\cap F=\varnothing$, tem-se $T\uplus F = T\cup F$.}
+    \label{fig:op-uniao-disjunta}
+    \end{center}
 
+    \paragraph{}
     \item \textbf{Interseção} (\(A \cap B\)): o conjunto de todos os elementos que pertencem tanto a \(A\) quanto a \(B\).
     
     Exemplo: \(T \cap P = T\), pois todas as árvores são plantas.
+    \begin{center}
+    \begin{tikzpicture}[scale=0.95]
+        % Interseção T ∩ P = T (T ⊆ P)
+        \def\rP{1.6}
+        \def\rT{0.9}
+        \coordinate (cP) at (0,0);
+        \coordinate (cT) at (-0.4,0.1);
+        % P (maior) e T (dentro de P)
+        \draw[fill=blue!10, draw=blue!60, thick] (cP) circle (\rP);
+        \node[blue!60] at (0,\rP+0.25) {$P$};
+        % Preencher T (interseção equivale a T)
+        \draw[fill=blue!35, draw=blue!60, thick] (cT) circle (\rT);
+        \node[blue!60] at (cT) {$T$};
+    \end{tikzpicture}
+    \captionof{figure}{Interseção: como $T\subseteq P$, $T\cap P = T$ (a região escura é $T$).}
+    \label{fig:op-intersecao}
+    \end{center}
 
+    \paragraph{}    
     \item \textbf{Diferença} (\(A \setminus B\)): o conjunto de todos os elementos que pertencem a \(A\) mas não a \(B\).
     
     Exemplo: \(T \setminus A\) é o conjunto de todas as árvores que não têm folhas verdes.
-
+    \begin{center}
+    \begin{tikzpicture}[scale=0.95]
+        % Diferença T \ A (A ⊆ T)
+        \def\rT{1.4}
+        \def\rA{0.8}
+        \coordinate (cT) at (0,0);
+        \coordinate (cA) at (0.4,0.2);
+        % Preencher T
+        \draw[fill=blue!25, draw=blue!60, thick] (cT) circle (\rT);
+        % Remover a parte A de dentro de T
+        \begin{scope}
+            \clip (cT) circle (\rT);
+            \fill[white] (cA) circle (\rA);
+        \end{scope}
+        \draw[thick, blue!60] (cT) circle (\rT) node[above right=2pt and -2pt] {$T$};
+        \draw[thick, blue!60] (cA) circle (\rA) node[right=4pt] {$A$};
+    \end{tikzpicture}
+    \captionof{figure}{Diferença: região azul representa $T\setminus A$ (árvores que não têm folhas verdes).}
+    \label{fig:op-diferenca}
+    \end{center}
+    
+    \paragraph{}
     \item \textbf{Complemento} de \(X\) em um universo fixo \(U\): \(X^c := U\setminus X\) (também chamado de \textit{complemento absoluto}); o \textit{complemento relativo} de \(X\) em \(Y\) é \(Y\setminus X\).
     
     Exemplo: \(T^c = U \setminus T\) é o conjunto de todos os organismos que não são árvores. Ou seja, \(T^c\) inclui plantas que não são árvores, fungos e quaisquer outros organismos no universo \(U\).
+    \begin{center}
+    \begin{tikzpicture}[scale=0.95]
+        % Universo U e conjunto T
+        \draw[fill=gray!10, draw=black] (-2.6,-1.5) rectangle (2.6,1.5);
+        \draw[fill=white, draw=black, thick] (-0.3,0) circle (1.0);
+        \node at (-0.3,0) {$T$};
+        \node at (2.3,1.25) {$U$};
+    \end{tikzpicture}
+    \captionof{figure}{Complemento: a área cinza representa $T^c = U\setminus T$.}
+    \label{fig:op-complemento}
+    \end{center}
 
+    \paragraph{}
     \item \textbf{Diferença simétrica} (\(A\,\Delta\, B\)): \((A\setminus B)\cup(B\setminus A)\); é igual a \(A\cup B\) quando \(A\) e \(B\) são disjuntos.
     
     Exemplo: \(P\,\Delta\, F\) é o conjunto de todos os organismos que são plantas ou fungos, mas não ambos (o que é trivialmente igual a \(P \cup F\) pois \(P\) e \(F\) são disjuntos).
+    \begin{center}
+    \begin{tikzpicture}[scale=0.95]
+        % Diferença simétrica P Δ F com P e F disjuntos
+        \def\r{1.2}
+        \coordinate (LP) at (-1.6,0);
+        \coordinate (LF) at (1.6,0);
+        \fill[blue!20] (LP) circle (\r);
+        \fill[green!20] (LF) circle (\r);
+        \draw[thick, blue!60] (LP) circle (\r) node[left=6pt] {$P$};
+        \draw[thick, green!50!black] (LF) circle (\r) node[right=6pt] {$F$};
+    \end{tikzpicture}
+    \captionof{figure}{Diferença simétrica: como $P\cap F=\varnothing$, temos $P\,\Delta\, F = P\cup F$.}
+    \label{fig:op-dif-simetrica}
+    \end{center}
 
+    \paragraph{}
     \item \textbf{Produto cartesiano} (\(A\times B\)): o conjunto de pares ordenados \((a,b)\) com \(a\in A\) e \(b\in B\).
 
-    Exemplo: suponha \(T=\{t_1,t_2\}\) e \(F=\{f_1,f_2\}\). Então
-    \(T\times F = \{(t_1,f_1),(t_1,f_2),(t_2,f_1),(t_2,f_2)\}\).
+    Exemplo: \(T=\{t_1,t_2\}\) e \(F=\{f_1,f_2\}\). Então \(T\times F = \{(t_1,f_1),(t_1,f_2),(t_2,f_1),(t_2,f_2)\}\).
+    \begin{center}
+    \begin{tikzpicture}[scale=1]
+        % Grade limpa para T × F (2×2) sem sobreposições
+        \def\xone{0}
+        \def\xtwo{2.5}
+        \def\yone{0}
+        \def\ytwo{1.6}
+        % Moldura e linhas da grade
+        \draw[gray!35] (\xone-0.4,\yone-0.4) rectangle (\xtwo+0.4,\ytwo+0.4);
+        \draw[gray!35] (\xone,\yone) -- (\xone,\ytwo);
+        \draw[gray!35] (\xtwo,\yone) -- (\xtwo,\ytwo);
+        \draw[gray!35] (\xone,\yone) -- (\xtwo,\yone);
+        \draw[gray!35] (\xone,\ytwo) -- (\xtwo,\ytwo);
+        % Pontos de T×F com cores distintas por par
+        \fill[blue!70] (\xone,\yone) circle (2.4pt);   % (t1,f1)
+        \fill[purple!70] (\xone,\ytwo) circle (2.4pt); % (t1,f2)
+        \fill[green!60!black] (\xtwo,\yone) circle (2.4pt); % (t2,f1)
+        \fill[orange!80!black] (\xtwo,\ytwo) circle (2.4pt); % (t2,f2)
+        % Rótulos dos pares (posicionados para não sobrepor)
+        \node[font=\scriptsize, text=blue!70, anchor=west]  at (\xone+0.18,\yone+0.18) {$(t_1,f_1)$};
+        \node[font=\scriptsize, text=purple!70, anchor=west] at (\xone+0.18,\ytwo) {$(t_1,f_2)$};
+        \node[font=\scriptsize, text=green!60!black, anchor=east] at (\xtwo-0.18,\yone+0.18) {$(t_2,f_1)$};
+        \node[font=\scriptsize, text=orange!80!black, anchor=east] at (\xtwo-0.18,\ytwo-0.18) {$(t_2,f_2)$};
+        % Rótulos dos elementos
+        \node[blue!60] at (\xone,\yone-0.45) {$t_1$};
+        \node[blue!60] at (\xtwo,\yone-0.45) {$t_2$};
+        \node[green!50!black, anchor=east] at (\xone-0.25,\yone) {$f_1$};
+        \node[green!50!black, anchor=east] at (\xone-0.25,\ytwo) {$f_2$};
+        % Rótulos dos conjuntos (eixos)
+        \node at (0.5*\xtwo, -0.95) {$T=\{t_1,t_2\}$};
+        \node[rotate=90] at (\xone-0.95, 0.5*\ytwo) {$F=\{f_1,f_2\}$};
+    \end{tikzpicture}
+    \captionof{figure}{Produto cartesiano: pontos representam os pares de $T\times F$ para $T=\{t_1,t_2\}$ e $F=\{f_1,f_2\}$.}
+    \label{fig:op-produto}
+    \end{center}
 
+    \paragraph{}
     \item \textbf{Conjunto das partes} (\(2^U\)): a família de todos os subconjuntos de \(U\) (inclui \(\varnothing\) e o próprio \(U\)).
     
     Exemplo: se \(U = \{x,y\}\), então \(2^U = \{\varnothing, \{x\}, \{y\}, \{x,y\}\}\). Logo, \(|2^U|=4=2^{|U|}\).
-
+    \begin{center}
+    \begin{tikzpicture}[scale=1, node distance=0.9cm]
+        % Diagrama de Hasse para U={x,y}
+        \node (empty) at (0,0) {$\varnothing$};
+        \node (x) [above left=of empty] {$\{x\}$};
+        \node (y) [above right=of empty] {$\{y\}$};
+        \node (xy) [above=of empty] {$\{x,y\}$};
+        \draw (empty) -- (x) -- (xy) -- (y) -- (empty);
+    \end{tikzpicture}
+    \captionof{figure}{Conjunto das partes: diagrama de Hasse de $2^{U}$ para $U=\{x,y\}$.}
+    \label{fig:op-partes}
+    \end{center}
 \end{itemize}
 
 \paragraph{Identidades úteis.}
 Usaremos livremente as propriedades clássicas de conjuntos — comutatividade e associatividade de \(\cup\) e \(\cap\), distributividade e as \textbf{leis de De Morgan} — sem prova. Quando for relevante, explicitaremos a identidade no ponto de uso. Por exemplo, no nosso universo \(U\), \((P\cup F)^c = P^c\cap F^c\).
 
 \subsubsection{Coleção}
-\paragraph{}
 
+\paragraph{}
 Entre os objetos que podem pertencer a um conjunto, estão também eles mesmos, outros conjuntos. Chamaremos tais conjuntos de \textbf{coleções} (ou \textbf{famílias}) de conjuntos. Por exemplo, \(\mathcal{C} = \{P, T, F\}\) é uma coleção formada pelos conjuntos de organismos já definidos: plantas \(P\), árvores \(T\) e fungos \(F\). Note que \(\mathcal{C}\) é um conjunto como outro qualquer; seus elementos são, cada um, um conjunto.
 
 \paragraph{}
@@ -170,6 +410,53 @@ Uma coleção \(\mathcal{F}\) é dita \textbf{laminar} quando, para quaisquer \(
 
 \paragraph{}
 Por exemplo, na coleção \(\mathcal{C} = \{P, T, F\}\): \(P\) é o conjunto de todas as plantas, \(T\) o de todas as árvores (portanto \(T\subseteq P\)) e \(F\) o de todos os fungos (disjunto de plantas e, logo, de árvores). Assim, quaisquer dois conjuntos em \(\mathcal{C}\) são aninhados ou disjuntos, e \(\mathcal{C}\) é laminar. Na coleção \(\mathcal{D} = \{A, T\}\): \(A\) é o conjunto de árvores com folhas verdes e \(T\) o de todas as árvores; como toda árvore de \(A\) é árvore de \(T\), temos \(A\subseteq T\) e a coleção é laminar. Já em \(\mathcal{E} = \{A, R\}\): \(R\) é o conjunto de árvores frutíferas; há árvores que são ao mesmo tempo frutíferas e de folhas verdes (a interseção é não vazia), mas nenhuma das classes contém a outra, então \(\mathcal{E}\) não é laminar.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.95]
+    % (a) Coleção C = {P, T, F} é laminar: T ⊆ P e F disjunto
+    \begin{scope}[xshift=-6.2cm]
+        % P (maior)
+        \draw[fill=blue!8, draw=blue!60, thick] (0,0) circle (1.6);
+        \node[blue!60] at (0,1.9) {$P$};
+        % T (dentro de P)
+        \draw[fill=blue!25, draw=blue!60, thick] (-0.4,0.1) circle (0.8);
+        \node[blue!70] at (-0.4,0.1) {$T$};
+        % F (disjunto)
+        \draw[fill=green!20, draw=green!50!black, thick] (2.8,0) circle (0.9);
+        \node[green!50!black] at (2.8,0) {$F$};
+        % Rótulo do subpainel
+        \node[font=\small] at (0,-2.2) {(a) $\mathcal{C}=\{P,T,F\}$ — laminar};
+    \end{scope}
+
+    % (b) Coleção D = {A, T} é laminar: A ⊆ T
+    \begin{scope}
+        % T
+        \draw[fill=blue!25, draw=blue!60, thick] (0,0) circle (1.3);
+        \node[blue!60] at (0,1.55) {$T$};
+        % A (dentro de T)
+        \draw[fill=blue!45, draw=blue!70, thick] (-0.4,0.1) circle (0.6);
+        \node[blue!70] at (-0.4,0.1) {$A$};
+        % Rótulo do subpainel
+        \node[font=\small] at (0,-2.0) {(b) $\mathcal{D}=\{A,T\}$ — laminar};
+    \end{scope}
+
+    % (c) Coleção E = {A, R} não é laminar: A e R se interceptam sem inclusão
+    \begin{scope}[xshift=6.2cm]
+        % A e R sobrepostos
+        \def\ra{1.1}
+        \coordinate (cA) at (-0.5,0);
+        \coordinate (cR) at (0.5,0);
+        \fill[blue!35, opacity=0.5] (cA) circle (\ra);
+        \fill[orange!60, opacity=0.45] (cR) circle (\ra);
+        \draw[blue!70, thick] (cA) circle (\ra) node[left=6pt] {$A$};
+        \draw[orange!80!black, thick] (cR) circle (\ra) node[right=6pt] {$R$};
+        % Rótulo do subpainel
+        \node[font=\small] at (0,-2.0) {(c) $\mathcal{E}=\{A,R\}$ — não laminar};
+    \end{scope}
+\end{tikzpicture}
+\captionof{figure}{Laminaridade em coleções: em (a) e (b), quaisquer dois conjuntos são aninhados ou disjuntos; em (c), $A$ e $R$ se interceptam sem inclusão, violando a laminaridade.}
+\label{fig:laminaridade}
+\end{center}
 
 \paragraph{}
 Este é um importante conceito que aparecerá no restante do trabalho. A ideia de laminaridade retornará quando tratarmos de cortes dirigidos.
@@ -198,23 +485,56 @@ Um conjunto \(A\in\mathcal{C}\) é \textbf{máximo} se \(B\subseteq A\) para tod
 Um bom exemplo para ilustrar a distinção entre conjuntos maximais e máximos é a coleção \(\mathcal{C}=\big\{\{1\},\{2\},\{1,2\},\{3\}\big\}\). Aqui, \(\{1,2\}\) é o único conjunto máximo (contém todos os outros), enquanto \(\{1\}\), \(\{2\}\) e \(\{3\}\) são todos maximais (não podem ser ampliados dentro da coleção).
 
 \paragraph{}
-Esses conceitos serão úteis mais adiante, quando lidarmos com coleções de cortes dirigidos e conjuntos de arestas em grafos.
+Esses conceitos reaparecerão ao longo do texto, especialmente na diferença entre estruturas \textbf{maximais} (saturadas por inclusão) e \textbf{máximas/ótimas} (de maior cardinalidade ou menor custo). Para fixar ideias:
+\begin{itemize}
+    \item Em muitos problemas, “\textbf{maximal}” quer dizer: não dá para ampliar uma escolha sem violar as regras; já “\textbf{máximo/ótimo}” quer dizer: entre todas as escolhas válidas, essa é a melhor segundo o critério (por exemplo, menor custo).
+    \item No algoritmo de \textbf{Chu--Liu/Edmonds}, começamos com escolhas locais que já não podem ser ampliadas dentro das regras do problema e, a partir delas, chegamos a uma solução de menor custo.
+    \item No método de \textbf{András Frank}, primeiro construímos uma estrutura organizada que garante escolhas suficientes; depois, usando apenas relações já ativadas por essa estrutura, extraímos a solução ótima.
+    \item Moral: partimos da ideia de “não dá para aumentar” (maximal) e chegamos a “melhor possível” (máximo/ótimo). Os detalhes técnicos de cada método aparecerão nas seções próprias.
+\end{itemize}
 
 \subsection{Relações e Funções}
+
 \paragraph{}
-Quando lidamos com conjuntos, frequentemente precisamos estabelecer conexões ou associações entre seus elementos. Essas conexões são formalizadas através de \textbf{relações} e \textbf{funções}, que são conceitos fundamentais em matemática e ciência da computação.
+Desde a introdução, vimos a ideia filosófica de explicar como “ligar” fatos a hipóteses da forma mais parcimoniosa possível. Para tornar essa intuição precisa, precisamos de uma linguagem que descreva objetos (conjuntos) e como eles se conectam. É aqui que entram as \textbf{relações} e, de modo ainda mais disciplinado, as \textbf{funções}: regras que associam a cada elemento de um conjunto exatamente um elemento de outro. Com elas, passamos do discurso qualitativo sobre explicações para uma estrutura matemática que permite medir, comparar e, adiante, otimizar.
+
+% \paragraph{}
+% Quando lidamos com conjuntos, frequentemente precisamos estabelecer conexões ou associações entre seus elementos. Essas conexões são formalizadas através de \textbf{relações} e \textbf{funções}, que são conceitos fundamentais em matemática e ciência da computação.
 
 \paragraph{}
 Na matemática, uma \textbf{relação} entre dois conjuntos \(A\) e \(B\) é uma maneira de associar elementos de \(A\) com elementos de \(B\). Uma \textbf{função} é um tipo especial de relação que associa cada elemento de \(A\) a exatamente um elemento de \(B\).
 
 \paragraph{}
-Na ciëncia da computação, relações e funções são usadas para modelar conexões entre dados, estruturas de dados e operações. 
-
-\paragraph{}
 Uma \textbf{relação} \(R\) entre dois conjuntos \(A\) e \(B\) é um subconjunto do produto cartesiano \(A \times B\). Ou seja, \(R \subseteq A \times B\). Se \((a,b) \in R\), dizemos que \(a\) está relacionado a \(b\) pela relação \(R\), denotado \(aRb\).
 
+\begin{center}
+\begin{tikzpicture}[>=Stealth, node distance=1.2cm]
+    % Coluna A (domínio) — retângulos arredondados
+    \node[draw, rounded corners, fill=blue!10, minimum width=8mm, minimum height=6mm] (a1) {$a_1$};
+    \node[draw, rounded corners, fill=blue!10, below=of a1, minimum width=8mm, minimum height=6mm] (a2) {$a_2$};
+    \node[draw, rounded corners, fill=blue!10, below=of a2, minimum width=8mm, minimum height=6mm] (a3) {$a_3$};
+    % Coluna B (contradomínio) — círculos
+    \node[circle, draw, fill=green!10, right=3.2cm of a1, minimum size=6mm] (b1) {$b_1$};
+    \node[circle, draw, fill=green!10, below=of b1, minimum size=6mm] (b2) {$b_2$};
+    \node[circle, draw, fill=green!10, below=of b2, minimum size=6mm] (b3) {$b_3$};
+    % Agrupadores (caixas) para A e B com rótulos
+    \node[draw=blue!50, rounded corners, fit=(a1)(a2)(a3), inner sep=5pt, label={[blue!60]above:A (domínio)}] {};
+    \node[draw=green!50!black, fit=(b1)(b2)(b3), inner sep=7pt, label={[green!50!black]above:B (contradomínio)}] {};
+    % Setas representando os pares de R (neutras para destacar os conjuntos)
+    \draw[->, thick, draw=gray!70] (a1) -- (b2);
+    \draw[->, thick, draw=gray!70] (a2) -- (b1);
+    \draw[->, thick, draw=gray!70] (a2) -- (b3);
+    \draw[->, thick, draw=gray!70] (a3) -- (b3);
+\end{tikzpicture}
+\captionof{figure}{Relação $R\subseteq A\times B$. Cada seta representa um par $(a,b)\in R$ (isto é, $a\,R\,b$). As formas/cores distinguem domínio ($A$, retângulos azuis) de contradomínio ($B$, círculos verdes). Note que $a_2$ se relaciona com $b_1$ e $b_3$; logo, este $R$ \emph{não} é uma função. Para que $R$ fosse uma função $f\!:\!A\to B$, cada $a\in A$ deveria ter \emph{exatamente uma} seta saindo para algum $b\in B$.}
+\label{fig:relacao}
+\end{center}
+
 \paragraph{}
-No nosso exemplo-mestre, considere \(P=\{\text{todas as plantas}\}\) e \(F=\{\text{todos os fungos}\}\). Definimos a relação \(R\) como "é um organismo que compete com". Assim, se uma planta \(p \in P\) compete com um fungo \(f \in F\), então \((p,f) \in R\).
+No nosso primeiro exemplo-mestre, considere \(P=\{\text{todas as plantas}\}\) e \(F=\{\text{todos os fungos}\}\). Definimos a relação \(R\) como "é um organismo que compete com". Assim, se uma planta \(p \in P\) compete com um fungo \(f \in F\), então \((p,f) \in R\).
+
+\paragraph{}
+No nosso segundo exemplo, considere \(H=\{\text{hipóteses}\}\) e \(E=\{\text{evidências}\}\). Definimos a relação \(R\) como "explica". Se uma hipótese \(h \in H\) explica uma evidência \(e \in E\), então \((h,e) \in R\).
 
 \paragraph{}
 Em teoria dos grafos, uma relação pode representar conexões entre vértices. Por exemplo, em um grafo dirigido, a relação "existe uma aresta de \(u\) para \(v\)" pode ser representada como um conjunto de pares ordenados \((u,v)\).
@@ -222,14 +542,273 @@ Em teoria dos grafos, uma relação pode representar conexões entre vértices. 
 \paragraph{}
 Uma \textbf{função} \(f\) de um conjunto \(A\) em um conjunto \(B\) é uma relação especial que associa cada elemento de \(A\) a exatamente um elemento de \(B\). Denotamos isso como \(f: A \to B\). Se \(f(a) = b\), dizemos que \(b\) é a imagem de \(a\) sob \(f\).
 
+\begin{center}
+\begin{tikzpicture}[>=Stealth, node distance=1.2cm]
+    % Coluna A (domínio) — retângulos arredondados
+    \node[draw, rounded corners, fill=blue!10, minimum width=8mm, minimum height=6mm] (a1f) {$a_1$};
+    \node[draw, rounded corners, fill=blue!10, below=of a1f, minimum width=8mm, minimum height=6mm] (a2f) {$a_2$};
+    \node[draw, rounded corners, fill=blue!10, below=of a2f, minimum width=8mm, minimum height=6mm] (a3f) {$a_3$};
+    % Coluna B (contradomínio) — círculos
+    \node[circle, draw, fill=green!10, right=3.2cm of a1f, minimum size=6mm] (b1f) {$b_1$};
+    \node[circle, draw, fill=green!10, below=of b1f, minimum size=6mm] (b2f) {$b_2$};
+    \node[circle, draw, fill=green!10, below=of b2f, minimum size=6mm] (b3f) {$b_3$};
+    % Agrupadores (caixas) para A e B com rótulos
+    \node[draw=blue!50, rounded corners, fit=(a1f)(a2f)(a3f), inner sep=5pt, label={[blue!60]above:A (domínio)}] {};
+    \node[draw=green!50!black, fit=(b1f)(b2f)(b3f), inner sep=7pt, label={[green!50!black]above:B (contradomínio)}] {};
+    % Setas de função (exatamente uma saída por elemento de A)
+    \draw[->, thick, draw=gray!70] (a1f) -- (b1f);
+    \draw[->, thick, draw=gray!70] (a2f) -- (b2f);
+    \draw[->, thick, draw=gray!70] (a3f) -- (b2f); % muitos-para-um permitido
+\end{tikzpicture}
+\captionof{figure}{Função $f\!:\!A\to B$. Cada elemento de $A$ tem \emph{exatamente uma} seta saindo para um elemento de $B$ (a imagem). Elementos distintos de $A$ podem ter a mesma imagem (muitos-para-um), e nem todo elemento de $B$ precisa ser imagem (aqui, $b_3$ não é atingido). Compare com a Fig.\ \ref{fig:relacao}.}
+\label{fig:funcao}
+\end{center}
+
 \paragraph{}
-No nosso exemplo-mestre, considere a função \(f: P \to \mathbb{N}\) que associa cada planta ao seu número de folhas. Se \(p \in P\) é uma árvore com 100 folhas, então \(f(p) = 100\).
+No nosso exemplo-mestre, considere \(P=\{\text{todas as plantas}\}\) e \(\mathbb{N}=\{0,1,2,\ldots\}\) (números naturais). Definimos a função \(f: P \to \mathbb{N}\) que associa cada planta ao seu número de folhas. Se \(p \in P\) é uma árvore com 100 folhas, então \(f(p) = 100\).
 
 \paragraph{}
 Em teoria dos grafos, funções podem ser usadas para atribuir pesos ou capacidades às arestas. Por exemplo, se temos um grafo \(G\) com arestas \(e_1, e_2, \ldots, e_n\), podemos definir uma função \(c: E \to \mathbb{R}^+\) que atribui um peso \(c(e_i)\) a cada aresta \(e_i\).
 
 \paragraph{}
-Computacionalmente, relações são frequentemente implementadas como tabelas ou listas de pares, enquanto funções são frequentemente implementadas como métodos ou procedimentos que recebem entradas e retornam saídas. Elas são fundamentais para a modularidade e reutilização de código.
+Na ciência da computação, relações e funções são usadas para modelar conexões entre dados, estruturas de dados e operações. Por exemplo, em bancos de dados relacionais, tabelas representam relações entre diferentes entidades. Em programação funcional, funções são tratadas como cidadãos de primeira classe, permitindo a criação de funções de ordem superior que podem receber outras funções como argumentos ou retorná-las como resultados.
+
+\subsubsection{Conceitos em Funções}
+\paragraph{}
+Alguns conceitos importantes relacionados a funções incluem:
+\begin{itemize}
+    \item \textbf{Domínio}: o conjunto \(A\) de entrada da função \(f: A \to B\).
+    \item \textbf{Contradomínio}: o conjunto \(B\) de possíveis saídas da função.
+    \item \textbf{Imagem}: o conjunto de valores efetivamente atingidos pela função, \(f(A) = \{f(a) \mid a \in A\}\).
+    
+    \begin{center}
+    \begin{tikzpicture}[>=Stealth, node distance=1.1cm]
+        % Elementos do domínio A (retângulos azuis)
+        \node[draw, rounded corners, fill=blue!10, minimum width=9mm, minimum height=6mm] (a1img) {$a_1$};
+        \node[draw, rounded corners, fill=blue!10, below=of a1img, minimum width=9mm, minimum height=6mm] (a2img) {$a_2$};
+        \node[draw, rounded corners, fill=blue!10, below=of a2img, minimum width=9mm, minimum height=6mm] (a3img) {$a_3$};
+        % Elementos do contradomínio B (círculos verdes)
+        \node[circle, draw, fill=green!10, right=3.2cm of a1img, minimum size=6mm] (b1img) {$b_1$};
+        \node[circle, draw, fill=green!10, below=of b1img, minimum size=10mm] (b2img) {$b_2$};
+        \node[circle, draw, fill=green!10, below=of b2img, minimum size=6mm] (b3img) {$b_3$};
+        % Caixas de agrupamento com rótulos
+        \node[draw=blue!50, rounded corners, fit=(a1img)(a2img)(a3img), inner sep=5pt, label={[blue!60]above:A (domínio)}] {};
+        \node[draw=green!50!black, fit=(b1img)(b2img)(b3img), inner sep=7pt, label={[green!50!black]above:B (contradomínio)}] {};
+        % Setas de f (exatamente uma por elemento de A)
+        \draw[->, thick, draw=gray!70] (a1img) -- (b1img);
+        \draw[->, thick, draw=gray!70] (a2img) -- (b2img);
+        \draw[->, thick, draw=gray!70] (a3img) -- (b2img);
+        % Destaque da imagem f(A) ⊆ B
+    \node[draw=purple!70!black, thick, fit=(b1img)(b2img), inner sep=3pt, label distance=15mm, label={[purple!70!black]right:Imagem $f(A)$}] {};
+    \end{tikzpicture}
+    
+    \captionof{figure}{Domínio, contradomínio e imagem: $A$ (retângulos azuis) mapeia via $f$ para $B$ (círculos verdes). A imagem $f(A)$ é o subconjunto de $B$ efetivamente atingido (aqui, $\{b_1,b_2\}$).}
+    \label{fig:dom-contradom-imagem}
+    \end{center}
+    
+    \item \textbf{Injetora}: uma função \(f\) é injetora se \(f(a_1) = f(a_2)\) implica \(a_1 = a_2\); ou seja, elementos distintos do domínio têm imagens distintas.
+    \item \textbf{Sobrejetora}: uma função \(f\) é sobrejetora se para todo \(b \in B\), existe \(a \in A\) tal que \(f(a) = b\); ou seja, a imagem é igual ao contradomínio.
+    \item \textbf{Bijetora}: uma função que é tanto injetora quanto sobrejetora; estabelece uma correspondência um-para-um entre os elementos de \(A\) e \(B\).
+    
+\end{itemize}
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth, scale=0.9, every node/.style={transform shape}, node distance=0.8cm]
+    % estilos reutilizados
+    \tikzset{
+        Aelem/.style={draw, rounded corners, fill=blue!10, minimum width=7mm, minimum height=5mm},
+        Belem/.style={circle, draw, fill=green!10, minimum size=5mm},
+        Abox/.style={draw=blue!50, rounded corners},
+        Bbox/.style={draw=green!50!black}
+    }
+
+    % (a) Injetora: imagens distintas
+    \begin{scope}
+        \node[Aelem] (a1i) {$a_1$};
+        \node[Aelem, below=of a1i] (a2i) {$a_2$};
+        \node[Aelem, below=of a2i] (a3i) {$a_3$};
+    \node[style=Belem, right=2.2cm of a1i] (b1i) {$b_1$};
+        \node[style=Belem, below=of b1i] (b2i) {$b_2$};
+        \node[style=Belem, below=of b2i] (b3i) {$b_3$};
+    \node[Abox, fit=(a1i)(a2i)(a3i), inner sep=3pt, label={[blue!60]above:$A$}] {};
+    \node[Bbox, fit=(b1i)(b2i)(b3i), inner sep=5pt, label={[green!50!black]above:$B$}] {};
+    \draw[->, semithick, draw=gray!70] (a1i) -- (b1i);
+    \draw[->, semithick, draw=gray!70] (a2i) -- (b2i);
+    \draw[->, semithick, draw=gray!70] (a3i) -- (b3i);
+    \node[font=\footnotesize, anchor=south] at ($(a1i)!0.5!(b1i)+(0,0.7)$) {(a) Injetora};
+    \end{scope}
+    
+    % (b) Sobrejetora: todo B é atingido
+    \begin{scope}[xshift=4.8cm]
+        \node[Aelem] (a1s) {$a_1$};
+        \node[Aelem, below=of a1s] (a2s) {$a_2$};
+        \node[Aelem, below=of a2s] (a3s) {$a_3$};
+    \node[style=Belem, right=2.2cm of a1s] (b1s) {$b_1$};
+    \node[style=Belem, below=of b1s] (b2s) {$b_2$};
+    \node[style=Belem, below=of b2s] (b3s) {$b_3$};
+    \node[Abox, fit=(a1s)(a2s)(a3s), inner sep=3pt, label={[blue!60]above:$A$}] {};
+    \node[Bbox, fit=(b1s)(b2s)(b3s), inner sep=5pt, label={[green!50!black]above:$B$}] {};
+    \draw[->, semithick, draw=gray!70] (a1s) -- (b1s);
+    \draw[->, semithick, draw=gray!70] (a2s) -- (b2s);
+    \draw[->, semithick, draw=gray!70] (a3s) -- (b3s);
+    \node[font=\footnotesize, anchor=south] at ($(a1s)!0.5!(b1s)+(0,0.7)$) {(b) Sobrejetora};
+    \end{scope}
+   
+    % (c) Bijetora: um-para-um e sobre
+    \begin{scope}[xshift=9.6cm]
+        \node[Aelem] (a1b) {$a_1$};
+        \node[Aelem, below=of a1b] (a2b) {$a_2$};
+        \node[Aelem, below=of a2b] (a3b) {$a_3$};
+    \node[style=Belem, right=2.2cm of a1b] (b1b) {$b_1$};
+    \node[style=Belem, below=of b1b] (b2b) {$b_2$};
+    \node[style=Belem, below=of b2b] (b3b) {$b_3$};
+    \node[Abox, fit=(a1b)(a2b)(a3b), inner sep=3pt, label={[blue!60]above:$A$}] {};
+    \node[Bbox, fit=(b1b)(b2b)(b3b), inner sep=5pt, label={[green!50!black]above:$B$}] {};
+    \draw[->, semithick, draw=gray!70] (a1b) -- (b2b);
+    \draw[->, semithick, draw=gray!70] (a2b) -- (b3b);
+    \draw[->, semithick, draw=gray!70] (a3b) -- (b1b);
+    \node[font=\footnotesize, anchor=south] at ($(a1b)!0.5!(b1b)+(0,0.7)$) {(c) Bijetora};
+    \end{scope}
+\end{tikzpicture}
+
+\captionof{figure}{Funções especiais: (a) Injetora — elementos distintos em $A$ têm imagens distintas em $B$; (b) Sobrejetora — todo elemento de $B$ é imagem; (c) Bijetora — um-para-um e sobre $B$.}
+\label{fig:inj-sobre-bij}
+\end{center}
+
+\subsubsection{Funções de agregação e somatórios}
+
+\paragraph{}
+Além de relacionar elementos de conjuntos, muitas operações familiares em matemática, envolvem \emph{funções} que recebem coleções de números (ou funções) e devolvem um número.
+
+\paragraph{}
+Uma \textbf{função de agregação} é uma função que recebe um conjunto (ou sequência) de valores e retorna um único valor que representa algum aspecto agregado desses valores. Exemplos comuns incluem:
+\begin{itemize}
+    \item \textbf{Média}: A média aritmética de um conjunto de números \(x_1, x_2, \ldots, x_n\) é dada por \(\frac{1}{n}\sum_{i=1}^{n} x_i\).
+    \item \textbf{Máximo e Mínimo}: A função máximo retorna o maior valor em um conjunto, enquanto a função mínimo retorna o menor valor.
+    \item \textbf{Produto}: O produto de um conjunto de números \(x_1, x_2, \ldots, x_n\) é dado por \(\prod_{i=1}^{n} x_i\).
+    \item \textbf{Contagem}: A função contagem retorna o número de elementos em um conjunto.
+\end{itemize}
+
+O \textbf{somatório}, por exemplo, é uma função de agregação linear que mapeia uma sequência \((x_1,\dots,x_n)\) em sua soma:
+\[\sum_{i=1}^{n} x_i.\]
+
+Esse conceito é especialmente útil em otimização e em análise combinatória: somatórios aparecem o tempo todo e serão explorados ao longo deste trabalho.
+
+\paragraph{Exemplos com grafos.}
+As sessões seguintes explorarão em maiores detalhes grafos e dígrafos, mas agora, consideremos a ideia básica: um \textbf{grafo} é um conjunto de pontos (\emph{vértices}) ligados por linhas (\emph{arestas}). No caso \emph{não dirigido}, as linhas não têm seta; no caso \emph{dirigido}, cada linha tem um sentido e é chamada de \emph{arco}.
+
+\paragraph{}
+A noção de somatória aparecerá naturalmente quando lidamos com propriedades dos grafos. Por exemplo:
+
+Seja um grafo não dirigido \(G=(V,E)\). O \textbf{grau} de um vértice \(v\in V\), escrito \(\deg(v)\), é quantas arestas tocam em \(v\). A soma dos graus de todos os vértices conta cada aresta \emph{duas vezes} (uma por extremidade), portanto:
+\[\sum_{v\in V} \deg(v) = 2\,|E|.\]
+
+Em grafos dirigidos, distinguimos \(\deg^{-}(v)\) (quantos arcos \emph{chegam} em \(v\)) e \(\deg^{+}(v)\) (quantos arcos \emph{saem} de \(v\)). Cada arco contribui com 1 para um grau de saída e 1 para um grau de entrada, logo:
+\[\sum_{v\in V} \deg^{-}(v) = \sum_{v\in V} \deg^{+}(v) = |E|.\]
+
+\paragraph{}
+Agora suponha que cada aresta/arco \(e\in E\) tenha um \emph{peso} (ou \emph{custo}) \(c(e)\ge 0\). O \textbf{custo total} de um subconjunto \(F\subseteq E\) é simplesmente a soma dos pesos das arestas escolhidas:
+\[C(F) = \sum_{e\in F} c(e).\]
+De maneira análoga, se \(X\subseteq V\) é um conjunto de vértices, a \textbf{capacidade} dos arcos que \emph{saem} de \(X\) é a soma dos pesos dessas setas. Usaremos mais adiante a notação \(\delta^{+}(X)\) para o conjunto de arcos que saem de \(X\) (ver a seção de dígrafos); com essa notação,
+\[\operatorname{cap}(X) = \sum_{e\in \delta^{+}(X)} c(e).\]
+Esses exemplos mostram como somatórios capturam propriedades estruturais do grafo por meio de funções simples de agregação.
+
+\subsubsection{Funções Especiais}
+
+\paragraph{Função de custo}
+\paragraph{}Uma \textbf{função de custo} é uma função \(c: A \to \mathbb{R}^+\) que atribui um valor numérico não negativo (custo) a cada elemento de um conjunto \(A\). Essas funções são amplamente utilizadas em otimização, economia e teoria dos grafos para modelar despesas, penalidades ou recursos associados a escolhas ou ações.
+
+\paragraph{}
+Exemplo: Considere um conjunto de tarefas \(T = \{t_1, t_2, t_3\}\). Uma função de custo \(c: T \to \mathbb{R}^+\) pode ser definida como:
+\[c(t_1) = 5, \quad c(t_2) = 10, \quad c(t_3) = 3.\]
+Aqui, \(c(t_i)\) representa o custo de realizar a tarefa \(t_i\). 
+
+\paragraph{}
+Depende diretamente do conceito de somatório, pois frequentemente queremos minimizar o custo total de um conjunto de escolhas. Se \(S \subseteq A\) é um subconjunto de elementos escolhidos, o custo total associado a \(S\) é dado por:
+\[C(S) = \sum_{a \in S} c(a).\] 
+
+\paragraph{Função c-disjunta}
+Uma \textbf{função c-disjunta} é uma função \(f: A \to B\) que, para quaisquer \(a_1, a_2 \in A\) com \(a_1 \neq a_2\), as imagens \(f(a_1)\) e \(f(a_2)\) são disjuntas, ou seja, \(f(a_1) \cap f(a_2) = \varnothing\). Em outras palavras, elementos distintos do domínio são mapeados para conjuntos disjuntos no contradomínio.
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth, node distance=1.0cm]
+    % Domínio A (retângulos azuis)
+    \node[draw, rounded corners, fill=blue!10, minimum width=9mm, minimum height=6mm] (a1cd) {$a_1$};
+    \node[draw, rounded corners, fill=blue!10, below=of a1cd, minimum width=9mm, minimum height=6mm] (a2cd) {$a_2$};
+    \node[draw, rounded corners, fill=blue!10, below=of a2cd, minimum width=9mm, minimum height=6mm] (a3cd) {$a_3$};
+    \node[draw=blue!50, rounded corners, fit=(a1cd)(a2cd)(a3cd), inner sep=4pt, label={[blue!60]above:$A$}] {};
+
+    % Universo U (círculos verdes como átomos) à direita
+    \node[circle, draw, fill=green!10, right=3.2cm of a1cd, minimum size=6mm] (ua) {$a$};
+    \node[circle, draw, fill=green!10, right=8mm of ua, minimum size=6mm] (ub) {$b$};
+    \node[circle, draw, fill=green!10, below=8mm of ua, minimum size=6mm] (uc) {$c$};
+    \node[circle, draw, fill=green!10, right=8mm of uc, minimum size=6mm] (ud) {$d$};
+    % Caixa do universo U
+    \node[draw=gray!60, rounded corners, fit=(ua)(ub)(uc)(ud), inner sep=6pt, label={[gray!70]above:$U$}] (Ubox) {};
+
+    % Destaque das imagens (subconjuntos disjuntos de U)
+    \node[draw=purple!70!black, rounded corners, fit=(ua)(ub), inner sep=2pt, label={[purple!70!black]above:$f(a_1)$}] (S1) {};
+    \node[draw=orange!80!black, rounded corners, fit=(uc), inner sep=3pt, label={[orange!80!black]below:$f(a_2)$}] (S2) {};
+    \node[draw=blue!60!black, rounded corners, fit=(ud), inner sep=3pt, label={[blue!60!black]below:$f(a_3)$}] (S3) {};
+
+    % Setas de mapeamento para os subconjuntos (apontando para as caixas de destaque)
+    \draw[->, thick, draw=gray!70] (a1cd) -- (S1.west);
+    \draw[->, thick, draw=gray!70] (a2cd) -- (S2.west);
+    \draw[->, thick, draw=gray!70] (a3cd) -- (S3.west);
+\end{tikzpicture}
+\captionof{figure}{Função c-disjunta: cada \(a\in A\) mapeia para um \emph{subconjunto} de \(U\), e as imagens são dois a dois disjuntas (sem sobreposição). No exemplo, $f(a_1)=\{a,b\}$, $f(a_2)=\{c\}$ e $f(a_3)=\{d\}$.}
+\label{fig:c-disjunta}
+\end{center}
+
+\paragraph{}
+Exemplo: Considere \(A = \{1, 2, 3\}\) e \(B = \{\{a\}, \{b\}, \{c\}, \{d\}\}\). Definimos a função \(f: A \to B\) como:
+\[f(1) = \{a, b\}, \quad f(2) = \{c\}, \quad f(3) = \{d\}.\]
+Aqui, \(f\) é c-disjunta, pois \(f(1) \cap f(2) = \varnothing\), \(f(1) \cap f(3) = \varnothing\) e \(f(2) \cap f(3) = \varnothing\).
+
+\paragraph{Função c-viável}
+
+\paragraph{}Uma \textbf{função c-viável} é uma função \(g: A \to \mathbb{R}^+\) que satisfaz certas condições de viabilidade relacionadas a um conjunto de restrições ou critérios. Essas funções são frequentemente usadas em otimização e teoria dos grafos para garantir que as soluções propostas atendam a requisitos específicos.
+\paragraph{}
+Exemplo: Considere um conjunto de projetos \(P = \{p_1, p_2, p_3\}\) e uma função \(g: P \to \mathbb{R}^+\) que atribui um valor de viabilidade a cada projeto. Suponha que temos a restrição de que a soma dos valores de viabilidade deve ser menor ou igual a um certo limite \(L\). Se definirmos:
+\[g(p_1) = 4, \quad g(p_2) = 6, \quad g(p_3) = 3,\]
+então a função \(g\) é c-viável se \(g(p_1) + g(p_2) + g(p_3) \leq L\).
+\paragraph{}Essas funções são essenciais para garantir que as soluções propostas em problemas de otimização sejam práticas e atendam aos critérios estabelecidos.
+
+\paragraph{Funções de otimização}
+
+\paragraph{}
+A semiótica é o estudos dos signos e dos processos de significação. Dada a significação, o que significa melhor?
+
+
+
+Em problemas de escolha, precisamos dizer o que significa “melhor”. Fazemos isso com uma \textbf{função objetivo} (ou \textbf{função de otimização}): dada uma família de soluções viáveis \(\mathcal{F}\) (por exemplo, subconjuntos admissíveis de um conjunto de itens), a função
+\[h:\; \mathcal{F} \to \mathbb{R}\]
+atribui um número real a cada solução. Procuramos então uma solução \(S^*\in\mathcal{F}\) que \emph{minimize} ou \emph{maximize} \(h\) (isto é, um \(\operatorname*{argmin}\) ou \(\operatorname*{argmax}\)).
+
+\paragraph{}
+Caso \emph{aditivo} (conectando com somatórios). Quando cada elemento \(a\in A\) tem um custo \(c(a)\ge 0\) e as soluções são subconjuntos \(S\subseteq A\), a função objetivo mais comum é o custo total
+\[C(S)=\sum_{a\in S} c(a),\]
+que desejamos \emph{minimizar}. De modo análogo, se cada item tem um benefício \(p(a)\ge 0\), podemos \emph{maximizar} o benefício total \(P(S)=\sum_{a\in S} p(a)\), possivelmente sujeito a restrições (por exemplo, de orçamento ou capacidade).
+
+\paragraph{}
+Exemplo acessível. Considere produtos \(X=\{x_1,x_2,x_3\}\) com lucro \(p(x_1)=10\), \(p(x_2)=15\), \(p(x_3)=7\). Se houver um limite de custo que impede escolher todos, o objetivo típico é escolher um subconjunto \(S\subseteq X\) que maximize \(\sum_{x\in S} p(x)\) respeitando as restrições. Essa forma reflete exatamente os somatórios introduzidos antes.
+
+\paragraph{}
+Em grafos, a função objetivo costuma somar pesos sobre uma estrutura escolhida:
+\begin{itemize}
+    \item \textit{Caminho mais curto} de \(s\) a \(t\): minimizar \(\sum_{e\in P} c(e)\) entre os caminhos \(P\) de \(s\) até \(t\).
+    \item \textit{Árvore geradora mínima}: minimizar \(\sum_{e\in T} c(e)\) entre as árvores geradoras \(T\) do grafo.
+    \item \textit{Fluxo máximo}: maximizar o valor do fluxo respeitando capacidades; veremos que isso se conecta a cortes mínimos.
+\end{itemize}
+Em todos os casos, a função objetivo explicita o critério de “melhor”, e as restrições determinam quais soluções são aceitáveis — dois ingredientes que retomaremos mais adiante.
+
+
+
+\subsubsection{Otimização}
+
+\paragraph{}
+
+
 \section{Considerações Finais}
 \printbibliography
 
