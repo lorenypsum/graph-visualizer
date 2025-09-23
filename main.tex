@@ -1500,7 +1500,33 @@ Para tornar a notação precisa e fácil de ler:
 Exemplo rápido: se \(\delta^+(X)=\{(u_1,v_1),(u_2,v_2)\}\) com \(c((u_1,v_1))=2\) e \(c((u_2,v_2))=3\), então \(c(\delta^+(X))=2+3=5\).
 
 \paragraph{}
-O \emph{teorema fluxo–corte} afirma que, em dígrafos com valores não negativos, o valor de um fluxo máximo de \(s\) para \(t\) é igual ao valor de um min-corte \(s\text{--}t\) (isto é, \(\min\, c(\delta^+(X))\)). Essa é uma instância canônica de resultado \emph{min–max}, conectando um problema de \emph{empacotar} caminhos com um problema de \emph{cobrir} arcos.
+\begin{center}
+
+\fcolorbox{blue!15}{blue!3}{%
+\parbox{\textwidth}{%
+\indent\colorbox{blue!15}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\textbf{Teorema (Fluxo–Corte Máximo = Mínimo Corte).}\\[1.0em]
+{\color{black!70!black}Em dígrafos com limites/pesos não negativos nos arcos, o valor de um fluxo máximo de \(s\) para \(t\) é igual ao valor de um min-corte \(s\text{--}t\). Em símbolos: \(\max\,\text{valor}(f) = \min\, c(\delta^+(X))\), onde o mínimo é sobre \(X\subseteq V\) com \(s\in X\), \(t\notin X\), e \(c(\delta^+(X))=\sum_{a\in\delta^+(X)} c(a)\).}}}
+
+\paragraph{}
+    \textbf{Prova (esboço):}
+    \paragraph{} 
+    \emph{(i) Desigualdade \(\le\).} Seja \(f\) um fluxo qualquer. Para um corte \((X, V\setminus X)\) com \(s\in X\), \(t\notin X\), a conservação de fluxo implica que o fluxo líquido que sai de \(X\) é exatamente \(\text{valor}(f)\). 
+    
+    Logo, \[\text{valor}(f)= \sum_{a\in\delta^+(X)} f(a) - \sum_{a\in\delta^-(X)} f(a) \le \sum_{a\in\delta^+(X)} f(a) \le \sum_{a\in\delta^+(X)} c(a)=c(\delta^+(X)),\]
+
+    pois \(f(a)\le c(a)\) para todo arco (limite). Como isso vale para todo \(X\), obtemos \(\text{valor}(f)\le \min_X c(\delta^+(X))\).
+
+    \paragraph{}
+    \emph{(ii) Desigualdade \(\ge\) e igualdade.} Considere um fluxo máximo \(f\) sem caminho aumentante no \emph{grafo residual} \(R_f\) (isto é, não há como aumentar o valor do fluxo). Defina \(X\) como o conjunto de vértices alcançáveis a partir de \(s\) em \(R_f\). Então, não existe arco residual de \(X\) para \(V\setminus X\); logo, todo arco original que sai de \(X\) está saturado (\(f(a)=c(a)\)), e todo arco que entra em \(X\) carrega fluxo zero. Assim,
+
+    \[\text{valor}(f)=\sum_{a\in\delta^+(X)} f(a)=\sum_{a\in\delta^+(X)} c(a)=c(\delta^+(X)).\]
+    Portanto, \(f\) atinge exatamente o valor de um corte \(s\text{--}t\); em particular, esse corte é mínimo e \(f\) é máximo. \hfill$\square$
+
+\paragraph{}
+\smallskip
+\textbf{Comentário:} Esse resultado é um protótipo de teorema \emph{min--max}: “empacotar” muito fluxo (caminhos) equivale a “cobrir” pouco com um corte. Ver, por exemplo, \cite{schrijver2003comb}.
+}}
+\end{center}
 
 \paragraph{}
 Empacotamento de vértices (ou empacotamento de nós) em um dígrafo é um conjunto de vértices tal que nenhum par de vértices no conjunto está conectado por um arco. Formalmente, dado um dígrafo \(D = (V, A)\), um empacotamento de vértices \(M\) é um subconjunto de vértices \(M \subseteq V\) tal que para qualquer par distinto \(u, v \in M\), não existe um arco \((u, v) \in A\) nem \((v, u) \in A\).
