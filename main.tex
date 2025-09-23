@@ -1466,11 +1466,23 @@ Além disso, uma arborescência com \(n\) vértices sempre tem exatamente \(n-1\
 \label{fig:arborescencia}
 \end{center}
 
-\paragraph{}
+\paragraph{Propriedades de arborescências}
+
+\paragraph{Arborescências Geradora}
 Uma arborescência é considerada geradora se inclui todos os vértices do dígrafo original, ou seja, \(V_T = V\). Nesse caso, a arborescência é formada por um subconjunto dos arcos do dígrafo original.
 
+\paragraph{Arborescência Maximal}
+Uma arborescência é dita maximal se não é possível adicionar mais vértices ou arcos a ela sem perder a propriedade de ser uma arborescência, ou seja, sem criar ciclos ou desconectar o dígrafo.
+
+\paragraph{Arborescência de Custo Mínimo}
+Uma arborescência de custo mínimo é uma arborescência que minimiza a soma dos pesos dos arcos que a compõem. Esse conceito é especialmente relevante em aplicações onde os arcos têm custos associados, como em redes de transporte ou comunicação.
+
+\paragraph{Arborescência de Raiz Específica}
+Uma arborescência de raiz específica é uma arborescência onde a raiz é um vértice pré-determinado do dígrafo. Isso é útil em situações onde um ponto de origem específico deve ser o início dos caminhos direcionados para todos os outros vértices. Podemos chamá-la de r-arborescência, onde \(r\) é o vértice raiz.
+
 \paragraph{}
-Essas estruturas são importantes porque elas possuem propriedades especiais, trilhas e circuitos em dígrafos, por exemplo, ao respeitar a direção dos arcos, outros critérios de existência são afetados e mudam os teoremas associados. Árvores direcionadas (arborescências) têm uma raiz única e os caminhos passam a ser direcionados para atingirtodos os outros vértices, o que é útil em muitas aplicações, como hierarquias e fluxos de dados. Componentes fortemente conexas ajudam a identificar subestruturas dentro de um dígrafo onde todos os vértices são mutuamente alcançáveis, o que é crucial em análise de redes e sistemas complexos.
+As arborescências são a principal estrutura que exploraremos ao longo desta dissertação, especialmente a r-arborescência de custo mínimo, que é o foco do problema do qual tratamos aqui.
+Vamos aprofundar mais nessas estruturas apresentando propriedades importantes sobre elas, teoremas relevantes e algoritmos que nascem dessas discussões, mas antes precisamos abordar algumas propriedades matemáticas em dígrafos.
 
 \subsubsection{Propriedades matemáticas em dígrafos}
 \paragraph{}
