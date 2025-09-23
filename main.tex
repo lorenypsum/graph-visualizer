@@ -860,19 +860,18 @@ Nesta dissertação, essa noção de otimização é central: olhamos para o mes
 (\cite{chu1965,edmonds1967optimum}).
 
 \paragraph{}
-No lado “dual”, em vez de montar a árvore, colocamos “preços” em cortes do grafo com raiz $r$. A regra é simples: nenhum preço pode ultrapassar o custo das arestas que cruzam o corte. Buscamos escolher esses preços para somar o máximo possível. As arestas que “batem no limite” viram 0‑arestas, e a partir delas conseguimos reconstruir uma arborescência ótima. Essa visão, desenvolvida por Frank, leva a um teorema min–max e a um procedimento em duas etapas: primeiro ajustamos os preços, depois extraímos a solução usando apenas 0‑arestas. 
+No lado “dual”, em vez de montar a árvore, colocamos custos em cortes do grafo com raiz $r$. A regra é simples: nenhum custo pode ultrapassar o custo das arestas que cruzam o corte. Buscamos escolher esses custos para somar o máximo possível. As arestas que “batem no limite” viram 0‑arestas, e a partir delas conseguimos reconstruir uma arborescência ótima. Essa visão, desenvolvida por Frank, leva a um teorema min–max e a um procedimento em duas etapas: primeiro ajustamos os custos, depois extraímos a solução usando apenas 0‑arestas. 
 (cf. \cite{frank2014,schrijver2003comb})
 
-\subsection{Grafos Dirigidos}
+\subsection{Problemas interessantes}
 
 \paragraph{}
-
 Qual o número mínimo de cores necessárias para colorir um mapa de países, de modo que países vizinhos tenham cores diferentes? Qual o caminho mais curto entre duas cidades em um mapa rodoviário? Como encontrar a árvore geradora mínima que conecta todas as cidades com o menor custo total? Essas perguntas são exemplos clássicos de problemas que podem ser modelados e resolvidos usando a teoria dos grafos. Vistas sob a lente da navalha de occam, todas elas buscam a solução mais parcimoniosa que atende ao requisito: usar poucas cores, percorrer um caminho curto ou conectar tudo com custo mínimo.
 
 \begin{center}
 \begin{tikzpicture}[>=Stealth]
     % estilo de vértice e arestas
-    	ikzset{v/.style={circle, draw, thick, minimum size=7mm, inner sep=0pt}, e/.style={semithick, draw=gray!70}}
+    \tikzset{v/.style={circle, draw, thick, minimum size=7mm, inner sep=0pt}, e/.style={semithick, draw=gray!70}}
 
     % vértices de um K4 (exige 4 cores)
     \node[v, fill=red!30, label=below:$v_1$]  (v1) at (0,0) {};
@@ -892,11 +891,434 @@ Qual o número mínimo de cores necessárias para colorir um mapa de países, de
 \label{fig:coloracao}
 \end{center}
 
-
-
 \paragraph{}
 Sem a teoria dos grafos, seria difícil formalizar e resolver esses problemas de maneira eficiente. Ao representar situações do mundo real como grafos, tornamos a parcimônia da navalha de occam algo operacional: escolhemos uma medida simples (número de cores, comprimento, custo) e aplicamos algoritmos que, entre as soluções viáveis, minimizam ou maximizam esse critério — produzindo soluções ótimas ou, quando necessário, boas aproximações.
 
+\subsubsection{Grafos}
+\paragraph{}
+Falamos bastante de grafos ao longo do texto, aqui fixamos a noção básica. 
+
+\paragraph{}
+Um \textbf{grafo} \(G = (V, E)\) é uma estrutura matemática composta por um conjunto \(V\) de \emph{vértices} (ou \emph{nós}) e um conjunto \(E\) de \emph{arestas} (ou \emph{ligações}) que conectam pares de vértices. 
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, e/.style={semithick, draw=gray!70}}
+
+    % vértices (V)
+    \node[v, label=below:$v_1$] (v1) at (0,0) {};
+    \node[v, label=below:$v_2$] (v2) at (2.0,0) {};
+    \node[v, label=above:$v_3$] (v3) at (2.0,1.6) {};
+    \node[v, label=above:$v_4$] (v4) at (0,1.6) {};
+
+    % arestas (E: pares não ordenados)
+    \draw[e] (v1) -- (v2);
+    \draw[e] (v2) -- (v3);
+    \draw[e] (v3) -- (v4);
+    \draw[e] (v4) -- (v1);
+
+    % legenda com os conjuntos V e E
+    \node[align=left, anchor=west] at (3.0,0.9) {$V=\{v_1,v_2,v_3,v_4\}$\\ $E=\{\{v_1,v_2\},\{v_2,v_3\},\{v_3,v_4\},\{v_4,v_1\}\}$};
+\end{tikzpicture}
+\captionof{figure}{Definição de grafo: exemplo de grafo simples \(G=(V,E)\). Pontos representam os vértices \(V\) e linhas representam as arestas \(E\), que são pares não ordenados de vértices distintos.}
+\label{fig:def-grafo}
+\end{center}
+
+\paragraph{}
+O conjunto de vértices \(V\) pode ser definido como \(V = \{v_1, v_2, \ldots, v_n\}\), onde cada \(v_i\) representa um ponto distinto no grafo. O conjunto de arestas \(E\) é um conjunto de pares não ordenados de vértices, ou seja, \(E \subseteq \{\{u, v\} \mid u, v \in V, u \neq v\}\). Cada aresta \(\{u, v\}\) indica uma conexão entre os vértices \(u\) e \(v\).
+
+\paragraph{}
+Esses vértices e arestas podem representar uma variedade de entidades e relações no mundo real. Por exemplo, em um grafo que modela uma rede social, os vértices podem representar pessoas, e as arestas podem representar amizades entre elas. Em um grafo que representa uma rede de transporte, os vértices podem ser cidades, e as arestas podem ser estradas ou rotas de voo conectando essas cidades.
+
+\paragraph{}
+Tendo em mente esses problemas, podemos falar de custos associados às arestas. Por exemplo, em um grafo que representa uma rede de transporte, cada aresta pode ter um custo associado, como a distância entre duas cidades ou o tempo necessário para percorrer uma estrada. Em um grafo que modela uma rede de comunicação, as arestas podem ter custos relacionados à largura de banda ou à latência.
+
+\paragraph{}
+Esses custos representam uma função \(c: E \to \mathbb{R}^+\) que atribui um valor numérico não negativo a cada aresta do grafo. Assim, para cada aresta \(\{u, v\} \in E\), \(c(\{u, v\})\) representa o custo associado a essa conexão.
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, e/.style={semithick, draw=gray!70}}
+
+    % vértices
+    \node[v, label=below:$v_1$] (v1) at (0,0) {};
+    \node[v, label=below:$v_2$] (v2) at (2.2,0) {};
+    \node[v, label=above:$v_3$] (v3) at (3.0,1.8) {};
+    \node[v, label=above:$v_4$] (v4) at (-0.4,1.8) {};
+
+    % arestas com custos (rótulos c(e))
+    \draw[e] (v1) -- node[midway, fill=white, inner sep=2pt, font=\scriptsize] {3} (v2);
+    \draw[e] (v2) -- node[midway, fill=white, inner sep=2pt, font=\scriptsize] {5} (v3);
+    \draw[e] (v3) -- node[midway, fill=white, inner sep=2pt, font=\scriptsize] {2} (v4);
+    \draw[e] (v4) -- node[midway, fill=white, inner sep=2pt, font=\scriptsize] {4} (v1);
+    \draw[e] (v1) -- node[midway, fill=white, inner sep=2pt, font=\scriptsize] {6} (v3);
+
+    % legenda breve
+    \node[align=left, anchor=west] at (4.0,1.0) {$c:E\to\mathbb{R}^+$\\ $c(\{v_1,v_2\})=3,\; c(\{v_1,v_3\})=6,\dots$};
+\end{tikzpicture}
+\captionof{figure}{Grafo com custos nas arestas: a função $c:E\to\mathbb{R}^+$ atribui a cada aresta um custo $c(e)$ (mostrado junto às arestas). Por exemplo, $c(\{v_1,v_2\})=3$. O custo total de um subconjunto $F\subseteq E$ é $C(F)=\sum_{e\in F} c(e)$.}
+\label{fig:grafo-custos}
+\end{center}
+
+\paragraph{}
+Os problemas não envolvem a necessidade de direção nas conexões. No entanto, em muitos contextos, as conexões entre os vértices têm uma direção específica. Em problemas de fluxo de tráfego, por exemplo, as ruas podem ser de mão única, ou em redes de comunicação, os dados podem ser enviados em uma direção específica. Nesses casos, usamos \emph{grafos dirigidos} (ou grafos direcionados ou simplesmente dígrafos), onde as arestas são pares ordenados de vértices. Esse é um conceito central para o desenvolvimento deste trabalho e portanto vamos explorá-lo em detalhes na próxima seção.
+
+\paragraph{}
+Antes, de avançarmos para falar de dígrafos, vale notar que grafos apresentam diversas estruturas interessantes, como caminhos, ciclos, árvores e componentes conexas. Essas estruturas são fundamentais para entender a topologia e as propriedades dos grafos, e muitas vezes são o foco de problemas de otimização.
+
+\paragraph{Caminhos}
+\paragraph{}Um \textbf{caminho} em um grafo é uma sequência de vértices conectados por arestas. Formalmente, um caminho \(P\) de comprimento \(k\geq 1\) é uma sequência de vértices \(P = (v_1, v_2, \ldots, v_{k+1})\) tal que cada par consecutivo \((v_i, v_{i+1})\) é uma aresta em \(E\). O comprimento do caminho é o número de arestas que ele contém, que é \(k\).
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, e/.style={semithick, draw=gray!60}, p/.style={very thick, draw=blue!60}}
+
+    % vértices do caminho
+    \node[v, label=below:$v_1$] (v1) at (0,0) {};
+    \node[v, label=below:$v_2$] (v2) at (1.8,0) {};
+    \node[v, label=below:$v_3$] (v3) at (3.6,0) {};
+    \node[v, label=below:$v_4$] (v4) at (5.4,0) {};
+
+    % vértices extras (arestas que não fazem parte do caminho)
+    \node[v, label=above:$x$] (x) at (1.8,1.2) {};
+    \node[v, label=above:$y$] (y) at (3.6,1.2) {};
+
+    % arestas não pertencentes ao caminho (cinza)
+    \draw[e] (v1) -- (x);
+    \draw[e] (x) -- (v3);
+    \draw[e] (y) -- (v4);
+
+    % caminho destacado (azul)
+    \draw[p] (v1) -- (v2);
+    \draw[p] (v2) -- (v3);
+    \draw[p] (v3) -- (v4);
+
+    % legenda
+    \node[align=left, anchor=west] at (6.2,0.6) {$P=(v_1,v_2,v_3,v_4)$\\ $|P|=3$};
+\end{tikzpicture}
+\captionof{figure}{Caminho em grafo não dirigido: o caminho $P=(v_1,v_2,v_3,v_4)$ está destacado em azul. Seu comprimento é o número de arestas percorridas, $|P|=3$.}
+\label{fig:caminho}
+\end{center}
+
+\paragraph{Ciclos}
+\paragraph{}Um \textbf{ciclo} é um caminho que começa e termina no mesmo vértice, ou seja, \(v_1 = v_{k+1}\). Formalmente, um ciclo \(C\) é uma sequência de vértices \(C = (v_1, v_2, \ldots, v_k, v_1)\) tal que cada par consecutivo \((v_i, v_{i+1})\) é uma aresta em \(E\) e \(k \geq 2\). O comprimento do ciclo é o número de arestas que ele contém, que é \(k\).
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, e/.style={semithick, draw=gray!60}, c/.style={very thick, draw=blue!60}}
+
+    % vértices do ciclo (dispostos aproximadamente em círculo)
+    \node[v, label=below:$v_1$] (v1) at (0,0) {};
+    \node[v, label=right:$v_2$] (v2) at (2.0,0.8) {};
+    \node[v, label=above:$v_3$] (v3) at (1.2,2.1) {};
+    \node[v, label=left:$v_4$] (v4) at (-0.8,1.6) {};
+
+    % arestas não pertencentes ao ciclo (cinza)
+    \node[v, label=right:$x$] (x) at (2.6,1.8) {};
+    \draw[e] (x) -- (v2);
+    \draw[e] (x) -- (v3);
+
+    % ciclo destacado (azul)
+    \draw[c] (v1) -- (v2);
+    \draw[c] (v2) -- (v3);
+    \draw[c] (v3) -- (v4);
+    \draw[c] (v4) -- (v1);
+
+    % legenda
+    \node[align=left, anchor=west] at (3.2,1.0) {$C=(v_1,v_2,v_3,v_4,v_1)$\\ $|C|=4$};
+\end{tikzpicture}
+\captionof{figure}{Ciclo em grafo não dirigido: o ciclo $C=(v_1,v_2,v_3,v_4,v_1)$ está destacado em azul. Seu comprimento é o número de arestas, $|C|=4$.}
+\label{fig:ciclo}
+\end{center}
+
+\paragraph{Árvores}
+\paragraph{}Uma \textbf{árvore} é um grafo conexo e acíclico. Formalmente, uma árvore \(T\) é um grafo \(T = (V_T, E_T)\) onde \(V_T \subseteq V\) e \(E
+_T \subseteq E\), que satisfaz as seguintes propriedades:
+\begin{itemize}
+    \item \(T\) é conexo: existe um caminho entre qualquer par de vértices em \(V_T\).
+    \item \(T\) é acíclico: não contém ciclos.
+\end{itemize}
+Além disso, uma árvore com \(n\) vértices sempre tem exatamente \(n-1\) arestas.
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, e/.style={semithick, draw=gray!70}}
+
+    % vértices da árvore
+    \node[v, label=below:$r$] (r) at (0,0) {};
+    \node[v, label=above:$a$] (a) at (-1.6,1.4) {};
+    \node[v, label=above:$b$] (b) at (0.0,1.8) {};
+    \node[v, label=above:$c$] (c) at (1.6,1.4) {};
+    \node[v, label=above:$d$] (d) at (-2.4,2.8) {};
+    \node[v, label=above:$e$] (e) at (-0.8,3.0) {};
+    \node[v, label=above:$f$] (f) at (0.8,3.0) {};
+
+    % arestas da árvore (sem ciclos)
+    \draw[e] (r) -- (a);
+    \draw[e] (r) -- (b);
+    \draw[e] (r) -- (c);
+    \draw[e] (a) -- (d);
+    \draw[e] (a) -- (e);
+    \draw[e] (b) -- (f);
+
+    % indicação de |E| = |V| - 1
+    \node[align=left, anchor=west] at (3.0,1.8) {$|V_T|=7,\; |E_T|=6$\\ $|E_T|=|V_T|-1$};
+\end{tikzpicture}
+\captionof{figure}{Árvore: grafo conexo e acíclico. No exemplo, $|V_T|=7$ e $|E_T|=6$, satisfazendo $|E_T|=|V_T|-1$. Não há ciclos e existe um único caminho simples entre quaisquer dois vértices.}
+\label{fig:arvore}
+\end{center}
+
+\paragraph{Componentes conexas}
+\paragraph{}Uma \textbf{componente conexa} de um grafo é um subgrafo maximal que é conexo. Formalmente, uma componente conexa \(C\) é um subgrafo \(C = (V_C, E_C)\) onde \(V_C \subseteq V\) e \(E_C \subseteq E\), que satisfaz a seguinte propriedade:
+\begin{itemize}
+    \item \(C\) é conexo: existe um caminho entre qualquer par de vértices em \(V_C\).
+\end{itemize}
+Além disso, \(C\) é maximal, o que significa que não é possível adicionar mais vértices ou arestas a \(C\) sem perder a propriedade de conexidade.
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, e/.style={semithick, draw=gray!70}, comp/.style={draw=blue!40, rounded corners}}
+
+    % Componente C1 (à esquerda)
+    \node[v, label=above:$a$] (a) at (0,1.2) {};
+    \node[v, label=below:$b$] (b) at (-0.8,0) {};
+    \node[v, label=below:$c$] (c) at (0.8,0) {};
+    \draw[e] (a) -- (b);
+    \draw[e] (a) -- (c);
+    \node[comp, fit=(a)(b)(c), inner sep=20pt, label={[blue!60]above:$C_1$}] {};
+
+    % Componente C2 (centro)
+    \node[v, label=below:$d$] (d) at (4,0) {};
+    \node[v, label=below:$e$] (e) at (5.6,0) {};
+    \draw[e] (d) -- (e);
+    \node[comp, fit=(d)(e), inner sep=15pt, label={[blue!60]above:$C_2$}] {};
+
+    % Componente C3 (direita)
+    \node[v, label=above:$f$] (f) at (8.6,1.2) {};
+    \node[v, label=below:$g$] (g) at (7.8,0) {};
+    \node[v, label=below:$h$] (h) at (9.4,0) {};
+    \draw[e] (f) -- (g);
+    \draw[e] (f) -- (h);
+    \draw[e] (g) -- (h);
+    \node[comp, fit=(f)(g)(h), inner sep=20pt, label={[blue!60]above:$C_3$}] {};
+
+    % texto explicativo
+    \node[align=center, anchor=north west] at (-0.2,-1.0) {Cada caixa destaca uma \emph{componente conexa}.\\ Não há arestas entre $C_1$, $C_2$ e $C_3$.};
+\end{tikzpicture}
+\captionof{figure}{Componentes conexas: o grafo possui três componentes $C_1$, $C_2$ e $C_3$. Cada $C_i$ é conexo e \emph{maximal}: adicionar qualquer vértice de fora quebraria a propriedade de conexidade interna ou exigiria arestas ausentes.}
+\label{fig:componentes}
+\end{center}
+
+\paragraph{}
+Existem muitas outras estruturas e propriedades interessantes em grafos, mas essas são algumas das mais fundamentais para esse trabalho. E para o nosso objetivo, nos interessa entendê-las em mais profundidade em grafos direcionados.
+
+\subsubsection{Quando a direção importa: dígrafos}
+\paragraph{}
+Um \textbf{grafo dirigido} (grafos direcionados ou simplesmente dígrafos) é uma estrutura matemática composta por um conjunto \(V\) de \emph{vértices} e um conjunto \(A\) de \emph{arcos} (ou \emph{arestas direcionadas}) que conectam pares ordenados de vértices.
+
+\paragraph{}
+Por vértices entendemos os mesmos pontos que em grafos comuns, mas agora as conexões entre eles têm uma direção específica. Cada arco \((u, v) \in A\) indica uma conexão direcionada do vértice \(u\) para o vértice \(v\), significando que a relação ou fluxo ocorre de \(u\) para \(v\).
+
+\paragraph{}
+Assim, temos os conceitos de cabeça e cauda de um arco: em \((u, v)\), \(u\) é a \emph{cauda} (origem) e \(v\) é a \emph{cabeça} (destino). Esses conceitos podem ser formalizados por meio de funções \(s, t: A \to V\), onde \(s((u, v)) = u\) (cauda) e \(t((u, v)) = v\) (cabeça).
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!70}}
+
+    % vértices
+    \node[v, label=below:$u$] (u) at (0,0) {};
+    \node[v, label=below:$v$] (v) at (2.6,0) {};
+    \node[v, label=above:$x$] (x) at (1.3,1.5) {};
+
+    % arcos
+    \draw[a] (u) -- node[above, sloped, font=\scriptsize] {$a$} (v);
+    \draw[a] (x) -- (u);
+    \draw[a] (v) -- (x);
+
+    % anotações de cauda/cabeça
+    \node[font=\scriptsize, anchor=north] at ($(u)!0.5!(v)$) {$a=(u,v)$};
+    \path (u) ++(0,-0.9) node[font=\scriptsize] {cauda $s(a)=u$};
+    \path (v) ++(0,-0.9) node[font=\scriptsize] {cabeça $t(a)=v$};
+\end{tikzpicture}
+\captionof{figure}{Dígrafos: arcos têm direção. No arco $a=(u,v)$, $u$ é a \emph{cauda} (origem) e $v$ é a \emph{cabeça} (destino). As funções $s,t:A\to V$ dão a origem e o destino de cada arco.}
+\label{fig:def-digrafo}
+\end{center}
+
+\paragraph{}
+Tal qual os grafos comuns, os dígrafos podem ter custos associados aos arcos. A função de custo \(c: A \to \mathbb{R}^+\) atribui um valor numérico geralmente não negativo a cada arco do dígrafo. Assim, para cada arco \((u, v) \in A\), \(c((u, v))\) representa o custo associado a essa conexão direcionada.
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!70}}
+
+    % vértices
+    \node[v, label=below:$s$] (s) at (0,0) {};
+    \node[v, label=above:$u$] (u) at (2,1.0) {};
+    \node[v, label=below:$v$] (v) at (2,-1.0) {};
+    \node[v, label=below:$t$] (t) at (4,0) {};
+
+    % arcos com custos
+    \draw[a] (s) -- node[midway, fill=white, inner sep=2pt, font=\scriptsize] {2} (u);
+    \draw[a] (s) -- node[midway, fill=white, inner sep=2pt, font=\scriptsize] {4} (v);
+    \draw[a] (u) -- node[midway, fill=white, inner sep=2pt, font=\scriptsize] {1} (v);
+    \draw[a] (u) -- node[midway, fill=white, inner sep=2pt, font=\scriptsize] {5} (t);
+    \draw[a] (v) -- node[midway, fill=white, inner sep=2pt, font=\scriptsize] {3} (t);
+
+    % legenda
+    \node[align=left, anchor=west] at (5.1,0.9) {$c:A\to\mathbb{R}^+$\\ $c((s,u))=2,\; c((v,t))=3,\dots$\\ $C(P)=\sum\limits_{a\in P} c(a)$};
+\end{tikzpicture}
+\captionof{figure}{Dígrafos com custos nos arcos: a função $c:A\to\mathbb{R}^+$ atribui a cada arco $(u,v)$ um custo $c((u,v))$ (mostrado junto à seta). O custo de um caminho $P$ é a soma dos custos de seus arcos, $C(P)=\sum_{a\in P} c(a)$.}
+\label{fig:digrafo-custos}
+\end{center}
+
+\paragraph{}
+Assim como falamos na sessão anterior, os dígrafos também possuem estruturas interessantes, como caminhos direcionados, ciclos direcionados, arborescências e componentes fortemente conexas. Essas estruturas são fundamentais para entender a topologia e as propriedades dos dígrafos, e muitas vezes são o foco de problemas de otimização.
+
+\paragraph{Caminhos direcionados ou trilhas}
+\paragraph{}Um \textbf{caminho direcionado} em um dígrafo é uma sequência de vértices conectados por arcos que respeitam a direção. Formalmente, um caminho direcionado \(P\) de comprimento \(k \geq 1\) é uma sequência de vértices \(P = (v_1, v_2, \ldots, v_{k+1})\) tal que cada par consecutivo \((v_i, v_{i+1})\) é um arco em \(A\). O comprimento do caminho é o número de arcos que ele contém, que é \(k\). 
+\begin{center}
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!60}, p/.style={very thick, draw=blue!
+60}}    
+
+    % vértices do caminho
+    \node[v, label=below:$v_1$] (v1) at (0,0) {};
+    \node[v, label=below:$v_2$] (v2) at (1.8,0) {};
+    \node[v, label=below:$v_3$] (v3) at (3.6,0) {};
+    \node[v, label=below:$v_4$] (v4) at (5.4,0) {};
+
+    % vértices extras (arcos que não fazem parte do caminho)
+    \node[v, label=above:$x$] (x) at (1.8,1.2) {};
+    \node[v, label=above:$y$] (y) at (3.6,1.2) {};
+
+    % arcos não pertencentes ao caminho (cinza)
+    \draw[a] (v1) -- (x);
+    \draw[a] (x) -- (v3);
+    \draw[a] (y) -- (v4);
+
+    % caminho destacado (azul)
+    \draw[p] (v1) -- (v2);
+    \draw[p] (v2) -- (v3);
+    \draw[p] (v3) -- (v4);
+
+    % legenda
+    \node[align=left, anchor=west] at (6.2,0.6) {$P=(v_1,v_2,v_3,v_4)$\\ $|P|=3$};
+\end{tikzpicture}
+\captionof{figure}{Caminho direcionado em dígrafo: o caminho $P=(v_1,v_2,v_3,v_4)$ está destacado em azul. Seu comprimento é o número de arcos percorridos, $|P|=3$.}
+\label{fig:caminho-direcionado}
+\end{center}
+
+\paragraph{Ciclos direcionados ou circuitos}
+\paragraph{}Um \textbf{ciclo direcionado} é um caminho direcionado que começa e termina no mesmo vértice, ou seja, \(v_1 = v_{k+1}\). Formalmente, um ciclo direcionado \(C\) é uma sequência de vértices \(C = (v_1, v_2, \ldots, v_k, v_1)\) tal que cada par consecutivo \((v_i, v_{i+1})\) é um arco em \(A\) e \(k \geq 2\). O comprimento do ciclo é o número de arcos que ele contém, que é \(k\).
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!60}, c/.style={very thick, draw=blue!60}};
+    % vértices do ciclo (dispostos aproximadamente em círculo)
+    \node[v, label=below:$v_1$] (v1) at (0,0) {};
+    \node[v, label=right:$v_2$] (v2) at (2.0,0.8) {};
+    \node[v, label=above:$v_3$] (v3) at (1.2,2.1) {};
+    \node[v, label=left:$v_4$] (v4) at (-0.8,1.6) {};
+    % arcos não pertencentes ao ciclo (cinza)
+    \node[v, label=right:$x$] (x) at (2.6,1.8) {};
+    \draw[a] (x) -- (v2);
+    \draw[a] (x) -- (v3);
+    % ciclo destacado (azul)
+    \draw[c] (v1) -- (v2);
+    \draw[c] (v2) -- (v3);
+    \draw[c] (v3) -- (v4);
+    \draw[c] (v4) -- (v1);
+    % legenda
+    \node[align=left, anchor=west] at (3.2,1.0) {$C=(v_1,v_2,v_3,v_4,v_1)$\\ $|C|=4$};
+\end{tikzpicture}
+\captionof{figure}{Ciclo direcionado em dígrafo: o ciclo $C=(v_1,v_2,v_3,v_4,v_1)$ está destacado em azul. Seu comprimento é o número de arcos, $|C|=4$.}
+\label{fig:ciclo-direcionado}
+\end{center}
+
+\paragraph{Arborescências}
+\paragraph{}Uma \textbf{arborescência} é um dígrafo acíclico e conexo, onde há um vértice especial chamado \emph{raiz} que tem um caminho direcionado para todos os outros vértices. Formalmente, uma arborescência \(T\) é um dígrafo \(T = (V_T, A_T)\) onde \(V_T \subseteq V\) e \(A_T \subseteq A\), que satisfaz as seguintes propriedades:
+\begin{itemize}
+    \item \(T\) é conexo: existe um caminho direcionado da raiz para qualquer vértice em \(V_T\).
+    \item \(T\) é acíclico: não contém ciclos direcionados.
+\end{itemize}
+Além disso, uma arborescência com \(n\) vértices sempre tem exatamente \(n-1\) arcos.
+\begin{center}
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!70}};
+    % vértices da arborescência
+    \node[v, label=below:$r$] (r) at (0,0) {};
+    \node[v, label=above:$a$] (a) at (-1.6,1.4) {};
+    \node[v, label=above:$b$] (b) at (0.0,1.8) {};
+    \node[v, label=above:$c$] (c) at (1.6,1.4) {};
+    \node[v, label=above:$d$] (d) at (-2.4,2.8) {};
+    \node[v, label=above:$e$] (e) at (-0.8,3.0) {};
+    \node[v, label=above:$f$] (f) at (0.8,3.0) {};
+    % arcos da arborescência (sem ciclos)                      
+    \draw[a] (r) -- (a);
+    \draw[a] (r) -- (b);
+    \draw[a] (r) -- (c);
+    \draw[a] (a) -- (d);
+    \draw[a] (b) -- (e);
+    \draw[a] (c) -- (f);
+    % indicação de |A| = |V| - 1
+    \node[align=left, anchor=west] at (3.0,1.8) {$|V_T|=7,\; |A_T|=6$\\ $|A_T|=|V_T|-1$};
+\end{tikzpicture}
+\captionof{figure}{Arborescência: dígrafo conexo e acíclico com raiz $r$. No exemplo, $|V_T|=7$ e $|A_T|=6$, satisfazendo $|A_T|=|V_T|-1$. Não há ciclos direcionados e existe um único caminho direcionado da raiz para quaisquer outros vértices.}
+\label{fig:arborescencia}
+\end{center}
+
+\paragraph{Componentes fortemente conexas}
+\paragraph{}Uma \textbf{componente fortemente conexa} de um dígrafo é um subdígrafo maximal onde existe um caminho direcionado entre qualquer par de vértices. Formalmente, uma componente fortemente conexa \(C\) é um subdígrafo \(C = (V_C, A_C)\) onde \(V_C \subseteq V\) e \(A_C \subseteq A\), que satisfaz a seguinte propriedade:
+\begin{itemize}
+    \item \(C\) é fortemente conexo: existe um caminho direcionado entre qualquer par de vértices em \(V_C\).
+\end{itemize}
+Além disso, \(C\) é maximal, o que significa que não é possível adicionar mais vértices ou arcos a \(C\) sem perder a propriedade de forte conexidade.
+\begin{center}
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!70}, comp/.style={draw=blue!40, rounded corners}};
+    % Componente C1 (à esquerda)
+    \node[v, label=above:$a$] (a) at (0,1.2) {};
+    \node[v, label=below:$b$] (b) at (-0.8,0) {};
+    \node[v, label=below:$c$] (c) at (0.8,0) {};
+    \draw[a] (a) -- (b);
+    \draw[a] (b) -- (c);
+    \draw[a] (c) -- (a);
+    \node[comp, fit=(a)(b)(c), inner sep=20pt, label={[blue!60]above:$C_1$}] {};
+    % Componente C2 (centro)
+    \node[v, label=below:$d$] (d) at (4,0) {};
+    \node[v, label=below:$e$] (e) at (5.6,0) {};
+    \draw[a] (d) -- (e);
+    \draw[a] (e) -- (d);
+    \node[comp, fit=(d)(e), inner sep=15pt, label={[blue!60]above:$C_2$}] {};
+    % Componente C3 (direita)
+    \node[v, label=above:$f$] (f) at (8.6,1.2) {};
+    \node[v, label=below:$g$] (g) at (7.8,0) {};
+    \node[v, label=below:$h$] (h) at (9.4,0) {};
+    \draw[a] (f) -- (g);
+    \draw[a] (g) -- (h);
+    \draw[a] (h) -- (f);
+    \draw[a] (g) -- (f);
+    \draw[a] (h) -- (g);
+    \draw[a] (f) -- (h);
+    \node[comp, fit=(f)(g)(h), inner sep=20pt, label={[blue!60]above:$C_3$}] {};
+    % texto explicativo
+    \node[align=center, anchor=north west] at (-0.2,-1.0) {Cada caixa destaca uma \emph{componente fortemente conexa}.\\ Não há arcos entre $C_1$, $C_2$ e $C_3$.};
+\end{tikzpicture}
+\captionof{figure}{Componentes fortemente conexas: o dígrafo possui três componentes $C_1$, $C_2$ e $C_3$. Cada $C_i$ é fortemente conexo e \emph{maximal}: adicionar qualquer vértice de fora quebraria a propriedade de forte conexidade interna ou exigiria arcos ausentes.}   
+\end{center}
 
 \section{Considerações Finais}
 \printbibliography
