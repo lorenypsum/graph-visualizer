@@ -963,10 +963,13 @@ Esses custos representam uma função \(c: E \to \mathbb{R}^+\) que atribui um v
 \end{center}
 
 \paragraph{}
-Os problemas não envolvem a necessidade de direção nas conexões. No entanto, em muitos contextos, as conexões entre os vértices têm uma direção específica. Em problemas de fluxo de tráfego, por exemplo, as ruas podem ser de mão única, ou em redes de comunicação, os dados podem ser enviados em uma direção específica. Nesses casos, usamos \emph{grafos dirigidos} (ou grafos direcionados ou simplesmente dígrafos), onde as arestas são pares ordenados de vértices. Esse é um conceito central para o desenvolvimento deste trabalho e portanto vamos explorá-lo em detalhes na próxima seção.
+Grafos apresentam diversas estruturas especiais. Essas estruturas são definidas como subgrafos e são fundamentais para entender a topologia e as propriedades dos grafos, e muitas vezes são o foco de problemas de otimização. 
+
+\paragraph{Subgrafos}
+\paragraph{}Um \textbf{subgrafo} \(H = (V_H, E_H)\) de um grafo \(G = (V, E)\) é um grafo cujos vértices e arestas são subconjuntos dos vértices e arestas de \(G\). Formalmente, \(V_H \subseteq V\) e \(E_H \subseteq E\), e cada aresta em \(E_H\) conecta dois vértices em \(V_H\).
 
 \paragraph{}
-Antes, de avançarmos para falar de dígrafos, vale notar que grafos apresentam diversas estruturas interessantes, como caminhos, ciclos, árvores e componentes conexas. Essas estruturas são fundamentais para entender a topologia e as propriedades dos grafos, e muitas vezes são o foco de problemas de otimização.
+Algumas estruturas especiais de subgrafos incluem: caminhos, ciclos, árvores e componentes conexas. Muitas propriedades e algoritmos em grafos dependem dessas estruturas, como encontrar o caminho mais curto entre dois vértices, detectar ciclos ou construir árvores geradoras mínimas. Dentre essas muitas estruturas especiais, vamos apresentar as que são relevantes para o desenvolvimento desta dissertação:
 
 \paragraph{Caminhos}
 \paragraph{}Um \textbf{caminho} em um grafo é uma sequência de vértices conectados por arestas. Formalmente, um caminho \(P\) de comprimento \(k\geq 1\) é uma sequência de vértices \(P = (v_1, v_2, \ldots, v_{k+1})\) tal que cada par consecutivo \((v_i, v_{i+1})\) é uma aresta em \(E\). O comprimento do caminho é o número de arestas que ele contém, que é \(k\).
@@ -1120,10 +1123,40 @@ Existem muitas outras estruturas e propriedades interessantes em grafos, mas ess
 
 \subsubsection{Quando a direção importa: dígrafos}
 \paragraph{}
-Um \textbf{grafo dirigido} (grafos direcionados ou simplesmente dígrafos) é uma estrutura matemática composta por um conjunto \(V\) de \emph{vértices} e um conjunto \(A\) de \emph{arcos} (ou \emph{arestas direcionadas}) que conectam pares ordenados de vértices.
+Existem problemas que a direção das arestas faz toda a diferença. Por exemplo, em uma rede de tráfego, algumas ruas são de mão única, ou em uma rede de comunicação, os dados podem ser enviados em uma direção específica. Nesses casos, usamos \emph{grafos dirigidos} (ou grafos direcionados ou simplesmente dígrafos), onde as arestas são pares de vértices ordenados.
 
 \paragraph{}
-Por vértices entendemos os mesmos pontos que em grafos comuns, mas agora as conexões entre eles têm uma direção específica. Cada arco \((u, v) \in A\) indica uma conexão direcionada do vértice \(u\) para o vértice \(v\), significando que a relação ou fluxo ocorre de \(u\) para \(v\).
+Um \textbf{grafo dirigido} (grafos direcionados ou simplesmente \textbf{dígrafos}) é uma estrutura matemática composta por um conjunto \(V\) de \emph{vértices} e um conjunto \(A\) de \emph{arcos} (ou \emph{arestas direcionadas}) que conectam pares ordenados de vértices.
+
+\paragraph{}
+Por vértices entendemos o mesmo conjunto que em grafos comuns, mas agora as arestas entre eles têm uma direção específica. Cada arco \((u, v) \in A\) indica uma conexão direcionada do vértice \(u\) para o vértice \(v\), significando que a relação ou fluxo ocorre de \(u\) para \(v\).
+
+\paragraph{}
+Assim, temos os conceitos de cabeça e cauda de um arco: em \((u, v)\), \(u\) é a \emph{cauda} (origem) e \(v\) é a \emph{cabeça} (destino). Esses conceitos podem ser formalizados por meio de funções \(s, t: A \to V\), onde \(s((u, v)) = u\) (cauda) e \(t((u, v)) = v\) (cabeça).
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!70}}
+
+    % vértices
+    \node[v, label=below:$u$] (u) at (0,0) {};
+    \node[v, label=below:$v$] (v) at (2.6,0) {};
+    \node[v, label=above:$x$] (x) at (1.3,1.5) {};
+
+    % arcos
+    \draw[a] (u) -- node[above, sloped, font=\scriptsize] {$a$} (v);
+    \draw[a] (x) -- (u);
+    \draw[a] (v) -- (x);
+
+    % anotações de cauda/cabeça
+    \node[font=\scriptsize, anchor=north] at ($(u)!0.5!(v)$) {$a=(u,v)$};
+    \path (u) ++(0,-0.9) node[font=\scriptsize] {cauda $s(a)=u$};
+    \path (v) ++(0,-0.9) node[font=\scriptsize] {cabeça $t(a)=v$};
+\end{tikzpicture}
+\captionof{figure}{Dígrafos: arcos têm direção. No arco $a=(u,v)$, $u$ é a \emph{cauda} (origem) e $v$ é a \emph{cabeça} (destino). As funções $s,t:A\to V$ dão a origem e o destino de cada arco.}
+\label{fig:def-digrafo}
+\end{center}
 
 \paragraph{}
 Em digrafos podem ocorrer laços (arcos que conectam um vértice a ele mesmo, como \((u, u)\)) e múltiplos arcos entre o mesmo par de vértices (como \((u, v)\) e \((u, v)\) distintos). Pictograficamente representamos essas condições com setas com dupla ponta ou com rótulos diferentes.
@@ -1161,33 +1194,6 @@ Em digrafos podem ocorrer laços (arcos que conectam um vértice a ele mesmo, co
 \end{center}       
 
 \paragraph{}
-Assim, temos os conceitos de cabeça e cauda de um arco: em \((u, v)\), \(u\) é a \emph{cauda} (origem) e \(v\) é a \emph{cabeça} (destino). Esses conceitos podem ser formalizados por meio de funções \(s, t: A \to V\), onde \(s((u, v)) = u\) (cauda) e \(t((u, v)) = v\) (cabeça).
-
-\begin{center}
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!70}}
-
-    % vértices
-    \node[v, label=below:$u$] (u) at (0,0) {};
-    \node[v, label=below:$v$] (v) at (2.6,0) {};
-    \node[v, label=above:$x$] (x) at (1.3,1.5) {};
-
-    % arcos
-    \draw[a] (u) -- node[above, sloped, font=\scriptsize] {$a$} (v);
-    \draw[a] (x) -- (u);
-    \draw[a] (v) -- (x);
-
-    % anotações de cauda/cabeça
-    \node[font=\scriptsize, anchor=north] at ($(u)!0.5!(v)$) {$a=(u,v)$};
-    \path (u) ++(0,-0.9) node[font=\scriptsize] {cauda $s(a)=u$};
-    \path (v) ++(0,-0.9) node[font=\scriptsize] {cabeça $t(a)=v$};
-\end{tikzpicture}
-\captionof{figure}{Dígrafos: arcos têm direção. No arco $a=(u,v)$, $u$ é a \emph{cauda} (origem) e $v$ é a \emph{cabeça} (destino). As funções $s,t:A\to V$ dão a origem e o destino de cada arco.}
-\label{fig:def-digrafo}
-\end{center}
-
-\paragraph{}
 Tal qual os grafos comuns, os dígrafos podem ter custos associados aos arcos. A função de custo \(c: A \to \mathbb{R}^+\) atribui um valor numérico geralmente não negativo a cada arco do dígrafo. Assim, para cada arco \((u, v) \in A\), \(c((u, v))\) representa o custo associado a essa conexão direcionada.
 
 \begin{center}
@@ -1218,7 +1224,7 @@ Tal qual os grafos comuns, os dígrafos podem ter custos associados aos arcos. A
 \paragraph{Subestruturas em dígrafos}
 
 \paragraph{}
-Assim como falamos na sessão anterior, os dígrafos também possuem as mesmas estruturas especiais que os grafos, essas estruturas chamadas sub-digrafos mudam um pouco em nomenclatura caminhos quando direcionados são chamados de trilhas, e ciclos são chamados de circuitos, árvores viram arborescências, e componentes conexas são componentes fortemente conexas. Além da nomenclatura, a direção dos arcos traz algumas nuances importantes para essas estruturas, não necessariamente exploraremos essas nuances aqui, mas é importante estar ciente delas.
+Tal qual os grafos que discutimos na sessão anterior, os dígrafos também possuem as mesmas estruturas especiais, essas estruturas chamadas sub-digrafos mudam um pouco em nomenclatura caminhos quando direcionados são chamados de trilhas, e ciclos são chamados de circuitos, árvores viram arborescências, e componentes conexas são componentes fortemente conexas. Além da nomenclatura, a direção dos arcos traz algumas nuances importantes para essas estruturas, não necessariamente exploraremos essas nuances aqui, mas é importante estar ciente delas.
 
 \paragraph{}
 Um \textbf{subdígrafo} \(D' = (V', A')\) de um dígrafo \(D = (V, A)\) é um dígrafo onde \(V' \subseteq V\) e \(A' \subseteq A\). Ou seja, \(D'\) é formado por um subconjunto dos vértices e arcos de \(D\).
@@ -1412,7 +1418,7 @@ Além disso, \(C\) é maximal, o que significa que não é possível adicionar m
 \end{center}
 
 \paragraph{}
-Essas estruturas são importantes porque elas possuem propriedades especiais, trilhas e circuitos em dígrafos, por exemplo, respeitam a direção dos arcos, o que pode afetar a existência e o número de tais caminhos. Árvores direcionadas (arborescências) têm uma raiz única e caminhos direcionados para todos os outros vértices, o que é útil em muitas aplicações, como hierarquias e fluxos de dados. Componentes fortemente conexas ajudam a identificar subestruturas dentro de um dígrafo onde todos os vértices são mutuamente alcançáveis, o que é crucial em análise de redes e sistemas complexos.
+Essas estruturas são importantes porque elas possuem propriedades especiais, trilhas e circuitos em dígrafos, por exemplo, ao respeitar a direção dos arcos, outros critérios de existência são afetados e mudam os teoremas associados. Árvores direcionadas (arborescências) têm uma raiz única e os caminhos passam a ser direcionados para atingirtodos os outros vértices, o que é útil em muitas aplicações, como hierarquias e fluxos de dados. Componentes fortemente conexas ajudam a identificar subestruturas dentro de um dígrafo onde todos os vértices são mutuamente alcançáveis, o que é crucial em análise de redes e sistemas complexos.
 
 \subsubsection{Propriedades matemáticas em dígrafos}
 \paragraph{}
@@ -1497,21 +1503,26 @@ Para tornar a notação precisa e fácil de ler:
     No caso não ponderado, esse valor coincide com a \emph{quantidade} de arcos que saem de \(X\).
 \end{itemize}
 
-Exemplo rápido: se \(\delta^+(X)=\{(u_1,v_1),(u_2,v_2)\}\) com \(c((u_1,v_1))=2\) e \(c((u_2,v_2))=3\), então \(c(\delta^+(X))=2+3=5\).
+Exemplo ilustrativo: se \(\delta^+(X)=\{(u_1,v_1),(u_2,v_2)\}\) com \(c((u_1,v_1))=2\) e \(c((u_2,v_2))=3\), então \(c(\delta^+(X))=2+3=5\).
 
 \paragraph{}
 \begin{center}
-
+\begingroup
+\setlength{\fboxsep}{10pt}% padding externo da moldura
 \fcolorbox{blue!15}{blue!3}{%
-\parbox{\textwidth}{%
-\indent\colorbox{blue!15}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\textbf{Teorema (Fluxo–Corte Máximo = Mínimo Corte).}\\[1.0em]
+\parbox{\dimexpr\textwidth-2\fboxsep\relax}{%
+\noindent
+\begingroup
+\setlength{\fboxsep}{15pt}% padding interno da faixa azul (título/enunciado)
+\colorbox{blue!15}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\textbf{Teorema (Fluxo–Corte Máximo = Mínimo Corte).}\\[1.0em]
 {\color{black!70!black}Em dígrafos com limites/pesos não negativos nos arcos, o valor de um fluxo máximo de \(s\) para \(t\) é igual ao valor de um min-corte \(s\text{--}t\). Em símbolos: \(\max\,\text{valor}(f) = \min\, c(\delta^+(X))\), onde o mínimo é sobre \(X\subseteq V\) com \(s\in X\), \(t\notin X\), e \(c(\delta^+(X))=\sum_{a\in\delta^+(X)} c(a)\).}}}
+\endgroup
 
 \paragraph{}
     \textbf{Prova (esboço):}
-    \paragraph{} 
-    \emph{(i) Desigualdade \(\le\).} Seja \(f\) um fluxo qualquer. Para um corte \((X, V\setminus X)\) com \(s\in X\), \(t\notin X\), a conservação de fluxo implica que o fluxo líquido que sai de \(X\) é exatamente \(\text{valor}(f)\). 
-    
+    \paragraph{}
+    \emph{(i) Desigualdade \(\le\).} Seja \(f\) um fluxo qualquer. Para um corte \((X, V\setminus X)\) com \(s\in X\), \(t\notin X\), a conservação de fluxo implica que o fluxo líquido que sai de \(X\) é exatamente \(\text{valor}(f)\).
+
     Logo, \[\text{valor}(f)= \sum_{a\in\delta^+(X)} f(a) - \sum_{a\in\delta^-(X)} f(a) \le \sum_{a\in\delta^+(X)} f(a) \le \sum_{a\in\delta^+(X)} c(a)=c(\delta^+(X)),\]
 
     pois \(f(a)\le c(a)\) para todo arco (limite). Como isso vale para todo \(X\), obtemos \(\text{valor}(f)\le \min_X c(\delta^+(X))\).
@@ -1526,6 +1537,7 @@ Exemplo rápido: se \(\delta^+(X)=\{(u_1,v_1),(u_2,v_2)\}\) com \(c((u_1,v_1))=2
 \smallskip
 \textbf{Comentário:} Esse resultado é um protótipo de teorema \emph{min--max}: “empacotar” muito fluxo (caminhos) equivale a “cobrir” pouco com um corte. Ver, por exemplo, \cite{schrijver2003comb}.
 }}
+\endgroup
 \end{center}
 
 \paragraph{}
