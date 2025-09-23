@@ -1334,6 +1334,55 @@ Um \textbf{circuito} é um caminho direcionado que começa e termina no mesmo v�
 \label{fig:ciclo-direcionado}
 \end{center}
 
+\paragraph{Componentes fortemente conexas}
+\paragraph{}Uma \textbf{componente fortemente conexa} de um dígrafo é um subdígrafo maximal onde existe um caminho direcionado entre qualquer par de vértices. Formalmente, uma componente fortemente conexa \(C\) é um subdígrafo \(C = (V_C, A_C)\) onde \(V_C \subseteq V\) e \(A_C \subseteq A\), que satisfaz a seguinte propriedade:
+\begin{itemize}
+    \item \(C\) é fortemente conexo: existe um caminho direcionado entre qualquer par de vértices em \(V_C\).
+\end{itemize}
+Além disso, \(C\) é maximal, o que significa que não é possível adicionar mais vértices ou arcos a \(C\) sem perder a propriedade de forte conexidade.
+\begin{center}
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!70}, comp/.style={draw=blue!40, rounded corners}};
+    % Componente C1 (à esquerda)
+    \node[v, label=above:$a$] (a) at (0,1.2) {};
+    \node[v, label=below:$b$] (b) at (-0.8,0) {};
+    \node[v, label=below:$c$] (c) at (0.8,0) {};
+    \draw[a] (a) -- (b);
+    \draw[a] (b) -- (c);
+    \draw[a] (c) -- (a);
+    \node[comp, fit=(a)(b)(c), inner sep=20pt, label={[blue!60]above:$C_1$}] {};
+    % Componente C2 (centro)
+    \node[v, label=below:$d$] (d) at (4,0) {};
+    \node[v, label=below:$e$] (e) at (5.6,0) {};
+    \draw[a] (d) to[bend left=20] (e);
+    \draw[a] (e) to[bend left=20] (d);
+    \node[comp, fit=(d)(e), inner sep=15pt, label={[blue!60]above:$C_2$}] {};
+    % Componente C3 (direita)
+    \node[v, label=above:$f$] (f) at (8.6,1.2) {};
+    \node[v, label=below:$g$] (g) at (7.8,0) {};
+    \node[v, label=below:$h$] (h) at (9.4,0) {};
+    \draw[a] (f) to[bend left=20] (g);
+    \draw[a] (g) to[bend left=20] (h);
+    \draw[a] (h) to[bend left=20] (f);
+    \draw[a] (g) to[bend left=20] (f);
+    \draw[a] (h) to[bend left=20] (g);
+    \draw[a] (f) to[bend left=20] (h);
+    \node[comp, fit=(f)(g)(h), inner sep=20pt, label={[blue!60]above:$C_3$}] {};
+    % texto explicativo
+    \node[align=center, anchor=north west] at (-0.2,-1.0) {Cada caixa destaca uma \emph{componente fortemente conexa}.\\ Não há arcos entre $C_1$, $C_2$ e $C_3$.};
+\end{tikzpicture}
+\captionof{figure}{Componentes fortemente conexas: o dígrafo possui três componentes $C_1$, $C_2$ e $C_3$. Cada $C_i$ é fortemente conexo e \emph{maximal}: adicionar qualquer vértice de fora quebraria a propriedade de forte conexidade interna ou exigiria arcos ausentes.}   
+\end{center}
+
+\paragraph{Componentes-fonte}
+\paragraph{}Uma \textbf{componente-fonte} é uma componente fortemente conexa que não possui arcos direcionados saindo dela para outras componentes. Formalmente, uma componente-fonte \(C\) é uma componente fortemente conexa \(C = (V_C, A_C)\) onde \(V_C \subseteq V\) e \(A_C \subseteq A\), que satisfaz a seguinte propriedade:
+\begin{itemize}
+    \item Não existem arcos \((u, v) \in A\) tais que \(u \in V_C\) e \(v \notin V_C\).
+    \item \(C\) é maximal: não é possível adicionar mais vértices ou arcos a \(C\) sem perder a propriedade de forte conexidade.
+    \item \(C\) é fortemente conexo: existe um caminho direcionado entre qualquer par de vértices em \(V_C\).
+\end{itemize}
+
 \paragraph{Arborescências}
 \paragraph{}Uma \textbf{arborescência} é um dígrafo acíclico e conexo, onde há um vértice especial chamado \emph{raiz} que tem um caminho direcionado para todos os outros vértices. Formalmente, uma arborescência \(T\) é um dígrafo \(T = (V_T, A_T)\) onde \(V_T \subseteq V\) e \(A_T \subseteq A\), que satisfaz as seguintes propriedades:
 \begin{itemize}
@@ -1377,47 +1426,6 @@ Além disso, uma arborescência com \(n\) vértices sempre tem exatamente \(n-1\
 
 \paragraph{}
 Uma arborescência é considerada geradora se inclui todos os vértices do dígrafo original, ou seja, \(V_T = V\). Nesse caso, a arborescência é formada por um subconjunto dos arcos do dígrafo original.
-
-\paragraph{Componentes fortemente conexas}
-\paragraph{}Uma \textbf{componente fortemente conexa} de um dígrafo é um subdígrafo maximal onde existe um caminho direcionado entre qualquer par de vértices. Formalmente, uma componente fortemente conexa \(C\) é um subdígrafo \(C = (V_C, A_C)\) onde \(V_C \subseteq V\) e \(A_C \subseteq A\), que satisfaz a seguinte propriedade:
-\begin{itemize}
-    \item \(C\) é fortemente conexo: existe um caminho direcionado entre qualquer par de vértices em \(V_C\).
-\end{itemize}
-Além disso, \(C\) é maximal, o que significa que não é possível adicionar mais vértices ou arcos a \(C\) sem perder a propriedade de forte conexidade.
-\begin{center}
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!70}, comp/.style={draw=blue!40, rounded corners}};
-    % Componente C1 (à esquerda)
-    \node[v, label=above:$a$] (a) at (0,1.2) {};
-    \node[v, label=below:$b$] (b) at (-0.8,0) {};
-    \node[v, label=below:$c$] (c) at (0.8,0) {};
-    \draw[a] (a) -- (b);
-    \draw[a] (b) -- (c);
-    \draw[a] (c) -- (a);
-    \node[comp, fit=(a)(b)(c), inner sep=20pt, label={[blue!60]above:$C_1$}] {};
-    % Componente C2 (centro)
-    \node[v, label=below:$d$] (d) at (4,0) {};
-    \node[v, label=below:$e$] (e) at (5.6,0) {};
-    \draw[a] (d) to[bend left=20] (e);
-    \draw[a] (e) to[bend left=20] (d);
-    \node[comp, fit=(d)(e), inner sep=15pt, label={[blue!60]above:$C_2$}] {};
-    % Componente C3 (direita)
-    \node[v, label=above:$f$] (f) at (8.6,1.2) {};
-    \node[v, label=below:$g$] (g) at (7.8,0) {};
-    \node[v, label=below:$h$] (h) at (9.4,0) {};
-    \draw[a] (f) to[bend left=20] (g);
-    \draw[a] (g) to[bend left=20] (h);
-    \draw[a] (h) to[bend left=20] (f);
-    \draw[a] (g) to[bend left=20] (f);
-    \draw[a] (h) to[bend left=20] (g);
-    \draw[a] (f) to[bend left=20] (h);
-    \node[comp, fit=(f)(g)(h), inner sep=20pt, label={[blue!60]above:$C_3$}] {};
-    % texto explicativo
-    \node[align=center, anchor=north west] at (-0.2,-1.0) {Cada caixa destaca uma \emph{componente fortemente conexa}.\\ Não há arcos entre $C_1$, $C_2$ e $C_3$.};
-\end{tikzpicture}
-\captionof{figure}{Componentes fortemente conexas: o dígrafo possui três componentes $C_1$, $C_2$ e $C_3$. Cada $C_i$ é fortemente conexo e \emph{maximal}: adicionar qualquer vértice de fora quebraria a propriedade de forte conexidade interna ou exigiria arcos ausentes.}   
-\end{center}
 
 \paragraph{}
 Essas estruturas são importantes porque elas possuem propriedades especiais, trilhas e circuitos em dígrafos, por exemplo, ao respeitar a direção dos arcos, outros critérios de existência são afetados e mudam os teoremas associados. Árvores direcionadas (arborescências) têm uma raiz única e os caminhos passam a ser direcionados para atingirtodos os outros vértices, o que é útil em muitas aplicações, como hierarquias e fluxos de dados. Componentes fortemente conexas ajudam a identificar subestruturas dentro de um dígrafo onde todos os vértices são mutuamente alcançáveis, o que é crucial em análise de redes e sistemas complexos.

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025/Homebrew) (preloaded format=pdflatex 2025.9.15)  23 SEP 2025 17:34
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025/Homebrew) (preloaded format=pdflatex 2025.9.15)  23 SEP 2025 17:36
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1029,19 +1029,19 @@ Missing character: There is no ; in font nullfont!
 
 [26]
 Missing character: There is no ; in font nullfont!
-Missing character: There is no ; in font nullfont!
 
 
 [27]
+Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 
 
 [28]
 
-LaTeX Warning: Citation 'schrijver2003comb' on page 29 undefined on input line 1541.
+LaTeX Warning: Citation 'schrijver2003comb' on page 29 undefined on input line 1549.
 
 
-Overfull \hbox (0.79999pt too wide) in paragraph at lines 1541--1543
+Overfull \hbox (0.79999pt too wide) in paragraph at lines 1549--1551
  [][][] 
  []
 
@@ -1049,23 +1049,25 @@ Overfull \hbox (0.79999pt too wide) in paragraph at lines 1541--1543
 
 [29]
 
-LaTeX Warning: Citation 'frank2014' on page 30 undefined on input line 1559.
+[30]
+
+LaTeX Warning: Citation 'frank2014' on page 31 undefined on input line 1567.
 
 
-LaTeX Warning: Citation 'schrijver2003comb' on page 30 undefined on input line 1559.
+LaTeX Warning: Citation 'schrijver2003comb' on page 31 undefined on input line 1567.
 
 
-LaTeX Warning: Citation 'chu1965' on page 30 undefined on input line 1562.
+LaTeX Warning: Citation 'chu1965' on page 31 undefined on input line 1570.
 
 
-LaTeX Warning: Citation 'edmonds1967optimum' on page 30 undefined on input line 1562.
+LaTeX Warning: Citation 'edmonds1967optimum' on page 31 undefined on input line 1570.
 
 
-LaTeX Warning: Empty bibliography on input line 1566.
+LaTeX Warning: Empty bibliography on input line 1574.
 
 
 
-[30] (./main.aux)
+[31] (./main.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
@@ -1086,18 +1088,18 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 33604 strings out of 473190
- 635166 string characters out of 5704335
+ 33607 strings out of 473190
+ 635197 string characters out of 5704335
  1255740 words of memory out of 5000000
  55952 multiletter control sequences out of 15000+600000
  578314 words of font info for 194 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  102i,14n,107p,1934b,1652s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on main.pdf (30 pages, 343443 bytes).
+Output written on main.pdf (31 pages, 344720 bytes).
 PDF statistics:
- 552 PDF objects out of 1000 (max. 8388607)
- 478 compressed objects within 5 object streams
- 236 named destinations out of 1000 (max. 500000)
+ 559 PDF objects out of 1000 (max. 8388607)
+ 484 compressed objects within 5 object streams
+ 239 named destinations out of 1000 (max. 500000)
  37045 words of extra memory for PDF output out of 42996 (max. 10000000)
 
