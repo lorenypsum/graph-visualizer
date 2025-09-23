@@ -1180,43 +1180,15 @@ Tal qual os grafos comuns, os dígrafos podem ter custos associados aos arcos. A
 \label{fig:digrafo-custos}
 \end{center}
 
+\paragraph{Subestruturas em dígrafos}
+
 \paragraph{}
-Assim como falamos na sessão anterior, os dígrafos também possuem estruturas interessantes, como caminhos direcionados, ciclos direcionados, arborescências e componentes fortemente conexas. Essas estruturas são fundamentais para entender a topologia e as propriedades dos dígrafos, e muitas vezes são o foco de problemas de otimização.
+Assim como falamos na sessão anterior, os dígrafos também possuem as mesmas estruturas especiais que os grafos, mas a nomenclatura muda um pouco, caminhos quando direcionados são chamados de trilhas, e ciclos são chamados de circuitos, árvores viram arborescências, e componentes conexas são componentes fortemente conexas. Além da nomenclatura, a direção dos arcos traz algumas nuances importantes para essas estruturas, não necessariamente exploraremos essas nuances aqui, mas é importante estar ciente delas.
 
-\paragraph{Caminhos direcionados ou trilhas}
-\paragraph{}Um \textbf{caminho direcionado} em um dígrafo é uma sequência de vértices conectados por arcos que respeitam a direção. Formalmente, um caminho direcionado \(P\) de comprimento \(k \geq 1\) é uma sequência de vértices \(P = (v_1, v_2, \ldots, v_{k+1})\) tal que cada par consecutivo \((v_i, v_{i+1})\) é um arco em \(A\). O comprimento do caminho é o número de arcos que ele contém, que é \(k\). 
-\begin{center}
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!60}, p/.style={very thick, draw=blue!
-60}}    
+\paragraph{Trilhas}
+\paragraph{}
 
-    % vértices do caminho
-    \node[v, label=below:$v_1$] (v1) at (0,0) {};
-    \node[v, label=below:$v_2$] (v2) at (1.8,0) {};
-    \node[v, label=below:$v_3$] (v3) at (3.6,0) {};
-    \node[v, label=below:$v_4$] (v4) at (5.4,0) {};
-
-    % vértices extras (arcos que não fazem parte do caminho)
-    \node[v, label=above:$x$] (x) at (1.8,1.2) {};
-    \node[v, label=above:$y$] (y) at (3.6,1.2) {};
-
-    % arcos não pertencentes ao caminho (cinza)
-    \draw[a] (v1) -- (x);
-    \draw[a] (x) -- (v3);
-    \draw[a] (y) -- (v4);
-
-    % caminho destacado (azul)
-    \draw[p] (v1) -- (v2);
-    \draw[p] (v2) -- (v3);
-    \draw[p] (v3) -- (v4);
-
-    % legenda
-    \node[align=left, anchor=west] at (6.2,0.6) {$P=(v_1,v_2,v_3,v_4)$\\ $|P|=3$};
-\end{tikzpicture}
-\captionof{figure}{Caminho direcionado em dígrafo: o caminho $P=(v_1,v_2,v_3,v_4)$ está destacado em azul. Seu comprimento é o número de arcos percorridos, $|P|=3$.}
-\label{fig:caminho-direcionado}
-\end{center}
+Uma \textbf{trilha} em um dígrafo é uma sequência de vértices conectados por arcos que respeitam a direção. Formalmente, uma trilha \(P\) de comprimento \(k \geq 1\) é uma sequência de vértices \(P = (v_1, v_2, \ldots, v_{k+1})\) tal que cada par consecutivo \((v_i, v_{i+1})\) é um arco em \(A\). O comprimento da trilha é o número de arcos que ela contém, que é \(k\). 
 
 \paragraph{Ciclos direcionados ou circuitos}
 \paragraph{}Um \textbf{ciclo direcionado} é um caminho direcionado que começa e termina no mesmo vértice, ou seja, \(v_1 = v_{k+1}\). Formalmente, um ciclo direcionado \(C\) é uma sequência de vértices \(C = (v_1, v_2, \ldots, v_k, v_1)\) tal que cada par consecutivo \((v_i, v_{i+1})\) é um arco em \(A\) e \(k \geq 2\). O comprimento do ciclo é o número de arcos que ele contém, que é \(k\).
