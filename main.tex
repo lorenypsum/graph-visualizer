@@ -1038,44 +1038,6 @@ Alguns subgrafos interessantes incluem: caminhos, ciclos, componentes conexas e 
 \label{fig:ciclo}
 \end{center}
 
-\paragraph{Árvores}
-\paragraph{}Uma \textbf{árvore} é um grafo conexo e acíclico. Formalmente, uma árvore \(T\) é um grafo \(T = (V_T, E_T)\) onde \(V_T \subseteq V\) e \(E
-_T \subseteq E\), que satisfaz as seguintes propriedades:
-\begin{itemize}
-    \item \(T\) é conexo: existe um caminho entre qualquer par de vértices em \(V_T\).
-    \item \(T\) é acíclico: não contém ciclos.
-\end{itemize}
-Além disso, uma árvore com \(n\) vértices sempre tem exatamente \(n-1\) arestas.
-
-\begin{center}
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, e/.style={semithick, draw=gray!70}}
-
-    % vértices da árvore
-    \node[v, label=below:$r$] (r) at (0,0) {};
-    \node[v, label=above:$a$] (a) at (-1.6,1.4) {};
-    \node[v, label=above:$b$] (b) at (0.0,1.8) {};
-    \node[v, label=above:$c$] (c) at (1.6,1.4) {};
-    \node[v, label=above:$d$] (d) at (-2.4,2.8) {};
-    \node[v, label=above:$e$] (e) at (-0.8,3.0) {};
-    \node[v, label=above:$f$] (f) at (0.8,3.0) {};
-
-    % arestas da árvore (sem ciclos)
-    \draw[e] (r) -- (a);
-    \draw[e] (r) -- (b);
-    \draw[e] (r) -- (c);
-    \draw[e] (a) -- (d);
-    \draw[e] (a) -- (e);
-    \draw[e] (b) -- (f);
-
-    % indicação de |E| = |V| - 1
-    \node[align=left, anchor=west] at (3.0,1.8) {$|V_T|=7,\; |E_T|=6$\\ $|E_T|=|V_T|-1$};
-\end{tikzpicture}
-\captionof{figure}{Árvore: grafo conexo e acíclico. No exemplo, $|V_T|=7$ e $|E_T|=6$, satisfazendo $|E_T|=|V_T|-1$. Não há ciclos e existe um único caminho simples entre quaisquer dois vértices.}
-\label{fig:arvore}
-\end{center}
-
 \paragraph{Componentes conexas}
 \paragraph{}Uma \textbf{componente conexa} de um grafo é um subgrafo maximal que é conexo. Formalmente, uma componente conexa \(C\) é um subgrafo \(C = (V_C, E_C)\) onde \(V_C \subseteq V\) e \(E_C \subseteq E\), que satisfaz a seguinte propriedade:
 \begin{itemize}
@@ -1116,6 +1078,44 @@ Além disso, \(C\) é maximal, o que significa que não é possível adicionar m
 \end{tikzpicture}
 \captionof{figure}{Componentes conexas: o grafo possui três componentes $C_1$, $C_2$ e $C_3$. Cada $C_i$ é conexo e \emph{maximal}: adicionar qualquer vértice de fora quebraria a propriedade de conexidade interna ou exigiria arestas ausentes.}
 \label{fig:componentes}
+\end{center}
+
+\paragraph{Árvores}
+\paragraph{}Uma \textbf{árvore} é um grafo conexo e acíclico. Formalmente, uma árvore \(T\) é um grafo \(T = (V_T, E_T)\) onde \(V_T \subseteq V\) e \(E
+_T \subseteq E\), que satisfaz as seguintes propriedades:
+\begin{itemize}
+    \item \(T\) é conexo: existe um caminho entre qualquer par de vértices em \(V_T\).
+    \item \(T\) é acíclico: não contém ciclos.
+\end{itemize}
+Além disso, uma árvore com \(n\) vértices sempre tem exatamente \(n-1\) arestas.
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, e/.style={semithick, draw=gray!70}}
+
+    % vértices da árvore
+    \node[v, label=below:$r$] (r) at (0,0) {};
+    \node[v, label=above:$a$] (a) at (-1.6,1.4) {};
+    \node[v, label=above:$b$] (b) at (0.0,1.8) {};
+    \node[v, label=above:$c$] (c) at (1.6,1.4) {};
+    \node[v, label=above:$d$] (d) at (-2.4,2.8) {};
+    \node[v, label=above:$e$] (e) at (-0.8,3.0) {};
+    \node[v, label=above:$f$] (f) at (0.8,3.0) {};
+
+    % arestas da árvore (sem ciclos)
+    \draw[e] (r) -- (a);
+    \draw[e] (r) -- (b);
+    \draw[e] (r) -- (c);
+    \draw[e] (a) -- (d);
+    \draw[e] (a) -- (e);
+    \draw[e] (b) -- (f);
+
+    % indicação de |E| = |V| - 1
+    \node[align=left, anchor=west] at (3.0,1.8) {$|V_T|=7,\; |E_T|=6$\\ $|E_T|=|V_T|-1$};
+\end{tikzpicture}
+\captionof{figure}{Árvore: grafo conexo e acíclico. No exemplo, $|V_T|=7$ e $|E_T|=6$, satisfazendo $|E_T|=|V_T|-1$. Não há ciclos e existe um único caminho simples entre quaisquer dois vértices.}
+\label{fig:arvore}
 \end{center}
 
 \paragraph{}
