@@ -1468,16 +1468,16 @@ Além disso, uma arborescência com \(n\) vértices sempre tem exatamente \(n-1\
 
 \paragraph{Propriedades de arborescências}
 
-\paragraph{Arborescências Geradora}
+\paragraph{Arborescência Geradora:}
 Uma arborescência é considerada geradora se inclui todos os vértices do dígrafo original, ou seja, \(V_T = V\). Nesse caso, a arborescência é formada por um subconjunto dos arcos do dígrafo original.
 
-\paragraph{Arborescência Maximal}
+\paragraph{Arborescência Maximal:}
 Uma arborescência é dita maximal se não é possível adicionar mais vértices ou arcos a ela sem perder a propriedade de ser uma arborescência, ou seja, sem criar ciclos ou desconectar o dígrafo.
 
-\paragraph{Arborescência de Custo Mínimo}
+\paragraph{Arborescência de Custo Mínimo:}
 Uma arborescência de custo mínimo é uma arborescência que minimiza a soma dos pesos dos arcos que a compõem. Esse conceito é especialmente relevante em aplicações onde os arcos têm custos associados, como em redes de transporte ou comunicação.
 
-\paragraph{Arborescência de Raiz Específica}
+\paragraph{Arborescência de Raiz Específica:}
 Uma arborescência de raiz específica é uma arborescência onde a raiz é um vértice pré-determinado do dígrafo. Isso é útil em situações onde um ponto de origem específico deve ser o início dos caminhos direcionados para todos os outros vértices. Podemos chamá-la de r-arborescência, onde \(r\) é o vértice raiz.
 
 \paragraph{}
@@ -1485,10 +1485,6 @@ As arborescências são a principal estrutura que exploraremos ao longo desta di
 Vamos aprofundar mais nessas estruturas apresentando propriedades importantes sobre elas, teoremas relevantes e algoritmos que nascem dessas discussões, mas antes precisamos abordar algumas propriedades matemáticas em dígrafos.
 
 \subsubsection{Propriedades matemáticas em dígrafos}
-\paragraph{}
-Para organizar ideias, fixamos uma notação leve para cortes. Dado um dígrafo \(D=(V,A)\) e um subconjunto \(X\subseteq V\), denotamos por
-\[\delta^+(X)=\{\, (u,v)\in A:\; u\in X,\ v\notin X\,\}\quad\text{e}\quad \delta^-(X)=\{\, (u,v)\in A:\; u\notin X,\ v\in X\,\}\]
-o conjunto de arcos que saem de \(X\) e o conjunto de arcos que entram em \(X\), respectivamente. Se houver uma função de custos/pesos \(c:A\to\mathbb R_+\), definimos o \emph{valor} de um conjunto de arcos \(F\subseteq A\) como \(c(F)=\sum_{a\in F}c(a)\).
 
 \paragraph{}
 Um corte em um dígrafo é um conjunto de arcos cuja remoção desconecta o dígrafo, ou seja, impede que haja um caminho direcionado entre certos pares de vértices. Formalmente, dado um dígrafo \(D = (V, A)\), um corte \(C\) é um subconjunto de arcos \(C \subseteq A\) tal que a remoção dos arcos em \(C\) resulta em um dígrafo \(D' = (V, A \setminus C)\) onde não existe mais um caminho direcionado entre pelo menos um par de vértices \(u, v \in V\).
@@ -1521,6 +1517,11 @@ Um corte em um dígrafo é um conjunto de arcos cuja remoção desconecta o díg
 \captionof{figure}{Corte em dígrafo: o corte $C=\{(b,d)\}$ está destacado em vermelho. Remover esse arco desconecta o dígrafo, impedindo caminhos direcionados entre certos pares de vértices.}
 \label{fig:corte}
 \end{center}
+
+\paragraph{}
+Para organizar ideias, fixamos uma notação leve para cortes. Dado um dígrafo \(D=(V,A)\) e um subconjunto \(X\subseteq V\), denotamos por
+\[\delta^+(X)=\{\, (u,v)\in A:\; u\in X,\ v\notin X\,\}\quad\text{e}\quad \delta^-(X)=\{\, (u,v)\in A:\; u\notin X,\ v\in X\,\}\]
+o conjunto de arcos que saem de \(X\) e o conjunto de arcos que entram em \(X\), respectivamente. Se houver uma função de custos/pesos \(c:A\to\mathbb R_+\), definimos o \emph{valor} de um conjunto de arcos \(F\subseteq A\) como \(c(F)=\sum_{a\in F}c(a)\).
 
 \paragraph{}
 Um min-corte é um corte de tamanho mínimo, ou seja, é o corte com o menor número possível de arcos cuja remoção desconecta o dígrafo. Formalmente, dado um dígrafo \(D = (V, A)\), um min-corte \(C_{min}\) é um corte tal que para qualquer outro corte \(C\), \(|C_{min}| \leq |C|\). O tamanho do min-corte é o número de arcos em \(C_{min}\).
