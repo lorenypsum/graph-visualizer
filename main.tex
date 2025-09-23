@@ -1126,7 +1126,7 @@ Para o nosso objetivo principal, nos interessa entendê-las em grafos que a dire
 Existem problemas que a direção das arestas faz toda a diferença. Por exemplo, em uma rede de tráfego, algumas ruas são de mão única, ou em uma rede de comunicação, os dados podem ser enviados em uma direção específica. Nesses casos, usamos \emph{grafos dirigidos} (ou grafos direcionados ou simplesmente dígrafos), onde as arestas são pares de vértices ordenados.
 
 \paragraph{}
-Um \textbf{grafo dirigido} (grafos direcionados ou simplesmente \textbf{dígrafos}) é uma estrutura matemática composta por um conjunto \(V\) de \emph{vértices} e um conjunto \(A\) de \emph{arcos} (ou \emph{arestas direcionadas}) que conectam pares ordenados de vértices.
+Um \textbf{grafo dirigido - digrafo} (grafos direcionados) é uma estrutura matemática composta por um conjunto \(V\) de \emph{vértices} e um conjunto \(A\) de \emph{arcos} (ou \emph{arestas direcionadas}) que conectam pares ordenados de vértices.
 
 \paragraph{}
 Por vértices entendemos o mesmo conjunto que em grafos comuns, mas agora as arestas entre eles têm uma direção específica. Cada arco \((u, v) \in A\) indica uma conexão direcionada do vértice \(u\) para o vértice \(v\), significando que a relação ou fluxo ocorre de \(u\) para \(v\).
@@ -1159,7 +1159,7 @@ Assim, temos os conceitos de cabeça e cauda de um arco: em \((u, v)\), \(u\) é
 \end{center}
 
 \paragraph{}
-Em digrafos podem ocorrer laços (arcos que conectam um vértice a ele mesmo, como \((u, u)\)) e múltiplos arcos entre o mesmo par de vértices (como \((u, v)\) e \((u, v)\) distintos). Pictograficamente representamos essas condições com setas com dupla ponta ou com rótulos diferentes.
+Em digrafos podem ocorrer laços (arcos que conectam um vértice a ele mesmo, como \((u, u)\)) nesse caso as funções \(s\) e \(t\) coincidem. Também podem ocorrer múltiplos arcos entre o mesmo par de vértices (como \((u, v)\) e \((u, v)\) distintos). Pictograficamente representamos essas condições com setas com dupla ponta ou com rótulos diferentes.
 
 \begin{center}
 \begin{tikzpicture}[>=Stealth]
@@ -1224,13 +1224,11 @@ Tal qual os grafos comuns, os dígrafos podem ter custos associados aos arcos. A
 \paragraph{Subestruturas em dígrafos}
 
 \paragraph{}
-Tal qual os grafos que discutimos na sessão anterior, os dígrafos também possuem as mesmas estruturas especiais, essas estruturas chamadas sub-digrafos mudam um pouco em nomenclatura caminhos quando direcionados são chamados de trilhas, e ciclos são chamados de circuitos, árvores viram arborescências, e componentes conexas são componentes fortemente conexas. Além da nomenclatura, a direção dos arcos traz algumas nuances importantes para essas estruturas, não necessariamente exploraremos essas nuances aqui, mas é importante estar ciente delas.
+Tal qual os grafos que discutimos na sessão anterior, os dígrafos também possuem as mesmas estruturas especiais, essas estruturas chamadas sub-digrafos mudam um pouco em nomenclatura: caminhos quando direcionados são chamados de trilhas, e ciclos são chamados de circuitos, árvores viram arborescências, e componentes conexas são componentes fortemente conexas. Além da nomenclatura, a direção dos arcos traz algumas nuances importantes para essas estruturas, não necessariamente exploraremos essas nuances aqui, mas é importante estar ciente delas.
 
 \paragraph{}
 Um \textbf{subdígrafo} \(D' = (V', A')\) de um dígrafo \(D = (V, A)\) é um dígrafo onde \(V' \subseteq V\) e \(A' \subseteq A\). Ou seja, \(D'\) é formado por um subconjunto dos vértices e arcos de \(D\).
 
-\paragraph{Subdígrafos Induzidos}
-Um subdígrafo pode ser \emph{induzido} por um conjunto de vértices \(V' \subseteq V\), denotado como \(D[V']\). Nesse caso, o conjunto de arcos \(A'\) inclui todos os arcos em \(A\) que têm ambas as extremidades em \(V'\), ou seja, \(A' = \{(u, v) \in A \mid u, v \in V'\}\).
 \begin{center}
 \begin{tikzpicture}[>=Stealth]
     % estilos
@@ -1262,6 +1260,9 @@ Um subdígrafo pode ser \emph{induzido} por um conjunto de vértices \(V' \subse
 \captionof{figure}{Subdígrafo: o subdígrafo $D'=(V',A')$ está destacado em azul. Aqui, $V'=\{b,c,d,e\}$ e $A'=\{(b,c),(c,b),(d,b),(e,d),(b,e),(e,b)\}$.}
 \label{fig:subdigrafo}
 \end{center}
+
+\paragraph{Subdígrafos Induzidos}
+Um subdígrafo pode ser \emph{induzido} por um conjunto de vértices \(V' \subseteq V\), denotado como \(D[V']\). Nesse caso, o conjunto de arcos \(A'\) inclui todos os arcos em \(A\) que têm ambas as extremidades em \(V'\), ou seja, \(A' = \{(u, v) \in A \mid u, v \in V'\}\).
 
 \paragraph{Subdigrafo Maximal}
 Um subdigrafo é tido como maximal se não é possível adicionar mais vértices ou arcos a ele sem perder alguma propriedade específica, como conexidade ou aciclicidade.
