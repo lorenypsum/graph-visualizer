@@ -1597,9 +1597,12 @@ Propriedades importantes dos circuitos incluem:
     \item \textbf{Circuito Euleriano}: um circuito que percorre cada arco exatamente uma vez. Um dígrafo possui um circuito euleriano se e somente se é fortemente conexo e o grau de entrada é igual ao grau de saída para cada vértice.
     \item \textbf{Circuito Hamiltoniano}: um circuito que visita cada vértice exatamente uma vez, exceto o vértice inicial/final. Determinar a existência de um circuito hamiltoniano é um problema que chamamos de NP-completo. Vamos explicar mais sobre isso na seção de algoritmos e complexidade computacional.
 \end{itemize}       
-\paragraph{}
 
-Em grafos o 
+\paragraph{}
+Existe um princípio chamado de princípio da casa dos pombos, que diz que se você tem mais pombos do que casas, pelo menos uma casa deve conter mais de um pombo. Em termos de grafos, isso se traduz na ideia de que se um grafo tem mais arestas do que vértices, ele deve conter pelo menos um ciclo.
+
+\paragraph{}
+Esse princípio também se aplica a dígrafos, mas com uma nuance importante: em dígrafos, o critério correto para garantir a existência de um circuito dirigido é que o grau mínimo de saída (ou de entrada) seja pelo menos 1. Ou seja, se cada vértice em um dígrafo tem pelo menos um arco saindo dele (ou entrando nele), então o dígrafo deve conter pelo menos um circuito dirigido. Abaixo apresentamos esse resultado formalmente.
 
 \paragraph{}
 \begin{center}
@@ -1625,9 +1628,10 @@ Em grafos o
 \end{center}
 
 \paragraph{}
-Esse princípio ajuda a entender o comportamento básico dos métodos que os algoritmos empregam para encontrar as arborescências de custo mínimo. Vamos elaborar melhor esse ponto na seção de arborescências.
+Esse princípio ajuda a entender o comportamento básico dos métodos que os algoritmos empregam para encontrar as arborescências de custo mínimo. Vamos elaborar melhor esse ponto na seção de algoritmos em arborescências, especialmente ao discutir o algoritmo de Chu--Liu/Edmonds.
 
-% Se, para cada vértice \(v\neq r\), escolhemos a aresta de menor custo que entra em \(v\), o subgrafo obtido fica com grau de entrada igual a 1 em todos os \(v\neq r\). Pelo lema, enquanto esse subgrafo ainda não for uma arborescência, ele necessariamente contém um circuito. É exatamente isso que o algoritmo de Chu--Liu/Edmonds explora: detectar o circuito inevitável, contraí-lo a um único vértice e repetir a seleção sob custos reduzidos. Quando não houver mais circuitos, as arestas escolhidas formam uma arborescência ótima enraizada em \(r\).
+\paragraph{}
+No algoritmo de Chu--Liu/Edmonds que exploraremos em detalhes em capítulo posterior, para cada vértice \(v\neq r\), escolhemos a aresta de menor custo que entra em \(v\), o subgrafo obtido fica com grau de entrada igual a 1 em todos os \(v\neq r\). Pelo lema, enquanto esse subgrafo ainda não for uma arborescência, ele necessariamente contém um circuito: assim o algoritmo se baseia em detectar o circuitos, contraí-lo a um único vértice e repetir a seleção sob custos reduzidos. Quando não houver mais circuitos, as arestas escolhidas formam uma arborescência ótima enraizada em \(r\).
 
 \paragraph{Componentes fortemente conexas}
 \paragraph{}Uma \textbf{componente fortemente conexa} de um dígrafo é um subdígrafo maximal onde existe um caminho direcionado entre qualquer par de vértices. Formalmente, uma componente fortemente conexa \(C\) é um subdígrafo \(C = (V_C, A_C)\) onde \(V_C \subseteq V\) e \(A_C \subseteq A\), que satisfaz a seguinte propriedade:
@@ -1671,19 +1675,6 @@ Além disso, \(C\) é maximal, o que significa que não é possível adicionar m
 \end{tikzpicture}
 \captionof{figure}{Componentes fortemente conexas: o dígrafo possui três componentes $C_1$, $C_2$ e $C_3$. Cada $C_i$ é fortemente conexo e \emph{maximal}: adicionar qualquer vértice de fora quebraria a propriedade de forte conexidade interna ou exigiria arcos ausentes.}   
 \end{center}
-
-\paragraph{Componentes-fortemente conexas e empacotamento de circuitos}
-
-\paragraph{Empacotamento de vértices}
-\paragraph{}Um \textbf{empacotamento de vértices} em um dígrafo é um conjunto de vértices \(S \subseteq V\) tal que não existem arcos entre quaisquer dois vértices em \(S\). Formalmente, um empacotamento de vértices \(S\) satisfaz a seguinte propriedade:
-\begin{itemize}
-    \item Para quaisquer \(u, v \in S\), não existe arco \((u, v) \in A\) ou \((v, u) \in A\).
-\end{itemize}
-O objetivo de encontrar um empacotamento de vértices é maximizar o tamanho do conjunto \(S\), ou seja, encontrar o maior número possível de vértices que podem ser incluídos em \(S\) sem violar a propriedade acima.
-
-\paragraph{}
-A noção de componente-forte conversa diretamente com o conceito de \emph{empacotamento de circuitos}. Pois, em uma componente fortemente conexa, qualquer vértice pode ser alcançado a partir de qualquer outro vértice, o que implica que é possível encontrar circuitos que percorrem todos os vértices da componente. Assim, o empacotamento de circuitos em um dígrafo pode ser visto como a seleção de circuitos dentro de suas componentes fortemente conexas, garantindo que cada vértice seja visitado por pelo menos um circuito.
-
 
 \paragraph{Componentes-fonte}
 \paragraph{}Uma \textbf{componente-fonte} é uma componente fortemente conexa que não possui arcos direcionados saindo dela para outras componentes. Formalmente, uma componente-fonte \(C\) é uma componente fortemente conexa \(C = (V_C, A_C)\) onde \(V_C \subseteq V\) e \(A_C \subseteq A\), que satisfaz a seguinte propriedade:
