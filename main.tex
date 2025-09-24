@@ -1480,8 +1480,11 @@ Uma arborescência de custo mínimo é uma arborescência que minimiza a soma do
 \paragraph{Arborescência de Raiz Específica:}
 Uma arborescência de raiz específica é uma arborescência onde a raiz é um vértice pré-determinado do dígrafo. Isso é útil em situações onde um ponto de origem específico deve ser o início dos caminhos direcionados para todos os outros vértices. Podemos chamá-la de r-arborescência, onde \(r\) é o vértice raiz.
 
+\paragraph{Arborescência inversa (in-arborescência):}
+Uma \emph{arborescência inversa} enraizada em \(r\) — também chamada de \emph{in-arborescência} — é o resultado de inverter a orientação de todos os arcos de uma arborescência (out-arborescência) enraizada em \(r\). Equivalentemente: é um dígrafo acíclico no qual, para todo \(v\neq r\), existe \emph{exatamente um} caminho direcionado de \(v\) até \(r\) (isto é, todos os arcos estão orientados \emph{em direção} à raiz). Em termos de graus, numa in-arborescência cada vértice \(v\neq r\) tem grau de saída igual a 1 (o arco para seu “pai”) e a raiz \(r\) tem grau de saída 0; os graus de entrada são complementares aos de uma out-arborescência.
+
 \paragraph{}
-As arborescências são a principal estrutura que exploraremos ao longo desta dissertação, especialmente a r-arborescência de custo mínimo, que é o foco do problema do qual tratamos aqui.
+As arborescências são a principal estrutura que exploraremos ao longo desta dissertação, especialmente a r-arborescência de custo mínimo e r-arborescência inversa de custo mínimo, que é o foco do problema do qual tratamos aqui.
 Vamos aprofundar mais nessas estruturas apresentando propriedades importantes sobre elas, teoremas relevantes e algoritmos que nascem dessas discussões, mas antes precisamos abordar algumas propriedades matemáticas em dígrafos.
 
 \subsubsection{Propriedades matemáticas em dígrafos}
