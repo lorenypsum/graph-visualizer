@@ -1304,9 +1304,9 @@ Um \textbf{subdígrafo} \(D' = (V', A')\) de um dígrafo \(D = (V, A)\) é um d�
 \label{fig:subdigrafo}
 \end{center}
 
-\paragraph{Subdígrafos Induzidos}
+\paragraph{Subdigrafos Induzidos}
 \paragraph{}
-Um subdígrafo pode ser \emph{induzido} por um conjunto de vértices \(V' \subseteq V\), denotado como \(D[V']\). Nesse caso, o conjunto de arcos \(A'\) inclui todos os arcos em \(A\) que têm ambas as extremidades em \(V'\), ou seja, \(A' = \{(u, v) \in A \mid u, v \in V'\}\).
+Um subdigrafo pode ser \emph{induzido} por um conjunto de vértices \(V' \subseteq V\), denotado como \(D[V']\). Nesse caso, o conjunto de arcos \(A'\) inclui todos os arcos em \(A\) que têm ambas as extremidades em \(V'\), ou seja, \(A' = \{(u, v) \in A \mid u, v \in V'\}\).
 
 \begin{center}
 \begin{tikzpicture}[>=Stealth]
@@ -1340,6 +1340,28 @@ Um subdígrafo pode ser \emph{induzido} por um conjunto de vértices \(V' \subse
 \paragraph{Subdigrafo Maximal}
 \paragraph{}
 Um subdigrafo é tido como maximal se não é possível adicionar mais vértices ou arcos a ele sem perder alguma propriedade específica, como conexidade ou aciclicidade.
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!60}, keep/.style={->, very thick, draw=blue!60}}
+    % vértices (triângulo)
+    \node[v, label=below:$b$] (b) at (0,0) {};
+    \node[v, label=below:$c$] (c) at (2.0,0) {};
+    \node[v, label=above:$d$] (d) at (1.0,1.6) {};
+    % arcos do dígrafo original (cinza)
+    \draw[a] (b) -- (c);
+    \draw[a] (c) -- (d);
+    \draw[a] (d) -- (b);
+    % subdígrafo maximal acíclico (azul): mantém dois arcos, omite o terceiro que fecharia o circuito
+    \draw[keep] (b) -- (c);
+    \draw[keep] (c) -- (d);
+    % anotação
+    \node[align=left, anchor=west] at (3.0,0.9) {$D'=\{b,c,d\},\ {(b,c),(c,d)}$ é acíclico.\\ Adicionar $(d,b)$ cria o circuito $b\to c\to d\to b$.};
+\end{tikzpicture}
+\captionof{figure}{Subdígrafo maximal (por aciclicidade): $D'$ é acíclico e maximal em $D$; adicionar o arco restante $(d,b)$ cria um circuito.}
+\label{fig:subdigrafo-maximal}
+\end{center}
 
 \paragraph{Subdigrafo Gerador}
 \paragraph{}
