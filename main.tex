@@ -1121,12 +1121,12 @@ Além disso, uma árvore com \(n\) vértices sempre tem exatamente \(n-1\) arest
 \paragraph{}
 Para o nosso objetivo principal, nos interessa entendê-las em grafos que a direção das conexões (arestas) importa.
 
-\subsection{Quando a direção importa: dígrafos}
+\subsection{Dígrafos: quando a direção importa}
 \paragraph{}
 Existem problemas que a direção das arestas faz toda a diferença. Por exemplo, em uma rede de tráfego, algumas ruas são de mão única, ou em uma rede de comunicação, os dados podem ser enviados em uma direção específica. Nesses casos, usamos \emph{grafos dirigidos} (ou grafos direcionados ou simplesmente dígrafos), onde as arestas são pares de vértices ordenados.
 
 \paragraph{}
-Um \textbf{grafo dirigido - digrafo} (grafos direcionados) é uma estrutura matemática composta por um conjunto \(V\) de \emph{vértices} e um conjunto \(A\) de \emph{arcos} (ou \emph{arestas direcionadas}) que conectam pares ordenados de vértices.
+Um \textbf{grafo dirigido - dígrafo} (grafos direcionados) é uma estrutura matemática composta por um conjunto \(V\) de \emph{vértices} e um conjunto \(A\) de \emph{arcos} (ou \emph{arestas direcionadas}) que conectam pares ordenados de vértices.
 
 \paragraph{}
 Por vértices entendemos o mesmo conjunto que em grafos comuns, mas agora as arestas entre eles têm uma direção específica. Cada arco \((u, v) \in A\) indica uma conexão direcionada do vértice \(u\) para o vértice \(v\), significando que a relação ou fluxo ocorre de \(u\) para \(v\).
@@ -1220,6 +1220,24 @@ Tal qual os grafos comuns, os dígrafos podem ter custos associados aos arcos. A
 \captionof{figure}{Dígrafos com custos nos arcos: a função $c:A\to\mathbb{R}^+$ atribui a cada arco $(u,v)$ um custo $c((u,v))$ (mostrado junto à seta). O custo de um caminho $P$ é a soma dos custos de seus arcos, $C(P)=\sum_{a\in P} c(a)$.}
 \label{fig:digrafo-custos}
 \end{center}
+
+\paragraph{}
+Um conceito importante em dígrafos é o de grau de um vértice. O \textbf{grau de entrada} (ou \emph{in-degree}) de um vértice \(v\), denotado por \(d^-(v)\), é o número de arcos que chegam a \(v\) (ou seja, o número de arcos cujo destino é \(v\)). O \textbf{grau de saída} (ou \emph{out-degree}) de um vértice \(v\), denotado por \(d^+(v)\), é o número de arcos que saem de \(v\) (ou seja, o número de arcos cuja origem é \(v\)). Formalmente, temos:
+\[d^-(v) = |\{(u, v) \in A \mid u \in V\}|\]
+\[d^+(v) = |\{(v, w) \in A \mid w \in V\}|\]
+
+\paragraph{}
+Esse conceito é útil para analisar conectividade, o que nos leva ao próximo tópico, empacotamento de vértices.
+
+\paragraph{Empacotamento de Vértices}
+\paragraph{}Um \textbf{empacotamento de vértices} (conjunto independente) em um dígrafo é um conjunto \(S\subseteq V\) tal que, no subdígrafo induzido por \(S\), todo vértice tem grau de entrada e de saída iguais a zero. Em notação de graus, se denotamos por \(D[S]\) o subdígrafo induzido, então para todo \(v\in S\) vale \(d^-_{D[S]}(v)=0\) e \(d^+_{D[S]}(v)=0\). Isso é equivalente a dizer que não existe arco com ambas as extremidades em \(S\) (isto é, nenhum \((u,v)\in A\) com \(u,v\in S\)).
+
+\paragraph{Empacotamento Máximo de Vértices}
+\paragraph{}
+Um \textbf{empacotamento máximo de vértices} é um empacotamento de vértices que contém o maior número possível de vértices. Em outras palavras, é um conjunto \(S\subseteq V\) tal que não existem arcos entre vértices em \(S\) e \(S\) é o maior possível em termos de cardinalidade. Encontrar um empacotamento máximo em um dígrafo é um problema NP-difícil, vamos falar sobre o que isso significa na sessão de algoritmos e complexidade.
+
+\paragraph{}
+Esses conceitos de conectividade e empacotamento de vértices nos levam a explorar as subestruturas especiais que existem em dígrafos, que são similares às que vimos em grafos comuns, mas com algumas diferenças importantes devido à direção dos arcos.
 
 \subsubsection{Subestruturas em dígrafos}
 
@@ -1493,7 +1511,9 @@ Propriedades importantes dos circuitos incluem:
 \end{center}
 
 \paragraph{}
-Esse princípio ajuda a entender o comportamento básico dos métodos de arborescência mínima. Se, para cada vértice \(v\neq r\), escolhemos a aresta de menor custo que entra em \(v\), o subgrafo obtido fica com grau de entrada igual a 1 em todos os \(v\neq r\). Pelo lema, enquanto esse subgrafo ainda não for uma arborescência, ele necessariamente contém um circuito. É exatamente isso que o algoritmo de Chu--Liu/Edmonds explora: detectar o circuito inevitável, contraí-lo a um único vértice e repetir a seleção sob custos reduzidos. Quando não houver mais circuitos, as arestas escolhidas formam uma arborescência ótima enraizada em \(r\).
+Esse princípio ajuda a entender o comportamento básico dos métodos que os algoritmos empregam para encontrar as arborescências de custo mínimo. Vamos elaborar melhor esse ponto na seção de arborescências.
+
+% Se, para cada vértice \(v\neq r\), escolhemos a aresta de menor custo que entra em \(v\), o subgrafo obtido fica com grau de entrada igual a 1 em todos os \(v\neq r\). Pelo lema, enquanto esse subgrafo ainda não for uma arborescência, ele necessariamente contém um circuito. É exatamente isso que o algoritmo de Chu--Liu/Edmonds explora: detectar o circuito inevitável, contraí-lo a um único vértice e repetir a seleção sob custos reduzidos. Quando não houver mais circuitos, as arestas escolhidas formam uma arborescência ótima enraizada em \(r\).
 
 \paragraph{Componentes fortemente conexas}
 \paragraph{}Uma \textbf{componente fortemente conexa} de um dígrafo é um subdígrafo maximal onde existe um caminho direcionado entre qualquer par de vértices. Formalmente, uma componente fortemente conexa \(C\) é um subdígrafo \(C = (V_C, A_C)\) onde \(V_C \subseteq V\) e \(A_C \subseteq A\), que satisfaz a seguinte propriedade:
@@ -1535,6 +1555,19 @@ Além disso, \(C\) é maximal, o que significa que não é possível adicionar m
 \end{tikzpicture}
 \captionof{figure}{Componentes fortemente conexas: o dígrafo possui três componentes $C_1$, $C_2$ e $C_3$. Cada $C_i$ é fortemente conexo e \emph{maximal}: adicionar qualquer vértice de fora quebraria a propriedade de forte conexidade interna ou exigiria arcos ausentes.}   
 \end{center}
+
+\paragraph{Componentes-fortemente conexas e empacotamento de circuitos}
+
+\paragraph{Empacotamento de vértices}
+\paragraph{}Um \textbf{empacotamento de vértices} em um dígrafo é um conjunto de vértices \(S \subseteq V\) tal que não existem arcos entre quaisquer dois vértices em \(S\). Formalmente, um empacotamento de vértices \(S\) satisfaz a seguinte propriedade:
+\begin{itemize}
+    \item Para quaisquer \(u, v \in S\), não existe arco \((u, v) \in A\) ou \((v, u) \in A\).
+\end{itemize}
+O objetivo de encontrar um empacotamento de vértices é maximizar o tamanho do conjunto \(S\), ou seja, encontrar o maior número possível de vértices que podem ser incluídos em \(S\) sem violar a propriedade acima.
+
+\paragraph{}
+A noção de componente-forte conversa diretamente com o conceito de \emph{empacotamento de circuitos}. Pois, em uma componente fortemente conexa, qualquer vértice pode ser alcançado a partir de qualquer outro vértice, o que implica que é possível encontrar circuitos que percorrem todos os vértices da componente. Assim, o empacotamento de circuitos em um dígrafo pode ser visto como a seleção de circuitos dentro de suas componentes fortemente conexas, garantindo que cada vértice seja visitado por pelo menos um circuito.
+
 
 \paragraph{Componentes-fonte}
 \paragraph{}Uma \textbf{componente-fonte} é uma componente fortemente conexa que não possui arcos direcionados saindo dela para outras componentes. Formalmente, uma componente-fonte \(C\) é uma componente fortemente conexa \(C = (V_C, A_C)\) onde \(V_C \subseteq V\) e \(A_C \subseteq A\), que satisfaz a seguinte propriedade:
@@ -1651,16 +1684,6 @@ Vamos aprofundar mais nessas estruturas apresentando propriedades importantes so
 \subsubsection{Propriedades matemáticas em dígrafos}
 
 
-
-
-
-
-
-\paragraph{}
-Empacotamento de vértices (ou empacotamento de nós) em um dígrafo é um conjunto de vértices tal que nenhum par de vértices no conjunto está conectado por um arco. Formalmente, dado um dígrafo \(D = (V, A)\), um empacotamento de vértices \(M\) é um subconjunto de vértices \(M \subseteq V\) tal que para qualquer par distinto \(u, v \in M\), não existe um arco \((u, v) \in A\) nem \((v, u) \in A\).
-
-\paragraph{}
-Empacotamento máximo de vértices é um empacotamento que contém o maior número possível de vértices. Formalmente, um empacotamento máximo \(M_{max}\) é um empacotamento tal que para qualquer outro empacotamento \(M\), \(|M_{max}| \geq |M|\). O tamanho do empacotamento máximo é o número de vértices em \(M_{max}\).
 
 
 \paragraph{Cortes dirigidos e arborescências: uma visão dual}
