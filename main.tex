@@ -1399,7 +1399,7 @@ Um teorema importante relacionado a min-cortes é o Teorema do Fluxo Máximo - C
 \noindent
 \begingroup
 \setlength{\fboxsep}{15pt}% padding interno da faixa azul (título/enunciado)
-\colorbox{blue!15}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\textbf{Teorema (Fluxo–Corte Máximo = Mínimo Corte).}\\[1.0em]
+\colorbox{blue!15}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\textbf{Teorema: Fluxo–Corte Máximo = Mínimo Corte.}\\[1.0em]
 {\color{black!70!black}Em dígrafos com limites/pesos não negativos nos arcos, o valor de um fluxo máximo de \(s\) para \(t\) é igual ao valor de um min-corte \(s\text{--}t\). Em símbolos: \(\max\,\text{valor}(f) = \min\, c(\delta^+(X))\), onde o mínimo é sobre \(X\subseteq V\) com \(s\in X\), \(t\notin X\), e \(c(\delta^+(X))=\sum_{a\in\delta^+(X)} c(a)\).}}}
 \endgroup
 
@@ -1459,9 +1459,41 @@ A diferença entre trilhas e circuitos é que trilhas são caminhos direcionados
 \end{center}
 
 \paragraph{}
-Circuitos possuem muitas características importantes que precisamos abordar nessa dissertação.
+Propriedades importantes dos circuitos incluem:
+\begin{itemize}
+    \item \textbf{Circuito simples}: um circuito é dito simples se não repete vértices, exceto o vértice inicial/final. Ou seja, \(v_i \neq v_j\) para \(1 \leq i < j \leq k\).
+    \item \textbf{Circuito Euleriano}: um circuito que percorre cada arco exatamente uma vez. Um dígrafo possui um circuito euleriano se e somente se é fortemente conexo e o grau de entrada é igual ao grau de saída para cada vértice.
+    \item \textbf{Circuito Hamiltoniano}: um circuito que visita cada vértice exatamente uma vez, exceto o vértice inicial/final. Determinar a existência de um circuito hamiltoniano é um problema que chamamos de NP-completo. Vamos explicar mais sobre isso na seção de algoritmos e complexidade computacional.
+\end{itemize}       
+\paragraph{}
 
+\paragraph{Circuitos e Teoremas Relacionados}
 
+\paragraph{}
+\begin{center}
+\begingroup
+\setlength{\fboxsep}{15pt}% padding externo da moldura
+\fcolorbox{orange!15}{orange!3}{%
+\parbox{\dimexpr\textwidth-2\fboxsep\relax}{%
+\noindent
+\begingroup
+\setlength{\fboxsep}{15pt}% padding interno da faixa azul (título/enunciado)
+\colorbox{orange!15}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\textbf{Lema: Princípio da casa dos pombos para circuitos.}\\[1.0em]
+{\color{black!70!black}Se \(D=(V,A)\) é um dígrafo finito em que todo vértice tem grau de saída ao menos 1, isto é, \(d^+(v)\ge 1\) para todo \(v\in V\), então \(D\) contém pelo menos um circuito dirigido. (De forma equivalente, a afirmação vale trocando ``saída'' por ``entrada''.)}}}
+\endgroup
+
+\paragraph{}
+	\textbf{Prova:} Escolha para cada \(v\in V\) um arco \((v,f(v))\) que sai de \(v\) (possível porque \(d^+(v)\ge 1\)). Fixa\-do um vértice \(v_0\), considere a sequência \(v_0, v_1=f(v_0), v_2=f(v_1),\dots\). Como \(V\) é finito, algum vértice repete: existem \(i<j\) com \(v_i=v_j\). O trecho \(v_i\to v_{i+1}\to\cdots\to v_j=v_i\) é um circuito dirigido em \(D\). A versão com graus de entrada segue aplicando o argumento ao dígrafo com arcos invertidos. \hfill$\square$
+
+\paragraph{}
+\smallskip
+	\textbf{Observação:} A condição \(|A|>|V|\) \emph{não} garante a existência de circuito dirigido em geral (há orientações acíclicas com muitos arcos). O critério correto, simples e útil, é o grau mínimo de saída (ou de entrada) ser pelo menos 1. Ver, por exemplo, \cite{schrijver2003comb}.
+}}
+\endgroup
+\end{center}
+
+\paragraph{}
+Entender esse princípio é importante quando falarmos do algoritmo de Chu Liu e Edmonds, que envolve a contração de circuitos em dígrafos.
 
 \paragraph{Componentes fortemente conexas}
 \paragraph{}Uma \textbf{componente fortemente conexa} de um dígrafo é um subdígrafo maximal onde existe um caminho direcionado entre qualquer par de vértices. Formalmente, uma componente fortemente conexa \(C\) é um subdígrafo \(C = (V_C, A_C)\) onde \(V_C \subseteq V\) e \(A_C \subseteq A\), que satisfaz a seguinte propriedade:
