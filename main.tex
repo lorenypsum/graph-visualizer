@@ -1182,7 +1182,7 @@ Em digrafos podem ocorrer laços (arcos que conectam um vértice a ele mesmo, co
     \draw[a] (b) -- (c);
     \draw[a] (d) -- (b);
     \draw[a] (e) -- (d);
-    \draw[a] (f) -- (e);
+    \draw[->, semithick, draw=gray!70] (f) -- (e);
     \draw[a] (g) -- (f);
     \draw[a] (h) -- (g);
     \draw[p] (b) to[bend left=30] (e);
@@ -1236,6 +1236,31 @@ Esse conceito é útil para analisar conectividade, o que nos leva ao próximo t
 \paragraph{}
 Um \textbf{empacotamento máximo de vértices} é um empacotamento de vértices que contém o maior número possível de vértices. Em outras palavras, é um conjunto \(S\subseteq V\) tal que não existem arcos entre vértices em \(S\) e \(S\) é o maior possível em termos de cardinalidade. Encontrar um empacotamento máximo em um dígrafo é um problema NP-difícil, vamos falar sobre o que isso significa na sessão de algoritmos e complexidade.
 
+\begin{center}
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!70}}
+    % vértices
+    \node[v, label=below:$a$, fill=green!18] (a) at (0,0) {};
+    \node[v, label=below:$b$] (b) at (2,0) {};
+    \node[v, label=above:$c$] (c) at (1,1.6) {};
+    \node[v, label=above:$d$, fill=green!18] (d) at (3,1.6) {};
+    \node[v, label=below:$e$] (e) at (4,0) {};
+    \node[v, label=above:$f$, fill=green!18] (f) at (5.2,1.1) {};
+    % arcos do dígrafo
+    \draw[a] (a) -- (b);
+    \draw[a] (c) -- (a);
+    \draw[a] (b) -- (c);
+    \draw[a] (d) -- (b);
+    \draw[a] (e) -- (d);
+    \draw[a] (f) -- (e);
+    % anotação
+    \node[align=left, anchor=west] at (6.2,1.0) {$S^{*}=\{a,d,f\}$ é máximo\\ (não há arco com extremidades em $S^{*}$)};
+\end{tikzpicture}
+\captionof{figure}{Empacotamento máximo de vértices: para este dígrafo, $S^{*}=\{a,d,f\}$ (vértices em verde) é um conjunto independente de tamanho máximo.}
+\label{fig:empacotamento-max}
+\end{center}
+
 \paragraph{}
 Esses conceitos de conectividade e empacotamento de vértices nos levam a explorar as subestruturas especiais que existem em dígrafos, que são similares às que vimos em grafos comuns, mas com algumas diferenças importantes devido à direção dos arcos.
 
@@ -1280,16 +1305,21 @@ Um \textbf{subdígrafo} \(D' = (V', A')\) de um dígrafo \(D = (V, A)\) é um d�
 \end{center}
 
 \paragraph{Subdígrafos Induzidos}
+\paragraph{}
 Um subdígrafo pode ser \emph{induzido} por um conjunto de vértices \(V' \subseteq V\), denotado como \(D[V']\). Nesse caso, o conjunto de arcos \(A'\) inclui todos os arcos em \(A\) que têm ambas as extremidades em \(V'\), ou seja, \(A' = \{(u, v) \in A \mid u, v \in V'\}\).
 
 \paragraph{Subdigrafo Maximal}
+\paragraph{}
 Um subdigrafo é tido como maximal se não é possível adicionar mais vértices ou arcos a ele sem perder alguma propriedade específica, como conexidade ou aciclicidade.
 
 \paragraph{Subdigrafo Gerador}
+\paragraph{}
 Um subdigrafo é tido como gerador se inclui todos os vértices do dígrafo original, ou seja, \(V' = V\). Nesse caso, o subdigrafo é formado por um subconjunto dos arcos do dígrafo original.
 
 \paragraph{}
 Com essas definições em mente, podemos explorar as subdigrafos específicos que citaremos ao longo da dissertação, começando pelas trilhas, circuitos, componentes fortemente conexas, componentes-fonte e arborescências.
+
+\subsubsection{Subdigrafos Especiais}
 
 \paragraph{Trilhas}
 
@@ -1524,7 +1554,9 @@ Além disso, \(C\) é maximal, o que significa que não é possível adicionar m
 \begin{center}
 \begin{tikzpicture}[>=Stealth]
     % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!70}, comp/.style={draw=blue!40, rounded corners}};
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}};
+    \tikzset{a/.style={->, semithick, draw=gray!70}};
+    \tikzset{comp/.style={draw=blue!40, rounded corners}};
     % Componente C1 (à esquerda)
     \node[v, label=above:$a$] (a) at (0,1.2) {};
     \node[v, label=below:$b$] (b) at (-0.8,0) {};

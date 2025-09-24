@@ -281,18 +281,9 @@ INPUT /opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/generic/pgf/f
 INPUT /opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryfit.code.tex
 INPUT /opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarycalc.code.tex
 INPUT /opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarycalc.code.tex
-INPUT ./main.aux
-INPUT ./main.aux
-INPUT main.aux
 OUTPUT main.aux
-INPUT ./main.out
-INPUT ./main.out
-INPUT main.out
-INPUT main.out
-OUTPUT main.pdf
-INPUT ./main.out
-INPUT ./main.out
 OUTPUT main.out
+OUTPUT main.pdf
 INPUT /opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/biblatex/lbx/brazil.lbx
 INPUT /opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/biblatex/lbx/brazil.lbx
 INPUT /opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/biblatex/lbx/brazil.lbx
@@ -378,7 +369,6 @@ INPUT /opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/tfm/public/
 INPUT main.aux
 INPUT ./main.out
 INPUT ./main.out
-INPUT main.run.xml
 OUTPUT main.run.xml
 INPUT /opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
 INPUT /opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
