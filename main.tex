@@ -894,7 +894,7 @@ Qual o número mínimo de cores necessárias para colorir um mapa de países, de
 \paragraph{}
 Sem a teoria dos grafos, seria difícil formalizar e resolver esses problemas de maneira eficiente. Ao representar situações do mundo real como grafos, tornamos a parcimônia da navalha de occam algo operacional: escolhemos uma medida simples (número de cores, comprimento, custo) e aplicamos algoritmos que, entre as soluções viáveis, minimizam ou maximizam esse critério — produzindo soluções ótimas ou, quando necessário, boas aproximações.
 
-\subsubsection{Grafos}
+\subsection{Grafos}
 \paragraph{}
 Falamos bastante de grafos ao longo do texto, aqui fixamos a noção básica. 
 
@@ -965,7 +965,7 @@ Esses custos representam uma função \(c: E \to \mathbb{R}^+\) que atribui um v
 \paragraph{}
 Grafos apresentam diversas estruturas especiais. Essas estruturas são definidas como subgrafos e são fundamentais para entender a topologia e as propriedades dos grafos, e muitas vezes são o foco de problemas de otimização. 
 
-\paragraph{Subgrafos}
+\subsubsection{Subgrafos}
 \paragraph{}Um \textbf{subgrafo} \(H = (V_H, E_H)\) de um grafo \(G = (V, E)\) é um grafo cujos vértices e arestas são subconjuntos dos vértices e arestas de \(G\). Formalmente, \(V_H \subseteq V\) e \(E_H \subseteq E\), e cada aresta em \(E_H\) conecta dois vértices em \(V_H\).
 
 \paragraph{}
@@ -1121,7 +1121,7 @@ Além disso, uma árvore com \(n\) vértices sempre tem exatamente \(n-1\) arest
 \paragraph{}
 Para o nosso objetivo principal, nos interessa entendê-las em grafos que a direção das conexões (arestas) importa.
 
-\subsubsection{Quando a direção importa: dígrafos}
+\subsection{Quando a direção importa: dígrafos}
 \paragraph{}
 Existem problemas que a direção das arestas faz toda a diferença. Por exemplo, em uma rede de tráfego, algumas ruas são de mão única, ou em uma rede de comunicação, os dados podem ser enviados em uma direção específica. Nesses casos, usamos \emph{grafos dirigidos} (ou grafos direcionados ou simplesmente dígrafos), onde as arestas são pares de vértices ordenados.
 
@@ -1221,7 +1221,7 @@ Tal qual os grafos comuns, os dígrafos podem ter custos associados aos arcos. A
 \label{fig:digrafo-custos}
 \end{center}
 
-\paragraph{Subestruturas em dígrafos}
+\subsubsection{Subestruturas em dígrafos}
 
 \paragraph{}
 Tal qual os grafos que discutimos na sessão anterior, os dígrafos também possuem as mesmas estruturas especiais, essas estruturas chamadas sub-digrafos mudam um pouco em nomenclatura: caminhos quando direcionados são chamados de trilhas, e ciclos são chamados de circuitos e componentes conexas são componentes fortemente conexas e árvores viram arborescências. Além da nomenclatura, a direção dos arcos traz algumas nuances importantes para essas estruturas, não necessariamente exploraremos essas nuances aqui, mas é importante estar ciente delas.
@@ -1304,6 +1304,95 @@ Uma \textbf{trilha} (ou caminho direcionado) em um dígrafo é uma sequência de
 \captionof{figure}{Trilha em dígrafo: a trilha $P=(v_1,v_2,v_3,v_4)$ está destacada em azul. Seu comprimento é o número de arcos percorridos, $|P|=3$.}
 \label{fig:trilha}
 \end{center}
+
+\paragraph{}
+Uma conceito importante relacionado às trilhas é o de cortes. 
+
+\paragraph{Cortes e Min-cortes}
+\paragraph{}
+Um \textbf{corte} em um dígrafo é um conjunto de arcos cuja remoção desconecta o dígrafo, ou seja, impede que haja uma trilha entre certos pares de vértices. Formalmente, dado um dígrafo \(D = (V, A)\), um corte \(C\) é um subconjunto de arcos \(C \subseteq A\) tal que a remoção dos arcos em \(C\) resulta em um dígrafo \(D' = (V, A \setminus C)\) onde não existe mais uma trilha (caminho direcionado) entre pelo menos um par de vértices \(u, v \in V\).
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!70}, cut/.style={->, very thick, draw=red!70}};
+    % vértices
+    \node[v, label=below:$a$] (a) at (0,0) {};
+    \node[v, label=below:$b$] (b) at (2,0) {};
+    \node[v, label=above:$c$] (c) at (1,1.5) {};
+    \node[v, label=below:$d$] (d) at (4,0) {};
+    \node[v, label=above:$e$] (e) at (3,1.5) {};
+    \node[v, label=below:$f$] (f) at (6,0) {};
+    % arcos
+    \draw[a] (a) -- (b);
+    \draw[a] (b) -- (c);
+    \draw[a] (c) -- (a);
+    \draw[a] (b) -- (d);
+    \draw[a] (d) -- (e);
+    \draw[a] (e) -- (b);
+    \draw[a] (d) -- (f);
+    \draw[a] (f) -- (e);
+    % corte destacado (vermelho)
+    \draw[cut] (b) -- (d);
+    % legenda
+    \node[align=left, anchor=west] at (6.5,1.0) {Corte $C=\{(b,d)\}$\\ Remover $C$ desconecta $D$};
+\end{tikzpicture}
+\captionof{figure}{Corte em dígrafo: o corte $C=\{(b,d)\}$ está destacado em vermelho. Remover esse arco desconecta o dígrafo, impedindo caminhos direcionados entre certos pares de vértices.}
+\label{fig:corte}
+\end{center}
+
+\paragraph{}
+De forma resumida, dado um dígrafo \(D=(V,A)\) e um subconjunto \(X\subseteq V\), denotamos por um corte \(s\text{--}t\) é determinado pela escolha de um conjunto de vértices \(X\subseteq V\) tal que \(s\in X\) e \(t\notin X\); pensa-se nele como a “divisão” do grafo em dois lados: \(X\) e \(V\setminus X\).
+
+Para tornar a notação precisa e fácil de ler:
+\begin{itemize}
+    \item \textbf{\(s\text{--}t\)}: lê-se “de \(s\) para \(t\)”. Aqui, \(s\) é a fonte (onde o fluxo nasce) e \(t\) é o sumidouro (onde o fluxo chega).
+    \item \textbf{\(\delta^+(X)\)} (fronteira de saída de \(X\)): conjunto de todos os arcos que \emph{saem} de \(X\) para fora, isto é, para \(V\setminus X\).
+    \item \textbf{\(\delta^-(X)\)} (fronteira de entrada de \(X\)): conjunto de todos os arcos que \emph{entram} em \(X\) vindos de \(V\setminus X\). Note que \(\delta^-(X)=\delta^+(V\setminus X)\).
+    \item \textbf{Valor do corte}: dado um peso (ou custo) \(c:A\to\mathbb{R}_+\) para cada arco, o valor do corte induzido por \(X\) é a soma dos pesos dos arcos que cruzam de \(X\) para fora: 
+    \[c(\delta^+(X))=\sum_{a\in\delta^+(X)} c(a).\]
+    No caso não ponderado, esse valor coincide com a \emph{quantidade} de arcos que saem de \(X\).
+\end{itemize}
+
+\paragraph{Exemplo:} se \(\delta^+(X)=\{(u_1,v_1),(u_2,v_2)\}\) com \(c((u_1,v_1))=2\) e \(c((u_2,v_2))=3\), então \(c(\delta^+(X))=2+3=5\).
+
+\paragraph{}
+Um min-corte é um corte de tamanho mínimo, ou seja, é o corte com o menor número possível de arcos cuja remoção desconecta o dígrafo. Formalmente, dado um dígrafo \(D = (V, A)\), um min-corte \(C_{min}\) é um corte tal que para qualquer outro corte \(C\), \(|C_{min}| \leq |C|\). O tamanho do min-corte é o número de arcos em \(C_{min}\).
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!70}, cut/.style={->, very thick, draw=red!70}};
+    % vértices 
+    \node[v, label=below:$a$] (a) at (0,0) {};
+    \node[v, label=below:$b$] (b) at (2,0) {};
+    \node[v, label=above:$c$] (c) at (1,1.5) {};
+    \node[v, label=below:$d$] (d) at (4,0) {};
+    \node[v, label=above:$e$] (e) at (3,1.5) {};
+    \node[v, label=below:$f$] (f) at (6,0) {};
+    % arcos
+    \draw[a] (a) -- (b);
+    \draw[a] (b) -- (c);
+    \draw[a] (c) -- (a);
+    \draw[a] (b) -- (d);
+    \draw[a] (d) -- (e);
+    \draw[a] (e) -- (b);
+    \draw[a] (d) -- (f);
+    \draw[a] (f) -- (e);
+    % min-corte destacado (vermelho)
+    \draw[cut] (b) -- (d);
+    % legenda
+    \node[align=left, anchor=west] at (6.5,1.0) {Min-corte $C_{min}=\{(b,d)\}$\\ $|C_{min}|=1$ é o menor corte que desconecta $D$};
+\end{tikzpicture}
+\captionof{figure}{Min-corte em dígrafo: o min-corte $C_{min}=\{(b,d)\}$ está destacado em vermelho. Remover esse arco desconecta o dígrafo, e é o menor corte possível, com tamanho $|C_{min}|=1$.}
+\label{fig:min-corte}
+\end{center}
+
+Um teorema importante relacionado a min-cortes é o Teorema do Fluxo Máximo - Corte Mínimo, que estabelece uma relação entre o fluxo máximo que pode ser enviado de uma fonte \(s\) para um sumidouro \(t\) em um dígrafo e o valor do min-corte que separa \(s\) de \(t\). Escolhemos apresensentar esse teorema aqui pois ele traz uma intuição interessante sobre a relação entre fluxos e cortes em dígrafos, relevantes para os algoritmos que discutiremos mais adiante.
+
+
+
+
 
 \paragraph{Circuitos}
 \paragraph{}
@@ -1489,89 +1578,9 @@ Vamos aprofundar mais nessas estruturas apresentando propriedades importantes so
 
 \subsubsection{Propriedades matemáticas em dígrafos}
 
-\paragraph{}
-Um corte em um dígrafo é um conjunto de arcos cuja remoção desconecta o dígrafo, ou seja, impede que haja um caminho direcionado entre certos pares de vértices. Formalmente, dado um dígrafo \(D = (V, A)\), um corte \(C\) é um subconjunto de arcos \(C \subseteq A\) tal que a remoção dos arcos em \(C\) resulta em um dígrafo \(D' = (V, A \setminus C)\) onde não existe mais um caminho direcionado entre pelo menos um par de vértices \(u, v \in V\).
 
-\begin{center}
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!70}, cut/.style={->, very thick, draw=red!70}};
-    % vértices
-    \node[v, label=below:$a$] (a) at (0,0) {};
-    \node[v, label=below:$b$] (b) at (2,0) {};
-    \node[v, label=above:$c$] (c) at (1,1.5) {};
-    \node[v, label=below:$d$] (d) at (4,0) {};
-    \node[v, label=above:$e$] (e) at (3,1.5) {};
-    \node[v, label=below:$f$] (f) at (6,0) {};
-    % arcos
-    \draw[a] (a) -- (b);
-    \draw[a] (b) -- (c);
-    \draw[a] (c) -- (a);
-    \draw[a] (b) -- (d);
-    \draw[a] (d) -- (e);
-    \draw[a] (e) -- (b);
-    \draw[a] (d) -- (f);
-    \draw[a] (f) -- (e);
-    % corte destacado (vermelho)
-    \draw[cut] (b) -- (d);
-    % legenda
-    \node[align=left, anchor=west] at (6.5,1.0) {Corte $C=\{(b,d)\}$\\ Remover $C$ desconecta $D$};
-\end{tikzpicture}
-\captionof{figure}{Corte em dígrafo: o corte $C=\{(b,d)\}$ está destacado em vermelho. Remover esse arco desconecta o dígrafo, impedindo caminhos direcionados entre certos pares de vértices.}
-\label{fig:corte}
-\end{center}
 
-\paragraph{}
-Para organizar ideias, fixamos uma notação leve para cortes. Dado um dígrafo \(D=(V,A)\) e um subconjunto \(X\subseteq V\), denotamos por
-\[\delta^+(X)=\{\, (u,v)\in A:\; u\in X,\ v\notin X\,\}\quad\text{e}\quad \delta^-(X)=\{\, (u,v)\in A:\; u\notin X,\ v\in X\,\}\]
-o conjunto de arcos que saem de \(X\) e o conjunto de arcos que entram em \(X\), respectivamente. Se houver uma função de custos/pesos \(c:A\to\mathbb R_+\), definimos o \emph{valor} de um conjunto de arcos \(F\subseteq A\) como \(c(F)=\sum_{a\in F}c(a)\).
 
-\paragraph{}
-Um min-corte é um corte de tamanho mínimo, ou seja, é o corte com o menor número possível de arcos cuja remoção desconecta o dígrafo. Formalmente, dado um dígrafo \(D = (V, A)\), um min-corte \(C_{min}\) é um corte tal que para qualquer outro corte \(C\), \(|C_{min}| \leq |C|\). O tamanho do min-corte é o número de arcos em \(C_{min}\).
-
-\begin{center}
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!70}, cut/.style={->, very thick, draw=red!70}};
-    % vértices 
-    \node[v, label=below:$a$] (a) at (0,0) {};
-    \node[v, label=below:$b$] (b) at (2,0) {};
-    \node[v, label=above:$c$] (c) at (1,1.5) {};
-    \node[v, label=below:$d$] (d) at (4,0) {};
-    \node[v, label=above:$e$] (e) at (3,1.5) {};
-    \node[v, label=below:$f$] (f) at (6,0) {};
-    % arcos
-    \draw[a] (a) -- (b);
-    \draw[a] (b) -- (c);
-    \draw[a] (c) -- (a);
-    \draw[a] (b) -- (d);
-    \draw[a] (d) -- (e);
-    \draw[a] (e) -- (b);
-    \draw[a] (d) -- (f);
-    \draw[a] (f) -- (e);
-    % min-corte destacado (vermelho)
-    \draw[cut] (b) -- (d);
-    % legenda
-    \node[align=left, anchor=west] at (6.5,1.0) {Min-corte $C_{min}=\{(b,d)\}$\\ $|C_{min}|=1$ é o menor corte que desconecta $D$};
-\end{tikzpicture}
-\captionof{figure}{Min-corte em dígrafo: o min-corte $C_{min}=\{(b,d)\}$ está destacado em vermelho. Remover esse arco desconecta o dígrafo, e é o menor corte possível, com tamanho $|C_{min}|=1$.}
-\label{fig:min-corte}
-\end{center}
-
-\paragraph{}
-Quando trabalhamos com limites/pesos nas arestas, é comum focar em cortes \(s\text{--}t\). Um corte \(s\text{--}t\) é determinado pela escolha de um conjunto de vértices \(X\subseteq V\) tal que \(s\in X\) e \(t\notin X\); pensa-se nele como a “divisão” do grafo em dois lados: \(X\) e \(V\setminus X\).
-
-Para tornar a notação precisa e fácil de ler:
-\begin{itemize}
-    \item \textbf{\(s\text{--}t\)}: lê-se “de \(s\) para \(t\)”. Aqui, \(s\) é a fonte (onde o fluxo nasce) e \(t\) é o sumidouro (onde o fluxo chega).
-    \item \textbf{\(\delta^+(X)\)} (fronteira de saída de \(X\)): conjunto de todos os arcos que \emph{saem} de \(X\) para fora, isto é, para \(V\setminus X\).
-    \item \textbf{\(\delta^-(X)\)} (fronteira de entrada de \(X\)): conjunto de todos os arcos que \emph{entram} em \(X\) vindos de \(V\setminus X\). Note que \(\delta^-(X)=\delta^+(V\setminus X)\).
-    \item \textbf{Valor do corte}: dado um peso (ou custo) \(c:A\to\mathbb{R}_+\) para cada arco, o valor do corte induzido por \(X\) é a soma dos pesos dos arcos que cruzam de \(X\) para fora: 
-    \[c(\delta^+(X))=\sum_{a\in\delta^+(X)} c(a).\]
-    No caso não ponderado, esse valor coincide com a \emph{quantidade} de arcos que saem de \(X\).
-\end{itemize}
-
-Exemplo ilustrativo: se \(\delta^+(X)=\{(u_1,v_1),(u_2,v_2)\}\) com \(c((u_1,v_1))=2\) e \(c((u_2,v_2))=3\), então \(c(\delta^+(X))=2+3=5\).
 
 \paragraph{}
 \begin{center}
@@ -1614,9 +1623,6 @@ Empacotamento de vértices (ou empacotamento de nós) em um dígrafo é um conju
 \paragraph{}
 Empacotamento máximo de vértices é um empacotamento que contém o maior número possível de vértices. Formalmente, um empacotamento máximo \(M_{max}\) é um empacotamento tal que para qualquer outro empacotamento \(M\), \(|M_{max}| \geq |M|\). O tamanho do empacotamento máximo é o número de vértices em \(M_{max}\).
 
-\paragraph{Empacotamento de caminhos e separadores}
-\paragraph{}
-Outra relação \emph{min–max} clássica em dígrafos é dada pelo teorema de Menger: o número máximo de caminhos \(s\text{--}t\) mutuamente disjuntos (em vértices, ou em arcos) é igual ao tamanho mínimo de um conjunto de vértices (ou de arcos) cuja remoção separa \(s\) de \(t\). Assim como em fluxo–corte, ele expressa o equilíbrio entre \emph{empacotar} muitas trilhas/caminhos e \emph{cobrir} todos eles com poucas remoções.
 
 \paragraph{Cortes dirigidos e arborescências: uma visão dual}
 \paragraph{}
