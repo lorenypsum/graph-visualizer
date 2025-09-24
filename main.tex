@@ -1308,6 +1308,35 @@ Um \textbf{subdígrafo} \(D' = (V', A')\) de um dígrafo \(D = (V, A)\) é um d�
 \paragraph{}
 Um subdígrafo pode ser \emph{induzido} por um conjunto de vértices \(V' \subseteq V\), denotado como \(D[V']\). Nesse caso, o conjunto de arcos \(A'\) inclui todos os arcos em \(A\) que têm ambas as extremidades em \(V'\), ou seja, \(A' = \{(u, v) \in A \mid u, v \in V'\}\).
 
+\begin{center}
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!60}, ind/.style={->, very thick, draw=blue!60}}
+    % vértices
+    \node[v, label=below:$a$] (a) at (0,0) {};
+    \node[v, label=below:$b$] (b) at (2,0) {};
+    \node[v, label=above:$c$] (c) at (1,1.6) {};
+    \node[v, label=above:$d$] (d) at (3,1.6) {};
+    \node[v, label=below:$e$] (e) at (4.2,0) {};
+    \node[v, label=below:$f$] (f) at (5.4,0) {};
+    % arcos do dígrafo (cinza)
+    \draw[a] (a) -- (b);
+    \draw[a] (c) -- (a);
+    \draw[a] (e) -- (d);
+    \draw[a] (f) -- (e);
+    \draw[a] (b) to[bend left=20] (e);
+    \draw[a] (e) to[bend left=20] (b);
+    % arcos em D[V'] (azul): todas as arestas com ambas as extremidades em V'
+    \draw[ind] (b) -- (c);
+    \draw[ind] (c) -- (d);
+    \draw[ind] (d) -- (b);
+    % destaque do conjunto de vértices V'
+    \node[draw=blue!40, rounded corners, fit=(b)(c)(d), inner sep=12pt, label={[blue!60]above:$V'=\{b,c,d\}$}] {};
+\end{tikzpicture}
+\captionof{figure}{Subdígrafo induzido: para $V'=\{b,c,d\}$, o subdígrafo $D[V']$ contém todos os arcos de $D$ cujas extremidades pertencem a $V'$ (em azul). Arcos que incidem em $V'$ mas conectam a vértices fora de $V'$ não pertencem a $D[V']$.}
+\label{fig:subdigrafo-induzido}
+\end{center}
+
 \paragraph{Subdigrafo Maximal}
 \paragraph{}
 Um subdigrafo é tido como maximal se não é possível adicionar mais vértices ou arcos a ele sem perder alguma propriedade específica, como conexidade ou aciclicidade.
