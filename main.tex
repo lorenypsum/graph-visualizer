@@ -1367,6 +1367,39 @@ Um subdigrafo é tido como maximal se não é possível adicionar mais vértices
 \paragraph{}
 Um subdigrafo é tido como gerador se inclui todos os vértices do dígrafo original, ou seja, \(V' = V\). Nesse caso, o subdigrafo é formado por um subconjunto dos arcos do dígrafo original.
 
+\begin{center}
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    	\tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!60}, span/.style={->, very thick, draw=blue!60}}
+    % vértices
+    \node[v, label=below:$a$] (a) at (0,0) {};
+    \node[v, label=below:$b$] (b) at (2,0) {};
+    \node[v, label=above:$c$] (c) at (1,1.6) {};
+    \node[v, label=above:$d$] (d) at (3,1.6) {};
+    \node[v, label=below:$e$] (e) at (4.2,0) {};
+    \node[v, label=below:$f$] (f) at (5.4,0) {};
+    % arcos do dígrafo original (cinza)
+    \draw[a] (a) -- (b);
+    \draw[a] (c) -- (a);
+    \draw[a] (b) -- (c);
+    \draw[a] (d) -- (b);
+    \draw[a] (e) -- (d);
+    \draw[a] (f) -- (e);
+    \draw[a] (b) to[bend left=20] (e);
+    \draw[a] (e) to[bend left=20] (b);
+    % arcos do subdígrafo gerador (azul): V'=V e A' \subseteq A
+    \draw[span] (a) -- (b);
+    \draw[span] (b) -- (c);
+    \draw[span] (d) -- (b);
+    \draw[span] (e) -- (d);
+    \draw[span] (f) -- (e);
+    % anotação
+    \node[align=left, anchor=west] at (6.4,1.0) {$V'=V$\\ $A'\subseteq A$};
+\end{tikzpicture}
+\captionof{figure}{Subdígrafo gerador: inclui todos os vértices do dígrafo original ($V'=V$) e apenas um subconjunto dos arcos (em azul).}
+\label{fig:subdigrafo-gerador}
+\end{center}
+
 \paragraph{}
 Com essas definições em mente, podemos explorar as subdigrafos específicos que citaremos ao longo da dissertação, começando pelas trilhas, circuitos, componentes fortemente conexas, componentes-fonte e arborescências.
 
@@ -1566,7 +1599,7 @@ Propriedades importantes dos circuitos incluem:
 \end{itemize}       
 \paragraph{}
 
-\paragraph{Circuitos e Teoremas Relacionados}
+Em grafos o 
 
 \paragraph{}
 \begin{center}
