@@ -1692,39 +1692,7 @@ A seguir falaremos sobre a propriedade de alcançabilidade mútua em CFC, que é
      todo DAG tem ao menos uma componente-fonte (falaremos em seguida sobre eles) e uma componente-sumidouro; logo, $\mathrm{Cond}(D)$ também tem ao menos uma CFC-fonte e ao menos uma CFC-sumidouro.
 \end{itemize}
 
-\paragraph{}
 
-\paragraph{Mínimo de arcos para tornar o dígrafo fortemente conexo}
-
-\paragraph{}
-Considere $k$ CFCs em $D$ e o DAG $\mathrm{Cond}(D)$. Denote por $s$ o número de CFCs-\emph{fonte} (vértices de $\mathrm{Cond}(D)$ sem arcos \emph{entrando}) e por $t$ o número de CFCs-\emph{sumidouro} (vértices de $\mathrm{Cond}(D)$ sem arcos \emph{saindo}). Então:
-
-\paragraph{}
-\begin{center}
-\begingroup
-\setlength{\fboxsep}{15pt}% padding externo da moldura
-\fcolorbox{orange!15}{orange!3}{%
-\parbox{\dimexpr\textwidth-2\fboxsep\relax}{%
-\noindent
-\begingroup
-\setlength{\fboxsep}{15pt}% padding interno da faixa azul (título/enunciado)
-\colorbox{orange!15}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\textbf{Teorema: mínimo de arcos para conexidade forte}\\[1.0em]
-{\color{black!70!black}
-
-Se $k=1$, então $D$ já é fortemente conexo e o mínimo de arcos a adicionar é $0$. Se $k\ge 2$, o número mínimo de arcos a adicionar para tornar $D$ fortemente conexo é \[\boxed{\;\min = \max\{s,\,t\}\;}\,.\]
-
-}}}
-\endgroup
-
-\paragraph{}
-	\textbf{Prova (esboço).} \emph{Necessidade:} em qualquer supergrafo fortemente conexo, cada CFC-fonte deve receber ao menos um arco \emph{entrando} e cada CFC-sumidouro deve ter ao menos um arco \emph{saindo}; logo, são necessários ao menos $\max\{s,t\}$ arcos novos. \emph{Suficiência:} numa ordenação topológica de $\mathrm{Cond}(D)$, conecte CFCs-sumidouro a CFCs-fonte de modo a formar um ciclo que percorra todas as CFCs. Isso pode ser feito com exatamente $\max\{s,t\}$ arcos, mesmo quando $s\ne t$, emparelhando sobras de um lado com o outro. Ver, por exemplo, textos clássicos sobre dígrafos (e.g., \cite{schrijver2003comb}).
-}}
-\endgroup
-\end{center}
-
-
-\paragraph{}
-Esse teorema explica por que, em muitas rotinas (inclusive na construção de soluções por contração/condensação), olhar para componentes-fonte e componentes-sumidouro no condensado fornece limites e estratégias naturais de conexão.
 
 
 \paragraph{Componentes-fonte}
@@ -1774,8 +1742,127 @@ Esse teorema explica por que, em muitas rotinas (inclusive na construção de so
 \label{fig:componente-fonte}
 \end{center}
 
+\paragraph{Componentes-sumidouro}
+\paragraph{}Uma \textbf{componente-sumidouro} é uma componente fortemente conexa que não possui arcos direcionados entrando nela vindos de outras componentes. Formalmente, uma componente-sumidouro \(C\) é uma componente fortemente conexa \(C = (V_C, A_C)\) onde \(V_C \subseteq V\) e \(A_C \subseteq A\), que satisfaz a seguinte propriedade:
+\begin{itemize}
+    \item Não existem arcos \((u, v) \in A\) tais que \(u \notin V_C\) e \(v \in V_C\).
+    \item \(C\) é maximal: não é possível adicionar mais vértices ou arcos a \(C\) sem perder a propriedade de forte conexidade.
+    \item \(C\) é fortemente conexo: existe um caminho direcionado entre qualquer par de vértices em \(V_C\).
+\end{itemize}
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!70}, comp/.style={draw=blue!40, rounded corners}};
+    % Componente-fonte C1 (à esquerda)
+    \node[v, label=above:$a$] (a) at (0,1.2) {};
+    \node[v, label=below:$b$] (b) at (-0.8,0) {};
+    \node[v, label=below:$c$] (c) at (0.8,0) {};
+    \draw[a] (a) -- (b);
+    \draw[a] (b) -- (c);
+    \draw[a] (c) -- (a);
+    \node[comp, fit=(a)(b)(c), inner sep=20pt, label={[blue!60]above:$C_1$}] {};
+    % Componente C2 (centro)
+    \node[v, label=below:$d$] (d) at (4,0) {};
+    \node[v, label=below:$e$] (e) at (5.6,0) {};
+    \draw[a] (d) to[bend left=20] (e);
+    \draw[a] (e) to[bend left=20] (d);
+    \node[comp, fit=(d)(e), inner sep=15pt, label={[blue!60]above:$C_2$}] {};
+    % Componente C3 (direita)
+    \node[v, label=above:$f$] (f) at (8.6,1.2) {};
+    \node[v, label=below:$g$] (g) at (7.8,0) {};
+    \node[v, label=below:$h$] (h) at (9.4,0) {};
+    \draw[a] (f) to[bend left=20] (g);
+    \draw[a] (g) to[bend left=20] (h);
+    \draw[a] (h) to[bend left=20] (f);
+    \draw[a] (g) to[bend left=20] (f);
+    \draw[a] (h) to[bend left=20] (g);
+    \draw[a] (f) to[bend left=20] (h);
+    \node[comp, fit=(f)(g)(h), inner sep=15pt, label={[blue!60]above:$C_3$}] {};
+    % arcos entre componentes
+    \draw[a] (c) to[bend left=15] (d);
+    \draw[a] (e) to[bend left=15] (f);
+    % texto explicativo
+    \node[align=center, anchor=north west, text width=15.0cm] at (-1.5,-1.0) {A componente $C_3$ é uma \emph{componente-sumidouro} porque não há arcos entrando nela vindos de outras componentes. Já $C_1$ e $C_2$ não são componentes-sumidouro, pois há arcos saindo delas.};
+\end{tikzpicture}
+\captionof{figure}{Componente-sumidouro: o dígrafo possui três componentes $C_1$, $C_2$ e $C_3$. A componente $C_3$ é uma componente-sumidouro porque não há arcos entrando nela vindos de outras componentes. Já $C_1$ e $C_2$ não são componentes-sumidouro, pois há arcos saindo delas.}
+\label{fig:componente-sumidouro}
+\end{center}
+
 \paragraph{}
-A noção de componente-forte conversa diretamente com o conceito de \emph{arborescências}. Pois, em uma arborescência, todos os vértices são alcançáveis a partir da raiz, o que implica que a arborescência é fortemente conexa. Além disso, a raiz de uma arborescência pode ser vista como uma componente-fonte, já que não há arcos direcionados entrando nela de outras componentes.
+Existe um resultado clássico que relaciona o número de componentes-fonte e componentes-sumidouro em um dígrafo com o número mínimo de arcos necessários para torná-lo fortemente conexo.
+
+\begin{center}
+\begin{tikzpicture}[>=Stealth]
+    % estilos locais para o condensado
+    	\tikzset{
+        comp/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
+        src/.style={circle, draw=green!60!black, fill=green!15, minimum size=7mm, inner sep=0pt, very thick},
+        sink/.style={circle, draw=red!60!black, fill=red!15, minimum size=7mm, inner sep=0pt, very thick},
+        arc/.style={->, semithick, draw=gray!70}
+    }
+    % nós (CFCs do condensado)
+    \node[src, label=below:$C_1$] (c1) at (0,0) {};
+    \node[comp, label=below:$C_2$] (c2) at (2.2,0.9) {};
+    \node[comp, label=below:$C_3$] (c3) at (2.2,-0.9) {};
+    \node[sink, label=below:$C_4$] (c4) at (4.4,0) {};
+    % arcos do condensado (DAG)
+    \draw[arc] (c1) -- (c2);
+    \draw[arc] (c1) -- (c3);
+    \draw[arc] (c2) -- (c4);
+    \draw[arc] (c3) -- (c4);
+    % legendas curtas
+    \node[align=left, anchor=west] at (5.1,0.6) {CFC-\textit{fonte}: sem entrada ($C_1$)};
+    \node[align=left, anchor=west] at (5.1,-0.1) {CFC-\textit{sumidouro}: sem saída ($C_4$)};
+    \node[align=left, anchor=west] at (5.1,-0.8) {$s=1,\; t=1$ neste exemplo};
+\end{tikzpicture}
+\captionof{figure}{Grafo condensado $\mathrm{Cond}(D)$ e a contagem de CFCs-fonte/sumidouro: $C_1$ não recebe arcos (fonte) e $C_4$ não emite arcos (sumidouro).}
+\label{fig:condensado-st}
+\end{center}
+
+\paragraph{}
+Seja $D=(V,A)$ um dígrafo com $k$ componentes fortemente conexas (CFCs): 
+
+\paragraph{}
+Denote por $\mathrm{Cond}(D)$ o grafo \emph{condensado}, obtido ao contrair cada CFC de $D$ em um único vértice; $\mathrm{Cond}(D)$ é sempre um DAG. Escreva $s$ para o número de CFCs-\emph{fonte} (vértices de $\mathrm{Cond}(D)$ sem arcos de \emph{entrada}) e $t$ para o número de CFCs-\emph{sumidouro} (vértices de $\mathrm{Cond}(D)$ sem arcos de \emph{saída}). Com essa notação, vale o seguinte:
+
+\paragraph{}
+\begin{center}
+\begingroup
+\setlength{\fboxsep}{15pt}% padding externo da moldura
+\fcolorbox{orange!15}{orange!3}{%
+\parbox{\dimexpr\textwidth-2\fboxsep\relax}{%
+\noindent
+\begingroup
+\setlength{\fboxsep}{15pt}% padding interno da faixa azul (título/enunciado)
+\colorbox{orange!15}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\textbf{Teorema: mínimo de arcos para conexidade forte}\\[1.0em]
+{\color{black!70!black}
+
+Se $k=1$, então $D$ já é fortemente conexo e o mínimo de arcos a adicionar é $0$. Se $k\ge 2$, o número mínimo de arcos a adicionar para tornar $D$ fortemente conexo é \[\boxed{\;\min = \max\{s,\,t\}\;}\,.\]
+
+}}}
+\endgroup
+
+\paragraph{}
+	\textbf{Prova (esboço).} 
+    
+    \paragraph{}
+    \emph{Necessidade:} em qualquer supergrafo fortemente conexo, cada CFC-fonte deve receber ao menos um arco \emph{entrando} e cada CFC-sumidouro deve ter ao menos um arco \emph{saindo}; logo, são necessários ao menos $\max\{s,t\}$ arcos novos. 
+    
+    \paragraph{}
+    \emph{Suficiência:} numa ordenação topológica de $\mathrm{Cond}(D)$, conecte CFCs-sumidouro a CFCs-fonte de modo a formar um ciclo que percorra todas as CFCs. Isso pode ser feito com exatamente $\max\{s,t\}$ arcos, mesmo quando $s\ne t$, emparelhando sobras de um lado com o outro. 
+    
+    \paragraph{}
+    Ver, por exemplo, textos clássicos sobre dígrafos (e.g., \cite{schrijver2003comb}).
+}}
+\endgroup
+\end{center}
+
+\paragraph{}
+Esse teorema explica por que, em muitas rotinas (inclusive na construção de soluções por contração/condensação), olhar para componentes-fonte e componentes-sumidouro pode levar a estratégicas eficientes de contração ou expansão de subgrafos, especialmente quando o objetivo é garantir ou explorar a forte conexidade.
+
+\paragraph{}
+As noções de CFCs e componentes-fonte conversam diretamente com o conceito de \emph{arborescências}. Pois, em uma arborescência, todos os vértices são alcançáveis a partir da raiz, o que não implica que a arborescência é fortemente conexa, mas encontrar essas componentes dentro de um dígrafo pode nos ajudar em uma busca otimizada por arborescências.
 
 \paragraph{Arborescências}
 \paragraph{}Uma \textbf{arborescência} é um dígrafo acíclico e conexo, onde há um vértice especial chamado \emph{raiz} que tem um caminho direcionado para todos os outros vértices. Formalmente, uma arborescência \(T\) é um dígrafo \(T = (V_T, A_T)\) onde \(V_T \subseteq V\) e \(A_T \subseteq A\), que satisfaz as seguintes propriedades:
