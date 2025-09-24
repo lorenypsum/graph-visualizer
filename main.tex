@@ -1493,7 +1493,7 @@ Propriedades importantes dos circuitos incluem:
 \end{center}
 
 \paragraph{}
-Entender esse princípio é importante quando falarmos do algoritmo de Chu Liu e Edmonds, que envolve a contração de circuitos em dígrafos.
+Esse princípio ajuda a entender o comportamento básico dos métodos de arborescência mínima. Se, para cada vértice \(v\neq r\), escolhemos a aresta de menor custo que entra em \(v\), o subgrafo obtido fica com grau de entrada igual a 1 em todos os \(v\neq r\). Pelo lema, enquanto esse subgrafo ainda não for uma arborescência, ele necessariamente contém um circuito. É exatamente isso que o algoritmo de Chu--Liu/Edmonds explora: detectar o circuito inevitável, contraí-lo a um único vértice e repetir a seleção sob custos reduzidos. Quando não houver mais circuitos, as arestas escolhidas formam uma arborescência ótima enraizada em \(r\).
 
 \paragraph{Componentes fortemente conexas}
 \paragraph{}Uma \textbf{componente fortemente conexa} de um dígrafo é um subdígrafo maximal onde existe um caminho direcionado entre qualquer par de vértices. Formalmente, uma componente fortemente conexa \(C\) é um subdígrafo \(C = (V_C, A_C)\) onde \(V_C \subseteq V\) e \(A_C \subseteq A\), que satisfaz a seguinte propriedade:
@@ -1677,3 +1677,6 @@ Essa formulação leva a um algoritmo em duas fases (Fulkerson–Frank). Na Fase
 \printbibliography
 
 \end{document}
+
+% \paragraph{}
+% No algoritmo primal--dual de András Frank, a mesma ideia aparece no “grafo de zeros”. Ao subtrair, para cada componente-fonte \(X\), o menor custo das arestas que entram em \(X\), garantimos que pelo menos uma delas zere. Quando todos os vértices (exceto \(r\)) têm alguma aresta entrante de custo reduzido zero, surgem circuitos e componentes fortemente conexas nesse grafo — exatamente as estruturas que a condensação/contração explora. Essa dinâmica explica por que a solução pode ser construída apenas com arestas de custo reduzido zero e por que a condição dual “exatamente uma aresta entra em cada conjunto apertado \(X\) com \(z(X)>0\)” certifica a otimalidade.
