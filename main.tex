@@ -1699,26 +1699,29 @@ A seguir falaremos sobre a propriedade de alcançabilidade mútua em CFC, que é
 \paragraph{}
 Considere $k$ CFCs em $D$ e o DAG $\mathrm{Cond}(D)$. Denote por $s$ o número de CFCs-\emph{fonte} (vértices de $\mathrm{Cond}(D)$ sem arcos \emph{entrando}) e por $t$ o número de CFCs-\emph{sumidouro} (vértices de $\mathrm{Cond}(D)$ sem arcos \emph{saindo}). Então:
 
-% \paragraph{}
-% \begin{center}
-% \begingroup
-% \setlength{\fboxsep}{10pt}% padding externo
-% \fcolorbox{blue!15}{blue!3}{%
-% \parbox{\dimexpr\textwidth-2\fboxsep\relax}{%
-% \noindent
-% \begingroup
-% \setlength{\fboxsep}{15pt}% padding interno do cabeçalho
-% \colorbox{blue!15}{\parbox{\dimexpr\linewidth-2\fboxsep\relax
-% }{\textbf{Teorema: mínimo de arcos para conexidade forte.}\\[1.0em]
-% {\color{black!70!black}Se $k=1$, então $D$ já é fortemente conexo e o mínimo de arcos a adicionar é $0$. Se $k\ge 2$, o número mínimo de arcos a adicionar para tornar $D$ fortemente conexo é}
-% \[\boxed{\;\min = \max\{s,\,t\}\;}\,.]}}}}
-% \endgroup
+\paragraph{}
+\begin{center}
+\begingroup
+\setlength{\fboxsep}{15pt}% padding externo da moldura
+\fcolorbox{orange!15}{orange!3}{%
+\parbox{\dimexpr\textwidth-2\fboxsep\relax}{%
+\noindent
+\begingroup
+\setlength{\fboxsep}{15pt}% padding interno da faixa azul (título/enunciado)
+\colorbox{orange!15}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\textbf{Teorema: mínimo de arcos para conexidade forte}\\[1.0em]
+{\color{black!70!black}
 
-% \paragraph{}
-% 	\textbf{Prova (esboço).} \emph{Necessidade:} em qualquer supergrafo fortemente conexo, cada CFC-fonte deve receber ao menos um arco \emph{entrando} e cada CFC-sumidouro deve ter ao menos um arco \emph{saindo}; logo, são necessários ao menos $\max\{s,t\}$ arcos novos. \emph{Suficiência:} numa ordenação topológica de $\mathrm{Cond}(D)$, conecte CFCs-sumidouro a CFCs-fonte de modo a formar um ciclo que percorra todas as CFCs. Isso pode ser feito com exatamente $\max\{s,t\}$ arcos, mesmo quando $s\ne t$, emparelhando sobras de um lado com o outro. Ver, por exemplo, textos clássicos sobre dígrafos (e.g., \cite{schrijver2003comb}).
-% }
-% \endgroup
-% \end{center}
+Se $k=1$, então $D$ já é fortemente conexo e o mínimo de arcos a adicionar é $0$. Se $k\ge 2$, o número mínimo de arcos a adicionar para tornar $D$ fortemente conexo é \[\boxed{\;\min = \max\{s,\,t\}\;}\,.\]
+
+}}}
+\endgroup
+
+\paragraph{}
+	\textbf{Prova (esboço).} \emph{Necessidade:} em qualquer supergrafo fortemente conexo, cada CFC-fonte deve receber ao menos um arco \emph{entrando} e cada CFC-sumidouro deve ter ao menos um arco \emph{saindo}; logo, são necessários ao menos $\max\{s,t\}$ arcos novos. \emph{Suficiência:} numa ordenação topológica de $\mathrm{Cond}(D)$, conecte CFCs-sumidouro a CFCs-fonte de modo a formar um ciclo que percorra todas as CFCs. Isso pode ser feito com exatamente $\max\{s,t\}$ arcos, mesmo quando $s\ne t$, emparelhando sobras de um lado com o outro. Ver, por exemplo, textos clássicos sobre dígrafos (e.g., \cite{schrijver2003comb}).
+}}
+\endgroup
+\end{center}
+
 
 \paragraph{}
 Esse teorema explica por que, em muitas rotinas (inclusive na construção de soluções por contração/condensação), olhar para componentes-fonte e componentes-sumidouro no condensado fornece limites e estratégias naturais de conexão.
