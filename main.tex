@@ -1390,13 +1390,48 @@ Um min-corte é um corte de tamanho mínimo, ou seja, é o corte com o menor nú
 
 Um teorema importante relacionado a min-cortes é o Teorema do Fluxo Máximo - Corte Mínimo, que estabelece uma relação entre o fluxo máximo que pode ser enviado de uma fonte \(s\) para um sumidouro \(t\) em um dígrafo e o valor do min-corte que separa \(s\) de \(t\). Escolhemos apresensentar esse teorema aqui pois ele traz uma intuição interessante sobre a relação entre fluxos e cortes em dígrafos, relevantes para os algoritmos que discutiremos mais adiante.
 
+\paragraph{}
+\begin{center}
+\begingroup
+\setlength{\fboxsep}{10pt}% padding externo da moldura
+\fcolorbox{blue!15}{blue!3}{%
+\parbox{\dimexpr\textwidth-2\fboxsep\relax}{%
+\noindent
+\begingroup
+\setlength{\fboxsep}{15pt}% padding interno da faixa azul (título/enunciado)
+\colorbox{blue!15}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\textbf{Teorema (Fluxo–Corte Máximo = Mínimo Corte).}\\[1.0em]
+{\color{black!70!black}Em dígrafos com limites/pesos não negativos nos arcos, o valor de um fluxo máximo de \(s\) para \(t\) é igual ao valor de um min-corte \(s\text{--}t\). Em símbolos: \(\max\,\text{valor}(f) = \min\, c(\delta^+(X))\), onde o mínimo é sobre \(X\subseteq V\) com \(s\in X\), \(t\notin X\), e \(c(\delta^+(X))=\sum_{a\in\delta^+(X)} c(a)\).}}}
+\endgroup
 
+\paragraph{}
+    \textbf{Prova (esboço):}
+    \paragraph{}
+    \emph{(i) Desigualdade \(\le\).} Seja \(f\) um fluxo qualquer. Para um corte \((X, V\setminus X)\) com \(s\in X\), \(t\notin X\), a conservação de fluxo implica que o fluxo líquido que sai de \(X\) é exatamente \(\text{valor}(f)\).
 
+    Logo, \[\text{valor}(f)= \sum_{a\in\delta^+(X)} f(a) - \sum_{a\in\delta^-(X)} f(a) \le \sum_{a\in\delta^+(X)} f(a) \le \sum_{a\in\delta^+(X)} c(a)=c(\delta^+(X)),\]
 
+    pois \(f(a)\le c(a)\) para todo arco (limite). Como isso vale para todo \(X\), obtemos \(\text{valor}(f)\le \min_X c(\delta^+(X))\).
+
+    \paragraph{}
+    \emph{(ii) Desigualdade \(\ge\) e igualdade.} Considere um fluxo máximo \(f\) sem caminho aumentante no \emph{grafo residual} \(R_f\) (isto é, não há como aumentar o valor do fluxo). Defina \(X\) como o conjunto de vértices alcançáveis a partir de \(s\) em \(R_f\). Então, não existe arco residual de \(X\) para \(V\setminus X\); logo, todo arco original que sai de \(X\) está saturado (\(f(a)=c(a)\)), e todo arco que entra em \(X\) carrega fluxo zero. Assim,
+
+    \[\text{valor}(f)=\sum_{a\in\delta^+(X)} f(a)=\sum_{a\in\delta^+(X)} c(a)=c(\delta^+(X)).\]
+    Portanto, \(f\) atinge exatamente o valor de um corte \(s\text{--}t\); em particular, esse corte é mínimo e \(f\) é máximo. \hfill$\square$
+
+\paragraph{}
+\smallskip
+\textbf{Comentário:} Esse resultado é um protótipo de teorema \emph{min--max}: “empacotar” muito fluxo (caminhos) equivale a “cobrir” pouco com um corte. Ver, por exemplo, \cite{schrijver2003comb}.
+}}
+\endgroup
+\end{center}
+
+\paragraph{}
+Quando falamos em trilhas, precisamos também falar sobre circuitos, que são ciclos direcionados.
+A diferença entre trilhas e circuitos é que trilhas são caminhos direcionados que não necessariamente retornam ao ponto de origem, enquanto circuitos são caminhos direcionados que começam e terminam no mesmo vértice.
 
 \paragraph{Circuitos}
 \paragraph{}
-Um \textbf{circuito} é um caminho direcionado que começa e termina no mesmo vértice, ou seja, \(v_1 = v_{k+1}\). Formalmente, um circuito \(C\) é uma sequência de vértices \(C = (v_1, v_2, \ldots, v_k, v_1)\) tal que cada par consecutivo \((v_i, v_{i+1})\) é um arco em \(A\) e \(k \geq 2\). O comprimento do circuito é o número de arcos que ele contém, que é \(k\).
+ Um \textbf{circuito} é um caminho direcionado que começa e termina no mesmo vértice, ou seja, \(v_1 = v_{k+1}\). Formalmente, um circuito \(C\) é uma sequência de vértices \(C = (v_1, v_2, \ldots, v_k, v_1)\) tal que cada par consecutivo \((v_i, v_{i+1})\) é um arco em \(A\) e \(k \geq 2\). O comprimento do circuito é o número de arcos que ele contém, que é \(k\).
 
 \begin{center}
 \begin{tikzpicture}[>=Stealth]
@@ -1422,6 +1457,11 @@ Um \textbf{circuito} é um caminho direcionado que começa e termina no mesmo v�
 \captionof{figure}{Ciclo direcionado em dígrafo: o ciclo $C=(v_1,v_2,v_3,v_4,v_1)$ está destacado em azul. Seu comprimento é o número de arcos, $|C|=4$.}
 \label{fig:ciclo-direcionado}
 \end{center}
+
+\paragraph{}
+Circuitos possuem muitas características importantes que precisamos abordar nessa dissertação.
+
+
 
 \paragraph{Componentes fortemente conexas}
 \paragraph{}Uma \textbf{componente fortemente conexa} de um dígrafo é um subdígrafo maximal onde existe um caminho direcionado entre qualquer par de vértices. Formalmente, uma componente fortemente conexa \(C\) é um subdígrafo \(C = (V_C, A_C)\) onde \(V_C \subseteq V\) e \(A_C \subseteq A\), que satisfaz a seguinte propriedade:
@@ -1582,40 +1622,7 @@ Vamos aprofundar mais nessas estruturas apresentando propriedades importantes so
 
 
 
-\paragraph{}
-\begin{center}
-\begingroup
-\setlength{\fboxsep}{10pt}% padding externo da moldura
-\fcolorbox{blue!15}{blue!3}{%
-\parbox{\dimexpr\textwidth-2\fboxsep\relax}{%
-\noindent
-\begingroup
-\setlength{\fboxsep}{15pt}% padding interno da faixa azul (título/enunciado)
-\colorbox{blue!15}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\textbf{Teorema (Fluxo–Corte Máximo = Mínimo Corte).}\\[1.0em]
-{\color{black!70!black}Em dígrafos com limites/pesos não negativos nos arcos, o valor de um fluxo máximo de \(s\) para \(t\) é igual ao valor de um min-corte \(s\text{--}t\). Em símbolos: \(\max\,\text{valor}(f) = \min\, c(\delta^+(X))\), onde o mínimo é sobre \(X\subseteq V\) com \(s\in X\), \(t\notin X\), e \(c(\delta^+(X))=\sum_{a\in\delta^+(X)} c(a)\).}}}
-\endgroup
 
-\paragraph{}
-    \textbf{Prova (esboço):}
-    \paragraph{}
-    \emph{(i) Desigualdade \(\le\).} Seja \(f\) um fluxo qualquer. Para um corte \((X, V\setminus X)\) com \(s\in X\), \(t\notin X\), a conservação de fluxo implica que o fluxo líquido que sai de \(X\) é exatamente \(\text{valor}(f)\).
-
-    Logo, \[\text{valor}(f)= \sum_{a\in\delta^+(X)} f(a) - \sum_{a\in\delta^-(X)} f(a) \le \sum_{a\in\delta^+(X)} f(a) \le \sum_{a\in\delta^+(X)} c(a)=c(\delta^+(X)),\]
-
-    pois \(f(a)\le c(a)\) para todo arco (limite). Como isso vale para todo \(X\), obtemos \(\text{valor}(f)\le \min_X c(\delta^+(X))\).
-
-    \paragraph{}
-    \emph{(ii) Desigualdade \(\ge\) e igualdade.} Considere um fluxo máximo \(f\) sem caminho aumentante no \emph{grafo residual} \(R_f\) (isto é, não há como aumentar o valor do fluxo). Defina \(X\) como o conjunto de vértices alcançáveis a partir de \(s\) em \(R_f\). Então, não existe arco residual de \(X\) para \(V\setminus X\); logo, todo arco original que sai de \(X\) está saturado (\(f(a)=c(a)\)), e todo arco que entra em \(X\) carrega fluxo zero. Assim,
-
-    \[\text{valor}(f)=\sum_{a\in\delta^+(X)} f(a)=\sum_{a\in\delta^+(X)} c(a)=c(\delta^+(X)).\]
-    Portanto, \(f\) atinge exatamente o valor de um corte \(s\text{--}t\); em particular, esse corte é mínimo e \(f\) é máximo. \hfill$\square$
-
-\paragraph{}
-\smallskip
-\textbf{Comentário:} Esse resultado é um protótipo de teorema \emph{min--max}: “empacotar” muito fluxo (caminhos) equivale a “cobrir” pouco com um corte. Ver, por exemplo, \cite{schrijver2003comb}.
-}}
-\endgroup
-\end{center}
 
 \paragraph{}
 Empacotamento de vértices (ou empacotamento de nós) em um dígrafo é um conjunto de vértices tal que nenhum par de vértices no conjunto está conectado por um arco. Formalmente, dado um dígrafo \(D = (V, A)\), um empacotamento de vértices \(M\) é um subconjunto de vértices \(M \subseteq V\) tal que para qualquer par distinto \(u, v \in M\), não existe um arco \((u, v) \in A\) nem \((v, u) \in A\).
