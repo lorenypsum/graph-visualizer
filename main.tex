@@ -1964,10 +1964,10 @@ Uma arborescência é dita maximal se não é possível adicionar mais vértices
 Quando falamaos de ramificações geradoras, podemos falar de uma estrutura que fixa um vértice raiz \(r\) e constrói uma arborescência que alcança todos os outros vértices a partir dessa raiz. Essa estrutura é conhecida como \emph{r-arborescência}.
 
 \paragraph{Arborescência de Raiz Específica:}
-Uma arborescência de raiz específica é uma arborescência onde a raiz é um vértice pré-determinado do dígrafo. Isso é útil em situações onde um ponto de origem específico deve ser o início dos caminhos direcionados para todos os outros vértices. Podemos chamá-la de r-arborescência, onde \(r\) é o vértice raiz.
+uma arborescência de raiz específica é uma arborescência onde a raiz é um vértice pré-determinado do dígrafo. Isso é útil em situações onde um ponto de origem específico deve ser o início dos caminhos direcionados para todos os outros vértices. Podemos chamá-la de r-arborescência, onde \(r\) é o vértice raiz.
 
 \paragraph{Arborescência inversa (in-arborescência):}
-Uma \emph{arborescência inversa} enraizada em \(r\) — também chamada de \emph{in-arborescência} — é o resultado de inverter a orientação de todos os arcos de uma arborescência (out-arborescência) enraizada em \(r\). Equivalentemente: é um dígrafo acíclico no qual, para todo \(v\neq r\), existe \emph{exatamente um} caminho direcionado de \(v\) até \(r\) (isto é, todos os arcos estão orientados \emph{em direção} à raiz). Em termos de graus, numa in-arborescência cada vértice \(v\neq r\) tem grau de saída igual a 1 (o arco para seu “pai”) e a raiz \(r\) tem grau de saída 0; os graus de entrada são complementares aos de uma out-arborescência.
+uma \emph{arborescência inversa} enraizada em \(r\) — também chamada de \emph{in-arborescência} — é o resultado de inverter a orientação de todos os arcos de uma arborescência (out-arborescência) enraizada em \(r\). Equivalentemente: é um dígrafo acíclico no qual, para todo \(v\neq r\), existe \emph{exatamente um} caminho direcionado de \(v\) até \(r\) (isto é, todos os arcos estão orientados \emph{em direção} à raiz). Em termos de graus, numa in-arborescência cada vértice \(v\neq r\) tem grau de saída igual a 1 (o arco para seu “pai”) e a raiz \(r\) tem grau de saída 0; os graus de entrada são complementares aos de uma out-arborescência.
 
 \paragraph{}
 As arborecências podem ter custos associados aos seus arcos, o que nos leva ao conceito de arborescência de custo mínimo.
@@ -1980,7 +1980,7 @@ Uma \textbf{arborescência de custo mínimo} é uma arborescência que minimiza 
 Finalmente podemos conceituar a principal estrutura que estudaremos nesta dissertação: a r-arborescência de custo mínimo e sua variante, a r-arborescência inversa de custo mínimo.
 
 \paragraph{r-arborescência de custo mínimo:}
-Uma \textbf{r-arborescência de custo mínimo} é uma arborescência enraizada em um vértice específico \(r\) que minimiza a soma dos pesos dos arcos que a compõem. Formalmente, dada uma função de custo \(c: A \to \mathbb{R}_{\geq 0}\) que atribui um custo a cada arco do dígrafo \(D = (V, A)\), uma r-arborescência de custo mínimo \(T\) é uma arborescência \(T = (V_T, A_T)\) onde \(V_T \subseteq V\) e \(A_T \subseteq A\), que satisfaz as seguintes propriedades:
+é uma arborescência enraizada em um vértice específico \(r\) que minimiza a soma dos pesos dos arcos que a compõem. Formalmente, dada uma função de custo \(c: A \to \mathbb{R}_{\geq 0}\) que atribui um custo a cada arco do dígrafo \(D = (V, A)\), uma r-arborescência de custo mínimo \(T\) é uma arborescência \(T = (V_T, A_T)\) onde \(V_T \subseteq V\) e \(A_T \subseteq A\), que satisfaz as seguintes propriedades:
 \begin{itemize}
     \item \(T\) é uma arborescência enraizada em \(r\): existe um caminho direcionado de \(r\) para qualquer vértice em \(V_T\).
     \item \(T\) minimiza o custo total: a soma dos custos dos arcos em \(A_T\) é mínima, ou seja, \(\sum_{a \in A_T} c(a)\) é minimizada.
@@ -2017,11 +2017,13 @@ Uma \textbf{r-arborescência de custo mínimo} é uma arborescência enraizada e
 \end{center}
 
 \paragraph{r-arborescência inversa de custo mínimo:}
-Uma \textbf{r-arborescência inversa de custo mínimo} é uma arborescência inversa enraizada em um vértice específico \(r\) que minimiza a soma dos pesos dos arcos que a compõem. Formalmente, dada uma função de custo \(c: A \to \mathbb{R}_{\geq 0}\) que atribui um custo a cada arco do dígrafo \(D = (V, A)\), uma r-arborescência inversa de custo mínimo \(T\) é uma arborescência inversa \(T = (V_T, A_T)\) onde \(V_T \subseteq V\) e \(A_T \subseteq A\), que satisfaz as seguintes propriedades:
+é uma arborescência inversa enraizada em um vértice específico \(r\) que minimiza a soma dos pesos dos arcos que a compõem. Formalmente, dada uma função de custo \(c: A \to \mathbb{R}_{\geq 0}\) que atribui um custo a cada arco do dígrafo \(D = (V, A)\), uma r-arborescência inversa de custo mínimo \(T\) é uma arborescência inversa \(T = (V_T, A_T)\) onde \(V_T \subseteq V\) e \(A_T \subseteq A\), que satisfaz as seguintes propriedades:
 \begin{itemize}
     \item \(T\) é uma arborescência inversa enraizada em \(r\): existe um caminho direcionado de qualquer vértice em \(V_T\) até \(r\).
     \item \(T\) minimiza o custo total: a soma dos custos dos arcos em \(A_T\) é mínima, ou seja, \(\sum_{a \in A_T} c(a)\) é minimizada.
 \end{itemize}
+
+\paragraph{}
 \begin{center}
 \begin{tikzpicture}[>=Stealth]
     % estilos
@@ -2054,17 +2056,54 @@ Uma \textbf{r-arborescência inversa de custo mínimo} é uma arborescência inv
 \end{center}
 
 \paragraph{}
-As arborescências são a principal estrutura que exploraremos ao longo desta dissertação, especialmente a r-arborescência de custo mínimo e r-arborescência inversa de custo mínimo, abordaresmo o problema de encontrá-las eficientemente em dígrafos com custos associados aos arcos.
-
-\paragraph{O problema de busca por arborescências de custo mínimo:}
+As arborescências são a principal estrutura que exploraremos ao longo desta dissertação, especialmente a r-arborescência de custo mínimo e r-arborescência inversa de custo mínimo, abordaremos o problema de encontrá-las eficientemente em dígrafos com custos associados aos arcos.
 
 \paragraph{Noções aprofundadas em arborescências}
 
-\paragraph{Grau e contagem de arcos:}
-Se $T$ é uma arborescência (out-arborescência) enraizada em $r$ sobre $n$ vértices, então $|A_T|=n-1$, todo $v\ne r$ tem grau de entrada $d_T^-(v)=1$ e $d_T^-(r)=0$. Analogamente, numa in-arborescência cada $v\ne r$ tem grau de saída $d_T^+(v)=1$ e $d_T^+(r)=0$. Essas condições são necessárias e suficientes para caracterizar a estrutura de árvore dirigida.
+\paragraph{}
+Vamos explorar algumas propriedades e teoremas importantes relacionados a arborescências, que serão úteis para entender os algoritmos que discutiremos posteriormente.
 
-\paragraph{Condição de existência via cortes (Fulkerson):}
-Seja $D=(V,A)$ um dígrafo e $r\in V$. Existe uma out-arborescência enraizada em $r$ se, e somente se, para todo subconjunto não vazio $X\subseteq V\setminus\{r\}$ vale $\delta^-(X)\ne\emptyset$ (isto é, há ao menos um arco entrando em $X$ a partir de $V\setminus X$). Intuição: qualquer arborescência precisa “entrar” em cada $X$ pela primeira vez; reciprocamente, se todo corte voltado para dentro é cruzado, podemos construir uma arborescência por expansão guiada por BFS/DFS. Ver, e.g., \cite{schrijver2003comb}.
+\paragraph{Grau e contagem de arcos:}
+\paragraph{}
+Seja $T$ uma out-arborescência enraizada em $r$ com $n$ vértices. Ela é exatamente a estrutura que satisfaz as três condições combinadas abaixo (todas muito fáceis de checar):
+\begin{enumerate}\setlength{\itemsep}{2pt}
+    \item (Contagem) $|A_T| = n-1$.
+    \item (Entrada única) Cada vértice $v\neq r$ recebe exatamente um arco: $d_T^-(v)=1$.
+    \item (Raiz sem entrada) A raiz não recebe arcos: $d_T^-(r)=0$.
+\end{enumerate}
+De forma simétrica, numa in-arborescência (arborescência inversa) valem as versões “espelhadas”: cada $v\neq r$ tem exatamente um arco \emph{saindo} ($d_T^+(v)=1$) e a raiz tem grau de saída zero ($d_T^+(r)=0$).
+
+\paragraph{}
+Reciprocamente, qualquer subdígrafo que satisfaça (1)--(3) é uma out-arborescência enraizada em $r$ (e análogamente no caso inverso). Essas três condições serão nosso critério operacional para reconhecer arborescências.
+
+\paragraph{Condição de existência via cortes (Fulkerson)}
+\begin{center}
+\begingroup
+\setlength{\fboxsep}{14pt}% padding externo
+\fcolorbox{orange!40!black}{orange!5}{%
+\parbox{0.96\textwidth}{%
+	extbf{Teorema (Fulkerson – condição de cortes para arborescências).} Seja $D=(V,A)$ e $r\in V$. Existe uma out-arborescência (arborescência dirigida) enraizada em $r$ se, e somente se,
+\[
+\forall\, X\subseteq V\setminus\{r\},\ X\neq\emptyset:\  \delta^-(X)\neq\emptyset.
+\]
+Isto é: todo subconjunto não vazio que não contém a raiz recebe ao menos um arco vindo de fora.
+
+\medskip
+	extbf{Prova (leitura rápida).} 
+\emph{(Só se)} Suponha que $T$ é uma out-arborescência enraizada em $r$. Pegue qualquer $X\neq\emptyset$ sem $r$. Considere o primeiro vértice de $X$ alcançado a partir de $r$ no caminho dentro de $T$; o arco imediatamente anterior entra em $X$ e pertence a $\delta^-(X)$. Logo $\delta^-(X)\neq\emptyset$.
+
+\emph{(Se)} Agora suponha que toda parte $X$ não vazia sem $r$ recebe um arco. Construímos $T$ iterativamente: comece com $S=\{r\}$. Enquanto $S\neq V$, tome um vértice $v\in V\setminus S$ tal que existe um arco $(u,v)$ com $u\in S$ (existe porque, caso contrário, o conjunto $X=V\setminus S$ não receberia arco). Adicione $v$ e o arco $(u,v)$. Não criamos ciclos porque cada novo vértice entra com exatamente um arco e só aponta para frente (a direção é de um vértice já inserido para um novo). Ao final, cada $v\neq r$ tem exatamente um arco de entrada e o grafo é conexo a partir de $r$, logo obtivemos uma out-arborescência.
+
+\medskip
+	extbf{Intuição curta.} A condição “todo $X$ tem um arco entrando” impede que qualquer bloco de vértices fique isolado da raiz; o processo guloso de anexar o primeiro arco que entra em cada bloco produz a arborescência sem retrocessos.
+
+\medskip
+\emph{Referência:} ver, por exemplo, \cite{schrijver2003comb}.
+\label{thm:fulkerson-cut-arborescencia}
+}% end parbox
+}% end fcolorbox
+\endgroup
+\end{center}
 
 \paragraph{Teorema das arborescências disjuntas de Edmonds:}
 Seja $D=(V,A)$ e $r\in V$. Para um inteiro $k\ge 1$, existem $k$ out-arborescências enraizadas em $r$ par de arcos disjuntas se, e somente se, para todo $X\subseteq V\setminus\{r\}$ tem-se $|\delta^-(X)|\ge k$. Essa condição de cortes é necessária (cada arborescência deve “entrar” em $X$ por um arco distinto) e suficiente (prova por matroides ou via teoremas de enxerto). Referências clássicas: Edmonds (1973), e \cite{schrijver2003comb}.
@@ -2081,6 +2120,10 @@ Intuitivamente, \(z(X)\) é um “preço” pago para entrar em \(X\); nenhum ar
 
 \paragraph{}
 Essa formulação leva a um algoritmo em duas fases (Fulkerson–Frank). Na Fase 1, ajustamos os custos de modo a tornar certos arcos de custo zero (0‑arcos), aumentando gradualmente valores \(z(X)\) para conjuntos mínimos sem 0‑arcos entrando. Na Fase 2, extraímos uma arborescência apenas com 0‑arcos, escolhendo-os de forma gulosa. Quando os dois lados “se encontram” (valor dual = valor primal), obtemos ao mesmo tempo a arborescência ótima e um certificado de otimalidade. Essa visão se conecta diretamente à normalização de custos e à contração/reexpansão de ciclos no algoritmo de Chu–Liu/Edmonds \cite{chu1965, edmonds1967optimum}.
+
+\subsection{Algoritmo Chu e Liu}
+
+O algoritmo de Chu e Liu (1965) é um método clássico para encontrar a r-arborescência de custo mínimo em um dígrafo com custos associados aos arcos. O algoritmo funciona da seguinte maneira:
 
 \paragraph{}     
 \section{Considerações Finais}

@@ -1,6 +1,6 @@
 # Fdb version 4
-["bibtex main"] 0 "main.aux" "main.bbl" "main" 1758759611.5425 0
-  "./main-blx.bib" 1758759611.14123 342 20d1170ef6c1d70c658d70e011e08dba ""
+["bibtex main"] 0 "main.aux" "main.bbl" "main" 1758834112.34928 0
+  "./main-blx.bib" 1758834111.74549 342 20d1170ef6c1d70c658d70e011e08dba ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/bibtex/bst/biblatex/biblatex.bst" 1741388039 65510 b1f696b0241395385f422f67543c37fd ""
   "main.aux" 0 -1 0 "pdflatex"
   "referencias.bib" 0 -1 0 ""
@@ -8,8 +8,8 @@
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1758759606.2073 "/Users/lorenypsum/Desktop/Repositórios/GraphVisualizer.nosync/main.tex" "main.pdf" "main" 1758759611.5428 0
-  "/Users/lorenypsum/Desktop/Repositórios/GraphVisualizer.nosync/main.tex" 1758759602.6221 140590 2dbb4e3519d65c7add2f29f9685be96b ""
+["pdflatex"] 1758834101.9256 "/Users/lorenypsum/Desktop/Repositórios/GraphVisualizer.nosync/main.tex" "main.pdf" "main" 1758834112.34993 0
+  "/Users/lorenypsum/Desktop/Repositórios/GraphVisualizer.nosync/main.tex" 1758834098.35063 142805 a420efb0052e1ad91c992a335fca296f ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1741388039 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/map/fontname/texfonts.map" 1741388039 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/map/pdftex/updmap/pdftex.map" 1741388039 5466553 2748998d7db8078826afa1f272036265 ""
@@ -214,10 +214,10 @@
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/xcolor/xcolor.sty" 1741388039 55384 b454dec21c2d9f45ec0b793f0995b992 ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/web2c/texmf.cnf" 1741388039 42151 79f67285bdd95beca4d137b380b4b9e5 ""
   "/opt/homebrew/Cellar/texlive/20250308_1/share/texmf-var/web2c/pdftex/pdflatex.fmt" 1741388039 3346143 db330ceb7ec17e3597c88db360fe3d1b ""
-  "main.aux" 1758759611.13343 47793 7824d3e7cd3f4dafbde5357e1f1cf42b "pdflatex"
+  "main.aux" 1758834111.73264 48246 5d493297c6b7c1f8aede02481d00297a "pdflatex"
   "main.bbl" 0 -1 0 "bibtex main"
-  "main.out" 1758759611.13971 3945 3479ddc1168c7279e52976d051363653 "pdflatex"
-  "main.run.xml" 1758759611.14211 2555 160959f2f917990629d6efc6e46ca88b "pdflatex"
+  "main.out" 1758834111.74273 4107 fe383f1aa729088fbac92e800e5fe8c2 "pdflatex"
+  "main.run.xml" 1758834111.74706 2555 160959f2f917990629d6efc6e46ca88b "pdflatex"
   (generated)
   "main-blx.bib"
   "main.aux"
