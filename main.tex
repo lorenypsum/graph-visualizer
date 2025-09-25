@@ -1835,7 +1835,7 @@ Denote por $\mathrm{Cond}(D)$ o grafo \emph{condensado}, obtido ao contrair cada
 \noindent
 \begingroup
 \setlength{\fboxsep}{15pt}% padding interno da faixa azul (título/enunciado)
-\colorbox{orange!15}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\textbf{Teorema: mínimo de arcos para conexidade forte}\\[1.0em]
+\colorbox{orange!15}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\textbf{Lema: mínimo de arcos para conexidade forte}\\[1.0em]
 {\color{black!70!black}
 
 Se $k=1$, então $D$ já é fortemente conexo e o mínimo de arcos a adicionar é $0$. Se $k\ge 2$, o número mínimo de arcos a adicionar para tornar $D$ fortemente conexo é \[\boxed{\;\min = \max\{s,\,t\}\;}\,.\]
@@ -1859,12 +1859,13 @@ Se $k=1$, então $D$ já é fortemente conexo e o mínimo de arcos a adicionar �
 \end{center}
 
 \paragraph{}
-Esse teorema explica por que, em muitas rotinas (inclusive na construção de soluções por contração/condensação), olhar para componentes-fonte e componentes-sumidouro pode levar a estratégicas eficientes de contração ou expansão de subgrafos, especialmente quando o objetivo é garantir ou explorar a forte conexidade.
+Esse lema explica por que todo dígrafo com mais de uma CFC-fonte ou mais de uma CFC-sumidouro não pode ser fortemente conexo. Além disso, ele é útil em algoritmos que buscam tornar um dígrafo fortemente conexo, pois fornece um limite inferior para o número de arcos que precisam ser adicionados.
 
 \paragraph{}
 As noções de CFCs e componentes-fonte conversam diretamente com o conceito de \emph{arborescências}. Pois, em uma arborescência, todos os vértices são alcançáveis a partir da raiz, o que não implica que a arborescência é fortemente conexa, mas encontrar essas componentes dentro de um dígrafo pode nos ajudar em uma busca otimizada por arborescências.
 
 \paragraph{Arborescências}
+
 \paragraph{}Uma \textbf{arborescência} é um dígrafo acíclico e conexo, onde há um vértice especial chamado \emph{raiz} que tem um caminho direcionado para todos os outros vértices. Formalmente, uma arborescência \(T\) é um dígrafo \(T = (V_T, A_T)\) onde \(V_T \subseteq V\) e \(A_T \subseteq A\), que satisfaz as seguintes propriedades:
 \begin{itemize}
     \item \(T\) é conexo: existe um caminho direcionado da raiz para qualquer vértice em \(V_T\).
@@ -1905,7 +1906,13 @@ Além disso, uma arborescência com \(n\) vértices sempre tem exatamente \(n-1\
 \label{fig:arborescencia}
 \end{center}
 
-\paragraph{Propriedades de arborescências}
+\paragraph{}
+As arborescências são o principal objeto de investigação desse trabalho, portanto vamos usar uma sessão dedicada a elas para apresentar suas características, variações e aplicações.
+
+\subsection{Arborescências em foco}
+
+\paragraph{}
+Já tratamos do conceito básico de arborescência, agora falaremos de arborescências especiais:
 
 \paragraph{Arborescência Geradora:}
 Uma arborescência é considerada geradora se inclui todos os vértices do dígrafo original, ou seja, \(V_T = V\). Nesse caso, a arborescência é formada por um subconjunto dos arcos do dígrafo original.
@@ -1913,8 +1920,50 @@ Uma arborescência é considerada geradora se inclui todos os vértices do dígr
 \paragraph{Arborescência Maximal:}
 Uma arborescência é dita maximal se não é possível adicionar mais vértices ou arcos a ela sem perder a propriedade de ser uma arborescência, ou seja, sem criar ciclos ou desconectar o dígrafo.
 
-\paragraph{Arborescência de Custo Mínimo:}
-Uma arborescência de custo mínimo é uma arborescência que minimiza a soma dos pesos dos arcos que a compõem. Esse conceito é especialmente relevante em aplicações onde os arcos têm custos associados, como em redes de transporte ou comunicação.
+Esses dois conceitos nos levam à ideia de ramificações geradoras, que são arborescências que abrangem todos os vértices do dígrafo original.
+
+\paragraph{Ramificações Geradoras}
+\paragraph{}Uma \textbf{ramificação geradora} é um subdígrafo que é uma arborescência que inclui todos os vértices do dígrafo original. Formalmente, uma ramificação geradora \(R\) é um subdígrafo \(R = (V_R, A_R)\) onde \(V_R = V\) e \(A_R \subseteq A\), que satisfaz as seguintes propriedades:
+\begin{itemize}
+    \item \(R\) é uma arborescência: existe um vértice especial chamado raiz que tem um caminho direcionado para todos os outros vértices.
+    \item \(R\) é maximal: não é possível adicionar mais arcos a \(R\) sem perder a propriedade de ser uma arborescência.
+\end{itemize}
+\begin{center}
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=blue!70}, p/.style={->, draw=gray!60}};
+    % vértices da ramificação geradora
+    \node[v, label=below:$r$] (r) at (0,0) {};
+    \node[v, label=above:$a$] (a) at (-1.6,1.4) {};
+    \node[v, label=above:$b$] (b) at (0.0,1.8) {};
+    \node[v, label=above:$c$] (c) at (1.6,1.4) {};
+    \node[v, label=above:$d$] (d) at (-2.4,2.8) {};
+    \node[v, label=above:$e$] (e) at (-0.8,3.0) {};
+    \node[v, label=above:$f$] (f) at (0.8,3.0) {};
+    \node[v, label=above:$g$] (g) at (-4.95,3.0) {};
+    \node[v, label=above:$h$] (h) at (-3.50,3.0) {};
+    % arcos da ramificação geradora (sem ciclos)                      
+    \draw[a] (r) -- (a);
+    \draw[a] (r) -- (b);
+    \draw[a] (r) -- (c);
+    \draw[a] (a) -- (d);
+    \draw[a] (b) -- (e);
+    \draw[a] (c) -- (f);
+    % arco extra (não faz parte da ramificação geradora)
+    \draw[p] (e) -- (d);
+    \draw[p] (f) -- (r);
+    \draw[p] (d) -- (b);    
+    \draw[p] (a) -- (b);
+    \draw[p] (g) -- (h);
+
+    \node[align=left, anchor=west] at (3.0,1.8) {$|V_T|=7,\; |A_T|=6$\\ $|A_T|=|V_T|-1$};
+\end{tikzpicture}
+\captionof{figure}{Ramificação geradora: arborescência que inclui todos os vértices do dígrafo original, em azul. No exemplo, $|V_T|=7$ e $|A_T|=6$, satisfazendo $|A_T|=|V_T|-1$. Em cinza, arcos que não fazem parte da ramificação geradora.}
+\label{fig:ramificacao-geradora}
+\end{center} 
+
+\paragraph{}
+Quando falamaos de ramificações geradoras, podemos falar de uma estrutura que fixa um vértice raiz \(r\) e constrói uma arborescência que alcança todos os outros vértices a partir dessa raiz. Essa estrutura é conhecida como \emph{r-arborescência}.
 
 \paragraph{Arborescência de Raiz Específica:}
 Uma arborescência de raiz específica é uma arborescência onde a raiz é um vértice pré-determinado do dígrafo. Isso é útil em situações onde um ponto de origem específico deve ser o início dos caminhos direcionados para todos os outros vértices. Podemos chamá-la de r-arborescência, onde \(r\) é o vértice raiz.
@@ -1923,8 +1972,96 @@ Uma arborescência de raiz específica é uma arborescência onde a raiz é um v
 Uma \emph{arborescência inversa} enraizada em \(r\) — também chamada de \emph{in-arborescência} — é o resultado de inverter a orientação de todos os arcos de uma arborescência (out-arborescência) enraizada em \(r\). Equivalentemente: é um dígrafo acíclico no qual, para todo \(v\neq r\), existe \emph{exatamente um} caminho direcionado de \(v\) até \(r\) (isto é, todos os arcos estão orientados \emph{em direção} à raiz). Em termos de graus, numa in-arborescência cada vértice \(v\neq r\) tem grau de saída igual a 1 (o arco para seu “pai”) e a raiz \(r\) tem grau de saída 0; os graus de entrada são complementares aos de uma out-arborescência.
 
 \paragraph{}
+As arborecências podem ter custos associados aos seus arcos, o que nos leva ao conceito de arborescência de custo mínimo.
+
+\paragraph{Arborescência de Custo Mínimo:}
+Uma arborescência de custo mínimo é uma arborescência que minimiza a soma dos pesos dos arcos que a compõem. Esse conceito é especialmente relevante em aplicações onde os arcos têm custos associados, como em redes de transporte ou comunicação.
+
+\paragraph{}
+Finalmente podemos conceituar a principal estrutura que estudaremos nesta dissertação: a r-arborescência de custo mínimo e sua variante, a r-arborescência inversa de custo mínimo.
+
+\paragraph{r-arborescência de custo mínimo:}
+Uma \textbf{r-arborescência de custo mínimo} é uma arborescência enraizada em um vértice específico \(r\) que minimiza a soma dos pesos dos arcos que a compõem. Formalmente, dada uma função de custo \(c: A \to \mathbb{R}_{\geq 0}\) que atribui um custo a cada arco do dígrafo \(D = (V, A)\), uma r-arborescência de custo mínimo \(T\) é uma arborescência \(T = (V_T, A_T)\) onde \(V_T \subseteq V\) e \(A_T \subseteq A\), que satisfaz as seguintes propriedades:
+\begin{itemize}
+    \item \(T\) é uma arborescência enraizada em \(r\): existe um caminho direcionado de \(r\) para qualquer vértice em \(V_T\).
+    \item \(T\) minimiza o custo total: a soma dos custos dos arcos em \(A_T\) é mínima, ou seja, \(\sum_{a \in A_T} c(a)\) é minimizada.
+\end{itemize}
+\begin{center}
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=blue!70}, p/.style={->, draw=gray!60}};
+    % vértices da r-arborescência de custo mínimo
+    \node[v, label=below:$r$] (r) at (0,0) {};
+    \node[v, label=above:$a$] (a) at (-1.6,1.4) {};
+    \node[v, label=above:$b$] (b) at (0.0,1.8) {};
+    \node[v, label=above:$c$] (c) at (1.6,1.4) {};
+    \node[v, label=above:$d$] (d) at (-2.4,2.8) {};
+    \node[v, label=above:$e$] (e) at (-0.8,3.0) {};
+    \node[v, label=above:$f$] (f) at (0.8,3.0) {};
+    % arcos da r-arborescência de custo mínimo (sem ciclos)                      
+    \draw[a] (r) -- (a) node[midway, left] {2};
+    \draw[a] (r) -- (b) node[midway, right] {3};
+    \draw[a] (r) -- (c) node[midway, right] {1};
+    \draw[a] (a) -- (d) node[midway, left] {4};
+    \draw[a] (b) -- (e) node[midway, right] {2};
+    \draw[a] (c) -- (f) node[midway, right] {5};
+    % arco extra (não faz parte da r-arborescência de custo mínimo)
+    \draw[p] (e) -- (d) node[midway, left] {6};
+    \draw[p] (f) -- (r) node[midway, right] {7};
+    \draw[p] (d) -- (b) node[midway, right] {8};    
+    \draw[p] (a) -- (b) node[midway, right] {3};
+    % custo total
+    \node[align=left, anchor=west] at (3.0,1.8) {Custo total da r-arborescência: $2 + 3 + 1 + 4 + 2 + 5 = 17$};
+\end{tikzpicture}
+\captionof{figure}{r-arborescência de custo mínimo: arborescência enraizada em $r$ que minimiza a soma dos custos dos arcos, em azul. No exemplo, o custo total é $17$. Em cinza, arcos que não fazem parte da r-arborescência de custo mínimo.}
+\label{fig:r-arborescencia-custo-minimo}
+\end{center}
+
+\paragraph{r-arborescência inversa de custo mínimo:}
+Uma \textbf{r-arborescência inversa de custo mínimo} é uma arborescência inversa enraizada em um vértice específico \(r\) que minimiza a soma dos pesos dos arcos que a compõem. Formalmente, dada uma função de custo \(c: A \to \mathbb{R}_{\geq 0}\) que atribui um custo a cada arco do dígrafo \(D = (V, A)\), uma r-arborescência inversa de custo mínimo \(T\) é uma arborescência inversa \(T = (V_T, A_T)\) onde \(V_T \subseteq V\) e \(A_T \subseteq A\), que satisfaz as seguintes propriedades:
+\begin{itemize}
+    \item \(T\) é uma arborescência inversa enraizada em \(r\): existe um caminho direcionado de qualquer vértice em \(V_T\) até \(r\).
+    \item \(T\) minimiza o custo total: a soma dos custos dos arcos em \(A_T\) é mínima, ou seja, \(\sum_{a \in A_T} c(a)\) é minimizada.
+\end{itemize}
+\begin{center}
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=blue!70}, p/.style={->, draw=gray!60}};
+    % vértices da r-arborescência inversa de custo mínimo
+    \node[v, label=below:$r$] (r) at (0,0) {};
+    \node[v, label=above:$a$] (a) at (-1.6,1.4) {};
+    \node[v, label=above:$b$] (b) at (0.0,1.8) {};
+    \node[v, label=above:$c$] (c) at (1.6,1.4) {};
+    \node[v, label=above:$d$] (d) at (-2.4,2.8) {};
+    \node[v, label=above:$e$] (e) at (-0.8,3.0) {};
+    \node[v, label=above:$f$] (f) at (0.8,3.0) {};
+    % arcos da r-arborescência inversa de custo mínimo (sem ciclos)                      
+    \draw[a] (a) -- (r) node[midway, left] {2};
+    \draw[a] (b) -- (r) node[midway, right] {3};
+    \draw[a] (c) -- (r) node[midway, right] {1};
+    \draw[a] (d) -- (a) node[midway, left] {4};
+    \draw[a] (e) -- (b) node[midway, right] {2};
+    \draw[a] (f) -- (c) node[midway, right] {5};
+    % arco extra (não faz parte da r-arborescência inversa de custo mínimo)
+    \draw[p] (d) -- (e) node[midway, left] {6};
+    \draw[p] (r) -- (f) node[midway, right] {7};
+    \draw[p] (b) -- (d) node[midway, right] {8};    
+    \draw[p] (b) -- (a) node[midway, right] {3};
+    % custo total
+    \node[align=left, anchor=west] at (3.0,1.8) {Custo total da r-arborescência inversa: $2 + 3 + 1 + 4 + 2 + 5 = 17$};
+\end{tikzpicture}
+\captionof{figure}{r-arborescência inversa de custo mínimo: arborescência inversa enraizada em $r$ que minimiza a soma dos custos dos arcos, em azul. No exemplo, o custo total é $17$. Em cinza, arcos que não fazem parte da r-arborescência inversa de custo mínimo.}
+\label{fig:r-arborescencia-inversa-custo-minimo}
+\end{center}
+
+\paragraph{}
 As arborescências são a principal estrutura que exploraremos ao longo desta dissertação, especialmente a r-arborescência de custo mínimo e r-arborescência inversa de custo mínimo, que é o foco do problema do qual tratamos aqui.
+
 Vamos aprofundar mais nessas estruturas apresentando propriedades importantes sobre elas, teoremas relevantes e algoritmos que nascem dessas discussões, mas antes precisamos abordar algumas propriedades matemáticas em dígrafos.
+
+\paragraph{Mais sobre arborescências}
+
+
 
 \subsubsection{Propriedades matemáticas em dígrafos}
 
