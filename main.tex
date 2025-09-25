@@ -2076,34 +2076,34 @@ De forma simétrica, numa in-arborescência (arborescência inversa) valem as ve
 \paragraph{}
 Reciprocamente, qualquer subdígrafo que satisfaça (1)--(3) é uma out-arborescência enraizada em $r$ (e análogamente no caso inverso). Essas três condições serão nosso critério operacional para reconhecer arborescências.
 
-\paragraph{Condição de existência via cortes (Fulkerson)}
-\begin{center}
-\begingroup
-\setlength{\fboxsep}{14pt}% padding externo
-\fcolorbox{orange!40!black}{orange!5}{%
-\parbox{0.96\textwidth}{%
-	extbf{Teorema (Fulkerson – condição de cortes para arborescências).} Seja $D=(V,A)$ e $r\in V$. Existe uma out-arborescência (arborescência dirigida) enraizada em $r$ se, e somente se,
-\[
-\forall\, X\subseteq V\setminus\{r\},\ X\neq\emptyset:\  \delta^-(X)\neq\emptyset.
-\]
-Isto é: todo subconjunto não vazio que não contém a raiz recebe ao menos um arco vindo de fora.
+% \paragraph{Condição de existência via cortes (Fulkerson)}
+% \begin{center}
+% \begingroup
+% \setlength{\fboxsep}{14pt}% padding externo
+% \fcolorbox{orange!40!black}{orange!5}{%
+% \parbox{0.96\textwidth}{%
+% 	extbf{Teorema (Fulkerson – condição de cortes para arborescências).} Seja $D=(V,A)$ e $r\in V$. Existe uma out-arborescência (arborescência dirigida) enraizada em $r$ se, e somente se,
+% \[
+% \forall\, X\subseteq V\setminus\{r\},\ X\neq\emptyset:\  \delta^-(X)\neq\emptyset.
+% \]
+% Isto é: todo subconjunto não vazio que não contém a raiz recebe ao menos um arco vindo de fora.
 
-\medskip
-	extbf{Prova (leitura rápida).} 
-\emph{(Só se)} Suponha que $T$ é uma out-arborescência enraizada em $r$. Pegue qualquer $X\neq\emptyset$ sem $r$. Considere o primeiro vértice de $X$ alcançado a partir de $r$ no caminho dentro de $T$; o arco imediatamente anterior entra em $X$ e pertence a $\delta^-(X)$. Logo $\delta^-(X)\neq\emptyset$.
+% \medskip
+% 	extbf{Prova (leitura rápida).} 
+% \emph{(Só se)} Suponha que $T$ é uma out-arborescência enraizada em $r$. Pegue qualquer $X\neq\emptyset$ sem $r$. Considere o primeiro vértice de $X$ alcançado a partir de $r$ no caminho dentro de $T$; o arco imediatamente anterior entra em $X$ e pertence a $\delta^-(X)$. Logo $\delta^-(X)\neq\emptyset$.
 
-\emph{(Se)} Agora suponha que toda parte $X$ não vazia sem $r$ recebe um arco. Construímos $T$ iterativamente: comece com $S=\{r\}$. Enquanto $S\neq V$, tome um vértice $v\in V\setminus S$ tal que existe um arco $(u,v)$ com $u\in S$ (existe porque, caso contrário, o conjunto $X=V\setminus S$ não receberia arco). Adicione $v$ e o arco $(u,v)$. Não criamos ciclos porque cada novo vértice entra com exatamente um arco e só aponta para frente (a direção é de um vértice já inserido para um novo). Ao final, cada $v\neq r$ tem exatamente um arco de entrada e o grafo é conexo a partir de $r$, logo obtivemos uma out-arborescência.
+% \emph{(Se)} Agora suponha que toda parte $X$ não vazia sem $r$ recebe um arco. Construímos $T$ iterativamente: comece com $S=\{r\}$. Enquanto $S\neq V$, tome um vértice $v\in V\setminus S$ tal que existe um arco $(u,v)$ com $u\in S$ (existe porque, caso contrário, o conjunto $X=V\setminus S$ não receberia arco). Adicione $v$ e o arco $(u,v)$. Não criamos ciclos porque cada novo vértice entra com exatamente um arco e só aponta para frente (a direção é de um vértice já inserido para um novo). Ao final, cada $v\neq r$ tem exatamente um arco de entrada e o grafo é conexo a partir de $r$, logo obtivemos uma out-arborescência.
 
-\medskip
-	extbf{Intuição curta.} A condição “todo $X$ tem um arco entrando” impede que qualquer bloco de vértices fique isolado da raiz; o processo guloso de anexar o primeiro arco que entra em cada bloco produz a arborescência sem retrocessos.
+% \medskip
+% 	extbf{Intuição curta.} A condição “todo $X$ tem um arco entrando” impede que qualquer bloco de vértices fique isolado da raiz; o processo guloso de anexar o primeiro arco que entra em cada bloco produz a arborescência sem retrocessos.
 
-\medskip
-\emph{Referência:} ver, por exemplo, \cite{schrijver2003comb}.
-\label{thm:fulkerson-cut-arborescencia}
-}% end parbox
-}% end fcolorbox
-\endgroup
-\end{center}
+% \medskip
+% \emph{Referência:} ver, por exemplo, \cite{schrijver2003comb}.
+% \label{thm:fulkerson-cut-arborescencia}
+% }% end parbox
+% }% end fcolorbox
+% \endgroup
+% \end{center}
 
 \paragraph{Teorema das arborescências disjuntas de Edmonds:}
 Seja $D=(V,A)$ e $r\in V$. Para um inteiro $k\ge 1$, existem $k$ out-arborescências enraizadas em $r$ par de arcos disjuntas se, e somente se, para todo $X\subseteq V\setminus\{r\}$ tem-se $|\delta^-(X)|\ge k$. Essa condição de cortes é necessária (cada arborescência deve “entrar” em $X$ por um arco distinto) e suficiente (prova por matroides ou via teoremas de enxerto). Referências clássicas: Edmonds (1973), e \cite{schrijver2003comb}.
