@@ -1920,8 +1920,6 @@ Uma arborescência é considerada geradora se inclui todos os vértices do dígr
 \paragraph{Arborescência Maximal:}
 Uma arborescência é dita maximal se não é possível adicionar mais vértices ou arcos a ela sem perder a propriedade de ser uma arborescência, ou seja, sem criar ciclos ou desconectar o dígrafo.
 
-Esses dois conceitos nos levam à ideia de ramificações geradoras, que são arborescências que abrangem todos os vértices do dígrafo original.
-
 \paragraph{Ramificações Geradoras}
 \paragraph{}Uma \textbf{ramificação geradora} é um subdígrafo que é uma arborescência que inclui todos os vértices do dígrafo original. Formalmente, uma ramificação geradora \(R\) é um subdígrafo \(R = (V_R, A_R)\) onde \(V_R = V\) e \(A_R \subseteq A\), que satisfaz as seguintes propriedades:
 \begin{itemize}
@@ -1975,7 +1973,8 @@ Uma \emph{arborescência inversa} enraizada em \(r\) — também chamada de \emp
 As arborecências podem ter custos associados aos seus arcos, o que nos leva ao conceito de arborescência de custo mínimo.
 
 \paragraph{Arborescência de Custo Mínimo:}
-Uma arborescência de custo mínimo é uma arborescência que minimiza a soma dos pesos dos arcos que a compõem. Esse conceito é especialmente relevante em aplicações onde os arcos têm custos associados, como em redes de transporte ou comunicação.
+\paragraph{}
+Uma \textbf{arborescência de custo mínimo} é uma arborescência que minimiza a soma dos pesos dos arcos que a compõem. Esse conceito é especialmente relevante em aplicações onde os arcos têm custos associados, como em redes de transporte ou comunicação.
 
 \paragraph{}
 Finalmente podemos conceituar a principal estrutura que estudaremos nesta dissertação: a r-arborescência de custo mínimo e sua variante, a r-arborescência inversa de custo mínimo.
@@ -2011,7 +2010,7 @@ Uma \textbf{r-arborescência de custo mínimo} é uma arborescência enraizada e
     \draw[p] (d) -- (b) node[midway, right] {8};    
     \draw[p] (a) -- (b) node[midway, right] {3};
     % custo total
-    \node[align=left, anchor=west] at (3.0,1.8) {Custo total da r-arborescência: $2 + 3 + 1 + 4 + 2 + 5 = 17$};
+    \node[align=left, anchor=west] at (-3.0,-1.5) {Custo total da r-arborescência: $2 + 3 + 1 + 4 + 2 + 5 = 17$};
 \end{tikzpicture}
 \captionof{figure}{r-arborescência de custo mínimo: arborescência enraizada em $r$ que minimiza a soma dos custos dos arcos, em azul. No exemplo, o custo total é $17$. Em cinza, arcos que não fazem parte da r-arborescência de custo mínimo.}
 \label{fig:r-arborescencia-custo-minimo}
@@ -2048,25 +2047,31 @@ Uma \textbf{r-arborescência inversa de custo mínimo} é uma arborescência inv
     \draw[p] (b) -- (d) node[midway, right] {8};    
     \draw[p] (b) -- (a) node[midway, right] {3};
     % custo total
-    \node[align=left, anchor=west] at (3.0,1.8) {Custo total da r-arborescência inversa: $2 + 3 + 1 + 4 + 2 + 5 = 17$};
+    \node[align=left, anchor=west] at (-3.0,-1.5) {Custo total da r-arborescência inversa: $2 + 3 + 1 + 4 + 2 + 5 = 17$};
 \end{tikzpicture}
 \captionof{figure}{r-arborescência inversa de custo mínimo: arborescência inversa enraizada em $r$ que minimiza a soma dos custos dos arcos, em azul. No exemplo, o custo total é $17$. Em cinza, arcos que não fazem parte da r-arborescência inversa de custo mínimo.}
 \label{fig:r-arborescencia-inversa-custo-minimo}
 \end{center}
 
 \paragraph{}
-As arborescências são a principal estrutura que exploraremos ao longo desta dissertação, especialmente a r-arborescência de custo mínimo e r-arborescência inversa de custo mínimo, que é o foco do problema do qual tratamos aqui.
+As arborescências são a principal estrutura que exploraremos ao longo desta dissertação, especialmente a r-arborescência de custo mínimo e r-arborescência inversa de custo mínimo, abordaresmo o problema de encontrá-las eficientemente em dígrafos com custos associados aos arcos.
 
-Vamos aprofundar mais nessas estruturas apresentando propriedades importantes sobre elas, teoremas relevantes e algoritmos que nascem dessas discussões, mas antes precisamos abordar algumas propriedades matemáticas em dígrafos.
+\paragraph{O problema de busca por arborescências de custo mínimo:}
 
-\paragraph{Mais sobre arborescências}
+\paragraph{Noções aprofundadas em arborescências}
 
+\paragraph{Grau e contagem de arcos:}
+Se $T$ é uma arborescência (out-arborescência) enraizada em $r$ sobre $n$ vértices, então $|A_T|=n-1$, todo $v\ne r$ tem grau de entrada $d_T^-(v)=1$ e $d_T^-(r)=0$. Analogamente, numa in-arborescência cada $v\ne r$ tem grau de saída $d_T^+(v)=1$ e $d_T^+(r)=0$. Essas condições são necessárias e suficientes para caracterizar a estrutura de árvore dirigida.
 
+\paragraph{Condição de existência via cortes (Fulkerson):}
+Seja $D=(V,A)$ um dígrafo e $r\in V$. Existe uma out-arborescência enraizada em $r$ se, e somente se, para todo subconjunto não vazio $X\subseteq V\setminus\{r\}$ vale $\delta^-(X)\ne\emptyset$ (isto é, há ao menos um arco entrando em $X$ a partir de $V\setminus X$). Intuição: qualquer arborescência precisa “entrar” em cada $X$ pela primeira vez; reciprocamente, se todo corte voltado para dentro é cruzado, podemos construir uma arborescência por expansão guiada por BFS/DFS. Ver, e.g., \cite{schrijver2003comb}.
 
-\subsubsection{Propriedades matemáticas em dígrafos}
+\paragraph{Teorema das arborescências disjuntas de Edmonds:}
+Seja $D=(V,A)$ e $r\in V$. Para um inteiro $k\ge 1$, existem $k$ out-arborescências enraizadas em $r$ par de arcos disjuntas se, e somente se, para todo $X\subseteq V\setminus\{r\}$ tem-se $|\delta^-(X)|\ge k$. Essa condição de cortes é necessária (cada arborescência deve “entrar” em $X$ por um arco distinto) e suficiente (prova por matroides ou via teoremas de enxerto). Referências clássicas: Edmonds (1973), e \cite{schrijver2003comb}.
 
-
-
+\paragraph{Nota sobre custo mínimo e dualidade (visão de alto nível):}
+No problema de r-arborescência de custo mínimo, algoritmos como Chu--Liu/Edmonds e o primal--dual de Frank operam com \emph{custos reduzidos}: subtraem de cada componente-fonte o menor custo das arestas que a “alimentam”, fazendo surgir arestas de custo reduzido zero e circuitos/condensações que guiam contrações. No ótimo, há uma escolha de potenciais (variáveis duais) tal que todas as arestas escolhidas têm custo reduzido zero e cada conjunto “apertado” recebe exatamente uma aresta, certificando otimalidade. Ver \cite{frank2014connections, schrijver2003comb}.
+Esses dois conceitos nos levam à ideia de ramificações geradoras, que são arborescências que abrangem todos os vértices do dígrafo original.
 
 \paragraph{Cortes dirigidos e arborescências: uma visão dual}
 \paragraph{}
