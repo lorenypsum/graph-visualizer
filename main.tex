@@ -1906,6 +1906,11 @@ Além disso, uma arborescência com \(n\) vértices sempre tem exatamente \(n-1\
 \label{fig:arborescencia}
 \end{center}
 
+\paragraph{Definições e notação adicionais}
+\paragraph{}
+Para facilitar a discussão sobre arborescências, introduzimos algumas definições e notações adicionais: seja \(D = (V, A)\) um dígrafo e \(r \in V\) um vértice específico (a raiz). Denotamos por \(d_D^+(v)\) o grau de saída de um vértice \(v\) em \(D\), ou seja, o número de arcos que saem de \(v\). Analogamente, \(d_D^-(v)\) é o grau de entrada de \(v\), o número de arcos que entram em \(v\).
+
+
 \paragraph{}
 As arborescências são o principal objeto de investigação desse trabalho, portanto vamos usar uma sessão dedicada a elas para apresentar suas características, variações e aplicações.
 
@@ -1926,6 +1931,7 @@ Uma arborescência é dita maximal se não é possível adicionar mais vértices
     \item \(R\) é uma arborescência: existe um vértice especial chamado raiz que tem um caminho direcionado para todos os outros vértices.
     \item \(R\) é maximal: não é possível adicionar mais arcos a \(R\) sem perder a propriedade de ser uma arborescência.
 \end{itemize}
+
 \begin{center}
 \begin{tikzpicture}[>=Stealth]
     % estilos
@@ -1965,6 +1971,14 @@ Quando falamaos de ramificações geradoras, podemos falar de uma estrutura que 
 
 \paragraph{Arborescência de Raiz Específica:}
 uma arborescência de raiz específica é uma arborescência onde a raiz é um vértice pré-determinado do dígrafo. Isso é útil em situações onde um ponto de origem específico deve ser o início dos caminhos direcionados para todos os outros vértices. Podemos chamá-la de r-arborescência, onde \(r\) é o vértice raiz.
+
+\paragraph{}
+Em uma arborescência \(T = (V_T, A_T)\) enraizada em \(r\), temos as seguintes propriedades:
+\begin{itemize}
+    \item A raiz \(r\) tem grau de entrada zero: \(d_T^-(r) = 0\).
+    \item Todo outro vértice \(v \in V_T \setminus \{r\}\) tem grau de entrada exatamente um: \(d_T^-(v) = 1\). Isso significa que há exatamente um arco direcionado entrando em cada vértice, exceto na raiz.
+    \item O grau de saída \(d_T^+(v)\) pode variar, mas para garantir que \(T\) seja conexo, deve haver pelo menos um arco saindo de \(r\) para alcançar os outros vértices.
+\end{itemize}
 
 \paragraph{Arborescência inversa (in-arborescência):}
 uma \emph{arborescência inversa} enraizada em \(r\) — também chamada de \emph{in-arborescência} — é o resultado de inverter a orientação de todos os arcos de uma arborescência (out-arborescência) enraizada em \(r\). Equivalentemente: é um dígrafo acíclico no qual, para todo \(v\neq r\), existe \emph{exatamente um} caminho direcionado de \(v\) até \(r\) (isto é, todos os arcos estão orientados \emph{em direção} à raiz). Em termos de graus, numa in-arborescência cada vértice \(v\neq r\) tem grau de saída igual a 1 (o arco para seu “pai”) e a raiz \(r\) tem grau de saída 0; os graus de entrada são complementares aos de uma out-arborescência.
@@ -2058,6 +2072,8 @@ Finalmente podemos conceituar a principal estrutura que estudaremos nesta disser
 \paragraph{}
 As arborescências são a principal estrutura que exploraremos ao longo desta dissertação, especialmente a r-arborescência de custo mínimo e r-arborescência inversa de custo mínimo, abordaremos o problema de encontrá-las eficientemente em dígrafos com custos associados aos arcos.
 
+
+
 \paragraph{Noções aprofundadas em arborescências}
 
 \paragraph{}
@@ -2074,56 +2090,301 @@ Seja $T$ uma out-arborescência enraizada em $r$ com $n$ vértices. Ela é exata
 De forma simétrica, numa in-arborescência (arborescência inversa) valem as versões “espelhadas”: cada $v\neq r$ tem exatamente um arco \emph{saindo} ($d_T^+(v)=1$) e a raiz tem grau de saída zero ($d_T^+(r)=0$).
 
 \paragraph{}
-Reciprocamente, qualquer subdígrafo que satisfaça (1)--(3) é uma out-arborescência enraizada em $r$ (e análogamente no caso inverso). Essas três condições serão nosso critério operacional para reconhecer arborescências.
+Reciprocamente, qualquer subdígrafo que satisfaça (1)--(3) é uma out-arborescência enraizada em $r$ (e análogamente no caso inverso). 
 
-% \paragraph{Condição de existência via cortes (Fulkerson)}
-% \begin{center}
-% \begingroup
-% \setlength{\fboxsep}{14pt}% padding externo
-% \fcolorbox{orange!40!black}{orange!5}{%
-% \parbox{0.96\textwidth}{%
-% 	extbf{Teorema (Fulkerson – condição de cortes para arborescências).} Seja $D=(V,A)$ e $r\in V$. Existe uma out-arborescência (arborescência dirigida) enraizada em $r$ se, e somente se,
-% \[
-% \forall\, X\subseteq V\setminus\{r\},\ X\neq\emptyset:\  \delta^-(X)\neq\emptyset.
-% \]
-% Isto é: todo subconjunto não vazio que não contém a raiz recebe ao menos um arco vindo de fora.
-
-% \medskip
-% 	extbf{Prova (leitura rápida).} 
-% \emph{(Só se)} Suponha que $T$ é uma out-arborescência enraizada em $r$. Pegue qualquer $X\neq\emptyset$ sem $r$. Considere o primeiro vértice de $X$ alcançado a partir de $r$ no caminho dentro de $T$; o arco imediatamente anterior entra em $X$ e pertence a $\delta^-(X)$. Logo $\delta^-(X)\neq\emptyset$.
-
-% \emph{(Se)} Agora suponha que toda parte $X$ não vazia sem $r$ recebe um arco. Construímos $T$ iterativamente: comece com $S=\{r\}$. Enquanto $S\neq V$, tome um vértice $v\in V\setminus S$ tal que existe um arco $(u,v)$ com $u\in S$ (existe porque, caso contrário, o conjunto $X=V\setminus S$ não receberia arco). Adicione $v$ e o arco $(u,v)$. Não criamos ciclos porque cada novo vértice entra com exatamente um arco e só aponta para frente (a direção é de um vértice já inserido para um novo). Ao final, cada $v\neq r$ tem exatamente um arco de entrada e o grafo é conexo a partir de $r$, logo obtivemos uma out-arborescência.
-
-% \medskip
-% 	extbf{Intuição curta.} A condição “todo $X$ tem um arco entrando” impede que qualquer bloco de vértices fique isolado da raiz; o processo guloso de anexar o primeiro arco que entra em cada bloco produz a arborescência sem retrocessos.
-
-% \medskip
-% \emph{Referência:} ver, por exemplo, \cite{schrijver2003comb}.
-% \label{thm:fulkerson-cut-arborescencia}
-% }% end parbox
-% }% end fcolorbox
-% \endgroup
-% \end{center}
-
-\paragraph{Teorema das arborescências disjuntas de Edmonds:}
-Seja $D=(V,A)$ e $r\in V$. Para um inteiro $k\ge 1$, existem $k$ out-arborescências enraizadas em $r$ par de arcos disjuntas se, e somente se, para todo $X\subseteq V\setminus\{r\}$ tem-se $|\delta^-(X)|\ge k$. Essa condição de cortes é necessária (cada arborescência deve “entrar” em $X$ por um arco distinto) e suficiente (prova por matroides ou via teoremas de enxerto). Referências clássicas: Edmonds (1973), e \cite{schrijver2003comb}.
-
-\paragraph{Nota sobre custo mínimo e dualidade (visão de alto nível):}
-No problema de r-arborescência de custo mínimo, algoritmos como Chu--Liu/Edmonds e o primal--dual de Frank operam com \emph{custos reduzidos}: subtraem de cada componente-fonte o menor custo das arestas que a “alimentam”, fazendo surgir arestas de custo reduzido zero e circuitos/condensações que guiam contrações. No ótimo, há uma escolha de potenciais (variáveis duais) tal que todas as arestas escolhidas têm custo reduzido zero e cada conjunto “apertado” recebe exatamente uma aresta, certificando otimalidade. Ver \cite{frank2014connections, schrijver2003comb}.
-Esses dois conceitos nos levam à ideia de ramificações geradoras, que são arborescências que abrangem todos os vértices do dígrafo original.
-
-\paragraph{Cortes dirigidos e arborescências: uma visão dual}
-\paragraph{}
-As ideias de cortes também aparecem no problema central desta dissertação. Para custos não negativos e um vértice-raiz \(r\), o custo mínimo de uma arborescência geradora dirigida é igual ao valor máximo de uma função \(z\) definida em subconjuntos \(X\subseteq V\setminus\{r\}\) que respeita as desigualdades
-\[ c(a)\ \ge\ z(X)\quad \text{para todo arco } a\text{ que entra }X. \]
-Intuitivamente, \(z(X)\) é um “preço” pago para entrar em \(X\); nenhum arco pode cobrar menos do que a soma dos preços dos conjuntos que ele entra. Esse é o teorema de Fulkerson (ver, por exemplo, \cite{frank2014, schrijver2003comb}).
+\paragraph{Discussões importantes sobre arborescências}
 
 \paragraph{}
-Essa formulação leva a um algoritmo em duas fases (Fulkerson–Frank). Na Fase 1, ajustamos os custos de modo a tornar certos arcos de custo zero (0‑arcos), aumentando gradualmente valores \(z(X)\) para conjuntos mínimos sem 0‑arcos entrando. Na Fase 2, extraímos uma arborescência apenas com 0‑arcos, escolhendo-os de forma gulosa. Quando os dois lados “se encontram” (valor dual = valor primal), obtemos ao mesmo tempo a arborescência ótima e um certificado de otimalidade. Essa visão se conecta diretamente à normalização de custos e à contração/reexpansão de ciclos no algoritmo de Chu–Liu/Edmonds \cite{chu1965, edmonds1967optimum}.
+Dado um Dígrafo \(D = (V, A)\) e um vértice raiz \(r \in V\), uma questão fundamental é determinar quando existe uma arborescência enraizada em \(r\).
+Existem alguns resultados clássicos que caracterizam a existência de arborescências em dígrafos, bem como condições para a existência de múltiplas arborescências disjuntas. Vamos apresentar dois teoremas fundamentais nesse contexto.
 
-\subsection{Algoritmo Chu e Liu}
+\paragraph{Teorema de Fulkerson}
 
-O algoritmo de Chu e Liu (1965) é um método clássico para encontrar a r-arborescência de custo mínimo em um dígrafo com custos associados aos arcos. O algoritmo funciona da seguinte maneira:
+\paragraph{}
+Existem várias formas de caracterizar a existência de arborescências em um dígrafo. Uma delas é via a condição de cortes, que estabelece uma relação entre a existência de arborescências e a estrutura dos cortes no dígrafo.
+
+\paragraph{}
+Esse resultado é conhecido como o \textbf{Teorema de Fulkerson} e para entendermos ele precisamos ter em mente as seguintes definições:
+
+\begin{itemize}
+    \item Seja \(D = (V, A)\) um dígrafo e \(X \subseteq V\) um subconjunto de vértices. O conjunto \(\delta^-(X)\) é definido como o conjunto de todos os arcos que entram em \(X\) vindos de \(V \setminus X\). Formalmente,
+    \[
+    \delta^-(X) = \{(u, v) \in A : u \in V \setminus X, v \in X\}.
+    \]
+    \item Um corte em um dígrafo é uma partição dos vértices em dois subconjuntos disjuntos. O conjunto \(\delta^-(X)\) representa o corte que separa \(X\) do resto do grafo.
+\end{itemize}
+
+\paragraph{}
+A seguir apresentamos o teorema propriamente dito e um esboço de sua prova.
+
+\paragraph{}
+\begin{center}
+\begingroup
+\setlength{\fboxsep}{15pt}% padding externo da moldura
+\fcolorbox{blue!15}{blue!3}{%
+\parbox{\dimexpr\textwidth-2\fboxsep\relax}{%
+\noindent
+\begingroup
+\setlength{\fboxsep}{15pt}% padding interno da faixa azul (título/enunciado)
+\colorbox{blue!15}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\textbf{Teorema: condição de existência de arborescência via cortes - Fulkerson}\\[1.0em]
+{\color{black!70!black}
+Seja $D=(V,A)$ e $r\in V$. Existe uma out-arborescência (arborescência dirigida) enraizada em $r$ se, e somente se,
+\[
+\forall\, X\subseteq V\setminus\{r\},\ X\neq\emptyset:\  \delta^-(X)\neq\emptyset.
+\]
+Isto é: todo subconjunto não vazio que não contém a raiz recebe ao menos um arco vindo de fora.
+}}}
+\endgroup
+
+\paragraph{}
+\textbf{Prova (esboço):} 
+
+\paragraph{}
+\emph{(Só se:)} Suponha que $T$ é uma out-arborescência enraizada em $r$. Pegue qualquer $X\neq\emptyset$ sem $r$. Considere o primeiro vértice de $X$ alcançado a partir de $r$ no caminho dentro de $T$; o arco imediatamente anterior entra em $X$ e pertence a $\delta^-(X)$. Logo $\delta^-(X)\neq\emptyset$.
+
+\paragraph{}
+\emph{(Se:)} Agora suponha que toda parte $X$ não vazia sem $r$ recebe um arco. Construímos $T$ iterativamente: comece com $S=\{r\}$. Enquanto $S\neq V$, tome um vértice $v\in V\setminus S$ tal que existe um arco $(u,v)$ com $u\in S$ (existe porque, caso contrário, o conjunto $X=V\setminus S$ não receberia arco). Adicione $v$ e o arco $(u,v)$. Não criamos ciclos porque cada novo vértice entra com exatamente um arco e só aponta para frente (a direção é de um vértice já inserido para um novo). Ao final, cada $v\neq r$ tem exatamente um arco de entrada e o grafo é conexo a partir de $r$, logo obtivemos uma out-arborescência.
+
+\medskip
+	\textbf{Intuição curta.} A condição “todo $X$ tem um arco entrando” impede que qualquer bloco de vértices fique isolado da raiz; o processo guloso de anexar o primeiro arco que entra em cada bloco produz a arborescência sem retrocessos.
+
+\medskip
+\emph{Referência:} ver, por exemplo, \cite{schrijver2003comb}.
+\label{thm:fulkerson-cut-arborescencia}
+    
+}}
+\endgroup
+\end{center}
+
+\paragraph{}
+Outro resultado clássico é o teorema que caracteriza a existência de múltiplas arborescências arcodisjuntas em um dígrafo, conhecido como o \textbf{Teorema de Edmonds}. Precisamos de algumas definições antes de enunciá-lo:
+
+\begin{itemize}
+    \item Duas arborescências são ditas \emph{arcodisjuntas} se não compartilham nenhum arco, ou seja, \(A_{T_1} \cap A_{T_2} = \emptyset\).
+    \item A condição de cortes para múltiplas arborescências estabelece que, para qualquer subconjunto \(X \subseteq V \setminus \{r\}\), o número de arcos que entram em \(X\) deve ser pelo menos igual ao número de arborescências desejadas.
+    \item Uma out-arborescência enraizada em \(r\) é uma arborescência onde todos os caminhos direcionados partem de \(r\) e alcançam todos os outros vértices.
+    \item O conjunto \(\delta^-(X)\) é definido como o conjunto de todos os arcos que entram em \(X\) vindos de \(V \setminus X\). Formalmente,
+    \[
+    \delta^-(X) = \{(u, v) \in A : u \in V \setminus X, v \in X\}.
+    \]
+    \item Um corte em um dígrafo é uma partição dos vértices em dois subconjuntos disjuntos. O conjunto \(\delta^-(X)\) representa o corte que separa \(X\) do resto do grafo.
+    \end{itemize}
+
+\paragraph{}
+Antes de enunciar o teorema, vale a pena mencionar o conceito de \emph{interseção de matroides}, mas, para não alongar demais, deixamos a explicação detalhada para o Apêndice \ref{ap:matroides}. Aqui, apenas uma breve introdução:
+\begin{itemize}
+    \item Matroides, são estruturas combinatórias que generalizam a noção de independência linear em álgebra linear. A interseção de matroides é um conceito que permite combinar duas ou mais estruturas de matroides para formar uma nova estrutura que mantém certas propriedades de independência.
+    \item A interseção de matroides é frequentemente utilizada em problemas de otimização combinatória, onde é necessário encontrar soluções que satisfaçam múltiplas condições de independência simultaneamente.
+    \item Familia de conjuntos independentes: cada matroide é definido por uma coleção de subconjuntos de um conjunto finito, chamados de conjuntos independentes, que satisfazem certas propriedades.
+    \item No contexto de arborescências, a interseção de matroides pode ser usada para modelar a seleção de arcos que formam múltiplas arborescências arcodisjuntas, garantindo que cada arborescência mantenha suas propriedades de independência.
+\end{itemize}
+
+\paragraph{}
+\begin{center}
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=blue!70}, p/.style={->, draw=gray!60}};
+    % vértices do dígrafo
+    \node[v, label=below:$r$] (r) at (0,0) {};
+    \node[v, label=above:$a$] (a) at (-1.6,1.4) {};
+    \node[v, label=above:$b$] (b) at (0.0,1.8) {};
+    \node[v, label=above:$c$] (c) at (1.6,1.4) {};
+    \node[v, label=above:$d$] (d) at (-2.4,2.8) {};
+    \node[v, label=above:$e$] (e) at (-0.8,3.0) {};
+    \node[v, label=above:$f$] (f) at (0.8,3.0) {};
+    % arcos do dígrafo                      
+    \draw[a] (r) -- (a);
+    \draw[a] (r) -- (b);
+    \draw[a] (r) -- (c);
+    \draw[a] (a) -- (d);
+    \draw[a] (b) -- (e);
+    \draw[a] (c) -- (f);
+    \draw[a] (e) -- (d);
+    \draw[a] (f) -- (r);
+    \draw[a] (d) -- (b);    
+    \draw[a] (a) -- (b);
+    % arcos extras (não fazem parte das arborescências)
+    \draw[p] (e) -- (f);
+    \draw[p] (f) -- (e);
+    \draw[p] (d) -- (c);    
+    \draw[p] (c) -- (d);
+    \draw[p] (g) -- (h);
+    \draw[p] (h) -- (g);
+\end{tikzpicture}
+\captionof{figure}{Dígrafo de exemplo para múltiplas arborescências arcodisjuntas.}
+\label{fig:exemplo-multiplas-arborescencias}
+\end{center}
+
+\paragraph{}
+Agora podemos enunciar o teorema de Edmonds, que fornece uma condição necessária e suficiente para a existência de \(k\) arborescências arcodisjuntas enraizadas em um vértice \(r\).
+
+\paragraph{}
+\paragraph{}
+\begin{center}
+\begingroup
+\setlength{\fboxsep}{15pt}% padding externo da moldura
+\fcolorbox{blue!15}{blue!3}{%
+\parbox{\dimexpr\textwidth-2\fboxsep\relax}{%
+\noindent
+\begingroup
+\setlength{\fboxsep}{15pt}% padding interno da faixa azul (título/enunciado)
+\colorbox{blue!15}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\textbf{Teorema de $k$ arborescências arcodisjuntas - Edmonds}\\[1.0em]
+{\color{black!70!black}
+Seja $D=(V,A)$, $r\in V$ e $k\ge 1$ inteiro. São equivalentes:
+\begin{enumerate}\setlength{\itemsep}{4pt}
+    \item Existem $k$ out-arborescências enraizadas em $r$ que são par a par \emph{arcodisjuntas}.
+    \item (Condição de cortes) Para todo subconjunto $X\subseteq V\setminus\{r\}$ vale $|\delta^-(X)| \ge k$.
+\end{enumerate}
+Em palavras: cada “bloco” $X$ que não contém a raiz precisa ter pelo menos $k$ arcos distintos chegando de fora; isso é exatamente o que permite "alimentar" $X$ a partir de $r$ em $k$ estruturas de ramificação independentes.
+}}}
+\endgroup
+
+\paragraph{}
+\textbf{Prova (esboço):}
+\emph{(1 $\Rightarrow$ 2)} Se temos $k$ out-arborescências arcodisjuntas, então cada arborescência deve entrar em qualquer $X$ (senão não alcançaria seus vértices). Como os arcos são distintos entre as $k$ estruturas, precisamos de pelo menos $k$ arcos entrando em $X$; logo $|\delta^-(X)|\ge k$.
+
+\paragraph{}
+\emph{(2 $\Rightarrow$ 1)} Trata-se a construção como um problema de \emph{interseção de matroides} ou aplicamos um procedimento incremental de troca ("augmenting"). O conjunto de arcos pode suportar no máximo $k(n-1)$ arcos selecionados se quisermos $k$ arborescências, onde cada vértice $v \neq r$ recebe exatamente $k$ arcos de entrada (um de cada arborescência). A condição de cortes impede gargalos: se algum subconjunto $X$ tivesse menos que $k$ arcos entrando, seria impossível abastecer seus vértices com $k$ escolhas independentes.
+
+\paragraph{}
+Uma prova clássica (Edmonds) formula o problema como interseção de duas famílias independentes: 
+
+\paragraph{}
+(i) uma família que limita a quantidade de arcos entrando em cada vértice a no máximo $k$; 
+
+\paragraph{}
+(ii) uma família que evita a criação de ciclos dirigidos ao selecionar arcos (estrutura de matroide de partição + matroide gráfico orientado). 
+
+\paragraph{}
+A hipótese de cortes garante que o algoritmo de aumento (que tenta adicionar um arco e, se criar ciclo ou saturar um vértice, realiza trocas) nunca fica travado antes de atingir $k(n-1)$ arcos. Agrupando, particionamos esses $k(n-1)$ arcos em $k$ coleções de $(n-1)$ arcos cada, que formam as $k$ out-arborescências arcodisjuntas.
+
+\medskip
+\emph{Referências:} Edmonds (teorema das branchings) \cite{edmonds1967optimum}, apresentações modernas em \cite{schrijver2003comb}.
+\label{thm:edmonds-disjoint-arborescencias}    
+}}
+\endgroup
+\end{center}
+
+\paragraph{}
+Teoremas como esses servem para responder perguntas do tipo “quando existe?” e “quão rica pode ser a estrutura?”. Em particular, eles nos dizem que:
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item A existência de uma arborescência enraizada em \(r\) é garantida se, e somente se, todo subconjunto não vazio que não contém \(r\) recebe pelo menos um arco vindo de fora (Teorema de Fulkerson).
+    \item A existência de \(k\) arborescências arcodisjuntas enraizadas em \(r\) é garantida se, e somente se, todo subconjunto não vazio que não contém \(r\) recebe pelo menos \(k\) arcos vindos de fora (Teorema de Edmonds).
+\end{itemize}
+
+\paragraph{}
+Mas, agora estamos interessados em achar essas arborescências de forma eficiente, especialmente quando os arcos têm custos associados. Queremos encontrar a r-arborescência de custo mínimo, ou seja, a arborescência enraizada em \(r\) que minimiza a soma dos custos dos arcos que a compõem.
+
+\paragraph{}
+Um resultado central agora é a caracterização de \emph{optimalidade} para r-arborescências de custo mínimo: as chamadas \emph{condições de Fulkerson}. Elas conectam a solução primal (os arcos escolhidos) a um certificado dual (potenciais em subconjuntos) via custos reduzidos.
+
+\paragraph{Terminologia:} 
+\paragraph{}
+Para um dígrafo $D=(V,A)$, raiz $r$ e custos $c:A\to \mathbb{R}_{\ge 0}$, um subconjunto não vazio $X\subseteq V\setminus\{r\}$ é dito \textbf{apertado} (para uma família de pesos $y$) se exatamente um arco da solução escolhida entra em $X$ e $y(X)>0$. 
+
+\paragraph{}
+Diremos que um arco $a=(u,v)$ \emph{entra} em $X$ se $u\notin X$ e $v\in X$. 
+
+\paragraph{}
+Dada uma família de pesos $y: \{X\subseteq V\setminus\{r\}: X\neq\emptyset\}\to \mathbb{R}_{\ge 0}$, definimos o \textbf{custo reduzido} de $a$ por
+\[
+ c'(a) \;=\; c(a)\; - \sum_{\substack{X\subseteq V\setminus\{r\},\\ X\neq\emptyset,\ u\notin X,\ v\in X}} y(X).
+\]
+
+\paragraph{}
+\begin{center}
+\begingroup
+\setlength{\fboxsep}{15pt}% padding externo
+\fcolorbox{blue!15}{blue!3}{%
+\parbox{\dimexpr\textwidth-2\fboxsep\relax}{%
+\noindent
+\begingroup
+\setlength{\fboxsep}{15pt}% padding interno título
+\colorbox{blue!15}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\textbf{Teorema de Optimalidade de Fulkerson (r-arborescência de custo mínimo)}\\[1.0em]
+{\color{black!70!black}
+Seja $D=(V,A)$, raiz $r$ e custos $c:A\to\mathbb{R}_{\ge 0}$. Seja $T$ uma out-arborescência enraizada em $r$. As afirmações são equivalentes: 
+\begin{enumerate}\setlength{\itemsep}{4pt}
+    \item $T$ tem custo mínimo entre todas as out-arborescências enraizadas em $r$.
+    \item (Condições dual–primal) Existem pesos $y(X)\ge 0$ para cada $\emptyset\neq X\subseteq V\setminus\{r\}$ tais que:
+    \begin{enumerate}\setlength{\itemsep}{2pt}
+         \item[(a)] $c'(a)\ge 0$ para todo arco $a\in A$ (não negatividade dos custos reduzidos);
+         \item[(b)] $c'(a)=0$ para todo arco $a\in T$ (complementaridade em arcos usados);
+         \item[(c)] Para todo $X$ com $y(X)>0$ entra \emph{exatamente um} arco de $T$ em $X$ (complementaridade em conjuntos apertados).
+    \end{enumerate}
+\end{enumerate}
+Além disso, quando (2) vale, o valor $\sum_X y(X)$ é exatamente o custo de $T$.}
+}}
+\endgroup
+
+\paragraph{}
+	\textbf{Prova (esboço):}
+
+\paragraph{(2 $\Rightarrow$ 1).} Para qualquer arborescência $B$ temos
+\[
+ 	ext{custo}(B) = \sum_{a\in B} c(a) = \sum_{a\in B} \Big( c'(a) + \sum_{X: a\text{ entra }X} y(X) \Big).
+\]
+Trocando a ordem da soma:
+\[
+ 	ext{custo}(B) = \sum_{a\in B} c'(a) + \sum_X y(X)\,\big| \{a\in B: a \text{ entra } X\}\big|.
+\]
+Pelas condições, $c'(a)\ge 0$, logo a primeira soma é $\ge 0$. Como uma out-arborescência entra em qualquer $X\neq\emptyset$ (senão $X$ estaria desconectado de $r$), temos $|\{a\in B: a \text{ entra } X\}|\ge 1$. Assim
+\[
+ 	ext{custo}(B) \ge \sum_X y(X).
+\]
+Para $B=T$, pela complementaridade $c'(a)=0$ se $a\in T$ e para cada $X$ com $y(X)>0$ entra \emph{exatamente} um arco de $T$, obtendo
+\[
+ 	ext{custo}(T) = 0 + \sum_X y(X),
+\]
+logo $\text{custo}(T) \le \text{custo}(B)$ para qualquer $B$; $T$ é ótimo.
+
+\paragraph{(1 $\Rightarrow$ 2).} (Ideia) Execute o procedimento clássico: enquanto houver vértice (ou componente contraída) $v\neq r$ sem arco de custo reduzido zero entrando, subtraia do custo de todos os arcos que entram em $v$ o menor custo positivo entre eles (isso equivale a aumentar uniformemente $y(X)$ para cada subconjunto $X$ cujo primeiro arco zero estamos “criando”). Quando um ciclo de arcos de custo reduzido zero surge, contraia-o e continue no dígrafo comprimido. Ao final, os arcos de custo reduzido zero selecionados formam $T$. As quantidades subtraídas definem $y$: cada vez que subtraímos $\alpha>0$ para um subconjunto/componente $X$, somamos $\alpha$ a $y(X)$. Construção garante (a)–(c).
+
+\paragraph{Intuição.} Os pesos $y$ “pagam” parcialmente cada arco de fora para dentro dos subconjuntos; arcos da solução ficam exatamente “quitados” (custo reduzido 0). Se algum arco restante tivesse custo reduzido negativo, poderíamos baixar o custo da solução trocando-o por um arco de $T$, contradizendo optimalidade. Conjuntos com $y(X)>0$ exigem uso único de um arco para não desperdiçar potencial.
+
+\medskip
+\emph{Referências:} Fulkerson (condições de optimalidade), apresentações modernas em \cite{frank2014connections, schrijver2003comb}.
+\label{thm:fulkerson-optimalidade-arborescencia}
+}}
+\endgroup
+\end{center}
+
+
+
+\subsection{Algoritmos}
+\paragraph{}
+
+\paragraph{}
+Para isso, precisamos de três ideias que se encaixam:
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item \textbf{Normalização de custos / custos reduzidos}: retirar redundâncias locais até surgirem arcos de custo zero obrigatórios.
+    \item \textbf{Potenciais (visão dual)}: interpretar essa normalização como atribuir “preços” a subconjuntos de vértices, gerando um certificado de otimalidade.
+    \item \textbf{Contração de ciclos de custo zero}: manter a estrutura enxuta sem perder caminhos a partir da raiz.
+\end{itemize}
+Essa trilha (normalizar \(\to\) criar zeros \(\to\) contrair \(\to\) reexpandir) é exatamente o que une Chu--Liu/Edmonds e abordagens primal--duais. Na subseção seguinte formalizamos essa ponte.
+
+
+\subsection{Arborescências de custo mínimo e a ideia de custos reduzidos}
+
+
+O problema central agora é: dado $D=(V,A)$, custos $c:A\to \mathbb{R}_{\ge 0}$ e raiz $r$, como achar uma r-arborescência geradora de custo mínimo? Dois paradigmas clássicos resolvem isso: (a) \textbf{Chu--Liu/Edmonds} (contração de ciclos) e (b) algoritmos \textbf{primal--duais} (Fulkerson–Frank / Frank) baseados em ajustar custos.
+
+\paragraph{Ideia unificadora.} Ambos criam um \emph{grafo de custos reduzidos}. Para cada subconjunto (ou componente-fonte) consideramos o menor custo de um arco que entra nele e subtraímos esse valor de todos os arcos que o atravessam. Pelo menos um arco que entra em cada parte fica então com custo reduzido zero. Ao longo do processo, arcos de custo zero conectam vértices/componentes; quando surge um ciclo só com arcos de custo zero, contraímos (Chu--Liu) ou marcamos um conjunto “apertado” (dual). Referências: \cite{chu1965, edmonds1967optimum, frank2014connections, schrijver2003comb}.
+
+\paragraph{Por que funciona?} Há uma interpretação dual: existe uma função $z$ em subconjuntos $X\subseteq V\setminus\{r\}$ tal que \(\sum_X z(X)\) (maximizada) é igual ao custo da arborescência ótima e cada arco escolhido tem custo original igual à soma das contribuições $z(X)$ dos conjuntos que ele “atravessa” (logo custo reduzido zero). Conjuntos com $z(X)>0$ são exatamente os “apertados”: entra neles \emph{exatamente} um arco da solução. Essa é a certificação de otimalidade (teorema de Fulkerson / visão de Frank).
+
+\paragraph{Algoritmo em duas fases (visão primal–dual simples).}
+\begin{enumerate}\setlength{\itemsep}{3pt}
+    \item Enquanto existir um subconjunto não vazio sem a raiz que ainda não recebe arco de custo reduzido zero, aumente uniformemente os potenciais (preços) relevantes até que algum arco zere; marque esse arco como candidato.
+    \item Se aparecer um ciclo de candidatos, contraia-o e continue (mantendo custos reduzidos); caso contrário, quando cada $v\neq r$ tiver exatamente um arco de custo zero entrando, esses arcos formam a arborescência. Reexpanda ciclos contraídos remontando a solução final.
+\end{enumerate}
+Ao terminar, a soma dos custos reduzidos escolhidos é zero e a soma subtraída acumulada é o custo ótimo.
+
+\paragraph{Ligação com Edmonds (ciclos).} O algoritmo de Chu--Liu/Edmonds pode ser visto como executar implicitamente esse ajuste: primeiro escolhe, para cada vértice (ou componente), o arco de entrada mínimo; se não houver ciclo, está pronto; se houver, contrai o ciclo e repete. Os valores subtraídos correspondem às elevações do dual.
+
+\paragraph{Resumo mental.} (1) Normalize custos para criar zeros obrigatórios; (2) use apenas arcos zero para construir a estrutura; (3) contraia ciclos zero para não perder alcance; (4) reexpanda. Custos reduzidos zero + cortes “apertados” = certificado dual de otimalidade.
+
+\paragraph{Gancho para a próxima seção.} Com essa base conceitual, podemos agora descrever passo a passo o algoritmo de Chu e Liu e, depois, discutir detalhes de implementação.
+
 
 \paragraph{}     
 \section{Considerações Finais}
