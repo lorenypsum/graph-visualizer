@@ -840,9 +840,14 @@ Pensando em modelagem de problemas em grafos, podemos pensar em exemplos clássi
 \paragraph{}
 O taoísmo chinês fala do yin e yang, forças opostas que se complementam. Um conceito que remete à contrastes, noite e dia, matéria e anti-matéria, máximos e mínimos. Na matemática, um conceito semelhante é a \emph{dualidade}, que conecta problemas de minimização a problemas de maximização.
 
+\paragraph{}
 Em termos matemáticos, para cada problema de otimização (o \emph{primal}), existe um problema associado (o \emph{dual}) que oferece uma perspectiva complementar. Resolver um desses problemas pode fornecer insights ou soluções para o outro.
 
-Considere como problema primal a minimização do custo de uma estrutura (como uma árvore geradora mínima) e como dual a maximização de um conjunto de pesos ou preços que justificam esse custo mínimo. A relação entre primal e dual é formalizada por teoremas de dualidade, que garantem que o valor ótimo do primal é igual ao valor ótimo do dual sob certas condições.
+\paragraph{Exemplo:}
+Considere um problema de otimização onde queremos minimizar o custo de transporte de mercadorias entre diferentes armazéns. O problema primal busca a solução de transporte que minimize os custos totais, enquanto o problema dual pode ser formulado como a maximização do valor dos recursos disponíveis (como a capacidade dos armazéns e a demanda dos clientes).
+
+\paragraph{}
+No nosso texto, consideramos como problema primal a minimização do custo de uma estrutura (como uma árvore geradora mínima) e como dual a maximização de um conjunto de pesos ou preços que justificam esse custo mínimo. A relação entre primal e dual é formalizada por teoremas de dualidade, que garantem que o valor ótimo do primal é igual ao valor ótimo do dual sob certas condições.
 
 \paragraph{}
 Esse ponto de vista leva a “teoremas min–max” que ligam problemas de \emph{minimização} a problemas de \emph{maximização} e fornecem certificados verificáveis de otimalidade.
@@ -1614,7 +1619,7 @@ Existe um princípio chamado de princípio da casa dos pombos, que diz que se vo
 Esse princípio também se aplica a dígrafos, mas com uma nuance importante: em dígrafos, o critério correto para garantir a existência de um circuito dirigido é que o grau mínimo de saída (ou de entrada) seja pelo menos 1. Ou seja, se cada vértice em um dígrafo tem pelo menos um arco saindo dele (ou entrando nele), então o dígrafo deve conter pelo menos um circuito dirigido. Abaixo apresentamos esse resultado formalmente.
 
 \paragraph{}
-\begin{lemabox}{Princípio da casa dos pombos para circuitos.}
+\begin{lemabox}{Princípio da casa dos pombos para circuitos.}{casa-dos-pombos}
 Se \(D=(V,A)\) é um dígrafo finito em que todo vértice tem grau de saída ao menos 1, isto é, \(d^+(v)\ge 1\) para todo \(v\in V\), então \(D\) contém pelo menos um circuito dirigido. (De forma equivalente, a afirmação vale trocando ``saída'' por ``entrada''.)
 
 \paragraph{}
@@ -2311,7 +2316,7 @@ Quando falamos em passo a passo é muito comum vir à mente a ideia de receitas 
 Um dos primeiros algoritmos conhecidos é o \emph{método de Euclides} para encontrar o máximo divisor comum (mdc) de dois números inteiros, descrito por Euclides em sua obra "Os Elementos" por volta de 300 a.C. 
 
 \paragraph{}
-\begin{algobox}{Método de Euclides (mdc)}
+\begin{algobox}{Método de Euclides (mdc)}{mdc}
 Dados inteiros positivos $a$ e $b$:
 \begin{enumerate}\setlength{\itemsep}{2pt}
     \item enquanto $b>0$, substitua $(a,b)$ por $(b, a\bmod b)$;
@@ -2359,7 +2364,7 @@ Para ilustrar a análise de complexidade, consideremos o exemplo da busca linear
 \paragraph{}
 O algoritmo de busca linear percorre cada elemento do vetor até encontrar o valor desejado ou chegar ao final do vetor. A complexidade desse algoritmo é \(O(n)\) no pior caso, onde \(n\) é o tamanho do vetor, pois pode ser necessário verificar todos os elementos.
 
-\begin{algobox}{Busca Linear}
+\begin{algobox}{Busca Linear}{busca-linear}
 Dado um vetor \(V\) de tamanho \(n\) e um valor \(x\):
 \begin{enumerate}\setlength{\itemsep}{2pt}
     \item Para cada índice \(i\) de \(0\) a \(n - 1\):
@@ -2373,7 +2378,7 @@ Dado um vetor \(V\) de tamanho \(n\) e um valor \(x\):
 \paragraph{}
 Já o algoritmo de busca binária aproveita o fato de que o vetor está ordenado para reduzir o espaço de busca pela metade a cada iteração. A complexidade desse algoritmo é \(O(\log n)\) no pior caso, tornando-o muito mais eficiente para grandes vetores.
 
-\begin{algobox}{Busca Binária}
+\begin{algobox}{Busca Binária}{busca-binaria}
 Dado um vetor ordenado \(V\) de tamanho \(n\) e um valor \(x\):
 \begin{enumerate}\setlength{\itemsep}{2pt}
     \item Defina \(\text{início} = 0\) e \(\text{fim} = n - 1\).
@@ -2419,15 +2424,18 @@ Com esses conceitos em mente, estamos prontos para explorar os algoritmos espec�
 \section{A Arborescência Perdida}
 
 \paragraph{}
-Maquiável é conhecido por sua obra "O Príncipe", onde discute estratégias políticas e de liderança. Uma de suas citações mais famosas é: "Os fins justificam os meios". Essa frase sugere que, em certas circunstâncias, qualquer ação pode ser justificada se o resultado final for considerado positivo ou benéfico.
+Maquiável é conhecido por uma de suas citações: "Os fins justificam os meios". Essa frase ficou famosa, porque tem uma interpretação polêmica: em certas circunstâncias, qualquer ação pode ser justificada se o resultado final for considerado positivo ou benéfico. Muitos, não concordam com essa visão, argumentando que os meios também importam e que ações imorais não podem ser justificadas por bons resultados.
 
 \paragraph{}
-Mas, quando se trata de encontrar a arborescência perdida, precisamos de mais do que apenas fins. Os meios, ou seja, os algoritmos e técnicas que utilizaremos, são cruciais para garantir que alcancemos nosso objetivo de forma eficiente e correta.
+Os problemas de otimização,certamente se enquadram nessa segunda turma. O objetivo final (os fins) é encontrar a r-arborescência de custo mínimo, que é uma estrutura que conecta todos os vértices de um dígrafo de forma eficiente e econômica. Esse objetivo é claro e bem definido. Mas, os meios para alcançá-lo são igualmente importantes.
 
 \paragraph{}
-Nesta seção, abordaremos os primeiros passos na busca por r-arborescências de custo mínimo, começando com uma revisão dos conceitos fundamentais e das técnicas que serão utilizadas.
+Os meios envolvem os algoritmos e técnicas que utilizamos para encontrar essa arborescência. Eles precisam ser eficientes, corretos e capazes de lidar com a complexidade do problema. Eles, revelam diversas propriedades interessantes dos dígrafos e das arborescências, como as condições de Fulkerson, que fornecem critérios para a optimalidade.
 
-\subsection{Revisão dos Conceitos Fundamentais}
+\paragraph{}
+Nesta seção, abordaremos os meios na busca por r-arborescências de custo mínimo, ou seja os algoritmos que são empregados, para obter essa estrutura desejada, falaremos sobre o algoritmo de Chu–Liu/Edmonds e o procedimento em duas fases de András Frank, mas antes,começaremos com uma revisão resumida dos conceitos fundamentais (que já apresentamos em sessões anteriores) e das técnicas que serão utilizadas.
+
+\paragraph{Revisão dos Conceitos Fundamentais}
 \paragraph{}
 Antes de mergulharmos nos algoritmos específicos, é importante revisitar alguns conceitos fundamentais que serão cruciais para nossa compreensão:
 \begin{itemize}\setlength{\itemsep}{2pt}
@@ -2439,7 +2447,10 @@ Antes de mergulharmos nos algoritmos específicos, é importante revisitar algun
     \item \textbf{Condicionalidade de Fulkerson}: as condições necessárias e suficientes para a existência de uma r-arborescência de custo mínimo.
 \end{itemize}
 
-\subsection{Técnicas e Abordagens}
+\paragraph{}
+Além desses conceitos, precisamos citar algumas abordagens que serão utilizadas nos algoritmos:
+
+\paragraph{Técnicas e Abordagens:}
 \paragraph{}
 Para encontrar r-arborescências de custo mínimo, utilizaremos algumas técnicas e abordagens específicas:
 \begin{itemize}\setlength{\itemsep}{2pt}
@@ -2470,7 +2481,7 @@ Para cada vértice \(v\neq r\), selecione o arco de menor custo que \emph{entra}
     \end{enumerate}
 \end{enumerate}
 
-\begin{algobox}{Chu–Liu/Edmonds (visão operacional)}
+\begin{algobox}{Chu–Liu/Edmonds (visão operacional)}{chu-liu-edmonds}
 Entrada: dígrafo \(D=(V,A)\), custos \(c:A\to\mathbb{R}\), raiz \(r\).
 \begin{enumerate}\setlength{\itemsep}{2pt}
     \item Para cada \(v\neq r\), escolha \(a_v\in\arg\min\{c(u,v):(u,v)\in A\}\).
@@ -2501,7 +2512,7 @@ As condições clássicas de existência dizem que, para todo subconjunto não v
     \item \textbf{Fase II (extração).} No grafo (possivelmente contraído), selecione uma r-arborescência usando apenas arcos de custo reduzido zero; se um ciclo surgir, contraia e prossiga. Ao término, expanda as contrações em ordem inversa, escolhendo, em cada expansão, o arco que entra no componente com custo reduzido zero para quebrar o ciclo interno.
 \end{enumerate}
 
-\begin{algobox}{Frank: método em duas fases (resumo)}
+\begin{algobox}{Frank: método em duas fases (resumo)}{frank}
 Entrada: dígrafo \(D=(V,A)\), custos \(c\), raiz \(r\).
 \begin{enumerate}\setlength{\itemsep}{2pt}
     \item (Fase I) Mantenha potenciais \(y\). Enquanto existir \(v\neq r\) sem arco \((u,v)\) com \(c(u,v)-y(v)=0\), aumente \(y(v)\) até algum entrar a zero. Mantenha contrações para ciclos de zeros.
