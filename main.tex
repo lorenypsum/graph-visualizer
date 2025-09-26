@@ -2494,7 +2494,34 @@ Quando analisamos algoritmos alguns outros conceitos são úteis:
 \paragraph{}
 Com esses conceitos em mente, estamos prontos para explorar os algoritmos específicos para encontrar r-arborescências de custo mínimo, que serão detalhados no próximo capítulo.
 
-\paragraph{}     
+\section{Em busca da Arborescência Perdida: Parte 1}
+
+\paragraph{}
+Nesta seção, abordaremos os primeiros passos na busca por r-arborescências de custo mínimo, começando com uma revisão dos conceitos fundamentais e das técnicas que serão utilizadas.
+\subsection{Revisão dos Conceitos Fundamentais}
+\paragraph{}
+Antes de mergulharmos nos algoritmos específicos, é importante revisitar alguns conceitos fundamentais que serão cruciais para nossa compreensão:
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item \textbf{Dígrafo}: um grafo direcionado onde os arcos têm uma direção específica, indo de um vértice a outro.
+    \item \textbf{Arborescência}: uma árvore direcionada onde todos os caminhos partem de um vértice raiz e alcançam todos os outros vértices.
+    \item \textbf{Custo dos Arcos}: cada arco em um dígrafo pode ter um custo associado, representando, por exemplo, o custo de transporte ou a distância.
+    \item \textbf{r-Arborescência de Custo Mínimo}: uma arborescência enraizada em um vértice \(r\) que minimiza a soma dos custos dos arcos que a compõem.
+    \item \textbf{Cortes e Conectividade}: a importância dos cortes em dígrafos para garantir a conectividade e a existência de arborescências.
+    \item \textbf{Condicionalidade de Fulkerson}: as condições necessárias e suficientes para a existência de uma r-arborescência de custo mínimo.
+\end{itemize}
+
+\subsection{Técnicas e Abordagens}
+\paragraph{}
+Para encontrar r-arborescências de custo mínimo, utilizaremos algumas técnicas e abordagens específicas:
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item \textbf{Normalização de Custos}: ajustaremos os custos dos arcos para facilitar a identificação de arcos de custo reduzido zero.
+    \item \textbf{Contração de Ciclos}: quando formos encontrar ciclos de arcos de custo reduzido zero, os contrairemos para simplificar o dígrafo.
+    \item \textbf{Algoritmo de Chu–Liu/Edmonds}: um algoritmo clássico para encontrar r-arborescências de custo mínimo, que utiliza as técnicas mencionadas.
+    \item \textbf{Procedimento em Duas Fases de András Frank}: uma abordagem alternativa que também será explorada.
+\end{itemize}
+
+\paragraph{}Com esses conceitos e técnicas em mente, estamos prontos para explorar os algoritmos específicos que nos levarão à descoberta da arborescência perdida. No próximo capítulo, detalharemos o algoritmo de Chu–Liu/Edmonds e o procedimento em duas fases de András Frank, explicando suas etapas, intuições e implementações.
+    
 \section{Considerações Finais}
 \printbibliography
 
