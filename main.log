@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025/Homebrew) (preloaded format=pdflatex 2025.9.15)  26 SEP 2025 07:05
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025/Homebrew) (preloaded format=pdflatex 2025.9.15)  26 SEP 2025 07:09
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1186,16 +1186,13 @@ Overfull \hbox (0.37761pt too wide) in paragraph at lines 1788--1789
 
 [33]
 
-LaTeX Warning: Citation 'schrijver2003comb' on page 34 undefined on input line 1851.
-
-
-Overfull \hbox (0.79999pt too wide) in paragraph at lines 1851--1853
- [][][] 
- []
+LaTeX Warning: Citation 'schrijver2003comb' on page 34 undefined on input line 1837.
 
 
 
 [34]
+Missing character: There is no ; in font nullfont!
+
 
 [35]
 Missing character: There is no ; in font nullfont!
@@ -1210,41 +1207,38 @@ Missing character: There is no ; in font nullfont!
 
 
 [38]
-Missing character: There is no ; in font nullfont!
-
 
 [39]
 
-LaTeX Warning: Citation 'schrijver2003comb' on page 40 undefined on input line 2135.
+LaTeX Warning: Citation 'schrijver2003comb' on page 40 undefined on input line 2120.
 
 
 
 [40]
 
-LaTeX Warning: Reference `ap:matroides' on page 41 undefined on input line 2154.
+LaTeX Warning: Reference `ap:matroides' on page 41 undefined on input line 2139.
+
+Missing character: There is no ; in font nullfont!
+
+LaTeX Warning: Citation 'edmonds1967optimum' on page 41 undefined on input line 2215.
+
+
+LaTeX Warning: Citation 'schrijver2003comb' on page 41 undefined on input line 2215.
 
 
 
 [41]
-Missing character: There is no ; in font nullfont!
-
-LaTeX Warning: Citation 'edmonds1967optimum' on page 42 undefined on input line 2230.
-
-
-LaTeX Warning: Citation 'schrijver2003comb' on page 42 undefined on input line 2230.
-
-
 
 [42]
 
+LaTeX Warning: Citation 'frank2014connections' on page 43 undefined on input line 2285.
+
+
+LaTeX Warning: Citation 'schrijver2003comb' on page 43 undefined on input line 2285.
+
+
+
 [43]
-
-LaTeX Warning: Citation 'frank2014connections' on page 44 undefined on input line 2300.
-
-
-LaTeX Warning: Citation 'schrijver2003comb' on page 44 undefined on input line 2300.
-
-
 
 [44]
 
@@ -1256,13 +1250,11 @@ LaTeX Warning: Citation 'schrijver2003comb' on page 44 undefined on input line 2
 
 [48]
 
-[49]
-
-LaTeX Warning: Empty bibliography on input line 2463.
+LaTeX Warning: Empty bibliography on input line 2448.
 
 
 
-[50] (./main.aux)
+[49] (./main.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
@@ -1286,18 +1278,18 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 40544 strings out of 473190
- 810332 string characters out of 5704335
- 1462090 words of memory out of 5000000
- 62579 multiletter control sequences out of 15000+600000
- 580356 words of font info for 216 fonts, out of 8000000 for 9000
+ 40542 strings out of 473190
+ 810273 string characters out of 5704335
+ 1462152 words of memory out of 5000000
+ 62574 multiletter control sequences out of 15000+600000
+ 580574 words of font info for 218 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  102i,13n,107p,1934b,1654s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on main.pdf (50 pages, 459865 bytes).
+Output written on main.pdf (49 pages, 458045 bytes).
 PDF statistics:
- 905 PDF objects out of 1000 (max. 8388607)
- 780 compressed objects within 8 object streams
- 411 named destinations out of 1000 (max. 500000)
+ 901 PDF objects out of 1000 (max. 8388607)
+ 777 compressed objects within 8 object streams
+ 410 named destinations out of 1000 (max. 500000)
  39301 words of extra memory for PDF output out of 42996 (max. 10000000)
 

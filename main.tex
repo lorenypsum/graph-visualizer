@@ -18,19 +18,19 @@
 % Algoritmos: paleta verde
 \newtcbtheorem[number within=section]{algobox}{Algoritmo}%
 {enhanced,breakable,sharp corners,boxsep=6pt,arc=1pt,
- colback=green!3,colframe=green!20!black,fonttitle=\bfseries,coltitle=white,boxrule=0.6pt}{th}
+ colback=green!3,colframe=green!30,fonttitle=\bfseries,coltitle=black,boxrule=0.6pt}{th}
 
 % Teoremas: paleta azul 
 \newtcbtheorem[number within=section]{teobox}{Teorema}%
 {enhanced,breakable,sharp corners,boxsep=6pt,arc=1pt,
- colback=blue!3,colframe=blue!30,fonttitle=\bfseries,coltitle=black,boxrule=0.6pt}{th}
+ colback=blue!3,colframe=blue!20,fonttitle=\bfseries,coltitle=black,boxrule=0.6pt}{th}
 
  % Lemas: paleta laranja
 \newtcbtheorem[number within=section]
 {lemabox}{Lema}%
 {enhanced,breakable,sharp corners,boxsep=6pt,arc=1pt,
  colback=orange!3,colframe=orange!35,fonttitle=\bfseries,coltitle=black,boxrule=0.6pt}{lem}
- 
+
 \usetikzlibrary{positioning,arrows.meta,fit,calc}
 
 \addbibresource{referencias.bib}
@@ -1822,21 +1822,8 @@ Seja $D=(V,A)$ um dígrafo com $k$ componentes fortemente conexas (CFCs):
 Denote por $\mathrm{Cond}(D)$ o grafo \emph{condensado}, obtido ao contrair cada CFC de $D$ em um único vértice; $\mathrm{Cond}(D)$ é sempre um DAG. Escreva $s$ para o número de CFCs-\emph{fonte} (vértices de $\mathrm{Cond}(D)$ sem arcos de \emph{entrada}) e $t$ para o número de CFCs-\emph{sumidouro} (vértices de $\mathrm{Cond}(D)$ sem arcos de \emph{saída}). Com essa notação, vale o seguinte:
 
 \paragraph{}
-\begin{center}
-\begingroup
-\setlength{\fboxsep}{15pt}% padding externo da moldura
-\fcolorbox{orange!15}{orange!3}{%
-\parbox{\dimexpr\textwidth-2\fboxsep\relax}{%
-\noindent
-\begingroup
-\setlength{\fboxsep}{15pt}% padding interno da faixa azul (título/enunciado)
-\colorbox{orange!15}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\textbf{Lema: mínimo de arcos para conexidade forte}\\[1.0em]
-{\color{black!70!black}
-
+\begin{lemabox}{Mínimo de arcos para conexidade forte}{min-arc}
 Se $k=1$, então $D$ já é fortemente conexo e o mínimo de arcos a adicionar é $0$. Se $k\ge 2$, o número mínimo de arcos a adicionar para tornar $D$ fortemente conexo é \[\boxed{\;\min = \max\{s,\,t\}\;}\,.\]
-
-}}}
-\endgroup
 
 \paragraph{}
 	\textbf{Prova (esboço).} 
@@ -1848,9 +1835,7 @@ Se $k=1$, então $D$ já é fortemente conexo e o mínimo de arcos a adicionar �
     
     \paragraph{}
     Ver, por exemplo, textos clássicos sobre dígrafos (e.g., \cite{schrijver2003comb}).
-}}
-\endgroup
-\end{center}
+\end{lemabox}
 
 \paragraph{}
 Esse lema explica por que todo dígrafo com mais de uma CFC-fonte ou mais de uma CFC-sumidouro não pode ser fortemente conexo. Além disso, ele é útil em algoritmos que buscam tornar um dígrafo fortemente conexo, pois fornece um limite inferior para o número de arcos que precisam ser adicionados.
