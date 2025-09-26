@@ -2138,10 +2138,9 @@ Seja $D=(V,A)$ e $r\in V$. Existe uma out-arborescência (arborescência dirigid
 \forall\, X\subseteq V\setminus\{r\},\ X\neq\emptyset:\  \delta^-(X)\neq\emptyset.
 \]
 Isto é: todo subconjunto não vazio que não contém a raiz recebe ao menos um arco vindo de fora.
-\end{teobox}
 
 \paragraph{}
-	extbf{Prova (esboço):} 
+	\textbf{Prova (esboço):} 
 
 \paragraph{}
 \emph{(Só se:)} Suponha que $T$ é uma out-arborescência enraizada em $r$. Pegue qualquer $X\neq\emptyset$ sem $r$. Considere o primeiro vértice de $X$ alcançado a partir de $r$ no caminho dentro de $T$; o arco imediatamente anterior entra em $X$ e pertence a $\delta^-(X)$. Logo $\delta^-(X)\neq\emptyset$.
@@ -2155,6 +2154,10 @@ Isto é: todo subconjunto não vazio que não contém a raiz recebe ao menos um 
 \medskip
 \emph{Referência:} ver, por exemplo, \cite{schrijver2003comb}.
 \label{thm:fulkerson-cut-arborescencia}
+
+\end{teobox}
+
+
 
 \paragraph{}
 Outro resultado clássico é o teorema que caracteriza a existência de múltiplas arborescências arcodisjuntas em um dígrafo, conhecido como o \textbf{Teorema de Edmonds}. Precisamos de algumas definições antes de enunciá-lo:
@@ -2227,7 +2230,6 @@ Seja $D=(V,A)$, $r\in V$ e $k\ge 1$ inteiro. São equivalentes:
     \item (Condição de cortes) Para todo subconjunto $X\subseteq V\setminus\{r\}$ vale $|\delta^-(X)| \ge k$.
 \end{enumerate}
 Em palavras: cada “bloco” $X$ que não contém a raiz precisa ter pelo menos $k$ arcos distintos chegando de fora; isso é exatamente o que permite "alimentar" $X$ a partir de $r$ em $k$ estruturas de ramificação independentes.
-\end{teobox}
 
 \paragraph{}
 \textbf{Prova (esboço):}
@@ -2250,7 +2252,8 @@ A hipótese de cortes garante que o algoritmo de aumento (que tenta adicionar um
 
 \medskip
 \emph{Referências:} Edmonds (teorema das branchings) \cite{edmonds1967optimum}, apresentações modernas em \cite{schrijver2003comb}.
-\label{thm:edmonds-disjoint-arborescencias}    
+\label{thm:edmonds-disjoint-arborescencias} 
+\end{teobox}
 
 \paragraph{}
 Teoremas como esses servem para responder perguntas do tipo “quando existe?” e “quão rica pode ser a estrutura?”. Em particular, eles nos dizem que:
@@ -2291,7 +2294,6 @@ Seja $D=(V,A)$, raiz $r$ e custos $c:A\to\mathbb{R}_{\ge 0}$. Seja $T$ uma out-a
     \end{enumerate}
 \end{enumerate}
 Além disso, quando (2) vale, o valor $\sum_X y(X)$ é exatamente o custo de $T$.
-\end{teobox}
 
 \paragraph{}
 	\textbf{Prova (esboço):}
@@ -2313,15 +2315,7 @@ Para $B=T$, pela complementaridade $c'(a)=0$ se $a\in T$ e para cada $X$ com $y(
  	\textbf{custo}(T) = 0 + \sum_X y(X),
 \]
 logo $\textbf{custo}(T) \le \textbf{custo}(B)$ para qualquer $B$; $T$ é ótimo.
- 
 
-\paragraph{}
-\begin{center}
-\begingroup
-\setlength{\fboxsep}{15pt}% padding externo
-\fcolorbox{blue!15}{blue!3}{%
-\parbox{\dimexpr\textwidth-2\fboxsep\relax}{%
-\noindent
 \paragraph{(1 $\Rightarrow$ 2).} (Ideia) Execute o procedimento clássico: enquanto houver vértice (ou componente contraída) $v\neq r$ sem arco de custo reduzido zero entrando, subtraia do custo de todos os arcos que entram em $v$ o menor custo positivo entre eles (isso equivale a aumentar uniformemente $y(X)$ para cada subconjunto $X$ cujo primeiro arco zero estamos “criando”). Quando um ciclo de arcos de custo reduzido zero surge, contraia-o e continue no dígrafo comprimido. Ao final, os arcos de custo reduzido zero selecionados formam $T$. As quantidades subtraídas definem $y$: cada vez que subtraímos $\alpha>0$ para um subconjunto/componente $X$, somamos $\alpha$ a $y(X)$. Construção garante (a)–(c).
 
 \paragraph{Intuição.} Os pesos $y$ “pagam” parcialmente cada arco de fora para dentro dos subconjuntos; arcos da solução ficam exatamente “quitados” (custo reduzido 0). Se algum arco restante tivesse custo reduzido negativo, poderíamos baixar o custo da solução trocando-o por um arco de $T$, contradizendo optimalidade. Conjuntos com $y(X)>0$ exigem uso único de um arco para não desperdiçar potencial.
@@ -2329,10 +2323,7 @@ logo $\textbf{custo}(T) \le \textbf{custo}(B)$ para qualquer $B$; $T$ é ótimo.
 \medskip
 \emph{Referências:} Fulkerson (condições de optimalidade), apresentações modernas em \cite{frank2014connections, schrijver2003comb}.
 \label{thm:fulkerson-optimalidade-arborescencia}
-
-}}
-\endgroup
-\end{center}
+\end{teobox}
 
 \paragraph{}
 O teorema anterior nos diz como reconhecer, de forma concreta, que a arborescência encontrada é realmente de custo mínimo. Fazemos uma normalização simples de custos\footnote{Por “normalização de custos” entendemos subtrair a mesma constante de todos os arcos que entram em um mesmo subconjunto (ou componente) do grafo, para simplificar os valores e criar arcos de custo reduzido zero, sem alterar qual solução é ótima; em outras palavras, trabalhar com custos reduzidos.}: para cada “parte” do grafo, subtraímos, dos arcos que entram nessa parte, o menor custo observado; com isso, pelo menos um arco que entra em cada parte zera. A solução ótima pode ser construída usando apenas arcos com custo reduzido zero e, sob esse ajuste, não sobra nenhuma troca que diminua o custo.
