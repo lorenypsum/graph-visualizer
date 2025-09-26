@@ -1537,19 +1537,8 @@ Um min-corte é um corte de tamanho mínimo, ou seja, é o corte com o menor nú
 Um teorema importante relacionado a min-cortes é o Teorema do Fluxo Máximo - Corte Mínimo, que estabelece uma relação entre o fluxo máximo que pode ser enviado de uma fonte \(s\) para um sumidouro \(t\) em um dígrafo e o valor do min-corte que separa \(s\) de \(t\). Escolhemos apresensentar esse teorema aqui pois ele traz uma intuição interessante sobre a relação entre fluxos e cortes em dígrafos, relevantes para os algoritmos que discutiremos mais adiante.
 
 \paragraph{}
-\begin{center}
-\begingroup
-\setlength{\fboxsep}{10pt}% padding externo da moldura
-\fcolorbox{blue!15}{blue!3}{%
-\parbox{\dimexpr\textwidth-2\fboxsep\relax}{%
-\noindent
-\begingroup
-\setlength{\fboxsep}{15pt}% padding interno da faixa azul (título/enunciado)
-\colorbox{blue!15}{\parbox{\dimexpr\linewidth-2\fboxsep\relax
-}{\textbf{Teorema: Fluxo–Corte Máximo = Mínimo Corte.}\\[1.0em]
-{\color{black!70!black}Em dígrafos com limites/pesos não negativos nos arcos, o valor de um fluxo máximo de \(s\) para \(t\) é igual ao valor de um min-corte \(s\text{--}t\). Em símbolos: \(\max\,\text{valor}(f) = \min\, c(\delta^+(X))\), onde o mínimo é sobre \(X\subseteq V\) com \(s\in X\), \(t\notin X\), e \(c(\delta^+(X))=\sum_{a\in\delta^+(X)} c(a)\).}}}
-\endgroup
-
+\begin{teobox}{Fluxo–Corte Máximo = Mínimo Corte.}{fluxo-corte}
+Em dígrafos com limites/pesos não negativos nos arcos, o valor de um fluxo máximo de \(s\) para \(t\) é igual ao valor de um min-corte \(s\text{--}t\). Em símbolos: \(\max\,\text{valor}(f) = \min\, c(\delta^+(X))\), onde o mínimo é sobre \(X\subseteq V\) com \(s\in X\), \(t\notin X\), e \(c(\delta^+(X))=\sum_{a\in\delta^+(X)} c(a)\).
 \paragraph{}
     \textbf{Prova (esboço):}
     \paragraph{}
@@ -1568,9 +1557,7 @@ Um teorema importante relacionado a min-cortes é o Teorema do Fluxo Máximo - C
 \paragraph{}
 \smallskip
 \textbf{Comentário:} Esse resultado é um protótipo de teorema \emph{min--max}: “empacotar” muito fluxo (caminhos) equivale a “cobrir” pouco com um corte. Ver, por exemplo, \cite{schrijver2003comb}.
-}}
-\endgroup
-\end{center}
+\end{teobox}
 
 \paragraph{}
 Quando falamos em trilhas, precisamos também falar sobre circuitos, que são ciclos direcionados.
@@ -1705,9 +1692,6 @@ A seguir falaremos sobre a propriedade de alcançabilidade mútua em CFC, que é
     \paragraph{Consequências:}
      todo DAG tem ao menos uma componente-fonte (falaremos em seguida sobre eles) e uma componente-sumidouro; logo, $\mathrm{Cond}(D)$ também tem ao menos uma CFC-fonte e ao menos uma CFC-sumidouro.
 \end{itemize}
-
-
-
 
 \paragraph{Componentes-fonte}
 \paragraph{}Uma \textbf{componente-fonte} é uma componente fortemente conexa que não possui arcos direcionados saindo dela para outras componentes. Formalmente, uma componente-fonte \(C\) é uma componente fortemente conexa \(C = (V_C, A_C)\) onde \(V_C \subseteq V\) e \(A_C \subseteq A\), que satisfaz a seguinte propriedade:
@@ -1859,7 +1843,6 @@ Se $k=1$, então $D$ já é fortemente conexo e o mínimo de arcos a adicionar �
 
 \paragraph{}
 	\textbf{Prova (esboço).} 
-    
     \paragraph{}
     \emph{Necessidade:} em qualquer supergrafo fortemente conexo, cada CFC-fonte deve receber ao menos um arco \emph{entrando} e cada CFC-sumidouro deve ter ao menos um arco \emph{saindo}; logo, são necessários ao menos $\max\{s,t\}$ arcos novos. 
     
@@ -2154,10 +2137,7 @@ Isto é: todo subconjunto não vazio que não contém a raiz recebe ao menos um 
 \medskip
 \emph{Referência:} ver, por exemplo, \cite{schrijver2003comb}.
 \label{thm:fulkerson-cut-arborescencia}
-
 \end{teobox}
-
-
 
 \paragraph{}
 Outro resultado clássico é o teorema que caracteriza a existência de múltiplas arborescências arcodisjuntas em um dígrafo, conhecido como o \textbf{Teorema de Edmonds}. Precisamos de algumas definições antes de enunciá-lo:
@@ -2221,7 +2201,6 @@ Antes de enunciar o teorema, vale a pena mencionar o conceito de \emph{interseç
 \paragraph{}
 Agora podemos enunciar o teorema de Edmonds, que fornece uma condição necessária e suficiente para a existência de \(k\) arborescências arcodisjuntas enraizadas em um vértice \(r\).
 
-\paragraph{}
 \paragraph{}
 \begin{teobox}{$k$ arborescências arcodisjuntas (Edmonds)}{edmonds-k-arborescencias}
 Seja $D=(V,A)$, $r\in V$ e $k\ge 1$ inteiro. São equivalentes:

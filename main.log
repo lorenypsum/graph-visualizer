@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025/Homebrew) (preloaded format=pdflatex 2025.9.15)  26 SEP 2025 06:43
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025/Homebrew) (preloaded format=pdflatex 2025.9.15)  26 SEP 2025 06:52
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1143,24 +1143,20 @@ Missing character: There is no ; in font nullfont!
 [27]
 Missing character: There is no ; in font nullfont!
 
-LaTeX Warning: Citation 'schrijver2003comb' on page 28 undefined on input line 1571.
-
-
-Overfull \hbox (0.79999pt too wide) in paragraph at lines 1571--1573
- [][][] 
- []
+LaTeX Warning: Citation 'schrijver2003comb' on page 28 undefined on input line 1559.
 
 
 
 [28]
-
-[29]
 Missing character: There is no ; in font nullfont!
 
-LaTeX Warning: Citation 'schrijver2003comb' on page 30 undefined on input line 1641.
+
+[29]
+
+LaTeX Warning: Citation 'schrijver2003comb' on page 30 undefined on input line 1628.
 
 
-Overfull \hbox (0.79999pt too wide) in paragraph at lines 1641--1643
+Overfull \hbox (0.79999pt too wide) in paragraph at lines 1628--1630
  [][][] 
  []
 
@@ -1180,15 +1176,15 @@ Missing character: There is no ; in font nullfont!
 
 
 [33]
-Overfull \hbox (0.37761pt too wide) in paragraph at lines 1807--1808
+Overfull \hbox (0.37761pt too wide) in paragraph at lines 1791--1792
  [][] \OT1/cmr/m/n/12 (-20) Existe um re-sul-tado cl^^Sassico que re-la-ci-ona o n^^Sumero de componentes-fonte e componentes-
  []
 
 
-LaTeX Warning: Citation 'schrijver2003comb' on page 34 undefined on input line 1871.
+LaTeX Warning: Citation 'schrijver2003comb' on page 34 undefined on input line 1854.
 
 
-Overfull \hbox (0.79999pt too wide) in paragraph at lines 1871--1873
+Overfull \hbox (0.79999pt too wide) in paragraph at lines 1854--1856
  [][][] 
  []
 
@@ -1214,23 +1210,23 @@ Missing character: There is no ; in font nullfont!
 
 [39]
 
-LaTeX Warning: Citation 'schrijver2003comb' on page 40 undefined on input line 2155.
+LaTeX Warning: Citation 'schrijver2003comb' on page 40 undefined on input line 2138.
 
 
 
 [40]
 
-LaTeX Warning: Reference `ap:matroides' on page 41 undefined on input line 2177.
+LaTeX Warning: Reference `ap:matroides' on page 41 undefined on input line 2157.
 
 
 
 [41]
 Missing character: There is no ; in font nullfont!
 
-LaTeX Warning: Citation 'edmonds1967optimum' on page 42 undefined on input line 2254.
+LaTeX Warning: Citation 'edmonds1967optimum' on page 42 undefined on input line 2233.
 
 
-LaTeX Warning: Citation 'schrijver2003comb' on page 42 undefined on input line 2254.
+LaTeX Warning: Citation 'schrijver2003comb' on page 42 undefined on input line 2233.
 
 
 
@@ -1238,10 +1234,10 @@ LaTeX Warning: Citation 'schrijver2003comb' on page 42 undefined on input line 2
 
 [43]
 
-LaTeX Warning: Citation 'frank2014connections' on page 44 undefined on input line 2324.
+LaTeX Warning: Citation 'frank2014connections' on page 44 undefined on input line 2303.
 
 
-LaTeX Warning: Citation 'schrijver2003comb' on page 44 undefined on input line 2324.
+LaTeX Warning: Citation 'schrijver2003comb' on page 44 undefined on input line 2303.
 
 
 
@@ -1257,7 +1253,7 @@ LaTeX Warning: Citation 'schrijver2003comb' on page 44 undefined on input line 2
 
 [49]
 
-LaTeX Warning: Empty bibliography on input line 2487.
+LaTeX Warning: Empty bibliography on input line 2466.
 
 
 
@@ -1282,18 +1278,18 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 40517 strings out of 473190
- 809759 string characters out of 5704335
- 1459276 words of memory out of 5000000
+ 40516 strings out of 473190
+ 809756 string characters out of 5704335
+ 1459348 words of memory out of 5000000
  62552 multiletter control sequences out of 15000+600000
  580415 words of font info for 217 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 102i,14n,107p,1934b,1652s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 102i,13n,107p,1934b,1652s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on main.pdf (50 pages, 460911 bytes).
+Output written on main.pdf (50 pages, 461133 bytes).
 PDF statistics:
- 903 PDF objects out of 1000 (max. 8388607)
- 778 compressed objects within 8 object streams
- 409 named destinations out of 1000 (max. 500000)
+ 901 PDF objects out of 1000 (max. 8388607)
+ 776 compressed objects within 8 object streams
+ 408 named destinations out of 1000 (max. 500000)
  39301 words of extra memory for PDF output out of 42996 (max. 10000000)
 
