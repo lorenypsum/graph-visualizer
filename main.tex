@@ -2305,7 +2305,7 @@ Dada uma família de pesos $y: \{X\subseteq V\setminus\{r\}: X\neq\emptyset\}\to
 Seja $D=(V,A)$, raiz $r$ e custos $c:A\to\mathbb{R}_{\ge 0}$. Seja $T$ uma out-arborescência enraizada em $r$. As afirmações são equivalentes: 
 \begin{enumerate}\setlength{\itemsep}{4pt}
     \item $T$ tem custo mínimo entre todas as out-arborescências enraizadas em $r$.
-    \item (Condições dual–primal) Existem pesos $y(X)\ge 0$ para cada $\emptyset\neq X\subseteq V\setminus\{r\}$ tais que:
+    \item Existem pesos $y(X)\ge 0$ para cada $\emptyset\neq X\subseteq V\setminus\{r\}$ tais que:
     \begin{enumerate}\setlength{\itemsep}{2pt}
          \item[(a)] $c'(a)\ge 0$ para todo arco $a\in A$ (não negatividade dos custos reduzidos);
          \item[(b)] $c'(a)=0$ para todo arco $a\in T$ (complementaridade em arcos usados);
@@ -2321,21 +2321,21 @@ Além disso, quando (2) vale, o valor $\sum_X y(X)$ é exatamente o custo de $T$
 
 \paragraph{(2 $\Rightarrow$ 1).} Para qualquer arborescência $B$ temos
 \[
- 	ext{custo}(B) = \sum_{a\in B} c(a) = \sum_{a\in B} \Big( c'(a) + \sum_{X: a\text{ entra }X} y(X) \Big).
+ 	\textbf{custo}(B) = \sum_{a\in B} c(a) = \sum_{a\in B} \Big( c'(a) + \sum_{X: a\text{ entra }X} y(X) \Big).
 \]
 Trocando a ordem da soma:
 \[
- 	ext{custo}(B) = \sum_{a\in B} c'(a) + \sum_X y(X)\,\big| \{a\in B: a \text{ entra } X\}\big|.
+ 	\textbf{custo}(B) = \sum_{a\in B} c'(a) + \sum_X y(X)\,\big| \{a\in B: a \text{ entra } X\}\big|.
 \]
 Pelas condições, $c'(a)\ge 0$, logo a primeira soma é $\ge 0$. Como uma out-arborescência entra em qualquer $X\neq\emptyset$ (senão $X$ estaria desconectado de $r$), temos $|\{a\in B: a \text{ entra } X\}|\ge 1$. Assim
 \[
- 	ext{custo}(B) \ge \sum_X y(X).
+ 	\textbf{custo}(B) \ge \sum_X y(X).
 \]
 Para $B=T$, pela complementaridade $c'(a)=0$ se $a\in T$ e para cada $X$ com $y(X)>0$ entra \emph{exatamente} um arco de $T$, obtendo
 \[
- 	ext{custo}(T) = 0 + \sum_X y(X),
+ 	\textbf{custo}(T) = 0 + \sum_X y(X),
 \]
-logo $\text{custo}(T) \le \text{custo}(B)$ para qualquer $B$; $T$ é ótimo.
+logo $\textbf{custo}(T) \le \textbf{custo}(B)$ para qualquer $B$; $T$ é ótimo.
 }}
 \endgroup
 \end{center}
@@ -2358,42 +2358,35 @@ logo $\text{custo}(T) \le \text{custo}(B)$ para qualquer $B$; $T$ é ótimo.
 \endgroup
 \end{center}
 
+\paragraph{}
+Em poucas palavras, o teorema anterior nos diz como reconhecer, de forma concreta, que a arborescência encontrada é realmente de custo mínimo. Fazemos uma normalização simples de custos\footnote{Por “normalização de custos” entendemos subtrair a mesma constante de todos os arcos que entram em um mesmo subconjunto (ou componente) do grafo, para simplificar os valores e criar arcos de custo reduzido zero, sem alterar qual solução é ótima; em outras palavras, trabalhar com custos reduzidos.}: para cada “parte” do grafo, subtraímos, dos arcos que entram nessa parte, o menor custo observado; com isso, pelo menos um arco que entra em cada parte zera. A solução ótima pode ser construída usando apenas arcos com custo reduzido zero e, sob esse ajuste, não sobra nenhuma troca que diminua o custo.
 
+Na prática, a verificação de optimalidade se reduz a checar condições locais:
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item não há arcos com custo reduzido negativo;
+    \item todo arco que compõe a arborescência tem custo reduzido zero;
+    \item para cada conjunto “apertado” (isto é, que recebeu desconto positivo no ajuste), entra exatamente um arco da arborescência.
+\end{itemize}
+Se alguma dessas condições falhar, existe uma troca que barateia a solução; se todas forem satisfeitas, temos um certificado de optimalidade curto e fácil de verificar.
+
+\paragraph{}
+Com essa ideia em mãos, saímos do “o que é ótimo?” para “como chegar lá, passo a passo?”. No próximo capítulo apresentamos a noção de algoritmo que adotaremos e descrevemos os métodos clássicos para este problema: o algoritmo de Chu–Liu/Edmonds (que cria arcos de custo zero e contrai ciclos) e o procedimento em duas fases de András Frank. Veremos as etapas, a intuição por trás e como vamos implementá-los no projeto.
 
 \subsection{Algoritmos}
 \paragraph{}
+A ideia de “passo a passo” tem uma motivação filosófica: desde uma receita de cozinha ao método de Euclides para o máximo divisor comum, buscamos procedimentos finitos e reprodutíveis que transformem intenções em resultados. Um algoritmo torna explícitas as decisões que tomaríamos “de cabeça”: torna o raciocínio executável, auditável e menos sujeito a ambiguidades.
 
-\paragraph{}
-Para isso, precisamos de três ideias que se encaixam:
+\emph{Definição intuitiva.} Um algoritmo é uma sequência finita de instruções claras que, dada uma entrada, conduz mecanicamente a uma saída desejada. Em termos práticos, cada passo deve ser:
 \begin{itemize}\setlength{\itemsep}{2pt}
-    \item \textbf{Normalização de custos / custos reduzidos}: retirar redundâncias locais até surgirem arcos de custo zero obrigatórios.
-    \item \textbf{Potenciais (visão dual)}: interpretar essa normalização como atribuir “preços” a subconjuntos de vértices, gerando um certificado de otimalidade.
-    \item \textbf{Contração de ciclos de custo zero}: manter a estrutura enxuta sem perder caminhos a partir da raiz.
+    \item não ambíguo (instruições interpretáveis de uma única maneira);
+    \item efetivo (cada operação é realizável em tempo finito);
+    \item geral (funciona para toda instância válida do problema).
 \end{itemize}
-Essa trilha (normalizar \(\to\) criar zeros \(\to\) contrair \(\to\) reexpandir) é exatamente o que une Chu--Liu/Edmonds e abordagens primal--duais. Na subseção seguinte formalizamos essa ponte.
 
+\emph{Comentário formal.} A ciência da computação formaliza esse conceito por meio de modelos como máquinas de Turing, funções recursivas, RAM, entre outros. Essas formalizações são equivalentes quanto ao que é computável (Tese de Church–Turing) e permitem discutir com rigor correção e complexidade (tempo e memória). Para nós, isso se traduz em duas questões centrais: (i) o procedimento sempre devolve uma arborescência válida? (ii) qual o seu custo assintótico?
 
-\subsection{Arborescências de custo mínimo e a ideia de custos reduzidos}
+No nosso contexto, um algoritmo para arborescências recebe um dígrafo com custos e uma raiz $r$ e devolve uma r-arborescência de custo mínimo. Nas próximas subseções veremos duas abordagens clássicas: Chu–Liu/Edmonds (escolhas locais com contração de ciclos) e um método primal–dual na linha de András Frank.
 
-
-O problema central agora é: dado $D=(V,A)$, custos $c:A\to \mathbb{R}_{\ge 0}$ e raiz $r$, como achar uma r-arborescência geradora de custo mínimo? Dois paradigmas clássicos resolvem isso: (a) \textbf{Chu--Liu/Edmonds} (contração de ciclos) e (b) algoritmos \textbf{primal--duais} (Fulkerson–Frank / Frank) baseados em ajustar custos.
-
-\paragraph{Ideia unificadora.} Ambos criam um \emph{grafo de custos reduzidos}. Para cada subconjunto (ou componente-fonte) consideramos o menor custo de um arco que entra nele e subtraímos esse valor de todos os arcos que o atravessam. Pelo menos um arco que entra em cada parte fica então com custo reduzido zero. Ao longo do processo, arcos de custo zero conectam vértices/componentes; quando surge um ciclo só com arcos de custo zero, contraímos (Chu--Liu) ou marcamos um conjunto “apertado” (dual). Referências: \cite{chu1965, edmonds1967optimum, frank2014connections, schrijver2003comb}.
-
-\paragraph{Por que funciona?} Há uma interpretação dual: existe uma função $z$ em subconjuntos $X\subseteq V\setminus\{r\}$ tal que \(\sum_X z(X)\) (maximizada) é igual ao custo da arborescência ótima e cada arco escolhido tem custo original igual à soma das contribuições $z(X)$ dos conjuntos que ele “atravessa” (logo custo reduzido zero). Conjuntos com $z(X)>0$ são exatamente os “apertados”: entra neles \emph{exatamente} um arco da solução. Essa é a certificação de otimalidade (teorema de Fulkerson / visão de Frank).
-
-\paragraph{Algoritmo em duas fases (visão primal–dual simples).}
-\begin{enumerate}\setlength{\itemsep}{3pt}
-    \item Enquanto existir um subconjunto não vazio sem a raiz que ainda não recebe arco de custo reduzido zero, aumente uniformemente os potenciais (preços) relevantes até que algum arco zere; marque esse arco como candidato.
-    \item Se aparecer um ciclo de candidatos, contraia-o e continue (mantendo custos reduzidos); caso contrário, quando cada $v\neq r$ tiver exatamente um arco de custo zero entrando, esses arcos formam a arborescência. Reexpanda ciclos contraídos remontando a solução final.
-\end{enumerate}
-Ao terminar, a soma dos custos reduzidos escolhidos é zero e a soma subtraída acumulada é o custo ótimo.
-
-\paragraph{Ligação com Edmonds (ciclos).} O algoritmo de Chu--Liu/Edmonds pode ser visto como executar implicitamente esse ajuste: primeiro escolhe, para cada vértice (ou componente), o arco de entrada mínimo; se não houver ciclo, está pronto; se houver, contrai o ciclo e repete. Os valores subtraídos correspondem às elevações do dual.
-
-\paragraph{Resumo mental.} (1) Normalize custos para criar zeros obrigatórios; (2) use apenas arcos zero para construir a estrutura; (3) contraia ciclos zero para não perder alcance; (4) reexpanda. Custos reduzidos zero + cortes “apertados” = certificado dual de otimalidade.
-
-\paragraph{Gancho para a próxima seção.} Com essa base conceitual, podemos agora descrever passo a passo o algoritmo de Chu e Liu e, depois, discutir detalhes de implementação.
 
 
 \paragraph{}     
@@ -2401,6 +2394,3 @@ Ao terminar, a soma dos custos reduzidos escolhidos é zero e a soma subtraída 
 \printbibliography
 
 \end{document}
-
-% \paragraph{}
-% No algoritmo primal--dual de András Frank, a mesma ideia aparece no “grafo de zeros”. Ao subtrair, para cada componente-fonte \(X\), o menor custo das arestas que entram em \(X\), garantimos que pelo menos uma delas zere. Quando todos os vértices (exceto \(r\)) têm alguma aresta entrante de custo reduzido zero, surgem circuitos e componentes fortemente conexas nesse grafo — exatamente as estruturas que a condensação/contração explora. Essa dinâmica explica por que a solução pode ser construída apenas com arestas de custo reduzido zero e por que a condição dual “exatamente uma aresta entra em cada conjunto apertado \(X\) com \(z(X)>0\)” certifica a otimalidade.
