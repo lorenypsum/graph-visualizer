@@ -14,15 +14,13 @@
 \usepackage{tikz}
 \usepackage[most]{tcolorbox}
     \tcbset{colback=green!15,colframe=purple!15,boxrule=0.6pt}
-% Algoritmos: paleta roxa
-% \newtcolorbox{algobox}[1]{enhanced,breakable,sharp corners,boxsep=6pt,arc=1pt,
-%     colback=green!3,colframe=black!80,fonttitle=\bfseries,coltitle=white,title={Algoritmo: #1}}
+
 % Algoritmos: paleta verde
 \newtcbtheorem[number within=section]{algobox}{Algoritmo}%
 {enhanced,breakable,sharp corners,boxsep=6pt,arc=1pt,
  colback=green!3,colframe=green!20!black,fonttitle=\bfseries,coltitle=white,boxrule=0.6pt}{th}
 
-% Teoremas: paleta azul  verde
+% Teoremas: paleta azul 
 \newtcbtheorem[number within=section]{teobox}{Teorema}%
 {enhanced,breakable,sharp corners,boxsep=6pt,arc=1pt,
  colback=blue!3,colframe=blue!30,fonttitle=\bfseries,coltitle=black,boxrule=0.6pt}{th}
@@ -32,6 +30,7 @@
 {lemabox}{Lema}%
 {enhanced,breakable,sharp corners,boxsep=6pt,arc=1pt,
  colback=orange!3,colframe=orange!35,fonttitle=\bfseries,coltitle=black,boxrule=0.6pt}{lem}
+ 
 \usetikzlibrary{positioning,arrows.meta,fit,calc}
 
 \addbibresource{referencias.bib}
