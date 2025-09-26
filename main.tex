@@ -1,5 +1,7 @@
 \documentclass[12pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
+% Caixa reutilizável para destacar algoritmos
+
 \usepackage{amsmath, amssymb, amsthm}
 \usepackage{geometry}
 \geometry{a4paper, margin=1in}
@@ -10,6 +12,10 @@
 \usepackage{microtype}
 \usepackage{capt-of} % permitir legenda/label sem float
 \usepackage{tikz}
+\usepackage[most]{tcolorbox}
+\tcbset{colback=green!15,colframe=purple!15,boxrule=0.6pt}
+\newtcolorbox{algobox}[1]{enhanced,breakable,sharp corners,boxsep=6pt,arc=1pt,
+    colback=green!3,colframe=black!85,title={Algoritmo: #1}}
 \usetikzlibrary{positioning,arrows.meta,fit,calc}
 
 \addbibresource{referencias.bib}
@@ -2359,8 +2365,9 @@ logo $\textbf{custo}(T) \le \textbf{custo}(B)$ para qualquer $B$; $T$ é ótimo.
 \end{center}
 
 \paragraph{}
-Em poucas palavras, o teorema anterior nos diz como reconhecer, de forma concreta, que a arborescência encontrada é realmente de custo mínimo. Fazemos uma normalização simples de custos\footnote{Por “normalização de custos” entendemos subtrair a mesma constante de todos os arcos que entram em um mesmo subconjunto (ou componente) do grafo, para simplificar os valores e criar arcos de custo reduzido zero, sem alterar qual solução é ótima; em outras palavras, trabalhar com custos reduzidos.}: para cada “parte” do grafo, subtraímos, dos arcos que entram nessa parte, o menor custo observado; com isso, pelo menos um arco que entra em cada parte zera. A solução ótima pode ser construída usando apenas arcos com custo reduzido zero e, sob esse ajuste, não sobra nenhuma troca que diminua o custo.
+O teorema anterior nos diz como reconhecer, de forma concreta, que a arborescência encontrada é realmente de custo mínimo. Fazemos uma normalização simples de custos\footnote{Por “normalização de custos” entendemos subtrair a mesma constante de todos os arcos que entram em um mesmo subconjunto (ou componente) do grafo, para simplificar os valores e criar arcos de custo reduzido zero, sem alterar qual solução é ótima; em outras palavras, trabalhar com custos reduzidos.}: para cada “parte” do grafo, subtraímos, dos arcos que entram nessa parte, o menor custo observado; com isso, pelo menos um arco que entra em cada parte zera. A solução ótima pode ser construída usando apenas arcos com custo reduzido zero e, sob esse ajuste, não sobra nenhuma troca que diminua o custo.
 
+\paragraph{}
 Na prática, a verificação de optimalidade se reduz a checar condições locais:
 \begin{itemize}\setlength{\itemsep}{2pt}
     \item não há arcos com custo reduzido negativo;
@@ -2374,20 +2381,118 @@ Com essa ideia em mãos, saímos do “o que é ótimo?” para “como chegar l
 
 \subsection{Algoritmos}
 \paragraph{}
-A ideia de “passo a passo” tem uma motivação filosófica: desde uma receita de cozinha ao método de Euclides para o máximo divisor comum, buscamos procedimentos finitos e reprodutíveis que transformem intenções em resultados. Um algoritmo torna explícitas as decisões que tomaríamos “de cabeça”: torna o raciocínio executável, auditável e menos sujeito a ambiguidades.
+Quando falamos em passo a passo é muito comum vir à mente a ideia de receitas de cozinha, instruções de montagem ou manuais de operação. Em ciência da computação, o termo \emph{algoritmo} captura essa ideia de forma mais formal e precisa.
 
-\emph{Definição intuitiva.} Um algoritmo é uma sequência finita de instruções claras que, dada uma entrada, conduz mecanicamente a uma saída desejada. Em termos práticos, cada passo deve ser:
+\paragraph{}O primeiro uso documentado do termo “algoritmo” em inglês data de 1230, em uma tradução latina do trabalho de Al-Khwarizmi. No entanto, o conceito de algoritmos é muito mais antigo, remontando a procedimentos matemáticos e lógicos desenvolvidos ao longo dos séculos.
+
+\paragraph{}
+Um dos primeiros algoritmos conhecidos é o \emph{método de Euclides} para encontrar o máximo divisor comum (mdc) de dois números inteiros, descrito por Euclides em sua obra "Os Elementos" por volta de 300 a.C. 
+
+\paragraph{}
+\begin{algobox}{Método de Euclides (mdc)}
+Dados inteiros positivos $a$ e $b$:
+\begin{enumerate}\setlength{\itemsep}{2pt}
+    \item enquanto $b>0$, substitua $(a,b)$ por $(b, a\bmod b)$;
+    \item quando $b=0$, devolva $a$.
+\end{enumerate}
+\end{algobox}
+
+\paragraph{}
+Mas, o que diferencia uma mera receita de um algoritmo? A resposta está na clareza, precisão e capacidade de execução repetitiva das instruções. Um algoritmo deve ser:
 \begin{itemize}\setlength{\itemsep}{2pt}
-    \item não ambíguo (instruições interpretáveis de uma única maneira);
-    \item efetivo (cada operação é realizável em tempo finito);
-    \item geral (funciona para toda instância válida do problema).
+    \item \textbf{Não ambiguidade}: cada passo deve ser definido de maneira inequívoca, sem ambiguidade.
+    \item \textbf{Especificidade}: as instruções devem ser detalhadas o suficiente para que possam ser seguidas sem interpretação subjetiva.
+    \item \textbf{Executabilidade}: deve ser possível executar o algoritmo de forma sistemática, sem necessidade de criatividade ou intuição.
 \end{itemize}
 
-\emph{Comentário formal.} A ciência da computação formaliza esse conceito por meio de modelos como máquinas de Turing, funções recursivas, RAM, entre outros. Essas formalizações são equivalentes quanto ao que é computável (Tese de Church–Turing) e permitem discutir com rigor correção e complexidade (tempo e memória). Para nós, isso se traduz em duas questões centrais: (i) o procedimento sempre devolve uma arborescência válida? (ii) qual o seu custo assintótico?
+\paragraph{}
+Por isso, que chamamos o método de Euclides de algoritmo: os passos são não ambíguos; termina porque a segunda coordenada diminui até zerar; é correto pois mantém o invariante $\gcd(a,b)=\gcd(b,a\bmod b)$; e o custo é baixo (proporcional ao número de dígitos de $a$ e $b$).
 
-No nosso contexto, um algoritmo para arborescências recebe um dígrafo com custos e uma raiz $r$ e devolve uma r-arborescência de custo mínimo. Nas próximas subseções veremos duas abordagens clássicas: Chu–Liu/Edmonds (escolhas locais com contração de ciclos) e um método primal–dual na linha de András Frank.
+\paragraph{}
+Essas características não definem formalmente o que é um algoritmo, mas ajudam a entender o conceito. A definição formal envolve a ideia de \emph{computabilidade}\footnote{A computabilidade é um conceito na teoria da computação, que se refere à capacidade de um problema ser resolvido por um algoritmo em um tempo finito. \emph{Comentário formal.} Esse conceito é formalizado por meio de modelos como máquinas de Turing, funções recursivas, RAM, entre outros. Essas formalizações são equivalentes quanto ao que é computável (Tese de Church–Turing) e permitem discutir com rigor correção e complexidade (tempo e memória).}, e isso envolve uma discussão profunda demais para o escopo deste trabalho.
 
+\subsubsection{Complexidade de Algoritmos}
 
+\paragraph{}
+Um dos conceitos que envolvem computabilidade que precisamos nos familiarizar é o de \emph{complexidade de algoritmos}, que se refere à quantidade de recursos computacionais (tempo e espaço) que um algoritmo consome em função do tamanho da entrada.
+
+\paragraph{}
+A complexidade de um algoritmo pode ser analisada em termos de \emph{complexidade de tempo} e \emph{complexidade de espaço}. A complexidade de tempo refere-se ao tempo que um algoritmo leva para ser executado, enquanto a complexidade de espaço refere-se à quantidade de memória que um algoritmo utiliza durante sua execução.
+
+\paragraph{}
+A notação assintótica é frequentemente usada para expressar a complexidade de algoritmos, permitindo descrever o comportamento do algoritmo à medida que o tamanho da entrada cresce. As notações mais comuns são:
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item \textbf{O grande (Big O)}: descreve um limite superior para o crescimento da função. Por exemplo, se um algoritmo tem complexidade \(O(n^2)\), isso significa que o tempo de execução do algoritmo cresce no máximo proporcional a \(n^2\) para entradas grandes.
+    \item \textbf{Ômega (\(\Omega\))}: descreve um limite inferior para o crescimento da função. Se um algoritmo tem complexidade \(\Omega(n)\), isso significa que o tempo de execução do algoritmo cresce no mínimo proporcional a \(n\) para entradas grandes.
+    \item \textbf{Theta (\(\Theta\))}: descreve um limite assintótico preciso, indicando que a função cresce exatamente proporcional a uma determinada função. Se um algoritmo tem complexidade \(\Theta(n \log n)\), isso significa que o tempo de execução do algoritmo cresce proporcional a \(n \log n\) para entradas grandes.
+\end{itemize}
+
+\paragraph{}
+Essas notações ajudam a comparar a eficiência de diferentes algoritmos e a entender como eles se comportam à medida que o tamanho da entrada aumenta. Ao analisar a complexidade de um algoritmo, é importante considerar o pior caso, o caso médio e o melhor caso, dependendo do contexto em que o algoritmo será utilizado.
+
+\paragraph{}
+Para ilustrar a análise de complexidade, consideremos o exemplo da busca linear vs busca binária em um vetor ordenado\footnote{Por vetor ordenado entendemos um arranjo (array) em que os elementos estão armazenados em posições consecutivas e dispostos segundo uma ordem total (tipicamente crescente ou não decrescente). Essa organização permite algoritmos como a busca binária, que dependem de comparações para descartar metades do intervalo.}. 
+
+\paragraph{Exemplo: Busca Linear vs Busca Binária}
+\paragraph{}
+O algoritmo de busca linear percorre cada elemento do vetor até encontrar o valor desejado ou chegar ao final do vetor. A complexidade desse algoritmo é \(O(n)\) no pior caso, onde \(n\) é o tamanho do vetor, pois pode ser necessário verificar todos os elementos.
+
+\begin{algobox}{Algoritmo: Busca Linear}
+Dado um vetor \(V\) de tamanho \(n\) e um valor \(x\):
+\begin{enumerate}\setlength{\itemsep}{2pt}
+    \item Para cada índice \(i\) de \(0\) a \(n - 1\):
+    \begin{enumerate}\setlength{\itemsep}{2pt}
+        \item Se \(V[i] = x\), retorne \(i\).
+    \end{enumerate}
+    \item Retorne \(-1\) (indica que \(x\) não está no vetor).
+\end{enumerate}
+\end{algobox}
+
+\paragraph{}
+Já o algoritmo de busca binária aproveita o fato de que o vetor está ordenado para reduzir o espaço de busca pela metade a cada iteração. A complexidade desse algoritmo é \(O(\log n)\) no pior caso, tornando-o muito mais eficiente para grandes vetores.
+
+\begin{algobox}{Algoritmo: Busca Binária}
+Dado um vetor ordenado \(V\) de tamanho \(n\) e um valor \(x\):
+\begin{enumerate}\setlength{\itemsep}{2pt}
+    \item Defina \(\text{início} = 0\) e \(\text{fim} = n - 1\).
+    \item Enquanto \(\text{início} \leq \text{fim}\):
+    \begin{enumerate}\setlength{\itemsep}{2pt}
+        \item Calcule \(meio = \left\lfloor \dfrac{\text{início} + \text{fim}}{2} \right\rfloor\).
+        \item Se \(V[meio] = x\), retorne \(meio\).
+        \item Se \(V[meio] < x\), defina \(\text{início} = meio + 1\).
+        \item Caso contrário, defina \(\text{fim} = meio - 1\).
+    \end{enumerate}
+    \item Retorne \(-1\) (indica que \(x\) não está no vetor).
+\end{enumerate}
+\end{algobox}  
+
+O algoritmo de busca linear tem a seguinte complexidade:
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item \textbf{Melhor caso}: \(O(1)\) - o elemento procurado está na primeira posição.
+    \item \textbf{Caso médio}: \(O(n)\) - em média, metade dos elementos precisam ser verificados.
+    \item \textbf{Pior caso}: \(O(n)\) - o elemento procurado está na última posição ou não está no vetor.
+\end{itemize}
+
+Já o algoritmo de busca binária tem a seguinte complexidade:
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item \textbf{Melhor caso}: \(O(1)\) - o elemento procurado está no meio do vetor.
+    \item \textbf{Caso médio}: \(O(\log n)\) - em média, a cada iteração, o tamanho do vetor é reduzido pela metade.
+    \item \textbf{Pior caso}: \(O(\log n)\) - o elemento procurado não está no vetor ou está na extremidade.
+\end{itemize}
+ 
+\paragraph{}
+Esse exemplo ilustra como a análise de complexidade pode fornecer insights sobre a eficiência de um algoritmo em diferentes cenários. A busca binária é muito mais eficiente do que uma busca linear (\(O(n)\)) para grandes vetores, graças à sua capacidade de reduzir o espaço de busca pela metade a cada iteração.
+
+\paragraph{}
+Quando analisamos algoritmos alguns outros conceitos são úteis:
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item \textbf{Invariante}: uma propriedade que permanece verdadeira durante a execução do algoritmo. Por exemplo, em um algoritmo de ordenação, um invariante pode ser que os elementos à esquerda de um índice específico estão sempre ordenados. (ex.: “não há custos reduzidos negativos” ou “cada componente tem ao menos um arco zero entrando”).
+    \item \textbf{Correção}: a garantia de que o algoritmo produz a saída correta para todas as entradas válidas. Isso geralmente é demonstrado por meio de provas formais ou argumentos lógicos. (ex.: justificativa de que o resultado final é uma arborescência válida e de custo mínimo)
+    \item \textbf{Terminação}: a garantia de que o algoritmo sempre chegará a um ponto final, ou seja, que não entrará em um loop infinito. Isso pode ser demonstrado mostrando que alguma medida (como o tamanho da entrada) diminui a cada passo. (ex.: cada contração reduz $|V|$; cada ajuste cria um novo arco zero).
+\end{itemize}
+
+\paragraph{}
+Com esses conceitos em mente, estamos prontos para explorar os algoritmos específicos para encontrar r-arborescências de custo mínimo, que serão detalhados no próximo capítulo.
 
 \paragraph{}     
 \section{Considerações Finais}
