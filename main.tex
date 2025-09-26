@@ -2282,7 +2282,7 @@ logo $\textbf{custo}(T) \le \textbf{custo}(B)$ para qualquer $B$; $T$ é ótimo.
 \paragraph{Intuição.} Os pesos $y$ “pagam” parcialmente cada arco de fora para dentro dos subconjuntos; arcos da solução ficam exatamente “quitados” (custo reduzido 0). Se algum arco restante tivesse custo reduzido negativo, poderíamos baixar o custo da solução trocando-o por um arco de $T$, contradizendo optimalidade. Conjuntos com $y(X)>0$ exigem uso único de um arco para não desperdiçar potencial.
 
 \medskip
-\emph{Referências:} Fulkerson (condições de optimalidade), apresentações modernas em \cite{frank2014connections, schrijver2003comb}.
+\emph{Referências:} Fulkerson (condições de optimalidade), apresentações modernas em \cite{frank2014, schrijver2003comb}.
 \label{thm:fulkerson-optimalidade-arborescencia}
 \end{teobox}
 
@@ -2449,7 +2449,72 @@ Para encontrar r-arborescências de custo mínimo, utilizaremos algumas técnica
     \item \textbf{Procedimento em Duas Fases de András Frank}: uma abordagem alternativa que também será explorada.
 \end{itemize}
 
-\paragraph{}Com esses conceitos e técnicas em mente, estamos prontos para explorar os algoritmos específicos que nos levarão à descoberta da arborescência perdida. No próximo capítulo, detalharemos o algoritmo de Chu–Liu/Edmonds e o procedimento em duas fases de András Frank, explicando suas etapas, intuições e implementações.
+\subsection{Algoritmo de Chu–Liu/Edmonds}
+
+\paragraph{História e motivação}
+O problema de encontrar uma \emph{r-arborescência de custo mínimo} (também chamado de \emph{minimum-cost branching}) generaliza a Árvore Geradora Mínima (MST) para grafos \emph{direcionados}. Enquanto a MST pode ser resolvida por algoritmos gulosos clássicos (Kruskal/Prim), no contexto dirigido a escolha ingênua das arestas mais baratas pode criar \emph{ciclos}. Em trabalhos independentes na década de 1960, \textbf{Chu e Liu} (1965) e \textbf{Edmonds} (1967) deram o algoritmo hoje conhecido como \emph{Chu–Liu/Edmonds}, que resolve o problema com uma ideia central simples: “cada vértice (exceto a raiz) deve ter exatamente um arco de entrada, de menor custo possível; se isso formar ciclos, contraia-os e repita”. Ver, por exemplo, \cite{schrijver2003comb}.
+
+\paragraph{Ideia em alto nível}
+Para cada vértice \(v\neq r\), selecione o arco de menor custo que \emph{entra} em \(v\). Se o conjunto selecionado não forma nenhum ciclo dirigido, já temos uma r-arborescência (cada vértice tem grau de entrada 1 e o grafo é acíclico). Se surgir um ciclo, contraímos todo o ciclo em um supervértice e \emph{ajustamos} os custos dos arcos que entram no ciclo para preservar a comparação relativa de custos. Repetimos no grafo contraído até não haver mais ciclos. Por fim, expandimos os ciclos em ordem inversa, escolhendo dentro de cada um os arcos corretos para manter grau de entrada 1 e aciclicidade global.
+
+\paragraph{Passos principais}
+\begin{enumerate}\setlength{\itemsep}{2pt}
+    \item Para cada \(v\neq r\), escolha um arco mais barato \(a_v\in \delta^-(v)\).
+    \item Se o conjunto \(A' = \{a_v : v\neq r\}\) não contém ciclo, então os arcos de \(A'\) formam a r-arborescência ótima.
+    \item Caso exista um ciclo dirigido \(C\subseteq A'\):
+    \begin{enumerate}\setlength{\itemsep}{1pt}
+        \item Contraia \(C\) em um supervértice \(x_C\).
+        \item Para cada arco \(e\) que \emph{entra} em algum vértice de \(C\) vindo de fora, reduza seu custo por um valor correspondente ao “excesso” em relação ao arco escolhido para o seu cabeça; com isso, manteremos arcos de custo reduzido \(0\) como candidatos.
+        \item Resolva recursivamente no grafo contraído.
+        \item Ao expandir \(C\), troque exatamente um arco selecionado no ciclo por um arco que entra no ciclo a custo reduzido \(0\), eliminando o ciclo e preservando grau de entrada 1.
+    \end{enumerate}
+\end{enumerate}
+
+\begin{algobox}{Chu–Liu/Edmonds (visão operacional)}
+Entrada: dígrafo \(D=(V,A)\), custos \(c:A\to\mathbb{R}\), raiz \(r\).
+\begin{enumerate}\setlength{\itemsep}{2pt}
+    \item Para cada \(v\neq r\), escolha \(a_v\in\arg\min\{c(u,v):(u,v)\in A\}\).
+    \item Se \(A' = \{a_v: v\neq r\}\) é acíclico, devolva \(A'\).
+    \item Senão, seja \(C\) um ciclo em \(A'\). Contraia \(C\) em \(x_C\). Para cada arco \((u,w)\) que entra em \(C\) (isto é, \(w\in V(C), u\notin V(C)\)), defina
+    \[c'(u,x_C) \leftarrow c(u,w) - c(a_w).\]
+    Resolva recursivamente com custos \(c'\). Na volta, expanda \(C\) e, dentro de \(C\), remova um arco de \(C\) e inclua o arco que entra em \(C\) escolhido na recursão (de custo reduzido zero).
+\end{enumerate}
+\end{algobox}
+
+\paragraph{Corretude e complexidade}
+O ajuste de custos conserva diferenças relevantes, garantindo que a solução no grafo contraído possa ser “traduzida” de volta para o original sem perder otimalidade. A prova formal utiliza um argumento de conservação por contração/expansão e pode ser vista como um caso particular de um raciocínio primal–dual: as reduções de custo correspondem a “potenciais” nos vértices que criam \emph{arcos de custo reduzido zero} como candidatos naturais. Implementações simples rodam em \(O(mn)\); com estruturas apropriadas, obtém-se \(O(m\log n)\), onde \(n=|V|\) e \(m=|A|\); ver \cite{schrijver2003comb}.
+
+\paragraph{Quando usar}
+É a escolha padrão quando se precisa de uma única r-arborescência de custo mínimo. A ideia de escolher o arco de entrada mais barato por vértice, lidar com ciclos por contração e trabalhar com custos reduzidos aparece em várias generalizações.
+
+\subsection{Procedimento em Duas Fases de András Frank}
+
+\paragraph{Motivação e visão dual}
+O método de \textbf{András Frank} organiza o raciocínio anterior em um \emph{esquema primal–dual em duas fases} que torna explícitos os papéis dos \emph{custos reduzidos} e dos \emph{cortes apertados} (tight cuts). Em alto nível, mantemos potenciais \(y(v)\) nos vértices e trabalhamos com custos reduzidos \(c'(u,v)=c(u,v)-y(v)\). A \textbf{Fase I} ajusta os potenciais até garantir, para cada \(v\neq r\), a existência de pelo menos um arco de custo reduzido zero que \emph{entra} em \(v\). A \textbf{Fase II} extrai dentre os arcos de custo reduzido zero uma r-arborescência, tratando ciclos por contração/expansão. Ver \cite{frank2014,schrijver2003comb}.
+
+\paragraph{Conexão com condições de corte}
+As condições clássicas de existência dizem que, para todo subconjunto não vazio \(X\subseteq V\setminus\{r\}\), deve existir ao menos um arco que entra em \(X\) (corte \(\delta^-(X)\) não vazio). No método de Frank, cortes “apertados” (aqueles cuja entrada disponível a custo reduzido é mínima) formam uma família laminar que guia as contrações, garantindo que, ao final, uma arborescência de custo mínimo emerge entre os arcos de custo reduzido zero.
+
+\paragraph{Esqueleto do método}
+\begin{enumerate}\setlength{\itemsep}{2pt}
+    \item \textbf{Fase I (normalização primal–dual).} Inicialize \(y\equiv 0\). Enquanto existir \(v\neq r\) sem arco de custo reduzido zero entrando em \(v\), aumente \(y(v)\) (diminuindo \(c'(u,v)\)) até que algum arco que entra em \(v\) atinja custo reduzido zero. Se aparecer ciclo entre arcos de custo reduzido zero, contraia-o e continue.
+    \item \textbf{Fase II (extração).} No grafo (possivelmente contraído), selecione uma r-arborescência usando apenas arcos de custo reduzido zero; se um ciclo surgir, contraia e prossiga. Ao término, expanda as contrações em ordem inversa, escolhendo, em cada expansão, o arco que entra no componente com custo reduzido zero para quebrar o ciclo interno.
+\end{enumerate}
+
+\begin{algobox}{Frank: método em duas fases (resumo)}
+Entrada: dígrafo \(D=(V,A)\), custos \(c\), raiz \(r\).
+\begin{enumerate}\setlength{\itemsep}{2pt}
+    \item (Fase I) Mantenha potenciais \(y\). Enquanto existir \(v\neq r\) sem arco \((u,v)\) com \(c(u,v)-y(v)=0\), aumente \(y(v)\) até algum entrar a zero. Mantenha contrações para ciclos de zeros.
+    \item (Fase II) Entre arcos de custo reduzido zero, construa uma r-arborescência; trate ciclos por contração e, no retorno, expanda escolhendo o arco que entra no componente com custo zero.
+    \item Devolva a arborescência construída. Pela dualidade implícita, seu custo é mínimo.
+\end{enumerate}
+\end{algobox}
+
+\paragraph{Corretude e complexidade}
+Ao manter custos reduzidos e uma família laminar de cortes apertados, o método garante que sempre existe uma escolha local consistente com a otimalidade global. A análise de complexidade é alinhada à do Chu–Liu/Edmonds: implementações diretas ficam em \(O(mn)\) e versões eficientes, em \(O(m\log n)\); ver \cite{frank2014,schrijver2003comb}.
+
+\paragraph{Quando usar}
+Além de fornecer uma forma limpa de provar corretude, a abordagem de Frank é útil quando queremos evidenciar a estrutura dual (custos reduzidos, cortes apertados) ou quando estendemos o problema para variantes com restrições adicionais.
     
 \section{Considerações Finais}
 \printbibliography

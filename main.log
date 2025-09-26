@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025/Homebrew) (preloaded format=pdflatex 2025.9.15)  26 SEP 2025 07:16
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025/Homebrew) (preloaded format=pdflatex 2025.9.15)  26 SEP 2025 07:22
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -880,6 +880,9 @@ LaTeX Warning: Label `th:D' multiply defined.
 
 LaTeX Warning: Label `th:D' multiply defined.
 
+
+LaTeX Warning: Label `th:E' multiply defined.
+
 )
 \openout1 = `main.aux'.
 
@@ -1231,7 +1234,7 @@ LaTeX Warning: Citation 'schrijver2003comb' on page 41 undefined on input line 2
 
 [42]
 
-LaTeX Warning: Citation 'frank2014connections' on page 43 undefined on input line 2285.
+LaTeX Warning: Citation 'frank2014' on page 43 undefined on input line 2285.
 
 
 LaTeX Warning: Citation 'schrijver2003comb' on page 43 undefined on input line 2285.
@@ -1250,11 +1253,43 @@ LaTeX Warning: Citation 'schrijver2003comb' on page 43 undefined on input line 2
 
 [48]
 
-LaTeX Warning: Empty bibliography on input line 2455.
+LaTeX Warning: Citation 'schrijver2003comb' on page 49 undefined on input line 2455.
 
 
 
-[49] (./main.aux)
+[49]
+
+LaTeX Warning: Citation 'schrijver2003comb' on page 50 undefined on input line 2485.
+
+
+
+[50]
+
+LaTeX Warning: Citation 'frank2014' on page 51 undefined on input line 2493.
+
+
+LaTeX Warning: Citation 'schrijver2003comb' on page 51 undefined on input line 2493.
+
+
+Overfull \hbox (9.85515pt too wide) in paragraph at lines 2501--2502
+[]\OT1/cmr/bx/n/12 (-20) Fase II (ex-tra^^Xc~ao). \OT1/cmr/m/n/12 (-20) No grafo (pos-si-vel-mente con-tra^^S^^Pdo), se-le-ci-one uma r-arboresc^encia
+ []
+
+
+
+[51]
+
+LaTeX Warning: Citation 'frank2014' on page 52 undefined on input line 2514.
+
+
+LaTeX Warning: Citation 'schrijver2003comb' on page 52 undefined on input line 2514.
+
+
+LaTeX Warning: Empty bibliography on input line 2520.
+
+
+
+[52] (./main.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
@@ -1267,7 +1302,7 @@ LaTeX Warning: There were undefined references.
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 320DA471EB7E8683A2BA25F4F4980C14;4837.
+(rerunfilecheck)             Checksum: 6D8431667EE82CED99E8CE60316C44A7;5333.
 
 Package biblatex Warning: Please (re)run BibTeX on the file(s):
 (biblatex)                main
@@ -1278,18 +1313,18 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 40545 strings out of 473190
- 810313 string characters out of 5704335
- 1462152 words of memory out of 5000000
- 62575 multiletter control sequences out of 15000+600000
- 580574 words of font info for 218 fonts, out of 8000000 for 9000
+ 40586 strings out of 473190
+ 810733 string characters out of 5704335
+ 1462183 words of memory out of 5000000
+ 62581 multiletter control sequences out of 15000+600000
+ 580792 words of font info for 220 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  102i,13n,107p,1934b,1654s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></opt/homebrew/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on main.pdf (49 pages, 458515 bytes).
+Output written on main.pdf (52 pages, 470666 bytes).
 PDF statistics:
- 903 PDF objects out of 1000 (max. 8388607)
- 779 compressed objects within 8 object streams
- 412 named destinations out of 1000 (max. 500000)
- 39301 words of extra memory for PDF output out of 42996 (max. 10000000)
+ 957 PDF objects out of 1000 (max. 8388607)
+ 829 compressed objects within 9 object streams
+ 443 named destinations out of 1000 (max. 500000)
+ 39317 words of extra memory for PDF output out of 42996 (max. 10000000)
 
