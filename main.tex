@@ -15,15 +15,23 @@
 \usepackage[most]{tcolorbox}
     \tcbset{colback=green!15,colframe=purple!15,boxrule=0.6pt}
 % Algoritmos: paleta roxa
-\newtcolorbox{algobox}[1]{enhanced,breakable,sharp corners,boxsep=6pt,arc=1pt,
-    colback=green!3,colframe=black!80,fonttitle=\bfseries,coltitle=white,title={Algoritmo: #1}}
-% Teoremas: paleta azul | Lemas: paleta verde
+% \newtcolorbox{algobox}[1]{enhanced,breakable,sharp corners,boxsep=6pt,arc=1pt,
+%     colback=green!3,colframe=black!80,fonttitle=\bfseries,coltitle=white,title={Algoritmo: #1}}
+% Algoritmos: paleta verde
+\newtcbtheorem[number within=section]{algobox}{Algoritmo}%
+{enhanced,breakable,sharp corners,boxsep=6pt,arc=1pt,
+ colback=green!3,colframe=green!20!black,fonttitle=\bfseries,coltitle=white,boxrule=0.6pt}{th}
+
+% Teoremas: paleta azul  verde
 \newtcbtheorem[number within=section]{teobox}{Teorema}%
 {enhanced,breakable,sharp corners,boxsep=6pt,arc=1pt,
  colback=blue!3,colframe=blue!30,fonttitle=\bfseries,coltitle=black,boxrule=0.6pt}{th}
-\newtcbtheorem[number within=section]{lemabox}{Lema}%
+
+ % Lemas: paleta laranja
+\newtcbtheorem[number within=section]
+{lemabox}{Lema}%
 {enhanced,breakable,sharp corners,boxsep=6pt,arc=1pt,
- colback=orange!3,colframe=orange!45!black,fonttitle=\bfseries,coltitle=black,boxrule=0.6pt}{lem}
+ colback=orange!3,colframe=orange!35,fonttitle=\bfseries,coltitle=black,boxrule=0.6pt}{lem}
 \usetikzlibrary{positioning,arrows.meta,fit,calc}
 
 \addbibresource{referencias.bib}
@@ -1607,17 +1615,8 @@ Existe um princípio chamado de princípio da casa dos pombos, que diz que se vo
 Esse princípio também se aplica a dígrafos, mas com uma nuance importante: em dígrafos, o critério correto para garantir a existência de um circuito dirigido é que o grau mínimo de saída (ou de entrada) seja pelo menos 1. Ou seja, se cada vértice em um dígrafo tem pelo menos um arco saindo dele (ou entrando nele), então o dígrafo deve conter pelo menos um circuito dirigido. Abaixo apresentamos esse resultado formalmente.
 
 \paragraph{}
-\begin{center}
-\begingroup
-\setlength{\fboxsep}{15pt}% padding externo da moldura
-\fcolorbox{orange!15}{orange!3}{%
-\parbox{\dimexpr\textwidth-2\fboxsep\relax}{%
-\noindent
-\begingroup
-\setlength{\fboxsep}{15pt}% padding interno da faixa azul (título/enunciado)
-\colorbox{orange!15}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\textbf{Lema: Princípio da casa dos pombos para circuitos.}\\[1.0em]
-{\color{black!70!black}Se \(D=(V,A)\) é um dígrafo finito em que todo vértice tem grau de saída ao menos 1, isto é, \(d^+(v)\ge 1\) para todo \(v\in V\), então \(D\) contém pelo menos um circuito dirigido. (De forma equivalente, a afirmação vale trocando ``saída'' por ``entrada''.)}}}
-\endgroup
+\begin{lemabox}{Princípio da casa dos pombos para circuitos.}
+Se \(D=(V,A)\) é um dígrafo finito em que todo vértice tem grau de saída ao menos 1, isto é, \(d^+(v)\ge 1\) para todo \(v\in V\), então \(D\) contém pelo menos um circuito dirigido. (De forma equivalente, a afirmação vale trocando ``saída'' por ``entrada''.)
 
 \paragraph{}
 	\textbf{Prova:} Escolha para cada \(v\in V\) um arco \((v,f(v))\) que sai de \(v\) (possível porque \(d^+(v)\ge 1\)). Fixa\-do um vértice \(v_0\), considere a sequência \(v_0, v_1=f(v_0), v_2=f(v_1),\dots\). Como \(V\) é finito, algum vértice repete: existem \(i<j\) com \(v_i=v_j\). O trecho \(v_i\to v_{i+1}\to\cdots\to v_j=v_i\) é um circuito dirigido em \(D\). A versão com graus de entrada segue aplicando o argumento ao dígrafo com arcos invertidos. \hfill$\square$
@@ -1625,9 +1624,8 @@ Esse princípio também se aplica a dígrafos, mas com uma nuance importante: em
 \paragraph{}
 \smallskip
 	\textbf{Observação:} A condição \(|A|>|V|\) \emph{não} garante a existência de circuito dirigido em geral (há orientações acíclicas com muitos arcos). O critério correto, simples e útil, é o grau mínimo de saída (ou de entrada) ser pelo menos 1. Ver, por exemplo, \cite{schrijver2003comb}.
-}}
-\endgroup
-\end{center}
+
+\end{lemabox}
 
 \paragraph{}
 Esse princípio ajuda a entender o comportamento básico dos métodos que os algoritmos empregam para encontrar as arborescências de custo mínimo. Vamos elaborar melhor esse ponto na seção de algoritmos em arborescências, especialmente ao discutir o algoritmo de Chu--Liu/Edmonds.
@@ -2377,7 +2375,7 @@ Para ilustrar a análise de complexidade, consideremos o exemplo da busca linear
 \paragraph{}
 O algoritmo de busca linear percorre cada elemento do vetor até encontrar o valor desejado ou chegar ao final do vetor. A complexidade desse algoritmo é \(O(n)\) no pior caso, onde \(n\) é o tamanho do vetor, pois pode ser necessário verificar todos os elementos.
 
-\begin{algobox}{Algoritmo: Busca Linear}
+\begin{algobox}{Busca Linear}
 Dado um vetor \(V\) de tamanho \(n\) e um valor \(x\):
 \begin{enumerate}\setlength{\itemsep}{2pt}
     \item Para cada índice \(i\) de \(0\) a \(n - 1\):
@@ -2391,7 +2389,7 @@ Dado um vetor \(V\) de tamanho \(n\) e um valor \(x\):
 \paragraph{}
 Já o algoritmo de busca binária aproveita o fato de que o vetor está ordenado para reduzir o espaço de busca pela metade a cada iteração. A complexidade desse algoritmo é \(O(\log n)\) no pior caso, tornando-o muito mais eficiente para grandes vetores.
 
-\begin{algobox}{Algoritmo: Busca Binária}
+\begin{algobox}{Busca Binária}
 Dado um vetor ordenado \(V\) de tamanho \(n\) e um valor \(x\):
 \begin{enumerate}\setlength{\itemsep}{2pt}
     \item Defina \(\text{início} = 0\) e \(\text{fim} = n - 1\).
