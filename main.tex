@@ -13,9 +13,17 @@
 \usepackage{capt-of} % permitir legenda/label sem float
 \usepackage{tikz}
 \usepackage[most]{tcolorbox}
-\tcbset{colback=green!15,colframe=purple!15,boxrule=0.6pt}
+    \tcbset{colback=green!15,colframe=purple!15,boxrule=0.6pt}
+% Algoritmos: paleta roxa
 \newtcolorbox{algobox}[1]{enhanced,breakable,sharp corners,boxsep=6pt,arc=1pt,
-    colback=green!3,colframe=black!85,title={Algoritmo: #1}}
+    colback=green!3,colframe=black!80,fonttitle=\bfseries,coltitle=white,title={Algoritmo: #1}}
+% Teoremas: paleta azul | Lemas: paleta verde
+\newtcbtheorem[number within=section]{teobox}{Teorema}%
+{enhanced,breakable,sharp corners,boxsep=6pt,arc=1pt,
+ colback=blue!3,colframe=blue!30,fonttitle=\bfseries,coltitle=black,boxrule=0.6pt}{th}
+\newtcbtheorem[number within=section]{lemabox}{Lema}%
+{enhanced,breakable,sharp corners,boxsep=6pt,arc=1pt,
+ colback=orange!3,colframe=orange!45!black,fonttitle=\bfseries,coltitle=black,boxrule=0.6pt}{lem}
 \usetikzlibrary{positioning,arrows.meta,fit,calc}
 
 \addbibresource{referencias.bib}
@@ -2124,26 +2132,16 @@ Esse resultado é conhecido como o \textbf{Teorema de Fulkerson} e para entender
 A seguir apresentamos o teorema propriamente dito e um esboço de sua prova.
 
 \paragraph{}
-\begin{center}
-\begingroup
-\setlength{\fboxsep}{15pt}% padding externo da moldura
-\fcolorbox{blue!15}{blue!3}{%
-\parbox{\dimexpr\textwidth-2\fboxsep\relax}{%
-\noindent
-\begingroup
-\setlength{\fboxsep}{15pt}% padding interno da faixa azul (título/enunciado)
-\colorbox{blue!15}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\textbf{Teorema: condição de existência de arborescência via cortes - Fulkerson}\\[1.0em]
-{\color{black!70!black}
+\begin{teobox}{Condição de existência via cortes (Fulkerson)}{fulkerson-existencia}
 Seja $D=(V,A)$ e $r\in V$. Existe uma out-arborescência (arborescência dirigida) enraizada em $r$ se, e somente se,
 \[
 \forall\, X\subseteq V\setminus\{r\},\ X\neq\emptyset:\  \delta^-(X)\neq\emptyset.
 \]
 Isto é: todo subconjunto não vazio que não contém a raiz recebe ao menos um arco vindo de fora.
-}}}
-\endgroup
+\end{teobox}
 
 \paragraph{}
-\textbf{Prova (esboço):} 
+	extbf{Prova (esboço):} 
 
 \paragraph{}
 \emph{(Só se:)} Suponha que $T$ é uma out-arborescência enraizada em $r$. Pegue qualquer $X\neq\emptyset$ sem $r$. Considere o primeiro vértice de $X$ alcançado a partir de $r$ no caminho dentro de $T$; o arco imediatamente anterior entra em $X$ e pertence a $\delta^-(X)$. Logo $\delta^-(X)\neq\emptyset$.
@@ -2157,10 +2155,6 @@ Isto é: todo subconjunto não vazio que não contém a raiz recebe ao menos um 
 \medskip
 \emph{Referência:} ver, por exemplo, \cite{schrijver2003comb}.
 \label{thm:fulkerson-cut-arborescencia}
-    
-}}
-\endgroup
-\end{center}
 
 \paragraph{}
 Outro resultado clássico é o teorema que caracteriza a existência de múltiplas arborescências arcodisjuntas em um dígrafo, conhecido como o \textbf{Teorema de Edmonds}. Precisamos de algumas definições antes de enunciá-lo:
@@ -2226,24 +2220,14 @@ Agora podemos enunciar o teorema de Edmonds, que fornece uma condição necessá
 
 \paragraph{}
 \paragraph{}
-\begin{center}
-\begingroup
-\setlength{\fboxsep}{15pt}% padding externo da moldura
-\fcolorbox{blue!15}{blue!3}{%
-\parbox{\dimexpr\textwidth-2\fboxsep\relax}{%
-\noindent
-\begingroup
-\setlength{\fboxsep}{15pt}% padding interno da faixa azul (título/enunciado)
-\colorbox{blue!15}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\textbf{Teorema de $k$ arborescências arcodisjuntas - Edmonds}\\[1.0em]
-{\color{black!70!black}
+\begin{teobox}{$k$ arborescências arcodisjuntas (Edmonds)}{edmonds-k-arborescencias}
 Seja $D=(V,A)$, $r\in V$ e $k\ge 1$ inteiro. São equivalentes:
 \begin{enumerate}\setlength{\itemsep}{4pt}
     \item Existem $k$ out-arborescências enraizadas em $r$ que são par a par \emph{arcodisjuntas}.
     \item (Condição de cortes) Para todo subconjunto $X\subseteq V\setminus\{r\}$ vale $|\delta^-(X)| \ge k$.
 \end{enumerate}
 Em palavras: cada “bloco” $X$ que não contém a raiz precisa ter pelo menos $k$ arcos distintos chegando de fora; isso é exatamente o que permite "alimentar" $X$ a partir de $r$ em $k$ estruturas de ramificação independentes.
-}}}
-\endgroup
+\end{teobox}
 
 \paragraph{}
 \textbf{Prova (esboço):}
@@ -2267,9 +2251,6 @@ A hipótese de cortes garante que o algoritmo de aumento (que tenta adicionar um
 \medskip
 \emph{Referências:} Edmonds (teorema das branchings) \cite{edmonds1967optimum}, apresentações modernas em \cite{schrijver2003comb}.
 \label{thm:edmonds-disjoint-arborescencias}    
-}}
-\endgroup
-\end{center}
 
 \paragraph{}
 Teoremas como esses servem para responder perguntas do tipo “quando existe?” e “quão rica pode ser a estrutura?”. Em particular, eles nos dizem que:
@@ -2298,16 +2279,7 @@ Dada uma família de pesos $y: \{X\subseteq V\setminus\{r\}: X\neq\emptyset\}\to
 \]
 
 \paragraph{}
-\begin{center}
-\begingroup
-\setlength{\fboxsep}{15pt}% padding externo
-\fcolorbox{blue!15}{blue!3}{%
-\parbox{\dimexpr\textwidth-2\fboxsep\relax}{%
-\noindent
-\begingroup
-\setlength{\fboxsep}{15pt}% padding interno título
-\colorbox{blue!15}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\textbf{Teorema de Optimalidade de Fulkerson (r-arborescência de custo mínimo)}\\[1.0em]
-{\color{black!70!black}
+\begin{teobox}{Optimalidade de Fulkerson (r-arborescência de custo mínimo)}{fulkerson-opt}
 Seja $D=(V,A)$, raiz $r$ e custos $c:A\to\mathbb{R}_{\ge 0}$. Seja $T$ uma out-arborescência enraizada em $r$. As afirmações são equivalentes: 
 \begin{enumerate}\setlength{\itemsep}{4pt}
     \item $T$ tem custo mínimo entre todas as out-arborescências enraizadas em $r$.
@@ -2318,9 +2290,8 @@ Seja $D=(V,A)$, raiz $r$ e custos $c:A\to\mathbb{R}_{\ge 0}$. Seja $T$ uma out-a
          \item[(c)] Para todo $X$ com $y(X)>0$ entra \emph{exatamente um} arco de $T$ em $X$ (complementaridade em conjuntos apertados).
     \end{enumerate}
 \end{enumerate}
-Além disso, quando (2) vale, o valor $\sum_X y(X)$ é exatamente o custo de $T$.}
-}}
-\endgroup
+Além disso, quando (2) vale, o valor $\sum_X y(X)$ é exatamente o custo de $T$.
+\end{teobox}
 
 \paragraph{}
 	\textbf{Prova (esboço):}
@@ -2342,9 +2313,7 @@ Para $B=T$, pela complementaridade $c'(a)=0$ se $a\in T$ e para cada $X$ com $y(
  	\textbf{custo}(T) = 0 + \sum_X y(X),
 \]
 logo $\textbf{custo}(T) \le \textbf{custo}(B)$ para qualquer $B$; $T$ é ótimo.
-}}
-\endgroup
-\end{center}
+ 
 
 \paragraph{}
 \begin{center}
@@ -2360,6 +2329,7 @@ logo $\textbf{custo}(T) \le \textbf{custo}(B)$ para qualquer $B$; $T$ é ótimo.
 \medskip
 \emph{Referências:} Fulkerson (condições de optimalidade), apresentações modernas em \cite{frank2014connections, schrijver2003comb}.
 \label{thm:fulkerson-optimalidade-arborescencia}
+
 }}
 \endgroup
 \end{center}
