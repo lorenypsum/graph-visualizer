@@ -528,3 +528,26 @@ def find_optimum_arborescence_chuliu(
                         f"\n{indent}Arborescência final.",
                     )
         return F_prime
+
+
+def test():
+  G = nx.DiGraph()
+  G.add_edges_from([('0', '1', {"w": 3}),
+                    ('0', '2', {"w": 6}),
+                    ('1', '2', {"w": 1}),
+                    ('2', '1', {'w': 1}),
+                    ('1', '3', {"w": 2}),
+                    ('1', '4', {"w": 10}),
+                    ('3', '4', {"w": 1}),
+                    ('4', '2', {"w": 10}),
+                    ('4', '5', {'w': 1}),
+                    ('5', '6', {'w': 1}),
+                    ('6', '4', {'w': 1}),
+                    ('6', '7', {'w': 8}),
+                    ('7', '8', {'w': 4}),
+                    ('8', '6', {'w': 5}),
+                    ('6', '8', {'w': 2})])
+  A = find_optimum_arborescence(G, '0', 0)
+  print([(u, v, A[u][v]) for u, v in A.edges])
+
+test()
