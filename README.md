@@ -27,6 +27,12 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+```bash
+npm install -D tailwindcss
+npx tailwindcss init
+npm install flowbite
+```
+
 ## Run Tests:
 To run the tests with:
 

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tese</title>
+    <link rel="icon" type="image/x-icon" href="../assets/logo.png"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+    
+    <link rel="stylesheet" href="https://pyscript.net/releases/2025.3.1/core.css" />
+    <script type="module" src="https://pyscript.net/releases/2025.3.1/core.js"></script>
+</head>
+
+<body class="flex min-h-screen text-gray-800 bg-gray-100">
+    <style>
+        .py-error, .py-terminal-error {
+            display: none !important;
+        }
+    </style>
+    <div class="absolute top-[100px] w-full h-[1px] bg-[#DBDBDB]"></div>
+
+    <!-- MENU LATERAL -->
+    <div id="sidebar"></div>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div id="main-content" class="flex-1 bg-[#E5E5E5] p-6">
+        <div class="flex items-center justify-between mb-10 px-4">
+            <span class="text-4xl text-[#352B67]">Nossa Tese</span>
+            <button id="download-tese" type="button" class="py-2 px-3 inline-flex items-center text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                <svg class="w-3 h-3 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20"><path d="M14.707 7.793a1 1 0 0 0-1.414 0L11 10.086V1.5a1 1 0 0 0-2 0v8.586L6.707 7.793a1 1 0 1 0-1.414 1.414l4 4a1 1 0 0 0 1.416 0l4-4a1 1 0 0 0-.002-1.414Z"/><path d="M18 12h-2.55l-2.975 2.975a3.5 3.5 0 0 1-4.95 0L4.55 12H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2Zm-3 5a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/></svg>
+                Download
+            </button>
+        </div>
+        <div class="container mx-auto p-4">
+            <!-- <h1 class="text-2xl font-bold mb-4">Meu Documento PDF</h1> -->
+            <div class="relative overflow-hidden w-full" style="padding-top: 56.25%;">
+                <iframe
+                src="https://media.geeksforgeeks.org/wp-content/cdn-uploads/20210101201653/PDF.pdf"
+                class="absolute top-0 left-0 w-full h-full"
+                frameborder="0"
+                title="Tese"
+                ></iframe>
+            </div>
+        </div>
+        
+
+        
+    </div>
+
+    <script>
+        document.getElementById("download-tese").addEventListener("click", function() {
+            const url = "https://media.geeksforgeeks.org/wp-content/cdn-uploads/20210101201653/PDF.pdf";
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "tese.pdf"; 
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        });
+    </script>
+
+    <!-- Scripts -->
+    <script src="../scripts/js/sidebar.js"></script>
+    <script src="../scripts/js/main.js"></script>
+</body>
+
+</html>
