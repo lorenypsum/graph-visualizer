@@ -2336,12 +2336,20 @@ Mas, o que diferencia uma mera receita de um algoritmo? A resposta está na clar
 Por isso, que chamamos o método de Euclides de algoritmo: os passos são não ambíguos; termina porque a segunda coordenada diminui até zerar; é correto pois mantém o invariante $\gcd(a,b)=\gcd(b,a\bmod b)$; e o custo é baixo (proporcional ao número de dígitos de $a$ e $b$).
 
 \paragraph{}
+Além dessas características, precisamos citar mais alguns conceitos úteis na análise de algoritmos:
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item \textbf{Invariante}: uma propriedade que permanece verdadeira durante a execução do algoritmo. Por exemplo, em um algoritmo de ordenação, um invariante pode ser que os elementos à esquerda de um índice específico estão sempre ordenados. (ex.: “não há custos reduzidos negativos” ou “cada componente tem ao menos um arco zero entrando”).
+    \item \textbf{Correção}: a garantia de que o algoritmo produz a saída correta para todas as entradas válidas. Isso geralmente é demonstrado por meio de provas formais ou argumentos lógicos. (ex.: justificativa de que o resultado final é uma arborescência válida e de custo mínimo)
+    \item \textbf{Terminação}: a garantia de que o algoritmo sempre chegará a um ponto final, ou seja, que não entrará em um loop infinito. Isso pode ser demonstrado mostrando que alguma medida (como o tamanho da entrada) diminui a cada passo. (ex.: cada contração reduz $|V|$; cada ajuste cria um novo arco zero).
+\end{itemize}
+
+\paragraph{}
 Essas características não definem formalmente o que é um algoritmo, mas ajudam a entender o conceito. A definição formal envolve a ideia de \emph{computabilidade}\footnote{A computabilidade é um conceito na teoria da computação, que se refere à capacidade de um problema ser resolvido por um algoritmo em um tempo finito. \emph{Comentário formal.} Esse conceito é formalizado por meio de modelos como máquinas de Turing, funções recursivas, RAM, entre outros. Essas formalizações são equivalentes quanto ao que é computável (Tese de Church–Turing) e permitem discutir com rigor correção e complexidade (tempo e memória).}, e isso envolve uma discussão profunda demais para o escopo deste trabalho.
 
 \subsubsection{Complexidade de Algoritmos}
 
 \paragraph{}
-Um dos conceitos que envolvem computabilidade que precisamos nos familiarizar é o de \emph{complexidade de algoritmos}, que se refere à quantidade de recursos computacionais (tempo e espaço) que um algoritmo consome em função do tamanho da entrada.
+Porém, precisamos nos aprofunda em um dos conceitos que estão envolvidos em computabilidade: o de \emph{complexidade de algoritmos}, que se refere à quantidade de recursos computacionais (tempo e espaço) que um algoritmo consome em função do tamanho da entrada.
 
 \paragraph{}
 A complexidade de um algoritmo pode ser analisada em termos de \emph{complexidade de tempo} e \emph{complexidade de espaço}. A complexidade de tempo refere-se ao tempo que um algoritmo leva para ser executado, enquanto a complexidade de espaço refere-se à quantidade de memória que um algoritmo utiliza durante sua execução.
@@ -2355,7 +2363,7 @@ A notação assintótica é frequentemente usada para expressar a complexidade d
 \end{itemize}
 
 \paragraph{}
-Essas notações ajudam a comparar a eficiência de diferentes algoritmos e a entender como eles se comportam à medida que o tamanho da entrada aumenta. Ao analisar a complexidade de um algoritmo, é importante considerar o pior caso, o caso médio e o melhor caso, dependendo do contexto em que o algoritmo será utilizado.
+Essas notações ajudam a comparar a eficiência de diferentes algoritmos e a entender como eles se comportam à medida que o tamanho da entrada aumenta\footnote{Por “tamanho da entrada” entendemos a quantidade de símbolos necessária para codificar a instância (tipicamente, o número de bits). Exemplos: (i) para grafos, mede-se usualmente por \(n=|V|\) e \(m=|E|\); se há pesos, também se contabiliza o número de bits para representá-los; (ii) para inteiros, é o número de dígitos; (iii) para strings, o comprimento. Em análises de alto nível, é comum expressar custos como funções de \(n\) e \(m\) no modelo RAM (palavra de \(\Theta(\log n)\) bits), mas quando os pesos são grandes a complexidade em bits pode prevalecer.}. Ao analisar a complexidade de um algoritmo, é importante considerar o pior caso, o caso médio e o melhor caso, dependendo do contexto em que o algoritmo será utilizado.
 
 \paragraph{}
 Para ilustrar a análise de complexidade, consideremos o exemplo da busca linear vs busca binária em um vetor ordenado\footnote{Por vetor ordenado entendemos um arranjo (array) em que os elementos estão armazenados em posições consecutivas e dispostos segundo uma ordem total (tipicamente crescente ou não decrescente). Essa organização permite algoritmos como a busca binária, que dependem de comparações para descartar metades do intervalo.}. 
@@ -2376,7 +2384,7 @@ Dado um vetor \(V\) de tamanho \(n\) e um valor \(x\):
 \end{algobox}
 
 \paragraph{}
-Já o algoritmo de busca binária aproveita o fato de que o vetor está ordenado para reduzir o espaço de busca pela metade a cada iteração. A complexidade desse algoritmo é \(O(\log n)\) no pior caso, tornando-o muito mais eficiente para grandes vetores.
+Já o algoritmo de busca binária aproveita o fato de que o vetor está ordenado para reduzir o espaço de busca pela metade a cada iteração.
 
 \begin{algobox}{Busca Binária}{busca-binaria}
 Dado um vetor ordenado \(V\) de tamanho \(n\) e um valor \(x\):
@@ -2412,8 +2420,7 @@ Esse exemplo ilustra como a análise de complexidade pode fornecer insights sobr
 
 \subsubsection{Os problemas e suas complexidades}
 
-\paragraph{Classes de Problemas}
-Além de analisar a complexidade de algoritmos específicos, é importante entender as \emph{classes de problemas} com base em sua dificuldade intrínseca. Algumas das classes mais comuns incluem:    
+Não avaliamos só o desempenho de \emph{um algoritmo}; também queremos saber \emph{quão difícil é o próprio problema}, assim temos  a seguinte forma de classificar problemas:    
 \begin{itemize}\setlength{\itemsep}{2pt}
     \item \textbf{Problemas de decisão}: problemas que podem ser respondidos com "sim" ou "não". Ex.: "Existe um caminho entre dois vértices em um grafo?"
     \item \textbf{Problemas de otimização}: problemas que envolvem encontrar a melhor solução possível entre várias opções. Ex.: "Qual é o caminho mais curto entre dois vértices em um grafo ponderado?"
@@ -2421,37 +2428,45 @@ Além de analisar a complexidade de algoritmos específicos, é importante enten
 \end{itemize}
 
 \paragraph{}
-Cada classe de problemas pode ter diferentes níveis de dificuldade, que avaliamos com base na complexidade dos algoritmos conhecidos para resolvê-los.
-Alguns problemas são considerados "fáceis" (resolvíveis em tempo polinomial), enquanto outros são "difíceis" (não se conhece nenhum algoritmo eficiente para resolvê-los).
-Apresentamos esse conceito de forma breve a seguir.
+Cada classe de problemas pode ter diferentes níveis de dificuldade, que avaliamos em termos de \emph{complexidade computacional}, que mede os recursos necessários (tempo e espaço) para resolver o problema.
+
+Problemas são considerados "fáceis" quando são resolvíveis em tempo polinomial, enquanto outros são "difíceis" quando não se conhece nenhum algoritmo eficiente para resolvê-los.
 
 \paragraph{Classes de complexidade de problemas}
 
 \paragraph{}
-Não avaliamos só o desempenho de \emph{um algoritmo}; também queremos saber \emph{quão difícil é o próprio problema}, independentemente do método usado. Como regra prática, consideramos \emph{tratáveis} os problemas que admitem soluções em tempo (ou espaço) \emph{polinomial} no tamanho da entrada\footnote{Por “tamanho da entrada” entendemos a quantidade de símbolos necessária para codificar a instância em uma codificação razoável (tipicamente, o número de bits). Exemplos: (i) para um grafo, mede-se usualmente por \(n=|V|\) e \(m=|E|\); se há pesos, no modelo de bits também se conta o número de bits para representar cada peso; (ii) para inteiros, é o número de dígitos (em base 2/10) do valor; (iii) para uma string, o seu comprimento. Em análises de alto nível, é comum expressar o custo como função de \(n\) e \(m\) (modelo RAM com palavras de \(\Theta(\log n)\) bits), mas quando os pesos são muito grandes a complexidade de bits pode ser determinante.}. Abaixo apresentamos, de forma breve, as classes mais usadas:
+ Como regra prática, consideramos \emph{tratáveis} os problemas que admitem soluções em tempo (ou espaço) \emph{polinomial} no tamanho da entrada e \emph{intratáveis} os que não admitem. Essa distinção é formalizada por meio de \emph{classes de complexidade}, que agrupam problemas segundo sua dificuldade intrínseca. Abaixo apresentamos-as:
 
 \begin{itemize}\setlength{\itemsep}{2pt}
-    \item \textbf{P} ("polynomial time"): problemas de \emph{decisão} resolvíveis em tempo polinomial. Ex.: conectividade em grafos, árvore geradora mínima (MST), caminho mínimo com pesos não negativos, fluxo máximo.
-    \item \textbf{NP} ("nondeterministic polynomial time"): problemas de decisão cujas soluções/certificados podem ser \emph{verificados} em tempo polinomial. Ex.: \emph{SAT} (satisfatibilidade booleana), \emph{Clique}, \emph{Vertex Cover}.
-    \item \textbf{co-NP}: complementos dos problemas em NP. Ex.: \emph{TAUT} (verificar se uma fórmula é tautologia) está em co-NP.
-    \item \textbf{NP-difícil}: pelo menos tão difíceis quanto os problemas de NP; todo problema em NP reduz-se (no sentido polinomial) a eles. Podem ser de decisão, otimização ou contagem e \emph{não precisam} estar em NP. Ex.: versão de otimização do \emph{TSP} (caixeiro-viajante), programação inteira, coloração mínima de grafos.
-    \item \textbf{NP-completo}: problemas \emph{de decisão} que são ao mesmo tempo \emph{NP-difíceis} e pertencem a \emph{NP}. Se algum NP-completo tiver algoritmo polinomial, então \(\mathrm{P}=\mathrm{NP}\). Ex.: \emph{SAT}, \emph{3-SAT}, \emph{Hamiltoniano} (existe ciclo hamiltoniano?).
-    \item \textbf{PSPACE}: problemas resolvíveis com \emph{espaço} polinomial (tempo pode ser maior). Ex.: \emph{QBF} (satisfatibilidade com quantificadores) é PSPACE-completo.
+    \item \textbf{P} (tempo polinomial). “Resolver é fácil”: existe um algoritmo que encontra a resposta em tempo que cresce como \(n^k\) para algum \(k\). Exemplos: conectividade em grafos, árvore geradora mínima (MST), caminho mínimo com pesos não negativos, fluxo máximo.
+    \item \textbf{NP} (verificação polinomial). “Conferir é fácil”: se alguém propõe uma solução, conseguimos \emph{verificar} em tempo polinomial se ela está correta (achar pode ser difícil). Exemplos: \emph{SAT} (satisfatibilidade booleana), \emph{Clique}, \emph{Vertex Cover}.
+    \item \textbf{co-NP}. Complementos dos problemas em NP — “conferir o ‘não’ é fácil” em vez do “sim”. Exemplo: \emph{TAUT} (verificar se uma fórmula é tautologia) está em co-NP.
+    \item \textbf{NP-difícil}. “Tão difíceis quanto o mais difícil de NP”: todo problema de NP reduz-se (em tempo polinomial) a eles. Podem ser de decisão, otimização ou contagem e \emph{não precisam} estar em NP. Em geral, não se espera algoritmo polinomial para todos os casos. Exemplos: versão de otimização do \emph{TSP} (caixeiro-viajante), programação inteira, coloração mínima de grafos.
+    \item \textbf{NP-completo}. “Os mais difíceis \emph{dentro} de NP”: problemas de decisão que estão em NP e são NP-difíceis. Se algum NP-completo tiver algoritmo polinomial, então \(\mathrm{P}=\mathrm{NP}\). Exemplos: \emph{SAT}, \emph{3-SAT}, problema \emph{Hamiltoniano} (existe ciclo hamiltoniano?).
+    \item \textbf{PSPACE} (espaço polinomial). “Memória polinomial, tempo possivelmente enorme”: resolvíveis usando memória que cresce polinomialmente com o tamanho da entrada. Exemplo: \emph{QBF} (satisfatibilidade com quantificadores) é PSPACE-completo.
 \end{itemize}
 
 \paragraph{Reduções polinomiais}
-Para comparar dificuldades, usamos reduções: dizemos que \(A\) reduz-se a \(B\) em tempo polinomial (\(A\le_p B\)) se uma solução para \(B\) permite resolver \(A\) com sobrecusto polinomial. Mostrar que um problema é NP-difícil (ou NP-completo) normalmente requer construir tais reduções a partir de problemas conhecidos.
+
+\paragraph{}
+Para comparar dificuldades, usamos reduções de problemas, reduzimos o problema \(A\) ao problema \(B\) (escrevemos \(A\le_p B\)) quando conseguimos transformar qualquer instância de \(A\) em uma instância de \(B\) em tempo polinomial, de modo que resolver \(B\) nos dê a resposta de \(A\) com apenas um sobrecusto polinomial. Logo: se \(A\le_p B\), então \textbf{\(B\) é pelo menos tão difícil quanto \(A\)} (um resolvedor para \(B\) resolveria \(A\) via redução). \footnote{Consequência útil: se \(A\le_p B\) e \(B\) tem algoritmo polinomial, então \(A\) também tem. Para mostrar que um problema \(C\) é NP-difícil, reduzimos \emph{de} um NP-completo conhecido \(P\) \emph{para} \(C\) (isto é, \(P\le_p C\)). Para provar que \(C\) é NP-completo, além disso precisamos que \(C\in\mathrm{NP}\). Exemplo: \(\text{3-SAT}\le_p \text{Clique}\) — resolver \textit{Clique} eficientemente daria um método eficiente para \textit{3-SAT}.}
 
 \paragraph{Relações conhecidas}
-Sabemos que \(\mathrm{P}\subseteq \mathrm{NP}\) e \(\mathrm{P}\subseteq \mathrm{co\text{-}NP}\), e também que \(\mathrm{P}\subseteq \mathrm{NP}\subseteq \mathrm{PSPACE}\subseteq \mathrm{EXP}\). As igualdades entre essas classes (em especial \(\mathrm{P}\) vs \(\mathrm{NP}\)) são problemas em aberto famosos.
+
+\paragraph{}
+Temos inclusões básicas: \(\mathrm{P}\subseteq \mathrm{NP}\), \(\mathrm{P}\subseteq \mathrm{co\text{-}NP}\) e \(\mathrm{NP}\subseteq \mathrm{PSPACE}\subseteq \mathrm{EXP}\). Acredita-se que muitas dessas inclusões sejam estritas, mas isso não foi provado; em particular, o problema \(\mathrm{P}\) vs \(\mathrm{NP}\) permanece em aberto. Também não se sabe se \(\mathrm{NP}=\mathrm{co\text{-}NP}\).
 
 \paragraph{}
 Essas classes não só categorizam problemas por sua dificuldade intrínseca, como também orientam a \emph{estratégia de solução}. Em linhas gerais: (i) quando o problema está em \(\mathrm{P}\), preferimos \textbf{algoritmos exatos} com tempo polinomial; (ii) para problemas NP-completos/NP-difíceis, \emph{não se conhecem} algoritmos exatos polinomiais (a menos que \(\mathrm{P}=\mathrm{NP}\)), e métodos gerais costumam ter pior caso exponencial. Por isso, são comuns \textbf{heurísticas}, \textbf{algoritmos de aproximação} e abordagens de \textbf{complexidade parametrizada} (FPT), além de algoritmos \textbf{pseudo-polinomiais} em casos numéricos. Muitas vezes, estruturas especiais (ex.: largura de árvore pequena, aciclicidade, graus limitados) também permitem soluções exatas polinomiais para subclasses. A seguir, explicitamos essa distinção entre \emph{algoritmos exatos} e \emph{heurísticas}.
 
+\subsubsection{Tipificando Algoritmos}
+
+É comum ouvirmos que “o ótimo é inimigo do bom”. Essa frase, atribuída a Voltaire, expressa a ideia de que buscar a perfeição pode impedir que se alcance um resultado satisfatório. Essa tensão entre buscar o ideal do “ótimo”  ou aceitar o “suficientemente bom” quando recursos e tempo são limitados\footnote{Na teoria da decisão, essa postura pragmática é conhecida como \emph{satisficing}, termo introduzido por Herbert A. Simon.} essa noção se materializa em uma forma de tipificação de algoritmos.
+
 \paragraph{Algoritmos Exatos vs Heurísticos}
 
 \paragraph{}
-É comum ouvirmos que “o melhor é inimigo do bom”. Essa frase, atribuída a Voltaire, expressa a ideia de que buscar a perfeição pode impedir que se alcance um resultado satisfatório. Essa tensão entre buscar o ideal do “ótimo”  ou aceitar o “suficientemente bom” quando recursos e tempo são limitados\footnote{Na teoria da decisão, essa postura pragmática é conhecida como \emph{satisficing}, termo introduzido por Herbert A. Simon.}. se materializa em mais uma forma de classificação de algoritmos:  \emph{algoritmos exatos} e \emph{algoritmos heurísticos}. Os primeiros vêm com garantias formais de optimalidade, enquanto os segundos privilegiam rapidez e simplicidade, buscando boas soluções na prática, por vezes com garantias de aproximação.
+Essa distinção é especialmente relevante em problemas de otimização, onde o objetivo é encontrar a melhor solução possível entre um conjunto de soluções viáveis. Existem dois tipos principais de algoritmos para abordar esses problemas: os \emph{algoritmos exatos} e os \emph{algoritmos heurísticos}.
 
 \begin{itemize}\setlength{\itemsep}{2pt}
     \item \textbf{Algoritmos Exatos}: são aqueles que garantem encontrar a solução ótima para um problema, se uma solução existe. Eles exploram todas as possibilidades ou utilizam técnicas matemáticas rigorosas para garantir a optimalidade. Exemplos incluem algoritmos de programação linear, algoritmos de busca exaustiva e algoritmos baseados em teoria dos grafos, como o algoritmo de Dijkstra para caminhos mínimos.
@@ -2459,64 +2474,145 @@ Essas classes não só categorizam problemas por sua dificuldade intrínseca, co
 \end{itemize}
 
 \paragraph{}
-Além dessas distinções precisamos citar mais alguns conceitos úteis na análise de algoritmos:
-\begin{itemize}\setlength{\itemsep}{2pt}
-    \item \textbf{Invariante}: uma propriedade que permanece verdadeira durante a execução do algoritmo. Por exemplo, em um algoritmo de ordenação, um invariante pode ser que os elementos à esquerda de um índice específico estão sempre ordenados. (ex.: “não há custos reduzidos negativos” ou “cada componente tem ao menos um arco zero entrando”).
-    \item \textbf{Correção}: a garantia de que o algoritmo produz a saída correta para todas as entradas válidas. Isso geralmente é demonstrado por meio de provas formais ou argumentos lógicos. (ex.: justificativa de que o resultado final é uma arborescência válida e de custo mínimo)
-    \item \textbf{Terminação}: a garantia de que o algoritmo sempre chegará a um ponto final, ou seja, que não entrará em um loop infinito. Isso pode ser demonstrado mostrando que alguma medida (como o tamanho da entrada) diminui a cada passo. (ex.: cada contração reduz $|V|$; cada ajuste cria um novo arco zero).
+Um tipo de algoritmo heurístico que merece destaque são os \emph{algoritmos gulosos}, pois os algoritmos que estudaremos para encontrar r-arborescências de custo mínimo se enquadram nessa categoria.
+
+\paragraph{Algoritmos Gulosos}
+\paragraph{}
+Os algoritmos gulosos são uma classe de algoritmos heurísticos que tomam decisões locais ótimas em cada etapa, na esperança de que essas escolhas levem a uma solução globalmente ótima. Eles são frequentemente utilizados em problemas de otimização, onde uma solução ótima é desejada, mas encontrar essa solução pode ser computacionalmente inviável.
+
+\paragraph{}
+Os algoritmos gulosos são caracterizados por:
+\paragraph{}
+
+1. \textbf{Escolha Local Ótima}: Em cada etapa do algoritmo, uma escolha é feita com base em algum critério de otimização local. Essa escolha é feita sem considerar as consequências futuras, ou seja, o algoritmo "se contenta" com a melhor opção disponível no momento.
+
+\paragraph{}
+2. \textbf{Decisões defitivas}: Uma vez que uma escolha é feita, o algoritmo não reconsidera essa decisão. Isso significa que, se uma escolha levar a uma solução subótima, o algoritmo não tentará corrigir esse erro mais tarde.
+
+\paragraph{}
+3. \textbf{Eficiência}: Os algoritmos gulosos tendem a ser mais eficientes em termos de tempo de execução do que métodos exatos, pois não exploram todo o espaço de soluções. No entanto, essa eficiência pode vir à custa da qualidade da solução encontrada.
+
+\paragraph{}
+Exemplos clássicos de algoritmos gulosos incluem:
+
+\begin{itemize}
+        \item \textbf{Kruskal}: seleciona as arestas de menor peso, evitando formar ciclos; produz uma árvore geradora mínima.
+        \item \textbf{Prim}: inicia em um vértice e, a cada passo, adiciona a aresta mais leve que cruza o corte entre a árvore e o restante do grafo.
+        \item \textbf{Dijkstra}: em dígrafos (ou grafos) com pesos não negativos, expande pelo vértice de menor distância conhecida e relaxa suas saídas.
+        \item  \textbf{Kahn} (ordenação topológica): em DAGs, remove repetidamente vértices de grau de entrada zero e elimina suas saídas, construindo uma ordem topológica.
+        \item \textbf{Chu–Liu/Edmonds} (arborescência mínima): escolhe, para cada \(v\neq r\), o arco de menor custo que entra em \(v\); ao formar ciclos, contrai-os e usa custos reduzidos até obter a r‑arborescência de custo mínimo.
+       \item \textbf{Frank} (arborescência mínima em duas fases): na primeira fase, constrói uma arborescência qualquer; na segunda, ajusta os custos reduzidos e troca arcos para minimizar o custo total.
 \end{itemize}
-
-
-
-
 
 \paragraph{}
 Com esses conceitos em mente, estamos prontos para explorar os algoritmos específicos para encontrar r-arborescências de custo mínimo, que serão detalhados no próximo capítulo.
 
-
-
-\section{A Arborescência Perdida}
+\section{Em busca da Arborescência Perdida}
 
 \paragraph{}
-Maquiável é conhecido por uma de suas citações: "Os fins justificam os meios". Essa frase ficou famosa, porque tem uma interpretação polêmica: em certas circunstâncias, qualquer ação pode ser justificada se o resultado final for considerado positivo ou benéfico. Muitos, não concordam com essa visão, argumentando que os meios também importam e que ações imorais não podem ser justificadas por bons resultados.
+Vamos usar esse capítulo para situar a evolução do problema: começamos revisitando como se encontra conectividade de menor custo em grafos não dirigidos por meio de \emph{árvores geradoras mínimas} (MST), onde estratégias gulosas são corretas graças aos princípios de \emph{corte} e de \emph{ciclo}. Em seguida veremos por que, ao passar para \emph{dígrafos} e buscar uma \textbf{r‑arborescência de custo mínimo}, essas mesmas receitas não se aplicam literalmente: surgem ciclos dirigidos e falta um “corte seguro” direto. Essa transição motiva as ferramentas certas — \emph{custos reduzidos} e \emph{contração de ciclos} — que aparecem no algoritmo de \textbf{Chu–Liu/Edmonds} e, adiante, no procedimento em duas fases de \textbf{Frank}.
+
+\subsection{Contexto Histórico}
+O problema de encontrar uma r-arborescência de custo mínimo em um dígrafo ponderado é de certa forma uma evolução do problema de conectividade de menor custo em grafos não dirigidos, mas traz desafios adicionais que exigem novas ferramentas e estratégias.
+
+\paragraph{A busca em grafos}
 
 \paragraph{}
-Os problemas de otimização, certamente se enquadram nessa turma. O objetivo final (os fins) é encontrar a r-arborescência de custo mínimo, que é uma estrutura que conecta todos os vértices de um dígrafo de forma eficiente e econômica. Esse objetivo é claro e bem definido. Mas, os meios para alcançá-lo são igualmente importantes.
+Antes de tratarmos do caso \emph{dirigido}, vamos falar sobre a intuição dominante de \emph{como construir estruturas de conectividade de menor custo} vinha do caso de \emph{grafos não dirigidos}: as \textbf{árvores geradoras mínimas}\footnote{Definição. Em um grafo não dirigido, conexo e ponderado \(G=(V,E)\) com pesos \(w:E\to\mathbb{R}\), uma árvore geradora mínima é um subconjunto de arestas \(T\subseteq E\) que forma uma árvore (conecta todos os vértices, é acíclica e tem \(|T|=|V|-1\)) e que minimiza \(\sum_{e\in T} w(e)\).} (\emph{Minimum Spanning Trees}, MST). 
 
 \paragraph{}
-Por meios entendemos os algoritmos e técnicas que utilizamos para encontrar essa arborescência: eles precisam ser eficientes, corretos e capazes de lidar com a complexidade do problema e também revelam diversas propriedades interessantes dos dígrafos e das arborescências.
-
-\paragraph{}
-Nesta seção, abordaremos os meios na busca por r-arborescências de custo mínimo, falaremos sobre o algoritmo de Chu–Liu/Edmonds e o procedimento em duas fases de András Frank, mas antes,começaremos com uma contextualização 
-histórica de como esses algoritmos foram desenvolvidos.
-
-
-\paragraph{História}
-\paragraph{}
-Antes de tratarmos do caso \emph{dirigido}, a intuição dominante sobre \emph{como construir estruturas de conectividade de menor custo} vinha do caso de \emph{grafos não dirigidos}: as \textbf{árvores geradoras mínimas}\footnote{Definição. Em um grafo não dirigido, conexo e ponderado \(G=(V,E)\) com pesos \(w:E\to\mathbb{R}\), uma árvore geradora mínima é um subconjunto de arestas \(T\subseteq E\) que forma uma árvore (conecta todos os vértices, é acíclica e tem \(|T|=|V|-1\)) e que minimiza \(\sum_{e\in T} w(e)\).} (\emph{Minimum Spanning Trees}, MST). A regra geral era: “escolha sempre a aresta mais barata disponível e encontraremos uma estrutura ótima”. Em grafos \emph{não dirigidos}, essa ideia realmente funciona porque há duas regras estruturais muito fortes que “protegem” as escolhas locais:
+De modo geral, funciona a seguinte regra para esse caso: “escolha sempre a aresta mais barata disponível e encontraremos uma estrutura ótima”. Existem dois princípios que justificam essa intuição:
 
 \begin{itemize}\setlength{\itemsep}{2pt}
-    \item \textbf{Princípio do corte (regra do corte seguro).} Um \emph{corte} é uma separação do conjunto de vértices em duas partes \(S\) e \(V\setminus S\). Dizemos que uma aresta “cruza” o corte se tem uma ponta em cada lado. O princípio afirma: \emph{a aresta de menor peso que cruza qualquer corte é segura}, ou seja, pode ser incluída em alguma MST sem perder optimalidade.
-    \paragraph{}
-    Intuitivamente, dizemos que se alguma solução ótima usa uma aresta \(e^*\) que cruza um certo corte e existe outra aresta \(e\) \emph{mais barata} cruzando o mesmo corte, podemos trocar \(e^*\) por \(e\). A troca mantém o grafo conectado (o corte continua sendo cruzado) e não aumenta o custo. Portanto, a mais barata do corte é sempre segura.
-    \item \textbf{Princípio do ciclo (regra da aresta pesada).} Em qualquer \emph{ciclo} (um passeio fechado sem repetir arestas), a aresta de maior peso \emph{não} pode pertencer a uma MST, pois existe uma troca que reduz (ou não aumenta) o custo total removendo essa aresta pesada.
-    \paragraph{}
-    Ou seja, em um ciclo \(C\), remover a aresta \emph{mais pesada} não desconecta o grafo (há caminho alternativo dentro do próprio ciclo). Como é a mais cara, retirá-la só pode reduzir (ou manter) o custo. Logo, nenhuma MST precisa conter a aresta mais pesada de um ciclo.
+    \item \textbf{Princípio do corte seguro.} Um \emph{corte} é uma separação do conjunto de vértices em duas partes \(S\) e \(V\setminus S\). Dizemos que uma aresta “cruza” o corte se tem uma ponta em cada lado. O princípio afirma: \emph{a aresta de menor peso que cruza qualquer corte é segura}, ou seja, pode ser incluída em alguma MST sem perder optimalidade. É o mesmo que dizer
+    intuitivamente, que se alguma solução ótima usa uma aresta \(e^*\) que cruza um certo corte e existe outra aresta \(e\) \emph{mais barata} cruzando o mesmo corte, podemos trocar \(e^*\) por \(e\). A troca mantém o grafo conectado (o corte continua sendo cruzado) e não aumenta o custo. Portanto, a mais barata do corte é sempre segura.
+    \begin{figure}[htbp]
+    \centering
+    % Ilustração do princípio do corte seguro
+    \begin{tikzpicture}[scale=1]
+        % Estilos
+        	\tikzset{
+            v/.style={circle, draw, fill=blue!10, minimum size=6mm, inner sep=0pt},
+            edgeG/.style={line width=0.9pt, draw=gray!65},
+            cross/.style={line width=1pt, draw=gray!65},
+            safe/.style={line width=1.6pt, draw=green!50!black},
+            cutline/.style={red!70, dashed, line width=1pt}
+        }
+        % Nós
+        \node[v, label=left:$a$] (A) at (-2, 1) {};
+        \node[v, label=left:$b$] (B) at (-2,-1) {};
+        \node[v, label=right:$c$] (C) at ( 2, 1) {};
+        \node[v, label=right:$d$] (D) at ( 2,-1) {};
+
+        % Lados do corte (rótulos)
+        \node[anchor=east, gray!70] at (-2.8, 0) {$S$};
+        \node[anchor=west, gray!70] at ( 2.8, 0) {$V\setminus S$};
+
+        % Linha do corte
+        \draw[cutline] (0, 1.6) -- (0,-1.6);
+
+        % Arestas internas (apenas contexto)
+        \draw[edgeG] (A) -- (B);
+        \draw[edgeG] (C) -- (D);
+
+        % Arestas que cruzam o corte (com pesos)
+        \draw[edgeG] (A) -- node[above, sloped, fill=white, inner sep=1pt] {4} (C);
+        \draw[safe]  (A) -- node[below, sloped, fill=white, inner sep=1pt] {\textbf{2}} (D);
+        \draw[edgeG] (B) -- node[below, sloped, fill=white, inner sep=1pt] {3} (C);
+
+    % Destaque textual
+    \node[green!40!black] at (0.4,-2.0) {A aresta mais barata que cruza o corte};
+    \end{tikzpicture}
+    \caption{Princípio do corte seguro: entre as arestas que cruzam \((S, V\setminus S)\), a de menor peso (em verde) é \emph{segura} — pode ser incluída em alguma MST sem perder optimalidade.}
+    \label{fig:mst-cut-safe}
+\end{figure}
+    \item \textbf{Princípio do uso da aresta mais pesada em um ciclo.} Em qualquer \emph{ciclo}, a aresta de maior peso \emph{não} pode pertencer a uma MST, pois existe uma troca que reduz (ou não aumenta) o custo total removendo essa aresta pesada, podemos entender que em um ciclo \(C\), remover a aresta \emph{mais pesada} não desconecta o grafo (há caminho alternativo dentro do próprio ciclo). Como é a mais cara, retirá-la só pode reduzir (ou manter) o custo. Logo, nenhuma MST precisa conter a aresta mais pesada de um ciclo.
+
+\begin{figure}[htbp]
+    \centering
+    % Ilustração do princípio da aresta mais pesada do ciclo
+    \begin{tikzpicture}[scale=1]
+        % Estilos
+        	\tikzset{
+            v/.style={circle, draw, fill=blue!10, minimum size=6mm, inner sep=0pt},
+            edgeG/.style={line width=0.9pt, draw=gray!65},
+            heavy/.style={line width=1.6pt, draw=red!70},
+            note/.style={gray!70}
+        }
+        % Nós do ciclo
+        \node[v, label=left:$u$]  (U) at (-2, 0) {};
+        \node[v, label=above:$v$] (V) at ( 0, 1.7) {};
+        \node[v, label=right:$x$] (X) at ( 2, 0) {};
+        \node[v, label=below:$y$] (Y) at ( 0,-1.7) {};
+
+        % Arestas do ciclo com pesos
+        \draw[edgeG] (U) -- node[above left,  fill=white, inner sep=1pt] {1} (V);
+        \draw[heavy] (V) -- node[above right, fill=white, inner sep=1pt] {\textbf{5}} (X);
+        \draw[edgeG] (X) -- node[below right, fill=white, inner sep=1pt] {2} (Y);
+        \draw[edgeG] (Y) -- node[below left,  fill=white, inner sep=1pt] {3} (U);
+
+        % Observação
+        \node[red!90!] at (0, -3.0) {A aresta mais pesada do ciclo (vermelha) não precisa aparecer em nenhuma MST};
+    \end{tikzpicture}
+    \caption{Princípio do ciclo: em qualquer ciclo, a aresta mais pesada (em vermelho) pode ser removida sem desconectar o grafo, reduzindo (ou não aumentando) o custo. Portanto, nenhuma MST contém a aresta mais pesada de um ciclo.}
+    \label{fig:mst-cycle-heavy}
+\end{figure}
 \end{itemize}
 
-\paragraph{}
-Esses dois princípios justificam os gulosos clássicos:
+Assim o problema de encontrar uma árvore geradora mínima (MST) consiste em dado um grafo (não dirigido), conexo e ponderado \(G=(V,E)\) com pesos \(w:E\to\mathbb{R}\), queremos um subconjunto de arestas \(T\subseteq E\) que conecta todos os vértices sem ciclos (forma uma árvore) e minimiza \(\sum_{e\in T} w(e)\). 
+Com base nos princípios acima, duas soluções gulosas são propostas: \textbf{Kruskal} e \textbf{Prim}.
+
 \begin{itemize}\setlength{\itemsep}{2pt}
     \item \textbf{Kruskal}: ordena as arestas por peso e adiciona enquanto não formar ciclo; usa o princípio do ciclo para evitar carregar a aresta mais pesada de um ciclo.
     \item \textbf{Prim}: começa em um vértice e cresce a árvore; a cada passo escolhe a aresta mais leve que cruza o corte entre “dentro” e “fora” — aplicação direta do princípio do corte.
 \end{itemize}
-Por isso, em grafos não dirigidos, “pegar as arestas mais baratas” funciona: trocas locais seguras garantem a otimalidade global. Assim o problema de encontrar uma árvore geradora mínima (MST) consiste em dado um grafo (não dirigido), conexo e ponderado \(G=(V,E)\) com pesos \(w:E\to\mathbb{R}\), queremos um subconjunto de arestas \(T\subseteq E\) que conecta todos os vértices sem ciclos (forma uma árvore) e minimiza \(\sum_{e\in T} w(e)\). Duas soluções gulosas consagradas:
+
 
 \begin{algobox}{Kruskal (MST, guloso por peso crescente)}{mst-kruskal}
 Entrada: grafo não dirigido \(G=(V,E)\), pesos \(w\).
 \begin{enumerate}\setlength{\itemsep}{2pt}
     \item Ordene as arestas por peso crescente.
-    \item Inicialize um \emph{Union-Find} com cada vértice em seu próprio conjunto; comece com \(T=\emptyset\).
+    \item Inicialize um \emph{Union-Find}\footnote{Também conhecido como \emph{Disjoint Set Union} (DSU) ou \emph{estrutura de conjuntos disjuntos}. Mantém uma partição dinâmica dos vértices em componentes, oferecendo operações \texttt{find} (descobrir o representante do conjunto) e \texttt{union} (unir dois conjuntos). Com as heurísticas de \emph{união por rank/tamanho} e \emph{compressão de caminhos}, ambas operam em tempo amortizado \(\alpha(n)\) (a função inversa de Ackermann), efetivamente constante na prática. Em Kruskal, essa estrutura detecta ciclos rapidamente ao verificar se as pontas de uma aresta pertencem a componentes distintas.} com cada vértice em seu próprio conjunto; comece com \(T=\emptyset\).
     \item Para cada aresta \(e=\{u,v\}\) na ordem: se \(u\) e \(v\) estão em componentes diferentes, una as componentes e adicione \(e\) a \(T\).
     \item Pare quando \(|T|=|V|-1\). Devolva \(T\).
 \end{enumerate}
@@ -2527,20 +2623,79 @@ Entrada: grafo não dirigido \(G=(V,E)\), pesos \(w\).
 \begin{algobox}{Prim (MST, expansão por corte mínimo)}{mst-prim}
 Entrada: grafo não dirigido \(G=(V,E)\), pesos \(w\), vértice inicial \(s\).
 \begin{enumerate}\setlength{\itemsep}{2pt}
-    \item Inicialize \(T=\{s\}\) e uma fila de prioridades com as arestas que saem de \(T\), chaveando pelo menor peso.
+    \item Inicialize \(T=\{s\}\) e uma fila de prioridades\footnote{Estrutura que mantém elementos com chaves de prioridade e permite extrair rapidamente o de menor (ou maior) chave. Implementações típicas: \emph{heap} binário (\(\mathrm{push}/\mathrm{decrease\text{-}key}/\mathrm{pop}\) em \(O(\log n)\)), \emph{heap} de Fibonacci (\(\mathrm{decrease\text{-}key}\) amortizado \(O(1)\), \(\mathrm{pop}\) em \(O(\log n)\)), e, em grafos com pesos pequenos, fila bucket (Dial) com tempos quase-lineares. No Prim, a fila é chaveada pelo menor peso de aresta que conecta o vértice fora da árvore ao conjunto \(T\).} com as arestas que saem de \(T\), chaveando pelo menor peso.
     \item Enquanto \(|T|<|V|\): extraia a aresta mais leve \(\{u,v\}\) com \(u\in T\) e \(v\notin T\); adicione \(v\) e \(\{u,v\}\) à árvore; atualize as chaves das arestas que cruzam o novo corte.
     \item Devolva a árvore construída.
 \end{enumerate}
 \end{algobox}
 
-\paragraph{}Prim também é correto pelo princípio do corte; com fila de prioridades binária, executa em \(O(m\log n)\) (ou em \(O(m+n\log n)\)); em grafos densos com \emph{heaps} de Fibonacci, pode-se obter \(O(m+n\log n)\) \cite{cormen2009,kleinberg2006,west2001introduction,diestel2017graph}.
-
-\paragraph{Revisão dos Conceitos Fundamentais}
+\paragraph{}Prim também é correto pelo princípio do corte; com fila de prioridades binária, executa em \(O(m\log n)\) (ou em \(O(m+n\log n)\)); em grafos densos com \emph{heaps} de Fibonacci\footnote{\emph{Heaps} (montes) são implementações clássicas de filas de prioridades. O \textbf{heap binário} mantém uma árvore quase completa e executa \texttt{insert}/\texttt{extract-min}/\texttt{decrease-key} em \(O(\log n)\). Já o \textbf{heap de Fibonacci} é uma estrutura amortizada com \texttt{decrease-key} e \texttt{meld} (união) em \(O(1)\) amortizado e \texttt{extract-min} em \(O(\log n)\). Em algoritmos como Prim e Dijkstra, onde \texttt{decrease-key} é frequente, isso leva a \(O(m+n\log n)\). Apesar da melhor garantia assintótica, constantes e implementação mais simples fazem heaps binários (ou \emph{pairing heaps}) serem frequentemente competitivos na prática.}, pode-se obter \(O(m+n\log n)\) \cite{cormen2009,kleinberg2006,west2001introduction,diestel2017graph}.
 
 \paragraph{}
-A revisão resumida dos conceitos fundamentais (que já apresentamos em sessões anteriores) e das técnicas que serão utilizadas.
+Os algoritmos gulosos de MST são corretos em grafos não dirigidos, mas a passagem para dígrafos \emph{não} é direta. No caso dirigido, buscamos uma \textbf{r-arborescência de custo mínimo}: para cada \(v\neq r\), exatamente um arco entra em \(v\), e o conjunto deve ser acíclico e alcançável a partir de \(r\). Se imitarmos a receita de MST (escolher sempre o arco de entrada mais barato), aparecem \emph{ciclos dirigidos}, e não há um análogo imediato do “corte seguro”.
+
+\paragraph{}
+Duas abordagens clássicas contornam essas dificuldades: (i) \textbf{Chu–Liu/Edmonds}, que mantém \emph{custos reduzidos} (criando arcos de custo reduzido zero) e resolve conflitos por \emph{contração de ciclos}; e (ii) o procedimento em duas fases de \textbf{Frank}, que parte de uma arborescência qualquer e a refina via ajustes de custos e trocas de arcos. Em ambos os casos, escolhas locais são acopladas a um mecanismo global de consistência, garantindo otimalidade no caso dirigido \cite{schrijver2003comb}.
+
+\subsubsection{A busca em digrafos}
+
+\paragraph{}
+O primeiro avanço significativo na busca por arborescências de custo mínimo em dígrafos foi feito por Y. Chu e T. Liu em 1965, que propuseram um algoritmo para encontrar a arborescência de custo mínimo em um dígrafo. Esse algoritmo foi posteriormente aprimorado por Jack Edmonds em 1967, que introduziu o conceito de custos reduzidos e a técnica de contração de ciclos, tornando o algoritmo mais eficiente e robusto.
+
+\paragraph{}
+Desde então, a pesquisa nessa área tem se concentrado em melhorar a eficiência dos algoritmos existentes, bem como em explorar novas técnicas e abordagens para lidar com diferentes tipos de dígrafos e restrições adicionais. A contribuição de András Frank, que propôs um procedimento em duas fases para encontrar arborescências de custo mínimo, é um exemplo notável dessa evolução contínua.
+
+\subsection{Os meios para um fim}
+
+\paragraph{}
+Maquiável é conhecido por uma de suas citações: "Os fins justificam os meios". Essa frase ficou famosa, porque tem uma interpretação polêmica: em certas circunstâncias, qualquer ação pode ser justificada se o resultado final for considerado positivo ou benéfico. Muitos, não concordam com essa visão, argumentando que os meios também importam e que ações imorais não podem ser justificadas por bons resultados.
+
+\paragraph{}
+Por um lado, na matemática essa frase pode ser validada quando falamos em duas formas distintas de construir algoritmos: por \emph{iteratividade} ou \emph{recursividade}.
+
+\paragraph{Iteratividade}
+\paragraph{}
+Muitos algoritmos — incluindo os gulosos — são construídos por \emph{iteração}: repetimos um bloco de instruções enquanto uma condição não é satisfeita. Para projetar e analisar laços com clareza, três ideias são centrais:
+
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item \textbf{Invariante de laço}: uma propriedade que é verdadeira antes do laço e permanece verdadeira a cada iteração. Ela explica \emph{o que} está sendo mantido correto durante a construção.
+    \item \textbf{Variante (medida de progresso)}: uma quantidade que melhora estritamente a cada iteração (ex.: aumenta $|T|$, diminui $|V|$, reduz um potencial). Garante \emph{terminação}.
+    \item \textbf{Critério de parada e pós-condição}: quando o laço termina, o invariante implica a especificação desejada.
+\end{itemize}
+
+\paragraph{}
+	\textit{Na prática.} Em \textbf{Kruskal}, o invariante é “$T$ é uma floresta acíclica e cada componente foi conectado por arestas seguras”; a variante é $|T|$, que cresce até $|V|-1$. Em \textbf{Prim}, “$T$ conecta um conjunto de vértices e as chaves refletem o menor corte atual”; a variante é o tamanho de $T$. Muitas análises usam \emph{custo por iteração} ou \emph{análise amortizada}\footnote{A análise amortizada distribui o custo de operações caras sobre uma sequência, garantindo um custo médio por operação (ex.: \texttt{decrease-key} em heaps de Fibonacci).} para capturar o desempenho agregado.
+
+\paragraph{Recursão}
+\paragraph{}
+Recursão resolve instâncias grandes chamando o próprio algoritmo em subinstâncias menores. Um projeto claro inclui:
+
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item \textbf{Casos base}: instâncias mínimas resolvidas diretamente.
+    \item \textbf{Passo recursivo}: como decompor e combinar soluções dos subproblemas.
+    \item \textbf{Medida decrescente}: uma grandeza que estritamente diminui a cada chamada (ex.: número de vértices após contração), assegurando terminção.
+    \item \textbf{Corretude por indução}: assumimos corretas as chamadas recursivas (hipótese indutiva) e provamos que a combinação produz uma solução correta.
+    \item \textbf{Custo por recorrência}: tempo expresso por $T(n)$ e resolvido por \emph{árvore de recursão} ou Teorema Mestre\footnote{Esboço: quando $T(n)=a\,T(n/b)+f(n)$, com $a\ge 1$, $b>1$, comparamos $f(n)$ a $n^{\log_b a}$. Não é necessário aqui, mas a técnica guia estimativas assintóticas.}.
+\end{itemize}
+
+\paragraph{}
+	\textit{Na prática.} Em \textbf{Chu–Liu/Edmonds}, o passo recursivo contrai um ciclo dirigido e ajusta custos; a medida decrescente é $|V|$ (a cada contração reduzimos o número de vértices do problema), e a expansão final preserva otimalidade. No procedimento em duas fases de \textbf{Frank}, a primeira fase produz uma arborescência inicial; a segunda aplica \emph{refinamentos iterativos} guiados por custos reduzidos — um exemplo de mistura entre recursão estrutural e iteração local.
+
+\paragraph{}
+Existe inclusive uma prova matemática\footnote{Em modelos padrão de computação (máquinas de Turing, RAM), \emph{iteração} e \emph{recursão} têm o mesmo poder expressivo: laços podem ser reescritos como recursão (sobre um contador/estado) e chamadas recursivas podem ser eliminadas por uma simulação explícita da pilha (iteração com uma estrutura \textit{stack}). Demonstrações e variantes aparecem em textos clássicos de teoria da computação e projeto de algoritmos; ver, por exemplo, \cite{cormen2009} (eliminação de recursão via pilha explícita). Aqui registramos apenas a equivalência conceitual, sem apresentá-la.} que diz que qualquer algoritmo iterativo pode ser reescrito de forma recursiva, e vice-versa. Ou seja, \emph{os fins justificam os meios}: a escolha entre iteração e recursão é muitas vezes uma questão de preferência ou conveniência, já que ambos podem alcançar o mesmo objetivo.
+
+\paragraph{}
+Por outro lado, os trabalhos de Y. Chu e T. Liu, Jack Edmonds e András Frank mostram que os meios importam: diferentes técnicas (custos reduzidos, contração de ciclos, ajustes iterativos) são cruciais para mudar a simplicidade e eficiência que um problema apresenta. A seguir, detalharemos essas técnicas e os algoritmos que as utilizam.
+
+\paragraph{}
+Nessa seção mostraremos sobre as abordagens clássicas para encontrar r-arborescências de custo mínimo em dígrafos ponderados: o algoritmo de \textbf{Chu–Liu/Edmonds} e o procedimento em duas fases de \textbf{Frank}. Antes, porém, precisamos revisar os conceitos fundamentais e as técnicas que serão utilizadas.
+
+\paragraph{Revisão}
+
 \paragraph{}
 Antes de mergulharmos nos algoritmos específicos, é importante revisitar alguns conceitos fundamentais que serão cruciais para nossa compreensão:
+
+\paragraph{Conceitos Fundamentais:}
 \begin{itemize}\setlength{\itemsep}{2pt}
     \item \textbf{Dígrafo}: um grafo direcionado onde os arcos têm uma direção específica, indo de um vértice a outro.
     \item \textbf{Arborescência}: uma árvore direcionada onde todos os caminhos partem de um vértice raiz e alcançam todos os outros vértices.
@@ -2550,24 +2705,23 @@ Antes de mergulharmos nos algoritmos específicos, é importante revisitar algun
     \item \textbf{Condicionalidade de Fulkerson}: as condições necessárias e suficientes para a existência de uma r-arborescência de custo mínimo.
 \end{itemize}
 
-\paragraph{}
-Além desses conceitos, precisamos citar algumas abordagens que serão utilizadas nos algoritmos:
-
 \paragraph{Técnicas e Abordagens:}
 \paragraph{}
 Para encontrar r-arborescências de custo mínimo, utilizaremos algumas técnicas e abordagens específicas:
 \begin{itemize}\setlength{\itemsep}{2pt}
     \item \textbf{Normalização de Custos}: ajustaremos os custos dos arcos para facilitar a identificação de arcos de custo reduzido zero.
     \item \textbf{Contração de Ciclos}: quando formos encontrar ciclos de arcos de custo reduzido zero, os contrairemos para simplificar o dígrafo.
-    \item \textbf{Algoritmo de Chu–Liu/Edmonds}: um algoritmo clássico para encontrar r-arborescências de custo mínimo, que utiliza as técnicas mencionadas.
-    \item \textbf{Procedimento em Duas Fases de András Frank}: uma abordagem alternativa que também será explorada.
+    \item \textbf{Custos Reduzidos}: utilizaremos custos reduzidos para identificar arcos que podem ser incluídos na arborescência sem aumentar o custo total.
+    \item \textbf{Estratégias Gulosas}: aplicaremos estratégias gulosas para selecionar arcos de forma eficiente, garantindo que cada escolha local contribua para a solução global ótima.
+    \item \textbf{Recursão e Expansão}: usaremos recursão para resolver subproblemas em dígrafos contraídos e expandiremos as soluções para o dígrafo original.
+    \item \textbf{Análise de Complexidade}: avaliaremos a eficiência dos algoritmos em termos de tempo e espaço, garantindo que sejam viáveis para grandes dígrafos.
+    \item \textbf{Provas de Corretude}: forneceremos argumentos formais para garantir que os algoritmos realmente produzem a r-arborescência de custo mínimo.
 \end{itemize}
 
 \subsection{Algoritmo de Chu–Liu/Edmonds}
 
 
 
-\paragraph{}Contudo, ao migrarmos para \emph{dígrafos}, essa inocência desaparece. Na variante dirigida, queremos uma \textbf{r-arborescência de custo mínimo}: para cada vértice \(v\neq r\), exatamente \emph{um arco de entrada} deve ser escolhido, e o conjunto resultante precisa ser acíclico e alcançável a partir de \(r\). Se tentarmos copiar a estratégia gulosa das MSTs — por exemplo, escolher para cada vértice o arco de entrada mais barato — surgem \emph{ciclos dirigidos}. Além disso, os princípios estruturais usados na prova de otimalidade de MST (corte/ciclo em grafos não dirigidos) não se traduzem diretamente para o caso dirigido. É nesse cenário que entram as ideias de \textbf{Chu–Liu} e \textbf{Edmonds}: manter \emph{custos reduzidos} (criando arcos de custo zero) e lidar com conflitos via \emph{contração de ciclos}. A síntese dessas ideias, o algoritmo de \emph{Chu–Liu/Edmonds}, alia escolhas locais baratas a um mecanismo global de consistência e garante otimalidade no caso dirigido \cite{schrijver2003comb}.
 
 \paragraph{Ideia em alto nível}
 Para cada vértice \(v\neq r\), selecione o arco de menor custo que \emph{entra} em \(v\). Se o conjunto selecionado não forma nenhum ciclo dirigido, já temos uma r-arborescência (cada vértice tem grau de entrada 1 e o grafo é acíclico). Se surgir um ciclo, contraímos todo o ciclo em um supervértice e \emph{ajustamos} os custos dos arcos que entram no ciclo para preservar a comparação relativa de custos. Repetimos no grafo contraído até não haver mais ciclos. Por fim, expandimos os ciclos em ordem inversa, escolhendo dentro de cada um os arcos corretos para manter grau de entrada 1 e aciclicidade global.
