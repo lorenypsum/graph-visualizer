@@ -2682,15 +2682,41 @@ Recursão resolve instâncias grandes chamando o próprio algoritmo em subinstâ
 	\textit{Na prática.} Em \textbf{Chu–Liu/Edmonds}, o passo recursivo contrai um ciclo dirigido e ajusta custos; a medida decrescente é $|V|$ (a cada contração reduzimos o número de vértices do problema), e a expansão final preserva otimalidade. No procedimento em duas fases de \textbf{Frank}, a primeira fase produz uma arborescência inicial; a segunda aplica \emph{refinamentos iterativos} guiados por custos reduzidos — um exemplo de mistura entre recursão estrutural e iteração local.
 
 \paragraph{}
-Existe inclusive uma prova matemática\footnote{Em modelos padrão de computação (máquinas de Turing, RAM), \emph{iteração} e \emph{recursão} têm o mesmo poder expressivo: laços podem ser reescritos como recursão (sobre um contador/estado) e chamadas recursivas podem ser eliminadas por uma simulação explícita da pilha (iteração com uma estrutura \textit{stack}). Demonstrações e variantes aparecem em textos clássicos de teoria da computação e projeto de algoritmos; ver, por exemplo, \cite{cormen2009} (eliminação de recursão via pilha explícita). Aqui registramos apenas a equivalência conceitual, sem apresentá-la.} que diz que qualquer algoritmo iterativo pode ser reescrito de forma recursiva, e vice-versa. Ou seja, \emph{os fins justificam os meios}: a escolha entre iteração e recursão é muitas vezes uma questão de preferência ou conveniência, já que ambos podem alcançar o mesmo objetivo.
+Para ilustrar, resolvemos o mesmo problema — calcular o fatorial \(n!\) — de forma \emph{iterativa} e \emph{recursiva}.
+
+\begin{algobox}{Fatorial (iterativo)}{fatorial-iterativo}
+Entrada: inteiro \(n\ge 0\)
+\begin{enumerate}\setlength{\itemsep}{2pt}
+    \item Se \(n=0\), devolva \(1\).
+    \item Defina \(r\leftarrow 1\).
+    \item Para \(i\) de \(1\) até \(n\): \(r\leftarrow r\cdot i\).
+    \item Devolva \(r\).
+\end{enumerate}
+\end{algobox}
+
+\begin{algobox}{Fatorial (recursivo)}{fatorial-recursivo}
+Entrada: inteiro \(n\ge 0\)
+\begin{enumerate}\setlength{\itemsep}{2pt}
+    \item Se \(n\le 1\), devolva \(1\). \hfill (caso base)
+    \item Caso contrário, devolva \(n\cdot \textsc{Fatorial}(n-1)\). \hfill (passo recursivo)
+\end{enumerate}
+\end{algobox}
 
 \paragraph{}
-Por outro lado, os trabalhos de Y. Chu e T. Liu, Jack Edmonds e András Frank mostram que os meios importam: diferentes técnicas (custos reduzidos, contração de ciclos, ajustes iterativos) são cruciais para mudar a simplicidade e eficiência que um problema apresenta. A seguir, detalharemos essas técnicas e os algoritmos que as utilizam.
+Ambas as versões computam a mesma função. A iterativa evidencia a \emph{variante} (o contador \(i\)) e um \emph{invariante} simples (\(r= i!\) ao fim da iteração \(i\)); a recursiva explicita o \emph{caso base} e o \emph{passo indutivo}, e corresponde, operacionalmente, a empilhar chamadas com parâmetros decrescentes até \(n=1\).    
 
 \paragraph{}
-Nessa seção mostraremos sobre as abordagens clássicas para encontrar r-arborescências de custo mínimo em dígrafos ponderados: o algoritmo de \textbf{Chu–Liu/Edmonds} e o procedimento em duas fases de \textbf{Frank}. Antes, porém, precisamos revisar os conceitos fundamentais e as técnicas que serão utilizadas.
+Existe inclusive uma prova matemática\footnote{Em modelos padrão de computação (máquinas de Turing, RAM), \emph{iteração} e \emph{recursão} têm o mesmo poder expressivo: laços podem ser reescritos como recursão (sobre um contador/estado) e chamadas recursivas podem ser eliminadas por uma simulação explícita da pilha (iteração com uma estrutura \textit{stack}). Demonstrações e variantes aparecem em textos clássicos de teoria da computação e projeto de algoritmos; ver, por exemplo, \cite{cormen2009} (eliminação de recursão via pilha explícita). Aqui registramos apenas a equivalência conceitual, sem apresentá-la.} que diz que qualquer algoritmo iterativo pode ser reescrito de forma recursiva, e vice-versa. Ou seja, \emph{os fins justificam os meios}: a escolha entre iteração e recursão é muitas vezes uma questão de preferência ou conveniência, já que ambos podem alcançar o mesmo objetivo. Porém, algoritmos recursivos podem ser mais elegantes e fáceis de entender, enquanto algoritmos iterativos podem ser mais eficientes em termos de uso de memória (evitando a sobrecarga da pilha de chamadas). Ou seja, os meios também importam. E os trabalhos de Chu–Liu/Edmonds e Frank ilustram bem essa tensão:
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item \textbf{Chu–Liu/Edmonds} é um algoritmo recursivo que contrai ciclos e resolve o problema em subinstâncias menores, usando custos reduzidos para manter a otimalidade.
+    \item O procedimento em \textbf{Frank} é iterativo, começando com uma arborescência qualquer e refinando-a por trocas locais guiadas por custos reduzidos, até alcançar a otimalidade.
+\end{itemize}
+Ambos os algoritmos são corretos e eficientes, mas adotam meios diferentes para alcançar o mesmo fim: encontrar uma r-arborescência de custo mínimo em um dígrafo ponderado.
 
-\paragraph{Revisão}
+\paragraph{}
+Nesta seção apresentaremos as principais abordagens para encontrar r-arborescências de custo mínimo em dígrafos ponderados. Antes de entrar nos detalhes, faremos uma breve revisão dos conceitos e técnicas que utilizaremos adiante, para uniformizar a notação e tornar a leitura mais fluida.
+
+\paragraph{Revisão: conceitos fundamentais e técnicas}
 
 \paragraph{}
 Antes de mergulharmos nos algoritmos específicos, é importante revisitar alguns conceitos fundamentais que serão cruciais para nossa compreensão:
