@@ -1,4 +1,5 @@
 \documentclass[12pt,a4paper]{article}
+\usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 % Caixa reutilizável para destacar algoritmos
 
@@ -10,10 +11,37 @@
 \usepackage{csquotes}
 \usepackage[brazil]{babel}
 \usepackage{microtype}
+\usepackage{float} % para usar o modificador [H] e fixar a posição do float
 \usepackage{capt-of} % permitir legenda/label sem float
 \usepackage{tikz}
 \usepackage[most]{tcolorbox}
     \tcbset{colback=green!15,colframe=purple!15,boxrule=0.6pt}
+\usepackage{listings}
+\usepackage{xcolor}
+
+% Estilo para listagens Python
+\lstdefinestyle{pystyle}{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    numbers=left,
+    numbersep=6pt,
+    tabsize=4,
+    showstringspaces=false,
+    breaklines=true,
+    keywordstyle=\color{blue!70!black}\bfseries,
+    commentstyle=\color{green!50!black}\itshape,
+    stringstyle=\color{red!60!black},
+    inputencoding=utf8,
+    extendedchars=true,
+    % Mapear caracteres UTF-8 comuns em PT/BR e pontuação tipográfica para LaTeX
+    literate={á}{{\'{a}}}1 {é}{{\'{e}}}1 {í}{{\'{\i}}}1 {ó}{{\'{o}}}1 {ú}{{\'{u}}}1
+             {Á}{{\'{A}}}1 {É}{{\'{E}}}1 {Í}{{\'{\I}}}1 {Ó}{{\'{O}}}1 {Ú}{{\'{U}}}1
+             {à}{{\`{a}}}1 {À}{{\`{A}}}1 {â}{{\^{a}}}1 {Â}{{\^{A}}}1 {ã}{{\~{a}}}1 {Ã}{{\~{A}}}1
+             {ê}{{\^{e}}}1 {Ê}{{\^{E}}}1 {ô}{{\^{o}}}1 {Ô}{{\^{O}}}1 {õ}{{\~{o}}}1 {Õ}{{\~{O}}}1
+             {ç}{{\c{c}}}1 {Ç}{{\c{C}}}1 {ü}{{\"{u}}}1 {Ü}{{\"{U}}}1
+             {ñ}{{\~{n}}}1 {Ñ}{{\~{N}}}1
+             {“}{{``}}1 {”}{{''}}1 {’}{{'}}1 {–}{{-}}1 {—}{{-}}1 {…}{{...}}1 {‑}{{-}}1
+}
 
 % Algoritmos: paleta verde
 \newtcbtheorem[number within=section]{algobox}{Algoritmo}%
@@ -30,6 +58,14 @@
 {lemabox}{Lema}%
 {enhanced,breakable,sharp corners,boxsep=6pt,arc=1pt,
  colback=orange!3,colframe=orange!35,fonttitle=\bfseries,coltitle=black,boxrule=0.6pt}{lem}
+
+% Caixa para código Python com tcolorbox + listings
+\newtcblisting{pybox}[2][]{
+    enhanced, breakable, sharp corners, boxsep=6pt, arc=1pt,
+    colback=gray!3, colframe=gray!40, fonttitle=\bfseries, coltitle=black, boxrule=0.6pt,
+    listing only, listing engine=listings, title={#2}, #1,
+    listing options={style=pystyle}
+}
 
 \usetikzlibrary{positioning,arrows.meta,fit,calc}
 
@@ -186,7 +222,7 @@ Começando pela \textbf{noção de pertinência} denotado por \(\in\): dizemos q
 \paragraph{}
 Seja o nosso universo \(U\) de organismos: \(P=\{\text{todas as plantas}\}\), \(T=\{\text{todas as árvores}\}\) e \(F=\{\text{todos os fungos}\}\). Se \(x\) é um carvalho, então \(x\in T\) e, como toda árvore é uma planta, \(x\in P\). Já se \(y\) é um cogumelo, então \(y\in F\) e, na taxonomia moderna, \(y\notin T\) e \(y\notin P\). Agora, considere \(A=\{\text{árvores com folhas verdes}\}\); a pertinência fica clara: \(x\in A\) se, e somente se, \(x\) é árvore e tem folhas verdes.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \begin{tikzpicture}[scale=1]
         % P: plantas (círculo maior)
@@ -211,7 +247,7 @@ Seja o nosso universo \(U\) de organismos: \(P=\{\text{todas as plantas}\}\), \(
 \paragraph{}
 Continuando, vem a \textbf{relação de inclusão} entre conjuntos denotada por \(\subseteq\): escrevemos \(X \subseteq Y\) quando todo elemento de \(X\) também pertence a \(Y\) (e \(X\subset Y\) quando, além disso, \(X\neq Y\)). No nosso exemplo, \(A\subseteq T\subset P\) e \(T\cap F=\varnothing\) (árvores e fungos não se sobrepõem).
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \begin{tikzpicture}[scale=1]
         % P: conjunto maior
@@ -2849,7 +2885,7 @@ Quando trabalhamos com \emph{custos reduzidos}, ajustamos em particular os arcos
 
 Para cada arco \((u,w)\) com \(w\in C\), ajustamos o custo reduzido para \(c'(u,x_C)=c(u,w)-c(a_w)\), onde \(a_w\) é o arco mais barato que entra em \(w\). No exemplo da Figura \ref{fig:chu-liu-reduced-cost}, o arco \((u,b)\) com custo \(7\) torna-se \((u,x_C)\) com custo reduzido \(7-5=2\), já que \(a_b=(a\to b)\) tem custo \(5\). Arcos que saem de \(C\) ou laços internos não são ajustados.
 
-\subsubsection{Descrição do algoritmo}
+\subsection{Descrição do algoritmo}
 
 \paragraph{}
 Em computação falamos em linguagem de alto nível quando uma linguagem de programação é próxima da linguagem humana, com abstrações que facilitam o entendimento. Em contraste, linguagens de baixo nível são mais próximas do código de máquina, exigindo detalhes explícitos. 
@@ -2873,7 +2909,6 @@ Se \(A'\) contiver um ciclo dirigido \(C\) (que não inclui \(r\)), normalizamos
 \paragraph{}
 Resolvemos recursivamente no grafo contraído. As arborescências do grafo contraído correspondem, em bijeção, às arborescências do grafo original com exatamente um arco entrando em \(C\); como os arcos de \(C\) têm custo reduzido zero, os custos são preservados na ida e na volta. 
 
-\paragraph{}
 \begin{figure}[htbp]
     \centering
     \begin{minipage}{.47\textwidth}
@@ -2915,7 +2950,7 @@ Resolvemos recursivamente no grafo contraído. As arborescências do grafo contr
             % nodes (expanded original graph)
             \node[vertex] (r2) at (-0.1,1.2) {$r$};
             \node[vertex] (u2) at (-0.9,0.0) {$u$};
-            \node[vertex] (a)  at (0.6,0.3) {$a$};
+            \node[vertex] (a)  at (0.6,0.1) {$a$};
             \node[vertex] (b)  at (1.4,0.3) {$b$};
             \node[vertex] (c)  at (1.0,-0.5) {$c$};
             \node[vertex] (v2) at (2.4,0.0) {$v$};
@@ -2942,26 +2977,154 @@ Resolvemos recursivamente no grafo contraído. As arborescências do grafo contr
 \end{figure}
 
 \paragraph{}
+A Figura \ref{fig:chu-liu-bijection} ilustra a bijeção entre arborescências no grafo contraído e no grafo original, destacando a preservação de custos e a manutenção das propriedades estruturais necessárias.
+
+\paragraph{}
 Na expansão, reintroduzimos \(C\) e removemos exatamente um arco interno para manter grau de entrada 1 e aciclicidade global \cite{schrijver2003comb,kleinberg2006}.
 
+\begin{figure}[htbp]
+    \centering
+    % Panel (a): contracted graph just before expansion
+    \begin{minipage}{.31\textwidth}
+        \centering
+        \begin{tikzpicture}[>=Latex]
+            	\tikzset{
+                vertex/.style={circle,draw,fill=white,inner sep=1pt,font=\small},
+                sel/.style={-Latex,very thick,green!60!black},
+                zero/.style={-Latex,very thick,blue!70},
+                ext/.style={-Latex,dashed,gray},
+                normal/.style={-Latex,thin}
+            }
+            \node[vertex] (r) at (-0.2,1.0) {$r$};
+            \node[vertex] (u) at (-0.9,0.0) {$u$};
+            \node[vertex,very thick] (x) at (0.6,0.0) {$x_C$};
+            \node[vertex] (v) at (1.9,0.0) {$v$};
+            \draw[sel]   (u) to[bend left=8] (x);   % chosen entering arc to x_C
+            \draw[normal](x) to[bend left=8] (v);   % some outgoing arc
+            \draw[ext]   (r) to[bend left=15] (x);
+        \end{tikzpicture}
+        \\[2pt]
+        \small (a) Antes: grafo contraído com o arco que entra em $x_C$ selecionado.
+    \end{minipage}\hfill
+    % Panel (b): expand C, before removing an internal arc
+    \begin{minipage}{.31\textwidth}
+        \centering
+        \begin{tikzpicture}[>=Latex]
+            	\tikzset{
+                vertex/.style={circle,draw,fill=white,inner sep=1pt,font=\small},
+                sel/.style={-Latex,very thick,green!60!black},
+                zero/.style={-Latex,very thick,blue!70},
+                ext/.style={-Latex,dashed,gray},
+                normal/.style={-Latex,thin}
+            }
+            \node[vertex] (r2) at (-0.2,1.0) {$r$};
+            \node[vertex] (u2) at (-0.9,0.0) {$u$};
+            \node[vertex] (a)  at (0.4,0.35) {$a$};
+            \node[vertex] (b)  at (1.2,0.35) {$b$};
+            \node[vertex] (c)  at (0.8,-0.4) {$c$};
+            \node[vertex] (v2) at (2.2,0.0) {$v$};
+            % internal cycle C with zero-reduced-cost arcs
+            \draw[zero] (a) -- (b);
+            \draw[zero] (b) -- (c);
+            \draw[zero] (c) -- (a);
+            % mapped entering arc to some w in C (e.g., u -> b)
+            \draw[sel] (u2) to[bend left=8] (b);
+            % an outgoing arc from C
+            \draw[normal] (c) to[bend left=8] (v2);
+            % optional external arc from r
+            \draw[ext] (r2) to[bend left=12] (a);
+        \end{tikzpicture}
+        \\[2pt]
+        \small (b) Expansão: $x_C$ é substituído por $C$, mantendo o arco que entra em $C$.
+    \end{minipage}\hfill
+    % Panel (c): remove one internal arc to break the cycle
+    \begin{minipage}{.31\textwidth}
+        \centering
+        \begin{tikzpicture}[>=Latex]
+            	\tikzset{
+                vertex/.style={circle,draw,fill=white,inner sep=1pt,font=\small},
+                sel/.style={-Latex,very thick,green!60!black},
+                zero/.style={-Latex,very thick,blue!70},
+                ext/.style={-Latex,dashed,gray},
+                normal/.style={-Latex,thin}
+            }
+            \node[vertex] (u3) at (-0.9,0.0) {$u$};
+            \node[vertex] (a3)  at (0.4,0.35) {$a$};
+            \node[vertex] (b3)  at (1.2,0.35) {$b$};
+            \node[vertex] (c3)  at (0.8,-0.4) {$c$};
+            \node[vertex] (v3) at (2.2,0.0) {$v$};
+            % keep entering arc and one outgoing
+            \draw[sel]   (u3) to[bend left=8] (b3);
+            \draw[normal](c3) to[bend left=8] (v3);
+            % keep two internal zero-cost arcs and remove one (b->c removed)
+            \draw[zero] (a3) -- (b3);
+            % removed arc visual: faded/dashed with cross
+            \draw[ext] (b3) -- (c3);
+            \path (b3) -- (c3) node[pos=0.5] (mid) {};
+            \node[red] at (mid) {$\times$};
+            \draw[zero] (c3) -- (a3);
+        \end{tikzpicture}
+        \\[2pt]
+        \small (c) Final: remove-se um arco interno de $C$ para quebrar o ciclo (mantendo grau de entrada 1).
+    \end{minipage}
+    \caption{Reexpansão de $C$. (a) No grafo contraído, seleciona-se um único arco que entra em $x_C$. (b) Ao expandir, $x_C$ é substituído pelo ciclo $C$ e o arco selecionado passa a entrar em algum $w\in C$. (c) Remove-se exatamente um arco interno de $C$ para eliminar o ciclo, preservando conectividade a partir de $r$ e o custo total, pois os arcos internos têm custo reduzido zero.}
+    \label{fig:chu-liu-reexpansion}
+\end{figure}
+
+\paragraph{}
+A Figura \ref{fig:chu-liu-reexpansion} detalha o processo de expansão e remoção de um arco interno para quebrar o ciclo, garantindo que a estrutura de r-arborescência seja mantida.
+
+\paragraph{}
+Abaixo, temos a descrição formal do algoritmo.
+\paragraph{}
 \begin{algobox}{Chu–Liu/Edmonds (visão operacional)}{chu-liu-edmonds}
-Entrada: dígrafo \(D=(V,A)\), custos \(c:A\to\mathbb{R}\), raiz \(r\).
+Entrada: dígrafo \(D=(V,A)\), custos \(c:A\to\mathbb{R}_{\ge 0}\), raiz \(r\).\footnote{Se algum \(v\neq r\) não possui arco de entrada, não existe r‑arborescência.}
 \begin{enumerate}\setlength{\itemsep}{2pt}
-    \item Para cada \(v\neq r\), escolha \(a_v\in\arg\min\{c(u,v):(u,v)\in A\}\) e forme \(A'=\{a_v: v\neq r\}\).
-    \item Se \((V,A')\) é acíclico, devolva \(A'\) (é uma r‑arborescência ótima \cite[Obs.~4.36]{kleinberg2006}).
-    \item Caso contrário, seja \(C\) um ciclo em \(A'\). Contraia \(C\) em \(x_C\). Para cada arco \((u,w)\) que \emph{entra} em \(C\) (isto é, \(w\in V(C), u\notin V(C)\)), defina
-    \[c'(u,x_C) \leftarrow c(u,w) - c(a_w).\]
-    Resolva recursivamente com custos \(c'\). Na volta, expanda \(C\) e, dentro de \(C\), remova exatamente um arco de \(C\) e inclua o arco que entra em \(C\) escolhido na recursão (de custo reduzido zero), preservando aciclicidade e grau de entrada 1.
+    \item Para cada \(v\neq r\), escolha \(a_v\in\operatorname*{argmin}_{(u,v)\in A} c(u,v)\). Defina \(y(v):=c(a_v)\) e \(F^*:=\{a_v: v\neq r\}.\)
+    \item Se \((V,F^*)\) é acíclico, devolva \(F^*\). Por \cite[Obs.~4.36]{kleinberg2006}, trata‑se de uma r‑arborescência de custo mínimo.
+    \item Caso contrário, seja \(C\) um ciclo dirigido de \(F^*\) (com \(r\notin C\)). \textbf{Contração:} contraia \(C\) em um supervértice \(x_C\) e defina custos \(c'\) por
+    \begin{align*}
+        c'(u,x_C) &:= c(u,w) - y(w) = c(u,w) - c(a_w) && \text{para } u\notin C,\ w\in C, \\
+        c'(x_C,v) &:= c(w,v) && \text{para } w\in C,\ v\notin C,
+    \end{align*}
+    descartando laços em \(x_C\) e permitindo paralelos. Denote o dígrafo contraído por \(D'=(V',A')\).
+    \item \textbf{Recursão:} compute uma r‑arborescência ótima \(T'\) de \(D'\) com custos \(c'\).
+    \item \textbf{Expansão:} seja \((u,x_C)\in T'\) o único arco que entra em \(x_C\). No grafo original, ele corresponde a \((u,w)\) com \(w\in C\). Forme
+    \[
+        T := \bigl(T'\setminus\{\text{arcos incidentes a } x_C\}\bigr)\ \cup\ \{(u,w)\}\ \cup\ \bigl((F^*\cap A(C))\setminus\{a_w\}\bigr).
+    \]
+    Então \(T\) tem grau de entrada 1 em cada \(v\neq r\), é acíclico e tem o mesmo custo de \(T'\); logo, é uma r‑arborescência ótima de \(D\) \cite[Sec.~4.9]{kleinberg2006,schrijver2003comb}.
 \end{enumerate}
 \end{algobox}
 
-\paragraph{Corretude e complexidade}
-O ajuste de custos conserva diferenças relevantes, garantindo que a solução no grafo contraído possa ser “traduzida” de volta para o original sem perder otimalidade. A prova formal utiliza um argumento de conservação por contração/expansão e pode ser vista como um caso particular de um raciocínio primal–dual: as reduções de custo correspondem a “potenciais” nos vértices que criam \emph{arcos de custo reduzido zero} como candidatos naturais. Implementações simples rodam em \(O(mn)\); com estruturas apropriadas, obtém-se \(O(m\log n)\), onde \(n=|V|\) e \(m=|A|\); ver \cite{schrijver2003comb}.
+\paragraph{Corretude}
+\begin{enumerate}\setlength{\itemsep}{2pt}
+    \item \emph{Normalização por custos reduzidos.} Para cada \(v\neq r\), defina \(y(v):=\min\{c(u,v):(u,v)\in A\}\) e \(c'(u,v):=c(u,v)-y(v)\). Para qualquer r‑arborescência \(T\), vale
+    \[
+        \sum_{a\in T} c'(a) \,=\, \sum_{a\in T} c(a) \, - \, \sum_{v\neq r} y(v),
+    \]
+    pois há exatamente um arco de \(T\) entrando em cada \(v\neq r\). O termo \(\sum_{v\neq r} y(v)\) é constante (independe de \(T\)); assim, minimizar \(\sum c\) equivale a minimizar \(\sum c'\) \cite[Obs.~4.37]{kleinberg2006}. Em particular, os arcos \(a_v\) de menor custo que entram em \(v\) têm custo reduzido zero e formam \(F^*\).
+    \item \emph{Caso acíclico.} Se \((V,F^*)\) é acíclico, então já é uma r‑arborescência e, por realizar o mínimo custo de entrada em cada \(v\neq r\), é ótima \cite[Obs.~4.36]{kleinberg2006}.
+    \item \emph{Caso com ciclo (contração/expansão).} Se \(F^*\) contém um ciclo dirigido \(C\), todos os seus arcos têm custo reduzido zero. Contraia \(C\) em \(x_C\) e ajuste apenas arcos que \emph{entram} em \(C\): \(c'(u,x_C):=c(u,w)-y(w)=c(u,w)-c(a_w)\). Resolva o problema no grafo contraído \(D'\), obtendo uma r‑arborescência ótima \(T'\) sob \(c'\). Na expansão, substitua o arco \((u,x_C)\in T'\) pelo correspondente \((u,w)\) (com \(w\in C\)) e remova \(a_w\) de \(C\). Como os arcos de \(C\) têm custo reduzido zero e \(c'(u,x_C)=c(u,w)-y(w)\), a soma dos custos reduzidos é preservada na ida e na volta; logo, \(T'\) ótimo em \(D'\) mapeia para \(T\) ótimo em \(D\) para \(c'\). Pela equivalência entre \(c\) e \(c'\), \(T\) também é ótimo para \(c\). Repetindo o argumento a cada contração, obtemos a corretude por indução \cite[Sec.~4.9]{kleinberg2006,schrijver2003comb}.
+\end{enumerate}
+Em termos intuitivos, \(y\) funciona como um potencial nos vértices: torna “apertados” (custo reduzido zero) os candidatos corretos; ciclos de arcos apertados podem ser contraídos sem perder otimalidade.
 
-\paragraph{Quando usar}
-É a escolha padrão quando se precisa de uma única r-arborescência de custo mínimo. A ideia de escolher o arco de entrada mais barato por vértice, lidar com ciclos por contração e trabalhar com custos reduzidos aparece em várias generalizações.
+\paragraph{Complexidade}
+\paragraph{}
+Na implementação direta, selecionar os \(a_v\), detectar/contrair ciclos e atualizar estruturas custa \(O(m)\) por nível; como o número de vértices decresce a cada contração, temos no máximo \(O(n)\) níveis e tempo total \(O(mn)\), com \(n=|V|\), \(m=|A|\).
 
-\subsubsection{Detalhes de implementação}
+Com estruturas de dados adequadas, evita‑se revarrer todas as arestas a cada contração e obtém‑se \(O(m\log n)\). A ideia é manter, para cada componente (vértice ou supervértice), uma fila de prioridade (heap) com as arestas que \emph{entram} nele, chaveadas pelo custo \emph{reduzido}. Os potenciais \(y(\cdot)\) são aplicados de forma \emph{lazy} como um deslocamento (offset) agregado por componente, de modo que reponderar não exige atualizar todas as chaves. Assim, o arco mínimo que entra em um componente vira um \emph{extract‑min} no seu heap; quando um ciclo é contraído, fazemos \emph{meld} (união) dos heaps dos vértices de \(C\) e ajustamos um único offset no novo supervértice. Cada aresta é inserida em algum heap no máximo uma vez e é extraída/descartada no máximo uma vez; como inserções/extrações custam \(O(\log n)\) amortizado, o total fica em \(O(m\log n)\). A detecção de ciclos no grafo funcional \(F^*\) permanece linear no tamanho do componente e é dominada pelo custo de heap.
+
+\paragraph{}
+O uso de memória é \(O(m+n)\), incluindo mapeamentos de contração/expansão e as filas de prioridade dos arcos de entrada.
+
+\paragraph{}
+A implementação a seguir adota a versão \(O(mn)\) por simplicidade, mas com estruturas que facilitam a transição para \(O(m\log n)\) se desejado.
+
+\section{Implementação em Python}
+
+\paragraph{Visão geral}
+Esta seção apresenta uma implementação em Python do algoritmo de Chu–Liu/Edmonds, baseada no código do trabalho. A arquitetura segue os passos teóricos: (i) remoção de arestas que entram na raiz, (ii) normalização dos custos de entrada por vértice, (iii) construção do grafo funcional \(F^*\), (iv) detecção/contração de ciclos e (v) recursão seguida de reexpansão.
 
 \paragraph{Contrato (entrada/saída e hipóteses)}
 \begin{itemize}\setlength{\itemsep}{2pt}
@@ -2972,6 +3135,150 @@ O ajuste de custos conserva diferenças relevantes, garantindo que a solução n
 \end{itemize}
 
 \paragraph{Observações de implementação}
+\subsection*{Funções principais}
+
+\begin{pybox}{Normalização por vértice: custos reduzidos}
+from typing import Optional
+import networkx as nx
+
+def normalize_incoming_edge_weights(D: nx.DiGraph, node: str, lang: str = "pt") -> None:
+    """Subtrai de cada aresta que entra em `node` o menor custo que entra em `node`.
+    Modifica o grafo D in-place.
+    """
+    assert node in D, (
+        "normalize_incoming_edge_weights: O vértice '%s' não existe no grafo." % node
+        if lang == "pt" else
+        "normalize_incoming_edge_weights: The vertex '%s' does not exist in the graph." % node
+    )
+    preds = list(D.in_edges(node, data="w"))
+    if not preds:
+        return
+    yv = min(w for _, _, w in preds)
+    for u, _, _ in preds:
+        D[u][node]["w"] -= yv
+\end{pybox}
+
+\begin{pybox}{Construção de $F^*$ (grafo funcional)}
+def get_Fstar(D: nx.DiGraph, r0: str, lang: str = "pt") -> nx.DiGraph:
+    """Constroi F* escolhendo, para cada v != r0, um arco de custo reduzido zero que entra em v."""
+    assert r0 in D, (
+        "get_Fstar: O vértice raiz '%s' não existe no grafo." % r0
+        if lang == "pt" else
+        "get_Fstar: The root vertex '%s' does not exist in the graph." % r0
+    )
+    F_star = nx.DiGraph()
+    for v in D.nodes():
+        if v == r0:
+            continue
+        in_edges = list(D.in_edges(v, data="w"))
+        if not in_edges:
+            continue  # inviável: v não tem arco de entrada
+        # escolhe um arco de custo reduzido zero, se houver
+        u_zero = next((u for u, _, w in in_edges if w == 0), None)
+        if u_zero is not None:
+            F_star.add_edge(u_zero, v)
+        else:
+            # fallback: pega o de menor custo caso não haja zero (robustez)
+            u_min, _, _ = min(in_edges, key=lambda t: t[2])
+            F_star.add_edge(u_min, v)
+    return F_star
+\end{pybox}
+
+\begin{pybox}{Detecção de ciclo dirigido em $F^*$}
+def find_cycle(F_star: nx.DiGraph) -> Optional[nx.DiGraph]:
+    """Retorna um subgrafo com um ciclo dirigido, ou None se não houver."""
+    try:
+        nodes_in_cycle = set()
+        for u, v, _ in nx.find_cycle(F_star, orientation="original"):
+            nodes_in_cycle.update([u, v])
+        return F_star.subgraph(nodes_in_cycle).copy()
+    except nx.NetworkXNoCycle:
+        return None
+\end{pybox}
+
+\begin{pybox}{Contração de ciclo (esqueleto)}
+def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: str, lang: str = "pt"):
+    """Contrai o ciclo C em um supervértice `label` e retorna mapas de entrada/saída."""
+    assert label not in D, (
+        "contract_cycle: O rótulo '%s' já existe em G." % label
+        if lang == "pt" else
+        "contract_cycle: The label '%s' already exists in G." % label
+    )
+    cycle_nodes = set(C.nodes())
+    in_to_cycle, out_from_cycle = {}, {}
+    # (Seleciona, para cada u fora de C, o arco mais barato que entra em C; idem para saídas.)
+    # ... implementação conforme código do trabalho ...
+    # Adiciona arestas agregadas ao supervértice e remove nós do ciclo
+    for u, (v, w) in in_to_cycle.items():
+        D.add_edge(u, label, w=w)
+    for v, (u, w) in out_from_cycle.items():
+        D.add_edge(label, v, w=w)
+    D.remove_nodes_from(cycle_nodes)
+    return in_to_cycle, out_from_cycle
+\end{pybox}
+
+\begin{pybox}{Remoção de arestas que entram na raiz}
+def remove_edges_to_r0(D: nx.DiGraph, r0: str, lang: str = "pt") -> nx.DiGraph:
+    assert r0 in D, (
+        "remove_edges_to_r0: O vértice raiz '%s' não existe." % r0
+        if lang == "pt" else
+        "remove_edges_to_r0: The root vertex '%s' does not exist." % r0
+    )
+    in_edges = list(D.in_edges(r0))
+    if in_edges:
+        D.remove_edges_from(in_edges)
+    return D
+\end{pybox}
+
+\begin{pybox}{Remover arco interno na reexpansão}
+def remove_internal_edge_to_cycle_entry(C: nx.DiGraph, v):
+    predecessor = next((u for u, _ in C.in_edges(v)), None)
+    if predecessor is not None:
+        C.remove_edge(predecessor, v)
+\end{pybox}
+
+\begin{pybox}{Procedimento principal (recursivo)}
+def find_optimum_arborescence_chuliu(D: nx.DiGraph, r0: str, level: int = 0) -> nx.DiGraph:
+    D_copy = D.copy()
+    remove_edges_to_r0(D_copy, r0)
+    for v in D_copy.nodes:
+        if v != r0:
+            normalize_incoming_edge_weights(D_copy, v)
+    F_star = get_Fstar(D_copy, r0)
+    if nx.is_arborescence(F_star):
+        # restaura pesos originais em F_star
+        for u, v in F_star.edges:
+            F_star[u][v]["w"] = D[u][v]["w"]
+        return F_star
+    # caso com ciclo: contrai e recursa
+    C = find_cycle(F_star)
+    assert C is not None, "Nenhum ciclo encontrado em F* (inconsistência)."
+    contracted_label = f"n*{level}"
+    in_to_cycle, out_from_cycle = contract_cycle(D_copy, C, contracted_label)
+    F_prime = find_optimum_arborescence_chuliu(D_copy, r0, level + 1)
+    # identifica o arco que entra no supervértice e mapeia de volta
+    in_edge = next(iter(F_prime.in_edges(contracted_label, data=True)), None)
+    assert in_edge is not None, "Sem arco de entrada no supervértice (inconsistência)."
+    u, _, _ = in_edge
+    v, _ = in_to_cycle[u]
+    remove_internal_edge_to_cycle_entry(C, v)
+    F_prime.add_edge(u, v)
+    # adiciona arestas internas remanescentes e externas de saída
+    for u_c, v_c in C.edges:
+        F_prime.add_edge(u_c, v_c)
+    for _, z, _ in list(F_prime.out_edges(contracted_label, data=True)):
+        # ... mapear saídas usando out_from_cycle ...
+        pass
+    F_prime.remove_node(contracted_label)
+    # restaura pesos originais de D
+    for u, v in F_prime.edges:
+        if D.has_edge(u, v) and "w" in D[u][v]:
+            F_prime[u][v]["w"] = D[u][v]["w"]
+    return F_prime
+\end{pybox}
+
+\paragraph{Notas finais}
+Para fins didáticos, omitimos alguns detalhes operacionais (por exemplo, o preenchimento completo de \texttt{contract\_cycle} e o mapeamento das saídas na reexpansão); esses trechos seguem diretamente o código do trabalho e podem ser incorporados na íntegra quando desejado. A organização em funções corresponde exatamente às etapas teóricas descritas anteriormente, tornando transparente a relação teoria–implementação.
 \begin{itemize}\setlength{\itemsep}{2pt}
     \item \(A'\) define um \emph{grafo funcional} (cada \(v\neq r\) tem exatamente um predecessor). Ciclos nesse grafo podem ser encontrados em tempo linear no tamanho de \(A'\) (por marcação/visitas com ponteiros de pai).
     \item Ao contrair um ciclo \(C\), ajuste apenas arcos que \emph{entram} em \(C\): para \((u,w)\) com \(u\notin V(C)\), \(w\in V(C)\), use o custo reduzido \(c'(u,x_C)=c(u,w)-c(a_w)\). Demais custos (inclusive os que \emph{saem} de \(C\)) permanecem inalterados; paralelos podem surgir e são mantidos, enquanto laços são removidos.

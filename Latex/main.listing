@@ -1,0 +1,37 @@
+def find_optimum_arborescence_chuliu(D: nx.DiGraph, r0: str, level: int = 0) -> nx.DiGraph:
+    D_copy = D.copy()
+    remove_edges_to_r0(D_copy, r0)
+    for v in D_copy.nodes:
+        if v != r0:
+            normalize_incoming_edge_weights(D_copy, v)
+    F_star = get_Fstar(D_copy, r0)
+    if nx.is_arborescence(F_star):
+        # restaura pesos originais em F_star
+        for u, v in F_star.edges:
+            F_star[u][v]["w"] = D[u][v]["w"]
+        return F_star
+    # caso com ciclo: contrai e recursa
+    C = find_cycle(F_star)
+    assert C is not None, "Nenhum ciclo encontrado em F* (inconsistência)."
+    contracted_label = f"n*{level}"
+    in_to_cycle, out_from_cycle = contract_cycle(D_copy, C, contracted_label)
+    F_prime = find_optimum_arborescence_chuliu(D_copy, r0, level + 1)
+    # identifica o arco que entra no supervértice e mapeia de volta
+    in_edge = next(iter(F_prime.in_edges(contracted_label, data=True)), None)
+    assert in_edge is not None, "Sem arco de entrada no supervértice (inconsistência)."
+    u, _, _ = in_edge
+    v, _ = in_to_cycle[u]
+    remove_internal_edge_to_cycle_entry(C, v)
+    F_prime.add_edge(u, v)
+    # adiciona arestas internas remanescentes e externas de saída
+    for u_c, v_c in C.edges:
+        F_prime.add_edge(u_c, v_c)
+    for _, z, _ in list(F_prime.out_edges(contracted_label, data=True)):
+        # ... mapear saídas usando out_from_cycle ...
+        pass
+    F_prime.remove_node(contracted_label)
+    # restaura pesos originais de D
+    for u, v in F_prime.edges:
+        if D.has_edge(u, v) and "w" in D[u][v]:
+            F_prime[u][v]["w"] = D[u][v]["w"]
+    return F_prime
