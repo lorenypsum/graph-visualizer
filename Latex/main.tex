@@ -2714,7 +2714,7 @@ Existe inclusive uma prova matemática\footnote{Em modelos padrão de computaç�
 Ambos os algoritmos são corretos e eficientes, mas adotam meios diferentes para alcançar o mesmo fim: encontrar uma r-arborescência de custo mínimo em um dígrafo ponderado.
 
 \paragraph{}
-Nesta seção apresentaremos as principais abordagens para encontrar r-arborescências de custo mínimo em dígrafos ponderados. Antes de entrar nos detalhes, faremos uma breve revisão dos conceitos e técnicas que utilizaremos adiante, para uniformizar a notação e tornar a leitura mais fluida.
+Antes de entrar nos detalhes, faremos uma breve revisão dos conceitos e técnicas que utilizaremos adiante, para uniformizar a notação e tornar a leitura mais fluida.
 
 \paragraph{Revisão: conceitos fundamentais e técnicas}
 
@@ -2744,35 +2744,214 @@ Para encontrar r-arborescências de custo mínimo, utilizaremos algumas técnica
     \item \textbf{Provas de Corretude}: forneceremos argumentos formais para garantir que os algoritmos realmente produzem a r-arborescência de custo mínimo.
 \end{itemize}
 
-\subsection{Algoritmo de Chu–Liu/Edmonds}
+\paragraph{}
+No capítulo seguinte, detalharemos o algoritmo de Chu–Liu/Edmonds, bem como os detalhes da implementação em Python; o subsequente será dedicado ao procedimento em duas fases de Frank e à respectiva implementação.
 
+\section{Algoritmo de Chu–Liu/Edmonds}
 
+\paragraph{}
+O algoritmo de Chu–Liu/Edmonds é um método clássico para encontrar uma r-arborescência de custo mínimo em um dígrafo ponderado. Ele combina estratégias gulosas com técnicas de normalização de custos e contração de ciclos para garantir a otimalidade da solução.
 
+\paragraph{}
+Se tentarmos copiar a receita das MSTs — dar a cada vértice \(v\neq r\) o arco de entrada mais barato — corremos o risco de fechar um \emph{ciclo dirigido} que não chega à raiz \(r\). 
 
-\paragraph{Ideia em alto nível}
-Para cada vértice \(v\neq r\), selecione o arco de menor custo que \emph{entra} em \(v\). Se o conjunto selecionado não forma nenhum ciclo dirigido, já temos uma r-arborescência (cada vértice tem grau de entrada 1 e o grafo é acíclico). Se surgir um ciclo, contraímos todo o ciclo em um supervértice e \emph{ajustamos} os custos dos arcos que entram no ciclo para preservar a comparação relativa de custos. Repetimos no grafo contraído até não haver mais ciclos. Por fim, expandimos os ciclos em ordem inversa, escolhendo dentro de cada um os arcos corretos para manter grau de entrada 1 e aciclicidade global.
+\paragraph{}
+Por que isso é proibido? Em uma r‑arborescência cada \(v\neq r\) deve ter exatamente um arco de entrada e \(r\) tem grau de entrada zero. Se houvesse um ciclo dirigido \(C\), todos os vértices de \(C\) já receberiam seu único arco de entrada de dentro do próprio \(C\), logo nenhum arco entraria em \(C\) a partir de \(V\setminus C\) (o corte \(\delta^-(C)\) ficaria vazio). Como \(r\notin C\), não existe caminho de \(r\) para os vértices de \(C\), contrariando a alcançabilidade exigida. Portanto, ciclos dirigidos são incompatíveis com a estrutura de r‑arborescência.
 
-\paragraph{Passos principais}
-\begin{enumerate}\setlength{\itemsep}{2pt}
-    \item Para cada \(v\neq r\), escolha um arco mais barato \(a_v\in \delta^-(v)\).
-    \item Se o conjunto \(A' = \{a_v : v\neq r\}\) não contém ciclo, então os arcos de \(A'\) formam a r-arborescência ótima.
-    \item Caso exista um ciclo dirigido \(C\subseteq A'\):
-    \begin{enumerate}\setlength{\itemsep}{1pt}
-        \item Contraia \(C\) em um supervértice \(x_C\).
-        \item Para cada arco \(e\) que \emph{entra} em algum vértice de \(C\) vindo de fora, reduza seu custo por um valor correspondente ao “excesso” em relação ao arco escolhido para o seu cabeça; com isso, manteremos arcos de custo reduzido \(0\) como candidatos.
-        \item Resolva recursivamente no grafo contraído.
-        \item Ao expandir \(C\), troque exatamente um arco selecionado no ciclo por um arco que entra no ciclo a custo reduzido \(0\), eliminando o ciclo e preservando grau de entrada 1.
-    \end{enumerate}
-\end{enumerate}
+\paragraph{}
+Dessa forma, o desafio é duplo: preservar a informação local de “mais barato por vértice” (que é valiosa) e, ao mesmo tempo, impedir que essas escolhas locais se combinem em ciclos. 
+
+\paragraph{}
+Uma maneira direta de enxergar isso é com um microexemplo: tome três vértices \(a,b,c\) (todos fora de \(r\)). Se o arco mais barato que entra em \(b\) vem de \(a\), o de \(c\) vem de \(b\) e o de \(a\) vem de \(c\), então as escolhas “mais baratas” formam o ciclo \(a\to b\to c\to a\). Note que, entre essas escolhas locais, nenhum deles recebe o arco vindo de \(r\) (mesmo que existam \(r\to a\), \(r\to b\), \(r\to c\) mais caros); ficamos presos dentro do ciclo e não alcançamos a raiz. É exatamente esse impasse que o algoritmo resolve ao zerar custos por vértice e contrair ciclos, deixando para decidir qual arco interno remover apenas na expansão.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[>=Stealth, node distance=2.0cm]
+        % estilos
+        	\tikzset{
+            v/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
+            cheap/.style={->, very thick, draw=blue!70},
+            expensive/.style={->, dashed, draw=gray!60}
+        }
+        % nós
+        \node[v] (r) {\small $r$};
+        \node[v] (a) [right=2.2cm of r] {\small $a$};
+        \node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
+        \node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
+        % ciclo de escolhas mais baratas (custo 1)
+        \draw[cheap] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 1} (b);
+        \draw[cheap] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 1} (c);
+        \draw[cheap] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 1} (a);
+        % arcos da raiz mais caros (não escolhidos pelo critério local)
+        \draw[expensive] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (a);
+        \draw[expensive] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (b);
+        \draw[expensive] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (c);
+    \end{tikzpicture}
+    \caption{Ciclo gerado pelas escolhas locais “mais baratas por vértice”. Os arcos grossos (custo 1) entram em \(a,b,c\) e formam \(a\to b\to c\to a\). Os arcos tracejados partindo de \(r\) existem, mas são mais caros e por isso não são escolhidos pelo critério local.}
+    \label{fig:chu-liu-cycle-micro}
+\end{figure}
+
+\paragraph{}
+Partindo desse cenário, a ideia é \emph{normalizar os custos por vértice}: para cada \(v\neq r\), “descontamos” de todo arco que entra em \(v\) o menor custo que chega a \(v\). Após esse ajuste (custos reduzidos), cada \(v\neq r\) passa a ter ao menos um arco de custo reduzido zero entrando. Se os arcos de custo zero forem acíclicos, já temos a r‑arborescência. Se formarem um ciclo \(C\), isso indica que, dentro de \(C\), todos os vértices atingiram seus mínimos locais; então \emph{contraímos} \(C\) em um \textbf{supervértice} \(x_C\) e repetimos o processo no grafo menor. Ao final, \emph{expandimos} as contrações e, em cada ciclo expandido, removemos exatamente um arco para manter grau de entrada 1 e a aciclicidade global.
+
+\paragraph{Supervértices e contração de ciclos}
+
+\paragraph{}
+Dado um subconjunto \(C\subseteq V\) que forma um ciclo dirigido, a \emph{contração de \(C\)} substitui todos os vértices de \(C\) por um único vértice \(x_C\) - \textbf{o supervértice}. Todo arco com exatamente uma ponta em \(C\) passa a ser incidente a \(x_C\):
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item arcos \((u,w)\) com \(u\notin C\), \(w\in C\) tornam-se \((u, x_C)\);
+    \item arcos \((w,v)\) com \(w\in C\), \(v\notin C\) tornam-se \((x_C, v)\);
+    \item arcos com as duas pontas em \(C\) tornam-se laços em \(x_C\) e são descartados.
+\end{itemize}
+Quando trabalhamos com \emph{custos reduzidos}, ajustamos em particular os arcos que \emph{entram} em \(C\) para preservar a comparação relativa: para um arco \((u,w)\) com \(w\in C\), definimos \(c'(u,x_C) = c(u,w) - c(a_w)\), onde \(a_w\) é o arco mais barato que entra em \(w\). Essa normalização garante que, ao resolver no grafo contraído, decisões ótimas podem ser traduzidas de volta na etapa de expansão.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{minipage}[t]{0.52\textwidth}
+        \centering
+        \begin{tikzpicture}[>=Stealth, node distance=1.4cm]
+            	\tikzset{v/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
+                     cheap/.style={->, very thick, draw=blue!70},
+                     e/.style={->, semithick, draw=gray!65}}
+            % ciclo C e arcos internos (a_w em negrito)
+            \node[v] (a) {\small $a$};
+            \node[v] (b) [above right=0.9cm and 1.4cm of a] {\small $b$};
+            \node[v] (c) [below right=0.9cm and 1.4cm of a] {\small $c$};
+            % interno: a->b é a_b (mais barato em b), custo 5
+            \draw[cheap] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize $5$} (b);
+            % outros do ciclo (custos quaisquer)
+            \draw[e] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize $4$} (c);
+            \draw[e] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize $6$} (a);
+            % arco externo u->b com custo 7
+            \node[v] (u) [left=1.9cm of b] {\small $u$};
+            \draw[e] (u) -- node[midway, above, sloped] {\scriptsize $7$} (b);
+            % contorno do ciclo C
+            \node[draw=blue!40, rounded corners, fit=(a)(b)(c), inner sep=6pt, label={[blue!60]below:{\small $C$}}] {};
+        \end{tikzpicture}
+        \vspace{2pt}
+        \small (a) Antes: $a_b=(a\!\to\!b)$ tem custo $5$; o arco externo $(u\!\to\!b)$ tem custo $7$.
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.44\textwidth}
+        \centering
+        \begin{tikzpicture}[>=Stealth, node distance=2.0cm]
+            	\tikzset{v/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
+                     e/.style={->, very thick, draw=blue!70}}
+            \node[v] (x) {\small $x_C$};
+            \node[v] (u) [left=2.1cm of x] {\small $u$};
+            \draw[e] (u) -- node[midway, above, sloped] {\scriptsize $7-5=2$} (x);
+        \end{tikzpicture}
+        \vspace{2pt}
+        \small (b) Depois: $(u\!\to\!x_C)$ recebe custo reduzido $c'(u,x_C)=7-5=2$.
+    \end{minipage}
+    \caption{Ajuste de custo reduzido para um arco \emph{entrando} em $C$. Para $(u,w)$ com $w\in C$, define-se $c'(u,x_C)=c(u,w)-c(a_w)$, onde $a_w$ é o arco mais barato que entra em $w$. No exemplo, $c'(u,x_C)=7-5=2$.}
+    \label{fig:chu-liu-reduced-cost}
+\end{figure}
+
+Para cada arco \((u,w)\) com \(w\in C\), ajustamos o custo reduzido para \(c'(u,x_C)=c(u,w)-c(a_w)\), onde \(a_w\) é o arco mais barato que entra em \(w\). No exemplo da Figura \ref{fig:chu-liu-reduced-cost}, o arco \((u,b)\) com custo \(7\) torna-se \((u,x_C)\) com custo reduzido \(7-5=2\), já que \(a_b=(a\to b)\) tem custo \(5\). Arcos que saem de \(C\) ou laços internos não são ajustados.
+
+\subsubsection{Descrição do algoritmo}
+
+\paragraph{}
+Em computação falamos em linguagem de alto nível quando uma linguagem de programação é próxima da linguagem humana, com abstrações que facilitam o entendimento. Em contraste, linguagens de baixo nível são mais próximas do código de máquina, exigindo detalhes explícitos. 
+
+\paragraph{}
+Podemos falar também em visão operacional de alto nível quando descrevemos um algoritmo focando na lógica e nos passos principais, sem entrar em detalhes de implementação específicos.
+
+\paragraph{}
+Aqui, apresentamos o algoritmo de Chu–Liu/Edmonds em uma visão operacional de alto nível, focando na lógica e nos passos principais, sem entrar em detalhes de implementação específicos. E dedicaremos a próxima subseção apenas para discutir detalhes práticos de implementação.
+
+\paragraph{Visão Operacional de Alto Nível - Chu–Liu/Edmonds}
+\paragraph{}
+Denotamos por \(A'\) o conjunto de arcos escolhidos na construção da r-arborescência. 
+
+\paragraph{}
+Construa \(A'\) escolhendo, para cada \(v\neq r\), um arco de menor custo que \emph{entra} em \(v\). Se \((V,A')\) é acíclico, então, pela caracterização de arborescências (grau de entrada 1 para todo \(v\neq r\) e ausência de ciclos), \(A'\) já é uma r‑arborescência; e é \emph{ótima}, pois realizamos o menor custo de entrada em cada vértice e nenhuma troca pode reduzir o custo mantendo as restrições \cite[Sec.~4.9]{kleinberg2006}. 
+
+\paragraph{}
+Se \(A'\) contiver um ciclo dirigido \(C\) (que não inclui \(r\)), normalizamos os custos de entrada (custos reduzidos) e \emph{contraímos} \(C\) em um supervértice \(x_C\), ajustando apenas arcos que \emph{entram} em \(C\) por \(c'(u,x_C)=c(u,w)-c(a_w)\). 
+
+\paragraph{}
+Resolvemos recursivamente no grafo contraído. As arborescências do grafo contraído correspondem, em bijeção, às arborescências do grafo original com exatamente um arco entrando em \(C\); como os arcos de \(C\) têm custo reduzido zero, os custos são preservados na ida e na volta. 
+
+\paragraph{}
+\begin{figure}[htbp]
+    \centering
+    \begin{minipage}{.47\textwidth}
+        \centering
+        \begin{tikzpicture}[>=Latex]
+            % styles
+            	\tikzset{
+                vertex/.style={circle,draw,fill=white,inner sep=1pt,font=\small},
+                sel/.style={-Latex,very thick,green!60!black},
+                zero/.style={-Latex,very thick,blue!70},
+                ext/.style={-Latex,dashed,gray},
+                normal/.style={-Latex,thin}
+            }
+            % nodes (contracted graph)
+            \node[vertex] (r) at (-0.1,1.2) {$r$};
+            \node[vertex] (u) at (-0.9,0.0) {$u$};
+            \node[vertex,very thick] (x) at (0.8,0.0) {$x_C$};
+            \node[vertex] (v) at (2.2,0.0) {$v$};
+            % arcs
+            \draw[sel]   (u) to[bend left=8] (x);       % chosen arc entering x_C
+            \draw[normal](x) to[bend left=8] (v);       % some outgoing from x_C
+            \draw[ext]   (r) to[bend left=15] (x);      % optional from r
+            \draw[ext]   (r) to[bend left=12] (u);
+        \end{tikzpicture}
+        \\[2pt]
+        \small (a) Grafo contraído: arborescência com um único arco entrando em $x_C$.
+    \end{minipage}\hfill
+    \begin{minipage}{.47\textwidth}
+        \centering
+        \begin{tikzpicture}[>=Latex]
+            % styles
+            	\tikzset{
+                vertex/.style={circle,draw,fill=white,inner sep=1pt,font=\small},
+                sel/.style={-Latex,very thick,green!60!black},
+                zero/.style={-Latex,very thick,blue!70},
+                ext/.style={-Latex,dashed,gray},
+                normal/.style={-Latex,thin}
+            }
+            % nodes (expanded original graph)
+            \node[vertex] (r2) at (-0.1,1.2) {$r$};
+            \node[vertex] (u2) at (-0.9,0.0) {$u$};
+            \node[vertex] (a)  at (0.6,0.3) {$a$};
+            \node[vertex] (b)  at (1.4,0.3) {$b$};
+            \node[vertex] (c)  at (1.0,-0.5) {$c$};
+            \node[vertex] (v2) at (2.4,0.0) {$v$};
+            % cycle C with zero reduced cost arcs
+            \draw[zero] (a) -- (b);
+            \draw[zero] (b) -- (c);
+            \draw[zero] (c) -- (a);
+            % chosen entering arc to some w in C (e.g., u -> b)
+            \draw[sel] (u2) to[bend left=8] (b);
+            % an outgoing arc from C
+            \draw[normal] (c) to[bend left=8] (v2);
+            % mark one internal arc to be removed when expanding (break cycle)
+            \path (b) -- (c) node[pos=0.5] (mid) {};
+            \node[red] at (mid) {$\times$};
+            % optional external arcs
+            \draw[ext] (r2) to[bend left=12] (a);
+            \draw[ext] (r2) to[bend right=12] (u2);
+        \end{tikzpicture}
+        \\[2pt]
+        \small (b) Grafo original: expansão de $C$; mantém-se o arco que entra em $C$ e remove-se um arco interno para quebrar o ciclo.
+    \end{minipage}
+    \caption{Bijeção entre arborescências após contração e no grafo original. (a) No grafo contraído, toda arborescência seleciona exatamente um arco que entra no supervértice $x_C$. (b) Ao expandir $C$, escolhe-se o arco correspondente \((u,w)\) que entra em algum $w\in C$ e mantêm-se os arcos internos de custo reduzido zero, removendo exatamente um para quebrar o ciclo. Como $c'(u,x_C)=c(u,w)-c(a_w)$ e os arcos internos têm custo reduzido zero, o custo total é preservado na ida e na volta.}
+    \label{fig:chu-liu-bijection}
+\end{figure}
+
+\paragraph{}
+Na expansão, reintroduzimos \(C\) e removemos exatamente um arco interno para manter grau de entrada 1 e aciclicidade global \cite{schrijver2003comb,kleinberg2006}.
 
 \begin{algobox}{Chu–Liu/Edmonds (visão operacional)}{chu-liu-edmonds}
 Entrada: dígrafo \(D=(V,A)\), custos \(c:A\to\mathbb{R}\), raiz \(r\).
 \begin{enumerate}\setlength{\itemsep}{2pt}
-    \item Para cada \(v\neq r\), escolha \(a_v\in\arg\min\{c(u,v):(u,v)\in A\}\).
-    \item Se \(A' = \{a_v: v\neq r\}\) é acíclico, devolva \(A'\).
-    \item Senão, seja \(C\) um ciclo em \(A'\). Contraia \(C\) em \(x_C\). Para cada arco \((u,w)\) que entra em \(C\) (isto é, \(w\in V(C), u\notin V(C)\)), defina
+    \item Para cada \(v\neq r\), escolha \(a_v\in\arg\min\{c(u,v):(u,v)\in A\}\) e forme \(A'=\{a_v: v\neq r\}\).
+    \item Se \((V,A')\) é acíclico, devolva \(A'\) (é uma r‑arborescência ótima \cite[Obs.~4.36]{kleinberg2006}).
+    \item Caso contrário, seja \(C\) um ciclo em \(A'\). Contraia \(C\) em \(x_C\). Para cada arco \((u,w)\) que \emph{entra} em \(C\) (isto é, \(w\in V(C), u\notin V(C)\)), defina
     \[c'(u,x_C) \leftarrow c(u,w) - c(a_w).\]
-    Resolva recursivamente com custos \(c'\). Na volta, expanda \(C\) e, dentro de \(C\), remova um arco de \(C\) e inclua o arco que entra em \(C\) escolhido na recursão (de custo reduzido zero).
+    Resolva recursivamente com custos \(c'\). Na volta, expanda \(C\) e, dentro de \(C\), remova exatamente um arco de \(C\) e inclua o arco que entra em \(C\) escolhido na recursão (de custo reduzido zero), preservando aciclicidade e grau de entrada 1.
 \end{enumerate}
 \end{algobox}
 
@@ -2782,7 +2961,26 @@ O ajuste de custos conserva diferenças relevantes, garantindo que a solução n
 \paragraph{Quando usar}
 É a escolha padrão quando se precisa de uma única r-arborescência de custo mínimo. A ideia de escolher o arco de entrada mais barato por vértice, lidar com ciclos por contração e trabalhar com custos reduzidos aparece em várias generalizações.
 
-\subsection{Procedimento em Duas Fases de András Frank}
+\subsubsection{Detalhes de implementação}
+
+\paragraph{Contrato (entrada/saída e hipóteses)}
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item \textbf{Entrada:} dígrafo ponderado \(D=(V,A)\), custos \(c:A\to\mathbb{R}\), raiz \(r\in V\).
+    \item \textbf{Hipóteses:} (i) todo \(v\neq r\) é alcançável a partir de \(r\) (caso contrário, não há r‑arborescência); (ii) para todo subconjunto não vazio \(X\subseteq V\setminus\{r\}\), existe ao menos um arco que entra em \(X\) (\(\delta^-(X)\neq\emptyset\); condições clássicas de existência \`a la Edmonds \cite{schrijver2003comb}).
+    \item \textbf{Saída:} conjunto \(A^*\subseteq A\) com \(|A^*|=|V|-1\), tal que cada \(v\neq r\) tem grau de entrada 1, todos os vértices são alcançáveis a partir de \(r\) e \(\sum_{a\in A^*} c(a)\) é mínimo.
+    \item \textbf{Convenções:} paralelos são permitidos após contrações; laços (self‑loops) são descartados.
+\end{itemize}
+
+\paragraph{Observações de implementação}
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item \(A'\) define um \emph{grafo funcional} (cada \(v\neq r\) tem exatamente um predecessor). Ciclos nesse grafo podem ser encontrados em tempo linear no tamanho de \(A'\) (por marcação/visitas com ponteiros de pai).
+    \item Ao contrair um ciclo \(C\), ajuste apenas arcos que \emph{entram} em \(C\): para \((u,w)\) com \(u\notin V(C)\), \(w\in V(C)\), use o custo reduzido \(c'(u,x_C)=c(u,w)-c(a_w)\). Demais custos (inclusive os que \emph{saem} de \(C\)) permanecem inalterados; paralelos podem surgir e são mantidos, enquanto laços são removidos.
+    \item Empates podem ser quebrados arbitrariamente sem afetar a otimalidade. Mantenha estruturas para: (i) rastrear \(a_v\) e \(y(v)\) (mínimo de entrada) por vértice; (ii) mapear contrações/expansões para escolher, em cada ciclo, o arco interno a remover na volta da recursão.
+    \item Se algum \(v\neq r\) não possui arco de entrada, o problema é inviável (não existe r‑arborescência), detectando a violação das condições de corte.
+\end{itemize}
+
+
+\section{Procedimento em Duas Fases de András Frank}
 
 \paragraph{Motivação e visão dual}
 O método de \textbf{András Frank} organiza o raciocínio anterior em um \emph{esquema primal–dual em duas fases} que torna explícitos os papéis dos \emph{custos reduzidos} e dos \emph{cortes apertados} (tight cuts). Em alto nível, mantemos potenciais \(y(v)\) nos vértices e trabalhamos com custos reduzidos \(c'(u,v)=c(u,v)-y(v)\). A \textbf{Fase I} ajusta os potenciais até garantir, para cada \(v\neq r\), a existência de pelo menos um arco de custo reduzido zero que \emph{entra} em \(v\). A \textbf{Fase II} extrai dentre os arcos de custo reduzido zero uma r-arborescência, tratando ciclos por contração/expansão. Ver \cite{frank2014,schrijver2003comb}.
