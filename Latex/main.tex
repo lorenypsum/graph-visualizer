@@ -3294,6 +3294,9 @@ def get_Fstar(D: nx.DiGraph, r0: str, lang="pt"):
     return F_star
 \end{pybox}
 
+\paragraph{Detecção de ciclo}
+A função detecta um ciclo dirigido em \(F^*\) (se existir) e retorna um subgrafo contendo o ciclo. Caso contrário, retorna None. A função utiliza a função \texttt{find\_cycle} do NetworkX, que implementa um algoritmo eficiente de detecção de ciclos. A função executa em \(O(m)\).
+
 \begin{pybox}{Detecção de ciclo dirigido em $F^*$}
 def find_cycle(F_star: nx.DiGraph):
     """
