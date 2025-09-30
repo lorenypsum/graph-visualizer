@@ -8,6 +8,8 @@
 \geometry{a4paper, margin=1in}
 % Hiperlinks e bookmarks: ativar Unicode e evitar destinos duplicados para figuras/tabelas
 \usepackage[unicode,hypertexnames=false]{hyperref}
+% Melhora o manuseio de marcadores/outline do PDF e estabiliza reexecuções
+\usepackage{bookmark}
 \usepackage[backend=bibtex,style=numeric]{biblatex}
 \usepackage{csquotes}
 \usepackage[brazil]{babel}
@@ -18,6 +20,26 @@
     \tcbset{colback=green!15,colframe=purple!15,boxrule=0.6pt}
 \usepackage{listings}
 \usepackage{xcolor}
+
+% Sanitizar conteúdo escrito em bookmarks/TOC (evita "Missing character ... nullfont")
+% Substitui comandos frágeis/matemática por versões simples apenas nos marcadores
+\pdfstringdefDisableCommands{%
+    \def\\{}% ignora quebras de linha em captions
+    \def\texttt#1{#1}% remove estilo monoespaçado em bookmarks
+    \def\emph#1{#1}% remove ênfase em bookmarks
+    \def\bfseries{}% ignora negrito
+    \def\itshape{}% ignora itálico
+    \def\_{}% evita sublinhado literal em bookmarks
+    \def\leq{\string<=}% mapeia símbolos comuns
+    \def\geq{\string>=}%
+    \def\times{\string x}%
+    \def\cup{\string U}%
+    \def\cap{\string n}%
+    \def\to{->}%
+    \def\leadsto{->}%
+    % Atenção: \delta não tem argumento; definir com parâmetro causa fuga de argumento
+    \def\delta{delta}%
+}
 
 % Corrigir nomes de âncoras de hyperref para figuras/tabelas quando a numeração for reiniciada por seção
 % (evita "pdfTeX warning (ext4): destination with the same identifier (name{figure.N})...")
