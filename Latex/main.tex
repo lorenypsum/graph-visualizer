@@ -2896,7 +2896,7 @@ Podemos falar também em visão operacional de alto nível quando descrevemos um
 \paragraph{}
 Aqui, apresentamos o algoritmo de Chu–Liu/Edmonds em uma visão operacional de alto nível, focando na lógica e nos passos principais, sem entrar em detalhes de implementação específicos. E dedicaremos a próxima subseção apenas para discutir detalhes práticos de implementação.
 
-\paragraph{Visão Operacional de Alto Nível - Chu–Liu/Edmonds}
+\paragraph{Visão Operacional - Chu–Liu/Edmonds}
 \paragraph{}
 Denotamos por \(A'\) o conjunto de arcos escolhidos na construção da r-arborescência. 
 
@@ -3113,29 +3113,47 @@ Em termos intuitivos, \(y\) funciona como um potencial nos vértices: torna “a
 \paragraph{}
 Na implementação direta, selecionar os \(a_v\), detectar/contrair ciclos e atualizar estruturas custa \(O(m)\) por nível; como o número de vértices decresce a cada contração, temos no máximo \(O(n)\) níveis e tempo total \(O(mn)\), com \(n=|V|\), \(m=|A|\).
 
-Com estruturas de dados adequadas, evita‑se revarrer todas as arestas a cada contração e obtém‑se \(O(m\log n)\). A ideia é manter, para cada componente (vértice ou supervértice), uma fila de prioridade (heap) com as arestas que \emph{entram} nele, chaveadas pelo custo \emph{reduzido}. Os potenciais \(y(\cdot)\) são aplicados de forma \emph{lazy} como um deslocamento (offset) agregado por componente, de modo que reponderar não exige atualizar todas as chaves. Assim, o arco mínimo que entra em um componente vira um \emph{extract‑min} no seu heap; quando um ciclo é contraído, fazemos \emph{meld} (união) dos heaps dos vértices de \(C\) e ajustamos um único offset no novo supervértice. Cada aresta é inserida em algum heap no máximo uma vez e é extraída/descartada no máximo uma vez; como inserções/extrações custam \(O(\log n)\) amortizado, o total fica em \(O(m\log n)\). A detecção de ciclos no grafo funcional \(F^*\) permanece linear no tamanho do componente e é dominada pelo custo de heap.
 
 \paragraph{}
 O uso de memória é \(O(m+n)\), incluindo mapeamentos de contração/expansão e as filas de prioridade dos arcos de entrada.
 
 \paragraph{}
-A implementação a seguir adota a versão \(O(mn)\) por simplicidade, mas com estruturas que facilitam a transição para \(O(m\log n)\) se desejado.
+A implementação a seguir adota a versão \(O(mn)\) por simplicidade.
 
-\section{Implementação em Python}
+\subsection{Implementação em Python}
 
-\paragraph{Visão geral}
-Esta seção apresenta uma implementação em Python do algoritmo de Chu–Liu/Edmonds, baseada no código do trabalho. A arquitetura segue os passos teóricos: (i) remoção de arestas que entram na raiz, (ii) normalização dos custos de entrada por vértice, (iii) construção do grafo funcional \(F^*\), (iv) detecção/contração de ciclos e (v) recursão seguida de reexpansão.
+\paragraph{}
+Esta seção apresenta uma implementação em Python do algoritmo de Chu–Liu/Edmonds, baseada no código do trabalho. A arquitetura segue os passos teóricos:
 
-\paragraph{Contrato (entrada/saída e hipóteses)}
 \begin{itemize}\setlength{\itemsep}{2pt}
-    \item \textbf{Entrada:} dígrafo ponderado \(D=(V,A)\), custos \(c:A\to\mathbb{R}\), raiz \(r\in V\).
-    \item \textbf{Hipóteses:} (i) todo \(v\neq r\) é alcançável a partir de \(r\) (caso contrário, não há r‑arborescência); (ii) para todo subconjunto não vazio \(X\subseteq V\setminus\{r\}\), existe ao menos um arco que entra em \(X\) (\(\delta^-(X)\neq\emptyset\); condições clássicas de existência \`a la Edmonds \cite{schrijver2003comb}).
-    \item \textbf{Saída:} conjunto \(A^*\subseteq A\) com \(|A^*|=|V|-1\), tal que cada \(v\neq r\) tem grau de entrada 1, todos os vértices são alcançáveis a partir de \(r\) e \(\sum_{a\in A^*} c(a)\) é mínimo.
-    \item \textbf{Convenções:} paralelos são permitidos após contrações; laços (self‑loops) são descartados.
+    \item seleção dos arcos de menor custo que entram em cada vértice (formação de \(F^*\));
+    \item verificação de aciclicidade (se acíclico, retorno imediato);
+    \item se houver ciclo, normalização dos custos por vértice (custos reduzidos);
+    \item construção do grafo funcional \(F^*\) com arcos de custo reduzido zero;
+    \item detecção de ciclo em \(F^*\);
+    \item contração do ciclo em um supervértice, com ajuste de custos;
+    \item recursão no grafo contraído;
+    \item expansão do ciclo e remoção de um arco interno para quebrar o ciclo.
+    \item retorno da r‑arborescência ótima.
 \end{itemize}
 
-\paragraph{Observações de implementação}
-\subsection*{Funções principais}
+\paragraph{Especificação da interface (entradas, saídas e hipóteses)}
+
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item \textbf{Entrada:} dígrafo ponderado \(D=(V,A)\), custos \(c:A\to\mathbb{R}\), raiz \(r\in V\).
+    \item \textbf{Hipóteses:}
+        \begin{itemize}\setlength{\itemsep}{2pt}
+            \item \(D\) é representado como um objeto \texttt{networkx.DiGraph}, com pesos armazenados no atributo de arestas \texttt{'w'}.
+            \item \(D\) é conexo a partir de \(r\):
+            \item (i) todo \(v\neq r\) é alcançável a partir de \(r\) (caso contrário, não há r‑arborescência); (ii) para todo subconjunto não vazio \(X\subseteq V\setminus\{r\}\), existe ao menos um arco que entra em \(X\) (\(\delta^-(X)\neq\emptyset\); condições clássicas de existência \`a la Edmonds \cite{schrijver2003comb}).
+            \item Os custos são não negativos: \(c(a)\ge 0\) para todo \(a\in A\).
+        \end{itemize}
+    \item \textbf{Saída:} conjunto \(A^*\subseteq A\) com \(|A^*|=|V|-1\), tal que cada \(v\neq r\) tem grau de entrada 1, todos os vértices são alcançáveis a partir de \(r\) e \(\sum_{a\in A^*} c(a)\) é mínimo.
+    \item \textbf{Convenções:} arcos paralelos (múltiplos arcos entre o mesmo par de vértices) são permitidos após contrações; laços (self‑loops) são descartados.
+\end{itemize}
+
+
+\subsubsection{Funções principais}
 
 \begin{pybox}{Normalização por vértice: custos reduzidos}
 from typing import Optional
