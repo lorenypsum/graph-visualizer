@@ -3234,24 +3234,25 @@ Esta seção apresenta uma implementação em Python do algoritmo de Chu–Liu/E
 O código a seguir implementa o algoritmo de Chu–Liu/Edmonds em Python, utilizando a biblioteca NetworkX para manipulação de grafos. A implementação segue a estrutura descrita na seção anterior, com funções auxiliares para cada etapa do algoritmo.
 
 \paragraph{}
-A seguir, detalhamos as funções auxiliares e as principais para implementação, começando pela normalização dos custos por vértice.
+A seguir, detalhamos as implementações das funções auxiliares e as principais, começando pela normalização dos custos por vértice.
 
-\paragraph{Normalização por vértice}
-Para um vértice alvo $v$, a função normaliza os custos das arestas que \emph{entram} em $v$: calcula $y(v)=\min\{w(u,v)\}$ e substitui cada peso $w(u,v)$ por $w(u,v)-y(v)$. Com isso, ao menos uma entrada em $v$ passa a ter custo reduzido zero e a ordem relativa entre as entradas é preservada. A rotina modifica o grafo \emph{in-place} e executa em $O(\deg^-(v))$.
+\paragraph{Normalização por vértice:}
+para um vértice alvo $v$, a função normaliza\footnote{Aqui, “normalizar” significa subtrair do peso de cada aresta que entra em $v$ o menor peso de entrada de $v$ (custos reduzidos), preservando a ordem relativa entre as entradas; assim, ao menos uma entrada em $v$ passa a ter custo 0, sem afetar a comparação entre soluções.} os custos das arestas que \emph{entram} em $v$: calcula $y(v)=\min\{w(u,v)\}$ e 
+substitui cada peso $w(u,v)$ por $w(u,v)-y(v)$. Com isso, ao menos uma entrada em $v$ passa a ter custo reduzido zero e a ordem relativa entre as entradas é preservada. A função modifica o grafo \emph{in-place}\footnote{No jargão de programação, significa “no próprio lugar”: a estrutura de dados original é alterada diretamente, sem criar uma cópia. Isso economiza memória e tempo, mas introduz efeitos colaterais — outras referências ao mesmo objeto verão as mudanças.}, ou seja, sem criar uma cópia. A função executa em $O(\deg^-(v))$. Pois, dado o vértice $v$, obtemos suas arestas de entrada em $O(\deg^-(v))$; calcular o mínimo e ajustar os pesos também leva $O(\deg^-(v))$.
 
 \begin{pybox}{Normalização por vértice: custos reduzidos}
 def normalize_incoming_edge_weights(D: nx.DiGraph, node: str, lang="pt"):
     """
-    Change the weights of incoming edges into the `node`
-    by subtracting the minimum incoming weight from each in the Graph G.
+    Altera os pesos das arestas que entram em `node`
+    subtraindo de cada uma o menor peso de entrada no grafo D.
 
-    Parameters:
-        - D: A directed graph (networkx.DiGraph)
-        - node: The target node whose incoming edges will be adjusted
-        - lang: Language for error messages ("en" for English, "pt" for Portuguese)
+    Parâmetros:
+        - D: Um grafo direcionado (networkx.DiGraph)
+        - node: O vértice alvo cujas arestas de entrada serão ajustadas
+        - lang: Idioma das mensagens de erro ("en" para inglês, "pt" para português)
 
-    Returns:
-        - Nothing (the graph G is modified in place)
+    Retorno:
+        - Nada (o grafo D é modificado no próprio lugar — in-place)
     """
 
     if lang == "en":
@@ -3277,22 +3278,23 @@ def normalize_incoming_edge_weights(D: nx.DiGraph, node: str, lang="pt"):
         D[u][node]["w"] -= yv
 \end{pybox}
 
-\paragraph{Construção de \(F^*\)}
-A função constrói o grafo funcional \(F^*\) escolhendo, para cada vértice \(v\neq r_0\), um arco de custo reduzido zero que entra em \(v\). Se não houver arco de custo zero, escolhe o de menor custo (fallback). A função retorna um novo dígrafo representando \(F^*\).
+\paragraph{Construção de \(F^*\):}
+a função constrói o subdígrafo \(F^*\) selecionando, para cada vértice \(v\neq r_0\), uma única aresta de menor custo que entra em \(v\) (isto é, um \(\operatorname*{argmin}_{(u,v)\in A} w(u,v)\)). Se os custos já foram normalizados por vértice, o arco escolhido tem custo reduzido zero; caso contrário, ele devolve None. O resultado é um dígrafo com exatamente uma aresta entrando em cada \(v\neq r_0\) e nenhuma aresta entrando em \(r_0\). A função executa em \(O(m)\), onde \(m\) é o número de arestas. Isso ocorre porque a função itera sobre todos os vértices do grafo e, para cada vértice, verifica suas arestas de entrada para encontrar a de menor peso. Como cada aresta é considerada no máximo uma vez durante essa iteração, o tempo total é proporcional ao número de arestas, ou seja, \(O(m)\). A função não modifica o grafo original, mas cria um novo grafo direcionado \(F^*\).
 
-\begin{pybox}{Construção de $F^*$ (grafo funcional)}
+\begin{pybox}{Construção de $F^*$}
 def get_Fstar(D: nx.DiGraph, r0: str, lang="pt"):
     """
-    Creates the set F_star from graph G and root r0.
-    An returns a directed graph F_star.
+    Constrói o subgrafo funcional F* a partir do grafo D e da raiz r0.
+    Retorna um grafo direcionado F_star com exatamente uma aresta de entrada
+    para cada v != r0 e nenhuma aresta entrando em r0.
 
-    Parameters:
-        - D: A directed graph (networkx.DiGraph)
-        - r0: The root node
-        - lang: Language for error messages ("en" for English, "pt" for Portuguese)
+    Parâmetros:
+        - D: Um grafo direcionado (networkx.DiGraph)
+        - r0: Vértice raiz (rótulo)
+        - lang: Idioma das mensagens de erro ("en" para inglês, "pt" para português)
 
-    Returns:
-        - F_star: A directed graph (networkx.DiGraph) representing F*
+    Retorno:
+        - F_star: Um grafo direcionado (networkx.DiGraph) que representa F*
     """
 
     if lang == "en":
@@ -3316,20 +3318,20 @@ def get_Fstar(D: nx.DiGraph, r0: str, lang="pt"):
     return F_star
 \end{pybox}
 
-\paragraph{Detecção de ciclo}
-A função detecta um ciclo dirigido em \(F^*\) (se existir) e retorna um subgrafo contendo o ciclo. Caso contrário, retorna None. A função utiliza a função \texttt{find\_cycle} do NetworkX, que implementa um algoritmo eficiente de detecção de ciclos. A função executa em \(O(m)\).
+\paragraph{Detecção de ciclo:}
+a função detecta um ciclo dirigido em \(F^*\) (se existir) e retorna um subgrafo contendo o ciclo. Caso contrário, retorna None. A função utiliza a função \texttt{find\_cycle} do NetworkX, que implementa um algoritmo eficiente de detecção de ciclos. A função executa em \(O(m)\). Isso ocorre porque a função \texttt{find\_cycle} do NetworkX utiliza uma abordagem baseada em busca em profundidade (DFS) para detectar ciclos em grafos direcionados. A complexidade dessa abordagem é linear em relação ao número de vértices e arestas do grafo, ou seja, \(O(m)\), onde \(m\) é o número de arestas. A função não modifica o grafo original, mas cria um subgrafo contendo apenas os vértices e arestas que fazem parte do ciclo detectado.
 
 \begin{pybox}{Detecção de ciclo dirigido em $F^*$}
 def find_cycle(F_star: nx.DiGraph):
     """
-    Finds a directed cycle in the graph.
-    Returns a subgraph containing the cycle, or None if there is none.
+    Encontra um ciclo dirigido no grafo.
+    Retorna um subgrafo contendo o ciclo, ou None caso não exista.
 
-    Parameters:
-        - F_star: A directed graph (networkx.DiGraph)
+    Parâmetros:
+        - F_star: Um grafo direcionado (networkx.DiGraph)
 
-    Returns:
-        - A directed graph (networkx.DiGraph) representing the cycle, or None if no cycle is found.
+    Retorno:
+        - Um grafo direcionado (networkx.DiGraph) representando o ciclo, ou None se nenhum ciclo for encontrado.
     """
 
     try:
@@ -3344,8 +3346,27 @@ def find_cycle(F_star: nx.DiGraph):
         return None
 \end{pybox}
 
-\paragraph{Contração de ciclo}
-A função contrai um ciclo \(C\) em um supervértice \(x_C\), ajustando os arcos que entram e saem de \(C\) conforme os custos reduzidos. Retorna o grafo modificado, além de dicionários que mapeiam os arcos que entram e saem do ciclo. A função modifica o grafo \emph{in-place} e executa em \(O(m)\).
+\paragraph{Contração de ciclo:}
+a função contrai um ciclo dirigido simples \(C\) em um \textbf{supervértice} \(x_C\), redirecionando arcos incidentes a \(C\) e ajustando custos de acordo com a regra de \emph{custos reduzidos}. O grafo é modificado \emph{in-place} e a rotina devolve dicionários auxiliares para permitir a \emph{reexpansão} correta do ciclo.
+
+\paragraph{} Em alto nível, a rotina:
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item \textbf{Pré-condições:} (i) \(C\) induz um ciclo dirigido em \(D\); (ii) a raiz \(r_0\) não pertence a \(C\); (iii) o rótulo \(\texttt{label}\) não existe como vértice em \(D\) (é o nome de \(x_C\)).
+    \item \textbf{Ajuste de custos (entradas em \(C\)):} para cada arco \((u,w)\) com \(u\notin C\), \(w\in C\), cria \((u, x_C)\) com custo \(c'(u,x_C) := c(u,w) - y(w) = c(u,w) - c(a_w)\), onde \(a_w\) é a entrada mais barata em \(w\). Mantém-se, para cada \(u\), apenas o mínimo entre paralelos \((u, x_C)\).
+    \item \textbf{Arcos que saem de \(C\):} para cada arco \((w,v)\) com \(w\in C\), \(v\notin C\), cria \((x_C, v)\) com o \emph{mesmo} custo \(c(w,v)\); se surgirem paralelos, conserva-se o menor.
+    \item \textbf{Laços e arcos internos:} arcos com ambas as pontas em \(C\) tornam-se laços em \(x_C\) e são descartados (não influenciam a solução). 
+    \item \textbf{Mapeamentos para reexpansão:} devolve dicionários
+    \begin{itemize}\setlength{\itemsep}{1pt}
+        \item \(\texttt{in\_to\_cycle}[u] = (w^*, c'(u,x_C))\): o vértice \(w^*\in C\) que recebeu, de \(u\), a entrada mínima ao contrair (após o ajuste), e o custo reduzido correspondente; usado para substituir \((u,x_C)\) por \((u,w^*)\) na expansão e remover \(a_{w^*}\) de \(C\).
+        \item \(\texttt{out\_from\_cycle}[v] = (w^*, c(w^*,v))\): o vértice \(w^*\in C\) que envia a \(v\) o arco de menor custo antes da contração; útil para reconstruir paralelos e decidir empates.
+    \end{itemize}
+    \item \textbf{Efeitos colaterais:} remove todos os vértices de \(C\) de \(D\), insere \(x_C\) e adiciona os arcos redirecionados com os custos apropriados.
+    \item \textbf{Complexidade:} \(O(m)\) no tamanho do grafo atual: cada aresta incidente a \(C\) é examinada no máximo uma vez; a manutenção de mínimos entre paralelos é feita em tempo total linear.
+    \item \textbf{Casos de borda:} (i) se não houver arco entrando em \(C\), \(x_C\) ficará sem entradas, impossibilitando uma r-arborescência (instância inviável); (ii) se não houver arco saindo de \(C\), \(x_C\) ficará sem saídas (permitido, mas pode isolar componentes); (iii) pesos negativos são suportados — a normalização por custos reduzidos preserva comparações relativas.
+\end{itemize}
+
+Essas escolhas garantem a \emph{equivalência de custo} entre soluções ótimas no grafo contraído e no original após a reexpansão: os arcos internos de \(C\) têm custo reduzido zero e apenas as entradas em \(C\) recebem o desconto \(y(w)\), mantendo a bijeção entre arborescências descrita anteriormente.
+
 
 \begin{pybox}{Contração de ciclo}
 def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: str, lang="pt"):
