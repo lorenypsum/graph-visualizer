@@ -60,10 +60,12 @@
  colback=orange!3,colframe=orange!35,fonttitle=\bfseries,coltitle=black,boxrule=0.6pt}{lem}
 
 % Caixa para código Python com tcolorbox + listings
-\newtcblisting{pybox}[2][]{
+% Caixa numerada para código Python (numeração por seção)
+\newtcblisting[auto counter, number within=section]{pybox}[2][]{
     enhanced, breakable, sharp corners, boxsep=6pt, arc=1pt,
     colback=gray!3, colframe=gray!40, fonttitle=\bfseries, coltitle=black, boxrule=0.6pt,
-    listing only, listing engine=listings, title={#2}, #1,
+    listing only, listing engine=listings,
+    title={Função~\thetcbcounter: #2}, #1,
     listing options={style=pystyle}
 }
 
