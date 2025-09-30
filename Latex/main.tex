@@ -3472,7 +3472,21 @@ def remove_internal_edge_to_cycle_entry(C: nx.DiGraph, v):
 \end{pybox}
 
 \paragraph{Procedimento principal (recursivo)}
-A função principal implementa o algoritmo de Chu–Liu/Edmonds de forma recursiva. Ela coordena as etapas do algoritmo, incluindo normalização de custos, construção de \(F^*\), detecção de ciclos, contração, recursão e expansão. A função retorna a r‑arborescência ótima como um dígrafo.
+A função principal implementa o algoritmo de Chu–Liu/Edmonds de forma recursiva e atua como um orquestrador das fases do método. Em alto nível, ela mantém a seguinte lógica: (i) prepara a instância (opcionalmente removendo entradas em \(r_0\) e emitindo logs), (ii) normaliza, para cada \(v\neq r_0\), os custos das arestas que \emph{entram} em \(v\) para induzir pelo menos uma entrada de custo reduzido zero, (iii) constrói o grafo funcional \(F^*\) selecionando, para cada \(v\neq r_0\), uma única entrada de menor custo reduzido (preferencialmente zero), (iv) verifica aciclicidade de \(F^*\); se acíclico, devolve \(F^*\) como r‑arborescência, e (v) caso haja ciclo, contrai o ciclo em um supervértice, ajusta custos que \emph{entram} no componente contraído e chama‑se recursivamente na instância reduzida; ao retornar, expande o componente e remove exatamente uma aresta interna do ciclo para restaurar grau de entrada igual a 1 e aciclicidade.
+
+Mais especificamente, o procedimento garante as seguintes propriedades e passos:
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item \textbf{Contrato (entradas/saídas).} Entrada: dígrafo ponderado \(D=(V,A)\), raiz \(r_0\), e, opcionalmente, funções \texttt{draw\_fn} e \texttt{log} para visualização e registro. Saída: um subdígrafo dirigido \(T\) de \(D\) com \(|V|-1\) arcos em que todo \(v\neq r_0\) tem grau de entrada 1, todos os vértices alcançam \(r_0\) e o custo total \(\sum_{a\in T} c(a)\) é mínimo.
+    \item \textbf{Invariantes.} Após a normalização por vértice, cada \(v\neq r_0\) tem pelo menos uma entrada de custo reduzido zero; o conjunto \(F^*\) contém exatamente uma entrada por vértice distinto de \(r_0\); em toda contração, apenas arcos que \emph{entram} no componente têm seus custos reduzidos ajustados por \(c'(u,x_C)=c(u,w)-c(a_w)\), preservando comparações relativas.
+    \item \textbf{Detecção de ciclo e contração.} Se \(F^*\) contém um ciclo \(C\), todos os seus arcos têm custo reduzido zero. O procedimento forma o supervértice \(x_C\), reescreve arcos incidentes (descarta laços internos) e prossegue na instância menor. Essa etapa pode manter arcos paralelos e ignora laços.
+    \item \textbf{Recursão e expansão.} Ao obter \(T'\) ótimo no grafo contraído, o método mapeia \(T'\) de volta para \(D\): substitui o arco \((u,x_C)\) por um \((u,w)\) apropriado (com \(w\in C\)) e remove uma única aresta interna de \(C\), restaurando a propriedade “uma entrada por vértice” e a aciclicidade.
+    \item \textbf{Empates e robustez.} Empates de custo são resolvidos de modo determinístico/local, sem afetar a otimalidade. Arcos paralelos podem surgir após contrações e são tratados normalmente; laços são descartados por construção.
+    \item \textbf{Logs e desenho (opcionais).} Se fornecidos, \texttt{log} recebe mensagens estruturadas por nível de recursão, e \texttt{draw\_fn} pode ser chamado para ilustrar passos relevantes (normalização, detecção/contração de ciclos, retorno da recursão e expansão).
+    \item \textbf{Casos‑limite.} Se algum \(v\neq r_0\) não possui arco de entrada na instância corrente, detecta‑se inviabilidade (não existe r‑arborescência). Se \(F^*\) já é acíclico, retorna imediatamente (base da recursão).
+    \item \textbf{Complexidade.} Em uma implementação direta, cada nível de recursão executa seleção/checagem/ajustes em tempo proporcional a \(O(m)\), e há no máximo \(O(n)\) níveis devido às contrações, totalizando \(O(mn)\) e memória \(O(m+n)\).
+\end{itemize}
+
+Essa rotina encapsula, portanto, a estratégia primal do método: induzir arestas de custo reduzido zero por normalização local, extrair uma estrutura funcional \(F^*\) de uma entrada por vértice, e resolver conflitos cíclicos por contração/expansão, preservando custos e correção em todas as etapas.
 
 \begin{pybox}{Procedimento principal (recursivo)}
 def find_optimum_arborescence_chuliu(
