@@ -3444,18 +3444,18 @@ def remove_edges_to_r0(
     D: nx.DiGraph, r0: str, log=None, boilerplate: bool = True, lang="pt"
 ):
     """
-    Remove all edges entering the root vertex r0 in graph G.
-    Returns the updated graph.
+    Remove todas as arestas que entram no vértice raiz r0 no grafo D.
+    Retorna o grafo atualizado.
 
-    Parameters:
-        - D: A directed graph (networkx.DiGraph)
-        - r0: The root node
-        - log: Optional logging function to log information
-        - boilerplate: If True, enables logging
-        - lang: Language for logging messages ("en" for English, "pt" for Portuguese
+    Parâmetros:
+        - D: Um grafo direcionado (networkx.DiGraph)
+        - r0: O vértice raiz
+        - log: Função opcional de logging para registrar informações
+        - boilerplate: Se True, habilita mensagens de logging
+        - lang: Idioma das mensagens de logging ("en" para inglês, "pt" para português)
 
-    Returns:
-        - D: The updated directed graph (networkx.DiGraph) with edges to r0 removed
+    Retorno:
+        - D: O grafo direcionado (networkx.DiGraph) atualizado, sem as arestas que entram em r0
     """
 
     # Verify that r0 exists in G
