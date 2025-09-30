@@ -3393,6 +3393,9 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: str, lang="pt"):
     return in_to_cycle, out_from_cycle
 \end{pybox}
 
+\paragraph{Remoção de arestas que entram na raiz}
+A função remove todas as arestas que entram no vértice raiz \(r_0\) do grafo \(G\). A função modifica o grafo \emph{in-place} e executa em \(O(\deg^-(r_0))\). 
+
 \begin{pybox}{Remoção de arestas que entram na raiz}
 def remove_edges_to_r0(
     D: nx.DiGraph, r0: str, log=None, boilerplate: bool = True, lang="pt"
@@ -3445,6 +3448,9 @@ def remove_edges_to_r0(
                 )
     return D
 \end{pybox}
+
+\paragraph{Remoção de arco interno}
+Ao expandir o ciclo \(C\), a função remove o arco interno que entra no vértice de entrada \(v\) do ciclo, já que \(v\) agora recebe um arco externo do grafo. A função modifica o subgrafo do ciclo \emph{in-place} e executa em \(O(\deg^-(v))\).
 
 \begin{pybox}{Remover arco interno na reexpansão}
 def remove_internal_edge_to_cycle_entry(C: nx.DiGraph, v):
