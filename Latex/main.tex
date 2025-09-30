@@ -3319,6 +3319,9 @@ def find_cycle(F_star: nx.DiGraph):
         return None
 \end{pybox}
 
+\paragraph{Contração de ciclo}
+A função contrai um ciclo \(C\) em um supervértice \(x_C\), ajustando os arcos que entram e saem de \(C\) conforme os custos reduzidos. Retorna o grafo modificado, além de dicionários que mapeiam os arcos que entram e saem do ciclo. A função modifica o grafo \emph{in-place} e executa em \(O(m)\).
+
 \begin{pybox}{Contração de ciclo}
 def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: str, lang="pt"):
     """
