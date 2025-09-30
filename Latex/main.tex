@@ -3371,18 +3371,18 @@ Essas escolhas garantem a \emph{equivalência de custo} entre soluções ótimas
 \begin{pybox}{Contração de ciclo}
 def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: str, lang="pt"):
     """
-    Contract a cycle C in graph G, replacing it with a supernode labeled `label`.
-    Returns the modified graph G' with the contracted cycle, the list of incoming edges (in_edge), and outgoing edges (out_edge).
+    Contrai um ciclo C no grafo D, substituindo-o por um supervértice rotulado `label`.
+    Modifica o grafo D no próprio lugar (in-place) e devolve dicionários auxiliares para a reexpansão.
 
-    Parameters:
-        - D: A directed graph (networkx.DiGraph)
-        - C: A directed graph (networkx.DiGraph) representing the cycle to be contracted
-        - label: The label for the new supernode
-        - lang: Language for error messages ("en" for English, "pt" for Portuguese)
+    Parâmetros:
+        - D: Um grafo direcionado (networkx.DiGraph)
+        - C: Um grafo direcionado (networkx.DiGraph) que representa o ciclo a ser contraído
+        - label: O rótulo do novo supervértice
+        - lang: Idioma das mensagens de erro ("en" para inglês, "pt" para português)
 
-    Returns:
-        - in_to_cycle: A dictionary mapping nodes outside the cycle to tuples (node_in_cycle, weight)
-        - out_from_cycle: A dictionary mapping nodes outside the cycle to tuples (node_in_cycle, weight)
+    Retorno:
+        - in_to_cycle: Dicionário que mapeia nós fora do ciclo para tuplas (no_do_ciclo, peso) das arestas que entram no ciclo após o ajuste
+        - out_from_cycle: Dicionário que mapeia nós fora do ciclo para tuplas (no_do_ciclo, peso) das arestas que saem do ciclo
     """
 
     if lang == "en":
@@ -3437,7 +3437,7 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: str, lang="pt"):
 \end{pybox}
 
 \paragraph{Remoção de arestas que entram na raiz}
-A função remove todas as arestas que entram no vértice raiz \(r_0\) do grafo \(G\). A função modifica o grafo \emph{in-place} e executa em \(O(\deg^-(r_0))\). 
+a função remove todas as arestas que entram no vértice raiz \(r_0\) do grafo \(G\). A função modifica o grafo \emph{in-place} e executa em \(O(\deg^-(r_0))\). Isso ocorre porque a função obtém todas as arestas que entram em \(r_0\) usando o método \texttt{in\_edges} do NetworkX, que tem complexidade \(O(\deg^-(r_0))\). Em seguida, a função remove essas arestas usando o método \texttt{remove\_edges\_from}, que também opera em tempo linear em relação ao número de arestas sendo removidas. Portanto, o tempo total de execução da função é \(O(\deg^-(r_0))\). A função não cria uma cópia do grafo original, mas altera diretamente a estrutura de dados do grafo fornecido. 
 
 \begin{pybox}{Remoção de arestas que entram na raiz}
 def remove_edges_to_r0(
