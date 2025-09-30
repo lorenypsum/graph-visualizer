@@ -3157,24 +3157,52 @@ Esta seção apresenta uma implementação em Python do algoritmo de Chu–Liu/E
 
 \subsubsection{Funções principais}
 
-\begin{pybox}{Normalização por vértice: custos reduzidos}
-from typing import Optional
-import networkx as nx
+\paragraph{Descrição da função a seguir}
+A rotina a seguir implementa a normalização de custos por vértice: para um nó alvo $v$, calcula o menor peso entre as arestas que \emph{entram} em $v$ (denotado por $y(v)$) e o subtrai de \textit{todas} as arestas que entram em $v$. Esse ajuste preserva a ordem relativa dos custos que chegam a $v$ e garante que pelo menos uma aresta de entrada para $v$ passe a ter custo reduzido zero. Trata-se do passo padrão de \emph{custos reduzidos} usado pelo algoritmo de Chu–Liu/Edmonds.
 
-def normalize_incoming_edge_weights(D: nx.DiGraph, node: str, lang: str = "pt") -> None:
-    """Subtrai de cada aresta que entra em `node` o menor custo que entra em `node`.
-    Modifica o grafo D in-place.
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item Entrada: dígrafo ponderado $D$ (NetworkX DiGraph) e um nó $v$.
+    \item Efeito: modifica $D$ \textit{in-place}, substituindo cada peso $c(u,v)$ por $c(u,v)-y(v)$.
+    \item Casos especiais: se $v$ não tem arestas de entrada, nada é alterado; se $v$ não pertence a $D$, a função lança erro (\texttt{assert}).
+    \item Complexidade: $O(\deg^-(v))$ para varrer as arestas que entram em $v$ e atualizá-las.
+    \item Observação: não altera arestas que \emph{saem} de $v$; com custos não negativos, não cria pesos negativos \emph{relativos} entre as entradas e assegura ao menos uma entrada de custo zero em $v$.
+\end{itemize}
+
+\begin{pybox}{Normalização por vértice: custos reduzidos}
+def normalize_incoming_edge_weights(D: nx.DiGraph, node: str, lang="pt"):
     """
-    assert node in D, (
-        "normalize_incoming_edge_weights: O vértice '%s' não existe no grafo." % node
-        if lang == "pt" else
-        "normalize_incoming_edge_weights: The vertex '%s' does not exist in the graph." % node
-    )
-    preds = list(D.in_edges(node, data="w"))
-    if not preds:
+    Change the weights of incoming edges into the `node`
+    by subtracting the minimum incoming weight from each in the Graph G.
+
+    Parameters:
+        - D: A directed graph (networkx.DiGraph)
+        - node: The target node whose incoming edges will be adjusted
+        - lang: Language for error messages ("en" for English, "pt" for Portuguese)
+
+    Returns:
+        - Nothing (the graph G is modified in place)
+    """
+
+    if lang == "en":
+        assert (
+            node in D
+        ), f"\nnormalize_incoming_edge_weights: The vertex '{node}' does not exist in the graph."
+    elif lang == "pt":
+        assert (
+            node in D
+        ), f"\nnormalize_incoming_edge_weights: O vértice '{node}' não existe no grafo."
+
+    # Get the incoming edges of the node with their weights
+    predecessors = list(D.in_edges(node, data="w"))
+
+    if not predecessors:
         return
-    yv = min(w for _, _, w in preds)
-    for u, _, _ in preds:
+
+    # Calculate the minimum weight among the incoming edges
+    yv = min((w for _, _, w in predecessors))
+
+    # Subtract Yv from each incoming edge
+    for u, _, _ in predecessors:
         D[u][node]["w"] -= yv
 \end{pybox}
 
