@@ -3157,8 +3157,11 @@ Esta seção apresenta uma implementação em Python do algoritmo de Chu–Liu/E
 
 \subsubsection{Funções principais}
 
-\paragraph{Descrição da função a seguir}
-A rotina a seguir implementa a normalização de custos por vértice: para um nó alvo $v$, calcula o menor peso entre as arestas que \emph{entram} em $v$ (denotado por $y(v)$) e o subtrai de \textit{todas} as arestas que entram em $v$. Esse ajuste preserva a ordem relativa dos custos que chegam a $v$ e garante que pelo menos uma aresta de entrada para $v$ passe a ter custo reduzido zero. Trata-se do passo padrão de \emph{custos reduzidos} usado pelo algoritmo de Chu–Liu/Edmonds.
+\paragraph{}
+O código a seguir implementa o algoritmo de Chu–Liu/Edmonds em Python, utilizando a biblioteca NetworkX para manipulação de grafos. A implementação segue a estrutura descrita na seção anterior, com funções auxiliares para cada etapa do algoritmo.
+
+\paragraph{}
+A seguir, detalhamos as funções principais da implementação, começando pela normalização dos custos por vértice.
 
 \begin{itemize}\setlength{\itemsep}{2pt}
     \item Entrada: dígrafo ponderado $D$ (NetworkX DiGraph) e um nó $v$.
@@ -3167,6 +3170,9 @@ A rotina a seguir implementa a normalização de custos por vértice: para um n�
     \item Complexidade: $O(\deg^-(v))$ para varrer as arestas que entram em $v$ e atualizá-las.
     \item Observação: não altera arestas que \emph{saem} de $v$; com custos não negativos, não cria pesos negativos \emph{relativos} entre as entradas e assegura ao menos uma entrada de custo zero em $v$.
 \end{itemize}
+
+\paragraph{Descrição da função a seguir}
+A rotina a seguir implementa a normalização de custos por vértice: para um nó alvo $v$, calcula o menor peso entre as arestas que \emph{entram} em $v$ (denotado por $y(v)$) e o subtrai de \textit{todas} as arestas que entram em $v$. Esse ajuste preserva a ordem relativa dos custos que chegam a $v$ e garante que pelo menos uma aresta de entrada para $v$ passe a ter custo reduzido zero. Trata-se do passo padrão de \emph{custos reduzidos} usado pelo algoritmo de Chu–Liu/Edmonds.
 
 \begin{pybox}{Normalização por vértice: custos reduzidos}
 def normalize_incoming_edge_weights(D: nx.DiGraph, node: str, lang="pt"):
