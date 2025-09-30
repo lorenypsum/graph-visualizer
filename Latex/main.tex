@@ -3234,7 +3234,7 @@ Esta seção apresenta uma implementação em Python do algoritmo de Chu–Liu/E
 O código a seguir implementa o algoritmo de Chu–Liu/Edmonds em Python, utilizando a biblioteca NetworkX para manipulação de grafos. A implementação segue a estrutura descrita na seção anterior, com funções auxiliares para cada etapa do algoritmo.
 
 \paragraph{}
-A seguir, detalhamos as funções principais da implementação, começando pela normalização dos custos por vértice.
+A seguir, detalhamos as funções auxiliares e as principais para implementação, começando pela normalização dos custos por vértice.
 
 \paragraph{Normalização por vértice}
 Para um vértice alvo $v$, a função normaliza os custos das arestas que \emph{entram} em $v$: calcula $y(v)=\min\{w(u,v)\}$ e substitui cada peso $w(u,v)$ por $w(u,v)-y(v)$. Com isso, ao menos uma entrada em $v$ passa a ter custo reduzido zero e a ordem relativa entre as entradas é preservada. A rotina modifica o grafo \emph{in-place} e executa em $O(\deg^-(v))$.
