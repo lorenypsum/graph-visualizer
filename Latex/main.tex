@@ -3204,125 +3204,499 @@ def normalize_incoming_edge_weights(D: nx.DiGraph, node: str, lang="pt"):
         D[u][node]["w"] -= yv
 \end{pybox}
 
-
+\paragraph{Construção de \(F^*\)}
+A função constrói o grafo funcional \(F^*\) escolhendo, para cada vértice \(v\neq r_0\), um arco de custo reduzido zero que entra em \(v\). Se não houver arco de custo zero, escolhe o de menor custo (fallback). A função retorna um novo dígrafo representando \(F^*\).
 
 \begin{pybox}{Construção de $F^*$ (grafo funcional)}
-def get_Fstar(D: nx.DiGraph, r0: str, lang: str = "pt") -> nx.DiGraph:
-    """Constroi F* escolhendo, para cada v != r0, um arco de custo reduzido zero que entra em v."""
-    assert r0 in D, (
-        "get_Fstar: O vértice raiz '%s' não existe no grafo." % r0
-        if lang == "pt" else
-        "get_Fstar: The root vertex '%s' does not exist in the graph." % r0
-    )
+def get_Fstar(D: nx.DiGraph, r0: str, lang="pt"):
+    """
+    Creates the set F_star from graph G and root r0.
+    An returns a directed graph F_star.
+
+    Parameters:
+        - D: A directed graph (networkx.DiGraph)
+        - r0: The root node
+        - lang: Language for error messages ("en" for English, "pt" for Portuguese)
+
+    Returns:
+        - F_star: A directed graph (networkx.DiGraph) representing F*
+    """
+
+    if lang == "en":
+        assert (
+            r0 in D
+        ), f"\nget_Fstar: The root vertex '{r0}' does not exist in the graph."
+    elif lang == "pt":
+        assert r0 in D, f"\nget_Fstar: O vértice raiz '{r0}' não existe no grafo."
+
+    # Create an empty directed graph for F_star
     F_star = nx.DiGraph()
+
     for v in D.nodes():
-        if v == r0:
-            continue
-        in_edges = list(D.in_edges(v, data="w"))
-        if not in_edges:
-            continue  # inviável: v não tem arco de entrada
-        # escolhe um arco de custo reduzido zero, se houver
-        u_zero = next((u for u, _, w in in_edges if w == 0), None)
-        if u_zero is not None:
-            F_star.add_edge(u_zero, v)
-        else:
-            # fallback: pega o de menor custo caso não haja zero (robustez)
-            u_min, _, _ = min(in_edges, key=lambda t: t[2])
-            F_star.add_edge(u_min, v)
+        if v != r0:
+            in_edges = list(D.in_edges(v, data="w"))
+            if not in_edges:
+                continue  # No edges entering v
+            u = next((u for u, _, w in in_edges if w == 0), None)
+            if u:
+                F_star.add_edge(u, v, w=0)
     return F_star
 \end{pybox}
 
 \begin{pybox}{Detecção de ciclo dirigido em $F^*$}
-def find_cycle(F_star: nx.DiGraph) -> Optional[nx.DiGraph]:
-    """Retorna um subgrafo com um ciclo dirigido, ou None se não houver."""
+def find_cycle(F_star: nx.DiGraph):
+    """
+    Finds a directed cycle in the graph.
+    Returns a subgraph containing the cycle, or None if there is none.
+
+    Parameters:
+        - F_star: A directed graph (networkx.DiGraph)
+
+    Returns:
+        - A directed graph (networkx.DiGraph) representing the cycle, or None if no cycle is found.
+    """
+
     try:
         nodes_in_cycle = set()
+        # Extract nodes involved in the cycle
         for u, v, _ in nx.find_cycle(F_star, orientation="original"):
             nodes_in_cycle.update([u, v])
+        # Create a subgraph containing only the cycle
         return F_star.subgraph(nodes_in_cycle).copy()
+
     except nx.NetworkXNoCycle:
         return None
 \end{pybox}
 
-\begin{pybox}{Contração de ciclo (esqueleto)}
-def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: str, lang: str = "pt"):
-    """Contrai o ciclo C em um supervértice `label` e retorna mapas de entrada/saída."""
-    assert label not in D, (
-        "contract_cycle: O rótulo '%s' já existe em G." % label
-        if lang == "pt" else
-        "contract_cycle: The label '%s' already exists in G." % label
-    )
-    cycle_nodes = set(C.nodes())
-    in_to_cycle, out_from_cycle = {}, {}
-    # (Seleciona, para cada u fora de C, o arco mais barato que entra em C; idem para saídas.)
-    # ... implementação conforme código do trabalho ...
-    # Adiciona arestas agregadas ao supervértice e remove nós do ciclo
+\begin{pybox}{Contração de ciclo}
+def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: str, lang="pt"):
+    """
+    Contract a cycle C in graph G, replacing it with a supernode labeled `label`.
+    Returns the modified graph G' with the contracted cycle, the list of incoming edges (in_edge), and outgoing edges (out_edge).
+
+    Parameters:
+        - D: A directed graph (networkx.DiGraph)
+        - C: A directed graph (networkx.DiGraph) representing the cycle to be contracted
+        - label: The label for the new supernode
+        - lang: Language for error messages ("en" for English, "pt" for Portuguese)
+
+    Returns:
+        - in_to_cycle: A dictionary mapping nodes outside the cycle to tuples (node_in_cycle, weight)
+        - out_from_cycle: A dictionary mapping nodes outside the cycle to tuples (node_in_cycle, weight)
+    """
+
+    if lang == "en":
+        assert (
+            label not in D
+        ), f"\ncontract_cycle: The label '{label}' already exists as a vertex in G."
+    elif lang == "pt":
+        assert (
+            label not in D
+        ), f"\ncontract_cycle: O rótulo '{label}' já existe como vértice em G."
+
+    cycle_nodes: set[str] = set(C.nodes())
+
+    # Stores the vertex u outside the cycle and the vertex v inside the cycle that receives the minimum weight edge
+    in_to_cycle: dict[str, tuple[str, float]] = {}
+
+    for u in D.nodes:
+        if u not in cycle_nodes:
+            # Find the minimum weight edge that u has to any vertex in C
+            min_weight_edge_to_cycle = min(
+                ((v, w) for _, v, w in D.out_edges(u, data="w") if v in cycle_nodes),
+                key=lambda x: x[1],
+                default=None,
+            )
+            if min_weight_edge_to_cycle:
+                in_to_cycle[u] = min_weight_edge_to_cycle
+
     for u, (v, w) in in_to_cycle.items():
         D.add_edge(u, label, w=w)
+
+    # Stores the vertex v outside the cycle that receives the minimum weight edge from a vertex u inside the cycle
+    out_from_cycle: dict[str, tuple[str, float]] = {}
+
+    for v in D.nodes:
+        if v not in cycle_nodes:
+            # Find the minimum weight edge that v receives from any vertex in C
+            min_weight_edge_from_cycle = min(
+                ((u, w) for u, _, w in D.in_edges(v, data="w") if u in cycle_nodes),
+                key=lambda x: x[1],
+                default=None,
+            )
+            if min_weight_edge_from_cycle:
+                out_from_cycle[v] = min_weight_edge_from_cycle
+
     for v, (u, w) in out_from_cycle.items():
         D.add_edge(label, v, w=w)
+
+    # Remove all nodes in the cycle from G
     D.remove_nodes_from(cycle_nodes)
+
     return in_to_cycle, out_from_cycle
 \end{pybox}
 
 \begin{pybox}{Remoção de arestas que entram na raiz}
-def remove_edges_to_r0(D: nx.DiGraph, r0: str, lang: str = "pt") -> nx.DiGraph:
-    assert r0 in D, (
-        "remove_edges_to_r0: O vértice raiz '%s' não existe." % r0
-        if lang == "pt" else
-        "remove_edges_to_r0: The root vertex '%s' does not exist." % r0
-    )
+def remove_edges_to_r0(
+    D: nx.DiGraph, r0: str, log=None, boilerplate: bool = True, lang="pt"
+):
+    """
+    Remove all edges entering the root vertex r0 in graph G.
+    Returns the updated graph.
+
+    Parameters:
+        - D: A directed graph (networkx.DiGraph)
+        - r0: The root node
+        - log: Optional logging function to log information
+        - boilerplate: If True, enables logging
+        - lang: Language for logging messages ("en" for English, "pt" for Portuguese
+
+    Returns:
+        - D: The updated directed graph (networkx.DiGraph) with edges to r0 removed
+    """
+
+    # Verify that r0 exists in G
+    if lang == "en":
+        assert (
+            r0 in D
+        ), f"\nremove_edges_to_r0: The root vertex '{r0}' does not exist in the graph."
+    elif lang == "pt":
+        assert (
+            r0 in D
+        ), f"\nremove_edges_to_r0: O vértice raiz '{r0}' não existe no grafo."
+
+    # Remove all edges entering r0
     in_edges = list(D.in_edges(r0))
-    if in_edges:
+    if not in_edges:
+        if boilerplate and log:
+            if lang == "en":
+                log(f"\nremove_edges_to_r0: No edges entering '{r0}' to remove.")
+            elif lang == "pt":
+                log(
+                    f"\nremove_edges_to_r0: Nenhuma aresta entrando em '{r0}' para remover."
+                )
+    else:
         D.remove_edges_from(in_edges)
+        if boilerplate and log:
+            if lang == "en":
+                log(
+                    f"\nremove_edges_to_r0: Removed {len(in_edges)} edges entering '{r0}'."
+                )
+            elif lang == "pt":
+                log(
+                    f"\nremove_edges_to_r0: Removidas {len(in_edges)} arestas entrando em '{r0}'."
+                )
     return D
 \end{pybox}
 
 \begin{pybox}{Remover arco interno na reexpansão}
 def remove_internal_edge_to_cycle_entry(C: nx.DiGraph, v):
+    """
+    Remove the internal edge entering the entry vertex `v` from cycle C,
+    since `v` now receives an external edge from the graph.
+
+    Parameters:
+        - C: subgraph of the cycle
+        - external_entry_edge: tuple (u, v, w) — external edge connecting to the cycle
+
+    Returns:
+        - The modified cycle (with one less edge)
+    """
+
     predecessor = next((u for u, _ in C.in_edges(v)), None)
-    if predecessor is not None:
-        C.remove_edge(predecessor, v)
+
+    C.remove_edge(predecessor, v)
 \end{pybox}
 
 \begin{pybox}{Procedimento principal (recursivo)}
-def find_optimum_arborescence_chuliu(D: nx.DiGraph, r0: str, level: int = 0) -> nx.DiGraph:
+def find_optimum_arborescence_chuliu(
+    D: nx.DiGraph,
+    r0: str,
+    level=0,
+    draw_fn=None,
+    log=None,
+    boilerplate: bool = True,
+    lang="pt",
+):
+    """
+    Finds the optimum arborescence in a directed graph G with root r0 using the Chu-Liu/Edmonds algorithm.
+
+    Parameters:
+        - D: A directed graph (networkx.DiGraph)
+        - r0: The root node
+        - level: The current recursion level (used for logging and visualization)
+        - draw_fn: Optional function to visualize the graph at each step
+        - log: Optional logging function to log information
+        - boilerplate: If True, enables logging and visualization
+        - lang: Language for logging messages ("en" for English, "pt" for Portuguese
+
+    Returns:
+        - A directed graph (networkx.DiGraph) representing the optimum arborescence
+
+    Raises:
+        - AssertionError: If the root node r0 is not in the graph G
+        - AssertionError: If no cycle is found in F_star when expected
+        - AssertionError: If the contracted label already exists in the graph G
+        - AssertionError: If no incoming edge is found for the contracted node in F_prime
+        - AssertionError: If no vertex in the cycle is found to receive the incoming edge
+        - AssertionError: If the contracted label is not found in F_prime
+        - AssertionError: If vertices u or v are not found in the original graph G
+    """
+
+    indent = "  " * level
+
+    if boilerplate and log:
+        if lang == "en":
+            log(f"\nfind_optimum_arborescence_chuliu:{indent}Starting level {level}")
+        elif lang == "pt":
+            log(f"\nfind_optimum_arborescence_chuliu:{indent}Iniciando nível {level}")
+
+    if lang == "en":
+        assert (
+            r0 in D
+        ), f"\nfind_optimum_arborescence_chuliu: The root vertex '{r0}' is not present in the graph."
+    elif lang == "pt":
+        assert (
+            r0 in D
+        ), f"\nfind_optimum_arborescence_chuliu: O vértice raiz '{r0}' não está presente no grafo."
+
     D_copy = D.copy()
-    remove_edges_to_r0(D_copy, r0)
+
+    if boilerplate and log:
+        if lang == "en":
+            log(
+                f"\nfind_optimum_arborescence_chuliu:{indent}Removing edges entering '{r0}'"
+            )
+        elif lang == "pt":
+            log(
+                f"\nfind_optimum_arborescence_chuliu:{indent}Removendo arestas que entram em '{r0}'"
+            )
+        if draw_fn:
+            if lang == "en":
+                draw_fn(
+                    D_copy,
+                    f"\nfind_optimum_arborescence_chuliu:{indent}After removing incoming edges",
+                )
+            elif lang == "pt":
+                draw_fn(
+                    D_copy,
+                    f"\nfind_optimum_arborescence_chuliu:{indent}Após remoção de entradas",
+                )
+
     for v in D_copy.nodes:
         if v != r0:
-            normalize_incoming_edge_weights(D_copy, v)
-    F_star = get_Fstar(D_copy, r0)
+            normalize_incoming_edge_weights(D_copy, v, lang=lang)
+
+        if boilerplate and log:
+            if lang == "en":
+                log(
+                    f"\nfind_optimum_arborescence_chuliu:{indent}Normalizing weights of incoming edges to '{v}'"
+                )
+            elif lang == "pt":
+                log(
+                    f"\nfind_optimum_arborescence_chuliu:{indent}Normalizando pesos de arestas de entrada para '{v}'"
+                )
+            if draw_fn:
+                if lang == "en":
+                    draw_fn(
+                        D_copy,
+                        f"\nfind_optimum_arborescence_chuliu:{indent}After weight adjustment",
+                    )
+                elif lang == "pt":
+                    draw_fn(
+                        D_copy,
+                        f"\nfind_optimum_arborescence_chuliu:{indent}Após ajuste de pesos",
+                    )
+
+    # Build F_star
+    F_star = get_Fstar(D_copy, r0, lang=lang)
+
+    if boilerplate and log:
+        if lang == "en":
+            log(f"\nfind_optimum_arborescence_chuliu:{indent}Building F_star")
+        elif lang == "pt":
+            log(f"\nfind_optimum_arborescence_chuliu:{indent}Construindo F_star")
+        if draw_fn:
+            if lang == "en":
+                draw_fn(F_star, f"\nfind_optimum_arborescence_chuliu:{indent}F_star")
+            elif lang == "pt":
+                draw_fn(F_star, f"\nfind_optimum_arborescence_chuliu:{indent}F_star")
+
     if nx.is_arborescence(F_star):
-        # restaura pesos originais em F_star
         for u, v in F_star.edges:
             F_star[u][v]["w"] = D[u][v]["w"]
         return F_star
-    # caso com ciclo: contrai e recursa
-    C = find_cycle(F_star)
-    assert C is not None, "Nenhum ciclo encontrado em F* (inconsistência)."
-    contracted_label = f"n*{level}"
-    in_to_cycle, out_from_cycle = contract_cycle(D_copy, C, contracted_label)
-    F_prime = find_optimum_arborescence_chuliu(D_copy, r0, level + 1)
-    # identifica o arco que entra no supervértice e mapeia de volta
-    in_edge = next(iter(F_prime.in_edges(contracted_label, data=True)), None)
-    assert in_edge is not None, "Sem arco de entrada no supervértice (inconsistência)."
-    u, _, _ = in_edge
-    v, _ = in_to_cycle[u]
-    remove_internal_edge_to_cycle_entry(C, v)
-    F_prime.add_edge(u, v)
-    # adiciona arestas internas remanescentes e externas de saída
-    for u_c, v_c in C.edges:
-        F_prime.add_edge(u_c, v_c)
-    for _, z, _ in list(F_prime.out_edges(contracted_label, data=True)):
-        # ... mapear saídas usando out_from_cycle ...
-        pass
-    F_prime.remove_node(contracted_label)
-    # restaura pesos originais de D
-    for u, v in F_prime.edges:
-        if D.has_edge(u, v) and "w" in D[u][v]:
+
+    else:
+        if boilerplate and log:
+            if lang == "en":
+                log(
+                    f"\nfind_optimum_arborescence_chuliu:{indent}F_star is not an arborescence. Continuing..."
+                )
+            elif lang == "pt":
+                log(
+                    f"\nfind_optimum_arborescence_chuliu:{indent}F_star não é uma arborescência. Continuando..."
+                )
+
+        C: nx.DiGraph = find_cycle(F_star)
+
+        if lang == "en":
+            assert C, f"\nfind_optimum_arborescence_chuliu: No cycle found in F_star."
+        elif lang == "pt":
+            assert (
+                C
+            ), f"\nfind_optimum_arborescence_chuliu: Nenhum ciclo encontrado em F_star."
+
+        contracted_label = f"\n n*{level}"
+        in_to_cycle, out_from_cycle = contract_cycle(
+            D_copy, C, contracted_label, lang=lang
+        )
+
+        # Recursive call
+        F_prime = find_optimum_arborescence_chuliu(
+            D_copy,
+            r0,
+            level + 1,
+            draw_fn=None,
+            log=None,
+            boilerplate=boilerplate,
+            lang=lang,
+        )
+
+        # Identify the vertex in the cycle that received the only incoming edge from the arborescence
+        in_edge = next(iter(F_prime.in_edges(contracted_label, data="w")), None)
+
+        if lang == "en":
+            assert (
+                in_edge
+            ), f"\nfind_optimum_arborescence_chuliu: No incoming edge found for vertex '{contracted_label}'."
+        elif lang == "pt":
+            assert (
+                in_edge
+            ), f"\nfind_optimum_arborescence_chuliu: Nenhuma aresta encontrada entrando no vértice '{contracted_label}'."
+
+        u, _, _ = in_edge
+
+        v, _ = in_to_cycle[u]
+
+        if lang == "en":
+            assert (
+                v is not None
+            ), f"\nfind_optimum_arborescence_chuliu: No vertex in the cycle found to receive the incoming edge from '{u}'."
+        elif lang == "pt":
+            assert (
+                v is not None
+            ), f"\nfind_optimum_arborescence_chuliu: Nenhum vértice do ciclo encontrado que recebeu a aresta de entrada de '{u}'."
+
+        # Remove the internal edge entering vertex `v` from cycle C
+        remove_internal_edge_to_cycle_entry(
+            C, v
+        )  # Note: w is coming from F_prime, not from G
+
+        # Add the external edge entering the cycle (identified by in_edge), the weight will be corrected at the end using G
+        F_prime.add_edge(u, v)
+        if boilerplate and log:
+            if lang == "en":
+                log(
+                    f"\nfind_optimum_arborescence_chuliu:{indent}Adding incoming edge to cycle: ({u}, {v})"
+                )
+            elif lang == "pt":
+                log(
+                    f"\nfind_optimum_arborescence_chuliu:{indent}Adicionando aresta de entrada ao ciclo: ({u}, {v})"
+                )
+
+        # Add the remaining edges of the modified cycle C
+        for u_c, v_c in C.edges:
+            F_prime.add_edge(u_c, v_c)
+            if boilerplate and log:
+                if lang == "en":
+                    log(
+                        f"\nfind_optimum_arborescence_chuliu:{indent}Adding cycle edge: ({u_c}, {v_c})"
+                    )
+                elif lang == "pt":
+                    log(
+                        f"\nfind_optimum_arborescence_chuliu:{indent}Adicionando aresta do ciclo: ({u_c}, {v_c})"
+                    )
+
+        # Add the external edges leaving the cycle
+        for _, z, _ in F_prime.out_edges(contracted_label, data=True):
+
+            if lang == "en":
+                assert (
+                    z in out_from_cycle
+                ), f"\nfind_optimum_arborescence_chuliu: No outgoing edge found for vertex '{z}'."
+            elif lang == "pt":
+                assert (
+                    z in out_from_cycle
+                ), f"\nfind_optimum_arborescence_chuliu: Nenhuma aresta de saída encontrada para o vértice '{z}'."
+
+            u_cycle, _ = out_from_cycle[z]
+            F_prime.add_edge(u_cycle, z)
+
+            if boilerplate and log:
+                if lang == "en":
+                    log(
+                        f"\nfind_optimum_arborescence_chuliu:{indent}Adding outgoing edge from cycle: ({u_cycle}, {z})"
+                    )
+                elif lang == "pt":
+                    log(
+                        f"\nfind_optimum_arborescence_chuliu:{indent}Adicionando aresta externa de saída: ({u_cycle}, {z})"
+                    )
+
+        # Remove the contracted node
+        if lang == "en":
+            assert (
+                contracted_label in F_prime
+            ), f"\nfind_optimum_arborescence_chuliu: Vertex '{contracted_label}' not found in the graph."
+        elif lang == "pt":
+            assert (
+                contracted_label in F_prime
+            ), f"\nfind_optimum_arborescence_chuliu: Vértice '{contracted_label}' não encontrado no grafo."
+        F_prime.remove_node(contracted_label)
+
+        if boilerplate and log:
+            if lang == "en":
+                log(
+                    f"\nfind_optimum_arborescence_chuliu:{indent}Contracted vertex '{contracted_label}' removed."
+                )
+            elif lang == "pt":
+                log(
+                    f"\nfind_optimum_arborescence_chuliu:{indent}Vértice contraído '{contracted_label}' removido."
+                )
+
+        # Update the edge weights with the original weights from G
+        for u, v in F_prime.edges:
+            if lang == "en":
+                assert (
+                    u in D and v in D
+                ), f"\nfind_optimum_arborescence_chuliu: Vertex '{u}' or '{v}' not found in the original graph."
+            elif lang == "pt":
+                assert (
+                    u in D and v in D
+                ), f"\nfind_optimum_arborescence_chuliu: Vértice '{u}' ou '{v}' não encontrado no grafo original."
             F_prime[u][v]["w"] = D[u][v]["w"]
-    return F_prime
+
+        if boilerplate and log:
+            if lang == "en":
+                log(
+                    f"\n✅{indent}Final arborescence: {list(F_prime.edges)}"
+                )
+            elif lang == "pt":
+                log(
+                    f"\n✅{indent}Arborescência final: {list(F_prime.edges)}"
+                )
+            if draw_fn:
+                if lang == "en":
+                    draw_fn(
+                        F_prime,
+                        f"\n{indent}Final Arborescence.",
+                    )
+                elif lang == "pt":
+                    draw_fn(
+                        F_prime,
+                        f"\n{indent}Arborescência final.",
+                    )
+        return F_prime
 \end{pybox}
 
 \paragraph{Notas finais}
