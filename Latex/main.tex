@@ -3471,6 +3471,9 @@ def remove_internal_edge_to_cycle_entry(C: nx.DiGraph, v):
     C.remove_edge(predecessor, v)
 \end{pybox}
 
+\paragraph{Procedimento principal (recursivo)}
+A função principal implementa o algoritmo de Chu–Liu/Edmonds de forma recursiva. Ela coordena as etapas do algoritmo, incluindo normalização de custos, construção de \(F^*\), detecção de ciclos, contração, recursão e expansão. A função retorna a r‑arborescência ótima como um dígrafo.
+
 \begin{pybox}{Procedimento principal (recursivo)}
 def find_optimum_arborescence_chuliu(
     D: nx.DiGraph,
