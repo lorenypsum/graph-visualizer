@@ -3944,7 +3944,9 @@ As condições clássicas de existência dizem que, para todo subconjunto não v
 \paragraph{}
 O procedimento em duas fases pode ser resumido como segue:
 
+\paragraph{}
 Entrada: dígrafo \(D=(V,A)\), custos \(c\), raiz \(r\).
+
 \begin{enumerate}\setlength{\itemsep}{2pt}
     \item (Fase I) Mantenha potenciais \(y\). Enquanto existir \(v\neq r\) sem arco \((u,v)\) com \(c(u,v)-y(v)=0\), aumente \(y(v)\) até algum entrar a zero. Mantenha contrações para ciclos de zeros.
     \item (Fase II) Entre arcos de custo reduzido zero, construa uma r-arborescência; trate ciclos por contração e, no retorno, expanda escolhendo o arco que entra no componente com custo zero.
@@ -3953,13 +3955,9 @@ Entrada: dígrafo \(D=(V,A)\), custos \(c\), raiz \(r\).
 
 
 \begin{algobox}{Frank: fase I}{frank-fase-I}
-
-\end{algobox}
-
-\begin{algobox}{Frank: fases II}{frank-fase}
 Entrada: dígrafo \(D=(V,A)\), custos \(c:A\to\mathbb{R}\), raiz \(r\).
-\begin{enumerate}\setlength{\itemsep}{2pt}
-    \item \textbf{Fase I — normalização primal–dual (potenciais e cortes).}
+\paragraph{}
+ \textbf{Fase I — normalização primal–dual (potenciais e cortes).}
     \begin{enumerate}\setlength{\itemsep}{1pt}
         \item Inicialize potenciais \(y(v)\gets 0\) para todo \(v\in V\). Defina custos reduzidos \(c'(u,v)\gets c(u,v)-y(v)\) e mantenha o subgrafo \(D_0\) apenas com arcos \((u,v)\) tais que \(c'(u,v)=0\) (arcos \emph{apertados}).
         \item Enquanto existir \(v\neq r\) sem arco de custo zero \emph{entrando} em \(v\) em \(D_0\):
@@ -3970,7 +3968,13 @@ Entrada: dígrafo \(D=(V,A)\), custos \(c:A\to\mathbb{R}\), raiz \(r\).
         \end{enumerate}
         \item Termine a Fase I quando, após eventuais contrações, todo \(v\neq r\) tiver ao menos uma entrada com \(c'(u,v)=0\) no grafo corrente.
     \end{enumerate}
-    \item \textbf{Fase II — extração sobre o subgrafo de zeros.}
+\end{algobox}
+
+\paragraph{}
+A Fase I termina quando, após eventuais contrações, todo \(v\neq r\) tiver ao menos uma entrada com \(c'(u,v)=0\) no grafo corrente. Nesse ponto, o subgrafo \(D_0\) de arestas de custo reduzido zero pode conter ciclos, mas cada vértice (exceto a raiz) tem ao menos uma entrada. A Fase II extrai uma r-arborescência desse subgrafo, tratando ciclos por contração e, no retorno, expandindo-os adequadamente.
+
+\begin{algobox}{Frank: fase II}{frank-fase}
+\textbf{Fase II — extração sobre o subgrafo de zeros.}
     \begin{enumerate}\setlength{\itemsep}{1pt}
         \item No grafo (possivelmente contraído), selecione para cada \(v\neq r\) exatamente um arco \((u,v)\) com \(c'(u,v)=0\). Evite ciclos; se um ciclo surgir, contraia\-o e prossiga no grafo menor.
         \item Ao concluir a seleção (no grafo reduzido), expanda as contrações em ordem inversa. Em cada expansão de um componente \(X_C\):
@@ -3980,7 +3984,6 @@ Entrada: dígrafo \(D=(V,A)\), custos \(c:A\to\mathbb{R}\), raiz \(r\).
         \end{enumerate}
     \item O resultado é uma r-arborescência \(T\) composta apenas por arcos \emph{apertados}. Pela complementaridade primal–dual com os potenciais \(y\), \(T\) é ótima para os custos originais \(c\) \cite{frank2014,schrijver2003comb}.
     \end{enumerate}
-\end{enumerate}
 \end{algobox}
 
 \subsection{Fundamentos teóricos e algoritmo detalhado}
