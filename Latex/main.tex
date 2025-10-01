@@ -3903,8 +3903,32 @@ No capítulo seguinte revisitaremos o método sob uma \emph{ótica primal–dual
 
 \section{Procedimento em Duas Fases de András Frank}
 
-\paragraph{Motivação e visão dual}
-O método de \textbf{András Frank} organiza o raciocínio anterior em um \emph{esquema primal–dual em duas fases} que torna explícitos os papéis dos \emph{custos reduzidos} e dos \emph{cortes apertados} (tight cuts). Em alto nível, mantemos potenciais \(y(v)\) nos vértices e trabalhamos com custos reduzidos \(c'(u,v)=c(u,v)-y(v)\). A \textbf{Fase I} ajusta os potenciais até garantir, para cada \(v\neq r\), a existência de pelo menos um arco de custo reduzido zero que \emph{entra} em \(v\). A \textbf{Fase II} extrai dentre os arcos de custo reduzido zero uma r-arborescência, tratando ciclos por contração/expansão. Ver \cite{frank2014,schrijver2003comb}.
+\paragraph{}
+Os primeiros algoritmos para arborescência de custo mínimo foram propostos por Chu–Liu (1965) e Edmonds (1967). Eles introduziram a ideia de contrair ciclos e de caracterizar quando um conjunto de arcos forma uma arborescência. Anos depois, a comunidade passou a explicar esses métodos com a linguagem \emph{primal–dual}. András Frank organizou essa visão em um procedimento em duas fases: 
+\paragraph{}
+(i) usar “potenciais” nos vértices para criar arestas de \emph{custo reduzido} zero e 
+\paragraph{}
+(ii) extrair a arborescência apenas entre essas arestas. 
+
+\paragraph{}
+Essa leitura também conecta o problema a cortes “apertados” (que não se cruzam, isto é, formam uma família laminar) e a ferramentas de matroides, unificando a teoria e a implementação \cite{frank2014,schrijver2003comb}.
+
+\paragraph{Técnicas primal–duais: o que são e por que se consolidaram}
+Em poucas palavras, “primal–dual” significa trabalhar com duas coisas ao mesmo tempo:
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item \textbf{Solução primal:} a estrutura que queremos construir (a arborescência) — ou o grafo após contrações.
+    \item \textbf{Solução dual:} um número \(y(v)\) para cada vértice (os “potenciais”). Com eles, definimos o \emph{custo reduzido} de uma aresta \((u,v)\) por \(c'(u,v)=c(u,v)-y(v)\).
+\end{itemize}
+Se \(c'(u,v)=0\), dizemos que a aresta está \emph{apertada}. O algoritmo aumenta \(y(v)\) quando \(v\) ainda não tem nenhuma entrada apertada: isso empurra alguns custos para baixo até zerar e cria ao menos uma opção de entrada “barata” para \(v\). Sempre que surge um ciclo formado só por arestas apertadas, contraímos o ciclo e continuamos. No fim, quando a árvore usa apenas arestas apertadas e cada vértice (exceto a raiz) tem exatamente uma entrada, as regras de \emph{complementaridade} dizem que a solução é ótima: não há como baratear sem violar as regras.
+
+Por que essa abordagem se tornou padrão?
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item Fornece um “comprovante” de otimalidade (os próprios potenciais servem de certificado dual).
+    \item Leva a algoritmos simples e polinomiais, com passos puramente combinatórios.
+    \item Lida bem com pesos gerais (até negativos), graças aos custos reduzidos.
+    \item Explora cortes que não se cruzam (família laminar), o que simplifica prova e implementação.
+    \item Serve de base para versões mais rápidas e para extensões/aproximações \cite{schrijver2003comb,frank2014}.
+\end{itemize}
 
 \paragraph{Conexão com condições de corte}
 As condições clássicas de existência dizem que, para todo subconjunto não vazio \(X\subseteq V\setminus\{r\}\), deve existir ao menos um arco que entra em \(X\) (corte \(\delta^-(X)\) não vazio). No método de Frank, cortes “apertados” (aqueles cuja entrada disponível a custo reduzido é mínima) formam uma família laminar que guia as contrações, garantindo que, ao final, uma arborescência de custo mínimo emerge entre os arcos de custo reduzido zero.
@@ -3924,8 +3948,181 @@ Entrada: dígrafo \(D=(V,A)\), custos \(c\), raiz \(r\).
 \end{enumerate}
 \end{algobox}
 
+\subsection{Fundamentos teóricos e algoritmo detalhado}
+
+\paragraph{Potenciais e custos reduzidos}
+Definimos potenciais nos vértices \(y:V\to\mathbb{R}\) e custos reduzidos \(c'(u,v):=c(u,v)-y(v)\). Aumentar \(y(v)\) desloca uniformemente os custos das arestas que \emph{entram} em \(v\), preservando a ordem relativa entre entradas e, portanto, a otimalidade global (equivalência entre \(c\) e \(c'\)). A meta da Fase I é ajustar \(y\) até garantir, para todo \(v\neq r\), a existência de pelo menos uma entrada com \(c'(u,v)=0\).
+
+\paragraph{Cortes apertados e laminaridade}
+Para \(X\subseteq V\setminus\{r\}\), denote \(\delta^-(X)=\{(u,v)\in A: u\notin X, v\in X\}\). Um corte é \emph{apertado} se a soma do custo reduzido disponível para entrar em \(X\) é mínima; sob as atualizações de \(y\), os cortes que se tornam apertados formam uma \emph{família laminar} (não se cruzam), o que permite progressos via contrações sem ambiguidade \cite{frank2014,schrijver2003comb}. Quando surge um ciclo apenas com arestas de custo reduzido zero, contraímo-lo e continuamos no grafo menor.
+
+\paragraph{Corretude (esboço)}
+As condições de complementaridade entre os potenciais \(y\) e a escolha final de arestas de custo reduzido zero asseguram que nenhuma troca local reduz o custo. A cada contração, mantemos uma bijeção entre soluções no grafo contraído e no original, como em Chu–Liu/Edmonds: a expansão escolhe o arco que entra no componente com custo reduzido zero e remove uma única aresta interna para quebrar o ciclo. Repetindo por indução, a solução obtida é ótima para \(c'\) e, portanto, para \(c\).
+
+\begin{algobox}{Frank: algoritmo detalhado}{frank-detalhado}
+Entrada: dígrafo \(D=(V,A)\), custos \(c\), raiz \(r\).
+\begin{enumerate}\setlength{\itemsep}{2pt}
+    \item Inicialize potenciais \(y(v)\gets 0\) para todo \(v\in V\). Defina custos reduzidos \(c'(u,v)\gets c(u,v)-y(v)\).
+    \item \textbf{Fase I (normalização).}
+    \begin{enumerate}
+        \item Enquanto existir \(v\neq r\) sem nenhuma aresta \((u,v)\) com \(c'(u,v)=0\):
+        \begin{enumerate}
+            \item Seja \(\Delta:=\min\{c'(u,v):(u,v)\in A\}\) sobre arestas que entram em \(v\). Faça \(y(v)\gets y(v)+\Delta\) e atualize \(c'(u,v)\gets c'(u,v)-\Delta\) para todas as arestas que entram em \(v\).
+            \item Se o subgrafo de arestas com \(c'=0\) contiver um ciclo dirigido \(C\), contraia \(C\) em um supervértice, descartando laços, e continue.
+        \end{enumerate}
+    \end{enumerate}
+    \item \textbf{Fase II (extração).}
+    \begin{enumerate}
+        \item No grafo (possivelmente contraído), selecione uma r-arborescência apenas entre as arestas com \(c'=0\) (se surgir ciclo, contraia e prossiga).
+        \item Expanda as contrações em ordem inversa: em cada expansão, substitua o arco \((u,x_C)\) por um \((u,w)\) com \(w\in C\) e \(c'(u,w)=0\), e remova uma aresta interna de \(C\) para quebrar o ciclo.
+    \end{enumerate}
+    \item Devolva a r-arborescência obtida.
+\end{enumerate}
+\end{algobox}
+
+\paragraph{Complexidade}
+Na forma direta, cada ajuste de potencial e checagem/contração custa tempo linear no grau de entrada do vértice ou no tamanho do corte considerado, levando a \(O(m)\) por iteração e até \(O(n)\) iterações no pior caso: \(O(mn)\). Com estruturas adequadas (p.ex., filas de prioridade/\emph{heaps} para mínimos incrementais e manutenção eficiente do subgrafo de zeros), é possível atingir \(O(m\log n)\) em implementações mais sofisticadas.
+
+\subsection{Implementação em Python}
+
+\paragraph{Visão geral}
+A seguir apresentamos uma implementação didática em duas fases. Mantemos um subgrafo \(D_0\) com as arestas de custo reduzido zero e iterativamente elevamos potenciais para criar novas entradas a zero; em seguida, extraímos uma r-arborescência usando apenas arestas de custo zero. O foco é a clareza; a complexidade segue \(O(mn)\) na prática.
+
+\paragraph{Construção do subgrafo de zeros}
+Cria \(D_0\) contendo apenas arestas com peso zero e uma lista \(A_0\) com essas arestas.
+
+\begin{pybox}{Subgrafo de zeros e lista de zeros}
+def build_D_zero(D: nx.DiGraph):
+    """
+    Constrói o dígrafo D_zero com as arestas de peso zero de D
+    e retorna também a lista A_zero com essas arestas.
+    Complexidade: O(m).
+    """
+    D_zero = nx.DiGraph()
+    A_zero = []
+    for v in D.nodes:
+        D_zero.add_node(v)
+    for u, v, data in D.edges(data=True):
+        if data.get("w", 0) == 0:
+            D_zero.add_edge(u, v, **data)
+            A_zero.append((u, v))
+    return D_zero, A_zero
+\end{pybox}
+
+\paragraph{Arestas que entram em X e corte mínimo}
+Seleciona \(\delta^-(X)\) e calcula o menor peso dentre essas arestas.
+
+\begin{pybox}{Arestas que entram em X e mínimo}
+def get_arcs_entering_X(D: nx.DiGraph, X: set[str]):
+    """
+    Retorna a lista de arestas (u,v,data) com u fora de X e v em X.
+    """
+    return [(u, v, data) for u, v, data in D.edges(data=True) if u not in X and v in X]
+
+def get_minimum_weight_cut(arcs: list[tuple[str, str, dict]]):
+    """
+    Retorna o menor peso entre as arestas fornecidas; supõe lista não vazia.
+    """
+    return min(data.get("w", 0) for _, _, data in arcs)
+\end{pybox}
+
+\paragraph{Atualização de pesos que entram em X}
+Eleva o potencial de cada vértice de X em \(\Delta\) subtraindo \(\Delta\) aos pesos das arestas que \emph{entram} em X; ao zerar, a aresta é adicionada a \(D_0\) e a \(A_0\).
+
+\begin{pybox}{Atualização de pesos e manutenção de zeros}
+def update_weights_in_X(D: nx.DiGraph, X: set[str], delta: float, A_zero: list[tuple[str, str]], D_zero: nx.DiGraph):
+    """
+    Subtrai delta de toda aresta que entra em X; ao zerar, atualiza D_zero e A_zero.
+    Efeito colateral: modifica D e D_zero in-place. Complexidade: O(m).
+    """
+    for u, v, data in D.edges(data=True):
+        if v in X:
+            data["w"] = data.get("w", 0) - delta
+            if data["w"] == 0:
+                if (u, v) not in A_zero:
+                    A_zero.append((u, v))
+                D_zero.add_edge(u, v, **data)
+\end{pybox}
+
+\paragraph{Fase I: normalização por potenciais}
+Itera sobre vértices não raiz, computa \(X=\mathrm{Anc}_{D_0}(v)\cup\{v\}\) e, se necessário, eleva o potencial de \(v\) para criar ao menos uma entrada a zero; detecta e contrai ciclos de zeros por meio do subgrafo \(D_0\) (omissões de implementação para foco didático).
+
+\begin{pybox}{Fase I de Frank (didática)}
+def phase1_find_minimum_arborescence(D_original: nx.DiGraph, r0: str):
+    """
+    Ajusta potenciais elevando entradas a zero e mantém D_zero/A_zero.
+    Retorna (D_zero, A_zero). Complexidade: O(mn) na forma direta.
+    """
+    D = D_original.copy()
+    D_zero, A_zero = build_D_zero(D)
+    progress = True
+    while progress:
+        progress = False
+        for v in D.nodes:
+            if v == r0:
+                continue
+            X = set(nx.ancestors(D_zero, v)) | {v}
+            if r0 in X:
+                continue  # já alcançável por zeros
+            arcs = get_arcs_entering_X(D, X)
+            if not arcs:
+                continue  # instância inviável para este X
+            delta = get_minimum_weight_cut(arcs)
+            if delta > 0:
+                update_weights_in_X(D, X, delta, A_zero, D_zero)
+                progress = True
+    return D_zero, A_zero
+\end{pybox}
+
+\paragraph{Fase II: extração sobre zeros}
+Constrói uma r-arborescência escolhendo apenas arestas em \(A_0\) (peso zero reduzido). Estratégia gulosa: expande a fronteira a partir de \(r_0\).
+
+\begin{pybox}{Fase II de Frank (didática)}
+def phase2_build_arborescence(D_original: nx.DiGraph, r0: str, A_zero: list[tuple[str, str]]):
+    """
+    Constrói r-arborescência usando apenas arestas de custo reduzido zero de A_zero.
+    Complexidade: O(n + |A_zero|) em tempo; usa dados de D_original.
+    """
+    T = nx.DiGraph()
+    T.add_node(r0)
+    n = len(D_original.nodes)
+    for _ in range(n):
+        progress = False
+        for (u, v) in A_zero:
+            if u in T.nodes and v not in T.nodes:
+                T.add_node(v)
+                edge_data = D_original.get_edge_data(u, v, default={"w": 0})
+                T.add_edge(u, v, **edge_data)
+                progress = True
+                break
+        if not progress:
+            break
+    return T
+\end{pybox}
+
+\paragraph{Função orquestradora}
+Integra as fases e devolve \(T\).
+
+\begin{pybox}{Frank: função principal}
+def find_minimum_arborescence_frank(D: nx.DiGraph, r0: str = "r0"):
+    """
+    Encontra uma r-arborescência mínima pelo método de Frank em duas fases.
+    """
+    D_zero, A_zero = phase1_find_minimum_arborescence(D, r0)
+    T = phase2_build_arborescence(D, r0, A_zero)
+    return T
+\end{pybox}
+
+\paragraph{Observações e casos‑limite}
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item \textbf{Inviabilidade.} Se algum \(v\neq r_0\) permanece sem entrada possível, a instância não admite r-arborescência.
+    \item \textbf{Ciclos de zeros.} Uma implementação robusta deve contrair ciclos detectados em \(D_0\) e manter mapeamentos para a expansão, como em Chu–Liu/Edmonds.
+    \item \textbf{Pesos negativos.} São suportados: a normalização por potenciais desloca custos de forma relativa e não afeta comparações entre entradas do mesmo vértice.
+    \item \textbf{Complexidade.} O esqueleto acima é didático (\(O(mn)\)). Com manutenção incremental de mínimos e detecção eficiente de ciclos, obtém-se \(O(m\log n)\).
+\end{itemize}
+
 \paragraph{Corretude e complexidade}
-Ao manter custos reduzidos e uma família laminar de cortes apertados, o método garante que sempre existe uma escolha local consistente com a otimalidade global. A análise de complexidade é alinhada à do Chu–Liu/Edmonds: implementações diretas ficam em \(O(mn)\) e versões eficientes, em \(O(m\log n)\); ver \cite{frank2014,schrijver2003comb}.
+O arcabouço primal–dual com potenciais e cortes apertados fornece as condições de otimalidade: arestas escolhidas são \emph{apertadas} em relação a \(y\) e nenhum ajuste adicional reduz o custo sem violar restrições. A complexidade segue a discussão anterior: \(O(mn)\) na forma direta e \(O(m\log n)\) com estruturas eficientes \cite{frank2014,schrijver2003comb}.
 
 \paragraph{Quando usar}
 Além de fornecer uma forma limpa de provar corretude, a abordagem de Frank é útil quando queremos evidenciar a estrutura dual (custos reduzidos, cortes apertados) ou quando estendemos o problema para variantes com restrições adicionais.
