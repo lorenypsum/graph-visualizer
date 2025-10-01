@@ -3904,16 +3904,19 @@ No capítulo seguinte revisitaremos o método sob uma \emph{ótica primal–dual
 \section{Procedimento em Duas Fases de András Frank}
 
 \paragraph{}
-Os primeiros algoritmos para arborescência de custo mínimo foram propostos por Chu–Liu (1965) e Edmonds (1967). Eles introduziram a ideia de contrair ciclos e de caracterizar quando um conjunto de arcos forma uma arborescência. Anos depois, a comunidade passou a explicar esses métodos com a linguagem \emph{primal–dual}. András Frank organizou essa visão em um procedimento em duas fases: 
+Os primeiros algoritmos para arborescência de custo mínimo foram propostos por Chu–Liu (1965) e Edmonds (1967). Eles introduziram a ideia de contrair ciclos e de caracterizar quando um conjunto de arcos forma uma arborescência. Mais tarde, esses métodos passaram a ser interpretados no arcabouço \emph{primal–dual}. András Frank organizou essa visão em um procedimento em duas fases:
+
 \paragraph{}
-(i) usar “potenciais” nos vértices para criar arestas de \emph{custo reduzido} zero e 
+(i) Potenciais e criação de zeros. Inicialize \(y\equiv 0\) e mantenha o subgrafo \(D_0\) formado pelas arestas com \emph{custo reduzido} zero (isto é, \(c'(u,v)=c(u,v)-y(v)=0\)). Enquanto existir \(v\neq r\) sem nenhuma entrada a zero em \(D_0\), aumente \(y(v)\) em \(\Delta:=\min\{c'(u,v):(u,v)\in A\}\) de modo que ao menos uma aresta que entra em \(v\) zere. À medida que novos zeros surgem, pode aparecer um ciclo composto apenas de arestas de custo reduzido zero; quando isso ocorrer, contraia o ciclo e continue no grafo menor, preservando a equivalência de custos. A Fase I termina quando, após eventuais contrações, todo \(v\neq r\) dispõe de ao menos uma entrada com \(c'(u,v)=0\).
+
 \paragraph{}
-(ii) extrair a arborescência apenas entre essas arestas. 
+(ii) Extração sobre o subgrafo de zeros. Trabalhando no grafo (possivelmente contraído), selecione exatamente uma entrada de custo reduzido zero para cada \(v\neq r\), evitando ciclos. Se a seleção induzir um ciclo, contraia-o e prossiga recursivamente. Ao término, expanda as contrações em ordem inversa: para cada componente contraído, escolha o arco de custo reduzido zero que entra no componente e remova uma única aresta interna para quebrar o ciclo. Como todas as arestas escolhidas são \emph{apertadas} (têm custo reduzido zero) em relação a \(y\), a arborescência construída é ótima também para os custos originais \(c\) por complementaridade.
 
 \paragraph{}
 Essa leitura também conecta o problema a cortes “apertados” (que não se cruzam, isto é, formam uma família laminar) e a ferramentas de matroides, unificando a teoria e a implementação \cite{frank2014,schrijver2003comb}.
 
-\paragraph{Técnicas primal–duais: o que são e por que se consolidaram}
+\paragraph{Técnicas primal–duais:}
+\paragraph{}
 Em poucas palavras, “primal–dual” significa trabalhar com duas coisas ao mesmo tempo:
 \begin{itemize}\setlength{\itemsep}{2pt}
     \item \textbf{Solução primal:} a estrutura que queremos construir (a arborescência) — ou o grafo após contrações.
@@ -3921,7 +3924,8 @@ Em poucas palavras, “primal–dual” significa trabalhar com duas coisas ao m
 \end{itemize}
 Se \(c'(u,v)=0\), dizemos que a aresta está \emph{apertada}. O algoritmo aumenta \(y(v)\) quando \(v\) ainda não tem nenhuma entrada apertada: isso empurra alguns custos para baixo até zerar e cria ao menos uma opção de entrada “barata” para \(v\). Sempre que surge um ciclo formado só por arestas apertadas, contraímos o ciclo e continuamos. No fim, quando a árvore usa apenas arestas apertadas e cada vértice (exceto a raiz) tem exatamente uma entrada, as regras de \emph{complementaridade} dizem que a solução é ótima: não há como baratear sem violar as regras.
 
-Por que essa abordagem se tornou padrão?
+\paragraph{}
+Essa abordagem tem várias vantagens:
 \begin{itemize}\setlength{\itemsep}{2pt}
     \item Fornece um “comprovante” de otimalidade (os próprios potenciais servem de certificado dual).
     \item Leva a algoritmos simples e polinomiais, com passos puramente combinatórios.
@@ -3931,20 +3935,51 @@ Por que essa abordagem se tornou padrão?
 \end{itemize}
 
 \paragraph{Conexão com condições de corte}
+
+\paragraph{}
 As condições clássicas de existência dizem que, para todo subconjunto não vazio \(X\subseteq V\setminus\{r\}\), deve existir ao menos um arco que entra em \(X\) (corte \(\delta^-(X)\) não vazio). No método de Frank, cortes “apertados” (aqueles cuja entrada disponível a custo reduzido é mínima) formam uma família laminar que guia as contrações, garantindo que, ao final, uma arborescência de custo mínimo emerge entre os arcos de custo reduzido zero.
 
-\paragraph{Esqueleto do método}
-\begin{enumerate}\setlength{\itemsep}{2pt}
-    \item \textbf{Fase I (normalização primal–dual).} Inicialize \(y\equiv 0\). Enquanto existir \(v\neq r\) sem arco de custo reduzido zero entrando em \(v\), aumente \(y(v)\) (diminuindo \(c'(u,v)\)) até que algum arco que entra em \(v\) atinja custo reduzido zero. Se aparecer ciclo entre arcos de custo reduzido zero, contraia-o e continue.
-    \item \textbf{Fase II (extração).} No grafo (possivelmente contraído), selecione uma r-arborescência usando apenas arcos de custo reduzido zero; se um ciclo surgir, contraia e prossiga. Ao término, expanda as contrações em ordem inversa, escolhendo, em cada expansão, o arco que entra no componente com custo reduzido zero para quebrar o ciclo interno.
-\end{enumerate}
+\paragraph{Método de duas fases}
 
-\begin{algobox}{Frank: método em duas fases (resumo)}{frank}
+\paragraph{}
+O procedimento em duas fases pode ser resumido como segue:
+
 Entrada: dígrafo \(D=(V,A)\), custos \(c\), raiz \(r\).
 \begin{enumerate}\setlength{\itemsep}{2pt}
     \item (Fase I) Mantenha potenciais \(y\). Enquanto existir \(v\neq r\) sem arco \((u,v)\) com \(c(u,v)-y(v)=0\), aumente \(y(v)\) até algum entrar a zero. Mantenha contrações para ciclos de zeros.
     \item (Fase II) Entre arcos de custo reduzido zero, construa uma r-arborescência; trate ciclos por contração e, no retorno, expanda escolhendo o arco que entra no componente com custo zero.
     \item Devolva a arborescência construída. Pela dualidade implícita, seu custo é mínimo.
+\end{enumerate}
+
+
+\begin{algobox}{Frank: fase I}{frank-fase-I}
+
+\end{algobox}
+
+\begin{algobox}{Frank: fases II}{frank-fase}
+Entrada: dígrafo \(D=(V,A)\), custos \(c:A\to\mathbb{R}\), raiz \(r\).
+\begin{enumerate}\setlength{\itemsep}{2pt}
+    \item \textbf{Fase I — normalização primal–dual (potenciais e cortes).}
+    \begin{enumerate}\setlength{\itemsep}{1pt}
+        \item Inicialize potenciais \(y(v)\gets 0\) para todo \(v\in V\). Defina custos reduzidos \(c'(u,v)\gets c(u,v)-y(v)\) e mantenha o subgrafo \(D_0\) apenas com arcos \((u,v)\) tais que \(c'(u,v)=0\) (arcos \emph{apertados}).
+        \item Enquanto existir \(v\neq r\) sem arco de custo zero \emph{entrando} em \(v\) em \(D_0\):
+        \begin{enumerate}\setlength{\itemsep}{1pt}
+            \item Seja \(X\gets \mathrm{Anc}_{D_0}(v)\cup\{v\}\) (os ancestrais de \(v\) por arcos de \(D_0\), mais \(v\)).
+            \item Calcule \(\Delta\gets\min\{\,c'(u,x):\ u\notin X,\ x\in X\,\}=\min c'(\delta^-(X))\) e \emph{eleve} os potenciais dos vértices de \(X\): para todo \(x\in X\), faça \(y(x)\gets y(x)+\Delta\). Isso torna \(c'(u,x)\gets c'(u,x)-\Delta\) para arcos que entram em \(X\) e preserva \(c'\) para os demais.
+            \item Adicione a \(D_0\) todos os arcos que zerarem (novos \(c'(u,x)=0\) com \(u\notin X, x\in X\)). Se \(D_0\) passar a conter um ciclo dirigido \(C\) apenas de arcos de custo reduzido zero, contraia \(C\) em um supervértice \(x_C\); redirecione arestas incidentes preservando a regra de custos reduzidos e registre mapeamentos para a reexpansão.
+        \end{enumerate}
+        \item Termine a Fase I quando, após eventuais contrações, todo \(v\neq r\) tiver ao menos uma entrada com \(c'(u,v)=0\) no grafo corrente.
+    \end{enumerate}
+    \item \textbf{Fase II — extração sobre o subgrafo de zeros.}
+    \begin{enumerate}\setlength{\itemsep}{1pt}
+        \item No grafo (possivelmente contraído), selecione para cada \(v\neq r\) exatamente um arco \((u,v)\) com \(c'(u,v)=0\). Evite ciclos; se um ciclo surgir, contraia\-o e prossiga no grafo menor.
+        \item Ao concluir a seleção (no grafo reduzido), expanda as contrações em ordem inversa. Em cada expansão de um componente \(X_C\):
+        \begin{enumerate}\setlength{\itemsep}{1pt}
+            \item mantenha o arco externo (de custo reduzido zero) que \emph{entra} em \(X_C\) como a única entrada do vértice de entrada correspondente;
+            \item remova exatamente uma aresta interna do ciclo de \(X_C\) para restaurar grau de entrada igual a 1 e garantir aciclicidade.
+        \end{enumerate}
+    \item O resultado é uma r-arborescência \(T\) composta apenas por arcos \emph{apertados}. Pela complementaridade primal–dual com os potenciais \(y\), \(T\) é ótima para os custos originais \(c\) \cite{frank2014,schrijver2003comb}.
+    \end{enumerate}
 \end{enumerate}
 \end{algobox}
 
