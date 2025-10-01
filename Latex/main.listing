@@ -8,28 +8,28 @@ def find_optimum_arborescence_chuliu(
     lang="pt",
 ):
     """
-    Finds the optimum arborescence in a directed graph G with root r0 using the Chu-Liu/Edmonds algorithm.
+    Encontra a arborescência ótima em um dígrafo D com raiz r0 usando o algoritmo de Chu–Liu/Edmonds.
 
-    Parameters:
-        - D: A directed graph (networkx.DiGraph)
-        - r0: The root node
-        - level: The current recursion level (used for logging and visualization)
-        - draw_fn: Optional function to visualize the graph at each step
-        - log: Optional logging function to log information
-        - boilerplate: If True, enables logging and visualization
-        - lang: Language for logging messages ("en" for English, "pt" for Portuguese
+    Parâmetros:
+        - D: Um grafo direcionado (networkx.DiGraph)
+        - r0: O vértice raiz
+        - level: Nível atual da recursão (usado para logs e visualização)
+        - draw_fn: Função opcional para visualizar o grafo em cada etapa
+        - log: Função opcional de logging para registrar informações
+        - boilerplate: Se True, habilita logging e visualização
+        - lang: Idioma das mensagens de logging ("en" para inglês, "pt" para português)
 
-    Returns:
-        - A directed graph (networkx.DiGraph) representing the optimum arborescence
+    Retorno:
+        - Um grafo direcionado (networkx.DiGraph) que representa a arborescência ótima
 
-    Raises:
-        - AssertionError: If the root node r0 is not in the graph G
-        - AssertionError: If no cycle is found in F_star when expected
-        - AssertionError: If the contracted label already exists in the graph G
-        - AssertionError: If no incoming edge is found for the contracted node in F_prime
-        - AssertionError: If no vertex in the cycle is found to receive the incoming edge
-        - AssertionError: If the contracted label is not found in F_prime
-        - AssertionError: If vertices u or v are not found in the original graph G
+    Exceções:
+        - AssertionError: Se o vértice raiz r0 não estiver presente no grafo D
+        - AssertionError: Se nenhum ciclo for encontrado em F_star quando esperado
+        - AssertionError: Se o rótulo contraído já existir no grafo D
+        - AssertionError: Se não houver aresta de entrada para o vértice contraído em F_prime
+        - AssertionError: Se nenhum vértice do ciclo for encontrado para receber a aresta de entrada
+        - AssertionError: Se o rótulo contraído não for encontrado em F_prime
+        - AssertionError: Se os vértices u ou v não forem encontrados no grafo original D
     """
 
     indent = "  " * level

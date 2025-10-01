@@ -3174,13 +3174,19 @@ Entrada: dígrafo \(D=(V,A)\), custos \(c:A\to\mathbb{R}_{\ge 0}\), raiz \(r\).\
 
 \paragraph{Corretude}
 \begin{enumerate}\setlength{\itemsep}{2pt}
-    \item \emph{Normalização por custos reduzidos.} Para cada \(v\neq r\), defina \(y(v):=\min\{c(u,v):(u,v)\in A\}\) e \(c'(u,v):=c(u,v)-y(v)\). Para qualquer r‑arborescência \(T\), vale
+    \item \emph{Normalização por custos reduzidos:} para cada \(v\neq r\), defina \(y(v):=\min\{c(u,v):(u,v)\in A\}\) e \(c'(u,v):=c(u,v)-y(v)\). Para qualquer r‑arborescência \(T\), vale
     \[
         \sum_{a\in T} c'(a) \,=\, \sum_{a\in T} c(a) \, - \, \sum_{v\neq r} y(v),
     \]
     pois há exatamente um arco de \(T\) entrando em cada \(v\neq r\). O termo \(\sum_{v\neq r} y(v)\) é constante (independe de \(T\)); assim, minimizar \(\sum c\) equivale a minimizar \(\sum c'\) \cite[Obs.~4.37]{kleinberg2006}. Em particular, os arcos \(a_v\) de menor custo que entram em \(v\) têm custo reduzido zero e formam \(F^*\).
-    \item \emph{Caso acíclico.} Se \((V,F^*)\) é acíclico, então já é uma r‑arborescência e, por realizar o mínimo custo de entrada em cada \(v\neq r\), é ótima \cite[Obs.~4.36]{kleinberg2006}.
-    \item \emph{Caso com ciclo (contração/expansão).} Se \(F^*\) contém um ciclo dirigido \(C\), todos os seus arcos têm custo reduzido zero. Contraia \(C\) em \(x_C\) e ajuste apenas arcos que \emph{entram} em \(C\): \(c'(u,x_C):=c(u,w)-y(w)=c(u,w)-c(a_w)\). Resolva o problema no grafo contraído \(D'\), obtendo uma r‑arborescência ótima \(T'\) sob \(c'\). Na expansão, substitua o arco \((u,x_C)\in T'\) pelo correspondente \((u,w)\) (com \(w\in C\)) e remova \(a_w\) de \(C\). Como os arcos de \(C\) têm custo reduzido zero e \(c'(u,x_C)=c(u,w)-y(w)\), a soma dos custos reduzidos é preservada na ida e na volta; logo, \(T'\) ótimo em \(D'\) mapeia para \(T\) ótimo em \(D\) para \(c'\). Pela equivalência entre \(c\) e \(c'\), \(T\) também é ótimo para \(c\). Repetindo o argumento a cada contração, obtemos a corretude por indução \cite[Sec.~4.9]{kleinberg2006,schrijver2003comb}.
+    \item \emph{Caso acíclico:} se \((V,F^*)\) é acíclico, então já é uma r‑arborescência e, por realizar o mínimo custo de entrada em cada \(v\neq r\), é ótima \cite[Obs.~4.36]{kleinberg2006}.
+    \item \emph{Caso com ciclo (contração/expansão):} se \(F^*\) contém um ciclo dirigido \(C\), todos os seus arcos têm custo reduzido zero. 
+    \paragraph{}
+    Contraia \(C\) em \(x_C\) e ajuste apenas arcos que \emph{entram} em \(C\): \(c'(u,x_C):=c(u,w)-y(w)=c(u,w)-c(a_w)\). 
+    \paragraph{}
+    Resolva o problema no grafo contraído \(D'\), obtendo uma r‑arborescência ótima \(T'\) sob \(c'\). Na expansão, substitua o arco \((u,x_C)\in T'\) pelo correspondente \((u,w)\) (com \(w\in C\)) e remova \(a_w\) de \(C\). 
+    \paragraph{}
+    Como os arcos de \(C\) têm custo reduzido zero e \(c'(u,x_C)=c(u,w)-y(w)\), a soma dos custos reduzidos é preservada na ida e na volta; logo, \(T'\) ótimo em \(D'\) mapeia para \(T\) ótimo em \(D\) para \(c'\). Pela equivalência entre \(c\) e \(c'\), \(T\) também é ótimo para \(c\). Repetindo o argumento a cada contração, obtemos a corretude por indução \cite[Sec.~4.9]{kleinberg2006,schrijver2003comb}.
 \end{enumerate}
 Em termos intuitivos, \(y\) funciona como um potencial nos vértices: torna “apertados” (custo reduzido zero) os candidatos corretos; ciclos de arcos apertados podem ser contraídos sem perder otimalidade.
 
@@ -3190,10 +3196,7 @@ Na implementação direta, selecionar os \(a_v\), detectar/contrair ciclos e atu
 
 
 \paragraph{}
-O uso de memória é \(O(m+n)\), incluindo mapeamentos de contração/expansão e as filas de prioridade dos arcos de entrada.
-
-\paragraph{}
-A implementação a seguir adota a versão \(O(mn)\) por simplicidade.
+O uso de memória é \(O(m+n)\), incluindo mapeamentos de contração/expansão e as filas de prioridade dos arcos de entrada. A implementação a seguir adota a versão \(O(mn)\) por simplicidade.
 
 \subsection{Implementação em Python}
 
@@ -3238,7 +3241,13 @@ A seguir, detalhamos as implementações das funções auxiliares e as principai
 
 \paragraph{Normalização por vértice:}
 para um vértice alvo $v$, a função normaliza\footnote{Aqui, “normalizar” significa subtrair do peso de cada aresta que entra em $v$ o menor peso de entrada de $v$ (custos reduzidos), preservando a ordem relativa entre as entradas; assim, ao menos uma entrada em $v$ passa a ter custo 0, sem afetar a comparação entre soluções.} os custos das arestas que \emph{entram} em $v$: calcula $y(v)=\min\{w(u,v)\}$ e 
-substitui cada peso $w(u,v)$ por $w(u,v)-y(v)$. Com isso, ao menos uma entrada em $v$ passa a ter custo reduzido zero e a ordem relativa entre as entradas é preservada. A função modifica o grafo \emph{in-place}\footnote{No jargão de programação, significa “no próprio lugar”: a estrutura de dados original é alterada diretamente, sem criar uma cópia. Isso economiza memória e tempo, mas introduz efeitos colaterais — outras referências ao mesmo objeto verão as mudanças.}, ou seja, sem criar uma cópia. A função executa em $O(\deg^-(v))$. Pois, dado o vértice $v$, obtemos suas arestas de entrada em $O(\deg^-(v))$; calcular o mínimo e ajustar os pesos também leva $O(\deg^-(v))$.
+substitui cada peso $w(u,v)$ por $w(u,v)-y(v)$. 
+
+\paragraph{}
+Com isso, ao menos uma entrada em $v$ passa a ter custo reduzido zero e a ordem relativa entre as entradas é preservada. A função modifica o grafo \emph{in-place}\footnote{No jargão de programação, significa “no próprio lugar”: a estrutura de dados original é alterada diretamente, sem criar uma cópia. Isso economiza memória e tempo, mas introduz efeitos colaterais — outras referências ao mesmo objeto verão as mudanças.}, ou seja, sem criar uma cópia. 
+
+\paragraph{}
+A função executa em $O(\deg^-(v))$. Pois, dado o vértice $v$, obtemos suas arestas de entrada em $O(\deg^-(v))$; calcular o mínimo e ajustar os pesos também leva $O(\deg^-(v))$.
 
 \begin{pybox}{Normalização por vértice: custos reduzidos}
 def normalize_incoming_edge_weights(D: nx.DiGraph, node: str, lang="pt"):
@@ -3279,7 +3288,13 @@ def normalize_incoming_edge_weights(D: nx.DiGraph, node: str, lang="pt"):
 \end{pybox}
 
 \paragraph{Construção de \(F^*\):}
-a função constrói o subdígrafo \(F^*\) selecionando, para cada vértice \(v\neq r_0\), uma única aresta de menor custo que entra em \(v\) (isto é, um \(\operatorname*{argmin}_{(u,v)\in A} w(u,v)\)). Se os custos já foram normalizados por vértice, o arco escolhido tem custo reduzido zero; caso contrário, ele devolve None. O resultado é um dígrafo com exatamente uma aresta entrando em cada \(v\neq r_0\) e nenhuma aresta entrando em \(r_0\). A função executa em \(O(m)\), onde \(m\) é o número de arestas. Isso ocorre porque a função itera sobre todos os vértices do grafo e, para cada vértice, verifica suas arestas de entrada para encontrar a de menor peso. Como cada aresta é considerada no máximo uma vez durante essa iteração, o tempo total é proporcional ao número de arestas, ou seja, \(O(m)\). A função não modifica o grafo original, mas cria um novo grafo direcionado \(F^*\).
+a função constrói o subdígrafo \(F^*\) selecionando, para cada vértice \(v\neq r_0\), uma única aresta de menor custo que entra em \(v\) (isto é, um \(\operatorname*{argmin}_{(u,v)\in A} w(u,v)\)). 
+
+\paragraph{}
+Se os custos já foram normalizados por vértice, o arco escolhido tem custo reduzido zero; caso contrário, ele devolve None. O resultado é um dígrafo com exatamente uma aresta entrando em cada \(v\neq r_0\) e nenhuma aresta entrando em \(r_0\). A função executa em \(O(m)\), onde \(m\) é o número de arestas. 
+
+\paragraph{}
+Isso ocorre porque a função itera sobre todos os vértices do grafo e, para cada vértice, verifica suas arestas de entrada para encontrar a de menor peso. Como cada aresta é considerada no máximo uma vez durante essa iteração, o tempo total é proporcional ao número de arestas, ou seja, \(O(m)\). A função não modifica o grafo original, mas cria um novo grafo direcionado \(F^*\).
 
 \begin{pybox}{Construção de $F^*$}
 def get_Fstar(D: nx.DiGraph, r0: str, lang="pt"):
@@ -3319,7 +3334,13 @@ def get_Fstar(D: nx.DiGraph, r0: str, lang="pt"):
 \end{pybox}
 
 \paragraph{Detecção de ciclo:}
-a função detecta um ciclo dirigido em \(F^*\) (se existir) e retorna um subgrafo contendo o ciclo. Caso contrário, retorna None. A função utiliza a função \texttt{find\_cycle} do NetworkX, que implementa um algoritmo eficiente de detecção de ciclos. A função executa em \(O(m)\). Isso ocorre porque a função \texttt{find\_cycle} do NetworkX utiliza uma abordagem baseada em busca em profundidade (DFS) para detectar ciclos em grafos direcionados. A complexidade dessa abordagem é linear em relação ao número de vértices e arestas do grafo, ou seja, \(O(m)\), onde \(m\) é o número de arestas. A função não modifica o grafo original, mas cria um subgrafo contendo apenas os vértices e arestas que fazem parte do ciclo detectado.
+a função detecta um ciclo dirigido em \(F^*\) (se existir) e retorna um subgrafo contendo o ciclo. Caso contrário, retorna None. A função utiliza a função \texttt{find\_cycle} do NetworkX, que implementa um algoritmo eficiente de detecção de ciclos. 
+
+\paragraph{}
+A função executa em \(O(m)\). Isso ocorre porque a função \texttt{find\_cycle} do NetworkX utiliza uma abordagem baseada em busca em profundidade (DFS) para detectar ciclos em grafos direcionados. 
+
+\paragraph{}
+A complexidade dessa abordagem é linear em relação ao número de vértices e arestas do grafo, ou seja, \(O(m)\), onde \(m\) é o número de arestas. A função não modifica o grafo original, mas cria um subgrafo contendo apenas os vértices e arestas que fazem parte do ciclo detectado.
 
 \begin{pybox}{Detecção de ciclo dirigido em $F^*$}
 def find_cycle(F_star: nx.DiGraph):
@@ -3351,7 +3372,13 @@ a função contrai um ciclo dirigido simples \(C\) em um \textbf{supervértice} 
 
 \paragraph{} Em alto nível, a rotina:
 \begin{itemize}\setlength{\itemsep}{2pt}
-    \item \textbf{Pré-condições:} (i) \(C\) induz um ciclo dirigido em \(D\); (ii) a raiz \(r_0\) não pertence a \(C\); (iii) o rótulo \(\texttt{label}\) não existe como vértice em \(D\) (é o nome de \(x_C\)).
+    \item \textbf{Pré-condições:} 
+    \paragraph{}
+    (i) \(C\) induz um ciclo dirigido em \(D\); 
+    \paragraph{}
+    (ii) a raiz \(r_0\) não pertence a \(C\); 
+    \paragraph{}
+    (iii) o rótulo \(\texttt{label}\) não existe como vértice em \(D\) (é o nome de \(x_C\)).
     \item \textbf{Ajuste de custos (entradas em \(C\)):} para cada arco \((u,w)\) com \(u\notin C\), \(w\in C\), cria \((u, x_C)\) com custo \(c'(u,x_C) := c(u,w) - y(w) = c(u,w) - c(a_w)\), onde \(a_w\) é a entrada mais barata em \(w\). Mantém-se, para cada \(u\), apenas o mínimo entre paralelos \((u, x_C)\).
     \item \textbf{Arcos que saem de \(C\):} para cada arco \((w,v)\) com \(w\in C\), \(v\notin C\), cria \((x_C, v)\) com o \emph{mesmo} custo \(c(w,v)\); se surgirem paralelos, conserva-se o menor.
     \item \textbf{Laços e arcos internos:} arcos com ambas as pontas em \(C\) tornam-se laços em \(x_C\) e são descartados (não influenciam a solução). 
@@ -3362,10 +3389,18 @@ a função contrai um ciclo dirigido simples \(C\) em um \textbf{supervértice} 
     \end{itemize}
     \item \textbf{Efeitos colaterais:} remove todos os vértices de \(C\) de \(D\), insere \(x_C\) e adiciona os arcos redirecionados com os custos apropriados.
     \item \textbf{Complexidade:} \(O(m)\) no tamanho do grafo atual: cada aresta incidente a \(C\) é examinada no máximo uma vez; a manutenção de mínimos entre paralelos é feita em tempo total linear.
-    \item \textbf{Casos de borda:} (i) se não houver arco entrando em \(C\), \(x_C\) ficará sem entradas, impossibilitando uma r-arborescência (instância inviável); (ii) se não houver arco saindo de \(C\), \(x_C\) ficará sem saídas (permitido, mas pode isolar componentes); (iii) pesos negativos são suportados — a normalização por custos reduzidos preserva comparações relativas.
+    \item \textbf{Casos de borda:} 
+    (i) se não houver arco entrando em \(C\), \(x_C\) ficará sem entradas, impossibilitando uma r-arborescência (instância inviável); 
+    \paragraph{}
+    (ii) se não houver arco saindo de \(C\), \(x_C\) ficará sem saídas (permitido, mas pode isolar componentes); 
+    \paragraph{}
+    (iii) pesos negativos são suportados — a normalização por custos reduzidos preserva comparações relativas.
 \end{itemize}
 
 Essas escolhas garantem a \emph{equivalência de custo} entre soluções ótimas no grafo contraído e no original após a reexpansão: os arcos internos de \(C\) têm custo reduzido zero e apenas as entradas em \(C\) recebem o desconto \(y(w)\), mantendo a bijeção entre arborescências descrita anteriormente.
+
+
+\noindent A expressão “no próprio lugar (in\-place)” no docstring abaixo\footnote{“In\-place” significa que a função altera diretamente a estrutura de dados existente, sem criar uma cópia. Assim, após a chamada, o grafo \(D\) já refletirá as remoções, inserções e ajustes feitos. Isso reduz alocações e pode ser mais eficiente, mas exige cuidado com aliasing/referências ativas, pois o estado anterior não é preservado a menos que seja salvo explicitamente.} indica que o grafo \(D\) é modificado diretamente.
 
 
 \begin{pybox}{Contração de ciclo}
@@ -3437,7 +3472,13 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: str, lang="pt"):
 \end{pybox}
 
 \paragraph{Remoção de arestas que entram na raiz}
-a função remove todas as arestas que entram no vértice raiz \(r_0\) do grafo \(G\). A função modifica o grafo \emph{in-place} e executa em \(O(\deg^-(r_0))\). Isso ocorre porque a função obtém todas as arestas que entram em \(r_0\) usando o método \texttt{in\_edges} do NetworkX, que tem complexidade \(O(\deg^-(r_0))\). Em seguida, a função remove essas arestas usando o método \texttt{remove\_edges\_from}, que também opera em tempo linear em relação ao número de arestas sendo removidas. Portanto, o tempo total de execução da função é \(O(\deg^-(r_0))\). A função não cria uma cópia do grafo original, mas altera diretamente a estrutura de dados do grafo fornecido. 
+a função remove todas as arestas que entram no vértice raiz \(r_0\) do grafo \(G\). A função modifica o grafo \emph{in-place} e executa em \(O(\deg^-(r_0))\). 
+
+\paragraph{}
+Isso ocorre porque a função obtém todas as arestas que entram em \(r_0\) usando o método \texttt{in\_edges} do NetworkX, que tem complexidade \(O(\deg^-(r_0))\). 
+
+\paragraph{}
+Em seguida, a função remove essas arestas usando o método \texttt{remove\_edges\_from}, que também opera em tempo linear em relação ao número de arestas sendo removidas. Portanto, o tempo total de execução da função é \(O(\deg^-(r_0))\). A função não cria uma cópia do grafo original, mas altera diretamente a estrutura de dados do grafo fornecido. 
 
 \begin{pybox}{Remoção de arestas que entram na raiz}
 def remove_edges_to_r0(
@@ -3493,20 +3534,20 @@ def remove_edges_to_r0(
 \end{pybox}
 
 \paragraph{Remoção de arco interno}
-Ao expandir o ciclo \(C\), a função remove o arco interno que entra no vértice de entrada \(v\) do ciclo, já que \(v\) agora recebe um arco externo do grafo. A função modifica o subgrafo do ciclo \emph{in-place} e executa em \(O(\deg^-(v))\).
+ao expandir o ciclo \(C\), a função remove o arco interno que entra no vértice de entrada \(v\) do ciclo, já que \(v\) agora recebe um arco externo do grafo. A função modifica o subgrafo do ciclo \emph{in-place} e executa em \(O(\deg^-(v))\).
 
 \begin{pybox}{Remover arco interno na reexpansão}
 def remove_internal_edge_to_cycle_entry(C: nx.DiGraph, v):
     """
-    Remove the internal edge entering the entry vertex `v` from cycle C,
-    since `v` now receives an external edge from the graph.
+    Remove a aresta interna que entra no vértice de entrada `v` do ciclo C,
+    pois `v` passa a receber uma aresta externa do grafo.
 
-    Parameters:
-        - C: subgraph of the cycle
-        - external_entry_edge: tuple (u, v, w) — external edge connecting to the cycle
+    Parâmetros:
+        - C: subgrafo do ciclo (networkx.DiGraph)
+        - v: vértice de entrada no ciclo que receberá a aresta externa
 
-    Returns:
-        - The modified cycle (with one less edge)
+    Retorno:
+        - Nada (o subgrafo do ciclo é modificado no próprio lugar — in-place)
     """
 
     predecessor = next((u for u, _ in C.in_edges(v)), None)
@@ -3514,12 +3555,28 @@ def remove_internal_edge_to_cycle_entry(C: nx.DiGraph, v):
     C.remove_edge(predecessor, v)
 \end{pybox}
 
-\paragraph{Procedimento principal (recursivo)}
-A função principal implementa o algoritmo de Chu–Liu/Edmonds de forma recursiva e atua como um orquestrador das fases do método. Em alto nível, ela mantém a seguinte lógica: (i) prepara a instância (opcionalmente removendo entradas em \(r_0\) e emitindo logs), (ii) normaliza, para cada \(v\neq r_0\), os custos das arestas que \emph{entram} em \(v\) para induzir pelo menos uma entrada de custo reduzido zero, (iii) constrói o grafo funcional \(F^*\) selecionando, para cada \(v\neq r_0\), uma única entrada de menor custo reduzido (preferencialmente zero), (iv) verifica aciclicidade de \(F^*\); se acíclico, devolve \(F^*\) como r‑arborescência, e (v) caso haja ciclo, contrai o ciclo em um supervértice, ajusta custos que \emph{entram} no componente contraído e chama‑se recursivamente na instância reduzida; ao retornar, expande o componente e remove exatamente uma aresta interna do ciclo para restaurar grau de entrada igual a 1 e aciclicidade.
+\paragraph{Procedimento principal (recursivo):}
+A função principal implementa o algoritmo de Chu–Liu/Edmonds de forma recursiva e atua como um orquestrador das fases do método. Em alto nível, ela mantém a seguinte lógica:
 
+\paragraph{}
+(i) prepara a instância (opcionalmente removendo entradas em \(r_0\) e emitindo logs); 
+
+\paragraph{}
+(ii) normaliza, para cada \(v\neq r_0\), os custos das arestas que \emph{entram} em \(v\) para induzir pelo menos uma entrada de custo reduzido zero; 
+
+\paragraph{}
+(iii) constrói o grafo funcional \(F^*\) selecionando, para cada \(v\neq r_0\), uma única entrada de menor custo reduzido (preferencialmente zero); 
+
+\paragraph{}
+(iv) verifica aciclicidade de \(F^*\); se acíclico, devolve \(F^*\) como r‑arborescência;
+
+\paragraph{}
+(v) caso haja ciclo, contrai o ciclo em um supervértice, ajusta custos que \emph{entram} no componente contraído e chama‑se recursivamente na instância reduzida; ao retornar, expande o componente e remove exatamente uma aresta interna do ciclo para restaurar grau de entrada igual a 1 e aciclicidade.
+
+\paragraph{}
 Mais especificamente, o procedimento garante as seguintes propriedades e passos:
 \begin{itemize}\setlength{\itemsep}{2pt}
-    \item \textbf{Contrato (entradas/saídas).} Entrada: dígrafo ponderado \(D=(V,A)\), raiz \(r_0\), e, opcionalmente, funções \texttt{draw\_fn} e \texttt{log} para visualização e registro. Saída: um subdígrafo dirigido \(T\) de \(D\) com \(|V|-1\) arcos em que todo \(v\neq r_0\) tem grau de entrada 1, todos os vértices alcançam \(r_0\) e o custo total \(\sum_{a\in T} c(a)\) é mínimo.
+    \item \textbf{Função (entradas/saídas).} Entrada: dígrafo ponderado \(D=(V,A)\), raiz \(r_0\), e, opcionalmente, funções \texttt{draw\_fn} e \texttt{log} para visualização e registro. Saída: um subdígrafo dirigido \(T\) de \(D\) com \(|V|-1\) arcos em que todo \(v\neq r_0\) tem grau de entrada 1, todos os vértices alcançam \(r_0\) e o custo total \(\sum_{a\in T} c(a)\) é mínimo.
     \item \textbf{Invariantes.} Após a normalização por vértice, cada \(v\neq r_0\) tem pelo menos uma entrada de custo reduzido zero; o conjunto \(F^*\) contém exatamente uma entrada por vértice distinto de \(r_0\); em toda contração, apenas arcos que \emph{entram} no componente têm seus custos reduzidos ajustados por \(c'(u,x_C)=c(u,w)-c(a_w)\), preservando comparações relativas.
     \item \textbf{Detecção de ciclo e contração.} Se \(F^*\) contém um ciclo \(C\), todos os seus arcos têm custo reduzido zero. O procedimento forma o supervértice \(x_C\), reescreve arcos incidentes (descarta laços internos) e prossegue na instância menor. Essa etapa pode manter arcos paralelos e ignora laços.
     \item \textbf{Recursão e expansão.} Ao obter \(T'\) ótimo no grafo contraído, o método mapeia \(T'\) de volta para \(D\): substitui o arco \((u,x_C)\) por um \((u,w)\) apropriado (com \(w\in C\)) e remove uma única aresta interna de \(C\), restaurando a propriedade “uma entrada por vértice” e a aciclicidade.
@@ -3542,28 +3599,28 @@ def find_optimum_arborescence_chuliu(
     lang="pt",
 ):
     """
-    Finds the optimum arborescence in a directed graph G with root r0 using the Chu-Liu/Edmonds algorithm.
+    Encontra a arborescência ótima em um dígrafo D com raiz r0 usando o algoritmo de Chu–Liu/Edmonds.
 
-    Parameters:
-        - D: A directed graph (networkx.DiGraph)
-        - r0: The root node
-        - level: The current recursion level (used for logging and visualization)
-        - draw_fn: Optional function to visualize the graph at each step
-        - log: Optional logging function to log information
-        - boilerplate: If True, enables logging and visualization
-        - lang: Language for logging messages ("en" for English, "pt" for Portuguese
+    Parâmetros:
+        - D: Um grafo direcionado (networkx.DiGraph)
+        - r0: O vértice raiz
+        - level: Nível atual da recursão (usado para logs e visualização)
+        - draw_fn: Função opcional para visualizar o grafo em cada etapa
+        - log: Função opcional de logging para registrar informações
+        - boilerplate: Se True, habilita logging e visualização
+        - lang: Idioma das mensagens de logging ("en" para inglês, "pt" para português)
 
-    Returns:
-        - A directed graph (networkx.DiGraph) representing the optimum arborescence
+    Retorno:
+        - Um grafo direcionado (networkx.DiGraph) que representa a arborescência ótima
 
-    Raises:
-        - AssertionError: If the root node r0 is not in the graph G
-        - AssertionError: If no cycle is found in F_star when expected
-        - AssertionError: If the contracted label already exists in the graph G
-        - AssertionError: If no incoming edge is found for the contracted node in F_prime
-        - AssertionError: If no vertex in the cycle is found to receive the incoming edge
-        - AssertionError: If the contracted label is not found in F_prime
-        - AssertionError: If vertices u or v are not found in the original graph G
+    Exceções:
+        - AssertionError: Se o vértice raiz r0 não estiver presente no grafo D
+        - AssertionError: Se nenhum ciclo for encontrado em F_star quando esperado
+        - AssertionError: Se o rótulo contraído já existir no grafo D
+        - AssertionError: Se não houver aresta de entrada para o vértice contraído em F_prime
+        - AssertionError: Se nenhum vértice do ciclo for encontrado para receber a aresta de entrada
+        - AssertionError: Se o rótulo contraído não for encontrado em F_prime
+        - AssertionError: Se os vértices u ou v não forem encontrados no grafo original D
     """
 
     indent = "  " * level
@@ -3823,13 +3880,25 @@ def find_optimum_arborescence_chuliu(
 \end{pybox}
 
 \paragraph{Notas finais}
-Para fins didáticos, omitimos alguns detalhes operacionais (por exemplo, o preenchimento completo de \texttt{contract\_cycle} e o mapeamento das saídas na reexpansão); esses trechos seguem diretamente o código do trabalho e podem ser incorporados na íntegra quando desejado. A organização em funções corresponde exatamente às etapas teóricas descritas anteriormente, tornando transparente a relação teoria–implementação.
+\paragraph{}
+A implementação acima segue diretamente a descrição do algoritmo de Chu–Liu/Edmonds, enfatizando clareza e correção. Para aplicações práticas, otimizações podem ser introduzidas, como estruturas de dados eficientes para seleção de mínimos, detecção rápida de ciclos e manipulação de grafos dinâmicos. Além disso, a função pode ser adaptada para lidar com casos especiais, como grafos desconexos ou múltiplas raízes, conforme necessário.
+
+\paragraph{}
+A complexidade da implementação direta é \(O(mn)\) no pior caso, onde \(m\) é o número de arestas e \(n\) o número de vértices, devido à potencial profundidade de recursão e ao processamento linear em cada nível. Implementações mais sofisticadas podem reduzir isso para \(O(m \log n)\) usando estruturas avançadas, como heaps e union-find, mas a versão apresentada prioriza a compreensão do algoritmo fundamental.
+
+
+\paragraph{}
+Para fechar este capítulo, vale destacar algumas decisões de projeto e implicações práticas:
 \begin{itemize}\setlength{\itemsep}{2pt}
-    \item \(A'\) define um \emph{grafo funcional} (cada \(v\neq r\) tem exatamente um predecessor). Ciclos nesse grafo podem ser encontrados em tempo linear no tamanho de \(A'\) (por marcação/visitas com ponteiros de pai).
-    \item Ao contrair um ciclo \(C\), ajuste apenas arcos que \emph{entram} em \(C\): para \((u,w)\) com \(u\notin V(C)\), \(w\in V(C)\), use o custo reduzido \(c'(u,x_C)=c(u,w)-c(a_w)\). Demais custos (inclusive os que \emph{saem} de \(C\)) permanecem inalterados; paralelos podem surgir e são mantidos, enquanto laços são removidos.
-    \item Empates podem ser quebrados arbitrariamente sem afetar a otimalidade. Mantenha estruturas para: (i) rastrear \(a_v\) e \(y(v)\) (mínimo de entrada) por vértice; (ii) mapear contrações/expansões para escolher, em cada ciclo, o arco interno a remover na volta da recursão.
-    \item Se algum \(v\neq r\) não possui arco de entrada, o problema é inviável (não existe r‑arborescência), detectando a violação das condições de corte.
+    \item \textbf{Estruturas e efeitos colaterais.} Optamos por modificar grafos \emph{in-place} (por exemplo, durante a normalização e a contração de ciclos) para reduzir alocações e facilitar a visualização incremental. Isso exige invariantes explícitos e cuidado com referências ativas ao grafo original.
+    \item \textbf{Empates, paralelos e laços.} Empates são resolvidos de forma determinística/local sem afetar a otimalidade. A contração pode induzir \emph{arcos paralelos}; preservamos apenas o de menor custo. Laços (self-loops) são descartados por construção.
+    \item \textbf{Validação e testes.}  O repositório inclui artefatos úteis para experimentação (por exemplo, \texttt{tests.py}, \texttt{test\_results.csv}, \texttt{test\_log.txt}). Onde um volume de grafos é gerado aleatoriamente, a função é executada e os resultados são validados são comparados com soluções de força bruta.
+    \item \textbf{Integração com visualização e logs.} A função \texttt{draw\_fn} permite registrar \emph{snapshots} (normalização, formação de \(F^*\), contração/expansão). O \texttt{log} facilita auditoria e depuração em execuções recursivas.
+    \item \textbf{Extensões.} Variantes com múltiplas raízes, restrições adicionais (p.ex., proibições por partição) e empacotamento de arborescências exigem ajustes na fase de extração/expansão ou formulações via matroides.
 \end{itemize}
+
+\paragraph{}
+No capítulo seguinte revisitaremos o método sob uma \emph{ótica primal–dual} em duas fases, proposta por András Frank. Essa perspectiva organiza a normalização via \emph{potenciais}\footnote{No contexto primal–dual, “potenciais” são valores escalares \(y(v)\) atribuídos aos vértices para definir \emph{custos reduzidos} \(c'(u,v)=c(u,v)-y(v)\). Ajustar \(y\) desloca uniformemente os custos das arestas que \emph{entram} em \(v\), sem mudar a otimalidade global: preserva a ordem relativa entre entradas e torna “apertadas” (custo reduzido zero) as candidatas corretas, habilitando contrações e uma prova de corretude via cortes apertados.} \(y(\cdot)\), explica os \emph{custos reduzidos} e introduz a noção de \emph{cortes apertados} (família laminar) como guias das contrações. Veremos como a mesma mecânica operacional (normalizar \(\to\) contrair \(\to\) expandir) emerge de condições duais que também sugerem otimizações e generalizações.
 
 
 \section{Procedimento em Duas Fases de András Frank}
