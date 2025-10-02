@@ -1,7 +1,288 @@
-def find_minimum_arborescence_frank(D: nx.DiGraph, r0: str = "r0"):
+def find_optimum_arborescence_chuliu(
+    D: nx.DiGraph,
+    r0: str,
+    level=0,
+    draw_fn=None,
+    log=None,
+    boilerplate: bool = True,
+    lang="pt",
+):
     """
-    Encontra uma r-arborescência mínima pelo método de Frank em duas fases.
+    Encontra a arborescência ótima em um dígrafo D com raiz r0 usando o algoritmo de Chu–Liu/Edmonds.
+
+    Parâmetros:
+        - D: Um grafo direcionado (networkx.DiGraph)
+        - r0: O vértice raiz
+        - level: Nível atual da recursão (usado para logs e visualização)
+        - draw_fn: Função opcional para visualizar o grafo em cada etapa
+        - log: Função opcional de logging para registrar informações
+        - boilerplate: Se True, habilita logging e visualização
+        - lang: Idioma das mensagens de logging ("en" para inglês, "pt" para português)
+
+    Retorno:
+        - Um grafo direcionado (networkx.DiGraph) que representa a arborescência ótima
+
+    Exceções:
+        - AssertionError: Se o vértice raiz r0 não estiver presente no grafo D
+        - AssertionError: Se nenhum ciclo for encontrado em F_star quando esperado
+        - AssertionError: Se o rótulo contraído já existir no grafo D
+        - AssertionError: Se não houver aresta de entrada para o vértice contraído em F_prime
+        - AssertionError: Se nenhum vértice do ciclo for encontrado para receber a aresta de entrada
+        - AssertionError: Se o rótulo contraído não for encontrado em F_prime
+        - AssertionError: Se os vértices u ou v não forem encontrados no grafo original D
     """
-    D_zero, A_zero = phase1_find_minimum_arborescence(D, r0)
-    T = phase2_build_arborescence(D, r0, A_zero)
-    return T
+
+    indent = "  " * level
+
+    if boilerplate and log:
+        if lang == "en":
+            log(f"\nfind_optimum_arborescence_chuliu:{indent}Starting level {level}")
+        elif lang == "pt":
+            log(f"\nfind_optimum_arborescence_chuliu:{indent}Iniciando nível {level}")
+
+    if lang == "en":
+        assert (
+            r0 in D
+        ), f"\nfind_optimum_arborescence_chuliu: The root vertex '{r0}' is not present in the graph."
+    elif lang == "pt":
+        assert (
+            r0 in D
+        ), f"\nfind_optimum_arborescence_chuliu: O vértice raiz '{r0}' não está presente no grafo."
+
+    D_copy = D.copy()
+
+    if boilerplate and log:
+        if lang == "en":
+            log(
+                f"\nfind_optimum_arborescence_chuliu:{indent}Removing edges entering '{r0}'"
+            )
+        elif lang == "pt":
+            log(
+                f"\nfind_optimum_arborescence_chuliu:{indent}Removendo arestas que entram em '{r0}'"
+            )
+        if draw_fn:
+            if lang == "en":
+                draw_fn(
+                    D_copy,
+                    f"\nfind_optimum_arborescence_chuliu:{indent}After removing incoming edges",
+                )
+            elif lang == "pt":
+                draw_fn(
+                    D_copy,
+                    f"\nfind_optimum_arborescence_chuliu:{indent}Após remoção de entradas",
+                )
+
+    for v in D_copy.nodes:
+        if v != r0:
+            normalize_incoming_edge_weights(D_copy, v, lang=lang)
+
+        if boilerplate and log:
+            if lang == "en":
+                log(
+                    f"\nfind_optimum_arborescence_chuliu:{indent}Normalizing weights of incoming edges to '{v}'"
+                )
+            elif lang == "pt":
+                log(
+                    f"\nfind_optimum_arborescence_chuliu:{indent}Normalizando pesos de arestas de entrada para '{v}'"
+                )
+            if draw_fn:
+                if lang == "en":
+                    draw_fn(
+                        D_copy,
+                        f"\nfind_optimum_arborescence_chuliu:{indent}After weight adjustment",
+                    )
+                elif lang == "pt":
+                    draw_fn(
+                        D_copy,
+                        f"\nfind_optimum_arborescence_chuliu:{indent}Após ajuste de pesos",
+                    )
+
+    # Build F_star
+    F_star = get_Fstar(D_copy, r0, lang=lang)
+
+    if boilerplate and log:
+        if lang == "en":
+            log(f"\nfind_optimum_arborescence_chuliu:{indent}Building F_star")
+        elif lang == "pt":
+            log(f"\nfind_optimum_arborescence_chuliu:{indent}Construindo F_star")
+        if draw_fn:
+            if lang == "en":
+                draw_fn(F_star, f"\nfind_optimum_arborescence_chuliu:{indent}F_star")
+            elif lang == "pt":
+                draw_fn(F_star, f"\nfind_optimum_arborescence_chuliu:{indent}F_star")
+
+    if nx.is_arborescence(F_star):
+        for u, v in F_star.edges:
+            F_star[u][v]["w"] = D[u][v]["w"]
+        return F_star
+
+    else:
+        if boilerplate and log:
+            if lang == "en":
+                log(
+                    f"\nfind_optimum_arborescence_chuliu:{indent}F_star is not an arborescence. Continuing..."
+                )
+            elif lang == "pt":
+                log(
+                    f"\nfind_optimum_arborescence_chuliu:{indent}F_star não é uma arborescência. Continuando..."
+                )
+
+        C: nx.DiGraph = find_cycle(F_star)
+
+        if lang == "en":
+            assert C, f"\nfind_optimum_arborescence_chuliu: No cycle found in F_star."
+        elif lang == "pt":
+            assert (
+                C
+            ), f"\nfind_optimum_arborescence_chuliu: Nenhum ciclo encontrado em F_star."
+
+        contracted_label = f"\n n*{level}"
+        in_to_cycle, out_from_cycle = contract_cycle(
+            D_copy, C, contracted_label, lang=lang
+        )
+
+        # Recursive call
+        F_prime = find_optimum_arborescence_chuliu(
+            D_copy,
+            r0,
+            level + 1,
+            draw_fn=None,
+            log=None,
+            boilerplate=boilerplate,
+            lang=lang,
+        )
+
+        # Identify the vertex in the cycle that received the only incoming edge from the arborescence
+        in_edge = next(iter(F_prime.in_edges(contracted_label, data="w")), None)
+
+        if lang == "en":
+            assert (
+                in_edge
+            ), f"\nfind_optimum_arborescence_chuliu: No incoming edge found for vertex '{contracted_label}'."
+        elif lang == "pt":
+            assert (
+                in_edge
+            ), f"\nfind_optimum_arborescence_chuliu: Nenhuma aresta encontrada entrando no vértice '{contracted_label}'."
+
+        u, _, _ = in_edge
+
+        v, _ = in_to_cycle[u]
+
+        if lang == "en":
+            assert (
+                v is not None
+            ), f"\nfind_optimum_arborescence_chuliu: No vertex in the cycle found to receive the incoming edge from '{u}'."
+        elif lang == "pt":
+            assert (
+                v is not None
+            ), f"\nfind_optimum_arborescence_chuliu: Nenhum vértice do ciclo encontrado que recebeu a aresta de entrada de '{u}'."
+
+        # Remove the internal edge entering vertex `v` from cycle C
+        remove_internal_edge_to_cycle_entry(
+            C, v
+        )  # Note: w is coming from F_prime, not from G
+
+        # Add the external edge entering the cycle (identified by in_edge), the weight will be corrected at the end using G
+        F_prime.add_edge(u, v)
+        if boilerplate and log:
+            if lang == "en":
+                log(
+                    f"\nfind_optimum_arborescence_chuliu:{indent}Adding incoming edge to cycle: ({u}, {v})"
+                )
+            elif lang == "pt":
+                log(
+                    f"\nfind_optimum_arborescence_chuliu:{indent}Adicionando aresta de entrada ao ciclo: ({u}, {v})"
+                )
+
+        # Add the remaining edges of the modified cycle C
+        for u_c, v_c in C.edges:
+            F_prime.add_edge(u_c, v_c)
+            if boilerplate and log:
+                if lang == "en":
+                    log(
+                        f"\nfind_optimum_arborescence_chuliu:{indent}Adding cycle edge: ({u_c}, {v_c})"
+                    )
+                elif lang == "pt":
+                    log(
+                        f"\nfind_optimum_arborescence_chuliu:{indent}Adicionando aresta do ciclo: ({u_c}, {v_c})"
+                    )
+
+        # Add the external edges leaving the cycle
+        for _, z, _ in F_prime.out_edges(contracted_label, data=True):
+
+            if lang == "en":
+                assert (
+                    z in out_from_cycle
+                ), f"\nfind_optimum_arborescence_chuliu: No outgoing edge found for vertex '{z}'."
+            elif lang == "pt":
+                assert (
+                    z in out_from_cycle
+                ), f"\nfind_optimum_arborescence_chuliu: Nenhuma aresta de saída encontrada para o vértice '{z}'."
+
+            u_cycle, _ = out_from_cycle[z]
+            F_prime.add_edge(u_cycle, z)
+
+            if boilerplate and log:
+                if lang == "en":
+                    log(
+                        f"\nfind_optimum_arborescence_chuliu:{indent}Adding outgoing edge from cycle: ({u_cycle}, {z})"
+                    )
+                elif lang == "pt":
+                    log(
+                        f"\nfind_optimum_arborescence_chuliu:{indent}Adicionando aresta externa de saída: ({u_cycle}, {z})"
+                    )
+
+        # Remove the contracted node
+        if lang == "en":
+            assert (
+                contracted_label in F_prime
+            ), f"\nfind_optimum_arborescence_chuliu: Vertex '{contracted_label}' not found in the graph."
+        elif lang == "pt":
+            assert (
+                contracted_label in F_prime
+            ), f"\nfind_optimum_arborescence_chuliu: Vértice '{contracted_label}' não encontrado no grafo."
+        F_prime.remove_node(contracted_label)
+
+        if boilerplate and log:
+            if lang == "en":
+                log(
+                    f"\nfind_optimum_arborescence_chuliu:{indent}Contracted vertex '{contracted_label}' removed."
+                )
+            elif lang == "pt":
+                log(
+                    f"\nfind_optimum_arborescence_chuliu:{indent}Vértice contraído '{contracted_label}' removido."
+                )
+
+        # Update the edge weights with the original weights from G
+        for u, v in F_prime.edges:
+            if lang == "en":
+                assert (
+                    u in D and v in D
+                ), f"\nfind_optimum_arborescence_chuliu: Vertex '{u}' or '{v}' not found in the original graph."
+            elif lang == "pt":
+                assert (
+                    u in D and v in D
+                ), f"\nfind_optimum_arborescence_chuliu: Vértice '{u}' ou '{v}' não encontrado no grafo original."
+            F_prime[u][v]["w"] = D[u][v]["w"]
+
+        if boilerplate and log:
+            if lang == "en":
+                log(
+                    f"\n✅{indent}Final arborescence: {list(F_prime.edges)}"
+                )
+            elif lang == "pt":
+                log(
+                    f"\n✅{indent}Arborescência final: {list(F_prime.edges)}"
+                )
+            if draw_fn:
+                if lang == "en":
+                    draw_fn(
+                        F_prime,
+                        f"\n{indent}Final Arborescence.",
+                    )
+                elif lang == "pt":
+                    draw_fn(
+                        F_prime,
+                        f"\n{indent}Arborescência final.",
+                    )
+        return F_prime
