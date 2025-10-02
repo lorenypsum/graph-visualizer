@@ -4015,17 +4015,28 @@ Provamos por primal–dual com contrações. Recorde as formulações primal/dua
     \item (I3 — laminaridade) A família ativa \(\mathcal{L}=\{X: y(X)>0\}\) pode ser tomada laminar por \emph{uncrossing}.
 \end{itemize}
 
-\noindent\textbf{Lema 1 (elevação de potenciais).} Seja \(X\subseteq V\setminus\{r\}\) e \(\Delta=\min c'(\delta^-(X))\). Atualizar \(y(X)\gets y(X)+\Delta\) (ou, na versão por vértices, \(\tilde y(x)\gets \tilde y(x)+\Delta\) para todo \(x\in X\)) mantém \(c'\ge 0\) e torna \emph{apertado} ao menos um arco que entra em \(X\).\newline
-Prova. Para \((u,x)\in \delta^-(X)\), \(c'\) é reduzido em \(\Delta\); pela definição de \(\Delta\), nenhum fica negativo e os de menor folga zeram. Os demais arcos não mudam. \qed
+\paragraph{Lema 1: elevação de potenciais:}
+\paragraph{} 
 
-\noindent\textbf{Lema 2 (contração de ciclo a zero).} Se \(D_0\) contém um ciclo dirigido \(C\) de arcos com \(c'=0\), então contrair \(C\) em um supervértice preserva viabilidade primal e dual e há uma bijeção de soluções ótimas entre a instância contraída e a original; ao reexpandir, basta manter o arco (de custo reduzido zero) que entra no componente e remover uma única aresta interna de \(C\).\newline
-Prova (esboço formal). Todo arco interno de \(C\) tem \(c'=0\). Ao contrair, redirecionamos apenas arcos que entram/saem de \(C\), preservando \(c'\ge 0\). Dado um \(r\)-arborescência ótima \(T'\) no grafo contraído, reexpandir \(C\) e remover um arco interno restaura grau de entrada 1 e aciclicidade. Reciprocamente, contrair qualquer \(T\) ótimo produz \(T'\) viável no grafo menor. A soma dos custos reduzidos é preservada porque os internos de \(C\) valem 0 e entradas em \(C\) descontam exatamente o potencial aplicado, mantendo equivalência de custos \cite[Sec.~4.9]{schrijver2003comb}. \qed
+Seja \(X\subseteq V\setminus\{r\}\) e \(\Delta=\min c'(\delta^-(X))\). Atualizar \(y(X)\gets y(X)+\Delta\) (ou, na versão por vértices, \(\tilde y(x)\gets \tilde y(x)+\Delta\) para todo \(x\in X\)) mantém \(c'\ge 0\) e torna \emph{apertado} ao menos um arco que entra em \(X\).\newline
 
-\noindent\textbf{Lema 3 (cortes ativos entram exatamente uma vez).} Seja \(T\) uma r‑arborescência e \(X\subseteq V\setminus\{r\}\). Se contraímos \(X\) a um vértice, o grau de entrada desse vértice na imagem de \(T\) é 1; logo \(\sum_{a\in \delta^-(X)} x_a=1\). Em particular, para todo \(X\in\mathcal{L}\) com \(y(X)>0\), a restrição primal do corte é \emph{justa}.\newline
+\paragraph{Prova:} Para \((u,x)\in \delta^-(X)\), \(c'\) é reduzido em \(\Delta\); pela definição de \(\Delta\), nenhum fica negativo e os de menor folga zeram. Os demais arcos não mudam. \qed
+
+\paragraph{Lema 2: contração de ciclo a zero:} 
+\paragraph{}
+Se \(D_0\) contém um ciclo dirigido \(C\) de arcos com \(c'=0\), então contrair \(C\) em um supervértice preserva viabilidade primal e dual e há uma bijeção de soluções ótimas entre a instância contraída e a original; ao reexpandir, basta manter o arco (de custo reduzido zero) que entra no componente e remover uma única aresta interna de \(C\).
+
+\paragraph{Prova:} Todo arco interno de \(C\) tem \(c'=0\). Ao contrair, redirecionamos apenas arcos que entram/saem de \(C\), preservando \(c'\ge 0\). Dado um \(r\)-arborescência ótima \(T'\) no grafo contraído, reexpandir \(C\) e remover um arco interno restaura grau de entrada 1 e aciclicidade. Reciprocamente, contrair qualquer \(T\) ótimo produz \(T'\) viável no grafo menor. A soma dos custos reduzidos é preservada porque os internos de \(C\) valem 0 e entradas em \(C\) descontam exatamente o potencial aplicado, mantendo equivalência de custos \cite[Sec.~4.9]{schrijver2003comb}. \qed
+
+\paragraph{Lema 3: cortes ativos entram exatamente uma vez} 
+\paragraph{}
+Seja \(T\) uma r‑arborescência e \(X\subseteq V\setminus\{r\}\). Se contraímos \(X\) a um vértice, o grau de entrada desse vértice na imagem de \(T\) é 1; logo \(\sum_{a\in \delta^-(X)} x_a=1\). Em particular, para todo \(X\in\mathcal{L}\) com \(y(X)>0\), a restrição primal do corte é \emph{justa}.\newline
 Prova. Em uma r‑arborescência, todo vértice distinto de \(r\) tem grau de entrada 1. Após contrair \(X\), o vértice contraído também não é \(r\) e deve ter grau de entrada 1. Isso conta exatamente um arco de \(\delta^-(X)\). \qed
 
-\noindent\textbf{Teorema.} O algoritmo devolve uma r‑arborescência ótima para \(c\).\newline
-Prova. Ao término da Fase I (após contrações de Lema 2), todo \(v\neq r\) possui ao menos uma entrada com \(c'(u,v)=0\). A Fase II seleciona apenas arcos \emph{apertados} e trata ciclos por contração/expansão, produzindo uma r‑arborescência \(T\). Logo, para todo \((u,v)\in T\), a desigualdade dual do arco é \emph{justa} (\(c'(u,v)=0\)). Pelo Lema 3, para todo \(X\in\mathcal{L}\) com \(y(X)>0\), a restrição primal do corte é \emph{justa} (entra exatamente um arco de \(T\)). Assim, valem as condições de \emph{complementaridade}:
+\paragraph{Teorema: o algoritmo devolve uma r‑arborescência ótima para \(c\)}
+
+\paragraph{Prova:} 
+Ao término da Fase I (após contrações de Lema 2), todo \(v\neq r\) possui ao menos uma entrada com \(c'(u,v)=0\). A Fase II seleciona apenas arcos \emph{apertados} e trata ciclos por contração/expansão, produzindo uma r‑arborescência \(T\). Logo, para todo \((u,v)\in T\), a desigualdade dual do arco é \emph{justa} (\(c'(u,v)=0\)). Pelo Lema 3, para todo \(X\in\mathcal{L}\) com \(y(X)>0\), a restrição primal do corte é \emph{justa} (entra exatamente um arco de \(T\)). Assim, valem as condições de \emph{complementaridade}:
 \begin{align*}
     &x_{(u,v)}>0\ \Rightarrow\ c'(u,v)=0,\qquad
     y(X)>0\ \Rightarrow\ \sum_{a\in \delta^-(X)} x_a=1.
@@ -4037,7 +4048,21 @@ Pela identidade \(c(u,v)=c'(u,v)+\sum_{X:\,v\in X,\ u\notin X} y(X)\), somando e
 Como \(y\) é dual viável (I1), \(\sum_X y(X)\) é um limitante inferior (dualidade fraca). Obtemos igualdade primal–dual, logo \(T\) é ótimo para \(c'\) e, pela equivalência entre \(c\) e \(c'\), também para \(c\) \cite{frank2014,schrijver2003comb}. \qed
 
 \paragraph{Complexidade}
-Na forma didática, manter o subgrafo de zeros, encontrar o próximo \(\Delta=\min c'(\delta^-(X))\) e detectar/contrair ciclos custa \(O(m)\) por nível; com no máximo \(O(n)\) níveis (devido às contrações), resulta \(O(mn)\) e memória \(O(m+n)\). Melhorias clássicas reduzem para \(O(m\log n)\): (i) manter, para cada \(v\), o menor custo reduzido de entrada em uma \emph{heap} (atualizações amortizadas quando \(y\) varia), (ii) detectar ciclos em \(D_0\) incrementalmente com DFS/union-find, e (iii) realizar contrações com redirecionamentos agregados. Em implementações otimizadas, o fator logarítmico vem das estruturas de seleção de mínimos, enquanto o número de contrações permanece \(O(n)\) \cite{frank2014,schrijver2003comb}.
+\paragraph{}
+Sem considerar otimizações, cada elevação de potenciais custa \(O(m)\) para varrer as arestas e atualizar \(D_0\). Há no máximo \(O(n)\) níveis (cada contração reduz o número de vértices), totalizando \(O(mn)\) tempo e \(O(m+n)\) memória. Com estruturas adequadas (heaps para mínimos, detecção incremental de ciclos, redirecionamentos em bloco), o tempo pode ser reduzido a \(O(m\log n)\) \cite{frank2014,schrijver2003comb}:
+
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item \textbf{Por nível:} manter o subgrafo de zeros \(D_0\), calcular o próximo \(\Delta=\min c'(\delta^-(X))\) e detectar/contrair ciclos custa \(O(m)\) por uma varredura nas arestas.
+    \item \textbf{Níveis:} há no máximo \(O(n)\) níveis, pois cada contração reduz o número de vértices.
+    \item \textbf{Total e memória:} tempo \(O(mn)\) e memória \(O(m+n)\).
+\end{itemize}
+Para chegar a \(O(m\log n)\), use estruturas padrão:
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item \textbf{Mínimo por vértice:} para cada \(v\), mantenha o menor custo reduzido de entrada em uma \emph{heap}; as chaves são atualizadas de forma amortizada quando \(y(v)\) aumenta.
+    \item \textbf{Ciclos em \(D_0\):} detecte-os incrementalmente conforme novas arestas de custo zero aparecem (DFS/union-find).
+    \item \textbf{Contrações:} execute redirecionamentos em bloco usando representantes, evitando tocar cada aresta individualmente.
+\end{itemize}
+Assim, o fator \(\log n\) vem da seleção de mínimos, enquanto o número de contrações permanece \(O(n)\) \cite{frank2014,schrijver2003comb}.
 
 \subsection{Implementação em Python}
 
