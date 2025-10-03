@@ -1,0 +1,28 @@
+% !TEX program = latexmk
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{microtype}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,fit,calc}
+
+\begin{document}
+\centering
+    \begin{tikzpicture}[scale=1]
+        % P: plantas (círculo maior)
+        \draw[fill=blue!8, draw=blue!60] (0,0) circle (2);
+        \node[blue!60] at (0,2.25) {$P$};
+        % T: árvores (círculo menor dentro de P)
+        \draw[fill=blue!25, draw=blue!60] (-0.6,0) circle (0.9);
+        \node[blue!60] at (-0.6,-0.45) {$T$};
+        % F: fungos (círculo disjunto)
+        \draw[fill=green!20, draw=green!50!black] (3.8,0) circle (1.2);
+        \node[green!50!black] at (3.8,-0.55) {$F$};
+        % Pontos de pertinência
+        \fill[red!70] (-0.9,0.2) circle (2pt);
+        \node[anchor=east, text=red!70] at (-1.05,0.2) {$x$};
+        \fill[black] (3.6,0.4) circle (2pt);
+        \node[anchor=west] at (3.72,0.4) {$y$};
+    \end{tikzpicture}
+    \end{document}

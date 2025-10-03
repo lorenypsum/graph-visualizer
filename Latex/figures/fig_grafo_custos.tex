@@ -1,0 +1,33 @@
+% !TEX program = latexmk
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{microtype}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,fit,calc}
+
+\begin{document}
+\centering
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, e/.style={semithick, draw=gray!70}}
+
+    % vértices
+    \node[v, label=below:$v_1$] (v1) at (0,0) {};
+    \node[v, label=below:$v_2$] (v2) at (2.2,0) {};
+    \node[v, label=above:$v_3$] (v3) at (3.0,1.8) {};
+    \node[v, label=above:$v_4$] (v4) at (-0.4,1.8) {};
+
+    % arestas com custos (rótulos c(e))
+    \draw[e] (v1) -- node[midway, fill=white, inner sep=2pt, font=\scriptsize] {3} (v2);
+    \draw[e] (v2) -- node[midway, fill=white, inner sep=2pt, font=\scriptsize] {5} (v3);
+    \draw[e] (v3) -- node[midway, fill=white, inner sep=2pt, font=\scriptsize] {2} (v4);
+    \draw[e] (v4) -- node[midway, fill=white, inner sep=2pt, font=\scriptsize] {4} (v1);
+    \draw[e] (v1) -- node[midway, fill=white, inner sep=2pt, font=\scriptsize] {6} (v3);
+
+    % legenda breve
+    \node[align=left, anchor=west] at (4.0,1.0) {$c:E\to\mathbb{R}^+$\\ $c(\{v_1,v_2\})=3,\; c(\{v_1,v_3\})=6,\dots$};
+\end{tikzpicture}
+^+$ atribui a cada aresta um custo $c(e)$ (mostrado junto às arestas). Por exemplo, $c(\{v_1,v_2\})=3$. O custo total de um subconjunto $F\subseteq E$ é $C(F)=\sum_{e\in F} c(e)$.}
+\end{document}

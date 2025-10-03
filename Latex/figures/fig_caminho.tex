@@ -1,0 +1,39 @@
+% !TEX program = latexmk
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{microtype}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,fit,calc}
+
+\begin{document}
+\centering
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, e/.style={semithick, draw=gray!60}, p/.style={very thick, draw=blue!60}}
+
+    % vértices do caminho
+    \node[v, label=below:$v_1$] (v1) at (0,0) {};
+    \node[v, label=below:$v_2$] (v2) at (1.8,0) {};
+    \node[v, label=below:$v_3$] (v3) at (3.6,0) {};
+    \node[v, label=below:$v_4$] (v4) at (5.4,0) {};
+
+    % vértices extras (arestas que não fazem parte do caminho)
+    \node[v, label=above:$x$] (x) at (1.8,1.2) {};
+    \node[v, label=above:$y$] (y) at (3.6,1.2) {};
+
+    % arestas não pertencentes ao caminho (cinza)
+    \draw[e] (v1) -- (x);
+    \draw[e] (x) -- (v3);
+    \draw[e] (y) -- (v4);
+
+    % caminho destacado (azul)
+    \draw[p] (v1) -- (v2);
+    \draw[p] (v2) -- (v3);
+    \draw[p] (v3) -- (v4);
+
+    % legenda
+    \node[align=left, anchor=west] at (6.2,0.6) {$P=(v_1,v_2,v_3,v_4)$\\ $|P|=3$};
+\end{tikzpicture}
+\end{document}

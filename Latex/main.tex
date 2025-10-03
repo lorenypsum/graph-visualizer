@@ -16,6 +16,13 @@
 \usepackage{microtype}
 \usepackage{float} % para usar o modificador [H] e fixar a posição do float
 \usepackage{tikz}
+\usepackage{graphicx} % for \includegraphics when including external PDFs
+% Global image sizing: fit within text width and 85% of text height, keep aspect ratio
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth \linewidth \else \Gin@nat@width \fi}
+\def\maxheight{\ifdim\Gin@nat@height>0.85\textheight 0.85\textheight \else \Gin@nat@height \fi}
+\makeatother
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 \usepackage[most]{tcolorbox}
     \tcbset{colback=green!15,colframe=purple!15,boxrule=0.6pt}
 \usepackage{listings}
@@ -256,50 +263,26 @@ Começando pela \textbf{noção de pertinência} denotado por \(\in\): dizemos q
 \paragraph{}
 Seja o nosso universo \(U\) de organismos: \(P=\{\text{todas as plantas}\}\), \(T=\{\text{todas as árvores}\}\) e \(F=\{\text{todos os fungos}\}\). Se \(x\) é um carvalho, então \(x\in T\) e, como toda árvore é uma planta, \(x\in P\). Já se \(y\) é um cogumelo, então \(y\in F\) e, na taxonomia moderna, \(y\notin T\) e \(y\notin P\). Agora, considere \(A=\{\text{árvores com folhas verdes}\}\); a pertinência fica clara: \(x\in A\) se, e somente se, \(x\) é árvore e tem folhas verdes.
 
+
 \begin{figure}[H]
     \centering
-    \begin{tikzpicture}[scale=1]
-        % P: plantas (círculo maior)
-        \draw[fill=blue!8, draw=blue!60] (0,0) circle (2);
-        \node[blue!60] at (0,2.25) {$P$};
-        % T: árvores (círculo menor dentro de P)
-        \draw[fill=blue!25, draw=blue!60] (-0.6,0) circle (0.9);
-        \node[blue!60] at (-0.6,-0.45) {$T$};
-        % F: fungos (círculo disjunto)
-        \draw[fill=green!20, draw=green!50!black] (3.8,0) circle (1.2);
-        \node[green!50!black] at (3.8,-0.55) {$F$};
-        % Pontos de pertinência
-        \fill[red!70] (-0.9,0.2) circle (2pt);
-        \node[anchor=east, text=red!70] at (-1.05,0.2) {$x$};
-        \fill[black] (3.6,0.4) circle (2pt);
-        \node[anchor=west] at (3.72,0.4) {$y$};
-    \end{tikzpicture}
+    \includegraphics[width=0.9\linewidth]{figures/fig_pertinencia.pdf}
+
     \caption{Pertinência: $x\in T\subseteq P$ (ponto vermelho dentro de $T$) e $y\in F$ (ponto preto); logo $y\notin P$ e $y\notin T$.}
-    \label{fig:pertinencia}
-\end{figure}
+    \label{fig:pertinencia}\end{figure}
+
 
 \paragraph{}
 Continuando, vem a \textbf{relação de inclusão} entre conjuntos denotada por \(\subseteq\): escrevemos \(X \subseteq Y\) quando todo elemento de \(X\) também pertence a \(Y\) (e \(X\subset Y\) quando, além disso, \(X\neq Y\)). No nosso exemplo, \(A\subseteq T\subset P\) e \(T\cap F=\varnothing\) (árvores e fungos não se sobrepõem).
 
+
 \begin{figure}[H]
     \centering
-    \begin{tikzpicture}[scale=1]
-        % P: conjunto maior
-        \draw[fill=blue!8, draw=blue!60] (0,0) circle (2);
-        \node[blue!60] at (0,2.25) {$P$};
-        % T: subconjunto de P
-        \draw[fill=blue!25, draw=blue!60] (-0.6,0) circle (0.9);
-        \node[blue!60] at (-0.6,0) {$T$};
-        % A: subconjunto de T
-        \draw[fill=blue!45, draw=blue!70] (-0.9,0.1) circle (0.45);
-        \node[blue!70] at (-0.9,0.1) {$A$};
-        % F: disjunto de P (e portanto de T e A)
-        \draw[fill=green!20, draw=green!50!black] (3.8,0) circle (1.2);
-        \node[green!50!black] at (3.8,0) {$F$};
-    \end{tikzpicture}
+    \includegraphics[width=0.9\linewidth]{figures/fig_inclusao.pdf}
+
     \caption{Inclusão: $A\subseteq T\subset P$ (círculos aninhados) e $T\cap F=\varnothing$ (círculos disjuntos).}
-    \label{fig:inclusao}
-\end{figure}
+    \label{fig:inclusao}\end{figure}
+
 
 \subsubsection{Operações entre conjuntos}
 \paragraph{}
@@ -510,53 +493,14 @@ Uma coleção \(\mathcal{F}\) é dita \textbf{laminar} quando, para quaisquer \(
 \paragraph{}
 Por exemplo, na coleção \(\mathcal{C} = \{P, T, F\}\): \(P\) é o conjunto de todas as plantas, \(T\) o de todas as árvores (portanto \(T\subseteq P\)) e \(F\) o de todos os fungos (disjunto de plantas e, logo, de árvores). Assim, quaisquer dois conjuntos em \(\mathcal{C}\) são aninhados ou disjuntos, e \(\mathcal{C}\) é laminar. Na coleção \(\mathcal{D} = \{A, T\}\): \(A\) é o conjunto de árvores com folhas verdes e \(T\) o de todas as árvores; como toda árvore de \(A\) é árvore de \(T\), temos \(A\subseteq T\) e a coleção é laminar. Já em \(\mathcal{E} = \{A, R\}\): \(R\) é o conjunto de árvores frutíferas; há árvores que são ao mesmo tempo frutíferas e de folhas verdes (a interseção é não vazia), mas nenhuma das classes contém a outra, então \(\mathcal{E}\) não é laminar.
 
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[scale=0.95]
-    % (a) Coleção C = {P, T, F} é laminar: T ⊆ P e F disjunto
-    \begin{scope}[xshift=-6.2cm]
-        % P (maior)
-        \draw[fill=blue!8, draw=blue!60, thick] (0,0) circle (1.6);
-        \node[blue!60] at (0,1.9) {$P$};
-        % T (dentro de P)
-        \draw[fill=blue!25, draw=blue!60, thick] (-0.4,0.1) circle (0.8);
-        \node[blue!70] at (-0.4,0.1) {$T$};
-        % F (disjunto)
-        \draw[fill=green!20, draw=green!50!black, thick] (2.8,0) circle (0.9);
-        \node[green!50!black] at (2.8,0) {$F$};
-        % Rótulo do subpainel
-        \node[font=\small] at (0,-2.2) {(a) $\mathcal{C}=\{P,T,F\}$ — laminar};
-    \end{scope}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_laminaridade.pdf}
 
-    % (b) Coleção D = {A, T} é laminar: A ⊆ T
-    \begin{scope}
-        % T
-        \draw[fill=blue!25, draw=blue!60, thick] (0,0) circle (1.3);
-        \node[blue!60] at (0,1.55) {$T$};
-        % A (dentro de T)
-        \draw[fill=blue!45, draw=blue!70, thick] (-0.4,0.1) circle (0.6);
-        \node[blue!70] at (-0.4,0.1) {$A$};
-        % Rótulo do subpainel
-        \node[font=\small] at (0,-2.0) {(b) $\mathcal{D}=\{A,T\}$ — laminar};
-    \end{scope}
+    \caption{Laminaridade em coleções: em (a) e (b), quaisquer dois conjuntos são aninhados ou disjuntos; em (c), $A$ e $R$ se interceptam sem inclusão, violando a laminaridade.}
+    \label{fig:laminaridade}\end{figure}
 
-    % (c) Coleção E = {A, R} não é laminar: A e R se interceptam sem inclusão
-    \begin{scope}[xshift=6.2cm]
-        % A e R sobrepostos
-        \def\ra{1.1}
-        \coordinate (cA) at (-0.5,0);
-        \coordinate (cR) at (0.5,0);
-        \fill[blue!35, opacity=0.5] (cA) circle (\ra);
-        \fill[orange!60, opacity=0.45] (cR) circle (\ra);
-        \draw[blue!70, thick] (cA) circle (\ra) node[left=6pt] {$A$};
-        \draw[orange!80!black, thick] (cR) circle (\ra) node[right=6pt] {$R$};
-        % Rótulo do subpainel
-        \node[font=\small] at (0,-2.0) {(c) $\mathcal{E}=\{A,R\}$ — não laminar};
-    \end{scope}
-\end{tikzpicture}
-\caption{Laminaridade em coleções: em (a) e (b), quaisquer dois conjuntos são aninhados ou disjuntos; em (c), $A$ e $R$ se interceptam sem inclusão, violando a laminaridade.}
-\label{fig:laminaridade}
-\end{figure}
 
 \paragraph{}
 Este é um importante conceito que aparecerá no restante do trabalho. A ideia de laminaridade retornará quando tratarmos de cortes dirigidos.
@@ -607,29 +551,15 @@ Na matemática, uma \textbf{relação} entre dois conjuntos \(A\) e \(B\) é uma
 \paragraph{}
 Uma \textbf{relação} \(R\) entre dois conjuntos \(A\) e \(B\) é um subconjunto do produto cartesiano \(A \times B\). Ou seja, \(R \subseteq A \times B\). Se \((a,b) \in R\), dizemos que \(a\) está relacionado a \(b\) pela relação \(R\), denotado \(aRb\).
 
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth, node distance=1.2cm]
-    % Coluna A (domínio) — retângulos arredondados
-    \node[draw, rounded corners, fill=blue!10, minimum width=8mm, minimum height=6mm] (a1) {$a_1$};
-    \node[draw, rounded corners, fill=blue!10, below=of a1, minimum width=8mm, minimum height=6mm] (a2) {$a_2$};
-    \node[draw, rounded corners, fill=blue!10, below=of a2, minimum width=8mm, minimum height=6mm] (a3) {$a_3$};
-    % Coluna B (contradomínio) — círculos
-    \node[circle, draw, fill=green!10, right=3.2cm of a1, minimum size=6mm] (b1) {$b_1$};
-    \node[circle, draw, fill=green!10, below=of b1, minimum size=6mm] (b2) {$b_2$};
-    \node[circle, draw, fill=green!10, below=of b2, minimum size=6mm] (b3) {$b_3$};
-    % Agrupadores (caixas) para A e B com rótulos
-    \node[draw=blue!50, rounded corners, fit=(a1)(a2)(a3), inner sep=5pt, label={[blue!60]above:A (domínio)}] {};
-    \node[draw=green!50!black, fit=(b1)(b2)(b3), inner sep=7pt, label={[green!50!black]above:B (contradomínio)}] {};
-    % Setas representando os pares de R (neutras para destacar os conjuntos)
-    \draw[->, thick, draw=gray!70] (a1) -- (b2);
-    \draw[->, thick, draw=gray!70] (a2) -- (b1);
-    \draw[->, thick, draw=gray!70] (a2) -- (b3);
-    \draw[->, thick, draw=gray!70] (a3) -- (b3);
-\end{tikzpicture}
-\caption{Relação $R\subseteq A\times B$. Cada seta representa um par $(a,b)\in R$ (isto é, $a\,R\,b$). As formas/cores distinguem domínio ($A$, retângulos azuis) de contradomínio ($B$, círculos verdes). Note que $a_2$ se relaciona com $b_1$ e $b_3$; logo, este $R$ \emph{não} é uma função. Para que $R$ fosse uma função $f\!:\!A\to B$, cada $a\in A$ deveria ter \emph{exatamente uma} seta saindo para algum $b\in B$.}
-\label{fig:relacao}
-\end{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_relacao.pdf}
+
+    \caption{Relação $R\subseteq A\times B$. Cada seta representa um par $(a,b)\in R$ (isto é, $a\,R\,b$). As formas/cores distinguem domínio ($A$, retângulos azuis) de contradomínio ($B$, círculos verdes). Note que $a_2$ se relaciona com $b_1$ e $b_3$; logo, este $R$ \emph{não é função}.}
+    \label{fig:relacao}
+    \end{figure}
+
 
 \paragraph{}
 No nosso primeiro exemplo-mestre, considere \(P=\{\text{todas as plantas}\}\) e \(F=\{\text{todos os fungos}\}\). Definimos a relação \(R\) como "é um organismo que compete com". Assim, se uma planta \(p \in P\) compete com um fungo \(f \in F\), então \((p,f) \in R\).
@@ -643,28 +573,15 @@ Em teoria dos grafos, uma relação pode representar conexões entre vértices. 
 \paragraph{}
 Uma \textbf{função} \(f\) de um conjunto \(A\) em um conjunto \(B\) é uma relação especial que associa cada elemento de \(A\) a exatamente um elemento de \(B\). Denotamos isso como \(f: A \to B\). Se \(f(a) = b\), dizemos que \(b\) é a imagem de \(a\) sob \(f\).
 
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth, node distance=1.2cm]
-    % Coluna A (domínio) — retângulos arredondados
-    \node[draw, rounded corners, fill=blue!10, minimum width=8mm, minimum height=6mm] (a1f) {$a_1$};
-    \node[draw, rounded corners, fill=blue!10, below=of a1f, minimum width=8mm, minimum height=6mm] (a2f) {$a_2$};
-    \node[draw, rounded corners, fill=blue!10, below=of a2f, minimum width=8mm, minimum height=6mm] (a3f) {$a_3$};
-    % Coluna B (contradomínio) — círculos
-    \node[circle, draw, fill=green!10, right=3.2cm of a1f, minimum size=6mm] (b1f) {$b_1$};
-    \node[circle, draw, fill=green!10, below=of b1f, minimum size=6mm] (b2f) {$b_2$};
-    \node[circle, draw, fill=green!10, below=of b2f, minimum size=6mm] (b3f) {$b_3$};
-    % Agrupadores (caixas) para A e B com rótulos
-    \node[draw=blue!50, rounded corners, fit=(a1f)(a2f)(a3f), inner sep=5pt, label={[blue!60]above:A (domínio)}] {};
-    \node[draw=green!50!black, fit=(b1f)(b2f)(b3f), inner sep=7pt, label={[green!50!black]above:B (contradomínio)}] {};
-    % Setas de função (exatamente uma saída por elemento de A)
-    \draw[->, thick, draw=gray!70] (a1f) -- (b1f);
-    \draw[->, thick, draw=gray!70] (a2f) -- (b2f);
-    \draw[->, thick, draw=gray!70] (a3f) -- (b2f); % muitos-para-um permitido
-\end{tikzpicture}
-\caption{Função $f\!:\!A\to B$. Cada elemento de $A$ tem \emph{exatamente uma} seta saindo para um elemento de $B$ (a imagem). Elementos distintos de $A$ podem ter a mesma imagem (muitos-para-um), e nem todo elemento de $B$ precisa ser imagem (aqui, $b_3$ não é atingido). Compare com a Fig.\ \ref{fig:relacao}.}
-\label{fig:funcao}
-\end{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_funcao.pdf}
+
+    \caption{Função $f\!:\!A\to B$. Cada elemento de $A$ tem \emph{exatamente uma} imagem em $B$.}
+    \label{fig:funcao}
+    \end{figure}
+
 
 \paragraph{}
 No nosso exemplo-mestre, considere \(P=\{\text{todas as plantas}\}\) e \(\mathbb{N}=\{0,1,2,\ldots\}\) (números naturais). Definimos a função \(f: P \to \mathbb{N}\) que associa cada planta ao seu número de folhas. Se \(p \in P\) é uma árvore com 100 folhas, então \(f(p) = 100\).
@@ -714,68 +631,14 @@ Alguns conceitos importantes relacionados a funções incluem:
     
 \end{itemize}
 
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth, scale=0.9, every node/.style={transform shape}, node distance=0.8cm]
-    % estilos reutilizados
-    \tikzset{
-        Aelem/.style={draw, rounded corners, fill=blue!10, minimum width=7mm, minimum height=5mm},
-        Belem/.style={circle, draw, fill=green!10, minimum size=5mm},
-        Abox/.style={draw=blue!50, rounded corners},
-        Bbox/.style={draw=green!50!black}
-    }
 
-    % (a) Injetora: imagens distintas
-    \begin{scope}
-        \node[Aelem] (a1i) {$a_1$};
-        \node[Aelem, below=of a1i] (a2i) {$a_2$};
-        \node[Aelem, below=of a2i] (a3i) {$a_3$};
-    \node[style=Belem, right=2.2cm of a1i] (b1i) {$b_1$};
-        \node[style=Belem, below=of b1i] (b2i) {$b_2$};
-        \node[style=Belem, below=of b2i] (b3i) {$b_3$};
-    \node[Abox, fit=(a1i)(a2i)(a3i), inner sep=3pt, label={[blue!60]above:$A$}] {};
-    \node[Bbox, fit=(b1i)(b2i)(b3i), inner sep=5pt, label={[green!50!black]above:$B$}] {};
-    \draw[->, semithick, draw=gray!70] (a1i) -- (b1i);
-    \draw[->, semithick, draw=gray!70] (a2i) -- (b2i);
-    \draw[->, semithick, draw=gray!70] (a3i) -- (b3i);
-    \node[font=\footnotesize, anchor=south] at ($(a1i)!0.5!(b1i)+(0,0.7)$) {(a) Injetora};
-    \end{scope}
-    
-    % (b) Sobrejetora: todo B é atingido
-    \begin{scope}[xshift=4.8cm]
-        \node[Aelem] (a1s) {$a_1$};
-        \node[Aelem, below=of a1s] (a2s) {$a_2$};
-        \node[Aelem, below=of a2s] (a3s) {$a_3$};
-    \node[style=Belem, right=2.2cm of a1s] (b1s) {$b_1$};
-    \node[style=Belem, below=of b1s] (b2s) {$b_2$};
-    \node[style=Belem, below=of b2s] (b3s) {$b_3$};
-    \node[Abox, fit=(a1s)(a2s)(a3s), inner sep=3pt, label={[blue!60]above:$A$}] {};
-    \node[Bbox, fit=(b1s)(b2s)(b3s), inner sep=5pt, label={[green!50!black]above:$B$}] {};
-    \draw[->, semithick, draw=gray!70] (a1s) -- (b1s);
-    \draw[->, semithick, draw=gray!70] (a2s) -- (b2s);
-    \draw[->, semithick, draw=gray!70] (a3s) -- (b3s);
-    \node[font=\footnotesize, anchor=south] at ($(a1s)!0.5!(b1s)+(0,0.7)$) {(b) Sobrejetora};
-    \end{scope}
-   
-    % (c) Bijetora: um-para-um e sobre
-    \begin{scope}[xshift=9.6cm]
-        \node[Aelem] (a1b) {$a_1$};
-        \node[Aelem, below=of a1b] (a2b) {$a_2$};
-        \node[Aelem, below=of a2b] (a3b) {$a_3$};
-    \node[style=Belem, right=2.2cm of a1b] (b1b) {$b_1$};
-    \node[style=Belem, below=of b1b] (b2b) {$b_2$};
-    \node[style=Belem, below=of b2b] (b3b) {$b_3$};
-    \node[Abox, fit=(a1b)(a2b)(a3b), inner sep=3pt, label={[blue!60]above:$A$}] {};
-    \node[Bbox, fit=(b1b)(b2b)(b3b), inner sep=5pt, label={[green!50!black]above:$B$}] {};
-    \draw[->, semithick, draw=gray!70] (a1b) -- (b2b);
-    \draw[->, semithick, draw=gray!70] (a2b) -- (b3b);
-    \draw[->, semithick, draw=gray!70] (a3b) -- (b1b);
-    \node[font=\footnotesize, anchor=south] at ($(a1b)!0.5!(b1b)+(0,0.7)$) {(c) Bijetora};
-    \end{scope}
-\end{tikzpicture}
-\caption{Funções especiais: (a) Injetora — elementos distintos em $A$ têm imagens distintas em $B$; (b) Sobrejetora — todo elemento de $B$ é imagem; (c) Bijetora — um-para-um e sobre $B$.}
-\label{fig:inj-sobre-bij}
-\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_inj_sobre_bij.pdf}
+
+    \caption{Funções especiais: (a) Injetora — elementos distintos em $A$ têm imagens distintas em $B$; (b) Sobrejetora — todo elemento de $B$ é imagem; (c) Bijetora — um-para-um e sobre $B$.}
+    \label{fig:inj-sobre-bij}\end{figure}
+
 
 \subsubsection{Funções de agregação e somatórios}
 
@@ -832,36 +695,15 @@ Depende diretamente do conceito de somatório, pois frequentemente queremos mini
 \paragraph{Função c-disjunta}
 Uma \textbf{função c-disjunta} é uma função \(f: A \to B\) que, para quaisquer \(a_1, a_2 \in A\) com \(a_1 \neq a_2\), as imagens \(f(a_1)\) e \(f(a_2)\) são disjuntas, ou seja, \(f(a_1) \cap f(a_2) = \varnothing\). Em outras palavras, elementos distintos do domínio são mapeados para conjuntos disjuntos no contradomínio.
 
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth, node distance=1.0cm]
-    % Domínio A (retângulos azuis)
-    \node[draw, rounded corners, fill=blue!10, minimum width=9mm, minimum height=6mm] (a1cd) {$a_1$};
-    \node[draw, rounded corners, fill=blue!10, below=of a1cd, minimum width=9mm, minimum height=6mm] (a2cd) {$a_2$};
-    \node[draw, rounded corners, fill=blue!10, below=of a2cd, minimum width=9mm, minimum height=6mm] (a3cd) {$a_3$};
-    \node[draw=blue!50, rounded corners, fit=(a1cd)(a2cd)(a3cd), inner sep=4pt, label={[blue!60]above:$A$}] {};
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_c_disjunta.pdf}
 
-    % Universo U (círculos verdes como átomos) à direita
-    \node[circle, draw, fill=green!10, right=3.2cm of a1cd, minimum size=6mm] (ua) {$a$};
-    \node[circle, draw, fill=green!10, right=8mm of ua, minimum size=6mm] (ub) {$b$};
-    \node[circle, draw, fill=green!10, below=8mm of ua, minimum size=6mm] (uc) {$c$};
-    \node[circle, draw, fill=green!10, right=8mm of uc, minimum size=6mm] (ud) {$d$};
-    % Caixa do universo U
-    \node[draw=gray!60, rounded corners, fit=(ua)(ub)(uc)(ud), inner sep=6pt, label={[gray!70]above:$U$}] (Ubox) {};
+    \caption{Função c-disjunta: cada \(a\in A\) mapeia para um \emph{subconjunto} de $B$, e imagens de elementos distintos são disjuntas.}
+    \label{fig:c-disjunta}
+    \end{figure}
 
-    % Destaque das imagens (subconjuntos disjuntos de U)
-    \node[draw=purple!70!black, rounded corners, fit=(ua)(ub), inner sep=2pt, label={[purple!70!black]above:$f(a_1)$}] (S1) {};
-    \node[draw=orange!80!black, rounded corners, fit=(uc), inner sep=3pt, label={[orange!80!black]below:$f(a_2)$}] (S2) {};
-    \node[draw=blue!60!black, rounded corners, fit=(ud), inner sep=3pt, label={[blue!60!black]below:$f(a_3)$}] (S3) {};
-
-    % Setas de mapeamento para os subconjuntos (apontando para as caixas de destaque)
-    \draw[->, thick, draw=gray!70] (a1cd) -- (S1.west);
-    \draw[->, thick, draw=gray!70] (a2cd) -- (S2.west);
-    \draw[->, thick, draw=gray!70] (a3cd) -- (S3.west);
-\end{tikzpicture}
-\caption{Função c-disjunta: cada \(a\in A\) mapeia para um \emph{subconjunto} de \(U\), e as imagens são dois a dois disjuntas (sem sobreposição). No exemplo, $f(a_1)=\{a,b\}$, $f(a_2)=\{c\}$ e $f(a_3)=\{d\}$.}
-\label{fig:c-disjunta}
-\end{figure}
 
 \paragraph{}
 Exemplo: Considere \(A = \{1, 2, 3\}\) e \(B = \{\{a\}, \{b\}, \{c\}, \{d\}\}\). Definimos a função \(f: A \to B\) como:
@@ -934,32 +776,14 @@ No nosso texto, consideramos como problema primal a minimização do custo de um
 \paragraph{}
 Esse ponto de vista leva a “teoremas min–max” que ligam problemas de \emph{minimização} a problemas de \emph{maximização} e fornecem certificados verificáveis de otimalidade.
 
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth, node distance=1.4cm]
-    % estilos
-    \tikzset{
-        box/.style={draw, rounded corners, fill=blue!5, minimum width=37mm, minimum height=10mm, align=center},
-        arrow/.style={->, semithick, draw=gray!70},
-        badge/.style={draw=green!50!black, rounded corners, fill=green!10, inner sep=4pt, font=\scriptsize}
-    }
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_min_max_cert.pdf}
 
-    % caixas primal (min) e dual (max)
-    \node[box] (min) {Minimização\\(cobrir)};
-    \node[box, right=4.2cm of min] (max) {Maximização\\(empacotar)};
+    \caption{Intuição de min--max: um problema de cobrir (minimização) e um de empacotar (maximização) andam juntos. Sempre vale valor dual $\le$ valor primal; quando há igualdade, temos um certificado de otimalidade.}
+    \label{fig:min-max-cert}\end{figure}
 
-    % relação de valores dual <= primal
-    \draw[arrow] (max.west) -- node[above, font=\scriptsize, black!70]{valor dual $\;\le\;$ valor primal} (min.east);
-
-    % destaque do "min--max" (igualdade no ótimo)
-    \path (min) -- (max) node[pos=0.5, yshift=12mm, badge] (mm) {teorema min--max: igualdade no ótimo};
-
-    % certificado de otimalidade
-    \path (min) -- (max) node[pos=0.5, yshift=-12mm, badge] (cert) {certificado: verificação simples do ótimo};
-\end{tikzpicture}
-\caption{Intuição de min--max: um problema de cobrir (minimização) e um de empacotar (maximização) andam juntos. Sempre vale valor dual $\le$ valor primal; quando há igualdade, temos um certificado de otimalidade.}
-\label{fig:min-max-cert}
-\end{figure}
 
 \paragraph{}
 No contexto de grafos, a otimização costuma aparecer como a busca por subestruturas (caminhos, árvores, cortes, fluxos) que minimizam ou maximizam um custo, sempre respeitando a topologia do grafo.
@@ -977,29 +801,14 @@ No lado “dual”, em vez de montar a árvore, colocamos custos em cortes do gr
 \paragraph{}
 Qual o número mínimo de cores necessárias para colorir um mapa de países, de modo que países vizinhos tenham cores diferentes? Qual o caminho mais curto entre duas cidades em um mapa rodoviário? Como encontrar a árvore geradora mínima que conecta todas as cidades com o menor custo total? Essas perguntas são exemplos clássicos de problemas que podem ser modelados e resolvidos usando a teoria dos grafos. Vistas sob a lente da navalha de occam, todas elas buscam a solução mais parcimoniosa que atende ao requisito: usar poucas cores, percorrer um caminho curto ou conectar tudo com custo mínimo.
 
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth]
-    % estilo de vértice e arestas
-    \tikzset{v/.style={circle, draw, thick, minimum size=7mm, inner sep=0pt}, e/.style={semithick, draw=gray!70}}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_coloracao.pdf}
 
-    % vértices de um K4 (exige 4 cores)
-    \node[v, fill=red!30, label=below:$v_1$]  (v1) at (0,0) {};
-    \node[v, fill=blue!30, label=below:$v_2$] (v2) at (2.1,0) {};
-    \node[v, fill=green!35, label=above:$v_3$] (v3) at (1,1.9) {};
-    \node[v, fill=orange!40, label=right:$v_4$] (v4) at (1,0.75) {};
+    \caption{Coloração de grafos: exemplo de coloração própria do grafo completo $K_4$. Como $K_4$ é completo, precisamos de 4 cores para colorir seus vértices de modo que vértices adjacentes tenham cores diferentes. Uma coloração é uma função $\varphi:V\to C$ tal que, se $uv\in E$, então $\varphi(u)\neq\varphi(v)$.}
+    \label{fig:coloracao}\end{figure}
 
-    % arestas (todas as pares -> K4)
-    \draw[e] (v1) -- (v2);
-    \draw[e] (v2) -- (v3);
-    \draw[e] (v3) -- (v1);
-    \draw[e] (v1) -- (v4);
-    \draw[e] (v2) -- (v4);
-    \draw[e] (v3) -- (v4);
-\end{tikzpicture}
-\caption{Coloração de grafos: exemplo de coloração própria do grafo completo $K_4$. Como $K_4$ é completo, precisamos de 4 cores para colorir seus vértices de modo que vértices adjacentes tenham cores diferentes. Uma coloração é uma função $\varphi:V\to C$ tal que, se $uv\in E$, então $\varphi(u)\neq\varphi(v)$.}
-\label{fig:coloracao}
-\end{figure}
 
 \paragraph{}
 Sem a teoria dos grafos, seria difícil formalizar e resolver esses problemas de maneira eficiente. Ao representar situações do mundo real como grafos, tornamos a parcimônia da navalha de occam algo operacional: escolhemos uma medida simples (número de cores, comprimento, custo) e aplicamos algoritmos que, entre as soluções viáveis, minimizam ou maximizam esse critério — produzindo soluções ótimas ou, quando necessário, boas aproximações.
@@ -1011,30 +820,14 @@ Falamos bastante de grafos ao longo do texto, aqui fixamos a noção básica.
 \paragraph{}
 Um \textbf{grafo} \(G = (V, E)\) é uma estrutura matemática composta por um conjunto \(V\) de \emph{vértices} (ou \emph{nós}) e um conjunto \(E\) de \emph{arestas} (ou \emph{ligações}) que conectam pares de vértices. 
 
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, e/.style={semithick, draw=gray!70}}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_def_grafo.pdf}
 
-    % vértices (V)
-    \node[v, label=below:$v_1$] (v1) at (0,0) {};
-    \node[v, label=below:$v_2$] (v2) at (2.0,0) {};
-    \node[v, label=above:$v_3$] (v3) at (2.0,1.6) {};
-    \node[v, label=above:$v_4$] (v4) at (0,1.6) {};
+    \caption{Definição de grafo: exemplo de grafo simples \(G=(V,E)\). Pontos representam os vértices \(V\) e linhas representam as arestas \(E\), que são pares não ordenados de vértices distintos.}
+    \label{fig:def-grafo}\end{figure}
 
-    % arestas (E: pares não ordenados)
-    \draw[e] (v1) -- (v2);
-    \draw[e] (v2) -- (v3);
-    \draw[e] (v3) -- (v4);
-    \draw[e] (v4) -- (v1);
-
-    % legenda com os conjuntos V e E
-    \node[align=left, anchor=west] at (3.0,0.9) {$V=\{v_1,v_2,v_3,v_4\}$\\ $E=\{\{v_1,v_2\},\{v_2,v_3\},\{v_3,v_4\},\{v_4,v_1\}\}$};
-\end{tikzpicture}
-\caption{Definição de grafo: exemplo de grafo simples \(G=(V,E)\). Pontos representam os vértices \(V\) e linhas representam as arestas \(E\), que são pares não ordenados de vértices distintos.}
-\label{fig:def-grafo}
-\end{figure}
 
 \paragraph{}
 O conjunto de vértices \(V\) pode ser definido como \(V = \{v_1, v_2, \ldots, v_n\}\), onde cada \(v_i\) representa um ponto distinto no grafo. O conjunto de arestas \(E\) é um conjunto de pares não ordenados de vértices, ou seja, \(E \subseteq \{\{u, v\} \mid u, v \in V, u \neq v\}\). Cada aresta \(\{u, v\}\) indica uma conexão entre os vértices \(u\) e \(v\).
@@ -1048,31 +841,15 @@ Tendo em mente esses problemas, podemos falar de custos associados às arestas. 
 \paragraph{}
 Esses custos representam uma função \(c: E \to \mathbb{R}^+\) que atribui um valor numérico não negativo a cada aresta do grafo. Assim, para cada aresta \(\{u, v\} \in E\), \(c(\{u, v\})\) representa o custo associado a essa conexão.
 
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, e/.style={semithick, draw=gray!70}}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_grafo_custos.pdf}
 
-    % vértices
-    \node[v, label=below:$v_1$] (v1) at (0,0) {};
-    \node[v, label=below:$v_2$] (v2) at (2.2,0) {};
-    \node[v, label=above:$v_3$] (v3) at (3.0,1.8) {};
-    \node[v, label=above:$v_4$] (v4) at (-0.4,1.8) {};
+    \caption{Grafo com custos nas arestas: a função $c:E\to\mathbb{R}^+$ atribui um custo não negativo a cada aresta.}
+    \label{fig:grafo-custos}
+    \end{figure}
 
-    % arestas com custos (rótulos c(e))
-    \draw[e] (v1) -- node[midway, fill=white, inner sep=2pt, font=\scriptsize] {3} (v2);
-    \draw[e] (v2) -- node[midway, fill=white, inner sep=2pt, font=\scriptsize] {5} (v3);
-    \draw[e] (v3) -- node[midway, fill=white, inner sep=2pt, font=\scriptsize] {2} (v4);
-    \draw[e] (v4) -- node[midway, fill=white, inner sep=2pt, font=\scriptsize] {4} (v1);
-    \draw[e] (v1) -- node[midway, fill=white, inner sep=2pt, font=\scriptsize] {6} (v3);
-
-    % legenda breve
-    \node[align=left, anchor=west] at (4.0,1.0) {$c:E\to\mathbb{R}^+$\\ $c(\{v_1,v_2\})=3,\; c(\{v_1,v_3\})=6,\dots$};
-\end{tikzpicture}
-\caption{Grafo com custos nas arestas: a função $c:E\to\mathbb{R}^+$ atribui a cada aresta um custo $c(e)$ (mostrado junto às arestas). Por exemplo, $c(\{v_1,v_2\})=3$. O custo total de um subconjunto $F\subseteq E$ é $C(F)=\sum_{e\in F} c(e)$.}
-\label{fig:grafo-custos}
-\end{figure}
 
 \paragraph{}
 Grafos apresentam diversas estruturas especiais. Essas estruturas são definidas como subgrafos e são fundamentais para entender a topologia e as propriedades dos grafos, e muitas vezes são o foco de problemas de otimização. 
@@ -1086,71 +863,26 @@ Alguns subgrafos interessantes incluem: caminhos, ciclos, componentes conexas e 
 \paragraph{Caminhos}
 \paragraph{}Um \textbf{caminho} em um grafo é uma sequência de vértices conectados por arestas. Formalmente, um caminho \(P\) de comprimento \(k\geq 1\) é uma sequência de vértices \(P = (v_1, v_2, \ldots, v_{k+1})\) tal que cada par consecutivo \((v_i, v_{i+1})\) é uma aresta em \(E\). O comprimento do caminho é o número de arestas que ele contém, que é \(k\).
 
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, e/.style={semithick, draw=gray!60}, p/.style={very thick, draw=blue!60}}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_caminho.pdf}
 
-    % vértices do caminho
-    \node[v, label=below:$v_1$] (v1) at (0,0) {};
-    \node[v, label=below:$v_2$] (v2) at (1.8,0) {};
-    \node[v, label=below:$v_3$] (v3) at (3.6,0) {};
-    \node[v, label=below:$v_4$] (v4) at (5.4,0) {};
+    \caption{Caminho em grafo não dirigido: o caminho $P=(v_1,v_2,v_3,v_4)$ está destacado em azul. Seu comprimento é o número de arestas percorridas, $|P|=3$.}
+    \label{fig:caminho}\end{figure}
 
-    % vértices extras (arestas que não fazem parte do caminho)
-    \node[v, label=above:$x$] (x) at (1.8,1.2) {};
-    \node[v, label=above:$y$] (y) at (3.6,1.2) {};
-
-    % arestas não pertencentes ao caminho (cinza)
-    \draw[e] (v1) -- (x);
-    \draw[e] (x) -- (v3);
-    \draw[e] (y) -- (v4);
-
-    % caminho destacado (azul)
-    \draw[p] (v1) -- (v2);
-    \draw[p] (v2) -- (v3);
-    \draw[p] (v3) -- (v4);
-
-    % legenda
-    \node[align=left, anchor=west] at (6.2,0.6) {$P=(v_1,v_2,v_3,v_4)$\\ $|P|=3$};
-\end{tikzpicture}
-\caption{Caminho em grafo não dirigido: o caminho $P=(v_1,v_2,v_3,v_4)$ está destacado em azul. Seu comprimento é o número de arestas percorridas, $|P|=3$.}
-\label{fig:caminho}
-\end{figure}
 
 \paragraph{Ciclos}
 \paragraph{}Um \textbf{ciclo} é um caminho que começa e termina no mesmo vértice, ou seja, \(v_1 = v_{k+1}\). Formalmente, um ciclo \(C\) é uma sequência de vértices \(C = (v_1, v_2, \ldots, v_k, v_1)\) tal que cada par consecutivo \((v_i, v_{i+1})\) é uma aresta em \(E\) e \(k \geq 2\). O comprimento do ciclo é o número de arestas que ele contém, que é \(k\).
 
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, e/.style={semithick, draw=gray!60}, c/.style={very thick, draw=blue!60}}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_ciclo.pdf}
 
-    % vértices do ciclo (dispostos aproximadamente em círculo)
-    \node[v, label=below:$v_1$] (v1) at (0,0) {};
-    \node[v, label=right:$v_2$] (v2) at (2.0,0.8) {};
-    \node[v, label=above:$v_3$] (v3) at (1.2,2.1) {};
-    \node[v, label=left:$v_4$] (v4) at (-0.8,1.6) {};
+    \caption{Ciclo em grafo não dirigido: o ciclo $C=(v_1,v_2,v_3,v_4,v_1)$ está destacado em azul. Seu comprimento é o número de arestas, $|C|=4$.}
+    \label{fig:ciclo}\end{figure}
 
-    % arestas não pertencentes ao ciclo (cinza)
-    \node[v, label=right:$x$] (x) at (2.6,1.8) {};
-    \draw[e] (x) -- (v2);
-    \draw[e] (x) -- (v3);
-
-    % ciclo destacado (azul)
-    \draw[c] (v1) -- (v2);
-    \draw[c] (v2) -- (v3);
-    \draw[c] (v3) -- (v4);
-    \draw[c] (v4) -- (v1);
-
-    % legenda
-    \node[align=left, anchor=west] at (3.2,1.0) {$C=(v_1,v_2,v_3,v_4,v_1)$\\ $|C|=4$};
-\end{tikzpicture}
-\caption{Ciclo em grafo não dirigido: o ciclo $C=(v_1,v_2,v_3,v_4,v_1)$ está destacado em azul. Seu comprimento é o número de arestas, $|C|=4$.}
-\label{fig:ciclo}
-\end{figure}
 
 \paragraph{Componentes conexas}
 \paragraph{}Uma \textbf{componente conexa} de um grafo é um subgrafo maximal que é conexo. Formalmente, uma componente conexa \(C\) é um subgrafo \(C = (V_C, E_C)\) onde \(V_C \subseteq V\) e \(E_C \subseteq E\), que satisfaz a seguinte propriedade:
@@ -1159,41 +891,15 @@ Alguns subgrafos interessantes incluem: caminhos, ciclos, componentes conexas e 
 \end{itemize}
 Além disso, \(C\) é maximal, o que significa que não é possível adicionar mais vértices ou arestas a \(C\) sem perder a propriedade de conexidade.
 
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, e/.style={semithick, draw=gray!70}, comp/.style={draw=blue!40, rounded corners}}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_componentes.pdf}
 
-    % Componente C1 (à esquerda)
-    \node[v, label=above:$a$] (a) at (0,1.2) {};
-    \node[v, label=below:$b$] (b) at (-0.8,0) {};
-    \node[v, label=below:$c$] (c) at (0.8,0) {};
-    \draw[e] (a) -- (b);
-    \draw[e] (a) -- (c);
-    \node[comp, fit=(a)(b)(c), inner sep=20pt, label={[blue!60]above:$C_1$}] {};
+    \caption{Componentes conexas: o grafo possui três componentes $C_1$, $C_2$ e $C_3$. Cada $C_i$ é conexo e \emph{maximal}, isto é, não pode ser estendido mantendo a conexidade.}
+    \label{fig:componentes}
+    \end{figure}
 
-    % Componente C2 (centro)
-    \node[v, label=below:$d$] (d) at (4,0) {};
-    \node[v, label=below:$e$] (e) at (5.6,0) {};
-    \draw[e] (d) -- (e);
-    \node[comp, fit=(d)(e), inner sep=15pt, label={[blue!60]above:$C_2$}] {};
-
-    % Componente C3 (direita)
-    \node[v, label=above:$f$] (f) at (8.6,1.2) {};
-    \node[v, label=below:$g$] (g) at (7.8,0) {};
-    \node[v, label=below:$h$] (h) at (9.4,0) {};
-    \draw[e] (f) -- (g);
-    \draw[e] (f) -- (h);
-    \draw[e] (g) -- (h);
-    \node[comp, fit=(f)(g)(h), inner sep=20pt, label={[blue!60]above:$C_3$}] {};
-
-    % texto explicativo
-    \node[align=center, anchor=north west] at (-0.2,-1.0) {Cada caixa destaca uma \emph{componente conexa}.\\ Não há arestas entre $C_1$, $C_2$ e $C_3$.};
-\end{tikzpicture}
-\caption{Componentes conexas: o grafo possui três componentes $C_1$, $C_2$ e $C_3$. Cada $C_i$ é conexo e \emph{maximal}: adicionar qualquer vértice de fora quebraria a propriedade de conexidade interna ou exigiria arestas ausentes.}
-\label{fig:componentes}
-\end{figure}
 
 \paragraph{Árvores}
 \paragraph{}Uma \textbf{árvore} é um grafo conexo e acíclico. Formalmente, uma árvore \(T\) é um grafo \(T = (V_T, E_T)\) onde \(V_T \subseteq V\) e \(E
@@ -1204,35 +910,14 @@ _T \subseteq E\), que satisfaz as seguintes propriedades:
 \end{itemize}
 Além disso, uma árvore com \(n\) vértices sempre tem exatamente \(n-1\) arestas.
 
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, e/.style={semithick, draw=gray!70}}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_arvore.pdf}
 
-    % vértices da árvore
-    \node[v, label=below:$r$] (r) at (0,0) {};
-    \node[v, label=above:$a$] (a) at (-1.6,1.4) {};
-    \node[v, label=above:$b$] (b) at (0.0,1.8) {};
-    \node[v, label=above:$c$] (c) at (1.6,1.4) {};
-    \node[v, label=above:$d$] (d) at (-2.4,2.8) {};
-    \node[v, label=above:$e$] (e) at (-0.8,3.0) {};
-    \node[v, label=above:$f$] (f) at (0.8,3.0) {};
+    \caption{Árvore: grafo conexo e acíclico. No exemplo, $|V_T|=7$ e $|E_T|=6$, satisfazendo $|E_T|=|V_T|-1$. Não há ciclos e existe um único caminho simples entre quaisquer dois vértices.}
+    \label{fig:arvore}\end{figure}
 
-    % arestas da árvore (sem ciclos)
-    \draw[e] (r) -- (a);
-    \draw[e] (r) -- (b);
-    \draw[e] (r) -- (c);
-    \draw[e] (a) -- (d);
-    \draw[e] (a) -- (e);
-    \draw[e] (b) -- (f);
-
-    % indicação de |E| = |V| - 1
-    \node[align=left, anchor=west] at (3.0,1.8) {$|V_T|=7,\; |E_T|=6$\\ $|E_T|=|V_T|-1$};
-\end{tikzpicture}
-\caption{Árvore: grafo conexo e acíclico. No exemplo, $|V_T|=7$ e $|E_T|=6$, satisfazendo $|E_T|=|V_T|-1$. Não há ciclos e existe um único caminho simples entre quaisquer dois vértices.}
-\label{fig:arvore}
-\end{figure}
 
 \paragraph{}
 Para o nosso objetivo principal, nos interessa entendê-las em grafos que a direção das conexões (arestas) importa.
@@ -1250,95 +935,40 @@ Por vértices entendemos o mesmo conjunto que em grafos comuns, mas agora as are
 \paragraph{}
 Assim, temos os conceitos de cabeça e cauda de um arco: em \((u, v)\), \(u\) é a \emph{cauda} (origem) e \(v\) é a \emph{cabeça} (destino). Esses conceitos podem ser formalizados por meio de funções \(s, t: A \to V\), onde \(s((u, v)) = u\) (cauda) e \(t((u, v)) = v\) (cabeça).
 
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!70}}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_def_digrafo.pdf}
 
-    % vértices
-    \node[v, label=below:$u$] (u) at (0,0) {};
-    \node[v, label=below:$v$] (v) at (2.6,0) {};
-    \node[v, label=above:$x$] (x) at (1.3,1.5) {};
+    \caption{Dígrafos: arcos têm direção. No arco $a=(u,v)$, $u$ é a \emph{cauda} e $v$ é a \emph{cabeça}.}
+    \label{fig:def-digrafo}
+    \end{figure}
 
-    % arcos
-    \draw[a] (u) -- node[above, sloped, font=\scriptsize] {$a$} (v);
-    \draw[a] (x) -- (u);
-    \draw[a] (v) -- (x);
-
-    % anotações de cauda/cabeça
-    \node[font=\scriptsize, anchor=north] at ($(u)!0.5!(v)$) {$a=(u,v)$};
-    \path (u) ++(0,-0.9) node[font=\scriptsize] {cauda $s(a)=u$};
-    \path (v) ++(0,-0.9) node[font=\scriptsize] {cabeça $t(a)=v$};
-\end{tikzpicture}
-\caption{Dígrafos: arcos têm direção. No arco $a=(u,v)$, $u$ é a \emph{cauda} (origem) e $v$ é a \emph{cabeça} (destino). As funções $s,t:A\to V$ dão a origem e o destino de cada arco.}
-\label{fig:def-digrafo}
-\end{figure}
 
 \paragraph{}
 Em digrafos podem ocorrer laços (arcos que conectam um vértice a ele mesmo, como \((u, u)\)) nesse caso as funções \(s\) e \(t\) coincidem. Também podem ocorrer múltiplos arcos entre o mesmo par de vértices (como \((u, v)\) e \((u, v)\) distintos). Pictograficamente representamos essas condições com setas com dupla ponta ou com rótulos diferentes.
 
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!70}, p/.style={->, draw=gray!60}};
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_def_digrafo_simples.pdf}
 
-    % vértices
-    \node[v, label=below:$a$] (a) at (0,0) {};
-    \node[v, label=below:$b$] (b) at (2,0) {};
-    \node[v, label=above:$c$] (c) at (1,1.5) {};
-    \node[v, label=above:$d$] (d) at (3,1.5) {};
-    \node[v, label=below:$e$] (e) at (4,0) {};
-    \node[v, label=below:$f$] (f) at (5,0) {};
-    \node[v, label=above:$g$] (g) at (4.5,1.5) {};
-    \node[v, label=above:$h$] (h) at (5.5,1.5) {};
-
-    % arcos
-    \draw[a] (a) -- (b);
-    \draw[a] (c) -- (a);
-    \draw[a] (b) -- (c);
-    \draw[a] (d) -- (b);
-    \draw[a] (e) -- (d);
-    \draw[->, semithick, draw=gray!70] (f) -- (e);
-    \draw[a] (g) -- (f);
-    \draw[a] (h) -- (g);
-    \draw[p] (b) to[bend left=30] (e);
-    \draw[p] (e) to[bend left=30] (b);
-    \draw[p] (f) to[bend left=40] (f); % laço
-\end{tikzpicture}
-\caption{Dígrafo: exemplo de grafo dirigido \(D=(V,A)\). Pontos representam os vértices \(V\) e setas representam os arcos \(A\), que são pares ordenados de vértices. Laços (como \((f,f)\)) e múltiplos arcos (como \((b,e)\) e \((e,b)\)) são permitidos.}
-\label{fig:def-digrafo-simples}
-\end{figure}       
+    \caption{Dígrafo: exemplo de grafo dirigido \(D=(V,A)\). Pontos representam os vértices \(V\) e setas representam os arcos \(A\), que são pares ordenados de vértices. Laços (como \((f,f)\)) e múltiplos arcos (como \((b,e)\) e \((e,b)\)) são permitidos.}
+    \label{fig:def-digrafo-simples}\end{figure}
+       
 
 \paragraph{}
 Tal qual os grafos comuns, os dígrafos podem ter custos associados aos arcos. A função de custo \(c: A \to \mathbb{R}^+\) atribui um valor numérico geralmente não negativo a cada arco do dígrafo. Assim, para cada arco \((u, v) \in A\), \(c((u, v))\) representa o custo associado a essa conexão direcionada.
 
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!70}}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_digrafo_custos.pdf}
 
-    % vértices
-    \node[v, label=below:$s$] (s) at (0,0) {};
-    \node[v, label=above:$u$] (u) at (2,1.0) {};
-    \node[v, label=below:$v$] (v) at (2,-1.0) {};
-    \node[v, label=below:$t$] (t) at (4,0) {};
+    \caption{Dígrafos com custos nos arcos: a função $c:A\to\mathbb{R}^+$ atribui um custo não negativo a cada arco.}
+    \label{fig:digrafo-custos}
+    \end{figure}
 
-    % arcos com custos
-    \draw[a] (s) -- node[midway, fill=white, inner sep=2pt, font=\scriptsize] {2} (u);
-    \draw[a] (s) -- node[midway, fill=white, inner sep=2pt, font=\scriptsize] {4} (v);
-    \draw[a] (u) -- node[midway, fill=white, inner sep=2pt, font=\scriptsize] {1} (v);
-    \draw[a] (u) -- node[midway, fill=white, inner sep=2pt, font=\scriptsize] {5} (t);
-    \draw[a] (v) -- node[midway, fill=white, inner sep=2pt, font=\scriptsize] {3} (t);
-
-    % legenda
-    \node[align=left, anchor=west] at (5.1,0.9) {$c:A\to\mathbb{R}^+$\\ $c((s,u))=2,\; c((v,t))=3,\dots$\\ $C(P)=\sum\limits_{a\in P} c(a)$};
-\end{tikzpicture}
-\caption{Dígrafos com custos nos arcos: a função $c:A\to\mathbb{R}^+$ atribui a cada arco $(u,v)$ um custo $c((u,v))$ (mostrado junto à seta). O custo de um caminho $P$ é a soma dos custos de seus arcos, $C(P)=\sum_{a\in P} c(a)$.}
-\label{fig:digrafo-custos}
-\end{figure}
 
 \paragraph{}
 Um conceito importante em dígrafos é o de grau de um vértice. O \textbf{grau de entrada} (ou \emph{in-degree}) de um vértice \(v\), denotado por \(d^-(v)\), é o número de arcos que chegam a \(v\) (ou seja, o número de arcos cujo destino é \(v\)). O \textbf{grau de saída} (ou \emph{out-degree}) de um vértice \(v\), denotado por \(d^+(v)\), é o número de arcos que saem de \(v\) (ou seja, o número de arcos cuja origem é \(v\)). Formalmente, temos:
@@ -1355,31 +985,15 @@ Esse conceito é útil para analisar conectividade, o que nos leva ao próximo t
 \paragraph{}
 Um \textbf{empacotamento máximo de vértices} é um empacotamento de vértices que contém o maior número possível de vértices. Em outras palavras, é um conjunto \(S\subseteq V\) tal que não existem arcos entre vértices em \(S\) e \(S\) é o maior possível em termos de cardinalidade. Encontrar um empacotamento máximo em um dígrafo é um problema NP-difícil, vamos falar sobre o que isso significa na sessão de algoritmos e complexidade.
 
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!70}}
-    % vértices
-    \node[v, label=below:$a$, fill=green!18] (a) at (0,0) {};
-    \node[v, label=below:$b$] (b) at (2,0) {};
-    \node[v, label=above:$c$] (c) at (1,1.6) {};
-    \node[v, label=above:$d$, fill=green!18] (d) at (3,1.6) {};
-    \node[v, label=below:$e$] (e) at (4,0) {};
-    \node[v, label=above:$f$, fill=green!18] (f) at (5.2,1.1) {};
-    % arcos do dígrafo
-    \draw[a] (a) -- (b);
-    \draw[a] (c) -- (a);
-    \draw[a] (b) -- (c);
-    \draw[a] (d) -- (b);
-    \draw[a] (e) -- (d);
-    \draw[a] (f) -- (e);
-    % anotação
-    \node[align=left, anchor=west] at (6.2,1.0) {$S^{*}=\{a,d,f\}$ é máximo\\ (não há arco com extremidades em $S^{*}$)};
-\end{tikzpicture}
-\caption{Empacotamento máximo de vértices: para este dígrafo, $S^{*}=\{a,d,f\}$ (vértices em verde) é um conjunto independente de tamanho máximo.}
-\label{fig:empacotamento-max}
-\end{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_empacotamento_max.pdf}
+
+    \caption{Empacotamento máximo de vértices: para este dígrafo, $S^{*}$ é um conjunto independente de maior cardinalidade.}
+    \label{fig:empacotamento-max}
+    \end{figure}
+
 
 \paragraph{}
 Esses conceitos de conectividade e empacotamento de vértices nos levam a explorar as subestruturas especiais que existem em dígrafos, que são similares às que vimos em grafos comuns, mas com algumas diferenças importantes devido à direção dos arcos.
@@ -1392,137 +1006,55 @@ Tal qual os grafos que discutimos na sessão anterior, os dígrafos também poss
 \paragraph{}
 Um \textbf{subdígrafo} \(D' = (V', A')\) de um dígrafo \(D = (V, A)\) é um dígrafo onde \(V' \subseteq V\) e \(A' \subseteq A\). Ou seja, \(D'\) é formado por um subconjunto dos vértices e arcos de \(D\).
 
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!70}, sub/.style={->, draw=blue!60}}
-    % vértices
-    \node[v, label=below:$a$] (a) at (0,0) {};
-    \node[v, label=below:$b$] (b) at (2,0) {};
-    \node[v, label=above:$c$] (c) at (1,1.5) {};
-    \node[v, label=above:$d$] (d) at (3,1.5) {};
-    \node[v, label=below:$e$] (e) at (4,0) {};
-    \node[v, label=below:$f$] (f) at (5,0) {};
-    \node[v, label=above:$g$] (g) at (4.5,1.5) {};
-    \node[v, label=above:$h$] (h) at (5.5,1.5) {};
-    % arcos
-    \draw[a] (a) -- (b);
-    \draw[a] (c) -- (a);
-    \draw[a] (b) -- (c);
-    \draw[a] (d) -- (b);
-    \draw[a] (e) -- (d);
-    \draw[a] (f) -- (e);
-    \draw[a] (g) -- (f);
-    \draw[a] (h) -- (g);
-    \draw[sub] (b) to[bend left=30] (e);
-    \draw[sub] (e) to[bend left=30] (b);
-    \draw[sub] (f) to[bend left=40] (f); % laço
-    % subdígrafo destacado
-    \node[draw=blue!40, rounded corners, fit=(b)(c)(d)(e), inner sep=15pt, label={[blue!60]above:$D'$}] {};
-\end{tikzpicture}
-\caption{Subdígrafo: o subdígrafo $D'=(V',A')$ está destacado em azul. Aqui, $V'=\{b,c,d,e\}$ e $A'=\{(b,c),(c,b),(d,b),(e,d),(b,e),(e,b)\}$.}
-\label{fig:subdigrafo}
-\end{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_subdigrafo.pdf}
+
+    \caption{Subdígrafo: o subdígrafo $D'=(V',A')$ está destacado em azul. Aqui, $V'=\{b,c,d,e\}$ e $A'$ contém apenas arcos entre esses vértices.}
+    \label{fig:subdigrafo}
+    \end{figure}
+
 
 \paragraph{Subdigrafos Induzidos}
 \paragraph{}
 Um subdigrafo pode ser \emph{induzido} por um conjunto de vértices \(V' \subseteq V\), denotado como \(D[V']\). Nesse caso, o conjunto de arcos \(A'\) inclui todos os arcos em \(A\) que têm ambas as extremidades em \(V'\), ou seja, \(A' = \{(u, v) \in A \mid u, v \in V'\}\).
 
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!60}, ind/.style={->, very thick, draw=blue!60}}
-    % vértices
-    \node[v, label=below:$a$] (a) at (0,0) {};
-    \node[v, label=below:$b$] (b) at (2,0) {};
-    \node[v, label=above:$c$] (c) at (1,1.6) {};
-    \node[v, label=above:$d$] (d) at (3,1.6) {};
-    \node[v, label=below:$e$] (e) at (4.2,0) {};
-    \node[v, label=below:$f$] (f) at (5.4,0) {};
-    % arcos do dígrafo (cinza)
-    \draw[a] (a) -- (b);
-    \draw[a] (c) -- (a);
-    \draw[a] (e) -- (d);
-    \draw[a] (f) -- (e);
-    \draw[a] (b) to[bend left=20] (e);
-    \draw[a] (e) to[bend left=20] (b);
-    % arcos em D[V'] (azul): todas as arestas com ambas as extremidades em V'
-    \draw[ind] (b) -- (c);
-    \draw[ind] (c) -- (d);
-    \draw[ind] (d) -- (b);
-    % destaque do conjunto de vértices V'
-    \node[draw=blue!40, rounded corners, fit=(b)(c)(d), inner sep=12pt, label={[blue!60]above:$V'=\{b,c,d\}$}] {};
-\end{tikzpicture}
-\caption{Subdígrafo induzido: para $V'=\{b,c,d\}$, o subdígrafo $D[V']$ contém todos os arcos de $D$ cujas extremidades pertencem a $V'$ (em azul). Arcos que incidem em $V'$ mas conectam a vértices fora de $V'$ não pertencem a $D[V']$.}
-\label{fig:subdigrafo-induzido}
-\end{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_subdigrafo_induzido.pdf}
+
+    \caption{Subdígrafo induzido: para $V'=\{b,c,d\}$, $D[V']$ mantém todos os arcos com ambas as extremidades em $V'$.}
+    \label{fig:subdigrafo-induzido}
+    \end{figure}
+
 
 \paragraph{Subdigrafo Maximal}
 \paragraph{}
 Um subdigrafo é tido como maximal se não é possível adicionar mais vértices ou arcos a ele sem perder alguma propriedade específica, como conexidade ou aciclicidade.
 
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!60}, keep/.style={->, very thick, draw=blue!60}}
-    % vértices (triângulo)
-    \node[v, label=below:$b$] (b) at (0,0) {};
-    \node[v, label=below:$c$] (c) at (2.0,0) {};
-    \node[v, label=above:$d$] (d) at (1.0,1.6) {};
-    % arcos do dígrafo original (cinza)
-    \draw[a] (b) -- (c);
-    \draw[a] (c) -- (d);
-    \draw[a] (d) -- (b);
-    % subdígrafo maximal acíclico (azul): mantém dois arcos, omite o terceiro que fecharia o circuito
-    \draw[keep] (b) -- (c);
-    \draw[keep] (c) -- (d);
-    % anotação
-    \node[align=left, anchor=west] at (3.0,0.9) {$D'=\{b,c,d\},\ {(b,c),(c,d)}$ é acíclico.\\ Adicionar $(d,b)$ cria o circuito $b\to c\to d\to b$.};
-\end{tikzpicture}
-\caption{Subdígrafo maximal (por aciclicidade): $D'$ é acíclico e maximal em $D$; adicionar o arco restante $(d,b)$ cria um circuito.}
-\label{fig:subdigrafo-maximal}
-\end{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_subdigrafo_maximal.pdf}
+
+    \caption{Subdígrafo maximal (por aciclicidade): $D'$ é acíclico e maximal em $D$; adicionar o arco restante $(d,b)$ cria um circuito.}
+    \label{fig:subdigrafo-maximal}\end{figure}
+
 
 \paragraph{Subdigrafo Gerador}
 \paragraph{}
 Um subdigrafo é tido como gerador se inclui todos os vértices do dígrafo original, ou seja, \(V' = V\). Nesse caso, o subdigrafo é formado por um subconjunto dos arcos do dígrafo original.
 
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    	\tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!60}, span/.style={->, very thick, draw=blue!60}}
-    % vértices
-    \node[v, label=below:$a$] (a) at (0,0) {};
-    \node[v, label=below:$b$] (b) at (2,0) {};
-    \node[v, label=above:$c$] (c) at (1,1.6) {};
-    \node[v, label=above:$d$] (d) at (3,1.6) {};
-    \node[v, label=below:$e$] (e) at (4.2,0) {};
-    \node[v, label=below:$f$] (f) at (5.4,0) {};
-    % arcos do dígrafo original (cinza)
-    \draw[a] (a) -- (b);
-    \draw[a] (c) -- (a);
-    \draw[a] (b) -- (c);
-    \draw[a] (d) -- (b);
-    \draw[a] (e) -- (d);
-    \draw[a] (f) -- (e);
-    \draw[a] (b) to[bend left=20] (e);
-    \draw[a] (e) to[bend left=20] (b);
-    % arcos do subdígrafo gerador (azul): V'=V e A' \subseteq A
-    \draw[span] (a) -- (b);
-    \draw[span] (b) -- (c);
-    \draw[span] (d) -- (b);
-    \draw[span] (e) -- (d);
-    \draw[span] (f) -- (e);
-    % anotação
-    \node[align=left, anchor=west] at (6.4,1.0) {$V'=V$\\ $A'\subseteq A$};
-\end{tikzpicture}
-\caption{Subdígrafo gerador: inclui todos os vértices do dígrafo original ($V'=V$) e apenas um subconjunto dos arcos (em azul).}
-\label{fig:subdigrafo-gerador}
-\end{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_subdigrafo_gerador.pdf}
+
+    \caption{Subdígrafo gerador: inclui todos os vértices do dígrafo original ($V'=V$) e apenas um subconjunto dos arcos (em azul).}
+    \label{fig:subdigrafo-gerador}\end{figure}
+
 
 \paragraph{}
 Com essas definições em mente, podemos explorar as subdigrafos específicos que citaremos ao longo da dissertação, começando pelas trilhas, circuitos, componentes fortemente conexas, componentes-fonte e arborescências.
@@ -1534,33 +1066,14 @@ Com essas definições em mente, podemos explorar as subdigrafos específicos qu
 \paragraph{}
 Uma \textbf{trilha} (ou caminho direcionado) em um dígrafo é uma sequência de vértices conectados por arcos que respeitam a direção. Formalmente, uma trilha \(P\) de comprimento \(k \geq 1\) é uma sequência de vértices \(P = (v_1, v_2, \ldots, v_{k+1})\) tal que cada par consecutivo \((v_i, v_{i+1})\) é um arco em \(A\). O comprimento da trilha é o número de arcos que ela contém, que é \(k\).
 
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!60}, p/.style={->, draw=blue!60}};
-    % vértices do caminho
-    \node[v, label=below:$v_1$] (v1) at (0,0) {};
-    \node[v, label=below:$v_2$] (v2) at (1.8,0) {};
-    \node[v, label=below:$v_3$] (v3) at (3.6,0) {};
-    \node[v, label=below:$v_4$] (v4) at (5.4,0) {};
-    % vértices extras (arcos que não fazem parte do caminho)
-    \node[v, label=above:$x$] (x) at (1.8,1.2) {};
-    \node[v, label=above:$y$] (y) at (3.6,1.2) {};
-    % arcos não pertencentes ao caminho (cinza)
-    \draw[a] (v1) -- (x);
-    \draw[a] (x) -- (v3);
-    \draw[a] (y) -- (v4);
-    % caminho destacado (azul)
-    \draw[p] (v1) -- (v2);
-    \draw[p] (v2) -- (v3);
-    \draw[p] (v3) -- (v4);
-    % legenda
-    \node[align=left, anchor=west] at (6.2,0.6) {$P=(v_1,v_2,v_3,v_4)$\\ $|P|=3$};
-\end{tikzpicture}
-\caption{Trilha em dígrafo: a trilha $P=(v_1,v_2,v_3,v_4)$ está destacada em azul. Seu comprimento é o número de arcos percorridos, $|P|=3$.}
-\label{fig:trilha}
-\end{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_trilha.pdf}
+
+    \caption{Trilha em dígrafo: a trilha $P=(v_1,v_2,v_3,v_4)$ está destacada em azul. Seu comprimento é o número de arcos percorridos, $|P|=3$.}
+    \label{fig:trilha}\end{figure}
+
 
 \paragraph{}
 Uma conceito importante relacionado às trilhas é o de cortes. 
@@ -1569,35 +1082,15 @@ Uma conceito importante relacionado às trilhas é o de cortes.
 \paragraph{}
 Um \textbf{corte} em um dígrafo é um conjunto de arcos cuja remoção desconecta o dígrafo, ou seja, impede que haja uma trilha entre certos pares de vértices. Formalmente, dado um dígrafo \(D = (V, A)\), um corte \(C\) é um subconjunto de arcos \(C \subseteq A\) tal que a remoção dos arcos em \(C\) resulta em um dígrafo \(D' = (V, A \setminus C)\) onde não existe mais uma trilha (caminho direcionado) entre pelo menos um par de vértices \(u, v \in V\).
 
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!70}, cut/.style={->, very thick, draw=red!70}};
-    % vértices
-    \node[v, label=below:$a$] (a) at (0,0) {};
-    \node[v, label=below:$b$] (b) at (2,0) {};
-    \node[v, label=above:$c$] (c) at (1,1.5) {};
-    \node[v, label=below:$d$] (d) at (4,0) {};
-    \node[v, label=above:$e$] (e) at (3,1.5) {};
-    \node[v, label=below:$f$] (f) at (6,0) {};
-    % arcos
-    \draw[a] (a) -- (b);
-    \draw[a] (b) -- (c);
-    \draw[a] (c) -- (a);
-    \draw[a] (b) -- (d);
-    \draw[a] (d) -- (e);
-    \draw[a] (e) -- (b);
-    \draw[a] (d) -- (f);
-    \draw[a] (f) -- (e);
-    % corte destacado (vermelho)
-    \draw[cut] (b) -- (d);
-    % legenda
-    \node[align=left, anchor=west] at (6.5,1.0) {Corte $C=\{(b,d)\}$\\ Remover $C$ desconecta $D$};
-\end{tikzpicture}
-\caption{Corte em dígrafo: o corte $C=\{(b,d)\}$ está destacado em vermelho. Remover esse arco desconecta o dígrafo, impedindo caminhos direcionados entre certos pares de vértices.}
-\label{fig:corte}
-\end{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_corte.pdf}
+
+    \caption{Corte em dígrafo: o corte $C=\{(b,d)\}$ remove conectividade de $b$ para $d$.}
+    \label{fig:corte}
+    \end{figure}
+
 
 \paragraph{}
 De forma resumida, dado um dígrafo \(D=(V,A)\) e um subconjunto \(X\subseteq V\), denotamos por um corte \(s\text{--}t\) é determinado pela escolha de um conjunto de vértices \(X\subseteq V\) tal que \(s\in X\) e \(t\notin X\); pensa-se nele como a “divisão” do grafo em dois lados: \(X\) e \(V\setminus X\).
@@ -1617,35 +1110,15 @@ Para tornar a notação precisa e fácil de ler:
 \paragraph{}
 Um min-corte é um corte de tamanho mínimo, ou seja, é o corte com o menor número possível de arcos cuja remoção desconecta o dígrafo. Formalmente, dado um dígrafo \(D = (V, A)\), um min-corte \(C_{min}\) é um corte tal que para qualquer outro corte \(C\), \(|C_{min}| \leq |C|\). O tamanho do min-corte é o número de arcos em \(C_{min}\).
 
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!70}, cut/.style={->, very thick, draw=red!70}};
-    % vértices 
-    \node[v, label=below:$a$] (a) at (0,0) {};
-    \node[v, label=below:$b$] (b) at (2,0) {};
-    \node[v, label=above:$c$] (c) at (1,1.5) {};
-    \node[v, label=below:$d$] (d) at (4,0) {};
-    \node[v, label=above:$e$] (e) at (3,1.5) {};
-    \node[v, label=below:$f$] (f) at (6,0) {};
-    % arcos
-    \draw[a] (a) -- (b);
-    \draw[a] (b) -- (c);
-    \draw[a] (c) -- (a);
-    \draw[a] (b) -- (d);
-    \draw[a] (d) -- (e);
-    \draw[a] (e) -- (b);
-    \draw[a] (d) -- (f);
-    \draw[a] (f) -- (e);
-    % min-corte destacado (vermelho)
-    \draw[cut] (b) -- (d);
-    % legenda
-    \node[align=left, anchor=west] at (6.5,1.0) {Min-corte $C_{min}=\{(b,d)\}$\\ $|C_{min}|=1$ é o menor corte que desconecta $D$};
-\end{tikzpicture}
-\caption{Min-corte em dígrafo: o min-corte $C_{min}=\{(b,d)\}$ está destacado em vermelho. Remover esse arco desconecta o dígrafo, e é o menor corte possível, com tamanho $|C_{min}|=1$.}
-\label{fig:min-corte}
-\end{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_min_corte.pdf}
+
+    \caption{Min-corte em dígrafo: o min-corte $C_{min}$ é um corte de menor cardinalidade (ou custo) que separa $s$ de $t$.}
+    \label{fig:min-corte}
+    \end{figure}
+
 
 Um teorema importante relacionado a min-cortes é o Teorema do Fluxo Máximo - Corte Mínimo, que estabelece uma relação entre o fluxo máximo que pode ser enviado de uma fonte \(s\) para um sumidouro \(t\) em um dígrafo e o valor do min-corte que separa \(s\) de \(t\). Escolhemos apresensentar esse teorema aqui pois ele traz uma intuição interessante sobre a relação entre fluxos e cortes em dígrafos, relevantes para os algoritmos que discutiremos mais adiante.
 
@@ -1680,31 +1153,14 @@ A diferença entre trilhas e circuitos é que trilhas são caminhos direcionados
 \paragraph{}
  Um \textbf{circuito} é um caminho direcionado que começa e termina no mesmo vértice, ou seja, \(v_1 = v_{k+1}\). Formalmente, um circuito \(C\) é uma sequência de vértices \(C = (v_1, v_2, \ldots, v_k, v_1)\) tal que cada par consecutivo \((v_i, v_{i+1})\) é um arco em \(A\) e \(k \geq 2\). O comprimento do circuito é o número de arcos que ele contém, que é \(k\).
 
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!60}, c/.style={->, draw=blue!60}};
-    % vértices do ciclo (dispostos aproximadamente em círculo)
-    \node[v, label=below:$v_1$] (v1) at (0,0) {};
-    \node[v, label=right:$v_2$] (v2) at (2.0,0.8) {};
-    \node[v, label=above:$v_3$] (v3) at (1.2,2.1) {};
-    \node[v, label=left:$v_4$] (v4) at (-0.8,1.6) {};
-    % arcos não pertencentes ao ciclo (cinza)
-    \node[v, label=right:$x$] (x) at (2.6,1.8) {};
-    \draw[a] (x) -- (v2);
-    \draw[a] (x) -- (v3);
-    % ciclo destacado (azul)
-    \draw[c] (v1) -- (v2);
-    \draw[c] (v2) -- (v3);
-    \draw[c] (v3) -- (v4);
-    \draw[c] (v4) -- (v1);
-    % legenda
-    \node[align=left, anchor=west] at (3.2,1.0) {$C=(v_1,v_2,v_3,v_4,v_1)$\\ $|C|=4$};
-\end{tikzpicture}
-\caption{Ciclo direcionado em dígrafo: o ciclo $C=(v_1,v_2,v_3,v_4,v_1)$ está destacado em azul. Seu comprimento é o número de arcos, $|C|=4$.}
-\label{fig:ciclo-direcionado}
-\end{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_ciclo_direcionado.pdf}
+
+    \caption{Ciclo direcionado em dígrafo: o ciclo $C=(v_1,v_2,v_3,v_4,v_1)$ está destacado em azul. Seu comprimento é o número de arcos, $|C|=4$.}
+    \label{fig:ciclo-direcionado}\end{figure}
+
 
 \paragraph{}
 Propriedades importantes dos circuitos incluem:
@@ -1748,43 +1204,14 @@ Formalmente, uma componente fortemente conexa \(C\) é um subdígrafo \(C = (V_C
     \item \(C\) é fortemente conexo: existe um caminho direcionado entre qualquer par de vértices em \(V_C\).
 \end{itemize}
 Além disso, \(C\) é maximal, o que significa que não é possível adicionar mais vértices ou arcos a \(C\) sem perder a propriedade de forte conexidade.
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}};
-    \tikzset{a/.style={->, semithick, draw=gray!70}};
-    \tikzset{comp/.style={draw=blue!40, rounded corners}};
-    % Componente C1 (à esquerda)
-    \node[v, label=above:$a$] (a) at (0,1.2) {};
-    \node[v, label=below:$b$] (b) at (-0.8,0) {};
-    \node[v, label=below:$c$] (c) at (0.8,0) {};
-    \draw[a] (a) -- (b);
-    \draw[a] (b) -- (c);
-    \draw[a] (c) -- (a);
-    \node[comp, fit=(a)(b)(c), inner sep=20pt, label={[blue!60]above:$C_1$}] {};
-    % Componente C2 (centro)
-    \node[v, label=below:$d$] (d) at (4,0) {};
-    \node[v, label=below:$e$] (e) at (5.6,0) {};
-    \draw[a] (d) to[bend left=20] (e);
-    \draw[a] (e) to[bend left=20] (d);
-    \node[comp, fit=(d)(e), inner sep=15pt, label={[blue!60]above:$C_2$}] {};
-    % Componente C3 (direita)
-    \node[v, label=above:$f$] (f) at (8.6,1.2) {};
-    \node[v, label=below:$g$] (g) at (7.8,0) {};
-    \node[v, label=below:$h$] (h) at (9.4,0) {};
-    \draw[a] (f) to[bend left=20] (g);
-    \draw[a] (g) to[bend left=20] (h);
-    \draw[a] (h) to[bend left=20] (f);
-    \draw[a] (g) to[bend left=20] (f);
-    \draw[a] (h) to[bend left=20] (g);
-    \draw[a] (f) to[bend left=20] (h);
-    \node[comp, fit=(f)(g)(h), inner sep=20pt, label={[blue!60]above:$C_3$}] {};
-    % texto explicativo
-    \node[align=center, anchor=north west] at (-0.2,-1.0) {Cada caixa destaca uma \emph{componente fortemente conexa}.\\ Não há arcos entre $C_1$, $C_2$ e $C_3$.};
-\end{tikzpicture}
-\caption{Componentes fortemente conexas: o dígrafo possui três componentes $C_1$, $C_2$ e $C_3$. Cada $C_i$ é fortemente conexo e \emph{maximal}: adicionar qualquer vértice de fora quebraria a propriedade de forte conexidade interna ou exigiria arcos ausentes.}   
-\end{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/figure_028.pdf}
+
+    \caption{Componentes fortemente conexas: o dígrafo possui três componentes $C_1$, $C_2$ e $C_3$. Cada $C_i$ é fortemente conexo e \emph{maximal}.}
+    \end{figure}
+
 
 \paragraph{}
 A seguir falaremos sobre a propriedade de alcançabilidade mútua em CFC, que é fundamental para entendermos a relação entre elas e arborescências (que apenas mencionaremos aqui, para aprofundarmos na sessão sobre arborescências e com os grafos acíclicos dirigidos (DAGs))\footnote{Um DAG (Directed Acyclic Graph) é um grafo direcionado que não contém ciclos. Em outras palavras, não é possível começar em um vértice e seguir uma sequência de arcos que retorne ao mesmo vértice. Os DAGs são estruturas fundamentais em muitas áreas da computação, incluindo a representação de dependências e a modelagem de processos.}:
@@ -1806,45 +1233,14 @@ A seguir falaremos sobre a propriedade de alcançabilidade mútua em CFC, que é
     \item \(C\) é fortemente conexo: existe um caminho direcionado entre qualquer par de vértices em \(V_C\).
 \end{itemize}
 
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!70}, comp/.style={draw=blue!40, rounded corners}};
-    % Componente-fonte C1 (à esquerda)
-    \node[v, label=above:$a$] (a) at (0,1.2) {};
-    \node[v, label=below:$b$] (b) at (-0.8,0) {};
-    \node[v, label=below:$c$] (c) at (0.8,0) {};
-    \draw[a] (a) -- (b);
-    \draw[a] (b) -- (c);
-    \draw[a] (c) -- (a);
-    \node[comp, fit=(a)(b)(c), inner sep=20pt, label={[blue!60]above:$C_1$}] {};
-    % Componente C2 (centro)
-    \node[v, label=below:$d$] (d) at (4,0) {};
-    \node[v, label=below:$e$] (e) at (5.6,0) {};
-    \draw[a] (d) to[bend left=20] (e);
-    \draw[a] (e) to[bend left=20] (d);
-    \node[comp, fit=(d)(e), inner sep=15pt, label={[blue!60]above:$C_2$}] {};
-    % Componente C3 (direita)
-    \node[v, label=above:$f$] (f) at (8.6,1.2) {};
-    \node[v, label=below:$g$] (g) at (7.8,0) {};
-    \node[v, label=below:$h$] (h) at (9.4,0) {};
-    \draw[a] (f) to[bend left=20] (g);
-    \draw[a] (g) to[bend left=20] (h);
-    \draw[a] (h) to[bend left=20] (f);
-    \draw[a] (g) to[bend left=20] (f);
-    \draw[a] (h) to[bend left=20] (g);
-    \draw[a] (f) to[bend left=20] (h);
-    \node[comp, fit=(f)(g)(h), inner sep=20pt, label={[blue!60]above:$C_3$}] {};
-    % arcos entre componentes
-    \draw[a] (c) to[bend left=15] (d);
-    \draw[a] (e) to[bend left=15] (f);
-    % texto explicativo
-    \node[align=center, anchor=north west, text width=15.0cm] at (-1.5,-1.0) {A componente $C_1$ é uma \emph{componente-fonte} porque não há arcos saindo dela para outras componentes. Já $C_2$ e $C_3$ não são componentes-fonte, pois há arcos entrando nelas.};
-\end{tikzpicture}
-\caption{Componente-fonte: o dígrafo possui três componentes $C_1$, $C_2$ e $C_3$. A componente $C_1$ é uma componente-fonte porque não há arcos saindo dela para outras componentes. Já $C_2$ e $C_3$ não são componentes-fonte, pois há ar  cos entrando nelas.}
-\label{fig:componente-fonte}
-\end{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_componente_fonte.pdf}
+
+    \caption{Componente-fonte: o dígrafo possui três componentes $C_1$, $C_2$ e $C_3$. A componente $C_1$ é uma componente-fonte porque não há arcos saindo dela para outras componentes. Já $C_2$ e $C_3$ não são componentes-fonte, pois há ar  cos entrando nelas.}
+    \label{fig:componente-fonte}\end{figure}
+
 
 \paragraph{Componentes-sumidouro}
 \paragraph{}Uma \textbf{componente-sumidouro} é uma componente fortemente conexa que não possui arcos direcionados entrando nela vindos de outras componentes. Formalmente, uma componente-sumidouro \(C\) é uma componente fortemente conexa \(C = (V_C, A_C)\) onde \(V_C \subseteq V\) e \(A_C \subseteq A\), que satisfaz a seguinte propriedade:
@@ -1854,77 +1250,27 @@ A seguir falaremos sobre a propriedade de alcançabilidade mútua em CFC, que é
     \item \(C\) é fortemente conexo: existe um caminho direcionado entre qualquer par de vértices em \(V_C\).
 \end{itemize}
 
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!70}, comp/.style={draw=blue!40, rounded corners}};
-    % Componente-fonte C1 (à esquerda)
-    \node[v, label=above:$a$] (a) at (0,1.2) {};
-    \node[v, label=below:$b$] (b) at (-0.8,0) {};
-    \node[v, label=below:$c$] (c) at (0.8,0) {};
-    \draw[a] (a) -- (b);
-    \draw[a] (b) -- (c);
-    \draw[a] (c) -- (a);
-    \node[comp, fit=(a)(b)(c), inner sep=20pt, label={[blue!60]above:$C_1$}] {};
-    % Componente C2 (centro)
-    \node[v, label=below:$d$] (d) at (4,0) {};
-    \node[v, label=below:$e$] (e) at (5.6,0) {};
-    \draw[a] (d) to[bend left=20] (e);
-    \draw[a] (e) to[bend left=20] (d);
-    \node[comp, fit=(d)(e), inner sep=15pt, label={[blue!60]above:$C_2$}] {};
-    % Componente C3 (direita)
-    \node[v, label=above:$f$] (f) at (8.6,1.2) {};
-    \node[v, label=below:$g$] (g) at (7.8,0) {};
-    \node[v, label=below:$h$] (h) at (9.4,0) {};
-    \draw[a] (f) to[bend left=20] (g);
-    \draw[a] (g) to[bend left=20] (h);
-    \draw[a] (h) to[bend left=20] (f);
-    \draw[a] (g) to[bend left=20] (f);
-    \draw[a] (h) to[bend left=20] (g);
-    \draw[a] (f) to[bend left=20] (h);
-    \node[comp, fit=(f)(g)(h), inner sep=15pt, label={[blue!60]above:$C_3$}] {};
-    % arcos entre componentes
-    \draw[a] (c) to[bend left=15] (d);
-    \draw[a] (e) to[bend left=15] (f);
-    % texto explicativo
-    \node[align=center, anchor=north west, text width=15.0cm] at (-1.5,-1.0) {A componente $C_3$ é uma \emph{componente-sumidouro} porque não há arcos entrando nela vindos de outras componentes. Já $C_1$ e $C_2$ não são componentes-sumidouro, pois há arcos saindo delas.};
-\end{tikzpicture}
-\caption{Componente-sumidouro: o dígrafo possui três componentes $C_1$, $C_2$ e $C_3$. A componente $C_3$ é uma componente-sumidouro porque não há arcos entrando nela vindos de outras componentes. Já $C_1$ e $C_2$ não são componentes-sumidouro, pois há arcos saindo delas.}
-\label{fig:componente-sumidouro}
-\end{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_componente_sumidouro.pdf}
+
+    \caption{Componente-sumidouro: o dígrafo possui três componentes $C_1$, $C_2$ e $C_3$. A componente $C_3$ é uma componente-sumidouro porque não há arcos entrando nela vindos de outras componentes. Já $C_1$ e $C_2$ não são componentes-sumidouro, pois há arcos saindo delas.}
+    \label{fig:componente-sumidouro}\end{figure}
+
 
 \paragraph{}
 Existe um resultado clássico que relaciona o número de componentes-fonte e componentes-sumidouro em um dígrafo com o número mínimo de arcos necessários para torná-lo fortemente conexo.
 
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth]
-    % estilos locais para o condensado
-    	\tikzset{
-        comp/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
-        src/.style={circle, draw=green!60!black, fill=green!15, minimum size=7mm, inner sep=0pt, very thick},
-        sink/.style={circle, draw=red!60!black, fill=red!15, minimum size=7mm, inner sep=0pt, very thick},
-        arc/.style={->, semithick, draw=gray!70}
-    }
-    % nós (CFCs do condensado)
-    \node[src, label=below:$C_1$] (c1) at (0,0) {};
-    \node[comp, label=below:$C_2$] (c2) at (2.2,0.9) {};
-    \node[comp, label=below:$C_3$] (c3) at (2.2,-0.9) {};
-    \node[sink, label=below:$C_4$] (c4) at (4.4,0) {};
-    % arcos do condensado (DAG)
-    \draw[arc] (c1) -- (c2);
-    \draw[arc] (c1) -- (c3);
-    \draw[arc] (c2) -- (c4);
-    \draw[arc] (c3) -- (c4);
-    % legendas curtas
-    \node[align=left, anchor=west] at (5.1,0.6) {CFC-\textit{fonte}: sem entrada ($C_1$)};
-    \node[align=left, anchor=west] at (5.1,-0.1) {CFC-\textit{sumidouro}: sem saída ($C_4$)};
-    \node[align=left, anchor=west] at (5.1,-0.8) {$s=1,\; t=1$ neste exemplo};
-\end{tikzpicture}
-\caption{Grafo condensado $\mathrm{Cond}(D)$ e a contagem de CFCs-fonte/sumidouro: $C_1$ não recebe arcos (fonte) e $C_4$ não emite arcos (sumidouro).}
-\label{fig:condensado-st}
-\end{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_condensado_st.pdf}
+
+    \caption{Grafo condensado $\mathrm{Cond}(D)$: cada CFC é contraída a um vértice e não há circuitos dirigidos (DAG).}
+    \label{fig:condensado-st}
+    \end{figure}
+
 
 \paragraph{}
 Seja $D=(V,A)$ um dígrafo com $k$ componentes fortemente conexas (CFCs): 
@@ -1962,40 +1308,14 @@ As noções de CFCs e componentes-fonte conversam diretamente com o conceito de 
     \item \(T\) é acíclico: não contém ciclos direcionados.
 \end{itemize}
 Além disso, uma arborescência com \(n\) vértices sempre tem exatamente \(n-1\) arcos.
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=blue!70}, p/.style={->, draw=gray!60}};
-    % vértices da arborescência
-    \node[v, label=below:$r$] (r) at (0,0) {};
-    \node[v, label=above:$a$] (a) at (-1.6,1.4) {};
-    \node[v, label=above:$b$] (b) at (0.0,1.8) {};
-    \node[v, label=above:$c$] (c) at (1.6,1.4) {};
-    \node[v, label=above:$d$] (d) at (-2.4,2.8) {};
-    \node[v, label=above:$e$] (e) at (-0.8,3.0) {};
-    \node[v, label=above:$f$] (f) at (0.8,3.0) {};
-    \node[v, label=above:$g$] (g) at (-4.95,3.0) {};
-    \node[v, label=above:$h$] (h) at (-3.50,3.0) {};
-    % arcos da arborescência (sem ciclos)                      
-    \draw[a] (r) -- (a);
-    \draw[a] (r) -- (b);
-    \draw[a] (r) -- (c);
-    \draw[a] (a) -- (d);
-    \draw[a] (b) -- (e);
-    \draw[a] (c) -- (f);
-    % arco extra (não faz parte da arborescência)
-    \draw[p] (e) -- (d);
-    \draw[p] (f) -- (r);
-    \draw[p] (d) -- (b);
-    \draw[p] (a) -- (b);
-    \draw[p] (g) -- (h);
-    
-    \node[align=left, anchor=west] at (3.0,1.8) {$|V_T|=7,\; |A_T|=6$\\ $|A_T|=|V_T|-1$};
-\end{tikzpicture}
-\caption{Arborescência: dígrafo conexo e acíclico com raiz $r$ de onde há um caminho direcionado para todos os outros vértices em azul. No exemplo, $|V_T|=7$ e $|A_T|=6$, satisfazendo $|A_T|=|V_T|-1$. Em cinza, arcos que não fazem parte da arborescência.}
-\label{fig:arborescencia}
-\end{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_arborescencia.pdf}
+
+    \caption{Arborescência: dígrafo conexo e acíclico com raiz $r$ de onde há um caminho direcionado para todos os outros vértices em azul. No exemplo, $|V_T|=7$ e $|A_T|=6$, satisfazendo $|A_T|=|V_T|-1$. Em cinza, arcos que não fazem parte da arborescência.}
+    \label{fig:arborescencia}\end{figure}
+
 
 \paragraph{Definições e notação adicionais}
 \paragraph{}
@@ -2023,40 +1343,14 @@ Uma arborescência é dita maximal se não é possível adicionar mais vértices
     \item \(R\) é maximal: não é possível adicionar mais arcos a \(R\) sem perder a propriedade de ser uma arborescência.
 \end{itemize}
 
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=blue!70}, p/.style={->, draw=gray!60}};
-    % vértices da ramificação geradora
-    \node[v, label=below:$r$] (r) at (0,0) {};
-    \node[v, label=above:$a$] (a) at (-1.6,1.4) {};
-    \node[v, label=above:$b$] (b) at (0.0,1.8) {};
-    \node[v, label=above:$c$] (c) at (1.6,1.4) {};
-    \node[v, label=above:$d$] (d) at (-2.4,2.8) {};
-    \node[v, label=above:$e$] (e) at (-0.8,3.0) {};
-    \node[v, label=above:$f$] (f) at (0.8,3.0) {};
-    \node[v, label=above:$g$] (g) at (-4.95,3.0) {};
-    \node[v, label=above:$h$] (h) at (-3.50,3.0) {};
-    % arcos da ramificação geradora (sem ciclos)                      
-    \draw[a] (r) -- (a);
-    \draw[a] (r) -- (b);
-    \draw[a] (r) -- (c);
-    \draw[a] (a) -- (d);
-    \draw[a] (b) -- (e);
-    \draw[a] (c) -- (f);
-    % arco extra (não faz parte da ramificação geradora)
-    \draw[p] (e) -- (d);
-    \draw[p] (f) -- (r);
-    \draw[p] (d) -- (b);    
-    \draw[p] (a) -- (b);
-    \draw[p] (g) -- (h);
 
-    \node[align=left, anchor=west] at (3.0,1.8) {$|V_T|=7,\; |A_T|=6$\\ $|A_T|=|V_T|-1$};
-\end{tikzpicture}
-\caption{Ramificação geradora: arborescência que inclui todos os vértices do dígrafo original, em azul. No exemplo, $|V_T|=7$ e $|A_T|=6$, satisfazendo $|A_T|=|V_T|-1$. Em cinza, arcos que não fazem parte da ramificação geradora.}
-\label{fig:ramificacao-geradora}
-\end{figure} 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_ramificacao_geradora.pdf}
+
+    \caption{Ramificação geradora: arborescência que inclui todos os vértices do dígrafo original, em azul. No exemplo, $|V_T|=7$ e $|A_T|=6$, satisfazendo $|A_T|=|V_T|-1$. Em cinza, arcos que não fazem parte da ramificação geradora.}
+    \label{fig:ramificacao-geradora}\end{figure}
+ 
 
 \paragraph{}
 Quando falamaos de ramificações geradoras, podemos falar de uma estrutura que fixa um vértice raiz \(r\) e constrói uma arborescência que alcança todos os outros vértices a partir dessa raiz. Essa estrutura é conhecida como \emph{r-arborescência}.
@@ -2091,37 +1385,14 @@ Finalmente podemos conceituar a principal estrutura que estudaremos nesta disser
     \item \(T\) é uma arborescência enraizada em \(r\): existe um caminho direcionado de \(r\) para qualquer vértice em \(V_T\).
     \item \(T\) minimiza o custo total: a soma dos custos dos arcos em \(A_T\) é mínima, ou seja, \(\sum_{a \in A_T} c(a)\) é minimizada.
 \end{itemize}
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=blue!70}, p/.style={->, draw=gray!60}};
-    % vértices da r-arborescência de custo mínimo
-    \node[v, label=below:$r$] (r) at (0,0) {};
-    \node[v, label=above:$a$] (a) at (-1.6,1.4) {};
-    \node[v, label=above:$b$] (b) at (0.0,1.8) {};
-    \node[v, label=above:$c$] (c) at (1.6,1.4) {};
-    \node[v, label=above:$d$] (d) at (-2.4,2.8) {};
-    \node[v, label=above:$e$] (e) at (-0.8,3.0) {};
-    \node[v, label=above:$f$] (f) at (0.8,3.0) {};
-    % arcos da r-arborescência de custo mínimo (sem ciclos)                      
-    \draw[a] (r) -- (a) node[midway, left] {2};
-    \draw[a] (r) -- (b) node[midway, right] {3};
-    \draw[a] (r) -- (c) node[midway, right] {1};
-    \draw[a] (a) -- (d) node[midway, left] {4};
-    \draw[a] (b) -- (e) node[midway, right] {2};
-    \draw[a] (c) -- (f) node[midway, right] {5};
-    % arco extra (não faz parte da r-arborescência de custo mínimo)
-    \draw[p] (e) -- (d) node[midway, left] {6};
-    \draw[p] (f) -- (r) node[midway, right] {7};
-    \draw[p] (d) -- (b) node[midway, right] {8};    
-    \draw[p] (a) -- (b) node[midway, right] {3};
-    % custo total
-    \node[align=left, anchor=west] at (-3.0,-1.5) {Custo total da r-arborescência: $2 + 3 + 1 + 4 + 2 + 5 = 17$};
-\end{tikzpicture}
-\caption{r-arborescência de custo mínimo: arborescência enraizada em $r$ que minimiza a soma dos custos dos arcos, em azul. No exemplo, o custo total é $17$. Em cinza, arcos que não fazem parte da r-arborescência de custo mínimo.}
-\label{fig:r-arborescencia-custo-minimo}
-\end{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_r_arborescencia_custo_minimo.pdf}
+
+    \caption{r-arborescência de custo mínimo: arborescência enraizada em $r$ que minimiza a soma dos custos dos arcos, em azul. No exemplo, o custo total é $17$. Em cinza, arcos que não fazem parte da r-arborescência de custo mínimo.}
+    \label{fig:r-arborescencia-custo-minimo}\end{figure}
+
 
 \paragraph{r-arborescência inversa de custo mínimo:}
 é uma arborescência inversa enraizada em um vértice específico \(r\) que minimiza a soma dos pesos dos arcos que a compõem. Formalmente, dada uma função de custo \(c: A \to \mathbb{R}_{\geq 0}\) que atribui um custo a cada arco do dígrafo \(D = (V, A)\), uma r-arborescência inversa de custo mínimo \(T\) é uma arborescência inversa \(T = (V_T, A_T)\) onde \(V_T \subseteq V\) e \(A_T \subseteq A\), que satisfaz as seguintes propriedades:
@@ -2131,37 +1402,14 @@ Finalmente podemos conceituar a principal estrutura que estudaremos nesta disser
 \end{itemize}
 
 \paragraph{}
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=blue!70}, p/.style={->, draw=gray!60}};
-    % vértices da r-arborescência inversa de custo mínimo
-    \node[v, label=below:$r$] (r) at (0,0) {};
-    \node[v, label=above:$a$] (a) at (-1.6,1.4) {};
-    \node[v, label=above:$b$] (b) at (0.0,1.8) {};
-    \node[v, label=above:$c$] (c) at (1.6,1.4) {};
-    \node[v, label=above:$d$] (d) at (-2.4,2.8) {};
-    \node[v, label=above:$e$] (e) at (-0.8,3.0) {};
-    \node[v, label=above:$f$] (f) at (0.8,3.0) {};
-    % arcos da r-arborescência inversa de custo mínimo (sem ciclos)                      
-    \draw[a] (a) -- (r) node[midway, left] {2};
-    \draw[a] (b) -- (r) node[midway, right] {3};
-    \draw[a] (c) -- (r) node[midway, right] {1};
-    \draw[a] (d) -- (a) node[midway, left] {4};
-    \draw[a] (e) -- (b) node[midway, right] {2};
-    \draw[a] (f) -- (c) node[midway, right] {5};
-    % arco extra (não faz parte da r-arborescência inversa de custo mínimo)
-    \draw[p] (d) -- (e) node[midway, left] {6};
-    \draw[p] (r) -- (f) node[midway, right] {7};
-    \draw[p] (b) -- (d) node[midway, right] {8};    
-    \draw[p] (b) -- (a) node[midway, right] {3};
-    % custo total
-    \node[align=left, anchor=west] at (-3.0,-1.5) {Custo total da r-arborescência inversa: $2 + 3 + 1 + 4 + 2 + 5 = 17$};
-\end{tikzpicture}
-\caption{r-arborescência inversa de custo mínimo: arborescência inversa enraizada em $r$ que minimiza a soma dos custos dos arcos, em azul. No exemplo, o custo total é $17$. Em cinza, arcos que não fazem parte da r-arborescência inversa de custo mínimo.}
-\label{fig:r-arborescencia-inversa-custo-minimo}
-\end{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_r_arborescencia_inversa_custo_minimo.pdf}
+
+    \caption{r-arborescência inversa de custo mínimo: arborescência inversa enraizada em $r$ que minimiza a soma dos custos dos arcos, em azul. No exemplo, o custo total é $17$. Em cinza, arcos que não fazem parte da r-arborescência inversa de custo mínimo.}
+    \label{fig:r-arborescencia-inversa-custo-minimo}\end{figure}
+
 
 \paragraph{}
 As arborescências são a principal estrutura que exploraremos ao longo desta dissertação, especialmente a r-arborescência de custo mínimo e r-arborescência inversa de custo mínimo, abordaremos o problema de encontrá-las eficientemente em dígrafos com custos associados aos arcos.
@@ -2260,41 +1508,14 @@ Antes de enunciar o teorema, vale a pena mencionar o conceito de \emph{interseç
 \end{itemize}
 
 \paragraph{}
+
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth]
-    % estilos
-    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=blue!70}, p/.style={->, draw=gray!60}};
-    % vértices do dígrafo
-    \node[v, label=below:$r$] (r) at (0,0) {};
-    \node[v, label=above:$a$] (a) at (-1.6,1.4) {};
-    \node[v, label=above:$b$] (b) at (0.0,1.8) {};
-    \node[v, label=above:$c$] (c) at (1.6,1.4) {};
-    \node[v, label=above:$d$] (d) at (-2.4,2.8) {};
-    \node[v, label=above:$e$] (e) at (-0.8,3.0) {};
-    \node[v, label=above:$f$] (f) at (0.8,3.0) {};
-    % arcos do dígrafo                      
-    \draw[a] (r) -- (a);
-    \draw[a] (r) -- (b);
-    \draw[a] (r) -- (c);
-    \draw[a] (a) -- (d);
-    \draw[a] (b) -- (e);
-    \draw[a] (c) -- (f);
-    \draw[a] (e) -- (d);
-    \draw[a] (f) -- (r);
-    \draw[a] (d) -- (b);    
-    \draw[a] (a) -- (b);
-    % arcos extras (não fazem parte das arborescências)
-    \draw[p] (e) -- (f);
-    \draw[p] (f) -- (e);
-    \draw[p] (d) -- (c);    
-    \draw[p] (c) -- (d);
-    \draw[p] (g) -- (h);
-    \draw[p] (h) -- (g);
-\end{tikzpicture}
-\caption{Dígrafo de exemplo para múltiplas arborescências arcodisjuntas.}
-\label{fig:exemplo-multiplas-arborescencias}
-\end{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/fig_exemplo_multiplas_arborescencias.pdf}
+
+    \caption{Dígrafo de exemplo para múltiplas arborescências arcodisjuntas.}
+    \label{fig:exemplo-multiplas-arborescencias}\end{figure}
+
 
 \paragraph{}
 Agora podemos enunciar o teorema de Edmonds, que fornece uma condição necessária e suficiente para a existência de \(k\) arborescências arcodisjuntas enraizadas em um vértice \(r\).
@@ -2679,35 +1900,14 @@ De modo geral, funciona a seguinte regra para esse caso: “escolha sempre a are
 \end{figure}
     \item \textbf{Princípio do uso da aresta mais pesada em um ciclo.} Em qualquer \emph{ciclo}, a aresta de maior peso \emph{não} pode pertencer a uma MST, pois existe uma troca que reduz (ou não aumenta) o custo total removendo essa aresta pesada, podemos entender que em um ciclo \(C\), remover a aresta \emph{mais pesada} não desconecta o grafo (há caminho alternativo dentro do próprio ciclo). Como é a mais cara, retirá-la só pode reduzir (ou manter) o custo. Logo, nenhuma MST precisa conter a aresta mais pesada de um ciclo.
 
+
 \begin{figure}[htbp]
     \centering
-    % Ilustração do princípio da aresta mais pesada do ciclo
-    \begin{tikzpicture}[scale=1]
-        % Estilos
-        	\tikzset{
-            v/.style={circle, draw, fill=blue!10, minimum size=6mm, inner sep=0pt},
-            edgeG/.style={line width=0.9pt, draw=gray!65},
-            heavy/.style={line width=1.6pt, draw=red!70},
-            note/.style={gray!70}
-        }
-        % Nós do ciclo
-        \node[v, label=left:$u$]  (U) at (-2, 0) {};
-        \node[v, label=above:$v$] (V) at ( 0, 1.7) {};
-        \node[v, label=right:$x$] (X) at ( 2, 0) {};
-        \node[v, label=below:$y$] (Y) at ( 0,-1.7) {};
+    \includegraphics[width=0.9\linewidth]{figures/fig_mst_cycle_heavy.pdf}
 
-        % Arestas do ciclo com pesos
-        \draw[edgeG] (U) -- node[above left,  fill=white, inner sep=1pt] {1} (V);
-        \draw[heavy] (V) -- node[above right, fill=white, inner sep=1pt] {\textbf{5}} (X);
-        \draw[edgeG] (X) -- node[below right, fill=white, inner sep=1pt] {2} (Y);
-        \draw[edgeG] (Y) -- node[below left,  fill=white, inner sep=1pt] {3} (U);
-
-        % Observação
-        \node[red!90!] at (0, -3.0) {A aresta mais pesada do ciclo (vermelha) não precisa aparecer em nenhuma MST};
-    \end{tikzpicture}
     \caption{Princípio do ciclo: em qualquer ciclo, a aresta mais pesada (em vermelho) pode ser removida sem desconectar o grafo, reduzindo (ou não aumentando) o custo. Portanto, nenhuma MST contém a aresta mais pesada de um ciclo.}
-    \label{fig:mst-cycle-heavy}
-\end{figure}
+    \label{fig:mst-cycle-heavy}\end{figure}
+
 \end{itemize}
 
 Assim o problema de encontrar uma árvore geradora mínima (MST) consiste em dado um grafo (não dirigido), conexo e ponderado \(G=(V,E)\) com pesos \(w:E\to\mathbb{R}\), queremos um subconjunto de arestas \(T\subseteq E\) que conecta todos os vértices sem ciclos (forma uma árvore) e minimiza \(\sum_{e\in T} w(e)\). 
@@ -2875,32 +2075,14 @@ Dessa forma, o desafio é duplo: preservar a informação local de “mais barat
 \paragraph{}
 Uma maneira direta de enxergar isso é com um microexemplo: tome três vértices \(a,b,c\) (todos fora de \(r\)). Se o arco mais barato que entra em \(b\) vem de \(a\), o de \(c\) vem de \(b\) e o de \(a\) vem de \(c\), então as escolhas “mais baratas” formam o ciclo \(a\to b\to c\to a\). Note que, entre essas escolhas locais, nenhum deles recebe o arco vindo de \(r\) (mesmo que existam \(r\to a\), \(r\to b\), \(r\to c\) mais caros); ficamos presos dentro do ciclo e não alcançamos a raiz. É exatamente esse impasse que o algoritmo resolve ao zerar custos por vértice e contrair ciclos, deixando para decidir qual arco interno remover apenas na expansão.
 
+
 \begin{figure}[htbp]
     \centering
-    \begin{tikzpicture}[>=Stealth, node distance=2.0cm]
-        % estilos
-        	\tikzset{
-            v/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
-            cheap/.style={->, very thick, draw=blue!70},
-            expensive/.style={->, dashed, draw=gray!60}
-        }
-        % nós
-        \node[v] (r) {\small $r$};
-        \node[v] (a) [right=2.2cm of r] {\small $a$};
-        \node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
-        \node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
-        % ciclo de escolhas mais baratas (custo 1)
-        \draw[cheap] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 1} (b);
-        \draw[cheap] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 1} (c);
-        \draw[cheap] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 1} (a);
-        % arcos da raiz mais caros (não escolhidos pelo critério local)
-        \draw[expensive] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (a);
-        \draw[expensive] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (b);
-        \draw[expensive] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (c);
-    \end{tikzpicture}
+    \includegraphics[width=0.9\linewidth]{figures/fig_chu_liu_cycle_micro.pdf}
+
     \caption{Ciclo gerado pelas escolhas locais “mais baratas por vértice”. Os arcos grossos (custo 1) entram em \(a,b,c\) e formam \(a\to b\to c\to a\). Os arcos tracejados partindo de \(r\) existem, mas são mais caros e por isso não são escolhidos pelo critério local.}
-    \label{fig:chu-liu-cycle-micro}
-\end{figure}
+    \label{fig:chu-liu-cycle-micro}\end{figure}
+
 
 \paragraph{}
 Partindo desse cenário, a ideia é \emph{normalizar os custos por vértice}: para cada \(v\neq r\), “descontamos” de todo arco que entra em \(v\) o menor custo que chega a \(v\). Após esse ajuste (custos reduzidos), cada \(v\neq r\) passa a ter ao menos um arco de custo reduzido zero entrando. Se os arcos de custo zero forem acíclicos, já temos a r‑arborescência. Se formarem um ciclo \(C\), isso indica que, dentro de \(C\), todos os vértices atingiram seus mínimos locais; então \emph{contraímos} \(C\) em um \textbf{supervértice} \(x_C\) e repetimos o processo no grafo menor. Ao final, \emph{expandimos} as contrações e, em cada ciclo expandido, removemos exatamente um arco para manter grau de entrada 1 e a aciclicidade global.
@@ -2916,47 +2098,15 @@ Dado um subconjunto \(C\subseteq V\) que forma um ciclo dirigido, a \emph{contra
 \end{itemize}
 Quando trabalhamos com \emph{custos reduzidos}, ajustamos em particular os arcos que \emph{entram} em \(C\) para preservar a comparação relativa: para um arco \((u,w)\) com \(w\in C\), definimos \(c'(u,x_C) = c(u,w) - c(a_w)\), onde \(a_w\) é o arco mais barato que entra em \(w\). Essa normalização garante que, ao resolver no grafo contraído, decisões ótimas podem ser traduzidas de volta na etapa de expansão.
 
+
 \begin{figure}[htbp]
     \centering
-    \begin{minipage}[t]{0.52\textwidth}
-        \centering
-        \begin{tikzpicture}[>=Stealth, node distance=1.4cm]
-            	\tikzset{v/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
-                     cheap/.style={->, very thick, draw=blue!70},
-                     e/.style={->, semithick, draw=gray!65}}
-            % ciclo C e arcos internos (a_w em negrito)
-            \node[v] (a) {\small $a$};
-            \node[v] (b) [above right=0.9cm and 1.4cm of a] {\small $b$};
-            \node[v] (c) [below right=0.9cm and 1.4cm of a] {\small $c$};
-            % interno: a->b é a_b (mais barato em b), custo 5
-            \draw[cheap] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize $5$} (b);
-            % outros do ciclo (custos quaisquer)
-            \draw[e] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize $4$} (c);
-            \draw[e] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize $6$} (a);
-            % arco externo u->b com custo 7
-            \node[v] (u) [left=1.9cm of b] {\small $u$};
-            \draw[e] (u) -- node[midway, above, sloped] {\scriptsize $7$} (b);
-            % contorno do ciclo C
-            \node[draw=blue!40, rounded corners, fit=(a)(b)(c), inner sep=6pt, label={[blue!60]below:{\small $C$}}] {};
-        \end{tikzpicture}
-        \vspace{2pt}
-        \small (a) Antes: $a_b=(a\!\to\!b)$ tem custo $5$; o arco externo $(u\!\to\!b)$ tem custo $7$.
-    \end{minipage}\hfill
-    \begin{minipage}[t]{0.44\textwidth}
-        \centering
-        \begin{tikzpicture}[>=Stealth, node distance=2.0cm]
-            	\tikzset{v/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
-                     e/.style={->, very thick, draw=blue!70}}
-            \node[v] (x) {\small $x_C$};
-            \node[v] (u) [left=2.1cm of x] {\small $u$};
-            \draw[e] (u) -- node[midway, above, sloped] {\scriptsize $7-5=2$} (x);
-        \end{tikzpicture}
-        \vspace{2pt}
-        \small (b) Depois: $(u\!\to\!x_C)$ recebe custo reduzido $c'(u,x_C)=7-5=2$.
-    \end{minipage}
-    \caption{Ajuste de custo reduzido para um arco \emph{entrando} em $C$. Para $(u,w)$ com $w\in C$, define-se $c'(u,x_C)=c(u,w)-c(a_w)$, onde $a_w$ é o arco mais barato que entra em $w$. No exemplo, $c'(u,x_C)=7-5=2$.}
+    \includegraphics[width=0.9\linewidth]{figures/fig_chu_liu_reduced_cost.pdf}
+
+    \caption{Ajuste de custo reduzido para um arco \emph{entrando}: ao contrair um ciclo $C$, o arco $(u,w)$ que entra em $w\in C$ passa a $(u,x_C)$ com custo reduzido $c'(u,x_C)=c(u,w)-c(a_w)$, onde $a_w$ é o arco mais barato que entra em $w$.}
     \label{fig:chu-liu-reduced-cost}
-\end{figure}
+    \end{figure}
+
 
 Para cada arco \((u,w)\) com \(w\in C\), ajustamos o custo reduzido para \(c'(u,x_C)=c(u,w)-c(a_w)\), onde \(a_w\) é o arco mais barato que entra em \(w\). No exemplo da Figura \ref{fig:chu-liu-reduced-cost}, o arco \((u,b)\) com custo \(7\) torna-se \((u,x_C)\) com custo reduzido \(7-5=2\), já que \(a_b=(a\to b)\) tem custo \(5\). Arcos que saem de \(C\) ou laços internos não são ajustados.
 
@@ -2984,72 +2134,14 @@ Se \(A'\) contiver um ciclo dirigido \(C\) (que não inclui \(r\)), normalizamos
 \paragraph{}
 Resolvemos recursivamente no grafo contraído. As arborescências do grafo contraído correspondem, em bijeção, às arborescências do grafo original com exatamente um arco entrando em \(C\); como os arcos de \(C\) têm custo reduzido zero, os custos são preservados na ida e na volta. 
 
+
 \begin{figure}[htbp]
     \centering
-    \begin{minipage}{.47\textwidth}
-        \centering
-        \begin{tikzpicture}[>=Latex]
-            % styles
-            	\tikzset{
-                vertex/.style={circle,draw,fill=white,inner sep=1pt,font=\small},
-                sel/.style={-Latex,very thick,green!60!black},
-                zero/.style={-Latex,very thick,blue!70},
-                ext/.style={-Latex,dashed,gray},
-                normal/.style={-Latex,thin}
-            }
-            % nodes (contracted graph)
-            \node[vertex] (r) at (-0.1,1.2) {$r$};
-            \node[vertex] (u) at (-0.9,0.0) {$u$};
-            \node[vertex,very thick] (x) at (0.8,0.0) {$x_C$};
-            \node[vertex] (v) at (2.2,0.0) {$v$};
-            % arcs
-            \draw[sel]   (u) to[bend left=8] (x);       % chosen arc entering x_C
-            \draw[normal](x) to[bend left=8] (v);       % some outgoing from x_C
-            \draw[ext]   (r) to[bend left=15] (x);      % optional from r
-            \draw[ext]   (r) to[bend left=12] (u);
-        \end{tikzpicture}
-        \\[2pt]
-        \small (a) Grafo contraído: arborescência com um único arco entrando em $x_C$.
-    \end{minipage}\hfill
-    \begin{minipage}{.47\textwidth}
-        \centering
-        \begin{tikzpicture}[>=Latex]
-            % styles
-            	\tikzset{
-                vertex/.style={circle,draw,fill=white,inner sep=1pt,font=\small},
-                sel/.style={-Latex,very thick,green!60!black},
-                zero/.style={-Latex,very thick,blue!70},
-                ext/.style={-Latex,dashed,gray},
-                normal/.style={-Latex,thin}
-            }
-            % nodes (expanded original graph)
-            \node[vertex] (r2) at (-0.1,1.2) {$r$};
-            \node[vertex] (u2) at (-0.9,0.0) {$u$};
-            \node[vertex] (a)  at (0.6,0.1) {$a$};
-            \node[vertex] (b)  at (1.4,0.3) {$b$};
-            \node[vertex] (c)  at (1.0,-0.5) {$c$};
-            \node[vertex] (v2) at (2.4,0.0) {$v$};
-            % cycle C with zero reduced cost arcs
-            \draw[zero] (a) -- (b);
-            \draw[zero] (b) -- (c);
-            \draw[zero] (c) -- (a);
-            % chosen entering arc to some w in C (e.g., u -> b)
-            \draw[sel] (u2) to[bend left=8] (b);
-            % an outgoing arc from C
-            \draw[normal] (c) to[bend left=8] (v2);
-            % mark one internal arc to be removed when expanding (break cycle)
-            \path (b) -- (c) node[pos=0.5] (mid) {};
-            \node[red] at (mid) {$\times$};
-            % optional external arcs
-            \draw[ext] (r2) to[bend left=12] (a);
-            \draw[ext] (r2) to[bend right=12] (u2);
-        \end{tikzpicture}
-        \\[2pt]
-        \small (b) Grafo original: expansão de $C$; mantém-se o arco que entra em $C$ e remove-se um arco interno para quebrar o ciclo.
-    \end{minipage}
+    \includegraphics[width=0.9\linewidth]{figures/fig_chu_liu_bijection.pdf}
+
     \caption{Bijeção entre arborescências após contração e no grafo original. (a) No grafo contraído, toda arborescência seleciona exatamente um arco que entra no supervértice $x_C$. (b) Ao expandir $C$, escolhe-se o arco correspondente \((u,w)\) que entra em algum $w\in C$ e mantêm-se os arcos internos de custo reduzido zero, removendo exatamente um para quebrar o ciclo. Como $c'(u,x_C)=c(u,w)-c(a_w)$ e os arcos internos têm custo reduzido zero, o custo total é preservado na ida e na volta.}
-    \label{fig:chu-liu-bijection}
-\end{figure}
+    \label{fig:chu-liu-bijection}\end{figure}
+
 
 \paragraph{}
 A Figura \ref{fig:chu-liu-bijection} ilustra a bijeção entre arborescências no grafo contraído e no grafo original, destacando a preservação de custos e a manutenção das propriedades estruturais necessárias.
@@ -3057,94 +2149,14 @@ A Figura \ref{fig:chu-liu-bijection} ilustra a bijeção entre arborescências n
 \paragraph{}
 Na expansão, reintroduzimos \(C\) e removemos exatamente um arco interno para manter grau de entrada 1 e aciclicidade global \cite{schrijver2003comb,kleinberg2006}.
 
+
 \begin{figure}[htbp]
     \centering
-    % Panel (a): contracted graph just before expansion
-    \begin{minipage}{.31\textwidth}
-        \centering
-        \begin{tikzpicture}[>=Latex]
-            	\tikzset{
-                vertex/.style={circle,draw,fill=white,inner sep=1pt,font=\small},
-                sel/.style={-Latex,very thick,green!60!black},
-                zero/.style={-Latex,very thick,blue!70},
-                ext/.style={-Latex,dashed,gray},
-                normal/.style={-Latex,thin}
-            }
-            \node[vertex] (r) at (-0.2,1.0) {$r$};
-            \node[vertex] (u) at (-0.9,0.0) {$u$};
-            \node[vertex,very thick] (x) at (0.6,0.0) {$x_C$};
-            \node[vertex] (v) at (1.9,0.0) {$v$};
-            \draw[sel]   (u) to[bend left=8] (x);   % chosen entering arc to x_C
-            \draw[normal](x) to[bend left=8] (v);   % some outgoing arc
-            \draw[ext]   (r) to[bend left=15] (x);
-        \end{tikzpicture}
-        \\[2pt]
-        \small (a) Antes: grafo contraído com o arco que entra em $x_C$ selecionado.
-    \end{minipage}\hfill
-    % Panel (b): expand C, before removing an internal arc
-    \begin{minipage}{.31\textwidth}
-        \centering
-        \begin{tikzpicture}[>=Latex]
-            	\tikzset{
-                vertex/.style={circle,draw,fill=white,inner sep=1pt,font=\small},
-                sel/.style={-Latex,very thick,green!60!black},
-                zero/.style={-Latex,very thick,blue!70},
-                ext/.style={-Latex,dashed,gray},
-                normal/.style={-Latex,thin}
-            }
-            \node[vertex] (r2) at (-0.2,1.0) {$r$};
-            \node[vertex] (u2) at (-0.9,0.0) {$u$};
-            \node[vertex] (a)  at (0.4,0.35) {$a$};
-            \node[vertex] (b)  at (1.2,0.35) {$b$};
-            \node[vertex] (c)  at (0.8,-0.4) {$c$};
-            \node[vertex] (v2) at (2.2,0.0) {$v$};
-            % internal cycle C with zero-reduced-cost arcs
-            \draw[zero] (a) -- (b);
-            \draw[zero] (b) -- (c);
-            \draw[zero] (c) -- (a);
-            % mapped entering arc to some w in C (e.g., u -> b)
-            \draw[sel] (u2) to[bend left=8] (b);
-            % an outgoing arc from C
-            \draw[normal] (c) to[bend left=8] (v2);
-            % optional external arc from r
-            \draw[ext] (r2) to[bend left=12] (a);
-        \end{tikzpicture}
-        \\[2pt]
-        \small (b) Expansão: $x_C$ é substituído por $C$, mantendo o arco que entra em $C$.
-    \end{minipage}\hfill
-    % Panel (c): remove one internal arc to break the cycle
-    \begin{minipage}{.31\textwidth}
-        \centering
-        \begin{tikzpicture}[>=Latex]
-            	\tikzset{
-                vertex/.style={circle,draw,fill=white,inner sep=1pt,font=\small},
-                sel/.style={-Latex,very thick,green!60!black},
-                zero/.style={-Latex,very thick,blue!70},
-                ext/.style={-Latex,dashed,gray},
-                normal/.style={-Latex,thin}
-            }
-            \node[vertex] (u3) at (-0.9,0.0) {$u$};
-            \node[vertex] (a3)  at (0.4,0.35) {$a$};
-            \node[vertex] (b3)  at (1.2,0.35) {$b$};
-            \node[vertex] (c3)  at (0.8,-0.4) {$c$};
-            \node[vertex] (v3) at (2.2,0.0) {$v$};
-            % keep entering arc and one outgoing
-            \draw[sel]   (u3) to[bend left=8] (b3);
-            \draw[normal](c3) to[bend left=8] (v3);
-            % keep two internal zero-cost arcs and remove one (b->c removed)
-            \draw[zero] (a3) -- (b3);
-            % removed arc visual: faded/dashed with cross
-            \draw[ext] (b3) -- (c3);
-            \path (b3) -- (c3) node[pos=0.5] (mid) {};
-            \node[red] at (mid) {$\times$};
-            \draw[zero] (c3) -- (a3);
-        \end{tikzpicture}
-        \\[2pt]
-        \small (c) Final: remove-se um arco interno de $C$ para quebrar o ciclo (mantendo grau de entrada 1).
-    \end{minipage}
+    \includegraphics[width=0.9\linewidth]{figures/fig_chu_liu_reexpansion.pdf}
+
     \caption{Reexpansão de $C$. (a) No grafo contraído, seleciona-se um único arco que entra em $x_C$. (b) Ao expandir, $x_C$ é substituído pelo ciclo $C$ e o arco selecionado passa a entrar em algum $w\in C$. (c) Remove-se exatamente um arco interno de $C$ para eliminar o ciclo, preservando conectividade a partir de $r$ e o custo total, pois os arcos internos têm custo reduzido zero.}
-    \label{fig:chu-liu-reexpansion}
-\end{figure}
+    \label{fig:chu-liu-reexpansion}\end{figure}
+
 
 \paragraph{}
 A Figura \ref{fig:chu-liu-reexpansion} detalha o processo de expansão e remoção de um arco interno para quebrar o ciclo, garantindo que a estrutura de r-arborescência seja mantida.

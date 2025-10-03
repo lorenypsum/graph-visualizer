@@ -1,0 +1,36 @@
+% !TEX program = latexmk
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{microtype}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,fit,calc}
+
+\begin{document}
+\centering
+\begin{tikzpicture}[>=Stealth]
+    % estilos locais para o condensado
+    	\tikzset{
+        comp/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
+        src/.style={circle, draw=green!60!black, fill=green!15, minimum size=7mm, inner sep=0pt, very thick},
+        sink/.style={circle, draw=red!60!black, fill=red!15, minimum size=7mm, inner sep=0pt, very thick},
+        arc/.style={->, semithick, draw=gray!70}
+    }
+    % nós (CFCs do condensado)
+    \node[src, label=below:$C_1$] (c1) at (0,0) {};
+    \node[comp, label=below:$C_2$] (c2) at (2.2,0.9) {};
+    \node[comp, label=below:$C_3$] (c3) at (2.2,-0.9) {};
+    \node[sink, label=below:$C_4$] (c4) at (4.4,0) {};
+    % arcos do condensado (DAG)
+    \draw[arc] (c1) -- (c2);
+    \draw[arc] (c1) -- (c3);
+    \draw[arc] (c2) -- (c4);
+    \draw[arc] (c3) -- (c4);
+    % legendas curtas
+    \node[align=left, anchor=west] at (5.1,0.6) {CFC-\textit{fonte}: sem entrada ($C_1$)};
+    \node[align=left, anchor=west] at (5.1,-0.1) {CFC-\textit{sumidouro}: sem saída ($C_4$)};
+    \node[align=left, anchor=west] at (5.1,-0.8) {$s=1,\; t=1$ neste exemplo};
+\end{tikzpicture}
+(D)$ e a contagem de CFCs-fonte/sumidouro: $C_1$ não recebe arcos (fonte) e $C_4$ não emite arcos (sumidouro).}
+\end{document}
