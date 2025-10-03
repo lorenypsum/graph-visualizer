@@ -4049,20 +4049,22 @@ Como \(y\) é dual viável (I1), \(\sum_X y(X)\) é um limitante inferior (duali
 
 \paragraph{Complexidade}
 \paragraph{}
-Sem considerar otimizações, cada elevação de potenciais custa \(O(m)\) para varrer as arestas e atualizar \(D_0\). Há no máximo \(O(n)\) níveis (cada contração reduz o número de vértices), totalizando \(O(mn)\) tempo e \(O(m+n)\) memória. Com estruturas adequadas (heaps para mínimos, detecção incremental de ciclos, redirecionamentos em bloco), o tempo pode ser reduzido a \(O(m\log n)\) \cite{frank2014,schrijver2003comb}:
+Visão rápida e objetiva:
 
+	extbf{Sem otimizações (forma didática).}
 \begin{itemize}\setlength{\itemsep}{2pt}
-    \item \textbf{Por nível:} manter o subgrafo de zeros \(D_0\), calcular o próximo \(\Delta=\min c'(\delta^-(X))\) e detectar/contrair ciclos custa \(O(m)\) por uma varredura nas arestas.
-    \item \textbf{Níveis:} há no máximo \(O(n)\) níveis, pois cada contração reduz o número de vértices.
-    \item \textbf{Total e memória:} tempo \(O(mn)\) e memória \(O(m+n)\).
+    \item \textbf{Por nível:} manter o subgrafo de zeros \(D_0\), calcular o próximo \(\Delta=\min c'(\delta^-(X))\) e detectar/contrair ciclos custa \(O(m)\) por varredura nas arestas.
+    \item \textbf{Níveis:} no máximo \(O(n)\), pois cada contração reduz o número de vértices.
+    \item \textbf{Total/memória:} tempo \(O(mn)\) e memória \(O(m+n)\).
 \end{itemize}
-Para chegar a \(O(m\log n)\), use estruturas padrão:
+
+	extbf{Com otimizações (atingindo \(O(m\log n)\)).}
 \begin{itemize}\setlength{\itemsep}{2pt}
-    \item \textbf{Mínimo por vértice:} para cada \(v\), mantenha o menor custo reduzido de entrada em uma \emph{heap}; as chaves são atualizadas de forma amortizada quando \(y(v)\) aumenta.
-    \item \textbf{Ciclos em \(D_0\):} detecte-os incrementalmente conforme novas arestas de custo zero aparecem (DFS/union-find).
-    \item \textbf{Contrações:} execute redirecionamentos em bloco usando representantes, evitando tocar cada aresta individualmente.
+    \item \textbf{Mínimo por vértice:} para cada \(v\), manter em uma \emph{heap} o menor custo reduzido de entrada; atualizar chaves quando \(y(v)\) aumenta (atualizações amortizadas).
+    \item \textbf{Ciclos em \(D_0\):} detectar incrementalmente à medida que surgem novas arestas com custo zero (DFS/union-find).
+    \item \textbf{Contrações:} realizar redirecionamentos em bloco via representantes, sem tocar cada aresta individualmente.
 \end{itemize}
-Assim, o fator \(\log n\) vem da seleção de mínimos, enquanto o número de contrações permanece \(O(n)\) \cite{frank2014,schrijver2003comb}.
+O fator \(\log n\) decorre da seleção eficiente de mínimos; o número de contrações segue \(O(n)\) \cite{frank2014,schrijver2003comb}.
 
 \subsection{Implementação em Python}
 
