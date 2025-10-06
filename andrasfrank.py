@@ -6,7 +6,6 @@ def build_D_zero(D):
     """
     Build a directed graph D_zero and from the input directed graph D,
     where D_zero contains only the edges with weight zero.
-    The function also returns a list of tuples representing the edges with weight zero in D_zero.
 
     Parameters:
     - D: directed graph (DiGraph)
