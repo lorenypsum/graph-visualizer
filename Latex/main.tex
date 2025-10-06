@@ -2518,7 +2518,7 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: str, lang="pt"):
     return in_to_cycle, out_from_cycle
 \end{pybox}
 
-\paragraph{Remoção de arestas que entram na raiz}
+\paragraph{Remoção de arestas que entram na raiz:}
 a função remove todas as arestas que entram no vértice raiz \(r_0\) do grafo \(G\). A função modifica o grafo \emph{in-place} e executa em \(O(\deg^-(r_0))\). 
 
 \paragraph{}
@@ -2580,7 +2580,7 @@ def remove_edges_to_r0(
     return D
 \end{pybox}
 
-\paragraph{Remoção de arco interno}
+\paragraph{Remoção de arco interno:}
 ao expandir o ciclo \(C\), a função remove o arco interno que entra no vértice de entrada \(v\) do ciclo, já que \(v\) agora recebe um arco externo do grafo. A função modifica o subgrafo do ciclo \emph{in-place} e executa em \(O(\deg^-(v))\).
 
 \begin{pybox}{Remover arco interno na reexpansão}
@@ -2623,14 +2623,14 @@ A função principal implementa o algoritmo de Chu–Liu/Edmonds de forma recurs
 \paragraph{}
 Mais especificamente, o procedimento garante as seguintes propriedades e passos:
 \begin{itemize}\setlength{\itemsep}{2pt}
-    \item \textbf{Função (entradas/saídas).} Entrada: dígrafo ponderado \(D=(V,A)\), raiz \(r_0\), e, opcionalmente, funções \texttt{draw\_fn} e \texttt{log} para visualização e registro. Saída: um subdígrafo dirigido \(T\) de \(D\) com \(|V|-1\) arcos em que todo \(v\neq r_0\) tem grau de entrada 1, todos os vértices alcançam \(r_0\) e o custo total \(\sum_{a\in T} c(a)\) é mínimo.
-    \item \textbf{Invariantes.} Após a normalização por vértice, cada \(v\neq r_0\) tem pelo menos uma entrada de custo reduzido zero; o conjunto \(F^*\) contém exatamente uma entrada por vértice distinto de \(r_0\); em toda contração, apenas arcos que \emph{entram} no componente têm seus custos reduzidos ajustados por \(c'(u,x_C)=c(u,w)-c(a_w)\), preservando comparações relativas.
-    \item \textbf{Detecção de ciclo e contração.} Se \(F^*\) contém um ciclo \(C\), todos os seus arcos têm custo reduzido zero. O procedimento forma o supervértice \(x_C\), reescreve arcos incidentes (descarta laços internos) e prossegue na instância menor. Essa etapa pode manter arcos paralelos e ignora laços.
-    \item \textbf{Recursão e expansão.} Ao obter \(T'\) ótimo no grafo contraído, o método mapeia \(T'\) de volta para \(D\): substitui o arco \((u,x_C)\) por um \((u,w)\) apropriado (com \(w\in C\)) e remove uma única aresta interna de \(C\), restaurando a propriedade “uma entrada por vértice” e a aciclicidade.
-    \item \textbf{Empates e robustez.} Empates de custo são resolvidos de modo determinístico/local, sem afetar a otimalidade. Arcos paralelos podem surgir após contrações e são tratados normalmente; laços são descartados por construção.
-    \item \textbf{Logs e desenho (opcionais).} Se fornecidos, \texttt{log} recebe mensagens estruturadas por nível de recursão, e \texttt{draw\_fn} pode ser chamado para ilustrar passos relevantes (normalização, detecção/contração de ciclos, retorno da recursão e expansão).
-    \item \textbf{Casos‑limite.} Se algum \(v\neq r_0\) não possui arco de entrada na instância corrente, detecta‑se inviabilidade (não existe r‑arborescência). Se \(F^*\) já é acíclico, retorna imediatamente (base da recursão).
-    \item \textbf{Complexidade.} Em uma implementação direta, cada nível de recursão executa seleção/checagem/ajustes em tempo proporcional a \(O(m)\), e há no máximo \(O(n)\) níveis devido às contrações, totalizando \(O(mn)\) e memória \(O(m+n)\).
+    \item \textbf{Função (entradas/saídas):} Entrada: dígrafo ponderado \(D=(V,A)\), raiz \(r_0\), e, opcionalmente, funções \texttt{draw\_fn} e \texttt{log} para visualização e registro. Saída: um subdígrafo dirigido \(T\) de \(D\) com \(|V|-1\) arcos em que todo \(v\neq r_0\) tem grau de entrada 1, todos os vértices alcançam \(r_0\) e o custo total \(\sum_{a\in T} c(a)\) é mínimo.
+    \item \textbf{Invariantes:} Após a normalização por vértice, cada \(v\neq r_0\) tem pelo menos uma entrada de custo reduzido zero; o conjunto \(F^*\) contém exatamente uma entrada por vértice distinto de \(r_0\); em toda contração, apenas arcos que \emph{entram} no componente têm seus custos reduzidos ajustados por \(c'(u,x_C)=c(u,w)-c(a_w)\), preservando comparações relativas.
+    \item \textbf{Detecção de ciclo e contração:} Se \(F^*\) contém um ciclo \(C\), todos os seus arcos têm custo reduzido zero. O procedimento forma o supervértice \(x_C\), reescreve arcos incidentes (descarta laços internos) e prossegue na instância menor. Essa etapa pode manter arcos paralelos e ignora laços.
+    \item \textbf{Recursão e expansão:} Ao obter \(T'\) ótimo no grafo contraído, o método mapeia \(T'\) de volta para \(D\): substitui o arco \((u,x_C)\) por um \((u,w)\) apropriado (com \(w\in C\)) e remove uma única aresta interna de \(C\), restaurando a propriedade “uma entrada por vértice” e a aciclicidade.
+    \item \textbf{Empates e robustez:} Empates de custo são resolvidos de modo determinístico/local, sem afetar a otimalidade. Arcos paralelos podem surgir após contrações e são tratados normalmente; laços são descartados por construção.
+    \item \textbf{Logs e desenho (opcionais):} Se fornecidos, \texttt{log} recebe mensagens estruturadas por nível de recursão, e \texttt{draw\_fn} pode ser chamado para ilustrar passos relevantes (normalização, detecção/contração de ciclos, retorno da recursão e expansão).
+    \item \textbf{Casos‑limite:} Se algum \(v\neq r_0\) não possui arco de entrada na instância corrente, detecta‑se inviabilidade (não existe r‑arborescência). Se \(F^*\) já é acíclico, retorna imediatamente (base da recursão).
+    \item \textbf{Complexidade:} Em uma implementação direta, cada nível de recursão executa seleção/checagem/ajustes em tempo proporcional a \(O(m)\), e há no máximo \(O(n)\) níveis devido às contrações, totalizando \(O(mn)\) e memória \(O(m+n)\).
 \end{itemize}
 
 Essa rotina encapsula, portanto, a estratégia primal do método: induzir arestas de custo reduzido zero por normalização local, extrair uma estrutura funcional \(F^*\) de uma entrada por vértice, e resolver conflitos cíclicos por contração/expansão, preservando custos e correção em todas as etapas.
@@ -2937,11 +2937,11 @@ A complexidade da implementação direta é \(O(mn)\) no pior caso, onde \(m\) �
 \paragraph{}
 Para fechar este capítulo, vale destacar algumas decisões de projeto e implicações práticas:
 \begin{itemize}\setlength{\itemsep}{2pt}
-    \item \textbf{Estruturas e efeitos colaterais.} Optamos por modificar grafos \emph{in-place} (por exemplo, durante a normalização e a contração de ciclos) para reduzir alocações e facilitar a visualização incremental. Isso exige invariantes explícitos e cuidado com referências ativas ao grafo original.
-    \item \textbf{Empates, paralelos e laços.} Empates são resolvidos de forma determinística/local sem afetar a otimalidade. A contração pode induzir \emph{arcos paralelos}; preservamos apenas o de menor custo. Laços (self-loops) são descartados por construção.
-    \item \textbf{Validação e testes.}  O repositório inclui artefatos úteis para experimentação (por exemplo, \texttt{tests.py}, \texttt{test\_results.csv}, \texttt{test\_log.txt}). Onde um volume de grafos é gerado aleatoriamente, a função é executada e os resultados são validados são comparados com soluções de força bruta.
-    \item \textbf{Integração com visualização e logs.} A função \texttt{draw\_fn} permite registrar \emph{snapshots} (normalização, formação de \(F^*\), contração/expansão). O \texttt{log} facilita auditoria e depuração em execuções recursivas.
-    \item \textbf{Extensões.} Variantes com múltiplas raízes, restrições adicionais (p.ex., proibições por partição) e empacotamento de arborescências exigem ajustes na fase de extração/expansão ou formulações via matroides.
+    \item \textbf{Estruturas e efeitos colaterais:} Optamos por modificar grafos \emph{in-place} (por exemplo, durante a normalização e a contração de ciclos) para reduzir alocações e facilitar a visualização incremental. Isso exige invariantes explícitos e cuidado com referências ativas ao grafo original.
+    \item \textbf{Empates, paralelos e laços:} Empates são resolvidos de forma determinística/local sem afetar a otimalidade. A contração pode induzir \emph{arcos paralelos}; preservamos apenas o de menor custo. Laços (self-loops) são descartados por construção.
+    \item \textbf{Validação e testes:}  O repositório inclui artefatos úteis para experimentação (por exemplo, \texttt{tests.py}, \texttt{test\_results.csv}, \texttt{test\_log.txt}). Onde um volume de grafos é gerado aleatoriamente, a função é executada e os resultados são validados são comparados com soluções de força bruta.
+    \item \textbf{Integração com visualização e logs:} A função \texttt{draw\_fn} permite registrar \emph{snapshots} (normalização, formação de \(F^*\), contração/expansão). O \texttt{log} facilita auditoria e depuração em execuções recursivas.
+    \item \textbf{Extensões:} Variantes com múltiplas raízes, restrições adicionais (p.ex., proibições por partição) e empacotamento de arborescências exigem ajustes na fase de extração/expansão ou formulações via matroides.
 \end{itemize}
 
 \paragraph{}
@@ -2982,13 +2982,15 @@ O algoritmo de Frank consiste em duas fases principais:
 O algoritmo termina quando uma r-arborescência viável é encontrada. A correção e otimalidade do método são garantidas pelas propriedades primal–duais e pela manutenção de cortes apertados durante as contrações.
 A seguir, explicamos por que essa abordagem é chamada de primal–dual e como as duas fases se relacionam com as formulações primal e dual do problema.
 
-\subsubsection{Primal–dual: intuição}
+\subsubsection{A intuição Primal–dual}
 
 Informalmente, o primal decide quais arcos entram para minimizar o custo total. Já o dual escolhe “descontos” (potenciais) a aplicar nos arcos, sem permitir que nenhum fique com preço negativo; para cada arco, a soma dos descontos permitidos não pode ultrapassar o seu preço original. Toda escolha viável desses descontos já estabelece um limite inferior para o menor custo possível.
 
 Esses problemas podem ser modelados de forma natural como \emph{programas lineares} (PLs). Portanto, vamos apresentar brevemente alguns conceitos de álgebra linear antes de descrever as formulações primal e dual.
 
 \paragraph{Nota breve de conceitos e notações em álgebra linear}
+
+\paragraph{}
 Para quem não está acostumado com a notação, eis um guia rápido:
 \begin{itemize}\setlength{\itemsep}{1pt}
     \item Vetores (por exemplo, \(x, c, y, b\)) são listas de números: \(x=(x_1,\dots,x_n)\). Escrever \(x\ge 0\) significa “cada componente \(x_i\) é não-negativa”.
@@ -3012,7 +3014,7 @@ Uma formulação padrão usa variáveis \(x_a\) para cada arco \(a\in A\) indica
 \end{aligned}
 \]
 
-O problema dual associa uma variável \(y(X)\ge 0\) a cada corte \(\emptyset\neq X\subseteq V\setminus\{r\}\) e toma a forma
+O problema dual associa uma variável \(y(X)\ge 0\) a cada corte \(\emptyset\neq X\subseteq V\setminus\{r\}\) e toma a forma:
 
 \[
 \begin{aligned}
@@ -3031,7 +3033,7 @@ c'(u,v)=c(u,v)-\sum_{X:\,v\in X,u\notin X}y(X)
 e justificam a estratégia primal–dual (elevar potenciais/contrações de ciclos) explorada por Frank.
 
 \paragraph{}
-Em fórmulas, no primal, minimizamos \(c^\top x\)\footnote{Produto interno (soma ponderada) entre os vetores \(c\) e \(x\): \(c^\top x=\sum_i c_i x_i\). No nosso contexto, \(c_i\) é o custo de um arco e \(x_i\in\{0,1\}\) indica se o arco é escolhido; logo \(c^\top x\) é o custo total da solução.} com \(x\) dentro do conjunto viável
+Em fórmulas, no primal, minimizamos \(c^\top x\)\footnote{Produto interno (soma ponderada) entre os vetores \(c\) e \(x\): \(c^\top x=\sum_i c_i x_i\). No nosso contexto, \(c_i\) é o custo de um arco e \(x_i\in\{0,1\}\) indica se o arco é escolhido; logo \(c^\top x\) é o custo total da solução.} com \(x\) dentro do conjunto viável:
 \[
     P\;=\;\{x\in\mathbb{R}^n:\; Ax\ge b,\ x\ge 0\},
 \]
@@ -3127,12 +3129,11 @@ e a própria hierarquia dos \(X\) guia as contrações: blocos (conjuntos) \emph
 \label{fig:laminar-potenciais-reduzidos}
 \end{figure}
 
-\subsubsection{Detalhes do Algoritmo}
 
 \paragraph{}
 Assim, devemos nos preocupar com as operações de elevar potenciais, manter custos reduzidos não negativos, identificar cortes apertados e conduzir contrações/expansões. A seguir, detalhamos esses pontos e apresentamos o algoritmo completo.
 
-\paragraph{Potenciais por vértice}
+\subsubsection{Potenciais por vértice}
 \paragraph{}
 Na prática, manteremos um único número por vértice, o \emph{potencial} \(\tilde y(v)\), que funciona como um “desconto” aplicado a todas as arestas que entram em \(v\):
 \[
@@ -3140,7 +3141,7 @@ Na prática, manteremos um único número por vértice, o \emph{potencial} \(\ti
 \]
 Se \(\tilde y\) vier do dual por cortes, ele é a soma dos \(y(X)\) dos conjuntos laminares \(X\) que contêm \(v\). Ao aumentar \(\tilde y(v)\), todos os arcos que entram em \(v\) ficam igualmente mais baratos na mesma medida; a ordem entre as entradas de \(v\) não muda. Por isso, resolver com \(c\) ou com \(c'\) é equivalente. Na Fase I, elevamos \(\tilde y\) até que todo \(v\neq r\) tenha ao menos uma entrada com \(c'(u,v)=0\).
 
-\paragraph{Cortes apertados e laminaridade}
+\subsubsection{Cortes apertados e laminaridade}
 \paragraph{}
 Escreva \(\delta^-(X)=\{(u,v)\in A: u\notin X,\ v\in X\}\). Dizemos:
 \begin{itemize}\setlength{\itemsep}{1pt}
@@ -3253,11 +3254,14 @@ Nós realizamos duas implementações: uma didática, focada na clareza do algor
 
 \subsection{Implementação em Python}
 
-\paragraph{Visão geral}
-A seguir apresentamos uma implementação didática em duas fases. Mantemos um subgrafo \(D_0\) com as arestas de custo reduzido zero e iterativamente elevamos potenciais para criar novas entradas a zero; em seguida, extraímos uma r-arborescência usando apenas arestas de custo zero. O foco é a clareza; a complexidade segue \(O(mn)\) na prática.
+\paragraph{}
+Implementamos duas versões do algoritmo de Frank: (i) uma versão didática, voltada à clareza do procedimento; e (ii) uma versão otimizada, que emprega heaps como estrutura auxiliar. Manter ambas permitiu validar o método por meio da comparação sistemática dos resultados.
 
-\paragraph{Construção do subgrafo de zeros}
-Cria \(D_0\) contendo apenas arestas com peso zero e uma lista \(A_0\) com essas arestas.
+\paragraph{}
+Utilizamos a biblioteca NetworkX para a manipulação de grafos e funções auxiliares para modularizar o código, o que facilita a leitura e a manutenção. A seguir, apresentamos os detalhes de implementação de ambas as versões.
+
+\paragraph{Construção do subgrafo de zeros:}
+cria \(D_0\) contendo apenas arestas com peso zero e uma lista \(A_0\) com essas arestas.
 
 \begin{pybox}{Subgrafo de zeros e lista de zeros}
 def build_D_zero(D: nx.DiGraph):
