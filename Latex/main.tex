@@ -3828,6 +3828,42 @@ Ambos os métodos são poderosos e amplamente aplicáveis, e a escolha entre ele
 
 Para validar a eficácia dos algoritmos de \emph{Chu–Liu/Edmonds} e \emph{Frank}, realizamos uma série de testes em diferentes instâncias de grafos direcionados. Os testes foram projetados para avaliar não apenas a correção dos algoritmos, mas também seu desempenho em termos de tempo de execução e uso de memória.
 
+\paragraph{Metodologia}
+Geramos digrafos enraizados aleatórios com \(|V|\in[100,200]\) e \(|A|\in[n,3n]\), pesos inteiros uniformes em \([1,20]\), e conectividade a partir da raiz \(r0\) garantida por uma construção incremental. Em cada instância (arquivo \texttt{tests.py}):
+\begin{itemize}\setlength{\itemsep}{1pt}
+    \item removemos arestas que entram em \(r0\) (normalização compatível com as formulações);
+    \item executamos \emph{Chu–Liu/Edmonds} e as duas variantes da Fase II de \emph{Frank} (versão direta e com heap) sobre o subgrafo de zeros produzido na Fase I;
+    \item comparamos os custos retornados e verificamos a \emph{condição dual} (complementaridade) para ambas as soluções de Frank;
+    \item registramos resultado e tempo total por instância em CSV.
+\end{itemize}
+
+\paragraph{Resultados observados}
+No recorte de 224 instâncias registrado em \texttt{test\_results.csv} (amostra ilustrativa), obtivemos:
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item \textbf{Correção e equivalência de custo.} Todos os testes finalizaram com sucesso (coluna \emph{Sucesso} = OK) e ambas as checagens de \emph{condição dual} retornaram \texttt{True} (colunas \emph{Condicao\_dual\_Frank1/2}). Embora as colunas de custo no CSV estejam como “-” por limitação de \emph{logging}, o código contém asserções que exigem \(\text{custo}_{\text{Chu–Liu}}=\text{custo}_{\text{Frank v1}}=\text{custo}_{\text{Frank v2}}\). Logo, a igualdade de custos foi verificada em todas as instâncias desta amostra. Esse comportamento é consistente com a teoria: arcos \emph{apertados} (\(c'=0\)) somados à complementaridade garantem otimalidade \cite{frank1981,frank2014,schrijver2003comb}, e o método de Edmonds é conhecido por devolver uma r‑arborescência ótima \cite{edmonds1967,chu1965}.
+    \item \textbf{Certificados duais.} A validação \emph{a posteriori} via “exatamente uma entrada por corte ativo” (condição dual) passou em 100% dos casos observados. Este é precisamente o certificado primal–dual recomendado na literatura para problemas por cortes laminares \cite{frank2014,schrijver2003comb}.
+    \item \textbf{Desempenho (tempo).} Os tempos totais por instância ficaram tipicamente entre \(\approx\) 0,026 s e 0,121 s nesta faixa de \(n\) e \(m\). Como a medida agrega todas as etapas (Chu–Liu, Fase I e Fase II), não separa o impacto relativo da Fase II v1 vs v2. Ainda assim, em linhas com \(|A|\) até cerca de 600, o tempo permaneceu na casa de centésimos, coerente com implementações diretas eficientes e sobrecarga de Python/NetworkX.
+\end{itemize}
+
+\paragraph{Leitura à luz das referências}
+Os achados alinham-se ao arcabouço teórico:
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item \textbf{Complementaridade e laminaridade.} A Fase I de Frank produz arcos apertados e uma família de cortes ativa que pode ser tomada laminar por \emph{uncrossing}; a Fase II escolhe apenas arcos com \(c'=0\). A combinação garante igualdade primal–dual \cite{frank2014,schrijver2003comb}. As checagens “True” no CSV corroboram essa leitura.
+    \item \textbf{Equivalência com Edmonds.} A coincidência de custos entre Chu–Liu/Edmonds e Frank é esperada: apesar de roteiros distintos (combinatório vs primal–dual), ambos implementam a mesma mecânica de contrair/expandir orientada por mínimos e cortes \cite{edmonds1967,chu1965,frank1981}.
+    \item \textbf{Complexidade.} A versão didática atinge \(O(mn)\) em pior caso; variantes com estruturas adequadas atingem \(O(m\log n)\) para operações de mínimos \cite{frank2014,schrijver2003comb}. A nossa versão “com heap” (Fase II v2) reduz o custo de expansão da arborescência sobre \(D_0\), mas o gargalo prático pode permanecer na Fase I conforme a densidade e o padrão de pesos.
+\end{itemize}
+
+\paragraph{Limitações do experimento e melhorias}
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item \textbf{Registro de custos.} O CSV atual não persiste os custos (aparecem “-”), pois as variáveis locais de custo não são gravadas nas colunas correspondentes. Recomenda-se registrar explicitamente os valores para permitir análises estatísticas (média, desvio, dispersão). Ainda assim, as asserções no código garantem igualdade de custos quando o teste marca sucesso.
+    \item \textbf{Granularidade temporal.} O tempo reportado é total por instância. Para comparar \emph{v1} vs \emph{v2} em Fase II e isolar a Fase I, sugere-se medir tempos por etapa (Chu–Liu, Fase I, Fase II v1, Fase II v2).
+    \item \textbf{Variedade de instâncias.} Os grafos são aleatórios com pesos uniformes. Seria útil adicionar famílias adversárias/estruturadas (p.ex., quase completos, quase árvores, camadas com \(D_0\) extenso/raso), bem como escalas maiores de \(n\) e \(m\), para observar transições de gargalo e os ganhos da heap na prática.
+    \item \textbf{Métricas adicionais.} Além de tempo e custo, incluir contagem de contrações, tamanho médio de \(D_0\), profundidade de reexpansão e memória ajudaria a relacionar empiricamente com as previsões de \cite{frank2014,schrijver2003comb}.
+\end{itemize}
+
+\paragraph{Conclusão}
+Nesta amostra, ambos os métodos devolveram soluções ótimas e consistentes, com certificados duais válidos em todas as instâncias observadas e tempos compatíveis com a escala dos grafos testados. Esses resultados reforçam a equivalência prática entre as abordagens, ao mesmo tempo em que destacam o papel pedagógico do prisma primal–dual de Frank para explicar \emph{por que} a seleção sobre \(D_0\) é suficiente e como a laminaridade organiza a prova de otimalidade \cite{frank1981,frank2014,schrijver2003comb}.
+
 
 
 
