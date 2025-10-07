@@ -3842,105 +3842,61 @@ Geramos digrafos enraizados aleatórios com \(|V|\in[100,200]\) e \(|A|\in[n,3n]
     \item registramos resultado e tempo total por instância em CSV.
 \end{itemize}
 
-\paragraph{Resultados observados}
-No recorte de 224 instâncias registrado em \texttt{test\_results.csv} (amostra ilustrativa), obtivemos:
+\paragraph{Resultados}
+Nas instâncias geradas, os três construtores de arborescência retornam sempre o mesmo custo, e as duas verificações da condição de complementaridade (dual) passam em 100\% dos casos reportados no CSV. Isso corrobora a corretude das implementações e a equivalência entre \emph{Chu--Liu/Edmonds} e \emph{Frank} no valor ótimo (cf. Seções anteriores e \cite{frank2014,schrijver2003comb}).
+
+Do ponto de vista de desempenho, a decomposição temporal por etapas evidencia três fatos principais:
 \begin{itemize}\setlength{\itemsep}{2pt}
-    \item \textbf{Correção e equivalência de custo.} Todos os testes finalizaram com sucesso (coluna \emph{Sucesso} = OK) e ambas as checagens de \emph{condição dual} retornaram \texttt{True} (colunas \emph{Condicao\_dual\_Frank1/2}). Embora as colunas de custo no CSV estejam como “-” por limitação de \emph{logging}, o código contém asserções que exigem \(\text{custo}_{\text{Chu–Liu}}=\text{custo}_{\text{Frank v1}}=\text{custo}_{\text{Frank v2}}\). Logo, a igualdade de custos foi verificada em todas as instâncias desta amostra. Esse comportamento é consistente com a teoria: arcos \emph{apertados} (\(c'=0\)) somados à complementaridade garantem otimalidade \cite{frank1981,frank2014,schrijver2003comb}, e o método de Edmonds é conhecido por devolver uma r‑arborescência ótima \cite{edmonds1967,chu1965}.
-    \item \textbf{Certificados duais.} A validação \emph{a posteriori} via “exatamente uma entrada por corte ativo” (condição dual) passou em 100% dos casos observados. Este é precisamente o certificado primal–dual recomendado na literatura para problemas por cortes laminares \cite{frank2014,schrijver2003comb}.
-    \item \textbf{Desempenho (tempo).} Os tempos totais por instância ficaram tipicamente entre \(\approx\) 0,026 s e 0,121 s nesta faixa de \(n\) e \(m\). Como a medida agrega todas as etapas (Chu–Liu, Fase I e Fase II), não separa o impacto relativo da Fase II v1 vs v2. Ainda assim, em linhas com \(|A|\) até cerca de 600, o tempo permaneceu na casa de centésimos, coerente com implementações diretas eficientes e sobrecarga de Python/NetworkX.
+        \item A Fase~I (normalização primal--dual/elevação de potenciais) domina o tempo total para os tamanhos \(|V|\in[100,200]\) e \(|A|\in[n,3n]|\): tipicamente responde pela maior parcela do tempo por instância, ao passo que o tempo de \emph{Chu--Liu/Edmonds} é menor e as Fases~II são uma fração residual.
+        \item Entre as duas variantes de Fase~II, a versão com heap (v2) é sistematicamente mais rápida que a versão direta (v1). Observamos ganhos mediana/mediana na ordem de\;3--8\,$\times$ (histograma de speedup), compatíveis com a troca de uma varredura sequencial por extrações de menor prioridade em \(O(\log n)\).
+        \item As estatísticas estruturais do \emph{Chu--Liu/Edmonds} mostram número de contrações e profundidade de recursão pequenos na maioria dos casos (tipicamente 0--3), com alguns outliers; isso é consistente com o limite \(O(n)\) para o número de contrações \cite{schrijver2003comb}. O tamanho do subgrafo de zeros \(D_0\) cresce aproximadamente linearmente com \(|V|\), como esperado pelo critério de “uma entrada apertada por vértice”. O pico de memória observado na Fase~I ficou bem abaixo de 1\,MB nas instâncias testadas.
 \end{itemize}
 
-\paragraph{Leitura à luz das referências}
-Os achados alinham-se ao arcabouço teórico:
-\begin{itemize}\setlength{\itemsep}{2pt}
-    \item \textbf{Complementaridade e laminaridade.} A Fase I de Frank produz arcos apertados e uma família de cortes ativa que pode ser tomada laminar por \emph{uncrossing}; a Fase II escolhe apenas arcos com \(c'=0\). A combinação garante igualdade primal–dual \cite{frank2014,schrijver2003comb}. As checagens “True” no CSV corroboram essa leitura.
-    \item \textbf{Equivalência com Edmonds.} A coincidência de custos entre Chu–Liu/Edmonds e Frank é esperada: apesar de roteiros distintos (combinatório vs primal–dual), ambos implementam a mesma mecânica de contrair/expandir orientada por mínimos e cortes \cite{edmonds1967,chu1965,frank1981}.
-    \item \textbf{Complexidade.} A versão didática atinge \(O(mn)\) em pior caso; variantes com estruturas adequadas atingem \(O(m\log n)\) para operações de mínimos \cite{frank2014,schrijver2003comb}. A nossa versão “com heap” (Fase II v2) reduz o custo de expansão da arborescência sobre \(D_0\), mas o gargalo prático pode permanecer na Fase I conforme a densidade e o padrão de pesos.
-\end{itemize}
+As Figuras~\ref{fig:times-boxplot}--\ref{fig:d0-vs-v} resumem esses achados. O boxplot (Fig.~\ref{fig:times-boxplot}) mostra a distribuição dos tempos de cada etapa; nota-se que a Fase~I concentra a maior variabilidade e mediana mais alta. A nuvem tempo~vs.~\(|A|\) (Fig.~\ref{fig:time-vs-edges}) indica crescimento aproximadamente linear nas faixas testadas. O histograma de speedup (Fig.~\ref{fig:speedup}) evidencia vantagem consistente da variante com heap na Fase~II. Por fim, as distribuições de contrações/profundidade (Fig.~\ref{fig:contr-depth}) e de pico de memória (Fig.~\ref{fig:peakmem}) são concentradas em valores baixos, enquanto o gráfico \(|A(D_0)|\)~vs.~\(|V|\) (Fig.~\ref{fig:d0-vs-v}) sugere proporcionalidade entre o tamanho de \(D_0\) e o número de vértices.
 
-\paragraph{Limitações do experimento e melhorias}
-\begin{itemize}\setlength{\itemsep}{2pt}
-    \item \textbf{Registro de custos.} O CSV atual não persiste os custos (aparecem “-”), pois as variáveis locais de custo não são gravadas nas colunas correspondentes. Recomenda-se registrar explicitamente os valores para permitir análises estatísticas (média, desvio, dispersão). Ainda assim, as asserções no código garantem igualdade de custos quando o teste marca sucesso.
-    \item \textbf{Granularidade temporal.} O tempo reportado é total por instância. Para comparar \emph{v1} vs \emph{v2} em Fase II e isolar a Fase I, sugere-se medir tempos por etapa (Chu–Liu, Fase I, Fase II v1, Fase II v2).
-    \item \textbf{Variedade de instâncias.} Os grafos são aleatórios com pesos uniformes. Seria útil adicionar famílias adversárias/estruturadas (p.ex., quase completos, quase árvores, camadas com \(D_0\) extenso/raso), bem como escalas maiores de \(n\) e \(m\), para observar transições de gargalo e os ganhos da heap na prática.
-    \item \textbf{Métricas adicionais.} Além de tempo e custo, incluir contagem de contrações, tamanho médio de \(D_0\), profundidade de reexpansão e memória ajudaria a relacionar empiricamente com as previsões de \cite{frank2014,schrijver2003comb}.
-\end{itemize}
-
-\paragraph{Conclusão}
-Nesta amostra, ambos os métodos devolveram soluções ótimas e consistentes, com certificados duais válidos em todas as instâncias observadas e tempos compatíveis com a escala dos grafos testados. Esses resultados reforçam a equivalência prática entre as abordagens, ao mesmo tempo em que destacam o papel pedagógico do prisma primal–dual de Frank para explicar \emph{por que} a seleção sobre \(D_0\) é suficiente e como a laminaridade organiza a prova de otimalidade \cite{frank1981,frank2014,schrijver2003comb}.
-
-
-% Figuras dos resultados a partir do CSV
 \begin{figure}[H]
     \centering
-    \begin{tikzpicture}
-        \begin{axis}[
-            width=0.95\linewidth,
-            height=6.0cm,
-            xlabel={Arestas ($|A|$)},
-            ylabel={Tempo de execução (s)},
-            title={Dispersão: tempo por número de arestas},
-            grid=both,
-            grid style={gray!20},
-            tick align=outside,
-            tick style={black},
-            legend style={at={(0.02,0.98)},anchor=north west,draw=none,fill=none}
-        ]
-            % Observação: colunas têm nomes com acentos; pgfplots lida bem quando não há espaços extras
-            \addplot+[only marks, mark=*, mark size=1.3pt, blue!70]
-                table[col sep=comma, x=Arestas, y=Tempo_execucao_seg]{../test_results.csv};
-            \addlegendentry{instâncias}
-        \end{axis}
-    \end{tikzpicture}
-    \caption{Relação entre o número de arestas e o tempo total de execução por instância.}
-    \label{fig:tempo-vs-arestas}
+    \includegraphics[width=.85\linewidth]{figures/fig_times_boxplot.png}
+    \caption{Distribuição de tempos por etapa (boxplot): \emph{Chu--Liu}, Fase~I, Fase~II v1 (direta) e Fase~II v2 (heap).}
+    \label{fig:times-boxplot}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \begin{tikzpicture}
-        \begin{axis}[
-            width=0.95\linewidth,
-            height=6.0cm,
-            xlabel={Vértices ($|V|$)},
-            ylabel={Tempo de execução (s)},
-            title={Dispersão: tempo por número de vértices},
-            grid=both,
-            grid style={gray!20},
-            tick align=outside,
-            tick style={black}
-        ]
-            \addplot+[only marks, mark=*, mark size=1.3pt, red!70]
-                table[col sep=comma, x index=1, y=Tempo_execucao_seg]{../test_results.csv};
-        \end{axis}
-    \end{tikzpicture}
-    \caption{Relação entre o número de vértices e o tempo total de execução por instância.}
-    \label{fig:tempo-vs-vertices}
+    \includegraphics[width=.85\linewidth]{figures/fig_time_vs_edges_scatter.png}
+    \caption{Escalonamento temporal em função de \(|A|\): comparação entre \emph{Chu--Liu} e Fase~I.}
+    \label{fig:time-vs-edges}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \begin{tikzpicture}
-        \begin{axis}[
-            width=0.95\linewidth,
-            height=6.0cm,
-            ybar,
-            xlabel={Tempo de execução (s)},
-            ylabel={Frequência},
-            title={Histograma dos tempos totais},
-            grid=both,
-            grid style={gray!20},
-            tick align=outside,
-            tick style={black}
-        ]
-            % Usando biblioteca statistics para histogram a partir dos dados brutos
-            \addplot+ [hist={data=y, bins=20}]
-                table[col sep=comma, y=Tempo_execucao_seg]{../test_results.csv};
-        \end{axis}
-    \end{tikzpicture}
-    \caption{Distribuição dos tempos totais de execução nas instâncias testadas.}
-    \label{fig:hist-tempos}
+    \includegraphics[width=.75\linewidth]{figures/fig_speedup_hist.png}
+    \caption{Histograma de speedup na Fase~II (\(\text{v1}/\text{v2}\)): valores maiores que 1 indicam v2 (heap) mais rápida.}
+    \label{fig:speedup}
 \end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.48\linewidth]{figures/fig_contractions_depth.png}
+    \caption{Distribuições do número de contrações e da profundidade de recursão em \emph{Chu--Liu}.}
+    \label{fig:contr-depth}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\linewidth]{figures/fig_peakmem_hist.png}
+    \caption{Pico de memória observado na Fase~I (kB).}
+    \label{fig:peakmem}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\linewidth]{figures/fig_d0_edges_vs_vertices.png}
+    \caption{Tamanho de \(D_0\) (número de arestas de custo reduzido zero) em função de \(|V|\).}
+    \label{fig:d0-vs-v}
+\end{figure}
+
+Em síntese, os resultados empíricos alinham-se às previsões teóricas: custos coincidem e satisfazem complementaridade; o \emph{Chu--Liu} apresenta boa escalabilidade nas faixas testadas; a Fase~I de Frank tende a dominar o tempo; e a variação com heap reduz significativamente o custo da Fase~II, refletindo o uso de extrações \(\log n\). Essas observações reforçam o quadro de \cite{frank2014,schrijver2003comb}: a organização primal--dual de Frank torna explícitas as estruturas (cortes ativos, apertude) que explicam tanto a corretude quanto caminhos de otimização.
 
 
 
