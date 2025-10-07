@@ -561,12 +561,39 @@ Esses conceitos reaparecerão ao longo do texto, especialmente na diferença ent
 \paragraph{}
 Desde a introdução, vimos a ideia filosófica de explicar como “ligar” fatos a hipóteses da forma mais parcimoniosa possível. Para tornar essa intuição precisa, precisamos de uma linguagem que descreva objetos (conjuntos) e como eles se conectam. É aqui que entram as \textbf{relações} e, de modo ainda mais disciplinado, as \textbf{funções}: regras que associam a cada elemento de um conjunto exatamente um elemento de outro. Com elas, passamos do discurso qualitativo sobre explicações para uma estrutura matemática que permite medir, comparar e, adiante, otimizar.
 
-% \paragraph{}
-Uma formulação padrão usa variáveis \(x_a\) para cada arco \(a\in A\) indicando sua seleção (na versão inteira \(x_a\in\{0,1\}\); se permitirmos valores fracionários \(0\le x_a\le 1\), obtemos a relaxação contínua, que é um programa linear (PL)):
-Explicando de forma mais canônica, o problema de arborescência mínima pode ser formulado como um programa linear (PL) primal–dual\footnote{Por “PL primal–dual” entendemos um par de formulações lineares acopladas: o primal escolhe variáveis $x_a$ para minimizar o custo total, e o dual atribui potenciais $y(\cdot)$ a cortes/vértices impondo $c'(u,v)\ge 0$. O dual fornece um limitante inferior (dualidade fraca); quando a solução primal usa apenas arcos de custo reduzido zero e cada corte ativo é atravessado exatamente uma vez, os valores coincidem (dualidade forte), certificando otimalidade; ver \cite{schrijver2003comb,frank2014}.}
 \paragraph{}
-Na matemática, uma \textbf{relação} entre dois conjuntos \(A\) e \(B\) é uma maneira de associar elementos de \(A\) com elementos de \(B\). Uma \textbf{função} é um tipo especial de relação que associa cada elemento de \(A\) a exatamente um elemento de \(B\).
+Para tornar essa discussão prática, desenvolvemos uma aplicação web interativa que permite visualizar passo a passo o funcionamento dos dois algoritmos, destacando suas diferenças e semelhanças. A seguir, discutimos a dimensão didática que motivou essas escolhas e como fundamentos de aprendizagem e visualização embasam o projeto.
 
+\section{A Didática do Abstrato}
+\label{sec:didatica-abstrato}
+
+O conteúdo desenvolvido até aqui toca tópicos de alta abstração (primal--dual, laminaridade, cortes, pertinência), comuns em cursos avançados de otimização e teoria dos grafos. Nesta seção, organizamos uma reflexão didático-pedagógica em quatro eixos: desafios do ensino de conceitos abstratos; especificidades no ensino de grafos e dígrafos; o papel de recursos visuais; e a importância de disseminação com ferramentas.
+
+\subsection{Desafios no ensino de conceitos abstratos}
+Aprender conteúdos de alta abstração envolve lidar com sobrecarga cognitiva intrínseca e extrínseca \cite{sweller1988cognitive}. Diretrizes de aprendizagem multimídia indicam que combinar representações verbais e visuais pode reduzir carga desnecessária e favorecer integração semântica \cite{mayer2009multimedia,paivio1990}. Em matemática avançada, a transição entre níveis de representação (intuitivo, formal, simbólico) exige mediação cuidadosa \cite{tall1991advanced} e atenção a como exemplos, contraexemplos e invariantes são apresentados.
+
+No caso específico de algoritmos com provas baseadas em complementaridade primal--dual, é frequente que estudantes compreendam os passos operacionais sem internalizar a estrutura justificativa. Tornar explícitos os elos entre “ação do algoritmo” e “restrições/condições que se tornam justas” ajuda a estabilizar o entendimento.
+
+\subsection{Desafios no ensino de grafos e dígrafos}
+Grafos e dígrafos são simultaneamente concretos (nós e arestas) e abstratos (propriedades globais como cortes, conectividade, laminaridade). A multiplicidade de noções (caminhos, ciclos, cortes, componentes, condensação) exige um vocabulário visual consistente \cite{bondy2008graph,diestel2017graph,west2001introduction}. No tema de arborescências de custo mínimo, a tensão entre a leitura combinatória (Chu--Liu/Edmonds) e a leitura primal--dual (Frank) adiciona um degrau conceitual que precisa ser transposto com exemplos estruturados e comparação lado a lado.
+
+Do ponto de vista pedagógico, três dificuldades são recorrentes: (i) a identificação de estruturas latentes (por exemplo, cortes ativos e arcos apertados) no meio do fluxo do algoritmo; (ii) o acompanhamento de operações de contração/expansão e seus efeitos nos custos reduzidos; (iii) a conexão entre métricas empíricas (tempos, contrações, memória) e as garantias teóricas (limites de complexidade, laminaridade, complementaridade).
+
+\subsection{Como recursos visuais podem auxiliar}
+Há evidências de que diagramas e animações, quando bem projetados, podem acelerar a compreensão de relações topológicas e causais \cite{larkin1987diagram,ware2012information}. Na educação em ciência da computação, visualizações de algoritmos têm efeito positivo sobretudo quando promovem \emph{engajamento ativo} (prever, manipular, explicar) e não apenas consumo passivo \cite{hundhausen2002meta,naps2003engagement}. Taxonomias de tarefas para visualização (
+overview \textrightarrow\ zoom/filter \textrightarrow\ details-on-demand) ajudam a alinhar interações com objetivos cognitivos \cite{shneiderman1996eyes}.
+
+Aplicado ao nosso escopo, três linhas guiadoras foram adotadas: (a) representar explicitamente o subgrafo de zeros \(D_0\) e destacar arcos \emph{apertados}; (b) tornar visível o processo de contração/expansão (macro e micro), com rastro dos cortes envolvidos; (c) aproximar o que é mostrado das garantias (por exemplo, marcar cortes da família laminar com contagem “entra exatamente um arco”).
+
+\subsection{Disseminação e incorporação de ferramentas}
+Materiais que conectam teoria, evidências empíricas e interatividade têm maior potencial de transferência e retenção. A aplicação web acompanha essa visão: ela instrumentaliza o texto, permitindo que quem lê projete no objeto interativo as ideias de primal--dual, apertude e laminaridade. Além disso, o \emph{pipeline} de testes e a geração automática de figuras tornam o conteúdo reprodutível, um valor didático em si.
+
+Do ponto de vista curricular, recomendamos sequências de atividades que alternem: (i) exploração interativa orientada por questões; (ii) exercícios de reconstrução de provas (por exemplo, complementaridade) a partir de instâncias; (iii) mini-investigações sobre desempenho (tempo vs. |A|, impacto de estruturas adversárias). Essas práticas situam conceitos abstratos em experiências manipuláveis, reduzindo carga extrínseca e ampliando a ancoragem conceitual \cite{mayer2009multimedia,sweller1988cognitive}.
+
+\paragraph{}
+Em resumo, a didática do abstrato aqui proposta combina fundamentos de aprendizagem e visualização com artefatos reprodutíveis (código, gráficos e aplicação interativa). Esse ecossistema busca não apenas explicar os algoritmos, mas também oferecer meios para que estudantes e docentes investiguem, comparem e consolidem entendimentos de forma ativa.
+
+\section{Considerações Finais}
 \paragraph{}
 Uma \textbf{relação} \(R\) entre dois conjuntos \(A\) e \(B\) é um subconjunto do produto cartesiano \(A \times B\). Ou seja, \(R \subseteq A \times B\). Se \((a,b) \in R\), dizemos que \(a\) está relacionado a \(b\) pela relação \(R\), denotado \(aRb\).
 
@@ -3785,7 +3812,7 @@ De fato, o algoritmo de Frank é uma abordagem elegante e eficiente para encontr
 
 Mas, depois de toda essa exploração do método de Frank, vale a pena revisitar o clássico algoritmo de Chu–Liu/Edmonds para entender as diferenças e semelhanças entre essas duas abordagens fundamentais para o problema da arborescência de custo mínimo. A seguir, discutiremos as diferenças e semelhanças entre os métodos de Chu–Liu/Edmonds e Frank.
 
-\section{Chu-liu/Edmonds vs. Frank}
+\section{Discussão e Resultados: Chu-liu/Edmonds vs. Frank}
 
 \paragraph{}
 Wittgenstein, em suas investigações filosóficas, propôs a ideia de "semelhança de família" que diz que coisas que pertencem ao mesmo grupo não compartilham necessariamente uma característica definidora, mas sim uma série de características que se sobrepõem de maneiras variadas. Assim, membros de uma "família" podem ser semelhantes em alguns aspectos, mas diferentes em outros, criando uma rede complexa de relações.
@@ -3827,13 +3854,14 @@ As principais diferenças e semelhanças entre os dois métodos podem ser resumi
 \end{itemize}
 
 \paragraph{}
-Ambos os métodos são poderosos e amplamente aplicáveis, e a escolha entre eles pode depender do contexto, da familiaridade com técnicas primal–dual ou combinatórias, e das necessidades específicas de implementação. Entender as nuances de cada abordagem enriquece a compreensão do problema da arborescência de custo mínimo e das ferramentas disponíveis para resolvê-lo.
+Ambos os métodos são poderosos e amplamente aplicáveis, e a escolha entre eles pode depender do contexto, da familiaridade com técnicas primal–dual ou combinatórias, e das necessidades específicas de implementação. Entender as nuances de cada abordagem enriquece a compreensão do problema da arborescência de custo mínimo e das ferramentas disponíveis para resolvê-lo. Nesse sentido realizamos testes para garantir a corretude e avaliar o desempenho das implementações comparativamente, conforme descrito a seguir.
 
 \subsection{Testes e Resultados}
 
 Para validar a eficácia dos algoritmos de \emph{Chu–Liu/Edmonds} e \emph{Frank}, realizamos uma série de testes em diferentes instâncias de grafos direcionados. Os testes foram projetados para avaliar não apenas a correção dos algoritmos, mas também seu desempenho em termos de tempo de execução e uso de memória.
 
 \paragraph{Metodologia}
+\paragraph{}
 Geramos digrafos enraizados aleatórios com \(|V|\in[100,200]\) e \(|A|\in[n,3n]\), pesos inteiros uniformes em \([1,20]\), e conectividade a partir da raiz \(r0\) garantida por uma construção incremental. Em cada instância (arquivo \texttt{tests.py}):
 \begin{itemize}\setlength{\itemsep}{1pt}
     \item removemos arestas que entram em \(r0\) (normalização compatível com as formulações);
@@ -3843,6 +3871,7 @@ Geramos digrafos enraizados aleatórios com \(|V|\in[100,200]\) e \(|A|\in[n,3n]
 \end{itemize}
 
 \paragraph{Resultados}
+\paragraph{}
 Nas instâncias geradas, os três construtores de arborescência retornam sempre o mesmo custo, e as duas verificações da condição de complementaridade (dual) passam em 100\% dos casos reportados no CSV. Isso corrobora a corretude das implementações e a equivalência entre \emph{Chu--Liu/Edmonds} e \emph{Frank} no valor ótimo (cf. Seções anteriores e \cite{frank2014,schrijver2003comb}).
 
 Do ponto de vista de desempenho, a decomposição temporal por etapas evidencia três fatos principais:
@@ -3898,14 +3927,15 @@ As Figuras~\ref{fig:times-boxplot}--\ref{fig:d0-vs-v} resumem esses achados. O b
 
 Em síntese, os resultados empíricos alinham-se às previsões teóricas: custos coincidem e satisfazem complementaridade; o \emph{Chu--Liu} apresenta boa escalabilidade nas faixas testadas; a Fase~I de Frank tende a dominar o tempo; e a variação com heap reduz significativamente o custo da Fase~II, refletindo o uso de extrações \(\log n\). Essas observações reforçam o quadro de \cite{frank2014,schrijver2003comb}: a organização primal--dual de Frank torna explícitas as estruturas (cortes ativos, apertude) que explicam tanto a corretude quanto caminhos de otimização.
 
-
-
-
+\paragraph{}
+Em síntese, os testes e as análises oferecem uma base robusta para a compreensão prática e teórica dos algoritmos de arborescência de custo mínimo, explicitando suas forças e nuances. A partir desses achados, avançamos para como transformá-los em aprendizagem efetiva.
 
 \paragraph{}
-Para facilitar a compreensão desenvolemos uma aplicação web interativa que permita visualizar passo a passo o funcionamento dos dois algoritmos, destacando suas diferenças e semelhanças. 
+Para tornar essa experiência concreta, desenvolvemos uma aplicação web interativa que permite acompanhar, passo a passo, o funcionamento de ambos os algoritmos, evidenciando suas semelhanças e diferenças.
 
-O aprendizado visual é uma ferramenta poderosa, e ver os algoritmos em ação pode ajudar a solidificar a compreensão dos conceitos discutidos. Na seção seguinte discutiremos aspectos didáticos relacionados ao aprendizado de digrafos, especialmente em estruturas mais complexas, traremos uma breve discussão sobre princípios de interação humano-computacional e como todos essas considerações culminaram na implementação da aplicação web.
+\paragraph{}
+A aprendizagem visual é especialmente útil: observar os algoritmos em ação ajuda a fixar os conceitos apresentados. A seguir, discutimos aspectos didáticos do ensino de dígrafos em cenários mais complexos e resumimos princípios de interação humano-computador que orientaram o desenho da ferramenta.
+
 
 \section{Considerações Finais}
 \clearpage
