@@ -1,19 +1,78 @@
-def get_arcs_entering_X(D, X):
-    """
-    Obter as arestas que entram em um conjunto X em um dígrafo D.
-    A função retorna uma lista de tuplas que representam as arestas que entram em X com seus respectivos pesos.
 
-    Parâmetros:
-    - D: dígrafo (DiGraph)
-    - X: conjunto de vértices
+    def andras_frank_algorithm(
+    D, draw_fn=None, log=None, boilerplate: bool = True, lang="pt"
+):
+    if boilerplate and log:
+        if lang == "en":
+            log(f"\nExecuting András Frank algorithm...")
+        elif lang == "pt":
+            log(f"\nExecutando algoritmo de András Frank...")
 
-    Retorno:
-    - arcs: lista de tuplas (u, v, data) em que u ∉ X e v ∈ X
-    """
+    A_zero, Dual_list = phase1_find_minimum_arborescence(
+        D, "r0", draw_fn=draw_fn, log=log, boilerplate=boilerplate, lang=lang
+    )
 
-    arcs = []
+    if boilerplate and log:
+        log(f"\nA_zero: \n{A_zero}")
+        log(f"\nDual_list: \n{Dual_list}")
 
-    for u, v, data in D.edges(data=True):
-        if u not in X and v in X:
-            arcs.append((u, v, data))
-    return arcs
+    if not has_arborescence(D, "r0"):
+        if boilerplate and log:
+            if lang == "en":
+                log(f"\nThe graph does not contain an arborescence with root r0.")
+            elif lang == "pt":
+                log(f"\nO grafo não contém uma arborescência com raiz r0.")
+        return None, None
+
+    arborescence_frank = phase2_find_minimum_arborescence(
+        D, "r0", A_zero, draw_fn=draw_fn, log=log, boilerplate=boilerplate, lang=lang
+    )
+    arborescence_frank_v2 = phase2_find_minimum_arborescence_v2(
+        D, "r0", A_zero, draw_fn=draw_fn, log=log, boilerplate=boilerplate, lang=lang
+    )
+
+    dual_frank = check_dual_optimality_condition(
+        arborescence_frank, Dual_list, log=log, boilerplate=boilerplate, lang=lang
+    )
+
+    dual_frank_v2 = check_dual_optimality_condition(
+        arborescence_frank_v2, Dual_list, log=log, boilerplate=boilerplate, lang=lang
+    )
+
+    if dual_frank and dual_frank_v2:
+        if boilerplate and log:
+            if lang == "en":
+                log(f"\n✅ Dual condition satisfied for András Frank.")
+            elif lang == "pt":
+                log(f"\n✅ Condição dual satisfeita para András Frank.")
+    else:
+        if boilerplate and log:
+            if lang == "en":
+                log(f"\n❌ Dual condition failed for András Frank.")
+            elif lang == "pt":
+                log(f"\n❌ Condição dual falhou para András Frank.")
+
+        if draw_fn:
+            if boilerplate and draw_fn:
+                if lang == "en":
+                    draw_fn(
+                        arborescence_frank,
+                        title="András Frank Arborescence - Method 1",
+                    )
+                    draw_fn(
+                        arborescence_frank_v2,
+                        title="András Frank Arborescence - Method 2",
+                    )
+                elif lang == "pt":
+                    draw_fn(
+                        arborescence_frank,
+                        title="Arborescência de András Frank - Método 1",
+                    )
+
+                    draw_fn(
+                        arborescence_frank_v2,
+                        title="Arborescência de András Frank - Método 2",
+                    )
+
+    return arborescence_frank, arborescence_frank_v2, dual_frank, dual_frank_v2
+
