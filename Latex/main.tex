@@ -3373,9 +3373,12 @@ O laço faz o seguinte, de forma direta:
     \end{itemize}
 \end{itemize}
 
-Na prática, \texttt{update\_weights\_in\_X} é o passo que “cria” novas 0‑arestas: ele reduz os pesos das entradas de \(X\) e insere em \texttt{D\_zero}/\texttt{A\_zero} aquelas que atingirem 0. O processo se repete até que toda componente diferente da raiz tenha ao menos uma entrada de peso 0, preparando o terreno para a Fase II. Parâmetros opcionais \texttt{draw\_fn} e \texttt{log} controlam visualização e mensagens.
+Na prática, \texttt{update\_weights\_in\_X} é o passo que “cria” novas 0‑arestas: ele reduz os pesos das entradas de \(X\) e insere em \texttt{D\_zero}/\texttt{A\_zero} aquelas que atingirem 0. O processo se repete até que toda componente diferente da raiz tenha ao menos uma entrada de peso 0, preparando o terreno para a Fase II.
 
-\begin{pybox}{Fase 1: algoritmo de Frank}
+\paragraph{}
+Parâmetros opcionais \texttt{draw\_fn} e \texttt{log} controlam visualização e mensagens.
+
+\begin{pybox}{Fase 1 - algoritmo de Frank}
 def phase1_find_minimum_arborescence(
     D_original, r0, draw_fn=None, log=None, boilerplate: bool = True, lang="pt"
 ):
@@ -3480,7 +3483,7 @@ def phase1_find_minimum_arborescence(
     return A_zero, Dual_list
 \end{pybox}
 
-\paragraph{Fase 2 do algoritmo de Frank:}
+\paragraph{Fase 2 - algoritmo de Frank}
 	a função \texttt{phase2\_find\_minimum\_arborescence} recebe \texttt{D\_original}, \texttt{r0} e \texttt{A\_zero} e devolve \texttt{Arb} (um \texttt{DiGraph}) contendo a arborescência construída apenas com 0‑arestas. O fluxo é:
 \begin{itemize}\setlength{\itemsep}{1pt}
     \item \emph{Inicialização:} \texttt{Arb = nx.DiGraph(); Arb.add\_node(r0); n = len(D\_original.nodes())}.
@@ -3491,11 +3494,14 @@ def phase1_find_minimum_arborescence(
         \item insere \texttt{Arb.add\_edge(u, v, **edge\_data)};
         \item faz \texttt{break} para reiniciar a varredura desde o início de \texttt{A\_zero} na próxima iteração (crescimento em camadas a partir do conjunto já alcançado).
     \end{itemize}
-    \item \emph{Desenho opcional:} se \texttt{draw\_fn} for fornecida, a arborescência parcial é desenhada a cada inclusão (título em EN/PT conforme \texttt{lang}).
     \item \emph{Invariantes práticos:} o teste \texttt{v not in Arb.nodes()} evita ciclos e mantém grau de entrada \(\le 1\) por vértice; \texttt{u in Arb.nodes()} garante que sempre expandimos a partir de vértices já alcançados por \(r0\).
     \item \emph{Hipóteses sobre a entrada:} \texttt{A\_zero} deve conter ao menos uma entrada para cada \(v\neq r0\); a ordem em \texttt{A\_zero} funciona como critério de desempate e pode alterar qual arborescência ótima é retornada, sem afetar o custo.
     \item \emph{Custo:} no pior caso, \(O(n\cdot |A\_zero|)\), pois a cada inclusão recomeçamos a varredura de \texttt{A\_zero}.
 \end{itemize}
+
+\paragraph{}
+Parâmetros opcionais \texttt{draw\_fn} e \texttt{log} controlam visualização e mensagens.
+
 
 \begin{pybox}{Fase 2: algoritmo de Frank - versão 1 (sem heap)}
 def phase2_find_minimum_arborescence(
@@ -3534,6 +3540,25 @@ def phase2_find_minimum_arborescence(
                 draw_fn(Arb, title=f"Arborescência parcial - Iteração {_+1}")
     return Arb
 \end{pybox}
+
+\paragraph{Fase 2 - algoritmo de Frank: versão 2 (com heap)}
+	extbf{Implementação com fila de prioridade.} Nesta variação, mantemos uma \emph{fronteira} de arcos candidatos em uma heap (\texttt{heapq}) e sempre extraímos o próximo arco com menor prioridade. O código constrói um grafo auxiliar apenas com as 0‑arestas e usa um conjunto de visitados para garantir que cada vértice entre exatamente uma vez.
+\begin{itemize}\setlength{\itemsep}{1pt}
+    \item \emph{Pré-processamento (grafo auxiliar):} criar \texttt{Arb = nx.DiGraph()} e inserir todas as 0‑arestas com um peso de prioridade indexado: \texttt{for i, (u,v) in enumerate(A\_zero): Arb.add\_edge(u, v, w=i)}. Aqui, \texttt{w} atua como \emph{chave de desempate} estável baseada na ordem de \texttt{A\_zero}.
+    \item \emph{Estados:} \texttt{V = \{r0\}} (vértices alcançados), \texttt{q = []} (heap de tuplas \texttt{(w, u, v)}), \texttt{A = nx.DiGraph()} (arborescência resultante).
+    \item \emph{Semeadura da fronteira:} para cada \texttt{(u, v, data)} em \texttt{Arb.out\_edges(r0, data=True)}, empilhar \texttt{heapq.heappush(q, (data["w"], u, v))}.
+    \item \emph{Laço principal:} enquanto \texttt{q} não estiver vazia,
+    \begin{itemize}\setlength{\itemsep}{1pt}
+        \item extrair \texttt{\_, u, v = heapq.heappop(q)};
+        \item se \texttt{v in V}, continuar (descartar arcos que levariam a um vértice já escolhido);
+        \item adicionar a aresta real com atributos originais: \texttt{edge\_data = D\_original.get\_edge\_data(u, v); A.add\_edge(u, v, **edge\_data)};
+        \item marcar \texttt{V.add(v)};
+        \item para cada \texttt{(v, w, data)} em \texttt{Arb.out\_edges(v, data=True)}, se \texttt{w not in V}, empilhar \texttt{heapq.heappush(q, (data["w"], v, w))}.
+    \end{itemize}
+    \item \emph{Propriedades:} cada vértice entra uma única vez em \texttt{V} (grau de entrada \(\le 1\) por vértice), só usamos arcos de \texttt{A\_zero} e evitamos ciclos por construção. O processo termina com \(|V| = |V(D\_original)|\) se \texttt{A\_zero} cobre uma entrada para todo \(v\neq r0\).
+    \item \emph{Desempate/prioridade:} a chave \texttt{w=i} preserva a ordem de \texttt{A\_zero}. Se desejar priorizar por custos originais, substitua \texttt{data["w"]} por \(c(u,v)\) (ou por uma tupla \texttt{(c(u,v), i)} para estabilidade).
+    \item \emph{Complexidade:} \(O(|A\_zero| \log |A\_zero|)\) para operações de heap, mais \(O(|A\_zero|)\) para construir \texttt{Arb}.
+\end{itemize}
 
 \begin{pybox}{Fase 2: algoritmo de Frank - versão 2 (com heap)}
 def phase2_find_minimum_arborescence_v2(
