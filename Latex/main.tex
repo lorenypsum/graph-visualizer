@@ -16,6 +16,11 @@
 % Evitar que figuras desloquem além da seção corrente; e inserir barreiras nas subseções
 \usepackage[section]{placeins}
 \usepackage{tikz}
+% Plotagem e leitura de CSV para gráficos dos resultados
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{statistics}
+\usepackage{pgfplotstable}
 \usepackage{graphicx} % for \includegraphics when including external PDFs
 % Global image sizing: fit within text width and 85% of text height, keep aspect ratio
 \makeatletter
@@ -3863,6 +3868,79 @@ Os achados alinham-se ao arcabouço teórico:
 
 \paragraph{Conclusão}
 Nesta amostra, ambos os métodos devolveram soluções ótimas e consistentes, com certificados duais válidos em todas as instâncias observadas e tempos compatíveis com a escala dos grafos testados. Esses resultados reforçam a equivalência prática entre as abordagens, ao mesmo tempo em que destacam o papel pedagógico do prisma primal–dual de Frank para explicar \emph{por que} a seleção sobre \(D_0\) é suficiente e como a laminaridade organiza a prova de otimalidade \cite{frank1981,frank2014,schrijver2003comb}.
+
+
+% Figuras dos resultados a partir do CSV
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            width=0.95\linewidth,
+            height=6.0cm,
+            xlabel={Arestas ($|A|$)},
+            ylabel={Tempo de execução (s)},
+            title={Dispersão: tempo por número de arestas},
+            grid=both,
+            grid style={gray!20},
+            tick align=outside,
+            tick style={black},
+            legend style={at={(0.02,0.98)},anchor=north west,draw=none,fill=none}
+        ]
+            % Observação: colunas têm nomes com acentos; pgfplots lida bem quando não há espaços extras
+            \addplot+[only marks, mark=*, mark size=1.3pt, blue!70]
+                table[col sep=comma, x=Arestas, y=Tempo_execucao_seg]{../test_results.csv};
+            \addlegendentry{instâncias}
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Relação entre o número de arestas e o tempo total de execução por instância.}
+    \label{fig:tempo-vs-arestas}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            width=0.95\linewidth,
+            height=6.0cm,
+            xlabel={Vértices ($|V|$)},
+            ylabel={Tempo de execução (s)},
+            title={Dispersão: tempo por número de vértices},
+            grid=both,
+            grid style={gray!20},
+            tick align=outside,
+            tick style={black}
+        ]
+            \addplot+[only marks, mark=*, mark size=1.3pt, red!70]
+                table[col sep=comma, x index=1, y=Tempo_execucao_seg]{../test_results.csv};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Relação entre o número de vértices e o tempo total de execução por instância.}
+    \label{fig:tempo-vs-vertices}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            width=0.95\linewidth,
+            height=6.0cm,
+            ybar,
+            xlabel={Tempo de execução (s)},
+            ylabel={Frequência},
+            title={Histograma dos tempos totais},
+            grid=both,
+            grid style={gray!20},
+            tick align=outside,
+            tick style={black}
+        ]
+            % Usando biblioteca statistics para histogram a partir dos dados brutos
+            \addplot+ [hist={data=y, bins=20}]
+                table[col sep=comma, y=Tempo_execucao_seg]{../test_results.csv};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Distribuição dos tempos totais de execução nas instâncias testadas.}
+    \label{fig:hist-tempos}
+\end{figure}
 
 
 
