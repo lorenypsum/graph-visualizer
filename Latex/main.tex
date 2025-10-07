@@ -3624,8 +3624,22 @@ def phase2_find_minimum_arborescence_v2(
     return A
 \end{pybox}
 
-\begin{pybox}{Checar condição de otimalidade dual}
+\paragraph{Checar condição de otimalidade dual:}
+    a função \texttt{check\_dual\_optimality\_condition} verifica a condição dual: se \(z(X)>0\), então exatamente uma aresta de \texttt{Arb} entra em \(X\). Ela recebe \texttt{Arb} (uma arborescência), \texttt{Dual\_list} (lista de tuplas \((X,z(X))\)), e retorna True se a condição for satisfeita, False caso contrário. O fluxo é:
+\begin{itemize}\setlength{\itemsep}{1pt}
+    \item para cada \((X,z)\) em \texttt{Dual\_list}:
+    \begin{itemize}\setlength{\itemsep}{1pt}
+        \item para cada \((u,v)\) em \texttt{Arb.edges()}:
+        \begin{itemize}\setlength{\itemsep}{1pt}
+            \item se \(u\notin X\) e \(v\in X\), incrementar contador \texttt{count};
+            \item se \texttt{count > 1}, a condição falha: logar mensagem (se \texttt{boilerplate} e \texttt{log} estiverem ativos) e retornar False.
+        \end{itemize}
+    \end{itemize}
+    \item se o laço terminar sem falhas, retornar True.
+    \item complexidade \(O(|\texttt{Dual\_list}| \cdot |\texttt{Arb.edges()}|)\) no pior caso.
+\end{itemize}
 
+\begin{pybox}{Checar condição de otimalidade dual}
 def check_dual_optimality_condition(
     Arb, Dual_list, log=None, boilerplate: bool = True, lang="pt"
 ):
@@ -3660,9 +3674,13 @@ def check_dual_optimality_condition(
 
 \end{pybox}
 
-\begin{pybox}{Rotina Principal: chamada das funções}
+\paragraph{Rotina principal:}
+    a função \texttt{andras\_frank\_algorithm} orquestra a execução das fases 1 e 2, além da verificação da condição dual. Ela recebe o dígrafo \(D\), a raiz \(r0\) (fixa), e parâmetros opcionais \texttt{draw\_fn}, \texttt{log}, \texttt{boilerplate} e \texttt{lang} para controle de visualização, mensagens e idioma.
 
-    def andras_frank_algorithm(
+    
+
+\begin{pybox}{Rotina Principal: chamada das funções}
+def andras_frank_algorithm(
     D, draw_fn=None, log=None, boilerplate: bool = True, lang="pt"
 ):
     if boilerplate and log:
@@ -3738,27 +3756,7 @@ def check_dual_optimality_condition(
                     )
 
     return arborescence_frank, arborescence_frank_v2, dual_frank, dual_frank_v2
-
 \end{pybox}    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 \section{Chu-liu/Edmonds vs. Frank}

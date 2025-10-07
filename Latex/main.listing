@@ -1,5 +1,4 @@
-
-    def andras_frank_algorithm(
+def andras_frank_algorithm(
     D, draw_fn=None, log=None, boilerplate: bool = True, lang="pt"
 ):
     if boilerplate and log:
@@ -75,4 +74,3 @@
                     )
 
     return arborescence_frank, arborescence_frank_v2, dual_frank, dual_frank_v2
-
