@@ -3305,6 +3305,9 @@ def get_minimum_weight_cut(arcs):
     return min(data["w"] for _, _, data in arcs)
 \end{pybox}    
 
+\paragraph{Atualizar pesos em X:}
+a função \texttt{update\_weights\_in\_X} atualiza os pesos das arestas que entram em um conjunto \(X\) em um dígrafo \(D\). Ela subtrai um valor mínimo dos pesos dessas arestas e registra aquelas que atingem peso zero em uma lista e em um novo dígrafo. Essa função tem efeito colateral, pois modifica o dígrafo original.
+
 \begin{pybox}{Atualizar pesos em X}
 def update_weights_in_X(D, arcs, min_weight, A_zero, D_zero):
     """
@@ -3330,6 +3333,9 @@ def update_weights_in_X(D, arcs, min_weight, A_zero, D_zero):
 
 \end{pybox}
 
+\paragraph{Identificar arborescência:}
+a função \texttt{has\_arborescence} verifica se um dígrafo \(D\) possui uma arborescência com raiz \(r0\). Ela retorna True se uma arborescência existir, caso contrário, retorna False. Isso é feito verificando se o dígrafo é uma árvore de busca em profundidade (DFS) com raiz \(r0\).
+
 \begin{pybox}{Identificar Arborescência}
 def has_arborescence(D, r0):
     """
@@ -3349,6 +3355,25 @@ def has_arborescence(D, r0):
 
     return tree.number_of_nodes() == D.number_of_nodes()
 \end{pybox}
+
+\paragraph{Fase 1 do algoritmo de Frank:}
+	a função \texttt{phase1\_find\_minimum\_arborescence} mantém três estruturas: (i) \texttt{D\_zero}, o subgrafo das arestas com peso 0; (ii) \texttt{A\_zero}, a lista dessas 0‑arestas; e (iii) \texttt{Dual\_list}, com pares \((X,\Delta)\) que registram os incrementos aplicados.
+
+\paragraph{}
+O laço faz o seguinte, de forma direta:
+\begin{itemize}
+    \item \emph{Construção do condensado:} constrói o condensado \(C=\mathrm{Cond}(D\_0)\) via \texttt{nx.condensation(D\_zero)} e coleta as \emph{fontes} de \(C\) (componentes com grau de entrada zero)\footnote{No grafo condensado \(C\) (um DAG cujos nós são as componentes fortemente conexas de \(D\_0\)), uma "fonte" é um nó com grau de entrada zero. Isso corresponde a um bloco de \(D\_0\) que não recebe arcos de custo reduzido zero vindos de fora do próprio bloco. Na Fase I, elevamos potenciais apenas para fontes distintas da que contém \(r\_0\) para garantir ao menos uma entrada apertada.};
+    \item \emph{Fontes:} se restar apenas uma fonte (a que contém \(r0\)), termina;
+    \item \emph{Processamento das fontes:} para cada fonte \(u\) com \(X=\text{members}(u)\) e \(r0\notin X\):
+    \begin{itemize}
+        \item \texttt{arcs = get\_arcs\_entering\_X(D\_copy, X)};
+        \item \(\Delta =\) \texttt{get\_minimum\_weight\_cut(arcs)} (menor peso dentre as entradas de \(X\));
+        \item \texttt{update\_weights\_in\_X(D\_copy, arcs, \(\Delta\), A\_zero, D\_zero)} para subtrair \(\Delta\) das entradas e adicionar a \texttt{D\_zero}/\texttt{A\_zero} as que zerarem;
+        \item se \(\Delta>0\), registra \((X,\Delta)\) em \texttt{Dual\_list}.
+    \end{itemize}
+\end{itemize}
+
+Na prática, \texttt{update\_weights\_in\_X} é o passo que “cria” novas 0‑arestas: ele reduz os pesos das entradas de \(X\) e insere em \texttt{D\_zero}/\texttt{A\_zero} aquelas que atingirem 0. O processo se repete até que toda componente diferente da raiz tenha ao menos uma entrada de peso 0, preparando o terreno para a Fase II. Parâmetros opcionais \texttt{draw\_fn} e \texttt{log} controlam visualização e mensagens.
 
 \begin{pybox}{Fase 1: algoritmo de Frank}
 def phase1_find_minimum_arborescence(
@@ -3454,6 +3479,23 @@ def phase1_find_minimum_arborescence(
 
     return A_zero, Dual_list
 \end{pybox}
+
+\paragraph{Fase 2 do algoritmo de Frank:}
+	a função \texttt{phase2\_find\_minimum\_arborescence} recebe \texttt{D\_original}, \texttt{r0} e \texttt{A\_zero} e devolve \texttt{Arb} (um \texttt{DiGraph}) contendo a arborescência construída apenas com 0‑arestas. O fluxo é:
+\begin{itemize}\setlength{\itemsep}{1pt}
+    \item \emph{Inicialização:} \texttt{Arb = nx.DiGraph(); Arb.add\_node(r0); n = len(D\_original.nodes())}.
+    \item \emph{Laço externo:} \texttt{for \_ in range(n-1)} força a inclusão de exatamente \(n-1\) arestas.
+    \item \emph{Laço interno (varredura de candidatos):} percorre \texttt{A\_zero} na ordem dada; para cada \((u,v)\), se \texttt{u in Arb.nodes()} e \texttt{v not in Arb.nodes()}, então
+    \begin{itemize}\setlength{\itemsep}{1pt}
+        \item lê atributos originais com \texttt{edge\_data = D\_original.get\_edge\_data(u,v)};
+        \item insere \texttt{Arb.add\_edge(u, v, **edge\_data)};
+        \item faz \texttt{break} para reiniciar a varredura desde o início de \texttt{A\_zero} na próxima iteração (crescimento em camadas a partir do conjunto já alcançado).
+    \end{itemize}
+    \item \emph{Desenho opcional:} se \texttt{draw\_fn} for fornecida, a arborescência parcial é desenhada a cada inclusão (título em EN/PT conforme \texttt{lang}).
+    \item \emph{Invariantes práticos:} o teste \texttt{v not in Arb.nodes()} evita ciclos e mantém grau de entrada \(\le 1\) por vértice; \texttt{u in Arb.nodes()} garante que sempre expandimos a partir de vértices já alcançados por \(r0\).
+    \item \emph{Hipóteses sobre a entrada:} \texttt{A\_zero} deve conter ao menos uma entrada para cada \(v\neq r0\); a ordem em \texttt{A\_zero} funciona como critério de desempate e pode alterar qual arborescência ótima é retornada, sem afetar o custo.
+    \item \emph{Custo:} no pior caso, \(O(n\cdot |A\_zero|)\), pois a cada inclusão recomeçamos a varredura de \texttt{A\_zero}.
+\end{itemize}
 
 \begin{pybox}{Fase 2: algoritmo de Frank - versão 1 (sem heap)}
 def phase2_find_minimum_arborescence(
