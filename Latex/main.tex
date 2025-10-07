@@ -3675,9 +3675,18 @@ def check_dual_optimality_condition(
 \end{pybox}
 
 \paragraph{Rotina principal:}
-    a função \texttt{andras\_frank\_algorithm} orquestra a execução das fases 1 e 2, além da verificação da condição dual. Ela recebe o dígrafo \(D\), a raiz \(r0\) (fixa), e parâmetros opcionais \texttt{draw\_fn}, \texttt{log}, \texttt{boilerplate} e \texttt{lang} para controle de visualização, mensagens e idioma.
+    a função \texttt{andras\_frank\_algorithm} orquestra a execução das fases 1 e 2, além da verificação da condição dual. Ela recebe o dígrafo \(D\), a raiz \(r0\) (fixa), e parâmetros opcionais \texttt{draw\_fn}, \texttt{log}, \texttt{boilerplate} e \texttt{lang} para controle de visualização, mensagens e idioma. O fluxo é:
 
-    
+\begin{itemize}\setlength{\itemsep}{1pt}
+    \item \texttt{A\_zero, Dual\_list = phase1\_find\_minimum\_arborescence()} executa a Fase I;
+    \item se \texttt{not has\_arborescence(D, r0)}, loga mensagem e retorna \texttt{None, None};
+    \item \texttt{arborescence\_frank = phase2\_find\_minimum\_arborescence()} executa a Fase II (versão 1);
+    \item \texttt{arborescence\_frank\_v2 = phase2\_find\_minimum\_arborescence\_v2()} executa a Fase II (versão 2);
+    \item \texttt{dual\_frank = check\_dual\_optimality\_condition()} verifica a condição dual para a versão 1;
+    \item \texttt{dual\_frank\_v2 = check\_dual\_optimality\_condition()} verifica a condição dual para a versão 2;
+    \item loga mensagens de sucesso/falha conforme \texttt{dual\_frank} e \texttt{dual\_frank\_v2};
+    \item retorna \texttt{arborescence\_frank, arborescence\_frank\_v2, dual\_frank, dual\_frank\_v2}.
+\end{itemize}
 
 \begin{pybox}{Rotina Principal: chamada das funções}
 def andras_frank_algorithm(
@@ -3756,22 +3765,77 @@ def andras_frank_algorithm(
                     )
 
     return arborescence_frank, arborescence_frank_v2, dual_frank, dual_frank_v2
-\end{pybox}    
+\end{pybox}
 
+\paragraph{Notas finais}
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item A implementação assume que \(D\) é conexo e contém uma raiz \(r0\) de onde todos os outros vértices são alcançáveis.
+    \item A ordem em \texttt{A\_zero} pode influenciar qual arborescência ótima é retornada, mas não o custo.
+    \item A verificação da condição dual é uma etapa de validação adicional, não necessária para a construção da arborescência.
+    \item Parâmetros opcionais permitem controle sobre visualização e mensagens, facilitando depuração e entendimento do processo.
+\end{itemize}
+
+\paragraph{}
+De fato, o algoritmo de Frank é uma abordagem elegante e eficiente para encontrar arborescências de custo mínimo em dígrafos, combinando técnicas de programação linear, teoria dos grafos e estruturas de dados. A implementação acima captura os principais passos do algoritmo, permitindo a exploração prática dessa técnica. 
+
+Mas, depois de toda essa exploração do método de Frank, vale a pena revisitar o clássico algoritmo de Chu–Liu/Edmonds para entender as diferenças e semelhanças entre essas duas abordagens fundamentais para o problema da arborescência de custo mínimo. A seguir, discutiremos as diferenças e semelhanças entre os métodos de Chu–Liu/Edmonds e Frank.
 
 \section{Chu-liu/Edmonds vs. Frank}
 
+\paragraph{}
+Wittgenstein, em suas investigações filosóficas, propôs a ideia de "semelhança de família" que diz que coisas que pertencem ao mesmo grupo não compartilham necessariamente uma característica definidora, mas sim uma série de características que se sobrepõem de maneiras variadas. Assim, membros de uma "família" podem ser semelhantes em alguns aspectos, mas diferentes em outros, criando uma rede complexa de relações.
+
+\paragraph{}
+Chu–Liu/Edmonds e Frank são parentes próximos: perseguem o mesmo objetivo com blocos operacionais semelhantes, mas organizam o enredo de modos distintos — um com voz combinatória, o outro com abordagem primal–dual.
+
+\paragraph{}
 Em linhas gerais, os dois métodos são equivalentes quanto ao resultado (ambos devolvem uma r‑arborescência de custo mínimo), mas organizam a mecânica de normalizar → contrair → expandir de maneiras distintas:
 
+\paragraph{}
+O algoritmo de Chu–Liu/Edmonds \cite{chu1965,edmonds1967} é o método clássico para encontrar uma arborescência de custo mínimo em um dígrafo com pesos arbitrários. Ele funciona recursivamente, escolhendo a melhor entrada para cada vértice, detectando ciclos e contraindo-os, ajustando os custos conforme necessário. O processo se repete até que não haja mais ciclos, momento em que a arborescência é extraída.
+
+\paragraph{}
+Já o método de Frank \cite{frank1981,frank2014} adota uma abordagem primal–dual, elevando potenciais para criar um subgrafo de arcos de custo reduzido zero e, em seguida, extraindo a arborescência apenas com esses arcos. Ciclos são tratados por contração/expansão, mas sem novos ajustes de custos após a fase inicial.
+
+\paragraph{}
+As principais diferenças e semelhanças entre os dois métodos podem ser resumidas assim:
+
 \begin{itemize}\setlength{\itemsep}{2pt}
-    \item \textbf{Paradigma e estrutura.} \emph{Chu–Liu/Edmonds} é apresentado de forma mais \emph{primal/combinatória}: escolhe para cada \(v\neq r\) a sua melhor entrada, forma \(F^*\), e trata ciclos imediatamente por contração com ajuste de custos, repetindo até não haver ciclos. \emph{Frank} explicita a visão \emph{primal–dual} em \textbf{duas fases}: (I) elevar potenciais para induzir o subgrafo de zeros \(D_0\) com ao menos uma entrada por vértice (apenas ajustes duais e eventuais contrações de ciclos de arcos apertados), e (II) extrair uma arborescência usando \emph{só} arcos apertados, tratando ciclos por contração/expansão, \textbf{sem} novas alterações de potenciais \cite{frank1981,frank2014,schrijver2003comb}.
-    \item \textbf{Papel dos potenciais.} Em \emph{Chu–Liu/Edmonds}, a “normalização” por vértice pode ser vista como potenciais \emph{implícitos} (subtrair mínimos de entradas), atualizados conforme a contração progride. Em \emph{Frank}, os potenciais \(\tilde y\) (ou o dual por cortes laminares) são entidades \emph{explícitas} que guiam a criação de arcos apertados e mantêm \(c'\ge 0\); a laminaridade é parte da prova e da organização da fase I.
-    \item \textbf{Tratamento de ciclos.} \emph{Chu–Liu/Edmonds} intercala extração e contração: assim que \(F^*\) tem um ciclo, contrai e ajusta custos, voltando ao mesmo fluxo. \emph{Frank} contrai apenas ciclos de arcos de custo reduzido zero durante a fase I (quando aparecem) e, na fase II, contrai ciclos surgidos da seleção \emph{sem} mexer nos potenciais, reexpandindo ao final com a remoção de uma única aresta interna do ciclo.
-    \item \textbf{Invariantes e corretude.} \emph{Chu–Liu/Edmonds} tradicionalmente é provado por argumentos combinatórios de custo e correção sob contrações. \emph{Frank} ancora a prova em \textbf{complementaridade primal–dual}: ao final, todas as arestas escolhidas são \emph{apertadas} (\(c'=0\)) e cada corte ativo da família laminar é atravessado exatamente uma vez, igualando valores primal e dual.
-    \item \textbf{Extração final.} Em \emph{Chu–Liu/Edmonds}, a seleção “uma entrada por vértice” e a resolução de ciclos acontecem iterativamente durante todo o processo. Em \emph{Frank}, a seleção acontece de uma vez sobre o subgrafo de zeros \(D_0\) produzido na fase I, o que simplifica a justificativa de otimalidade por manter todas as escolhas \emph{apertadas}.
-    \item \textbf{Complexidade e implementações.} Ambas as abordagens, em versão direta, rodam em \(O(mn)\); com estruturas adequadas, alcançam \(O(m\log n)\) em variantes conhecidas. A formulação dual explícita de \emph{Frank} facilita raciocinar sobre \emph{cortes apertados}, laminaridade e otimizações guiadas pelo dual.
-    \item \textbf{Resumo prático.} Pense em \emph{Chu–Liu/Edmonds} como o roteiro combinatório clássico “escolhe mínimos → contrai ciclo → ajusta e repete”. O método de \emph{Frank} reembala a mesma mecânica sob uma ótica \emph{primal–dual}: primeiro “zeramos” as entradas com potenciais até obter \(D_0\), depois extraímos a arborescência apenas com arcos apertados — e é exatamente essa apertude que certifica a otimalidade.
+    \item \textbf{Paradigma e estrutura:} \emph{Chu–Liu/Edmonds} é apresentado de forma mais \emph{primal/combinatória}: escolhe para cada \(v\neq r\) a sua melhor entrada, forma \(F^*\), e trata ciclos imediatamente por contração com ajuste de custos, repetindo até não haver ciclos. 
+    \emph{Frank} explicita a visão \emph{primal–dual} em \textbf{duas fases}: (I) elevar potenciais para induzir o subgrafo de zeros \(D_0\) com ao menos uma entrada por vértice (apenas ajustes duais e eventuais contrações de ciclos de arcos apertados), e (II) extrair uma arborescência usando \emph{só} arcos apertados, tratando ciclos por contração/expansão, \textbf{sem} novas alterações de potenciais \cite{frank1981,frank2014,schrijver2003comb}.
+    
+    \item \textbf{Papel dos potenciais:} Em \emph{Chu–Liu/Edmonds}, a “normalização” por vértice pode ser vista como potenciais \emph{implícitos} (subtrair mínimos de entradas), atualizados conforme a contração progride. Em \emph{Frank}, os potenciais \(\tilde y\) (ou o dual por cortes laminares) são entidades \emph{explícitas} que guiam a criação de arcos apertados e mantêm \(c'\ge 0\); a laminaridade é parte da prova e da organização da fase I.
+ 
+    \item \textbf{Estratégia de extração:} \emph{Chu–Liu/Edmonds} extrai a arborescência ao final do processo, enquanto \emph{Frank} a obtém diretamente do subgrafo de zeros \(D_0\) na fase II.
+
+    \item \textbf{Tratamento de ciclos:} \emph{Chu–Liu/Edmonds} intercala extração e contração: assim que \(F^*\) tem um ciclo, contrai e ajusta custos, voltando ao mesmo fluxo. \emph{Frank} contrai apenas ciclos de arcos de custo reduzido zero durante a fase I (quando aparecem) e, na fase II, contrai ciclos surgidos da seleção \emph{sem} mexer nos potenciais, reexpandindo ao final com a remoção de uma única aresta interna do ciclo.
+    
+    \item \textbf{Foco na estrutura dual:} \emph{Frank} enfatiza a relação primal–dual, com a família laminar de cortes ativos e a condição de complementaridade primal–dual como pilares centrais. \emph{Chu–Liu/Edmonds} é mais direto, focando na construção combinatória da arborescência.
+ 
+    \item \textbf{Invariantes e corretude:} \emph{Chu–Liu/Edmonds} tradicionalmente é provado por argumentos combinatórios de custo e correção sob contrações. \emph{Frank} ancora a prova em \textbf{complementaridade primal–dual}: ao final, todas as arestas escolhidas são \emph{apertadas} (\(c'=0\)) e cada corte ativo da família laminar é atravessado exatamente uma vez, igualando valores primal e dual.
+
+    \item \textbf{Extração final:} Em \emph{Chu–Liu/Edmonds}, a seleção “uma entrada por vértice” e a resolução de ciclos acontecem iterativamente durante todo o processo. Em \emph{Frank}, a seleção acontece de uma vez sobre o subgrafo de zeros \(D_0\) produzido na fase I, o que simplifica a justificativa de otimalidade por manter todas as escolhas \emph{apertadas}.
+    
+    \item \textbf{Complexidade e implementações:} Ambas as abordagens, em versão direta, rodam em \(O(mn)\); com estruturas adequadas, alcançam \(O(m\log n)\) em variantes conhecidas. A formulação dual explícita de \emph{Frank} facilita raciocinar sobre \emph{cortes apertados}, laminaridade e otimizações guiadas pelo dual.
+    
+    \item \textbf{Resumo prático:} Pense em \emph{Chu–Liu/Edmonds} como o roteiro combinatório clássico “escolhe mínimos → contrai ciclo → ajusta e repete”. O método de \emph{Frank} reembala a mesma mecânica sob uma ótica \emph{primal–dual}: primeiro “zeramos” as entradas com potenciais até obter \(D_0\), depois extraímos a arborescência apenas com arcos apertados — e é exatamente essa apertude que certifica a otimalidade.
 \end{itemize}
+
+\paragraph{}
+Ambos os métodos são poderosos e amplamente aplicáveis, e a escolha entre eles pode depender do contexto, da familiaridade com técnicas primal–dual ou combinatórias, e das necessidades específicas de implementação. Entender as nuances de cada abordagem enriquece a compreensão do problema da arborescência de custo mínimo e das ferramentas disponíveis para resolvê-lo.
+
+\subsection{Testes e Resultados}
+
+Para validar a eficácia dos algoritmos de \emph{Chu–Liu/Edmonds} e \emph{Frank}, realizamos uma série de testes em diferentes instâncias de grafos direcionados. Os testes foram projetados para avaliar não apenas a correção dos algoritmos, mas também seu desempenho em termos de tempo de execução e uso de memória.
+
+
+
+
+
+\paragraph{}
+Para facilitar a compreensão desenvolemos uma aplicação web interativa que permita visualizar passo a passo o funcionamento dos dois algoritmos, destacando suas diferenças e semelhanças. 
+
+O aprendizado visual é uma ferramenta poderosa, e ver os algoritmos em ação pode ajudar a solidificar a compreensão dos conceitos discutidos. Na seção seguinte discutiremos aspectos didáticos relacionados ao aprendizado de digrafos, especialmente em estruturas mais complexas, traremos uma breve discussão sobre princípios de interação humano-computacional e como todos essas considerações culminaram na implementação da aplicação web.
 
 \section{Considerações Finais}
 \clearpage
