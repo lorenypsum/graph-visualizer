@@ -3262,7 +3262,7 @@ Implementamos duas versões do algoritmo de Frank: uma primeira versão didátic
 Utilizamos a biblioteca NetworkX para a manipulação de grafos e funções auxiliares para modularizar o código, o que facilita a leitura e a manutenção. A seguir, apresentamos essas funções e os detalhes de implementação de ambas as versões.
 
 \paragraph{Arestas que entram em X e peso mínimo:}
-A função \texttt{get\_arcs\_entering\_X} recebe um dígrafo \(D\) e um conjunto de vértices \(X\), retornando uma lista de arestas que entram em \(X\). Cada aresta é representada como uma tupla \texttt{(u, v, data)}, onde \(u\) é o vértice de origem, \(v\) é o vértice de destino e \texttt{data} contém os atributos da aresta, incluindo o peso.
+a função \texttt{get\_arcs\_entering\_X} recebe um dígrafo \(D\) e um conjunto de vértices \(X\), retornando uma lista de arestas que entram em \(X\). Cada aresta é representada como uma tupla \texttt{(u, v, data)}, onde \(u\) é o vértice de origem, \(v\) é o vértice de destino e \texttt{data} contém os atributos da aresta, incluindo o peso.
 
 \begin{pybox}{Arestas que entram em X e mínimo}
 def get_arcs_entering_X(D, X):
