@@ -130,6 +130,15 @@
     listing options={style=pystyle}
 }
 
+% Caixa numerada para código HTML/markup (mesmo estilo visual de pybox)
+\newtcblisting[auto counter, number within=section]{htmlbox}[2][]{
+    enhanced, breakable, sharp corners, boxsep=6pt, arc=1pt,
+    colback=gray!3, colframe=gray!55, fonttitle=\bfseries, coltitle=black, boxrule=0.6pt,
+    listing only, listing engine=listings,
+    title={Markup~\thetcbcounter: #2}, #1,
+    listing options={style=pystyle, language=HTML}
+}
+
 \usetikzlibrary{positioning,arrows.meta,fit,calc}
 
 \addbibresource{referencias.bib}
@@ -4231,7 +4240,7 @@ def export_graph(event):
 
 \subsubsection{Estrutura da Página HTML}
 O trecho estrutural da página define a hierarquia visual e a ligação com PyScript (carregando \texttt{main.py}) e demonstra uso de Tailwind para classes utilitárias.
-\begin{lstlisting}[language=HTML,caption={Estrutura principal da página HTML com PyScript},label={lst:index_html}]
+\begin{htmlbox}[label={lst:index_html}]{Estrutura principal da página HTML com PyScript}
 <header class="bg-[#5b8f79] text-white text-center p-6">
     <h1 class="text-3xl font-bold">Chu-Liu/Edmonds Visualizer</h1>
     <p class="text-lg mt-2">Visualização passo a passo de arborescências</p>
@@ -4262,7 +4271,7 @@ O trecho estrutural da página define a hierarquia visual e a ligação com PySc
     </section>
 </main>
 <script type="py" src="./main.py" config="./pyscript.json"></script>
-\end{lstlisting}
+\end{htmlbox}
 
 \paragraph{Comentários.} A composição evita profundidade excessiva de navegação (tudo crítico em uma "única tela") e oferece agrupamento semântico (seções paralelas) contribuindo para \emph{overview} rápido (Shneiderman) antes de exploração detalhada. A distinção visual (fundo branco em cartões) delimita regiões de foco e reduz interferência lateral.
 
