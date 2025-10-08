@@ -1,76 +1,61 @@
-def andras_frank_algorithm(
-    D, draw_fn=None, log=None, boilerplate: bool = True, lang="pt"
+def phase2_find_minimum_arborescence_v2(
+    D_original, r0, A_zero, draw_fn=None, log=None, boilerplate: bool = True, lang="pt"
 ):
-    if boilerplate and log:
+    """
+    Find the minimum arborescence in a directed graph D with root r0.
+    The function returns the minimum arborescence as a DiGraph.
+
+    Parameters:
+        - D_original: directed graph (DiGraph)
+        - r0: root node
+        - A_zero: list of arcs (u, v) that form the minimum arborescence
+
+    Returns:
+        - Arb: directed graph (DiGraph) representing the minimum arborescence
+    """
+    Arb = nx.DiGraph()
+    for i, (u, v) in enumerate(A_zero):
+        Arb.add_edge(u, v, w=i)
+
+    # Set of visited vertices, starting with the root
+    V = {r0}
+
+    # Priority queue to store the edges
+    q = []
+    for u, v, data in Arb.out_edges(r0, data=True):
+
+        # Add edges to the priority queue with their weights
+        heapq.heappush(q, (data["w"], u, v))
+
+    A = nx.DiGraph()  # Arborescência resultante
+
+    if boilerplate and draw_fn:
         if lang == "en":
-            log(f"\nExecuting András Frank algorithm...")
+            draw_fn(Arb, title=f"Initial arborescence with weights - Phase 2")
         elif lang == "pt":
-            log(f"\nExecutando algoritmo de András Frank...")
+            draw_fn(Arb, title=f"Arborescência inicial com pesos - Fase 2")
 
-    A_zero, Dual_list = phase1_find_minimum_arborescence(
-        D, "r0", draw_fn=draw_fn, log=log, boilerplate=boilerplate, lang=lang
-    )
+    # While the queue is not empty
+    while q:
+        _, u, v = heapq.heappop(q)
 
-    if boilerplate and log:
-        log(f"\nA_zero: \n{A_zero}")
-        log(f"\nDual_list: \n{Dual_list}")
+        if v in V:  # If the vertex has already been visited, continue
+            continue
 
-    if not has_arborescence(D, "r0"):
-        if boilerplate and log:
-            if lang == "en":
-                log(f"\nThe graph does not contain an arborescence with root r0.")
-            elif lang == "pt":
-                log(f"\nO grafo não contém uma arborescência com raiz r0.")
-        return None, None
+        # Add the edge to the arborescence
+        A.add_edge(u, v, w=D_original[u][v]["w"])
 
-    arborescence_frank = phase2_find_minimum_arborescence(
-        D, "r0", A_zero, draw_fn=draw_fn, log=log, boilerplate=boilerplate, lang=lang
-    )
-    arborescence_frank_v2 = phase2_find_minimum_arborescence_v2(
-        D, "r0", A_zero, draw_fn=draw_fn, log=log, boilerplate=boilerplate, lang=lang
-    )
+        # Mark the vertex as visited
+        V.add(v)
 
-    dual_frank = check_dual_optimality_condition(
-        arborescence_frank, Dual_list, log=log, boilerplate=boilerplate, lang=lang
-    )
+        # Add the outgoing edges of the visited vertex to the priority queue
+        for x, y, data in Arb.out_edges(v, data=True):
+            heapq.heappush(q, (data["w"], x, y))
 
-    dual_frank_v2 = check_dual_optimality_condition(
-        arborescence_frank_v2, Dual_list, log=log, boilerplate=boilerplate, lang=lang
-    )
-
-    if dual_frank and dual_frank_v2:
-        if boilerplate and log:
-            if lang == "en":
-                log(f"\n✅ Dual condition satisfied for András Frank.")
-            elif lang == "pt":
-                log(f"\n✅ Condição dual satisfeita para András Frank.")
-    else:
-        if boilerplate and log:
-            if lang == "en":
-                log(f"\n❌ Dual condition failed for András Frank.")
-            elif lang == "pt":
-                log(f"\n❌ Condição dual falhou para András Frank.")
-
-        if draw_fn:
-            if boilerplate and draw_fn:
-                if lang == "en":
-                    draw_fn(
-                        arborescence_frank,
-                        title="András Frank Arborescence - Method 1",
-                    )
-                    draw_fn(
-                        arborescence_frank_v2,
-                        title="András Frank Arborescence - Method 2",
-                    )
-                elif lang == "pt":
-                    draw_fn(
-                        arborescence_frank,
-                        title="Arborescência de András Frank - Método 1",
-                    )
-
-                    draw_fn(
-                        arborescence_frank_v2,
-                        title="Arborescência de András Frank - Método 2",
-                    )
-
-    return arborescence_frank, arborescence_frank_v2, dual_frank, dual_frank_v2
+    if boilerplate and draw_fn:
+        if lang == "en":
+            draw_fn(A, title=f"Final arborescence - Phase 2")
+        elif lang == "pt":
+            draw_fn(A, title=f"Arborescência final - Fase 2")
+    # Return the resulting arborescence
+    return A
