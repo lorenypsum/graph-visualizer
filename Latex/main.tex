@@ -3824,7 +3824,7 @@ Chu–Liu/Edmonds e Frank são parentes próximos: perseguem o mesmo objetivo co
 Em linhas gerais, os dois métodos são equivalentes quanto ao resultado (ambos devolvem uma r‑arborescência de custo mínimo), mas organizam a mecânica de normalizar → contrair → expandir de maneiras distintas:
 
 \paragraph{}
-O algoritmo de Chu–Liu/Edmonds \cite{chu1965,edmonds1967} é o método clássico para encontrar uma arborescência de custo mínimo em um dígrafo com pesos arbitrários. Ele funciona recursivamente, escolhendo a melhor entrada para cada vértice, detectando ciclos e contraindo-os, ajustando os custos conforme necessário. O processo se repete até que não haja mais ciclos, momento em que a arborescência é extraída.
+O algoritmo de Chu–Liu/Edmonds \cite{chu1965,edmonds1967optimum} é o método clássico para encontrar uma arborescência de custo mínimo em um dígrafo com pesos arbitrários. Ele funciona recursivamente, escolhendo a melhor entrada para cada vértice, detectando ciclos e contraindo-os, ajustando os custos conforme necessário. O processo se repete até que não haja mais ciclos, momento em que a arborescência é extraída.
 
 \paragraph{}
 Já o método de Frank \cite{frank1981,frank2014} adota uma abordagem primal–dual, elevando potenciais para criar um subgrafo de arcos de custo reduzido zero e, em seguida, extraindo a arborescência apenas com esses arcos. Ciclos são tratados por contração/expansão, mas sem novos ajustes de custos após a fase inicial.
@@ -3936,6 +3936,88 @@ Para tornar essa experiência concreta, desenvolvemos uma aplicação web intera
 \paragraph{}
 A aprendizagem visual é especialmente útil: observar os algoritmos em ação ajuda a fixar os conceitos apresentados. A seguir, discutimos aspectos didáticos do ensino de dígrafos em cenários mais complexos e resumimos princípios de interação humano-computador que orientaram o desenho da ferramenta.
 
+\section{A didática do abstrato}
+
+\paragraph{}
+Thomás de Aquino, em sua obra \emph{De veritate}, argumenta que o conhecimento humano começa com a percepção sensorial do mundo concreto, mas alcança sua plenitude ao transcender o particular e abraçar o universal através da abstração. Esse processo de abstração é fundamental para a matemática e a ciência da computação, onde conceitos complexos são frequentemente representados por meio de símbolos e estruturas que vão além da experiência direta.
+
+\paragraph{}
+As ideias abstratas, como grafos, arborescências e algoritmos de otimização, são essenciais para modelar e resolver problemas do mundo real. No entanto, a natureza intangível desses conceitos pode representar um desafio significativo para estudantes e profissionais que buscam compreendê-los profundamente.
+
+\paragraph{}
+Então, como ensinar e aprender conceitos abstratos de forma eficaz? O ensino de matemática no ensino superior, especialmente em áreas como teoria dos grafos parecem sofrer com dificuldades específicas. A seguir, discutimos essas dificuldades e como o uso de ferramentas visuais e interativas pode ajudar a superá-las.
+
+\subsection{Sobre o ensino de matemática no ensino superior}
+\paragraph{}
+O ensino de matemática no ensino superior exige transitar entre registros de representação (intuitivo, visual, simbólico, formal) com intencionalidade didática \cite{tall1991advanced}. A complexidade conceitual eleva a \emph{carga cognitiva intrínseca}, e exposições que não integram bem palavras e figuras adicionam \emph{carga extrínseca} desnecessária \cite{sweller1988cognitive}. Diretrizes de aprendizagem multimídia e de codificação dupla apoiam a integração semântica entre linguagem e diagramas, reduzindo sobrecarga e favorecendo a formação de esquemas \cite{mayer2009multimedia,paivio1990}.
+
+\paragraph{}
+Princípios práticos que adotamos ao longo do texto e da ferramenta:
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item Andaimagem (scaffolding): começar em instâncias pequenas, explicitar invariantes e generalizar de forma gradual.
+    \item Exemplos contrastantes/contraexemplos: demarcam fronteiras conceituais (p.ex., família laminar vs. não‑laminar) e evitam falsas generalizações.
+    \item Atividades gerativas: pedir previsões/explicações e “por quês” consolida modelos mentais \cite{mayer2009multimedia}.
+\end{itemize}
+
+\subsection{Dificuldades no ensino e na aprendizagem}
+\paragraph{}
+Em grafos e dígrafos, o concreto (nós/arcos) convive com propriedades globais (cortes, SCCs, laminaridade) \cite{bondy2008graph,diestel2017graph,west2001introduction}. No tema de r‑arborescências de custo mínimo, três obstáculos didáticos são frequentes: (i) articular o local com o global — mínimos por vértice podem induzir ciclos; a condensação em SCCs torna esse fenômeno visível (Fig.~\ref{fig:didatica-condensado}); (ii) acompanhar efeitos de contração/expansão nos custos reduzidos e na família de cortes ativos — a laminaridade oferece uma “geometria de inclusões” útil (Fig.~\ref{fig:didatica-laminar}); (iii) mapear o “fazer do algoritmo” para a linguagem primal–dual (apertude, complementaridade) e conectar métricas empíricas a garantias teóricas — explicitado por custos reduzidos e reexpansão (Figs.~\ref{fig:didatica-reduced-cost} e \ref{fig:didatica-reexpansion}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.72\linewidth]{figures/fig_condensado_st.pdf}
+    \caption{Condensação de $D_0$ e fontes do DAG: ver o grafo “como” blocos (SCCs) ajuda a articular o local (entradas por vértice) com o global (cortes e contrações).}
+    \label{fig:didatica-condensado}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.72\linewidth]{figures/fig_laminaridade.pdf}
+    \caption{Família laminar de cortes ativos: uma geometria de inclusões que organiza a prova primal–dual e guia a Fase I.}
+    \label{fig:didatica-laminar}
+\end{figure}
+
+\subsection{Uso de ferramentas e recursos visuais}
+\paragraph{}
+Diagramas e visualizações bem projetados aceleram inferências espaciais e relacionais \cite{larkin1987diagram,ware2012information}. Em educação em computação, visualizações de algoritmos são mais efetivas quando promovem engajamento ativo (prever, manipular, explicar), não apenas consumo passivo \cite{hundhausen2002meta,naps2003engagement}. O mantra “overview $\to$ zoom/filter $\to$ details‑on‑demand” alinha interação a metas cognitivas \cite{shneiderman1996eyes}. Esses princípios informam as escolhas de destaque em \(D_0\), cortes e ciclos mostradas nas Figuras~\ref{fig:didatica-reduced-cost} e \ref{fig:didatica-reexpansion}.
+
+\paragraph{}
+Diretrizes adotadas neste projeto:
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item Semântica visual consistente: destacar o subgrafo de zeros $D_0$, arcos \emph{apertados} e cortes ativos.
+    \item Sincronizar passos e justificativas: cada ação (normalizar, contrair, reexpandir) acompanhada do “por quê” (efeitos em $c'$, invariantes).
+    \item Controle de granularidade: passo a passo, agregação de passos, previsões com feedback.
+    \item Trilhas auditáveis: logs que referenciem estados do grafo reduzem carga extrínseca.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.7\linewidth]{figures/fig_chu_liu_reduced_cost.pdf}
+    \caption{Custos reduzidos e arcos \emph{apertados}: destacar $c'\ge 0$ e as entradas de custo zero torna visível o vínculo entre ação e justificativa.}
+    \label{fig:didatica-reduced-cost}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.7\linewidth]{figures/fig_chu_liu_reexpansion.pdf}
+    \caption{Contração e reexpansão de ciclos: visualizar o “macro” (vértice contraído) e o “micro” (remover uma aresta interna) facilita a prova de correção.}
+    \label{fig:didatica-reexpansion}
+\end{figure}
+
+\subsection{A importância de disseminar o ensino e como fazer}
+\paragraph{}
+Conectar teoria, evidências empíricas e interatividade favorece transferência e retenção \cite{mayer2009multimedia,sweller1988cognitive}. Para os temas desta dissertação (r‑arborescências, primal–dual, laminaridade), propomos um eixo de disseminação com materiais reprodutíveis (código, CSVs, figuras) e uma aplicação web que materializa os conceitos (potenciais, 0‑arestas, ciclos) em ações manipuláveis.
+
+\paragraph{Plano de ação em sala e além}
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item Exploração guiada com previsões: antes de cada passo, pedir hipóteses sobre o próximo 0‑arco/contração; depois, comparar com o resultado e justificar à luz de $c'$ e dos cortes.
+    \item Reconstrução de provas a partir de instâncias: checar complementaridade/laminaridade em casos pequenos e explicitar a ponte entre “o que o algoritmo faz” e “por que funciona”.
+    \item Mini‑investigações de desempenho: variar $|A|$, densidade e famílias adversárias; coletar tempos/contrações e confrontar com limites teóricos.
+    \item Checklist operacional para a ferramenta: (i) visão geral do grafo e de $D_0$; (ii) passo a passo com rastro de cortes; (iii) painel de métricas (tempo por fase, contrações, pico de memória); (iv) botão “explicar por quê” referindo complementaridade; (v) \emph{presets} (aleatória, densa, esparsa, em camadas).
+    \item Disseminação aberta: publicar código, dados e guias rápidos; sugerir atividades prontas (10–15 min) para disciplinas de grafos/otimização e formação docente.
+\end{itemize}
+
+\paragraph{}Em conjunto, essas práticas alinham fundamentos de aprendizagem com recursos visuais e artefatos reprodutíveis, ampliando acesso e consolidando compreensão conceitual e procedimental dos algoritmos.
 
 \section{Considerações Finais}
 \clearpage
