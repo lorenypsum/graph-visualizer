@@ -4007,9 +4007,45 @@ Tendo em vista essas categorias, desenvolvemos uma aplicação web interativa qu
 
 \section{A interação humano-computacional com o problema da arborescência de custo mínimo}
 
+\paragraph{}
+A interação humano-computacional (IHC) estuda como projetar sistemas computacionais que sejam eficazes, eficientes e agradáveis para os usuários. No contexto do ensino de algoritmos complexos, como os de arborescência de custo mínimo, a IHC pode ajudar a criar ferramentas que facilitem a compreensão e a aprendizagem.
 
+\paragraph{}
+Os princípios da IHC podem ser aplicados para melhorar a experiência do usuário em ferramentas de visualização de algoritmos. Por exemplo, a personalização da interface, o feedback em tempo real e a adaptação ao nível de conhecimento do usuário são aspectos que podem ser explorados para tornar a aprendizagem mais eficaz.
+\subsection{Princípios de IHC aplicados ao ensino de arborescências de custo mínimo}
+\paragraph{}
+A seguir, destacamos alguns princípios de IHC que são particularmente relevantes para o ensino de arborescências de custo mínimo:
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item \textbf{Consistência:} A interface deve ser consistente em termos de layout, cores e interações. Isso ajuda os usuários a se familiarizarem rapidamente com a ferramenta e a se concentrarem no conteúdo.
+    \item \textbf{Feedback imediato:}   A ferramenta deve fornecer feedback imediato sobre as ações do usuário, como a seleção de arcos ou a contração de ciclos. Isso ajuda a reforçar o aprendizado e a manter o engajamento.
+    \item \textbf{Controle do usuário:}   Os usuários devem ter controle sobre  a velocidade e o ritmo da visualização. Isso permite que eles explorem os conceitos no seu próprio ritmo e revisitem partes específicas conforme necessário.
+    \item \textbf{Simplicidade:} A interface deve ser simples e intuitiva, evitando sobrecarga cognitiva desnecessária. Elementos visuais devem ser claros e relevantes para o conteúdo.
+    \item \textbf{Personalização:} A ferramenta deve permitir a personalização da experiência, como a escolha de níveis de detalhe ou a seleção de diferentes algoritmos para visualização.
+    \item \textbf{Acessibilidade:} A ferramenta deve ser acessível a usuários com diferentes níveis de habilidade e conhecimento, incluindo opções para iniciantes e usuários avançados.
+\end{itemize}
 
+\subsection{Descrição da aplicação interativa}
+\paragraph{}
+Desenvolvemos uma aplicação web interativa que implementa os algoritmos de Chu–Liu/Edmonds e de Frank para encontrar arborescências de custo mínimo em dígrafos. A aplicação permite aos usuários visualizar passo a passo o funcionamento dos algoritmos, destacando suas semelhanças e diferenças.
+\paragraph{}
+A interface da aplicação foi projetada com base nos princípios de IHC discutidos anteriormente. Isso inclui feedback imediato sobre as ações do usuário, controle sobre a velocidade da visualização e opções de personalização. Além disso, a aplicação é acessível a diferentes níveis de usuários, com tutoriais e dicas para iniciantes.
 
+\subsection{Implementação técnica}
+\paragraph{}
+A aplicação foi desenvolvida utilizando tecnologias web modernas, incluindo HTML, CSS e JavaScript. A biblioteca D3.js foi utilizada para a visualização interativa dos grafos, permitindo a manipulação dinâmica dos elementos visuais.
+\paragraph{}
+O backend da aplicação foi implementado em Python, utilizando o framework Flask para gerenciar as requisições e a lógica dos algoritmos. A comunicação entre o frontend e o backend é feita através de chamadas AJAX, permitindo uma experiência fluida e responsiva para o usuário.
+
+\subsection{Discussão e Perspectivas Futuras}
+\paragraph{}
+A aplicação interativa desenvolvida representa um passo significativo na direção de tornar o ensino de algoritmos complexos mais acessível e eficaz. No entanto, há várias áreas para melhorias e expansões futuras:
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item \textbf{Expansão de algoritmos:} Incluir outros algoritmos relacionados a grafos, como algoritmos de fluxo máximo, empacotamento de caminhos e outros problemas de otimização em redes.
+    \item \textbf{Avaliação de usabilidade:} Realizar estudos de usabilidade com usuários reais para avaliar a eficácia da aplicação e identificar áreas para melhorias.
+    \item \textbf{Integração com plataformas educacionais:} Integrar a aplicação com plataformas de ensino online para facilitar o acesso e a disseminação do conteúdo.
+    \item \textbf{Recursos colaborativos:} Adicionar funcionalidades que permitam a colaboração entre usuários, como a possibilidade de compartilhar visualizações e discutir estratégias.
+    \item \textbf{Análise de desempenho:} Implementar métricas para analisar o desempenho dos usuários na aplicação, ajudando a identificar dificuldades comuns e adaptar o conteúdo conforme necessário.
+\end{itemize}
 
 \section{Considerações Finais}
 \clearpage
