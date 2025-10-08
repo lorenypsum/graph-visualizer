@@ -564,36 +564,6 @@ Desde a introdução, vimos a ideia filosófica de explicar como “ligar” fat
 \paragraph{}
 Para tornar essa discussão prática, desenvolvemos uma aplicação web interativa que permite visualizar passo a passo o funcionamento dos dois algoritmos, destacando suas diferenças e semelhanças. A seguir, discutimos a dimensão didática que motivou essas escolhas e como fundamentos de aprendizagem e visualização embasam o projeto.
 
-\section{A Didática do Abstrato}
-\label{sec:didatica-abstrato}
-
-O conteúdo desenvolvido até aqui toca tópicos de alta abstração (primal--dual, laminaridade, cortes, pertinência), comuns em cursos avançados de otimização e teoria dos grafos. Nesta seção, organizamos uma reflexão didático-pedagógica em quatro eixos: desafios do ensino de conceitos abstratos; especificidades no ensino de grafos e dígrafos; o papel de recursos visuais; e a importância de disseminação com ferramentas.
-
-\subsection{Desafios no ensino de conceitos abstratos}
-Aprender conteúdos de alta abstração envolve lidar com sobrecarga cognitiva intrínseca e extrínseca \cite{sweller1988cognitive}. Diretrizes de aprendizagem multimídia indicam que combinar representações verbais e visuais pode reduzir carga desnecessária e favorecer integração semântica \cite{mayer2009multimedia,paivio1990}. Em matemática avançada, a transição entre níveis de representação (intuitivo, formal, simbólico) exige mediação cuidadosa \cite{tall1991advanced} e atenção a como exemplos, contraexemplos e invariantes são apresentados.
-
-No caso específico de algoritmos com provas baseadas em complementaridade primal--dual, é frequente que estudantes compreendam os passos operacionais sem internalizar a estrutura justificativa. Tornar explícitos os elos entre “ação do algoritmo” e “restrições/condições que se tornam justas” ajuda a estabilizar o entendimento.
-
-\subsection{Desafios no ensino de grafos e dígrafos}
-Grafos e dígrafos são simultaneamente concretos (nós e arestas) e abstratos (propriedades globais como cortes, conectividade, laminaridade). A multiplicidade de noções (caminhos, ciclos, cortes, componentes, condensação) exige um vocabulário visual consistente \cite{bondy2008graph,diestel2017graph,west2001introduction}. No tema de arborescências de custo mínimo, a tensão entre a leitura combinatória (Chu--Liu/Edmonds) e a leitura primal--dual (Frank) adiciona um degrau conceitual que precisa ser transposto com exemplos estruturados e comparação lado a lado.
-
-Do ponto de vista pedagógico, três dificuldades são recorrentes: (i) a identificação de estruturas latentes (por exemplo, cortes ativos e arcos apertados) no meio do fluxo do algoritmo; (ii) o acompanhamento de operações de contração/expansão e seus efeitos nos custos reduzidos; (iii) a conexão entre métricas empíricas (tempos, contrações, memória) e as garantias teóricas (limites de complexidade, laminaridade, complementaridade).
-
-\subsection{Como recursos visuais podem auxiliar}
-Há evidências de que diagramas e animações, quando bem projetados, podem acelerar a compreensão de relações topológicas e causais \cite{larkin1987diagram,ware2012information}. Na educação em ciência da computação, visualizações de algoritmos têm efeito positivo sobretudo quando promovem \emph{engajamento ativo} (prever, manipular, explicar) e não apenas consumo passivo \cite{hundhausen2002meta,naps2003engagement}. Taxonomias de tarefas para visualização (
-overview \textrightarrow\ zoom/filter \textrightarrow\ details-on-demand) ajudam a alinhar interações com objetivos cognitivos \cite{shneiderman1996eyes}.
-
-Aplicado ao nosso escopo, três linhas guiadoras foram adotadas: (a) representar explicitamente o subgrafo de zeros \(D_0\) e destacar arcos \emph{apertados}; (b) tornar visível o processo de contração/expansão (macro e micro), com rastro dos cortes envolvidos; (c) aproximar o que é mostrado das garantias (por exemplo, marcar cortes da família laminar com contagem “entra exatamente um arco”).
-
-\subsection{Disseminação e incorporação de ferramentas}
-Materiais que conectam teoria, evidências empíricas e interatividade têm maior potencial de transferência e retenção. A aplicação web acompanha essa visão: ela instrumentaliza o texto, permitindo que quem lê projete no objeto interativo as ideias de primal--dual, apertude e laminaridade. Além disso, o \emph{pipeline} de testes e a geração automática de figuras tornam o conteúdo reprodutível, um valor didático em si.
-
-Do ponto de vista curricular, recomendamos sequências de atividades que alternem: (i) exploração interativa orientada por questões; (ii) exercícios de reconstrução de provas (por exemplo, complementaridade) a partir de instâncias; (iii) mini-investigações sobre desempenho (tempo vs. |A|, impacto de estruturas adversárias). Essas práticas situam conceitos abstratos em experiências manipuláveis, reduzindo carga extrínseca e ampliando a ancoragem conceitual \cite{mayer2009multimedia,sweller1988cognitive}.
-
-\paragraph{}
-Em resumo, a didática do abstrato aqui proposta combina fundamentos de aprendizagem e visualização com artefatos reprodutíveis (código, gráficos e aplicação interativa). Esse ecossistema busca não apenas explicar os algoritmos, mas também oferecer meios para que estudantes e docentes investiguem, comparem e consolidem entendimentos de forma ativa.
-
-\section{Considerações Finais}
 \paragraph{}
 Uma \textbf{relação} \(R\) entre dois conjuntos \(A\) e \(B\) é um subconjunto do produto cartesiano \(A \times B\). Ou seja, \(R \subseteq A \times B\). Se \((a,b) \in R\), dizemos que \(a\) está relacionado a \(b\) pela relação \(R\), denotado \(aRb\).
 
@@ -2187,7 +2157,7 @@ Podemos falar também em visão operacional de alto nível quando descrevemos um
 \paragraph{}
 Aqui, apresentamos o algoritmo de Chu–Liu/Edmonds em uma visão operacional de alto nível, focando na lógica e nos passos principais, sem entrar em detalhes de implementação específicos. E dedicaremos a próxima subseção apenas para discutir detalhes práticos de implementação.
 
-\paragraph{Visão Operacional - Chu–Liu/Edmonds}
+\subsection{Descrição do Algoritmo}
 \paragraph{}
 Denotamos por \(A'\) o conjunto de arcos escolhidos na construção da r-arborescência. 
 
@@ -3949,15 +3919,21 @@ Então, como ensinar e aprender conceitos abstratos de forma eficaz? O ensino de
 
 \subsection{Sobre o ensino de matemática no ensino superior}
 \paragraph{}
-O ensino de matemática no ensino superior exige transitar entre registros de representação (intuitivo, visual, simbólico, formal) com intencionalidade didática \cite{tall1991advanced}. A complexidade conceitual eleva a \emph{carga cognitiva intrínseca}, e exposições que não integram bem palavras e figuras adicionam \emph{carga extrínseca} desnecessária \cite{sweller1988cognitive}. Diretrizes de aprendizagem multimídia e de codificação dupla apoiam a integração semântica entre linguagem e diagramas, reduzindo sobrecarga e favorecendo a formação de esquemas \cite{mayer2009multimedia,paivio1990}.
+O ensino de matemática no ensino superior exige transitar entre registros de representação (intuitivo, visual, simbólico, formal) com intencionalidade didática \cite{tall1991advanced}. À luz da teoria da carga cognitiva, é útil distinguir: (i) a \emph{carga intrínseca}, determinada pela complexidade dos esquemas a construir e pelos pré‑requisitos ativados; (ii) a \emph{carga extrínseca}, criada pela forma de apresentação; e (iii) a \emph{carga pertinente} (\emph{germane}), isto é, o esforço dedicado à organização e automatização de esquemas \cite{sweller1988cognitive}. Em cursos avançados, a extrínseca cresce quando definições, símbolos e figuras não são co‑referenciados no tempo e no espaço, dificultando a coordenação entre o que se lê, o que se vê e o que se infere.
+
+Diretrizes de aprendizagem multimídia \cite{mayer2009multimedia} e a teoria da codificação dupla \cite{paivio1990} sugerem práticas concretas para reduzir a carga extrínseca e favorecer a pertinente:
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item \textbf{Coerência e sinalização}: remover detalhes irrelevantes e destacar visualmente o que será usado (por exemplo, colorir arcos \emph{apertados} e cortes ativos).
+    \item \textbf{Contiguidade espacial e temporal}: manter fórmulas, legendas e diagramas próximos e apresentados em sincronia (e.g., exibir o custo reduzido $c'(u,v)$ ao lado da aresta correspondente).
+    \item \textbf{Modalidade e redundância}: preferir explicações textuais curtas + gráficos a blocos longos de texto ou duplicações desnecessárias do mesmo conteúdo em múltiplos canais.
+    \item \textbf{Segmentação e pré‑treinamento}: quebrar provas e algoritmos em passos curtos, introduzindo previamente a notação e convenções que serão usadas.
+    \item \textbf{Exemplos resolvidos com ``fading'' e autoexplicações}: começar com exemplos totalmente resolvidos, retirar gradualmente etapas e pedir justificativas locais (``por que este arco é apertado?''), deslocando esforço para a carga pertinente.
+\end{itemize}
+
+No campo específico de matemática avançada, Tall enfatiza a coordenação entre registros — intuitivo, visual, simbólico e formal — como motor da passagem do pensamento predominantemente procedimental para o conceitual \cite{tall1991advanced}. Diagramas não são meros adornos: estruturam inferências espaciais e relacionais de modo mais eficiente que sentenças lineares \cite{larkin1987diagram}. Assim, tarefas que pedem aos estudantes alternar e integrar registros (por exemplo, derivar a expressão de $c'$ e marcá‑la no grafo; identificar no condensado os conjuntos onde a complementaridade está ativa) tendem a aumentar a retenção e a transferência, ao mesmo tempo em que reduzem a carga extrínseca.
 
 \paragraph{}
-Princípios práticos que adotamos ao longo do texto e da ferramenta:
-\begin{itemize}\setlength{\itemsep}{2pt}
-    \item Andaimagem (scaffolding): começar em instâncias pequenas, explicitar invariantes e generalizar de forma gradual.
-    \item Exemplos contrastantes/contraexemplos: demarcam fronteiras conceituais (p.ex., família laminar vs. não‑laminar) e evitam falsas generalizações.
-    \item Atividades gerativas: pedir previsões/explicações e “por quês” consolida modelos mentais \cite{mayer2009multimedia}.
-\end{itemize}
+Em grafos, a visualização é crucial para entender propriedades globais (cortes, ciclos, conectividade) a partir de elementos locais (vértices, arestas) \cite{bondy2008graph,diestel2017graph,west2001introduction}. Ferramentas que permitem manipular e explorar grafos dinamicamente ajudam a construir intuições espaciais e relacionais \cite{larkin1987diagram,ware2012information}. Em algoritmos, visualizações interativas que promovem engajamento ativo (prever, manipular, explicar) são mais eficazes que exposições passivas \cite{hundhausen2002meta,naps2003engagement}.
 
 \subsection{Dificuldades no ensino e na aprendizagem}
 \paragraph{}
@@ -3969,6 +3945,35 @@ Em grafos e dígrafos, o concreto (nós/arcos) convive com propriedades globais 
     \caption{Condensação de $D_0$ e fontes do DAG: ver o grafo “como” blocos (SCCs) ajuda a articular o local (entradas por vértice) com o global (cortes e contrações).}
     \label{fig:didatica-condensado}
 \end{figure}
+
+section{A Didática do Abstrato}
+\label{sec:didatica-abstrato}
+
+O conteúdo desenvolvido até aqui toca tópicos de alta abstração (primal--dual, laminaridade, cortes, pertinência), comuns em cursos avançados de otimização e teoria dos grafos. Nesta seção, organizamos uma reflexão didático-pedagógica em quatro eixos: desafios do ensino de conceitos abstratos; especificidades no ensino de grafos e dígrafos; o papel de recursos visuais; e a importância de disseminação com ferramentas.
+
+\subsection{Desafios no ensino de conceitos abstratos}
+Aprender conteúdos de alta abstração envolve lidar com sobrecarga cognitiva intrínseca e extrínseca \cite{sweller1988cognitive}. Diretrizes de aprendizagem multimídia indicam que combinar representações verbais e visuais pode reduzir carga desnecessária e favorecer integração semântica \cite{mayer2009multimedia,paivio1990}. Em matemática avançada, a transição entre níveis de representação (intuitivo, formal, simbólico) exige mediação cuidadosa \cite{tall1991advanced} e atenção a como exemplos, contraexemplos e invariantes são apresentados.
+
+No caso específico de algoritmos com provas baseadas em complementaridade primal--dual, é frequente que estudantes compreendam os passos operacionais sem internalizar a estrutura justificativa. Tornar explícitos os elos entre “ação do algoritmo” e “restrições/condições que se tornam justas” ajuda a estabilizar o entendimento.
+
+\subsection{Desafios no ensino de grafos e dígrafos}
+Grafos e dígrafos são simultaneamente concretos (nós e arestas) e abstratos (propriedades globais como cortes, conectividade, laminaridade). A multiplicidade de noções (caminhos, ciclos, cortes, componentes, condensação) exige um vocabulário visual consistente \cite{bondy2008graph,diestel2017graph,west2001introduction}. No tema de arborescências de custo mínimo, a tensão entre a leitura combinatória (Chu--Liu/Edmonds) e a leitura primal--dual (Frank) adiciona um degrau conceitual que precisa ser transposto com exemplos estruturados e comparação lado a lado.
+
+Do ponto de vista pedagógico, três dificuldades são recorrentes: (i) a identificação de estruturas latentes (por exemplo, cortes ativos e arcos apertados) no meio do fluxo do algoritmo; (ii) o acompanhamento de operações de contração/expansão e seus efeitos nos custos reduzidos; (iii) a conexão entre métricas empíricas (tempos, contrações, memória) e as garantias teóricas (limites de complexidade, laminaridade, complementaridade).
+
+\subsection{Como recursos visuais podem auxiliar}
+Há evidências de que diagramas e animações, quando bem projetados, podem acelerar a compreensão de relações topológicas e causais \cite{larkin1987diagram,ware2012information}. Na educação em ciência da computação, visualizações de algoritmos têm efeito positivo sobretudo quando promovem \emph{engajamento ativo} (prever, manipular, explicar) e não apenas consumo passivo \cite{hundhausen2002meta,naps2003engagement}. Taxonomias de tarefas para visualização (
+overview \textrightarrow\ zoom/filter \textrightarrow\ details-on-demand) ajudam a alinhar interações com objetivos cognitivos \cite{shneiderman1996eyes}.
+
+Aplicado ao nosso escopo, três linhas guiadoras foram adotadas: (a) representar explicitamente o subgrafo de zeros \(D_0\) e destacar arcos \emph{apertados}; (b) tornar visível o processo de contração/expansão (macro e micro), com rastro dos cortes envolvidos; (c) aproximar o que é mostrado das garantias (por exemplo, marcar cortes da família laminar com contagem “entra exatamente um arco”).
+
+\subsection{Disseminação e incorporação de ferramentas}
+Materiais que conectam teoria, evidências empíricas e interatividade têm maior potencial de transferência e retenção. A aplicação web acompanha essa visão: ela instrumentaliza o texto, permitindo que quem lê projete no objeto interativo as ideias de primal--dual, apertude e laminaridade. Além disso, o \emph{pipeline} de testes e a geração automática de figuras tornam o conteúdo reprodutível, um valor didático em si.
+
+Do ponto de vista curricular, recomendamos sequências de atividades que alternem: (i) exploração interativa orientada por questões; (ii) exercícios de reconstrução de provas (por exemplo, complementaridade) a partir de instâncias; (iii) mini-investigações sobre desempenho (tempo vs. |A|, impacto de estruturas adversárias). Essas práticas situam conceitos abstratos em experiências manipuláveis, reduzindo carga extrínseca e ampliando a ancoragem conceitual \cite{mayer2009multimedia,sweller1988cognitive}.
+
+\paragraph{}
+Em resumo, a didática do abstrato aqui proposta combina fundamentos de aprendizagem e visualização com artefatos reprodutíveis (código, gráficos e aplicação interativa). Esse ecossistema busca não apenas explicar os algoritmos, mas também oferecer meios para que estudantes e docentes investiguem, comparem e consolidem entendimentos de forma ativa.
 
 \begin{figure}[H]
     \centering
