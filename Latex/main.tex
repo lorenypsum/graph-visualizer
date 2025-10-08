@@ -98,8 +98,11 @@
              {ñ}{{\~{n}}}1 {Ñ}{{\~{N}}}1
              {“}{{``}}1 {”}{{''}}1 {’}{{'}}1 {–}{{-}}1 {—}{{-}}1 {…}{{...}}1 {‑}{{-}}1
              {✅}{{$\checkmark$}}1 {✔}{{$\checkmark$}}1 {❌}{{$\times$}}1 {✗}{{$\times$}}1
-             {∈}{{$\in$}}1 {∉}{{$\notin$}}1
+             {∈}{{$\in$}}1 {∉}{{$\notin$}}1 {→}{{$\to$}}1
 }
+
+% Aplicar o estilo como padrão para todas as listagens (inclui literate mapping para Unicode)
+\lstset{style=pystyle}
 
 % Algoritmos: paleta verde
 \newtcbtheorem[number within=section]{algobox}{Algoritmo}%
@@ -3906,7 +3909,7 @@ Para tornar essa experiência concreta, desenvolvemos uma aplicação web intera
 \paragraph{}
 A aprendizagem visual é especialmente útil: observar os algoritmos em ação ajuda a fixar os conceitos apresentados. A seguir, discutimos aspectos didáticos do ensino de dígrafos em cenários mais complexos e resumimos princípios de interação humano-computador que orientaram o desenho da ferramenta.
 
-\section{A didática do Abstrato}
+\section{A Didática do Abstrato}
 
 \paragraph{}
 Thomás de Aquino, em sua obra \emph{De veritate}, argumenta que o conhecimento humano começa com a percepção sensorial do mundo concreto, mas alcança sua plenitude ao transcender o particular e abraçar o universal através da abstração. Esse processo de abstração é fundamental para a matemática e a ciência da computação, onde conceitos complexos são frequentemente representados por meio de símbolos e estruturas que vão além da experiência direta.
@@ -3970,7 +3973,7 @@ Tendo em vista esses fundamentos, ferramentas digitais podem ajudar a reduzir ca
 \paragraph{}
 Várias ferramentas digitais podem apoiar o ensino de grafos e dígrafos, cada uma com forças e limitações específicas. A seguir, discutimos quatro categorias principais: (i) diagramas programáveis e tipografia matemática, (ii) exploração e edição de grafos, (iii) visualização de algoritmos, e (iv) ambientes programáveis e reprodutibilidade.
 
-\paragraph{Diagramas programáveis e tipografia matemática}
+\paragraph{Diagramas e matemática}
 \paragraph{}
 Algumas ferramentas permitem criar diagramas de grafos com semântica visual consistente, integrando-os a textos matemáticos. Essas ferramentas são úteis para ilustrar conceitos, definições e provas em materiais didáticos.
 
@@ -4005,47 +4008,267 @@ Contudo, requerem familiaridade com programação e podem introduzir carga extr�
 \paragraph{}
 Tendo em vista essas categorias, desenvolvemos uma aplicação web interativa que combina elementos de visualização de algoritmos e ambientes programáveis, com foco específico nos algoritmos de arborescência de custo mínimo. A seguir, apresentamos princípios envolvendo a teoria de interação humano-computador que orientaram o desenho da ferramenta, e em seguida descrevemos a aplicação com seus respectivos detalhes de implementação e como ela se posiciona nesse ecossistema.
 
-\section{A interação humano-computacional com o problema da arborescência de custo mínimo}
+
+\section{A interação humano--computacional em ação: uma aplicação web interativa}
 
 \paragraph{}
-A interação humano-computacional (IHC) estuda como projetar sistemas computacionais que sejam eficazes, eficientes e agradáveis para os usuários. No contexto do ensino de algoritmos complexos, como os de arborescência de custo mínimo, a IHC pode ajudar a criar ferramentas que facilitem a compreensão e a aprendizagem.
+A aplicação web interativa foi desenvolvida para ilustrar os algoritmos de Chu–Liu/Edmonds e Frank, permitindo aos usuários acompanhar passo a passo o funcionamento de ambos os métodos. A ferramenta foi projetada com base em princípios de interação humano-computador e teoria da carga cognitiva, visando maximizar a compreensão e o engajamento dos usuários.
+
+\subsection{Princípios de interação humano-computador}
 
 \paragraph{}
-Os princípios da IHC podem ser aplicados para melhorar a experiência do usuário em ferramentas de visualização de algoritmos. Por exemplo, a personalização da interface, o feedback em tempo real e a adaptação ao nível de conhecimento do usuário são aspectos que podem ser explorados para tornar a aprendizagem mais eficaz.
-\subsection{Princípios de IHC aplicados ao ensino de arborescências de custo mínimo}
+Nesta subseção consolidamos conceitos fundamentais de IHC e explicitamos como foram adaptados ao contexto de uma ferramenta para ensino de algoritmos de teoria dos grafos (em especial, arborescências de custo mínimo). A ênfase recai em como cada princípio mitiga barreiras didáticas típicas descritas anteriormente (articulação local--global, carga extrínseca, mapeamento operacional $\leftrightarrow$ invariantes / certificações).
+
+\subsubsection*{Usabilidade, eficiência cognitiva e representação}
+Clássicas heurísticas de usabilidade (consistência, visibilidade de estado, prevenção de erros, controle do usuário) desdobram-se aqui em decisões visuais e de fluxo que reduzem \emph{custo de coordenação} entre o que o estudante vê e o que precisa inferir. Diagramas bem projetados tornam explícitas relações espaciais e topológicas sem exigir reconstrução mental onerosa \cite{larkin1987diagram,ware2012information}. O alinhamento espacial/temporal entre explicação textual, notação e destaque visual reduz a necessidade de busca cruzada e, portanto, carga extrínseca \cite{mayer2009multimedia}.
+
+\subsubsection*{Carga cognitiva e gerenciamento de camadas de detalhe}
+Seguindo \cite{sweller1988cognitive,mayer2009multimedia}, separamos elementos em três camadas: (i) \emph{base estrutural} (grafo original, vértices, arestas), (ii) \emph{camada de invariantes} (cortes ativos, subgrafo de zeros $D_0$, SCCs/condensação), (iii) \emph{camada analítica} (custos reduzidos numéricos, potenciais duals, métricas de execução). O usuário pode alternar camadas para evitar sobrecarga perceptual inicial e, quando pronto, revelar artefatos que sustentam proofs (complementaridade, apertude). Essa gradação busca otimizar carga germane (focada na construção de esquemas) sem inflar carga extrínseca.
+
+\subsubsection*{Affordances e feedback}
+\emph{Affordances} visuais (cores, ícones de contração, setas de reexpansão) sinalizam ações possíveis sem exigir leitura extensa de instruções. O feedback imediato após cada passo (ex.: aresta escolhida, ciclo identificado, custo reduzido atualizado) reforça a ligação causal entre ação e mudança de estado — um requisito para engajamento ativo efetivo \cite{hundhausen2002meta,naps2003engagement}. Mensagens sintéticas ("ciclo contraído", "condição dual satisfeita") evitam verbosidade e mantêm foco sobre a transformação estrutural.
+
+\subsubsection*{Engajamento ativo e estruturas de interação}
+Para escapar do consumo passivo de animações, incorporamos padrões: (i) \textbf{prever}: antes de revelar a próxima aresta, o usuário pode sinalizar qual espera ser escolhida; (ii) \textbf{manipular}: alterar pesos e observar impacto em $D_0$ e cortes ativos; (iii) \textbf{explicar}: prompts que pedem justificar por que uma aresta entra (ou não) na arborescência em termos de custo reduzido ou certificação. Esses mecanismos alinham-se a evidências de que a aprendizagem melhora quando a visualização exige participação cognitiva \cite{naps2003engagement,hundhausen2002meta}.
+
+\subsubsection*{Visão geral, filtragem e detalhe sob demanda}
+Inspirado no mantra de exploração \cite{shneiderman1996eyes}, a interface apresenta primeiro um painel resumido (contagem de vértices, arestas, contrações realizadas), permite filtros (mostrar apenas arestas de custo reduzido zero ou apenas o ciclo atual) e, sob demanda, revela atributos completos (potenciais, justificativas duals). A filtragem reduz densidade visual nos momentos em que a atenção deve estar na lógica do passo.
+
+\subsubsection*{Consistência semântica e mapeamentos estáveis}
+Cada cor, forma e estilo de linha é reservado a um conceito (ex.: arestas de $D_0$; arestas escolhidas; arestas tensas vs. relaxadas). Uma vez internalizado o mapeamento, o estudante não paga custo adicional de interpretação a cada passo. Esta consistência reforça formação de esquemas estáveis (Tall) e explora vantagens perceptuais discutidas em \cite{ware2012information,larkin1987diagram,tall1991advanced}.
+
+\subsubsection*{Multiplicidade de registros e transições explícitas}
+O design facilita transitar entre: (i) código (instrumentação Python/NetworkX), (ii) visualização dinâmica (grafo com destaques), (iii) representação simbólica (expressões de custo reduzido, $c' = c - y_{\text{origem}} + y_{\text{destino}}$), e (iv) justificativa formal (enunciado resumido de condições de otimalidade). A proximidade desses registros promove integração semântica (dual coding) \cite{paivio1990}.
+
+\subsubsection*{Prevenção de erros conceituais}
+Decisões consideradas perigosas para principiantes (ex.: apagar arestas críticas sem entender efeito) disparam avisos educacionais breves em vez de bloqueios duros, favorecendo reflexão sem interromper fluxo. Quando o usuário tenta "adiantar" múltiplos passos, a ferramenta insere checkpoints pedindo validação do invariante ("todos os vértices não-raiz têm exatamente uma aresta entrando?").
+
+\subsubsection*{Reprodutibilidade e análise pós-interação}
+Logs estruturados (CSV) e exportação JSON capturam sequências de ações, tempos e métricas, permitindo revisão posterior e comparação entre execuções. Integrar isso a notebooks facilita atividades investigativas e replicação de exemplos em avaliações \cite{kluyver2016jupyter}. A reprodutibilidade transforma a visualização de evento efêmero em objeto de estudo reanalisável.
+
+\subsubsection*{Limitações e adaptações futuras}
+Alguns princípios clássicos (personalização extensiva, acessibilidade completa WCAG, suporte colaborativo síncrono) ainda não estão plenamente implementados — o foco inicial privilegiou fidelidade teórico-visual. Recomenda-se: (i) adicionar temas de alto contraste; (ii) incorporar modo de teclado e descrições textuais de eventos; (iii) permitir trilhas anotadas compartilháveis para discussão em grupo. Essas extensões aprofundam os objetivos pedagógicos sem comprometer a arquitetura atual.
+
 \paragraph{}
-A seguir, destacamos alguns princípios de IHC que são particularmente relevantes para o ensino de arborescências de custo mínimo:
+Em síntese, adaptar princípios de IHC ao ensino de teoria dos grafos demanda traduzir heurísticas gerais em mecanismos que exponham invariantes estruturais e certificados de otimalidade sem inundar o estudante com detalhes. A ferramenta materializa esse mapeamento ao oferecer camadas graduais de complexidade, feedback causalmente rico e mapeamentos visuais estáveis conectados às provas subjacentes.
+
+\subsection{Descrição da aplicação}
+A aplicação proposta é uma ferramenta interativa, executada inteiramente no navegador, para visualização passo a passo e manipulação de grafos direcionados com foco no algoritmo de Chu--Liu/Edmonds (arborescência de custo mínimo). O objetivo pedagógico central é tornar visíveis os invariantes estruturais (arestas candidatas, contrações, custos associados) e o encadeamento causal de cada transformação, reduzindo a carga cognitiva extrínseca e promovendo aprendizagem ativa (cf. Mayer, Sweller; heurística de feedback imediato de Nielsen; mantra de Shneiderman \emph{overview \,$\rightarrow$\, filter \,$\rightarrow$\, details on demand}).
+\paragraph{}
+Diferentemente de abordagens tradicionais que dependem de um backend persistente, a aplicação é \emph{client-side}: código Python é carregado via PyScript dentro da página HTML e executado diretamente sobre uma instância em memória de um \texttt{DiGraph} da biblioteca NetworkX \cite{hagberg2008networkx}. A renderização incremental de estados utiliza \textit{matplotlib} incorporado (via PyScript) e é exibida sequencialmente, permitindo comparação visual entre passos sem perda de contexto (estabilidade semântica). Tailwind CSS organiza a hierarquia visual e reforça consistência e affordances claras (botões primários, agrupamento funcional). A exportação do grafo em formato JSON apoia reprodutibilidade e estudo posterior em notebooks Jupyter \cite{kluyver2016jupyter}.
+
+\subsubsection{Tecnologias Utilizadas}
+Os componentes tecnológicos refletem um design deliberado de baixo atrito para adoção educacional:
 \begin{itemize}\setlength{\itemsep}{2pt}
-    \item \textbf{Consistência:} A interface deve ser consistente em termos de layout, cores e interações. Isso ajuda os usuários a se familiarizarem rapidamente com a ferramenta e a se concentrarem no conteúdo.
-    \item \textbf{Feedback imediato:}   A ferramenta deve fornecer feedback imediato sobre as ações do usuário, como a seleção de arcos ou a contração de ciclos. Isso ajuda a reforçar o aprendizado e a manter o engajamento.
-    \item \textbf{Controle do usuário:}   Os usuários devem ter controle sobre  a velocidade e o ritmo da visualização. Isso permite que eles explorem os conceitos no seu próprio ritmo e revisitem partes específicas conforme necessário.
-    \item \textbf{Simplicidade:} A interface deve ser simples e intuitiva, evitando sobrecarga cognitiva desnecessária. Elementos visuais devem ser claros e relevantes para o conteúdo.
-    \item \textbf{Personalização:} A ferramenta deve permitir a personalização da experiência, como a escolha de níveis de detalhe ou a seleção de diferentes algoritmos para visualização.
-    \item \textbf{Acessibilidade:} A ferramenta deve ser acessível a usuários com diferentes níveis de habilidade e conhecimento, incluindo opções para iniciantes e usuários avançados.
+    \item \textbf{Estrutura e Estilo (Frontend):} HTML5 + Tailwind CSS para composições responsivas rápidas e contraste consistente sem sobrecarga manual de folhas de estilo.
+    \item \textbf{Execução de Código Python no Navegador:} PyScript provê carregamento e execução inline, eliminando instalação local de dependências e encorajando experimentação exploratória imediata.
+    \item \textbf{Manipulação e Análise de Grafos:} NetworkX \cite{hagberg2008networkx} para estrutura de dados, filtragens (remoção de arestas para a raiz) e suporte a transformações de grafo durante o algoritmo.
+    \item \textbf{Visualização de Estados:} \textit{matplotlib} (embedding PyScript) para gerar figuras estáticas sequenciadas que preservam layout planar aproximado e permitem leitura de rótulos e pesos (contrapondo \emph{clutter}).
+    \item \textbf{Exportação de Dados:} Serialização em JSON (formato \texttt{node\_link}) para continuidade de estudo em outros ambientes (e.g. notebooks Jupyter). Não há backend Flask nem uso de D3.js na versão atual --- menções anteriores a tais camadas foram removidas para evitar inconsistência descritiva.
 \end{itemize}
 
-\subsection{Descrição da aplicação interativa}
-\paragraph{}
-Desenvolvemos uma aplicação web interativa que implementa os algoritmos de Chu–Liu/Edmonds e de Frank para encontrar arborescências de custo mínimo em dígrafos. A aplicação permite aos usuários visualizar passo a passo o funcionamento dos algoritmos, destacando suas semelhanças e diferenças.
-\paragraph{}
-A interface da aplicação foi projetada com base nos princípios de IHC discutidos anteriormente. Isso inclui feedback imediato sobre as ações do usuário, controle sobre a velocidade da visualização e opções de personalização. Além disso, a aplicação é acessível a diferentes níveis de usuários, com tutoriais e dicas para iniciantes.
+\subsubsection{Arquitetura Lógica}
+O fluxo interativo segue um ciclo \emph{ação $\rightarrow$ feedback imediato $\rightarrow$ reflexão}: o usuário aciona eventos (botões com id específicos), decoradores \texttt{@when} do PyScript capturam a interação, atualizam o \texttt{DiGraph} e disparam tanto (i) renderização do grafo atualizado quanto (ii) registro textual no \emph{log} incremental. Esse log funciona como trilha de explicação (justificativa narrativa) apoiando metacognição e revisitação sequencial dos passos.
 
-\subsection{Implementação técnica}
-\paragraph{}
-A aplicação foi desenvolvida utilizando tecnologias web modernas, incluindo HTML, CSS e JavaScript. A biblioteca D3.js foi utilizada para a visualização interativa dos grafos, permitindo a manipulação dinâmica dos elementos visuais.
-\paragraph{}
-O backend da aplicação foi implementado em Python, utilizando o framework Flask para gerenciar as requisições e a lógica dos algoritmos. A comunicação entre o frontend e o backend é feita através de chamadas AJAX, permitindo uma experiência fluida e responsiva para o usuário.
-
-\subsection{Discussão e Perspectivas Futuras}
-\paragraph{}
-A aplicação interativa desenvolvida representa um passo significativo na direção de tornar o ensino de algoritmos complexos mais acessível e eficaz. No entanto, há várias áreas para melhorias e expansões futuras:
+\subsubsection{Funcionalidades Implementadas}
+Atualmente, o conjunto de ações reflete uma \emph{MVP} (mínimo produto viável) orientada ao algoritmo alvo:
 \begin{itemize}\setlength{\itemsep}{2pt}
-    \item \textbf{Expansão de algoritmos:} Incluir outros algoritmos relacionados a grafos, como algoritmos de fluxo máximo, empacotamento de caminhos e outros problemas de otimização em redes.
-    \item \textbf{Avaliação de usabilidade:} Realizar estudos de usabilidade com usuários reais para avaliar a eficácia da aplicação e identificar áreas para melhorias.
-    \item \textbf{Integração com plataformas educacionais:} Integrar a aplicação com plataformas de ensino online para facilitar o acesso e a disseminação do conteúdo.
-    \item \textbf{Recursos colaborativos:} Adicionar funcionalidades que permitam a colaboração entre usuários, como a possibilidade de compartilhar visualizações e discutir estratégias.
-    \item \textbf{Análise de desempenho:} Implementar métricas para analisar o desempenho dos usuários na aplicação, ajudando a identificar dificuldades comuns e adaptar o conteúdo conforme necessário.
+    \item \textbf{Construção Incremental de Grafo:} Inserção de arestas com pesos e limpeza total (\texttt{reset}). Não há ainda edição direta de vértices isolados ou remoção seletiva de arestas individuais via interface.
+    \item \textbf{Carga de Exemplo:} Grafo de teste pré-configurado para reduzir barreira inicial e possibilitar foco cognitivo em dinâmica algorítmica (reduz carga extrínseca inicial).
+    \item \textbf{Execução Passo a Passo do Algoritmo de Chu--Liu/Edmonds:} Chamada a uma função que encapsula (i) filtragem de arestas incidentes à raiz, (ii) seleção de arestas mínimas por vértice e (iii) detecção de ciclos para posterior contração. Cada fase produz visualizações acumuladas.
+    \item \textbf{Visualização Sequencial:} Estados são empilhados permitindo retrospectiva. A estabilidade posicional minimiza custo de acompanhamento (cf. Larkin \& Simon sobre carga de inferência espacial).
+    \item \textbf{Log Estruturado:} Mensagens textuais cronológicas que alinham eventos de interface a transformações de estrutura (apoio a coerência causal e integração verbal+visual conforme Dual Coding).
+    \item \textbf{Exportação JSON:} Captura a estrutura corrente permitindo reuso analítico.
 \end{itemize}
+
+\subsubsection{Funcionalidades Planejadas / Extensões}
+Para alinhamento mais amplo aos objetivos pedagógicos discutidos em seções anteriores, prevê-se:
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item Destacar explicitamente arestas escolhidas vs. rejeitadas (camadas de saliência cromática)
+    \item Animação de contrações e reexpansões de ciclos (reforçando laminaridade de subconjuntos)
+    \item Medidas adicionais (grau, centralidades, SCC enumeradas) sob demanda \emph{(details on demand)}
+    \item Passos reversíveis (navegação temporal) e anotações persistentes do estudante
+    \item Exportação de sequência (log + imagens) em pacote compacto para relato de solução
+\end{itemize}
+
+\subsubsection{Interface do Usuário}
+O layout adota separação conceitual clara: (i) entrada de dados (formulário de arestas, raiz), (ii) área de visualização cumulativa, (iii) log textual. A ausência de sobrecarga de múltiplos painéis evita fragmentação prematura de atenção, em linha com estratégia de \emph{progressive disclosure}. A semântica de cores (tons verdes para ações primárias) reforça affordances, enquanto a tipografia uniforme e espaçamento consistente reduzem ruído visual (Ware).
+
+\subsubsection{Exemplo de Uso (Fluxo Algorítmico)}
+Considere o usuário que deseja observar a construção de uma arborescência ótima:
+\begin{enumerate}\setlength{\itemsep}{2pt}
+    \item Carrega o grafo de teste (botão dedicado), inspecionando pesos.
+    \item (Opcional) Adiciona arestas suplementares para explorar variações.
+    \item Informa (ou confirma) o nó raiz \texttt{r0}.
+    \item Aciona ``Executar Algoritmo'': a aplicação registra filtragem de arestas para a raiz, apresenta seleção de arestas mínimas por vértice e, se presentes, marca ciclo detectado.
+    \item Após contrações internas e reexpansão (se aplicável), a arborescência final é exibida; todas as imagens intermediárias permanecem acessíveis para revisão comparativa.
+    \item Exporta o grafo resultante para estudo em outro ambiente ou documentação.
+\end{enumerate}
+
+\paragraph{}
+Assim, a aplicação materializa princípios de IHC educacional ao incorporar: (i) \emph{feedback imediato multi-modal}, (ii) \emph{camadas graduais de detalhe}, (iii) \emph{estabilidade posicional} entre estados, e (iv) suporte a externalização (log + export). O escopo atual foca profundidade conceitual de um algoritmo especializado como prova de conceito extensível.
+
+\subsection{Detalhes de Implementação}
+A implementação da aplicação web interativa envolveu várias etapas, desde o planejamento da arquitetura até a codificação e testes. A seguir, detalhamos os principais aspectos técnicos da implementação.
+\label{subsec:detalhes-implementacao}
+
+\subsubsection{Organização Geral}
+A aplicação é estruturada em um único arquivo HTML que incorpora tanto o layout visual (HTML + Tailwind CSS) quanto o código Python (via PyScript). A organização do código segue uma lógica modular, com funções dedicadas para manipulação do grafo, renderização visual, tratamento de eventos e exportação de dados.
+
+\subsubsection{Estado e Função de Desenho}
+A listagem a seguir mostra a inicialização do grafo dirigido e a função de visualização incremental. Ela ilustra princípios de estabilidade posicional (layout consistente) e saliência seletiva (cores e pesos destacados), reduzindo custos de inferência espacial \cite{larkin1987diagram,ware2012information}.
+\begin{lstlisting}[language=Python,caption={Estado global e função de desenho de grafos},label={lst:draw_graph}]
+import networkx as nx
+from networkx.readwrite import json_graph
+import matplotlib.pyplot as plt
+from js import Blob, URL, document, alert
+from pyscript import when, display
+
+from chuliu import find_optimum_arborescence_chuliu, remove_edges_to_r0
+
+def log_in_box(msg: str):
+        log_box = document.getElementById("log-output")
+        log_box.value += msg + "\n"
+        log_box.scrollTop = log_box.scrollHeight
+
+def draw_graph(G: nx.DiGraph, title="Digrafo", append=True):
+        plt.clf()
+        pos = nx.planar_layout(G)  # Stable layout for comparison between steps
+        plt.figure(figsize=(6, 4))
+        nx.draw(G, pos, with_labels=True, node_color="lightblue",
+                        edge_color="gray", node_size=2000, font_size=12)
+        weights = nx.get_edge_attributes(G, "w")
+        nx.draw_networkx_edge_labels(G, pos, edge_labels=weights,
+                                                                 font_color="red", font_size=12)
+        plt.title(title)
+        display(title, target="graph-area", append=append)
+        display(plt, target="graph-area", append=append)
+        plt.close()
+
+G = nx.DiGraph()
+\end{lstlisting}
+
+\paragraph{Comentários.} O layout planar aproxima uma ancoragem espacial consistente entre quadros, reduzindo carga extrínseca (Sweller). Labels de arestas (pesos) são renderizados em vermelho para maximizar contraste sem conflitar com o canal de cor reservado a outras categorias futuras (arestas selecionadas, contraídas, etc.). O acoplamento \emph{log textual + figura} concretiza dual coding \cite{paivio1990}.
+
+\subsubsection{Manipulação Incremental do Grafo}
+O usuário constrói o exemplo incrementalmente; cada ação gera feedback imediato e persistente no log, reforçando mapeamento ação-estado (heurísticas de Nielsen).
+\begin{lstlisting}[language=Python,caption={Manipuladores de eventos para edição e preparação de exemplos},label={lst:event_handlers}]
+@when("click", "#add-edge")
+def add_edge():
+        global G
+        source = document.getElementById("source").value
+        target = document.getElementById("target").value
+        weight = document.getElementById("weight").value
+        if source and target and weight:
+                G.add_edge(source, target, w=float(weight))
+                log_in_box(f"Aresta adicionada: {source} → {target} (peso={weight})")
+                draw_graph(G, "Grafo com Arestas", append=False)
+
+@when("click", "#reset-graph")
+def reset_graph():
+        global G
+        G.clear()
+        document.getElementById("log-output").value = ""
+        draw_graph(G, "Grafo Resetado", append=False)
+        log_in_box("Grafo resetado.")
+
+@when("click", "#load-test-graph")
+def load_test_graph(event):
+        global G
+        G.clear()
+        # Grafo de teste predefinido para reduzir barreira inicial
+        G.add_edge("r0", "B", w=10)
+        G.add_edge("r0", "A", w=2)
+        G.add_edge("r0", "C", w=10)
+        G.add_edge("B", "A", w=1)
+        G.add_edge("A", "C", w=4)
+        G.add_edge("C", "D", w=2)
+        G.add_edge("D", "B", w=2)
+        G.add_edge("B", "E", w=8)
+        G.add_edge("C", "E", w=4)
+        log_in_box("Grafo de teste carregado.")
+        draw_graph(G, "Grafo de Teste (DG)", append=False)
+\end{lstlisting}
+
+\paragraph{Comentários.} O grafo de teste diminui o \emph{time-to-first-insight}. A função \texttt{reset} fornece um ponto de recuperação, reduzindo medo de erro exploratório (aprendizagem ativa). A atualização visual não é animada quadro a quadro ainda, mas a substituição instantânea mantém latência cognitiva baixa.
+
+\subsubsection{Execução do Algoritmo e Exportação}
+O núcleo pedagógico está na execução do algoritmo de Chu--Liu/Edmonds; a exportação viabiliza reuso analítico e reprodutibilidade.
+\begin{lstlisting}[language=Python,caption={Execução do algoritmo e exportação},label={lst:algorithm_export}]
+@when("click", "#run-algorithm")
+def run_algorithm(event):
+        global G
+        r0 = document.getElementById("root-node").value or "r0"
+        if r0 not in G:
+                alert(f"[ERRO] O no raiz '{r0}' deve existir no grafo.")
+                return
+        log_in_box("Executando algoritmo de Chu-Liu...")
+        G_filtered = remove_edges_to_r0(G, r0)
+        T = find_optimum_arborescence_chuliu(G_filtered, r0,
+                                                                                 draw_fn=draw_graph, log=log_in_box)
+        draw_graph(T, "Arborescencia Otima")
+        log_in_box("Execução concluída com sucesso.")
+
+@when("click", "#export-graph")
+def export_graph(event):
+        log_in_box("Exportando grafo...")
+        if G.number_of_nodes() == 0:
+                log_in_box("[ERRO] O grafo esta vazio.")
+                return
+        data = json_graph.node_link_data(G, edges="links")
+        json_data = json.dumps(data, indent=4)
+        blob = Blob.new([json_data], {"type": "application/json"})
+        url = URL.createObjectURL(blob)
+        link = document.createElement("a")
+        link.href = url
+        link.download = "graph_teste.json"
+        link.click()
+        URL.revokeObjectURL(url)
+        log_in_box("Download do grafo iniciado.")
+\end{lstlisting}
+
+\paragraph{Comentários.} O algoritmo delega visualização de cada estado à função de desenho, permitindo instrumentação de passos internos (seleção de arestas mínimas, detecção de ciclos) sem acoplar lógica à interface. O log textual sequencia narrativa dos marcos algorítmicos (\emph{storytelling procedural}) reforçando a formação de modelo mental dos invariantes.
+
+\subsubsection{Estrutura da Página HTML}
+O trecho estrutural da página define a hierarquia visual e a ligação com PyScript (carregando \texttt{main.py}) e demonstra uso de Tailwind para classes utilitárias.
+\begin{lstlisting}[language=HTML,caption={Estrutura principal da página HTML com PyScript},label={lst:index_html}]
+<header class="bg-[#5b8f79] text-white text-center p-6">
+    <h1 class="text-3xl font-bold">Chu-Liu/Edmonds Visualizer</h1>
+    <p class="text-lg mt-2">Visualização passo a passo de arborescências</p>
+</header>
+<main class="flex flex-col items-center gap-8 py-8 px-8">
+    <section class="w-full max-w-4xl">
+        <h2 class="text-2xl font-semibold text-[#5b8f79] mb-4">Definir Di-grafo</h2>
+        <!-- Formulário de inserção de arestas -->
+        <input id="source" placeholder="Origem" />
+        <input id="target" placeholder="Destino" />
+        <input id="weight" type="number" placeholder="Peso" />
+        <button id="add-edge">Adicionar Aresta</button>
+        <button id="reset-graph">Limpar Grafo</button>
+        <button id="export-graph">Exportar JSON</button>
+    </section>
+    <section class="w-full max-w-4xl">
+        <h2 class="text-2xl font-semibold text-[#5b8f79] mb-4">Executar Algoritmo</h2>
+        <input id="root-node" value="r0" />
+        <button id="run-algorithm">Executar Algoritmo</button>
+    </section>
+    <section id="graph-output" class="w-full max-w-4xl bg-white p-6 rounded shadow">
+        <h2 class="text-2xl font-semibold text-[#5b8f79] mb-4">Grafo Atual</h2>
+        <py-script id="graph-area"></py-script>
+    </section>
+    <section id="log" class="w-full max-w-4xl bg-white p-6 rounded shadow">
+        <h2 class="text-2xl font-semibold text-[#5b8f79] mb-4">Log da Execução</h2>
+        <textarea id="log-output" readonly></textarea>
+    </section>
+</main>
+<script type="py" src="./main.py" config="./pyscript.json"></script>
+\end{lstlisting}
+
+\paragraph{Comentários.} A composição evita profundidade excessiva de navegação (tudo crítico em uma "única tela") e oferece agrupamento semântico (seções paralelas) contribuindo para \emph{overview} rápido (Shneiderman) antes de exploração detalhada. A distinção visual (fundo branco em cartões) delimita regiões de foco e reduz interferência lateral.
+
+\subsubsection{Relação com Princípios Pedagógicos}
+Em conjunto, os elementos demonstram: (i) \textbf{redução de carga extrínseca} (instanciação imediata sem instalação), (ii) \textbf{andaimagem progressiva} (grafo de teste + construção incremental), (iii) \textbf{integração multimodal} (visual + textual log), (iv) \textbf{estabilidade semântica} (mesmo layout entre estados), (v) \textbf{reprodutibilidade} (exportação JSON). Cada ponto reforça objetivos discutidos previamente, ancorando a implementação na literatura de visualização e aprendizagem baseada em exploração.
+
 
 \section{Considerações Finais}
 \clearpage
