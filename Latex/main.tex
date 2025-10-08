@@ -3925,7 +3925,7 @@ O ensino de matemática no ensino superior exige transitar entre registros de re
 Aprender conteúdos de alta abstração envolve lidar com sobrecarga cognitiva intrínseca e extrínseca \cite{sweller1988cognitive}. Diretrizes de aprendizagem multimídia indicam que combinar representações verbais e visuais pode reduzir carga desnecessária e favorecer integração semântica \cite{mayer2009multimedia,paivio1990}. Em matemática avançada, a transição entre níveis de representação (intuitivo, formal, simbólico) exige mediação cuidadosa \cite{tall1991advanced} e atenção a como exemplos, contraexemplos e invariantes são apresentados.
 
 \paragraph{}
-No caso específico de algoritmos com provas baseadas em complementaridade primal--dual, é frequente que estudantes compreendam os passos operacionais sem internalizar a estrutura justificativa. Tornar explícitos os elos entre “ação do algoritmo” e “restrições/condições que se tornam justas” ajuda a estabilizar o entendimento.
+No caso específico de algoritmos com provas baseadas em complementaridade primal--dual, é frequente que estudantes compreendam os passos operacionais sem internalizar a estrutura teórica que garante correção e otimalidade.
 
 \subsubsection{Lidando com grafos e dígrafos}
 Na prática, o que mais dificulta o ensino de dígrafos não é definir vértices e arcos, mas articular o que fazemos localmente com as estruturas globais que sustentam as provas de correção e de otimalidade em arborescências de custo mínimo — em particular, nos métodos de Chu–Liu/Edmonds e de Frank —: cortes ativos, componentes fortemente conexas (SCCs) e famílias laminares de conjuntos \cite{bondy2008graph,diestel2017graph,west2001introduction}. Quando essa articulação não aparece, cresce a \emph{carga intrínseca} (múltiplas dependências simultâneas) e também a \emph{carga extrínseca} (o esforço de alinhar texto, fórmulas e figuras). Nesse contexto específico destacamos três desafios didáticos:
@@ -3949,77 +3949,67 @@ No exemplo da figura abaixo, a condensação do dígrafo \(D\) em \(D_0\) torna 
 Há evidências de que diagramas e animações, quando bem projetados, podem acelerar a compreensão de relações topológicas e causais \cite{larkin1987diagram,ware2012information}.
 
 \paragraph{}
-No campo específico de matemática avançada, Tall enfatiza a coordenação entre registros — intuitivo, visual, simbólico e formal — como motor da passagem do pensamento predominantemente procedimental para o conceitual \cite{tall1991advanced}. Diagramas não são meros adornos: estruturam inferências espaciais e relacionais de modo mais eficiente que sentenças lineares \cite{larkin1987diagram}.
+A teoria da carga cognitiva sugere que combinar representações verbais e visuais pode reduzir carga extrínseca e favorecer integração semântica \cite{mayer2009multimedia,paivio1990}. Diretrizes de aprendizagem multimídia recomendam evitar excesso de elementos visuais que não contribuam para o entendimento (reduzindo carga extrínseca) e alinhar texto e imagens no tempo e no espaço (reduzindo esforço de coordenação) \cite{mayer2009multimedia}.
 
 \paragraph{}
-Na educação em ciência da computação, visualizações de algoritmos têm efeito positivo sobretudo quando promovem \emph{engajamento ativo} (prever, manipular, explicar) e não apenas consumo passivo \cite{hundhausen2002meta,naps2003engagement}. Taxonomias de tarefas para visualização (
-overview \textrightarrow\ zoom/filter \textrightarrow\ details-on-demand) ajudam a alinhar interações com objetivos cognitivos \cite{shneiderman1996eyes}. Esses princípios informam as escolhas de destaque em \(D_0\), cortes e ciclos mostradas nas Figuras~\ref{fig:didatica-reduced-cost} e \ref{fig:didatica-reexpansion}.
+No campo específico de matemática avançada, Tall enfatiza a coordenação entre registros — intuitivo, visual, simbólico e formal — como motor da passagem do pensamento predominantemente procedimental para o conceitual \cite{tall1991advanced}. Diagramas não são meros adornos: estruturam inferências espaciais e relacionais de modo mais eficiente que sentenças lineares \cite{larkin1987diagram}.
 
-\subsection{Ferramentas didáticas no ensino de teoria dos grafos}
-Ferramentas digitais ajudam a reduzir carga extrínseca e a integrar registros (visual, simbólico, formal) quando a interação é desenhada para promover \emph{engajamento ativo} \cite{mayer2009multimedia,sweller1988cognitive,hundhausen2002meta,naps2003engagement}. A seguir, mapeamos categorias de ferramentas úteis no ensino de grafos, indicando finalidades, forças e limitações, e posicionamos a nossa aplicação nesse ecossistema.
+
+\paragraph{}
+Na educação em ciência da computação, visualizações de algoritmos têm efeito positivo sobretudo quando promovem \emph{engajamento ativo} (prever, manipular, explicar) e não apenas consumo passivo \cite{hundhausen2002meta,naps2003engagement}.
+
+\subsection{Disseminação de conteúdos avançados: o ecossistema de ferramentas}
+
+\paragraph{}
+Materiais que conectam teoria, evidências empíricas e interatividade têm maior potencial de transferência e retenção. 
+
+\paragraph{}
+Tendo em vista esses fundamentos, ferramentas digitais podem ajudar a reduzir carga extrínseca e a integrar registros (visual, simbólico, formal) quando a interação é desenhada para promover \emph{engajamento ativo} \cite{mayer2009multimedia,sweller1988cognitive,hundhausen2002meta,naps2003engagement}. A seguir, apresentamos categorias de ferramentas úteis no ensino de grafos, indicando finalidades, forças e limitações, e posicionamos a nossa aplicação nesse ecossistema.
+
+\subsubsection{Ferramentas didáticas no ensino de teoria dos grafos}
+\paragraph{}
+Várias ferramentas digitais podem apoiar o ensino de grafos e dígrafos, cada uma com forças e limitações específicas. A seguir, discutimos quatro categorias principais: (i) diagramas programáveis e tipografia matemática, (ii) exploração e edição de grafos, (iii) visualização de algoritmos, e (iv) ambientes programáveis e reprodutibilidade.
 
 \paragraph{Diagramas programáveis e tipografia matemática}
+\paragraph{}
+Algumas ferramentas permitem criar diagramas de grafos com semântica visual consistente, integrando-os a textos matemáticos. Essas ferramentas são úteis para ilustrar conceitos, definições e provas em materiais didáticos.
+
+\paragraph{}
 Ambientes como Graphviz/dot e TikZ/PGF permitem especificar grafos declarativamente e gerar figuras reprodutíveis com layouts consistentes \cite{graphviz,tantau2015tikz}. Benefícios didáticos: (i) semântica visual estável (mesmo conceito, mesma forma), (ii) autoria próxima ao símbolo e ao texto (co-referência), (iii) manutenção e versionamento fáceis. Limitações: a interação costuma ser offline (figuras estáticas) e a curva de aprendizado de sintaxe pode ser um obstáculo inicial. Em contextos de prova e definição, esses recursos ancoram a narrativa formal com diagramas que obedecem às diretrizes de \cite{larkin1987diagram,ware2012information}.
 
+\paragraph{}
+Contudo, diagramas estáticos não capturam a dinâmica de algoritmos que envolvem mudanças estruturais (elevação de potenciais, contração/expansão, seleção de arestas). Para isso, são necessárias ferramentas interativas que permitam explorar essas transformações em tempo real.
+
 \paragraph{Exploração e edição de grafos}
-Ferramentas de exploração como Gephi, yEd e Cytoscape oferecem layouts automáticos, filtros e medidas de rede \cite{bastian2009gephi,yed,shannon2003cytoscape}. São adequadas para: (i) reconhecer padrões estruturais (componentes, comunidades), (ii) discutir implicações de layouts para percepção de estruturas, (iii) atividades de descoberta assistida ("overview \textrightarrow{} filter \textrightarrow{} details") \cite{shneiderman1996eyes}. Limitações: foco em redes gerais; suporte limitado a invariantes e estruturas específicas de provas (p.ex., cortes ativos, famílias laminares) e a passos operacionais de algoritmos com certificação primal--dual.
+\paragraph{}
+Ferramentas de exploração e edição de grafos permitem que os usuários interajam com representações gráficas de dados, facilitando a manipulação e a análise de estruturas complexas. Essas ferramentas são essenciais para atividades que exigem uma compreensão profunda das relações entre os elementos de um grafo.
+
+
+\paragraph{}
+Dentre elas destacam-se Gephi, yEd e Cytoscape oferecem layouts automáticos, filtros e medidas de rede \cite{bastian2009gephi,yed,shannon2003cytoscape}. São adequadas para: (i) reconhecer padrões estruturais (componentes, comunidades), (ii) discutir implicações de layouts para percepção de estruturas, (iii) atividades de descoberta assistida ("overview \textrightarrow{} filter \textrightarrow{} details") \cite{shneiderman1996eyes}. Limitações: (i) foco em análise exploratória de dados, não em algoritmos específicos; (ii) carga extrínseca ao alternar entre interface gráfica e conceitos teóricos; (iii) falta de controle fino sobre estados intermediários de algoritmos.
 
 \paragraph{Visualização de algoritmos}
+\paragraph{}
+Existem diversas ferramentas dedicadas à visualização de algoritmos, que ilustram passo a passo como um algoritmo opera sobre uma estrutura de dados. 
+
+\paragraph{}
 Repositórios e portais como VisuAlgo e iniciativas similares apresentam animações de algoritmos clássicos com controle do ritmo e de estados \cite{visualgo,hundhausen2002meta,naps2003engagement}. Evidências sugerem ganhos quando o estudante prevê, manipula e explica o que vê, ao invés de consumir animações passivamente. Pontos de atenção: (i) alinhar a animação às noções teóricas subjacentes (invariantes, certificados), (ii) explicitar mapeamentos entre "o que acontece" e "o que se garante" (p.ex., custo reduzido zero \(c'=0\), complementaridade), (iii) evitar excesso de elementos visuais que aumentem carga extrínseca \cite{mayer2009multimedia}.
 
 \paragraph{Ambientes programáveis e reprodutibilidade}
-Notebooks e bibliotecas (Jupyter + NetworkX) permitem construir exemplos mínimos, instrumentar execuções, coletar métricas e gerar figuras num único documento reprodutível \cite{kluyver2016jupyter,hagberg2008networkx}. Vantagens: (i) integração código--texto--figura, (ii) experimentação rápida (alterar pesos/estruturas e observar efeitos), (iii) trilhas auditáveis via logs. Limitações: requerem familiaridade com programação e curadoria para manter foco didático.
-
-\paragraph{Onde nossa aplicação se insere}
-Nosso artefato combina elementos dessas categorias com foco nas estruturas que sustentam as provas de correção e otimalidade em arborescências de custo mínimo. Especificamente, ele:
-\begin{itemize}\setlength{\itemsep}{2pt}
-    \item destaca o subgrafo de zeros \(D_0\), cortes ativos e SCCs/condensação com semântica visual consistente (alinhado a \cite{larkin1987diagram,ware2012information});
-    \item explicita o vínculo entre ação e certificação: elevações de potenciais e escolhas de arestas \(\Rightarrow\) \emph{apertude} e \emph{complementaridade} (relacionando operacional e primal--dual);
-    \item torna observáveis a dinâmica de contração/expansão e a família laminar de conjuntos (ponte entre local e global);
-    \item registra logs e métricas (tempos por fase, contrações, profundidade, pico de memória), apoiando sequências investigativas e reprodutibilidade \cite{kluyver2016jupyter};
-    \item oferece interações no espírito "overview \textrightarrow{} zoom/filter \textrightarrow{} details-on-demand" \cite{shneiderman1996eyes}, promovendo engajamento ativo \cite{naps2003engagement}.
-\end{itemize}
-Em conjunto, essas escolhas aproximam a visualização das estruturas teóricas (cortes ativos, \(c'=0\), laminaridade) e reduzem barreiras típicas (carga extrínseca, desvios entre o local e o global), complementando o uso de ferramentas generalistas e de diagramas programáveis.
+\paragraph{}
+Ferramentas como Jupyter Notebooks e bibliotecas como NetworkX permitem combinar código, texto e visualizações em um único documento interativo \cite{kluyver2016jupyter,hagberg2008networkx}. Essas ferramentas são valiosas para criar exemplos reprodutíveis e explorar algoritmos de forma prática.
 
 \paragraph{}
-Diretrizes adotadas neste projeto:
-\begin{itemize}\setlength{\itemsep}{2pt}
-    \item Semântica visual consistente: destacar o subgrafo de zeros $D_0$, arcos \emph{apertados} e cortes ativos.
-    \item Sincronizar passos e justificativas: cada ação (normalizar, contrair, reexpandir) acompanhada do “por quê” (efeitos em $c'$, invariantes).
-    \item Controle de granularidade: passo a passo, agregação de passos, previsões com feedback.
-    \item Trilhas auditáveis: logs que referenciem estados do grafo reduzem carga extrínseca.
-\end{itemize}
-
-
+Contudo, requerem familiaridade com programação e podem introduzir carga extrínseca se o foco se desviar para detalhes de implementação. A curadoria do conteúdo é essencial para manter o foco didático e evitar dispersão.
 
 \paragraph{}
-\vspace{-0.5\baselineskip}
+Tendo em vista essas categorias, desenvolvemos uma aplicação web interativa que combina elementos de visualização de algoritmos e ambientes programáveis, com foco específico nos algoritmos de arborescência de custo mínimo. A seguir, apresentamos princípios envolvendo a teoria de interação humano-computador que orientaram o desenho da ferramenta, e em seguida descrevemos a aplicação com seus respectivos detalhes de implementação e como ela se posiciona nesse ecossistema.
 
-\subsection{Disseminação e sequências de atividades}
-Materiais que conectam teoria, evidências empíricas e interatividade têm maior potencial de transferência e retenção. A aplicação web acompanha essa visão: ela instrumentaliza o texto, permitindo que quem lê projete no objeto interativo as ideias de primal--dual, apertude e laminaridade. Além disso, o \emph{pipeline} de testes e a geração automática de figuras tornam o conteúdo reprodutível, um valor didático em si.
+\section{A interação humano-computacional com o problema da arborescência de custo mínimo}
 
-Do ponto de vista curricular, recomendamos sequências de atividades que alternem: (i) exploração interativa orientada por questões; (ii) exercícios de reconstrução de provas (por exemplo, complementaridade) a partir de instâncias; (iii) mini-investigações sobre desempenho (tempo vs. |A|, impacto de estruturas adversárias). Essas práticas situam conceitos abstratos em experiências manipuláveis, reduzindo carga extrínseca e ampliando a ancoragem conceitual \cite{mayer2009multimedia,sweller1988cognitive}.
 
-\paragraph{}
-Em resumo, a didática do abstrato aqui proposta combina fundamentos de aprendizagem e visualização com artefatos reprodutíveis (código, gráficos e aplicação interativa). Esse ecossistema busca não apenas explicar os algoritmos, mas também oferecer meios para que estudantes e docentes investiguem, comparem e consolidem entendimentos de forma ativa.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=.72\linewidth]{figures/fig_laminaridade.pdf}
-    \caption{Família laminar de cortes ativos: uma geometria de inclusões que organiza a prova primal–dual e guia a Fase I.}
-    \label{fig:didatica-laminar}
-\end{figure}
 
-\paragraph{Plano de ação em sala e além}
-\begin{itemize}\setlength{\itemsep}{2pt}
-    \item Exploração guiada com previsões: antes de cada passo, pedir hipóteses sobre o próximo 0‑arco/contração; depois, comparar com o resultado e justificar à luz de $c'$ e dos cortes.
-    \item Reconstrução de provas a partir de instâncias: checar complementaridade/laminaridade em casos pequenos e explicitar a ponte entre “o que o algoritmo faz” e “por que funciona”.
-    \item Mini‑investigações de desempenho: variar $|A|$, densidade e famílias adversárias; coletar tempos/contrações e confrontar com limites teóricos.
-    \item Checklist operacional para a ferramenta: (i) visão geral do grafo e de $D_0$; (ii) passo a passo com rastro de cortes; (iii) painel de métricas (tempo por fase, contrações, pico de memória); (iv) botão “explicar por quê” referindo complementaridade; (v) \emph{presets} (aleatória, densa, esparsa, em camadas).
-    \item Disseminação aberta: publicar código, dados e guias rápidos; sugerir atividades prontas (10–15 min) para disciplinas de grafos/otimização e formação docente.
-\end{itemize}
-
-\paragraph{}Em conjunto, essas práticas alinham fundamentos de aprendizagem com recursos visuais e artefatos reprodutíveis, ampliando acesso e consolidando compreensão conceitual e procedimental dos algoritmos.
 
 \section{Considerações Finais}
 \clearpage
