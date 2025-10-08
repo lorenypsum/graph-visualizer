@@ -3955,8 +3955,31 @@ No campo específico de matemática avançada, Tall enfatiza a coordenação ent
 Na educação em ciência da computação, visualizações de algoritmos têm efeito positivo sobretudo quando promovem \emph{engajamento ativo} (prever, manipular, explicar) e não apenas consumo passivo \cite{hundhausen2002meta,naps2003engagement}. Taxonomias de tarefas para visualização (
 overview \textrightarrow\ zoom/filter \textrightarrow\ details-on-demand) ajudam a alinhar interações com objetivos cognitivos \cite{shneiderman1996eyes}. Esses princípios informam as escolhas de destaque em \(D_0\), cortes e ciclos mostradas nas Figuras~\ref{fig:didatica-reduced-cost} e \ref{fig:didatica-reexpansion}.
 
-\paragraph{}
-Nesse âmbito, podemos citar algumas ferramentas que foram pensadas com esse propósito e os objetivos que elas atingiram e como nosso trabalho contribui nesse escopo.
+\subsection{Ferramentas didáticas no ensino de teoria dos grafos}
+Ferramentas digitais ajudam a reduzir carga extrínseca e a integrar registros (visual, simbólico, formal) quando a interação é desenhada para promover \emph{engajamento ativo} \cite{mayer2009multimedia,sweller1988cognitive,hundhausen2002meta,naps2003engagement}. A seguir, mapeamos categorias de ferramentas úteis no ensino de grafos, indicando finalidades, forças e limitações, e posicionamos a nossa aplicação nesse ecossistema.
+
+\paragraph{Diagramas programáveis e tipografia matemática}
+Ambientes como Graphviz/dot e TikZ/PGF permitem especificar grafos declarativamente e gerar figuras reprodutíveis com layouts consistentes \cite{graphviz,tantau2015tikz}. Benefícios didáticos: (i) semântica visual estável (mesmo conceito, mesma forma), (ii) autoria próxima ao símbolo e ao texto (co-referência), (iii) manutenção e versionamento fáceis. Limitações: a interação costuma ser offline (figuras estáticas) e a curva de aprendizado de sintaxe pode ser um obstáculo inicial. Em contextos de prova e definição, esses recursos ancoram a narrativa formal com diagramas que obedecem às diretrizes de \cite{larkin1987diagram,ware2012information}.
+
+\paragraph{Exploração e edição de grafos}
+Ferramentas de exploração como Gephi, yEd e Cytoscape oferecem layouts automáticos, filtros e medidas de rede \cite{bastian2009gephi,yed,shannon2003cytoscape}. São adequadas para: (i) reconhecer padrões estruturais (componentes, comunidades), (ii) discutir implicações de layouts para percepção de estruturas, (iii) atividades de descoberta assistida ("overview \textrightarrow{} filter \textrightarrow{} details") \cite{shneiderman1996eyes}. Limitações: foco em redes gerais; suporte limitado a invariantes e estruturas específicas de provas (p.ex., cortes ativos, famílias laminares) e a passos operacionais de algoritmos com certificação primal--dual.
+
+\paragraph{Visualização de algoritmos}
+Repositórios e portais como VisuAlgo e iniciativas similares apresentam animações de algoritmos clássicos com controle do ritmo e de estados \cite{visualgo,hundhausen2002meta,naps2003engagement}. Evidências sugerem ganhos quando o estudante prevê, manipula e explica o que vê, ao invés de consumir animações passivamente. Pontos de atenção: (i) alinhar a animação às noções teóricas subjacentes (invariantes, certificados), (ii) explicitar mapeamentos entre "o que acontece" e "o que se garante" (p.ex., custo reduzido zero \(c'=0\), complementaridade), (iii) evitar excesso de elementos visuais que aumentem carga extrínseca \cite{mayer2009multimedia}.
+
+\paragraph{Ambientes programáveis e reprodutibilidade}
+Notebooks e bibliotecas (Jupyter + NetworkX) permitem construir exemplos mínimos, instrumentar execuções, coletar métricas e gerar figuras num único documento reprodutível \cite{kluyver2016jupyter,hagberg2008networkx}. Vantagens: (i) integração código--texto--figura, (ii) experimentação rápida (alterar pesos/estruturas e observar efeitos), (iii) trilhas auditáveis via logs. Limitações: requerem familiaridade com programação e curadoria para manter foco didático.
+
+\paragraph{Onde nossa aplicação se insere}
+Nosso artefato combina elementos dessas categorias com foco nas estruturas que sustentam as provas de correção e otimalidade em arborescências de custo mínimo. Especificamente, ele:
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item destaca o subgrafo de zeros \(D_0\), cortes ativos e SCCs/condensação com semântica visual consistente (alinhado a \cite{larkin1987diagram,ware2012information});
+    \item explicita o vínculo entre ação e certificação: elevações de potenciais e escolhas de arestas \(\Rightarrow\) \emph{apertude} e \emph{complementaridade} (relacionando operacional e primal--dual);
+    \item torna observáveis a dinâmica de contração/expansão e a família laminar de conjuntos (ponte entre local e global);
+    \item registra logs e métricas (tempos por fase, contrações, profundidade, pico de memória), apoiando sequências investigativas e reprodutibilidade \cite{kluyver2016jupyter};
+    \item oferece interações no espírito "overview \textrightarrow{} zoom/filter \textrightarrow{} details-on-demand" \cite{shneiderman1996eyes}, promovendo engajamento ativo \cite{naps2003engagement}.
+\end{itemize}
+Em conjunto, essas escolhas aproximam a visualização das estruturas teóricas (cortes ativos, \(c'=0\), laminaridade) e reduzem barreiras típicas (carga extrínseca, desvios entre o local e o global), complementando o uso de ferramentas generalistas e de diagramas programáveis.
 
 \paragraph{}
 Diretrizes adotadas neste projeto:
