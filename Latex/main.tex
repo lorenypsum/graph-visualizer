@@ -4126,7 +4126,7 @@ A aplicação é estruturada em um único arquivo HTML que incorpora tanto o lay
 
 \subsubsection{Estado e Função de Desenho}
 A listagem a seguir mostra a inicialização do grafo dirigido e a função de visualização incremental. Ela ilustra princípios de estabilidade posicional (layout consistente) e saliência seletiva (cores e pesos destacados), reduzindo custos de inferência espacial \cite{larkin1987diagram,ware2012information}.
-\begin{lstlisting}[language=Python,caption={Estado global e função de desenho de grafos},label={lst:draw_graph}]
+\begin{pybox}[label={lst:draw_graph}]{Estado global e função de desenho de grafos}
 import networkx as nx
 from networkx.readwrite import json_graph
 import matplotlib.pyplot as plt
@@ -4155,13 +4155,13 @@ def draw_graph(G: nx.DiGraph, title="Digrafo", append=True):
         plt.close()
 
 G = nx.DiGraph()
-\end{lstlisting}
+\end{pybox}
 
 \paragraph{Comentários.} O layout planar aproxima uma ancoragem espacial consistente entre quadros, reduzindo carga extrínseca (Sweller). Labels de arestas (pesos) são renderizados em vermelho para maximizar contraste sem conflitar com o canal de cor reservado a outras categorias futuras (arestas selecionadas, contraídas, etc.). O acoplamento \emph{log textual + figura} concretiza dual coding \cite{paivio1990}.
 
 \subsubsection{Manipulação Incremental do Grafo}
 O usuário constrói o exemplo incrementalmente; cada ação gera feedback imediato e persistente no log, reforçando mapeamento ação-estado (heurísticas de Nielsen).
-\begin{lstlisting}[language=Python,caption={Manipuladores de eventos para edição e preparação de exemplos},label={lst:event_handlers}]
+\begin{pybox}[label={lst:event_handlers}]{Manipuladores de eventos para edição e preparação de exemplos}
 @when("click", "#add-edge")
 def add_edge():
         global G
@@ -4197,13 +4197,13 @@ def load_test_graph(event):
         G.add_edge("C", "E", w=4)
         log_in_box("Grafo de teste carregado.")
         draw_graph(G, "Grafo de Teste (DG)", append=False)
-\end{lstlisting}
+    \end{pybox}
 
 \paragraph{Comentários.} O grafo de teste diminui o \emph{time-to-first-insight}. A função \texttt{reset} fornece um ponto de recuperação, reduzindo medo de erro exploratório (aprendizagem ativa). A atualização visual não é animada quadro a quadro ainda, mas a substituição instantânea mantém latência cognitiva baixa.
 
 \subsubsection{Execução do Algoritmo e Exportação}
 O núcleo pedagógico está na execução do algoritmo de Chu--Liu/Edmonds; a exportação viabiliza reuso analítico e reprodutibilidade.
-\begin{lstlisting}[language=Python,caption={Execução do algoritmo e exportação},label={lst:algorithm_export}]
+\begin{pybox}[label={lst:algorithm_export}]{Execução do algoritmo e exportação}
 @when("click", "#run-algorithm")
 def run_algorithm(event):
         global G
@@ -4234,7 +4234,7 @@ def export_graph(event):
         link.click()
         URL.revokeObjectURL(url)
         log_in_box("Download do grafo iniciado.")
-\end{lstlisting}
+    \end{pybox}
 
 \paragraph{Comentários.} O algoritmo delega visualização de cada estado à função de desenho, permitindo instrumentação de passos internos (seleção de arestas mínimas, detecção de ciclos) sem acoplar lógica à interface. O log textual sequencia narrativa dos marcos algorítmicos (\emph{storytelling procedural}) reforçando a formação de modelo mental dos invariantes.
 
@@ -4277,6 +4277,159 @@ O trecho estrutural da página define a hierarquia visual e a ligação com PySc
 
 \subsubsection{Relação com Princípios Pedagógicos}
 Em conjunto, os elementos demonstram: (i) \textbf{redução de carga extrínseca} (instanciação imediata sem instalação), (ii) \textbf{andaimagem progressiva} (grafo de teste + construção incremental), (iii) \textbf{integração multimodal} (visual + textual log), (iv) \textbf{estabilidade semântica} (mesmo layout entre estados), (v) \textbf{reprodutibilidade} (exportação JSON). Cada ponto reforça objetivos discutidos previamente, ancorando a implementação na literatura de visualização e aprendizagem baseada em exploração.
+
+\subsubsection{Demais Páginas da Aplicação Web}
+Além da página principal do visualizador, a aplicação inclui um conjunto de páginas modulares que suportam diferentes aspectos pedagógicos e de navegação. A seguir apresentamos recortes simplificados de cada arquivo (omitindo trechos irrelevantes, marcados por reticências) e um diagrama esquemático de seu layout/fluxo. Optamos por listar apenas a estrutura semântica essencial de cada página para manter legibilidade.
+
+\paragraph{\texttt{home.html}} Página de acolhimento e contexto geral, apresenta título estendido do projeto, resumo e integrantes. Fornece \emph{priming cognitivo}: ativa esquemas antes da exploração algorítmica.
+\begin{htmlbox}{Estrutura resumida de home.html}
+<body>
+    <div id="sidebar"></div>
+    <div id="main-content">
+        <span>Descrição longa do projeto</span>
+        <section id="resumo">...</section>
+        <section id="integrantes">...</section>
+    </div>
+</body>
+\end{htmlbox}
+\begin{figure}[H]\centering
+\begin{tikzpicture}[>=Stealth, node distance=1.8cm]
+    \node[draw,rounded corners,fill=gray!10] (sb) {Sidebar};
+    \node[draw,rounded corners,fill=blue!10,right=3cm of sb,minimum width=5cm,minimum height=2cm] (mc) {Main Content};
+    \node[draw,fill=white,rounded corners,below=0.2cm of mc,minimum width=4cm] (res) {Resumo};
+    \node[draw,fill=white,rounded corners,below=0.2cm of res,minimum width=4cm] (int) {Integrantes};
+    \draw[->] (res) -- (int);
+\end{tikzpicture}
+\caption{\texttt{home.html}: navegação lateral + conteúdo hierárquico (contexto \textrightarrow resumo \textrightarrow equipe).}
+\end{figure}
+	extit{Comentário:} Estrutura linear vertical facilita \emph{progressive disclosure}; separação lateral reduz interferência visual com conteúdo principal.
+
+\paragraph{\texttt{sidebar.html}} Fragmento reutilizável injetado em múltiplas páginas. Estabelece consistência de navegação (heurística de Nielsen) e reduz custo de orientação espacial.
+\begin{htmlbox}{Estrutura resumida de sidebar.html}
+<aside class="sidebar">
+    <a href="home.html">Home</a>
+    <a href="chuliu.html">Chu-Liu</a>
+    <a href="andrasfrank.html">Andras Frank</a>
+    <a href="draw_graph.html">Desenhe um grafo</a>
+    <a href="tese.html">Nossa tese</a>
+</aside>
+\end{htmlbox}
+\begin{figure}[H]\centering
+\begin{tikzpicture}[node distance=0.9cm]
+    \node[draw,rounded corners,fill=gray!15,minimum width=3cm] (h) {Home};
+    \node[draw,rounded corners,fill=gray!15,below=of h,minimum width=3cm] (cl) {Chu-Liu};
+    \node[draw,rounded corners,fill=gray!15,below=of cl,minimum width=3cm] (af) {Andras Frank};
+    \node[draw,rounded corners,fill=gray!15,below=of af,minimum width=3cm] (dg) {Draw};
+    \node[draw,rounded corners,fill=gray!15,below=of dg,minimum width=3cm] (te) {Tese};
+    \foreach \x in {h,cl,af,dg} {\draw[->] (\x.south) -- ++(0,-0.25);}
+\end{tikzpicture}
+\caption{\texttt{sidebar.html}: lista vertical reforçando modelo mental estável de navegação.}
+\end{figure}
+
+\paragraph{\texttt{tese.html}} Contém um \texttt{iframe} para o PDF da dissertação e botão de download. Fornece \emph{transição de modalidade} (exploração interativa \textrightarrow leitura formal).
+\begin{htmlbox}{Estrutura resumida de tese.html}
+<body>
+    <div id="sidebar"></div>
+    <div id="main-content">
+        <button id="download-tese">Download</button>
+        <iframe src="../Latex/main.pdf"></iframe>
+    </div>
+</body>
+\end{htmlbox}
+\begin{figure}[H]\centering
+\begin{tikzpicture}[node distance=2.2cm]
+    \node[draw,rounded corners,fill=gray!10] (sb2) {Sidebar};
+    \node[draw,rounded corners,fill=blue!10,right=3cm of sb2,minimum width=5.2cm,minimum height=2.6cm] (pdf) {Viewer PDF};
+    \node[draw,rounded corners,fill=white,above=0.1cm of pdf,minimum width=3cm] (dl) {Botão Download};
+    \draw[->] (dl) -- (pdf);
+\end{tikzpicture}
+\caption{\texttt{tese.html}: acesso rápido à versão formal do texto.}
+\end{figure}
+	extit{Comentário:} Minimiza atrito de distribuição de material estático enquanto mantém contexto de navegação.
+
+\paragraph{\texttt{draw\_graph.html}} Espaço de experimentação livre: desenhar/carrear/importar grafo base. Suporta \emph{exploração divergente} antes de foco em algoritmo específico.
+\begin{htmlbox}{Estrutura resumida de draw\_graph.html}
+<body>
+    <div id="sidebar"></div>
+    <div id="main-content">
+        <span>Desenhe seu grafo</span>
+        <div id="graph-editor">...</div>
+        <div class="actions">(download, reset)</div>
+    </div>
+</body>
+\end{htmlbox}
+\begin{figure}[H]\centering
+\begin{tikzpicture}[node distance=1.2cm]
+    \node[draw,rounded corners,fill=gray!10] (sb3) {Sidebar};
+    \node[draw,rounded corners,fill=white,right=3cm of sb3,minimum width=6cm,minimum height=2.2cm] (ed) {Editor de Grafo};
+    \node[draw,rounded corners,fill=white,below=0.2cm of ed,minimum width=3.6cm] (act) {Ações};
+    \draw[->] (act) -- (ed);
+\end{tikzpicture}
+\caption{\texttt{draw\_graph.html}: foco primordial no componente editor.}
+\end{figure}
+	extit{Comentário:} Reduz sobrecarga inicial ocultando passos algorítmicos até que o usuário tenha modelo mental da instância.
+
+\paragraph{\texttt{chuliu.html}} Página específica para execução guiada do algoritmo de Chu--Liu/Edmonds. Introduz componentes de passo-a-passo, logs e visualizações separadas (grafo original vs. arborescência) com possibilidade de esconder/mostrar seções (colapso).
+\begin{htmlbox}{Estrutura resumida de chuliu.html}
+<body>
+    <div id="sidebar"></div>
+    <div id="main-content">
+        <ol class="stepper">...</ol>
+        <div id="graph-editor">...</div>
+        <div id="arborescence-section" class="hidden">...</div>
+        <div id="log-section" class="hidden">...</div>
+    </div>
+    <div id="right-sidebar">Passo a Passo</div>
+</body>
+\end{htmlbox}
+\begin{figure}[H]\centering
+\begin{tikzpicture}[node distance=1.4cm]
+    \node[draw,rounded corners,fill=gray!10,minimum width=1.6cm] (sb4) {Sidebar};
+    \node[draw,rounded corners,fill=blue!8,right=2.6cm of sb4,minimum width=5.2cm,minimum height=3.4cm] (maincl) {Main (Stepper + Editor + Logs)};
+    \node[draw,rounded corners,fill=green!10,right=2.6cm of maincl,minimum width=2cm,minimum height=3.4cm] (rs) {Right Sidebar (Passos)};
+    \draw[->] (maincl.east) -- (rs.west);
+\end{tikzpicture}
+\caption{\texttt{chuliu.html}: tripartição funcional (navegação, conteúdo interativo, guia de passos).}
+\end{figure}
+	extit{Comentário:} Fornece \emph{scaffolding} procedural: o painel lateral direito atua como tutor leve orientando foco sequencial.
+
+\paragraph{\texttt{andrasfrank.html}} Estrutura análoga a \texttt{chuliu.html}, mas destinada ao método dual/cortes, mantendo coerência de interação (transferência de aprendizado) e preparando futuro contraste de paradigmas.
+\begin{htmlbox}{Estrutura resumida de andrasfrank.html}
+<body>
+    <div id="sidebar"></div>
+    <div id="main-content">(stepper + grafo + logs)</div>
+    <div id="right-sidebar">Passo a Passo</div>
+</body>
+\end{htmlbox}
+\begin{figure}[H]\centering
+\begin{tikzpicture}[node distance=1.4cm]
+    \node[draw,rounded corners,fill=gray!10,minimum width=1.6cm] (sb5) {Sidebar};
+    \node[draw,rounded corners,fill=blue!8,right=2.6cm of sb5,minimum width=5.2cm,minimum height=3.4cm] (mainaf) {Main (Stepper + Editor + Logs)};
+    \node[draw,rounded corners,fill=green!10,right=2.6cm of mainaf,minimum width=2cm,minimum height=3.4cm] (rsa) {Right Sidebar};
+    \draw[->] (mainaf.east) -- (rsa.west);
+\end{tikzpicture}
+\caption{\texttt{andrasfrank.html}: reutilização de padrão para consistência cognitiva.}
+\end{figure}
+	extit{Comentário:} Consistência reduz custo de alternância ao comparar abordagens; facilita estudos controlados de diferença de entendimento.
+
+\paragraph{Síntese arquitetural das páginas}
+\begin{figure}[H]\centering
+\begin{tikzpicture}[node distance=2.2cm,>=Stealth]
+    \node[draw,rounded corners,fill=purple!10] (home) {home};
+    \node[draw,rounded corners,fill=purple!10,right=of home] (draw) {draw\_graph};
+    \node[draw,rounded corners,fill=purple!10,right=of draw] (ch) {chuliu};
+    \node[draw,rounded corners,fill=purple!10,right=of ch] (afp) {andrasfrank};
+    \node[draw,rounded corners,fill=purple!10,below=of ch] (tese) {tese};
+    \node[draw,rounded corners,fill=orange!20,above=of ch] (sb) {sidebar (fragmento)};
+    \draw[->] (home) -- (draw);
+    \draw[->] (draw) -- (ch);
+    \draw[->] (ch) -- (afp);
+    \draw[->] (home) -- (tese);
+    \foreach \x in {home,draw,ch,afp,tese} {\draw[->] (sb) -- (\x);}
+\end{tikzpicture}
+\caption{Fluxo e reutilização: a \texttt{sidebar} injeta navegação consistente; páginas de algoritmo formam trilha exploratória (instância livre \textrightarrow algoritmo 1 \textrightarrow algoritmo 2).}
+\end{figure}
+	extit{Comentário geral:} O ecossistema de páginas cria uma narrativa pedagógica: contextualização (\texttt{home}) \,$\rightarrow$\, experimentação livre (\texttt{draw\_graph}) \,$\rightarrow$\, exploração guiada (\texttt{chuliu}, \texttt{andrasfrank}) \,$\rightarrow$\, consolidação formal (\texttt{tese}). Tal sequência segue princípios de \emph{spiral curriculum} e reduz carga intrínseca inicial.
 
 
 \section{Considerações Finais}
