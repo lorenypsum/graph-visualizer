@@ -4195,7 +4195,7 @@ A estrutura de arquivos da aplicação é organizada da seguinte forma:
 \paragraph{}
 A seguir, apresentamos os códigos desenvolvidos para os algoritmos implementados realizarem a interação com os usuários.
 
-\paragraph{Main.py - Lógica de manipulação de grafos:} o arquivo \texttt{main.py} contém funções para manipulação de grafos, execução dos algoritmos e geração de visualizações. 
+\paragraph{\texttt{Main.py}:} o arquivo \texttt{main.py} contém funções para manipulação de grafos, execução dos algoritmos e geração de visualizações.
 
 \paragraph{}
 As funções principais incluem:
@@ -4341,48 +4341,147 @@ def run_algorithm(event):
     log_in_box("Execução concluída com sucesso.")
 \end{pybox}
 
-\subsubsection{Estrutura da Página HTML}
-O trecho estrutural da página define a hierarquia visual e a ligação com PyScript (carregando \texttt{main.py}) e demonstra uso de Tailwind para classes utilitárias.
+\paragraph{\texttt{Index.html}:} o arquivo \texttt{index.html} define a estrutura principal da página HTML, incluindo a integração com PyScript e Tailwind CSS para estilos responsivos. A seguir, apresentamos o código completo dessa página.     
+
 \begin{htmlbox}[label={lst:index_html}]{Estrutura principal da página HTML com PyScript}
-<header class="bg-[#5b8f79] text-white text-center p-6">
-    <h1 class="text-3xl font-bold">Chu-Liu/Edmonds Visualizer</h1>
-    <p class="text-lg mt-2">Visualização passo a passo de arborescências</p>
-</header>
-<main class="flex flex-col items-center gap-8 py-8 px-8">
-    <section class="w-full max-w-4xl">
-        <h2 class="text-2xl font-semibold text-[#5b8f79] mb-4">Definir Di-grafo</h2>
-        <!-- Formulário de inserção de arestas -->
-        <input id="source" placeholder="Origem" />
-        <input id="target" placeholder="Destino" />
-        <input id="weight" type="number" placeholder="Peso" />
-        <button id="add-edge">Adicionar Aresta</button>
-        <button id="reset-graph">Limpar Grafo</button>
-        <button id="export-graph">Exportar JSON</button>
-    </section>
-    <section class="w-full max-w-4xl">
-        <h2 class="text-2xl font-semibold text-[#5b8f79] mb-4">Executar Algoritmo</h2>
-        <input id="root-node" value="r0" />
-        <button id="run-algorithm">Executar Algoritmo</button>
-    </section>
-    <section id="graph-output" class="w-full max-w-4xl bg-white p-6 rounded shadow">
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Chu-Liu/Edmonds Visualizer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://pyscript.net/releases/2025.3.1/core.css"
+    />
+    <script
+      type="module"
+      src="https://pyscript.net/releases/2025.3.1/core.js"
+    ></script>
+  </head>
+  <body class="bg-gray-100">
+    <header class="bg-[#5b8f79] text-white text-center p-6">
+      <h1 class="text-3xl font-bold">Chu-Liu/Edmonds Visualizer</h1>
+      <p class="text-lg mt-2">
+        Visualização passo a passo de arborescências em grafos direcionados
+      </p>
+    </header>
+
+    <main class="flex flex-col items-center gap-8 py-8 px-8">
+      <section class="text-center w-full max-w-4xl">
+        <h2 class="text-2xl font-semibold text-[#5b8f79] mb-4">
+          Definir Di-grafo
+        </h2>
+        <div class="flex flex-wrap justify-center gap-4 items-center mb-4">
+          <input
+            type="text"
+            id="source"
+            placeholder="Origem"
+            class="p-3 border rounded border-gray-300 w-40"
+          />
+          <input
+            type="text"
+            id="target"
+            placeholder="Destino"
+            class="p-3 border rounded border-gray-300 w-40"
+          />
+          <input
+            type="number"
+            id="weight"
+            placeholder="Peso"
+            min="0"
+            class="p-3 border rounded border-gray-300 w-40"
+          />
+          <button
+            id="add-edge"
+            class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+          >
+                        Adicionar Aresta
+          </button>
+        </div>
+        <div class="flex flex-wrap justify-center gap-4 items-center mb-4">
+          <button
+            id="reset-graph"
+            class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+          >
+                        Limpar Grafo
+          </button>
+          <button
+            id="export-graph"
+            class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+          >
+                        Exportar Grafo para JSON
+          </button>
+        </div>
+        <div class="flex flex-wrap justify-center gap-4 items-center mb-4">
+          <button
+            id="load-test-graph"
+            class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+          >
+                        Carregar Grafo de Teste
+          </button>
+          <button
+            id="show-ready-arborescence"
+            class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+          >
+                        Mostrar Arborescência do Grafo de Teste
+          </button>
+        </div>
+      </section>
+
+      <section class="text-center w-full max-w-4xl">
+        <h2 class="text-2xl font-semibold text-[#5b8f79] mb-4">
+          Executar Algoritmo de Chu-Liu/Edmonds
+        </h2>
+        <div class="flex flex-wrap justify-center gap-4 items-center">
+          <label for="root-node" class="text-gray-700 font-medium"
+            >Nó Raiz:</label
+          >
+          <input
+            type="text"
+            id="root-node"
+            placeholder="Nó Raiz"
+            value="r0"
+            class="p-3 border rounded border-gray-300 w-40"
+          />
+          <button
+            id="run-algorithm"
+            class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+          >
+                        Executar Algoritmo
+          </button>
+        </div>
+      </section>
+
+      <section
+        id="graph-output"
+        class="w-full max-w-4xl bg-white p-6 rounded shadow"
+      >
         <h2 class="text-2xl font-semibold text-[#5b8f79] mb-4">Grafo Atual</h2>
         <py-script id="graph-area"></py-script>
-    </section>
-    <section id="log" class="w-full max-w-4xl bg-white p-6 rounded shadow">
-        <h2 class="text-2xl font-semibold text-[#5b8f79] mb-4">Log da Execução</h2>
-        <textarea id="log-output" readonly></textarea>
-    </section>
-</main>
-<script type="py" src="./main.py" config="./pyscript.json"></script>
+      </section>
+
+      <section id="log" class="w-full max-w-4xl bg-white p-6 rounded shadow">
+        <h2 class="text-2xl font-semibold text-[#5b8f79] mb-4">
+          Log da Execução
+        </h2>
+        <textarea
+          id="log-output"
+          readonly
+          class="w-full p-3 border rounded border-gray-300 h-40"
+        ></textarea>
+      </section>
+    </main>
+
+    <script type="py" src="./main.py" config="./pyscript.json"></script>
+  </body>
+</html>
 \end{htmlbox}
 
-\paragraph{Comentários.} A composição evita profundidade excessiva de navegação (tudo crítico em uma "única tela") e oferece agrupamento semântico (seções paralelas) contribuindo para \emph{overview} rápido (Shneiderman) antes de exploração detalhada. A distinção visual (fundo branco em cartões) delimita regiões de foco e reduz interferência lateral.
-
-\subsubsection{Relação com Princípios Pedagógicos}
-Em conjunto, os elementos demonstram: (i) \textbf{redução de carga extrínseca} (instanciação imediata sem instalação), (ii) \textbf{andaimagem progressiva} (grafo de teste + construção incremental), (iii) \textbf{integração multimodal} (visual + textual log), (iv) \textbf{estabilidade semântica} (mesmo layout entre estados), (v) \textbf{reprodutibilidade} (exportação JSON). Cada ponto reforça objetivos discutidos previamente, ancorando a implementação na literatura de visualização e aprendizagem baseada em exploração.
 
 \subsubsection{Demais Páginas da Aplicação Web}
-Além da página principal do visualizador, a aplicação inclui um conjunto de páginas modulares que suportam diferentes aspectos pedagógicos e de navegação. A seguir apresentamos recortes simplificados de cada arquivo (omitindo trechos irrelevantes, marcados por reticências) e um diagrama esquemático de seu layout/fluxo. Optamos por listar apenas a estrutura semântica essencial de cada página para manter legibilidade.
+Além da página principal do visualizador, a aplicação inclui um conjunto de páginas modulares que suportam a navegação e fornecem contexto adicional. A seguir, detalhamos a estrutura e função de cada uma dessas páginas.
 
 \paragraph{\texttt{home.html}} Página de acolhimento e contexto geral, apresenta título estendido do projeto, resumo e integrantes. Fornece \emph{priming cognitivo}: ativa esquemas antes da exploração algorítmica.
 \begin{htmlbox}{Estrutura resumida de home.html}
@@ -4405,7 +4504,7 @@ Além da página principal do visualizador, a aplicação inclui um conjunto de 
 \end{tikzpicture}
 \caption{\texttt{home.html}: navegação lateral + conteúdo hierárquico (contexto \textrightarrow resumo \textrightarrow equipe).}
 \end{figure}
-	extit{Comentário:} Estrutura linear vertical facilita \emph{progressive disclosure}; separação lateral reduz interferência visual com conteúdo principal.
+    \textit{Comentário:} Estrutura linear vertical facilita \emph{progressive disclosure}; separação lateral reduz interferência visual com conteúdo principal.
 
 \paragraph{\texttt{sidebar.html}} Fragmento reutilizável injetado em múltiplas páginas. Estabelece consistência de navegação (heurística de Nielsen) e reduz custo de orientação espacial.
 \begin{htmlbox}{Estrutura resumida de sidebar.html}
@@ -4448,7 +4547,7 @@ Além da página principal do visualizador, a aplicação inclui um conjunto de 
 \end{tikzpicture}
 \caption{\texttt{tese.html}: acesso rápido à versão formal do texto.}
 \end{figure}
-	extit{Comentário:} Minimiza atrito de distribuição de material estático enquanto mantém contexto de navegação.
+    extit{Comentário:} Minimiza atrito de distribuição de material estático enquanto mantém contexto de navegação.
 
 \paragraph{\texttt{draw\_graph.html}} Espaço de experimentação livre: desenhar/carrear/importar grafo base. Suporta \emph{exploração divergente} antes de foco em algoritmo específico.
 \begin{htmlbox}{Estrutura resumida de draw\_graph.html}
