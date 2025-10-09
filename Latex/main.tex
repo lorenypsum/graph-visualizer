@@ -5319,19 +5319,24 @@ Um \textbf{espaço vetorial} $V$ sobre um corpo $\mathbb{K}$ (tipicamente $\math
 \paragraph{}
 Uma \textbf{transformação linear} $T:V\to W$ satisfaz $T(\alpha x+\beta y)=\alpha T(x)+\beta T(y)$. Fixadas bases de $V$ e $W$, toda transformação linear é representada por uma \textbf{matriz} $A$ e vale $[T(x)]=A[x]$. A composição de transformações corresponde ao produto de matrizes. A mudança de base é realizada por matrizes de passagem (sem alterar propriedades invariantes como posto).
 
-\paragraph{Sistemas lineares, posto e nulidade.}
+\paragraph{Sistemas lineares, posto e nulidade}
+\paragraph{}
 Resolver $Ax=b$ equivale a aplicar \emph{eliminação de Gauss} para obter forma escalonada. O \textbf{posto} $\operatorname{rank}(A)$ é o número de linhas (ou colunas) linearmente independentes; o \textbf{núcleo} $\ker(A)=\{x:Ax=0\}$ tem dimensão \textbf{nulidade} $\operatorname{null}(A)$. O \textbf{teorema posto--nulidade} afirma $\operatorname{rank}(A)+\operatorname{null}(A)=n$ (número de colunas de $A$). A existência e unicidade de soluções dependem de $\operatorname{rank}(A)$ e da consistência de $b$.
 
-\paragraph{Autovalores e autovetores.}
+\paragraph{Autovalores e autovetores}
+\paragraph{}
 Para $A\in\mathbb{R}^{n\times n}$, um \textbf{autovalor} $\lambda$ e um \textbf{autovetor} não nulo $v$ satisfazem $Av=\lambda v$. Se há $n$ autovetores linearmente independentes, $A$ é \textbf{diagonalizável} ($A=P\,\operatorname{diag}(\lambda_i)\,P^{-1}$). Para matrizes simétricas reais, vale o \textbf{teorema espectral}: existem autovetores ortonormais que formam base e autovalores reais, possibilitando decomposições ortogonais.
 
-\paragraph{Produto interno e ortogonalidade.}
+\paragraph{Produto interno e ortogonalidade}
+\paragraph{}
 Um \textbf{produto interno} $\langle x,y\rangle$ induz norma $\|x\|=\sqrt{\langle x,x\rangle}$. Vetores são \textbf{ortogonais} se $\langle x,y\rangle=0$. A projeção ortogonal de $u$ no subespaço $W$ minimiza a distância $\|u-w\|$ sobre $w\in W$. O processo de \textbf{Gram--Schmidt} transforma um conjunto independente em uma base ortonormal, útil para estabilidade numérica e interpretação geométrica.
 
-\paragraph{Matrizes de grafos e o Laplaciano.}
+\paragraph{Matrizes de grafos e o Laplaciano}
+\paragraph{}
 Para um dígrafo $G=(V,E)$, a \textbf{matriz de incidência} $B\in\mathbb{R}^{|V|\times |E|}$ codifica a orientação dos arcos; seu posto relaciona-se ao número de componentes fortemente conexas. O \textbf{Laplaciano} dirigido pode ser definido como $L=D_{\text{out}}-A$ (ou variações), onde $A$ é a matriz de adjacência e $D_{\text{out}}$ é diagonal com graus de saída. Em grafos não dirigidos, cofatores de $L$ contam árvores geradoras (\emph{teorema matriz--árvore}); em variantes dirigidas, cofatores apropriados contam arborescências enraizadas em $r$, conectando linearmente estruturas combinatórias e contagem de arborescências.
 
-\paragraph{Observação sobre potenciais e custos reduzidos.}
+\paragraph{Observação sobre potenciais e custos reduzidos}
+\paragraph{}
 Ao ajustar custos por \emph{potenciais} nos vértices (transformações do tipo $c'(u,v)=c(u,v)+\pi(u)-\pi(v)$), preservamos diferenças ao longo de ciclos (somas telescópicas nulas), o que ecoa a ideia de adicionar uma 1-forma exata. Trata-se, no fundo, de uma transformação linear no espaço dos pesos de arestas parametrizada por funções em $V$, com forte paralelismo a mudanças de base que preservam invariantes essenciais (como somas em ciclos).
 
 
