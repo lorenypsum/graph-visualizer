@@ -1,7 +1,5 @@
 <body>
     <div id="sidebar"></div>
-    <div id="main-content">
-        <button id="download-tese">Download</button>
-        <iframe src="../Latex/main.pdf"></iframe>
-    </div>
+    <div id="main-content">(stepper + grafo + logs)</div>
+    <div id="right-sidebar">Passo a Passo</div>
 </body>
