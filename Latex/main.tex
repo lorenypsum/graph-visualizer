@@ -612,13 +612,13 @@ Uma \textbf{relação} \(R\) entre dois conjuntos \(A\) e \(B\) é um subconjunt
 
 
 \paragraph{}
-No nosso primeiro exemplo-mestre, considere \(P=\{\text{todas as plantas}\}\) e \(F=\{\text{todos os fungos}\}\). Definimos a relação \(R\) como "é um organismo que compete com". Assim, se uma planta \(p \in P\) compete com um fungo \(f \in F\), então \((p,f) \in R\).
+No nosso primeiro exemplo-mestre, considere \(P=\{\text{todas as plantas}\}\) e \(F=\{\text{todos os fungos}\}\). Definimos a relação \(R\) como ``é um organismo que compete com''. Assim, se uma planta \(p \in P\) compete com um fungo \(f \in F\), então \((p,f) \in R\).
 
 \paragraph{}
-No nosso segundo exemplo, considere \(H=\{\text{hipóteses}\}\) e \(E=\{\text{evidências}\}\). Definimos a relação \(R\) como "explica". Se uma hipótese \(h \in H\) explica uma evidência \(e \in E\), então \((h,e) \in R\).
+No nosso segundo exemplo, considere \(H=\{\text{hipóteses}\}\) e \(E=\{\text{evidências}\}\). Definimos a relação \(R\) como ``explica''. Se uma hipótese \(h \in H\) explica uma evidência \(e \in E\), então \((h,e) \in R\).
 
 \paragraph{}
-Em teoria dos grafos, uma relação pode representar conexões entre vértices. Por exemplo, em um grafo dirigido, a relação "existe uma aresta de \(u\) para \(v\)" pode ser representada como um conjunto de pares ordenados \((u,v)\).
+Em teoria dos grafos, uma relação pode representar conexões entre vértices. Por exemplo, em um grafo dirigido, a relação ``existe uma aresta de \(u\) para \(v\)'' pode ser representada como um conjunto de pares ordenados \((u,v)\).
 
 \paragraph{}
 Uma \textbf{função} \(f\) de um conjunto \(A\) em um conjunto \(B\) é uma relação especial que associa cada elemento de \(A\) a exatamente um elemento de \(B\). Denotamos isso como \(f: A \to B\). Se \(f(a) = b\), dizemos que \(b\) é a imagem de \(a\) sob \(f\).
@@ -1597,14 +1597,14 @@ Seja $D=(V,A)$, $r\in V$ e $k\ge 1$ inteiro. São equivalentes:
     \item Existem $k$ out-arborescências enraizadas em $r$ que são par a par \emph{arcodisjuntas}.
     \item (Condição de cortes) Para todo subconjunto $X\subseteq V\setminus\{r\}$ vale $|\delta^-(X)| \ge k$.
 \end{enumerate}
-Em palavras: cada “bloco” $X$ que não contém a raiz precisa ter pelo menos $k$ arcos distintos chegando de fora; isso é exatamente o que permite "alimentar" $X$ a partir de $r$ em $k$ estruturas de ramificação independentes.
+Em palavras: cada “bloco” $X$ que não contém a raiz precisa ter pelo menos $k$ arcos distintos chegando de fora; isso é exatamente o que permite ``alimentar'' $X$ a partir de $r$ em $k$ estruturas de ramificação independentes.
 
 \paragraph{}
 \textbf{Prova (esboço):}
 \emph{(1 $\Rightarrow$ 2)} Se temos $k$ out-arborescências arcodisjuntas, então cada arborescência deve entrar em qualquer $X$ (senão não alcançaria seus vértices). Como os arcos são distintos entre as $k$ estruturas, precisamos de pelo menos $k$ arcos entrando em $X$; logo $|\delta^-(X)|\ge k$.
 
 \paragraph{}
-\emph{(2 $\Rightarrow$ 1)} Trata-se a construção como um problema de \emph{interseção de matroides} ou aplicamos um procedimento incremental de troca ("augmenting"). O conjunto de arcos pode suportar no máximo $k(n-1)$ arcos selecionados se quisermos $k$ arborescências, onde cada vértice $v \neq r$ recebe exatamente $k$ arcos de entrada (um de cada arborescência). A condição de cortes impede gargalos: se algum subconjunto $X$ tivesse menos que $k$ arcos entrando, seria impossível abastecer seus vértices com $k$ escolhas independentes.
+\emph{(2 $\Rightarrow$ 1)} Trata-se a construção como um problema de \emph{interseção de matroides} ou aplicamos um procedimento incremental de troca (``\textit{augmenting}''). O conjunto de arcos pode suportar no máximo $k(n-1)$ arcos selecionados se quisermos $k$ arborescências, onde cada vértice $v \neq r$ recebe exatamente $k$ arcos de entrada (um de cada arborescência). A condição de cortes impede gargalos: se algum subconjunto $X$ tivesse menos que $k$ arcos entrando, seria impossível abastecer seus vértices com $k$ escolhas independentes.
 
 \paragraph{}
 Uma prova clássica (Edmonds) formula o problema como interseção de duas famílias independentes: 
@@ -1715,7 +1715,7 @@ Quando falamos em passo a passo é muito comum vir à mente a ideia de receitas 
 \paragraph{}O primeiro uso documentado do termo “algoritmo” em inglês data de 1230, em uma tradução latina do trabalho de Al-Khwarizmi. No entanto, o conceito de algoritmos é muito mais antigo, remontando a procedimentos matemáticos e lógicos desenvolvidos ao longo dos séculos.
 
 \paragraph{}
-Um dos primeiros algoritmos conhecidos é o \emph{método de Euclides} para encontrar o máximo divisor comum (mdc) de dois números inteiros, descrito por Euclides em sua obra "Os Elementos" por volta de 300 a.C. 
+Um dos primeiros algoritmos conhecidos é o \emph{método de Euclides} para encontrar o máximo divisor comum (mdc) de dois números inteiros, descrito por Euclides em sua obra ``Os Elementos'' por volta de 300 a.C. 
 
 \paragraph{}
 \begin{algobox}{Método de Euclides (mdc)}{mdc}
@@ -1824,15 +1824,15 @@ Esse exemplo ilustra como a análise de complexidade pode fornecer insights sobr
 
 Não avaliamos só o desempenho de \emph{um algoritmo}; também queremos saber \emph{quão difícil é o próprio problema}, assim temos  a seguinte forma de classificar problemas:    
 \begin{itemize}\setlength{\itemsep}{2pt}
-    \item \textbf{Problemas de decisão}: problemas que podem ser respondidos com "sim" ou "não". Ex.: "Existe um caminho entre dois vértices em um grafo?"
-    \item \textbf{Problemas de otimização}: problemas que envolvem encontrar a melhor solução possível entre várias opções. Ex.: "Qual é o caminho mais curto entre dois vértices em um grafo ponderado?"
-    \item \textbf{Problemas de contagem}: problemas que envolvem contar o número de soluções possíveis. Ex.: "Quantos caminhos existem entre dois vértices em um grafo?"
+    \item \textbf{Problemas de decisão}: problemas que podem ser respondidos com ``sim'' ou ``não''. Ex.: ``Existe um caminho entre dois vértices em um grafo?''
+    \item \textbf{Problemas de otimização}: problemas que envolvem encontrar a melhor solução possível entre várias opções. Ex.: ``Qual é o caminho mais curto entre dois vértices em um grafo ponderado?''
+    \item \textbf{Problemas de contagem}: problemas que envolvem contar o número de soluções possíveis. Ex.: ``Quantos caminhos existem entre dois vértices em um grafo?''
 \end{itemize}
 
 \paragraph{}
 Cada classe de problemas pode ter diferentes níveis de dificuldade, que avaliamos em termos de \emph{complexidade computacional}, que mede os recursos necessários (tempo e espaço) para resolver o problema.
 
-Problemas são considerados "fáceis" quando são resolvíveis em tempo polinomial, enquanto outros são "difíceis" quando não se conhece nenhum algoritmo eficiente para resolvê-los.
+Problemas são considerados ``fáceis'' quando são resolvíveis em tempo polinomial, enquanto outros são ``difíceis'' quando não se conhece nenhum algoritmo eficiente para resolvê-los.
 
 \paragraph{Classes de complexidade de problemas}
 
@@ -1886,10 +1886,10 @@ Os algoritmos gulosos são uma classe de algoritmos heurísticos que tomam decis
 Os algoritmos gulosos são caracterizados por:
 \paragraph{}
 
-1. \textbf{Escolha Local Ótima}: Em cada etapa do algoritmo, uma escolha é feita com base em algum critério de otimização local. Essa escolha é feita sem considerar as consequências futuras, ou seja, o algoritmo "se contenta" com a melhor opção disponível no momento.
+1. \textbf{Escolha local ótima}: Em cada etapa do algoritmo, uma escolha é feita com base em algum critério de otimização local. Essa escolha é feita sem considerar as consequências futuras, ou seja, o algoritmo ``se contenta'' com a melhor opção disponível no momento.
 
 \paragraph{}
-2. \textbf{Decisões defitivas}: Uma vez que uma escolha é feita, o algoritmo não reconsidera essa decisão. Isso significa que, se uma escolha levar a uma solução subótima, o algoritmo não tentará corrigir esse erro mais tarde.
+2. \textbf{Decisões definitivas}: Uma vez que uma escolha é feita, o algoritmo não reconsidera essa decisão. Isso significa que, se uma escolha levar a uma solução subótima, o algoritmo não tentará corrigir esse erro mais tarde.
 
 \paragraph{}
 3. \textbf{Eficiência}: Os algoritmos gulosos tendem a ser mais eficientes em termos de tempo de execução do que métodos exatos, pois não exploram todo o espaço de soluções. No entanto, essa eficiência pode vir à custa da qualidade da solução encontrada.
@@ -2029,7 +2029,7 @@ Desde então, a pesquisa nessa área tem se concentrado em melhorar a eficiênci
 \subsection{Os meios para um fim}
 
 \paragraph{}
-Maquiável é conhecido por uma de suas citações: "Os fins justificam os meios". Essa frase ficou famosa, porque tem uma interpretação polêmica: em certas circunstâncias, qualquer ação pode ser justificada se o resultado final for considerado positivo ou benéfico. Muitos, não concordam com essa visão, argumentando que os meios também importam e que ações imorais não podem ser justificadas por bons resultados.
+Maquiavel é conhecido por uma de suas citações: ``Os fins justificam os meios''. Essa frase ficou famosa porque tem uma interpretação polêmica: em certas circunstâncias, qualquer ação pode ser justificada se o resultado final for considerado positivo ou benéfico. Muitos não concordam com essa visão, argumentando que os meios também importam e que ações imorais não podem ser justificadas por bons resultados.
 
 \paragraph{}
 Por um lado, na matemática essa frase pode ser validada quando falamos em duas formas distintas de construir algoritmos: por \emph{iteratividade} ou \emph{recursividade}.
@@ -3477,7 +3477,7 @@ def has_arborescence(D, r0):
 \paragraph{}
 O laço faz o seguinte, de forma direta:
 \begin{itemize}
-    \item \emph{Construção do condensado:} constrói o condensado \(C=\mathrm{Cond}(D_0)\) via \texttt{nx.condensation(D\_zero)} e coleta as \emph{fontes} de \(C\) (componentes com grau de entrada zero)\footnote{No grafo condensado \(C\) (um DAG cujos nós são as componentes fortemente conexas de \(D_0\)), uma "fonte" é um nó com grau de entrada zero. Isso corresponde a um bloco de \(D_0\) que não recebe arcos de custo reduzido zero vindos de fora do próprio bloco. Na Fase I, elevamos potenciais apenas para fontes distintas da que contém \(r_0\) para garantir ao menos uma entrada apertada.};
+    \item \emph{Construção do condensado:} constrói o condensado \(C=\mathrm{Cond}(D_0)\) via \texttt{nx.condensation(D\_zero)} e coleta as \emph{fontes} de \(C\) (componentes com grau de entrada zero)\footnote{No grafo condensado \(C\) (um DAG cujos nós são as componentes fortemente conexas de \(D_0\)), uma ``fonte'' é um nó com grau de entrada zero. Isso corresponde a um bloco de \(D_0\) que não recebe arcos de custo reduzido zero vindos de fora do próprio bloco. Na Fase I, elevamos potenciais apenas para fontes distintas da que contém \(r_0\) para garantir ao menos uma entrada apertada.};
     \item \emph{Fontes:} se restar apenas uma fonte (a que contém \(r0\)), termina;
     \item \emph{Processamento das fontes:} para cada fonte \(u\) com \(X=\text{members}(u)\) e \(r0\notin X\):
     \begin{itemize}
@@ -3898,7 +3898,7 @@ Mas, depois de toda essa exploração do método de Frank, vale a pena revisitar
 \section{Discussão e Resultados: Chu-liu/Edmonds vs. Frank}
 
 \paragraph{}
-Wittgenstein, em suas investigações filosóficas, propôs a ideia de "semelhança de família" que diz que coisas que pertencem ao mesmo grupo não compartilham necessariamente uma característica definidora, mas sim uma série de características que se sobrepõem de maneiras variadas. Assim, membros de uma "família" podem ser semelhantes em alguns aspectos, mas diferentes em outros, criando uma rede complexa de relações.
+Wittgenstein, em suas investigações filosóficas, propôs a ideia de ``semelhança de família'' que diz que coisas que pertencem ao mesmo grupo não compartilham necessariamente uma característica definidora, mas sim uma série de características que se sobrepõem de maneiras variadas. Assim, membros de uma ``família'' podem ser semelhantes em alguns aspectos, mas diferentes em outros, criando uma rede complexa de relações.
 
 \paragraph{}
 Chu–Liu/Edmonds e Frank são parentes próximos: perseguem o mesmo objetivo com blocos operacionais semelhantes, mas organizam o enredo de modos distintos — um com voz combinatória, o outro com abordagem primal–dual.
@@ -4099,14 +4099,14 @@ Ferramentas de exploração e edição de grafos permitem que os usuários inter
 
 
 \paragraph{}
-Dentre elas destacam-se Gephi, yEd e Cytoscape, que oferecem layouts automáticos, filtros e medidas de rede \cite{bastian2009gephi,yed,shannon2003cytoscape}. São adequadas para: (i) reconhecer padrões estruturais (componentes, comunidades), (ii) discutir implicações de layouts para percepção de estruturas, (iii) atividades de descoberta assistida ("overview \textrightarrow{} filter \textrightarrow{} details") \cite{shneiderman1996eyes}. Limitações: (i) foco em análise exploratória de dados, não em algoritmos específicos; (ii) carga extrínseca ao alternar entre interface gráfica e conceitos teóricos; (iii) falta de controle fino sobre estados intermediários de algoritmos.
+Dentre elas destacam-se Gephi, yEd e Cytoscape, que oferecem layouts automáticos, filtros e medidas de rede \cite{bastian2009gephi,yed,shannon2003cytoscape}. São adequadas para: (i) reconhecer padrões estruturais (componentes, comunidades), (ii) discutir implicações de layouts para percepção de estruturas, (iii) atividades de descoberta assistida (``\textit{overview} \textrightarrow{} \textit{filter} \textrightarrow{} \textit{details}'') \cite{shneiderman1996eyes}. Limitações: (i) foco em análise exploratória de dados, não em algoritmos específicos; (ii) carga extrínseca ao alternar entre interface gráfica e conceitos teóricos; (iii) falta de controle fino sobre estados intermediários de algoritmos.
 
 \paragraph{Visualização de algoritmos}
 \paragraph{}
 Existem diversas ferramentas dedicadas à visualização de algoritmos, que ilustram passo a passo como um algoritmo opera sobre uma estrutura de dados. 
 
 \paragraph{}
-Repositórios e portais como VisuAlgo e iniciativas similares apresentam animações de algoritmos clássicos com controle do ritmo e de estados \cite{visualgo,hundhausen2002meta,naps2003engagement}. Evidências sugerem ganhos quando o estudante prevê, manipula e explica o que vê, ao invés de consumir animações passivamente. Pontos de atenção: (i) alinhar a animação às noções teóricas subjacentes (invariantes, certificados), (ii) explicitar mapeamentos entre "o que acontece" e "o que se garante" (p.ex., custo reduzido zero \(c'=0\), complementaridade), (iii) evitar excesso de elementos visuais que aumentem carga extrínseca \cite{mayer2009multimedia}.
+Repositórios e portais como VisuAlgo e iniciativas similares apresentam animações de algoritmos clássicos com controle do ritmo e de estados \cite{visualgo,hundhausen2002meta,naps2003engagement}. Evidências sugerem ganhos quando o estudante prevê, manipula e explica o que vê, ao invés de consumir animações passivamente. Pontos de atenção: (i) alinhar a animação às noções teóricas subjacentes (invariantes, certificados), (ii) explicitar mapeamentos entre ``o que acontece'' e ``o que se garante'' (p.ex., custo reduzido zero \(c'=0\), complementaridade), (iii) evitar excesso de elementos visuais que aumentem carga extrínseca \cite{mayer2009multimedia}.
 
 \paragraph{Ambientes programáveis e reprodutibilidade}
 \paragraph{}
