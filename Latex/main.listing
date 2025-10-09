@@ -1,61 +1,133 @@
-def phase2_find_minimum_arborescence_v2(
-    D_original, r0, A_zero, draw_fn=None, log=None, boilerplate: bool = True, lang="pt"
-):
-    """
-    Encontra a arborescência mínima em um grafo dirigido D com raiz r0.
-    A função retorna a arborescência mínima como um DiGraph.
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Chu-Liu/Edmonds Visualizer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://pyscript.net/releases/2025.3.1/core.css"
+    />
+    <script
+      type="module"
+      src="https://pyscript.net/releases/2025.3.1/core.js"
+    ></script>
+  </head>
+  <body class="bg-gray-100">
+    <header class="bg-[#5b8f79] text-white text-center p-6">
+      <h1 class="text-3xl font-bold">Chu-Liu/Edmonds Visualizer</h1>
+      <p class="text-lg mt-2">
+        Visualização passo a passo de arborescências em grafos direcionados
+      </p>
+    </header>
 
-    Parâmetros:
-        - D_original: grafo dirigido (DiGraph)
-        - r0: vértice raiz
-        - A_zero: lista de arcos (u, v) que formam a arborescência mínima
+    <main class="flex flex-col items-center gap-8 py-8 px-8">
+      <section class="text-center w-full max-w-4xl">
+        <h2 class="text-2xl font-semibold text-[#5b8f79] mb-4">
+          Definir Di-grafo
+        </h2>
+        <div class="flex flex-wrap justify-center gap-4 items-center mb-4">
+          <input
+            type="text"
+            id="source"
+            placeholder="Origem"
+            class="p-3 border rounded border-gray-300 w-40"
+          />
+          <input
+            type="text"
+            id="target"
+            placeholder="Destino"
+            class="p-3 border rounded border-gray-300 w-40"
+          />
+          <input
+            type="number"
+            id="weight"
+            placeholder="Peso"
+            min="0"
+            class="p-3 border rounded border-gray-300 w-40"
+          />
+          <button
+            id="add-edge"
+            class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+          >
+                        Adicionar Aresta
+          </button>
+        </div>
+        <div class="flex flex-wrap justify-center gap-4 items-center mb-4">
+          <button
+            id="reset-graph"
+            class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+          >
+                        Limpar Grafo
+          </button>
+          <button
+            id="export-graph"
+            class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+          >
+                        Exportar Grafo para JSON
+          </button>
+        </div>
+        <div class="flex flex-wrap justify-center gap-4 items-center mb-4">
+          <button
+            id="load-test-graph"
+            class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+          >
+                        Carregar Grafo de Teste
+          </button>
+          <button
+            id="show-ready-arborescence"
+            class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+          >
+                        Mostrar Arborescência do Grafo de Teste
+          </button>
+        </div>
+      </section>
 
-    Retorno:
-        - Arb: grafo dirigido (DiGraph) que representa a arborescência mínima
-    """
-    Arb = nx.DiGraph()
-    for i, (u, v) in enumerate(A_zero):
-        Arb.add_edge(u, v, w=i)
+      <section class="text-center w-full max-w-4xl">
+        <h2 class="text-2xl font-semibold text-[#5b8f79] mb-4">
+          Executar Algoritmo de Chu-Liu/Edmonds
+        </h2>
+        <div class="flex flex-wrap justify-center gap-4 items-center">
+          <label for="root-node" class="text-gray-700 font-medium"
+            >Nó Raiz:</label
+          >
+          <input
+            type="text"
+            id="root-node"
+            placeholder="Nó Raiz"
+            value="r0"
+            class="p-3 border rounded border-gray-300 w-40"
+          />
+          <button
+            id="run-algorithm"
+            class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+          >
+                        Executar Algoritmo
+          </button>
+        </div>
+      </section>
 
-    # Set of visited vertices, starting with the root
-    V = {r0}
+      <section
+        id="graph-output"
+        class="w-full max-w-4xl bg-white p-6 rounded shadow"
+      >
+        <h2 class="text-2xl font-semibold text-[#5b8f79] mb-4">Grafo Atual</h2>
+        <py-script id="graph-area"></py-script>
+      </section>
 
-    # Priority queue to store the edges
-    q = []
-    for u, v, data in Arb.out_edges(r0, data=True):
+      <section id="log" class="w-full max-w-4xl bg-white p-6 rounded shadow">
+        <h2 class="text-2xl font-semibold text-[#5b8f79] mb-4">
+          Log da Execução
+        </h2>
+        <textarea
+          id="log-output"
+          readonly
+          class="w-full p-3 border rounded border-gray-300 h-40"
+        ></textarea>
+      </section>
+    </main>
 
-        # Add edges to the priority queue with their weights
-        heapq.heappush(q, (data["w"], u, v))
-
-    A = nx.DiGraph()  # Arborescência resultante
-
-    if boilerplate and draw_fn:
-        if lang == "en":
-            draw_fn(Arb, title=f"Initial arborescence with weights - Phase 2")
-        elif lang == "pt":
-            draw_fn(Arb, title=f"Arborescência inicial com pesos - Fase 2")
-
-    # While the queue is not empty
-    while q:
-        _, u, v = heapq.heappop(q)
-
-        if v in V:  # If the vertex has already been visited, continue
-            continue
-
-        # Add the edge to the arborescence
-        A.add_edge(u, v, w=D_original[u][v]["w"])
-
-        # Mark the vertex as visited
-        V.add(v)
-
-        # Add the outgoing edges of the visited vertex to the priority queue
-        for x, y, data in Arb.out_edges(v, data=True):
-            heapq.heappush(q, (data["w"], x, y))
-
-    if boilerplate and draw_fn:
-        if lang == "en":
-            draw_fn(A, title=f"Final arborescence - Phase 2")
-        elif lang == "pt":
-            draw_fn(A, title=f"Arborescência final - Fase 2")
-    # Return the resulting arborescence
-    return A
+    <script type="py" src="./main.py" config="./pyscript.json"></script>
+  </body>
+</html>
