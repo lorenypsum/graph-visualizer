@@ -4068,6 +4068,31 @@ A prevenção de erros envolve projetar o sistema de forma a minimizar a probabi
 \paragraph{}
 Esses princípios de interação humano-computador foram fundamentais para o desenvolvimento da nossa aplicação web interativa, garantindo que ela seja não apenas funcional, mas também acessível e eficaz como ferramenta de aprendizagem. A seguir, detalhamos a implementação técnica da aplicação e como ela se posiciona no ecossistema de ferramentas didáticas para o ensino de grafos.
 
+\paragraph{Tabela de Princípios em IHC}
+\begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.18}
+    \setlength{\tabcolsep}{6pt}
+    \footnotesize
+    % Ajuste de larguras: 1a coluna ampliada para evitar overlap; leve redução na 3a.
+    \begin{tabular}{p{2.9cm} p{4.0cm} p{7.0cm}}
+        \hline
+        	\textbf{Princípio} & \textbf{Exemplo Geral} & \textbf{Materialização na Aplicação} \\
+        \hline
+    Usabilidade & Botões claros para avançar/voltar etapas & Barra de controles com rótulos diretos (Adicionar Aresta, Executar, Reset); agrupamento visual consistente via Tailwind; nenhum menu profundo aninhado. \\
+    Eficiência\newline cognitiva & Reduzir elementos irrelevantes no estado atual & Layout estável entre passos; apenas arestas relevantes destacadas; eliminação de ornamentação visual; custos e rótulos legíveis sem rotação. \\
+    Feedback\newline imediato & Mostrar efeito de uma ação logo após o clique & Cada ação dispara: (i) atualização do desenho do grafo, (ii) entrada no log textual explicando a mudança (ex.: contração, seleção de aresta). \\
+    Engajamento\newline ativo & Usuário prediz antes de revelar próximo passo & Controles passo a passo permitem explorar sequencialmente; usuário insere/edita pesos e escolhe raiz antes de rodar o algoritmo. \\
+    Overview→\newline Details & Visão global com acesso a informação pontual & Visão completa do grafo em todos os passos + possibilidade de inspecionar pesos e arestas específicas no log sequencial; estados anteriores preservados para comparação mental. \\
+    Consistência\newline semântica & Mesmo conceito, mesma cor/forma & Raiz destacada de forma fixa; arestas selecionadas mantêm estilo; semântica cromática não muda entre passos (evita remapeamento mental). \\
+    Múltiplos\newline registros & Texto + grafo + (futuro) estrutura derivada & Combinação de: descrição textual no log, representação visual do grafo, parâmetros simbólicos (pesos); prepara expansão futura para mostrar custos reduzidos. \\
+    Prevenção /\newline recuperação\newline de erros & Impedir entrada inválida / ação reversível & Validação de pesos (numéricos); bloqueio de execução sem raiz definida; botão Reset para recompor estado limpo sem recarregar página. \\
+        \hline
+    \end{tabular}
+    \caption{Síntese dos princípios de interação humano-computador aplicados e sua realização concreta na ferramenta interativa.}
+    \label{tab:principios-ihc}
+\end{table}
+
 \subsection{Descrição da aplicação}
 A aplicação proposta é uma ferramenta interativa, executada inteiramente no navegador, para visualização passo a passo e manipulação de grafos direcionados com foco no algoritmo de Chu--Liu/Edmonds (arborescência de custo mínimo). O objetivo pedagógico central é tornar visíveis os invariantes estruturais (arestas candidatas, contrações, custos associados) e o encadeamento causal de cada transformação, reduzindo a carga cognitiva extrínseca e promovendo aprendizagem ativa (cf. Mayer, Sweller; heurística de feedback imediato de Nielsen; mantra de Shneiderman \emph{overview \,$\rightarrow$\, filter \,$\rightarrow$\, details on demand}).
 \paragraph{}
