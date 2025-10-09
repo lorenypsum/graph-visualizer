@@ -289,7 +289,7 @@ No segundo exemplo, consideremos \(E=\{\text{queda de temperatura},\, \text{céu
             \draw[->, thick] (HA.east) -- (E2.west);
             \draw[->, dashed] (HB.east) -- (E2.west);
             % Nota de parcimônia
-            \node[align=center, font=\small, below=1.0cm of E2] (nota) {Ambas as opções \emph{H\_A} e \emph{H\_A + H\_B} cobrem $E$;\\ por parcimônia, preferimos apenas \emph{H\_A}.};
+            \node[align=center, font=\small, below=1.0cm of E2] (nota) {Ambas as opções $H_A$ e $H_A + H_B$ cobrem $E$;\\ por parcimônia, preferimos apenas $H_A$.};
         \end{tikzpicture}
     \caption{\texorpdfstring{Exemplo inspirado na navalha de Occam: $H_A$ cobre ambas as evidências ($E$), enquanto $H_B$ seria redundante; prefere-se a explicação menor.}{Exemplo inspirado na navalha de Occam}}
         \label{fig:occam-exemplo}
@@ -2171,13 +2171,30 @@ Dado um subconjunto \(C\subseteq V\) que forma um ciclo dirigido, a \emph{contra
 Quando trabalhamos com \emph{custos reduzidos}, ajustamos em particular os arcos que \emph{entram} em \(C\) para preservar a comparação relativa: para um arco \((u,w)\) com \(w\in C\), definimos \(c'(u,x_C) = c(u,w) - c(a_w)\), onde \(a_w\) é o arco mais barato que entra em \(w\). Essa normalização garante que, ao resolver no grafo contraído, decisões ótimas podem ser traduzidas de volta na etapa de expansão.
 
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\linewidth]{figures/fig_chu_liu_reduced_cost.pdf}
+\begin{figure}[H]\centering
+\begin{tikzpicture}[>=Stealth, node distance=1.4cm]
+    % (a) Original
+    \node at (-4.4,2.0) {(a) Original};
+    \draw[dashed,rounded corners] (-7.2,-1.2) rectangle (-1.6,2.2) node[above right] {$C$};
+    \node[circle,draw,minimum size=6mm] (a) at (-6.2,1.2) {$a$};
+    \node[circle,draw,minimum size=6mm] (b) at (-4.2,0.4) {$b$};
+    \node[circle,draw,minimum size=6mm] (c) at (-6.0,-0.6) {$c$};
+    \draw[->] (a) -- (b);
+    \draw[->] (b) -- (c);
+    \draw[->] (c) -- (a);
+    \node[circle,draw,minimum size=6mm] (u) at (-0.2,0.4) {$u$};
+    \draw[->] (u) -- node[above] {$c(u,w)$} (b);
+    \draw[->,gray] (a) to[bend left=18] node[above,sloped,gray] {$a_b$} (b);
 
-    \caption{Ajuste de custo reduzido para um arco \emph{entrando}: ao contrair um ciclo $C$, o arco $(u,w)$ que entra em $w\in C$ passa a $(u,x_C)$ com custo reduzido $c'(u,x_C)=c(u,w)-c(a_w)$, onde $a_w$ é o arco mais barato que entra em $w$.}
-    \label{fig:chu-liu-reduced-cost}
-    \end{figure}
+    % (b) Contraído
+    \node at (3.7,2.0) {(b) Contraído};
+    \node[circle,draw,minimum size=8mm,fill=gray!10] (xC) at (3.6,0.4) {$x_C$};
+    \node[circle,draw,minimum size=6mm] (u2) at (6.8,0.4) {$u$};
+    \draw[->] (u2) -- node[above,align=center] {$c'(u,x_C)=c(u,w)-c(a_w)$} (xC);
+\end{tikzpicture}
+\caption{Ajuste de custo reduzido para um arco \emph{entrando}: ao contrair um ciclo $C$, o arco $(u,w)$ com $w\in C$ passa a $(u,x_C)$ com custo reduzido $c'(u,x_C)=c(u,w)-c(a_w)$, onde $a_w$ é o arco de menor custo que entra em $w$.}
+\label{fig:chu-liu-reduced-cost}
+\end{figure}
 
 
 Para cada arco \((u,w)\) com \(w\in C\), ajustamos o custo reduzido para \(c'(u,x_C)=c(u,w)-c(a_w)\), onde \(a_w\) é o arco mais barato que entra em \(w\). No exemplo da Figura \ref{fig:chu-liu-reduced-cost}, o arco \((u,b)\) com custo \(7\) torna-se \((u,x_C)\) com custo reduzido \(7-5=2\), já que \(a_b=(a\to b)\) tem custo \(5\). Arcos que saem de \(C\) ou laços internos não são ajustados.
@@ -2206,12 +2223,43 @@ Se \(A'\) contiver um ciclo dirigido \(C\) (que não inclui \(r\)), normalizamos
 Resolvemos recursivamente no grafo contraído. As arborescências do grafo contraído correspondem, em bijeção, às arborescências do grafo original com exatamente um arco entrando em \(C\); como os arcos de \(C\) têm custo reduzido zero, os custos são preservados na ida e na volta. 
 
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\linewidth]{figures/fig_chu_liu_bijection.pdf}
+\begin{figure}[H]\centering
+\begin{tikzpicture}[>=Stealth, node distance=1.2cm]
+    % (a) Contraído
+    \node at (-3.8,2.1) {(a) Grafo contraído};
+    \node[circle,draw,minimum size=6mm] (r1) at (-6.2,1.6) {$r$};
+    \node[circle,draw,minimum size=8mm,fill=gray!10] (xC1) at (-4.2,0.4) {$x_C$};
+    \node[circle,draw,minimum size=6mm] (p1) at (-6.4,-0.8) {$p$};
+    \node[circle,draw,minimum size=6mm] (q1) at (-2.2,1.2) {$q$};
+    \node[circle,draw,minimum size=6mm] (u1) at (-1.0,-0.2) {$u$};
+    \draw[->] (r1) -- (q1);
+    \draw[->] (r1) -- (p1);
+    \draw[->] (q1) -- (xC1);
+    \draw[->,very thick] (u1) -- (xC1);
 
-    \caption{Bijeção entre arborescências após contração e no grafo original. (a) No grafo contraído, toda arborescência seleciona exatamente um arco que entra no supervértice $x_C$. (b) Ao expandir $C$, escolhe-se o arco correspondente \((u,w)\) que entra em algum $w\in C$ e mantêm-se os arcos internos de custo reduzido zero, removendo exatamente um para quebrar o ciclo. Como $c'(u,x_C)=c(u,w)-c(a_w)$ e os arcos internos têm custo reduzido zero, o custo total é preservado na ida e na volta.}
-    \label{fig:chu-liu-bijection}\end{figure}
+    % (b) Expandido e mapeado
+    \node at (3.8,2.1) {(b) Expansão e bijeção};
+    \node[circle,draw,minimum size=6mm] (r2) at (1.6,1.6) {$r$};
+    \node[circle,draw,minimum size=6mm] (p2) at (1.4,-0.8) {$p$};
+    \node[circle,draw,minimum size=6mm] (q2) at (5.6,1.2) {$q$};
+    \node[circle,draw,minimum size=6mm] (u2b) at (6.8,-0.2) {$u$};
+    % cycle C
+    \draw[dashed,rounded corners] (2.6,-0.9) rectangle (4.6,1.7) node[above right] {$C$};
+    \node[circle,draw,minimum size=6mm] (aC) at (3.0,1.2) {$a$};
+    \node[circle,draw,minimum size=6mm] (bC) at (4.2,0.4) {$w$};
+    \node[circle,draw,minimum size=6mm] (cC) at (3.2,-0.2) {$c$};
+    \draw[->] (aC) -- (bC);
+    \draw[->] (bC) -- (cC);
+    \draw[->] (cC) -- (aC);
+    % external edges
+    \draw[->] (r2) -- (q2);
+    \draw[->] (r2) -- (p2);
+    \draw[->] (q2) -- (aC);
+    \draw[->,very thick] (u2b) -- node[above] {entra em $w$} (bC);
+\end{tikzpicture}
+\caption{Bijeção entre arborescências no grafo contraído e no original: (a) toda arborescência em $D'$ escolhe exatamente um arco que entra em $x_C$; (b) ao expandir $C$, esse arco corresponde a um $(u,w)$ que entra em algum $w\in C$ e os arcos internos (de custo reduzido zero) são mantidos. O custo total é preservado.}
+\label{fig:chu-liu-bijection}
+\end{figure}
 
 
 \paragraph{}
@@ -2221,12 +2269,44 @@ A Figura \ref{fig:chu-liu-bijection} ilustra a bijeção entre arborescências n
 Na expansão, reintroduzimos \(C\) e removemos exatamente um arco interno para manter grau de entrada 1 e aciclicidade global \cite{schrijver2003comb,kleinberg2006}.
 
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\linewidth]{figures/fig_chu_liu_reexpansion.pdf}
+\begin{figure}[H]\centering
+\begin{tikzpicture}[>=Stealth]
+    % (a) Contraído
+    \node at (-4.8,2.0) {(a) Contraído};
+    \node[circle,draw,minimum size=6mm] (r3) at (-6.0,1.2) {$r$};
+    \node[circle,draw,minimum size=8mm,fill=gray!10] (xC3) at (-4.0,0.2) {$x_C$};
+    \node[circle,draw,minimum size=6mm] (u3) at (-2.0,0.2) {$u$};
+    \draw[->] (r3) -- (xC3);
+    \draw[->,very thick] (u3) -- (xC3);
 
-    \caption{Reexpansão de $C$. (a) No grafo contraído, seleciona-se um único arco que entra em $x_C$. (b) Ao expandir, $x_C$ é substituído pelo ciclo $C$ e o arco selecionado passa a entrar em algum $w\in C$. (c) Remove-se exatamente um arco interno de $C$ para eliminar o ciclo, preservando conectividade a partir de $r$ e o custo total, pois os arcos internos têm custo reduzido zero.}
-    \label{fig:chu-liu-reexpansion}\end{figure}
+    % (b) Expandido
+    \node at (0.0,2.0) {(b) Expandido};
+    \draw[dashed,rounded corners] (-1.2,-0.8) rectangle (1.2,1.6) node[above right] {$C$};
+    \node[circle,draw,minimum size=6mm] (a3) at (-0.8,1.0) {$a$};
+    \node[circle,draw,minimum size=6mm] (w3) at (0.8,0.4) {$w$};
+    \node[circle,draw,minimum size=6mm] (c3) at (-0.4,0.0) {$c$};
+    \draw[->] (a3) -- (w3);
+    \draw[->] (w3) -- (c3);
+    \draw[->] (c3) -- (a3);
+    \node[circle,draw,minimum size=6mm] (u3b) at (2.4,0.4) {$u$};
+    \draw[->,very thick] (u3b) -- (w3);
+
+    % (c) Remoção interna
+    \node at (4.8,2.0) {(c) Remoção de arco interno};
+    \draw[dashed,rounded corners] (3.6,-0.8) rectangle (6.0,1.6) node[above right] {$C$};
+    \node[circle,draw,minimum size=6mm] (a4) at (4.0,1.0) {$a$};
+    \node[circle,draw,minimum size=6mm] (w4) at (5.6,0.4) {$w$};
+    \node[circle,draw,minimum size=6mm] (c4) at (4.8,0.0) {$c$};
+    \draw[->] (a4) -- (w4);
+    \draw[->] (w4) -- (c4);
+    % remove the closing arc with a red cross
+    \draw[->] (c4) -- (a4);
+    \draw[red,very thick] (4.35,0.55) -- (4.45,0.45);
+    \draw[red,very thick] (4.35,0.45) -- (4.45,0.55);
+\end{tikzpicture}
+\caption{Reexpansão de $C$: (a) no grafo contraído seleciona-se um único arco que entra em $x_C$; (b) ao expandir, $x_C$ é substituído por $C$ e o arco selecionado passa a entrar em algum $w\in C$; (c) remove-se exatamente um arco interno de $C$ para eliminar o ciclo, preservando conectividade a partir de $r$ e o custo total (os arcos internos têm custo reduzido zero).}
+\label{fig:chu-liu-reexpansion}
+\end{figure}
 
 
 \paragraph{}
