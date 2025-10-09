@@ -4506,7 +4506,17 @@ def run_algorithm(event):
 \subsubsection{Demais Páginas da Aplicação Web}
 Além da página principal do visualizador, a aplicação inclui um conjunto de páginas modulares que suportam a navegação e fornecem contexto adicional. A seguir, detalhamos a estrutura e função de cada uma dessas páginas.
 
-\paragraph{\texttt{Home.html}:} o arquivo \texttt{home.html} serve como a página inicial da aplicação, oferecendo uma visão geral do projeto, incluindo um resumo do trabalho e informações sobre os integrantes. A estrutura da página é projetada para ser acolhedora e informativa, utilizando Tailwind CSS para garantir uma aparência moderna e responsiva. A seguir, apresentamos o código completo dessa página.
+\paragraph{\texttt{Home.html}:} o arquivo \texttt{home.html} serve como a página inicial da aplicação, oferecendo uma visão geral do projeto, incluindo um resumo do trabalho e informações sobre os integrantes. A estrutura da página é projetada para ser acolhedora e informativa, utilizando Tailwind CSS para garantir uma aparência moderna e responsiva. Abaixo, apresentamos um exemplo de captura de tela da página.
+
+% Screenshot da página Home
+\begin{figure}[H]\centering
+    \includegraphics[width=0.95\textwidth]{../assets/homehtml.png}
+    \caption{Captura de tela de \texttt{home.html}: visão geral com resumo e integrantes.}
+    \label{fig:home_html_screenshot}
+\end{figure}
+
+
+A seguir, apresentamos o código completo dessa página.
 
 \begin{htmlbox}{home.html}
 <!DOCTYPE html>
@@ -4605,6 +4615,7 @@ Além da página principal do visualizador, a aplicação inclui um conjunto de 
 </html>
 \end{htmlbox}
 
+
 \begin{figure}[H]\centering
 \begin{tikzpicture}[>=Stealth, node distance=1.8cm]
     \node[draw,rounded corners,fill=gray!10] (sb) {Sidebar};
@@ -4617,7 +4628,16 @@ Além da página principal do visualizador, a aplicação inclui um conjunto de 
 \end{figure}
     \textit{Comentário:} estrutura linear vertical facilita \emph{progressive disclosure}; separação lateral reduz interferência visual com conteúdo principal.
 
-\paragraph{\texttt{Draw\_graph.html}:} editor de grafos livre com funcionalidades de criação, edição, importação e exportação. Utiliza \texttt{Cytoscape.js} para visualização interativa e \texttt{PyScript} para lógica algorítmica. A seguir, apresentamos o código completo dessa página. 
+\paragraph{\texttt{Draw\_graph.html}:} editor de grafos livre com funcionalidades de criação, edição, importação e exportação. Utiliza \texttt{Cytoscape.js} para visualização interativa e \texttt{PyScript} para lógica algorítmica. Abaixo, apresentamos uma captura de tela da página.
+
+% Screenshot da página Draw Graph
+\begin{figure}[H]\centering
+    \includegraphics[width=0.95\textwidth]{../assets/drawhtml.png}
+    \caption{Captura de tela de \texttt{draw\_graph.html}: editor livre de grafos.}
+    \label{fig:draw_html_screenshot}
+\end{figure}
+
+A seguir, apresentamos o código completo dessa página. 
 \begin{htmlbox}{draw\_graph.html}
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -4798,7 +4818,16 @@ A figura a seguir ilustra a estrutura hierárquica linear do menu lateral.
 \end{figure}
 \textit{Comentário:} a consistência visual e funcional do menu lateral em todas as páginas reduz a carga cognitiva associada à navegação, permitindo que os usuários se concentrem no conteúdo principal.
 
-\paragraph{\texttt{Chuliu.html}:} página dedicada ao visualizador do algoritmo de Chu-Liu/Edmonds. Inclui um passo a passo guiado para criar um grafo, selecionar o nó raiz e executar o algoritmo, com feedback visual e textual. A seguir, apresentamos o código completo dessa página.
+\paragraph{\texttt{Chuliu.html}:} página dedicada ao visualizador do algoritmo de Chu-Liu/Edmonds. Inclui um passo a passo guiado para criar um grafo, selecionar o nó raiz e executar o algoritmo, com feedback visual e textual. Abaixo, apresentamos uma captura de tela da página.
+
+% Screenshot da página Chu-Liu/Edmonds
+\begin{figure}[H]\centering
+    \includegraphics[width=0.95\textwidth]{../assets/chuliuhtml.png}
+    \caption{Captura de tela de \texttt{chuliu.html}: criação de grafo, seleção de raiz e execução do algoritmo.}
+    \label{fig:chuliu_html_screenshot}
+\end{figure}
+
+A seguir, apresentamos o código completo dessa página.
 
 \begin{htmlbox}{chuliu.html}
 <!DOCTYPE html>
@@ -5016,7 +5045,16 @@ A figura a seguir destaca a tripartição funcional da página: navegação late
 \end{figure}
 \textit{Comentário:} a presença do passo a passo auxilia na compreensão sequencial do algoritmo.
 
-\paragraph{\texttt{Andrasfrank.html}:} página dedicada ao visualizador do algoritmo de Andras Frank. Inclui um passo a passo guiado para criar um grafo, selecionar o vértice raiz e executar o algoritmo, com feedback visual e textual. A seguir, apresentamos o código completo dessa página.
+\paragraph{\texttt{Andrasfrank.html}:} página dedicada ao visualizador do algoritmo de Andras Frank. Inclui um passo a passo guiado para criar um grafo, selecionar o vértice raiz e executar o algoritmo, com feedback visual e textual. Abaixo, apresentamos uma captura de tela da página.
+
+% Screenshot da página Andras Frank
+\begin{figure}[H]\centering
+    \includegraphics[width=0.95\textwidth]{../assets/andrasfrankhtml.png}
+    \caption{Captura de tela de \texttt{andrasfrank.html}: interface para o procedimento em duas fases.}
+    \label{fig:andrasfrank_html_screenshot}
+\end{figure}
+
+A seguir, apresentamos o código completo dessa página.
 
 \begin{htmlbox}{andrasfrank.html}
 <!DOCTYPE html>
