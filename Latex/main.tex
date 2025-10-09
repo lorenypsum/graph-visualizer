@@ -2170,7 +2170,6 @@ Podemos falar também em visão operacional de alto nível quando descrevemos um
 \paragraph{}
 Aqui, apresentamos o algoritmo de Chu–Liu/Edmonds em uma visão operacional de alto nível, focando na lógica e nos passos principais, sem entrar em detalhes de implementação específicos. E dedicaremos a próxima subseção apenas para discutir detalhes práticos de implementação.
 
-\subsection{Descrição do Algoritmo}
 \paragraph{}
 Denotamos por \(A'\) o conjunto de arcos escolhidos na construção da r-arborescência. 
 
@@ -5292,15 +5291,48 @@ Para aprimorar a ferramenta, futuras iterações podem focar em otimizações de
 \label{ap:matroides}
 Nesta breve nota, registramos definições mínimas para dar contexto às menções a interseção de matroides no corpo do texto. Para referências e desenvolvimento completo, ver, por exemplo, Schrijver \cite{schrijver2003comb}.
 
+\paragraph{}
 Um \textbf{matroide} $M=(E,\mathcal{I})$ é dado por um conjunto finito $E$ e uma família $\mathcal{I}\subseteq 2^{E}$ de conjuntos \emph{independentes} que satisfazem: (i) $\varnothing\in\mathcal{I}$; (ii) se $I\in\mathcal{I}$ e $J\subseteq I$, então $J\in\mathcal{I}$ (hereditariedade); (iii) se $I,J\in\mathcal{I}$ e $|I|<|J|$, então existe $e\in J\setminus I$ com $I\cup\{e\}\in\mathcal{I}$ (troca).
 
+\paragraph{}
 Exemplos clássicos incluem: (a) o matroide gráfico, em que $E$ é o conjunto de arestas de um grafo e $\mathcal{I}$ são os conjuntos acíclicos; (b) o matroide de partição, que impõe no máximo uma escolha por parte; (c) o matroide linear, em que $E$ é um conjunto de vetores e $\mathcal{I}$ são subconjuntos linearmente independentes.
 
+\paragraph{}
 A \textbf{interseção de matroides} pergunta por um conjunto $X\subseteq E$ de maior cardinalidade (ou de menor custo no caso ponderado) que seja independente simultaneamente em dois matroides $M_1=(E,\mathcal{I}_1)$ e $M_2=(E,\mathcal{I}_2)$, isto é, $X\in\mathcal{I}_1\cap\mathcal{I}_2$. O problema admite algoritmos polinomiais gerais, e muitas formulações clássicas em grafos se enquadram nesse arcabouço.
 
+\paragraph{}
 No contexto de arborescências dirigidas, estruturas do tipo “no máximo um arco entrando em cada vértice” podem ser modeladas por matroides de partição, enquanto restrições que evitam ciclos dirigidos aparecem via matroide gráfico orientado e técnicas afins. Isso motiva a citação no corpo do texto quando discutimos o empacotamento de múltiplas arborescências e condições por cortes.
 
 
+
+
+
+\section{Conceitos de Álgebra Linear}
+\label{ap:algebra-linear}
+Este apêndice reúne noções básicas de álgebra linear úteis como referência rápida. O foco recai sobre ideias que aparecem implicitamente ao longo do texto (por exemplo, ao tratar de potenciais, estruturas matriciais de dígrafos e decomposições ortogonais).
+
+\paragraph{Espaços vetoriais, combinações e base}
+\paragraph{}
+Um \textbf{espaço vetorial} $V$ sobre um corpo $\mathbb{K}$ (tipicamente $\mathbb{R}$) é um conjunto com duas operações, soma $+$ e multiplicação por escalar, que satisfazem os axiomas usuais (associatividade, comutatividade da soma, existência de neutro e inverso aditivo, distributividade etc.). Dado um subconjunto $S=\{v_1,\dots,v_k\}\subseteq V$, uma \textbf{combinação linear} é $\sum_i \alpha_i v_i$ com $\alpha_i\in\mathbb{K}$. Dizemos que $S$ é \textbf{linearmente independente} se $\sum_i \alpha_i v_i=0$ implica $\alpha_i=0$ para todo $i$. Um conjunto gerador minimal (independente) chama-se \textbf{base} de $V$, e o número de vetores numa base é a \textbf{dimensão} $\dim V$ (bem-definida).
+
+\paragraph{Transformações lineares e matrizes}
+\paragraph{}
+Uma \textbf{transformação linear} $T:V\to W$ satisfaz $T(\alpha x+\beta y)=\alpha T(x)+\beta T(y)$. Fixadas bases de $V$ e $W$, toda transformação linear é representada por uma \textbf{matriz} $A$ e vale $[T(x)]=A[x]$. A composição de transformações corresponde ao produto de matrizes. A mudança de base é realizada por matrizes de passagem (sem alterar propriedades invariantes como posto).
+
+\paragraph{Sistemas lineares, posto e nulidade.}
+Resolver $Ax=b$ equivale a aplicar \emph{eliminação de Gauss} para obter forma escalonada. O \textbf{posto} $\operatorname{rank}(A)$ é o número de linhas (ou colunas) linearmente independentes; o \textbf{núcleo} $\ker(A)=\{x:Ax=0\}$ tem dimensão \textbf{nulidade} $\operatorname{null}(A)$. O \textbf{teorema posto--nulidade} afirma $\operatorname{rank}(A)+\operatorname{null}(A)=n$ (número de colunas de $A$). A existência e unicidade de soluções dependem de $\operatorname{rank}(A)$ e da consistência de $b$.
+
+\paragraph{Autovalores e autovetores.}
+Para $A\in\mathbb{R}^{n\times n}$, um \textbf{autovalor} $\lambda$ e um \textbf{autovetor} não nulo $v$ satisfazem $Av=\lambda v$. Se há $n$ autovetores linearmente independentes, $A$ é \textbf{diagonalizável} ($A=P\,\operatorname{diag}(\lambda_i)\,P^{-1}$). Para matrizes simétricas reais, vale o \textbf{teorema espectral}: existem autovetores ortonormais que formam base e autovalores reais, possibilitando decomposições ortogonais.
+
+\paragraph{Produto interno e ortogonalidade.}
+Um \textbf{produto interno} $\langle x,y\rangle$ induz norma $\|x\|=\sqrt{\langle x,x\rangle}$. Vetores são \textbf{ortogonais} se $\langle x,y\rangle=0$. A projeção ortogonal de $u$ no subespaço $W$ minimiza a distância $\|u-w\|$ sobre $w\in W$. O processo de \textbf{Gram--Schmidt} transforma um conjunto independente em uma base ortonormal, útil para estabilidade numérica e interpretação geométrica.
+
+\paragraph{Matrizes de grafos e o Laplaciano.}
+Para um dígrafo $G=(V,E)$, a \textbf{matriz de incidência} $B\in\mathbb{R}^{|V|\times |E|}$ codifica a orientação dos arcos; seu posto relaciona-se ao número de componentes fortemente conexas. O \textbf{Laplaciano} dirigido pode ser definido como $L=D_{\text{out}}-A$ (ou variações), onde $A$ é a matriz de adjacência e $D_{\text{out}}$ é diagonal com graus de saída. Em grafos não dirigidos, cofatores de $L$ contam árvores geradoras (\emph{teorema matriz--árvore}); em variantes dirigidas, cofatores apropriados contam arborescências enraizadas em $r$, conectando linearmente estruturas combinatórias e contagem de arborescências.
+
+\paragraph{Observação sobre potenciais e custos reduzidos.}
+Ao ajustar custos por \emph{potenciais} nos vértices (transformações do tipo $c'(u,v)=c(u,v)+\pi(u)-\pi(v)$), preservamos diferenças ao longo de ciclos (somas telescópicas nulas), o que ecoa a ideia de adicionar uma 1-forma exata. Trata-se, no fundo, de uma transformação linear no espaço dos pesos de arestas parametrizada por funções em $V$, com forte paralelismo a mudanças de base que preservam invariantes essenciais (como somas em ciclos).
 
 
 \bigskip
