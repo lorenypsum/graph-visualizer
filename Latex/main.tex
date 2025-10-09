@@ -4808,11 +4808,12 @@ A figura a seguir ilustra a estrutura hierárquica linear do menu lateral.
 \begin{tikzpicture}[node distance=0.9cm]
     % Ordem vertical: Home -> Chu-Liu -> Andras Frank -> Draw
     \node[draw,rounded corners,fill=gray!15,minimum width=3cm] (h) {Home};
-    \node[draw,rounded corners,fill=gray!15,below=of h,minimum width=3cm] (cl) {Draw};
-    \node[draw,rounded corners,fill=gray!15,below=of cl,minimum width=3cm] (af) {Chu-Liu/Edmonds};
-    \node[draw,rounded corners,fill=gray!15,below=of af,minimum width=3cm] (dg) {Andras Frank};
+    \node[draw,rounded corners,fill=gray!15,below=of h,minimum width=3cm] (cl) {Chu-Liu/Edmonds};
+    \node[draw,rounded corners,fill=gray!15,below=of cl,minimum width=3cm] (af) {Andras Frank};
+    \node[draw,rounded corners,fill=gray!15,below=of af,minimum width=3cm] (dg) {Draw};
+    \node[draw,rounded corners,fill=gray!15,below=of dg,minimum width=3cm] (ts) {Tese};
     % Seta indicando hierarquia linear
-    \foreach \x/\y in {h/cl,cl/af,af/dg} {\draw[->] (\x.south) -- (\y.north);} 
+    \foreach \x/\y in {h/cl,cl/af,af/dg,dg/ts} {\draw[->] (\x.south) -- (\y.north);} 
 \end{tikzpicture}
 \caption{\texttt{sidebar.html}: lista vertical reforçando modelo mental estável de navegação.}
 \end{figure}
