@@ -4092,14 +4092,19 @@ Esses princípios de interação humano-computador foram fundamentais para o des
     \label{tab:principios-ihc}
 \end{table}
 
-\subsection{Descrição da aplicação}\label{subsec:descricao-aplicacao}
-\paragraph{Objetivo pedagógico}
-Fornecer um ambiente de exploração incremental dos algoritmos de arborescência (Chu--Liu/Edmonds e variante dual de Frank em estágio inicial) enfatizando: (i) visibilidade de estados estruturais (arestas, pesos, escolhas), (ii) redução de carga extrínseca por layout estável, (iii) engajamento ativo por manipulação direta e (iv) registro persistente da execução (\emph{log}).
+\subsection{Descrição da aplicação}
+\paragraph{}
+A aplicação web interativa foi desenvolvida para ilustrar os algoritmos de Chu–Liu/Edmonds e Frank, permitindo aos usuários acompanhar passo a passo o funcionamento de ambos os métodos. A ferramenta foi projetada com base em princípios de interação humano-computador, visando maximizar a compreensão e o engajamento dos usuários.
 
-\paragraph{Visão geral das páginas}
-A aplicação é composta por páginas HTML autônomas carregadas no navegador, cada uma focada em um aspecto: (i) \texttt{home.html} (apresentação / resumo), (ii) \texttt{chuliu.html} (execução passo a passo do algoritmo de Chu--Liu/Edmonds), (iii) \texttt{andrasfrank.html} (estrutura para futura visualização da abordagem primal--dual), (iv) \texttt{draw\_graph.html} (editor livre de grafos), (v) \texttt{tese.html} (incorpora o PDF gerado em \LaTeX), além do componente compartilhado de navegação lateral \texttt{sidebar.html}. Cada página injeta o \texttt{sidebar} dinamicamente e carrega scripts específicos.
+
+\subsubsection{Visão geral das páginas}
+A aplicação web é composta por páginas HTML autônomas carregadas no navegador, cada uma focada em um aspecto: (i) \texttt{home.html} (apresentação / resumo), (ii) \texttt{chuliu.html} (execução passo a passo do algoritmo de Chu--Liu/Edmonds), (iii) \texttt{andrasfrank.html} (estrutura para futura visualização da abordagem primal--dual), (iv) \texttt{draw\_graph.html} (editor livre de grafos), (v) \texttt{tese.html} (incorpora o PDF gerado em \LaTeX), além do componente compartilhado de navegação lateral \texttt{sidebar.html}. Cada página injeta o \texttt{sidebar} dinamicamente e carrega scripts específicos.
 
 \paragraph{Arquitetura tecnológica}
+
+\paragraph{}
+O desenvolvimento utilizou tecnologias web modernas, incluindo HTML5, Tailwind CSS para estilos responsivos, e PyScript para execução de código Python diretamente no navegador. A biblioteca NetworkX foi empregada para manipulação de grafos, enquanto Matplotlib gerou visualizações estáticas dos estados intermediários. O código foi estruturado para modularidade e clareza, facilitando futuras extensões. Detalhamos abaixo esses aspectos:
+
 \begin{itemize}\setlength{\itemsep}{2pt}
     \item \textbf{Frontend:} HTML5 + Tailwind CSS para composição responsiva e estilos utilitários consistentes.
     \item \textbf{Execução Python no cliente:} PyScript (carregado via CDN) provê execução de módulos Python (ex.: \texttt{networkx}, \texttt{matplotlib}) sem instalação local, reduzindo barreira de entrada didática.
@@ -4109,6 +4114,9 @@ A aplicação é composta por páginas HTML autônomas carregadas no navegador, 
 \end{itemize}
 
 \paragraph{Componentes funcionais principais}
+\paragraph{}
+A aplicação centraliza-se nas páginas \texttt{chuliu.html} e \texttt{andrasfrank.html}, que permitem executar os algoritmos de Chu--Liu/Edmonds e Frank, respectivamente. A seguir, detalhamos os componentes funcionais principais da interface:
+
 \begin{enumerate}\setlength{\itemsep}{2pt}
     \item \textbf{Editor de Grafo:} Inputs para origem, destino e peso + botões de inserção e limpeza (\texttt{add-edge}, \texttt{reset-graph}).
     \item \textbf{Carregamento de exemplo:} Botão \texttt{load-test-graph} injeta um grafo de teste estruturado para reduzir \emph{time-to-first-insight}.
@@ -4120,7 +4128,10 @@ A aplicação é composta por páginas HTML autônomas carregadas no navegador, 
     \item \textbf{Incorporação de PDF:} \texttt{tese.html} exibe o \texttt{main.pdf} lado a lado à aplicação, incentivando leitura entrelaçada teoria-execução.
 \end{enumerate}
 
-\paragraph{Fluxo de interação}\label{par:fluxo-interacao}
+\paragraph{Fluxo de interação}
+\paragraph{}
+O fluxo de interação foi projetado para ser linear e intuitivo, guiando o usuário desde a criação do grafo até a visualização dos resultados do algoritmo. A seguir, descrevemos o fluxo típico:
+
 \begin{enumerate}\setlength{\itemsep}{2pt}
     \item Usuário monta ou carrega um grafo de teste.
     \item Define (ou confirma) o vértice raiz \(r_0\).
@@ -4130,12 +4141,13 @@ A aplicação é composta por páginas HTML autônomas carregadas no navegador, 
 \end{enumerate}
 
 \paragraph{Estado e dados persistentes}
-O estado principal é mantido em memória (objeto \texttt{networkx.DiGraph}). O log textual funciona como uma \emph{trilha de auditoria didática}. Não há backend; portanto, a persistência entre sessões depende de exportação manual (JSON) — escolha deliberada para simplicidade e transparência pedagógica.
-
-\paragraph{Mapeamento aos princípios de IHC (Tabela~\ref{tab:principios-ihc})}
-Usabilidade: nomenclatura direta e ausência de menus profundos; Eficiência cognitiva: layout estável, ausência de animações distrativas; Feedback imediato: cada ação gera log + figura; Overview→Details: sequência de figuras + inspeção textual; Consistência semântica: estilos visuais fixos; Múltiplos registros: grafo, texto, parâmetros; Prevenção de erros: validações de campos e reinicialização controlada.
+\paragraph{}    
+O estado principal é mantido em memória (objeto \texttt{networkx.DiGraph}). O log textual funciona como uma \emph{trilha de auditoria didática}. Cada ação do usuário (adição de aresta, definição de raiz, execução de passo) atualiza o grafo e o log, permitindo rastrear a evolução do estado. A exportação em JSON facilita a reimportação e análise posterior.
 
 \paragraph{Limitações atuais}
+\paragraph{}
+Atualmente, a aplicação apresenta algumas limitações que podem impactar a experiência do usuário e a eficácia da visualização:
+
 \begin{itemize}\setlength{\itemsep}{2pt}
     \item Ausência de visualização explícita de contração de ciclos (marcação diferenciada por cores/aglomerados ainda não implementada).
     \item Não há comparação lado a lado (split view) entre algoritmos (Chu--Liu vs. Frank) ainda.
@@ -4144,7 +4156,10 @@ Usabilidade: nomenclatura direta e ausência de menus profundos; Eficiência cog
     \item Exportação limita-se ao grafo final; não há pacote de estados intermediários (\emph{replay}).
 \end{itemize}
 
-\paragraph{Extensões planejadas}
+\paragraph{Melhorias futuras}
+\paragraph{}
+Desse modo, entendemos que a aplicação, embora funcional, pode ser aprimorada com recursos adicionais para enriquecer a experiência didática. Algumas melhorias incluem:
+
 \begin{itemize}\setlength{\itemsep}{2pt}
     \item Visualização animada da contração/reexpansão de ciclos com agrupamento colapsável.
     \item Camada de coloração para arestas com custo reduzido zero e cortes ativos.
@@ -4154,8 +4169,8 @@ Usabilidade: nomenclatura direta e ausência de menus profundos; Eficiência cog
     \item Instrumentação de métricas (tempo por passo, número de contrações, distribuição de pesos normalizados).
 \end{itemize}
 
-\paragraph{Síntese}
-A seção integra conceitos teóricos a affordances interativas concretas: cada decisão de design (layout estável, log paralelo, exportação explícita) funciona como um \emph{andame didático} alinhado aos princípios cognitivos e de IHC previamente discutidos, reduzindo a distância entre formalismo e experiência exploratória.
+\paragraph{}
+De modo geral, a aplicação serve como um protótipo funcional que demonstra o potencial de ferramentas interativas para o ensino de algoritmos complexos em teoria dos grafos. Com melhorias contínuas, pode se tornar uma plataforma robusta para aprendizagem ativa e visualização didática. Na seção seguinte, detalhamos aspectos técnicos da implementação.
 
 \subsection{Detalhes de Implementação}
 A implementação da aplicação web interativa envolveu várias etapas, desde o planejamento da arquitetura até a codificação e testes. A seguir, detalhamos os principais aspectos técnicos da implementação.
