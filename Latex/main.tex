@@ -4191,21 +4191,11 @@ A estrutura de arquivos da aplicação é organizada da seguinte forma:
     \item \texttt{assets/}: Diretório para imagens, ícones e outros recursos estáticos.
 \end{itemize}
 
-\paragraph{Bibliotecas e dependências}
+\subsubsection{Códigos principais}
 \paragraph{}
-A aplicação utiliza as seguintes bibliotecas e dependências principais:
-\begin{itemize}\setlength{\itemsep}{2pt}
-    \item \textbf{PyScript:} Permite a execução de código Python diretamente no navegador.
-    \item \textbf{NetworkX:} Biblioteca para criação, manipulação e estudo de grafos complexos.
-    \item \textbf{Matplotlib:} Utilizada para gerar visualizações estáticas dos grafos.
-    \item \textbf{Tailwind CSS:} Framework CSS para estilos utilitários e design responsivo.
-    \item \textbf{Cytoscape.js:} (importada para futuras implementações) Biblioteca JavaScript para visualização interativa de grafos.
-\end{itemize}
+A seguir, apresentamos os códigos desenvolvidos para os algoritmos implementados realizarem a interação com os usuários.
 
-\paragraph{Main.py: Lógica de manipulação de grafos}
-\paragraph{}
-O arquivo \texttt{main.py} contém funções para manipulação de grafos, execução dos algoritmos e geração de visualizações. A seguir, destacamos o código:
-
+\paragraph{Main.py - Lógica de manipulação de grafos:} o arquivo \texttt{main.py} contém funções para manipulação de grafos, execução dos algoritmos e geração de visualizações. A seguir, destacamos o código:
 
 \begin{pybox}[label={lst:draw_graph}]{Main.py: manipulação e visualização de grafos}
 import networkx as nx
