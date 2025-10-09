@@ -351,18 +351,18 @@ Outras operações comuns entre conjuntos incluem:
     \begin{figure}[H]
     \centering
     \begin{tikzpicture}[scale=0.95]
-        % União T ∪ F com sobreposição visível (intersecção)
+        % União T ∪ F com sobreposição visível (interseção)
         \def\r{1.2}
         \coordinate (LT) at (-0.9,0);
         \coordinate (LF) at (0.9,0);
-        % Preenchimento semitransparente para evidenciar a intersecção
+        % Preenchimento semitransparente para evidenciar a interseção
         \fill[blue!35, opacity=0.45] (LT) circle (\r);
         \fill[green!35, opacity=0.45] (LF) circle (\r);
         % Contornos e rótulos
         \draw[thick, blue!60] (LT) circle (\r) node[left=6pt] {$T$};
         \draw[thick, green!50!black] (LF) circle (\r) node[right=6pt] {$F$};
     \end{tikzpicture}
-    \caption{União: a área colorida representa $T \cup F$; a sobreposição evidencia a intersecção $T \cap F$ (hipotética).}
+    \caption{União: a área colorida representa $T \cup F$; a sobreposição evidencia a interseção $T \cap F$ (hipotética).}
     \label{fig:op-uniao}
     \end{figure}
     
