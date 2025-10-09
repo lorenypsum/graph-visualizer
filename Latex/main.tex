@@ -4068,7 +4068,6 @@ A prevenção de erros envolve projetar o sistema de forma a minimizar a probabi
 \paragraph{}
 Esses princípios de interação humano-computador foram fundamentais para o desenvolvimento da nossa aplicação web interativa, garantindo que ela seja não apenas funcional, mas também acessível e eficaz como ferramenta de aprendizagem. A seguir, detalhamos a implementação técnica da aplicação e como ela se posiciona no ecossistema de ferramentas didáticas para o ensino de grafos.
 
-\paragraph{Tabela de Princípios em IHC}
 \begin{table}[H]
     \centering
     \renewcommand{\arraystretch}{1.18}
@@ -4093,61 +4092,70 @@ Esses princípios de interação humano-computador foram fundamentais para o des
     \label{tab:principios-ihc}
 \end{table}
 
-\subsection{Descrição da aplicação}
-A aplicação proposta é uma ferramenta interativa, executada inteiramente no navegador, para visualização passo a passo e manipulação de grafos direcionados com foco no algoritmo de Chu--Liu/Edmonds (arborescência de custo mínimo). O objetivo pedagógico central é tornar visíveis os invariantes estruturais (arestas candidatas, contrações, custos associados) e o encadeamento causal de cada transformação, reduzindo a carga cognitiva extrínseca e promovendo aprendizagem ativa (cf. Mayer, Sweller; heurística de feedback imediato de Nielsen; mantra de Shneiderman \emph{overview \,$\rightarrow$\, filter \,$\rightarrow$\, details on demand}).
-\paragraph{}
-Diferentemente de abordagens tradicionais que dependem de um backend persistente, a aplicação é \emph{client-side}: código Python é carregado via PyScript dentro da página HTML e executado diretamente sobre uma instância em memória de um \texttt{DiGraph} da biblioteca NetworkX \cite{hagberg2008networkx}. A renderização incremental de estados utiliza \textit{matplotlib} incorporado (via PyScript) e é exibida sequencialmente, permitindo comparação visual entre passos sem perda de contexto (estabilidade semântica). Tailwind CSS organiza a hierarquia visual e reforça consistência e affordances claras (botões primários, agrupamento funcional). A exportação do grafo em formato JSON apoia reprodutibilidade e estudo posterior em notebooks Jupyter \cite{kluyver2016jupyter}.
+\subsection{Descrição da aplicação}\label{subsec:descricao-aplicacao}
+\paragraph{Objetivo pedagógico}
+Fornecer um ambiente de exploração incremental dos algoritmos de arborescência (Chu--Liu/Edmonds e variante dual de Frank em estágio inicial) enfatizando: (i) visibilidade de estados estruturais (arestas, pesos, escolhas), (ii) redução de carga extrínseca por layout estável, (iii) engajamento ativo por manipulação direta e (iv) registro persistente da execução (\emph{log}).
 
-\subsubsection{Tecnologias Utilizadas}
-Os componentes tecnológicos refletem um design deliberado de baixo atrito para adoção educacional:
+\paragraph{Visão geral das páginas}
+A aplicação é composta por páginas HTML autônomas carregadas no navegador, cada uma focada em um aspecto: (i) \texttt{home.html} (apresentação / resumo), (ii) \texttt{chuliu.html} (execução passo a passo do algoritmo de Chu--Liu/Edmonds), (iii) \texttt{andrasfrank.html} (estrutura para futura visualização da abordagem primal--dual), (iv) \texttt{draw\_graph.html} (editor livre de grafos), (v) \texttt{tese.html} (incorpora o PDF gerado em \LaTeX), além do componente compartilhado de navegação lateral \texttt{sidebar.html}. Cada página injeta o \texttt{sidebar} dinamicamente e carrega scripts específicos.
+
+\paragraph{Arquitetura tecnológica}
 \begin{itemize}\setlength{\itemsep}{2pt}
-    \item \textbf{Estrutura e Estilo (Frontend):} HTML5 + Tailwind CSS para composições responsivas rápidas e contraste consistente sem sobrecarga manual de folhas de estilo.
-    \item \textbf{Execução de Código Python no Navegador:} PyScript provê carregamento e execução inline, eliminando instalação local de dependências e encorajando experimentação exploratória imediata.
-    \item \textbf{Manipulação e Análise de Grafos:} NetworkX \cite{hagberg2008networkx} para estrutura de dados, filtragens (remoção de arestas para a raiz) e suporte a transformações de grafo durante o algoritmo.
-    \item \textbf{Visualização de Estados:} \textit{matplotlib} (embedding PyScript) para gerar figuras estáticas sequenciadas que preservam layout planar aproximado e permitem leitura de rótulos e pesos (contrapondo \emph{clutter}).
-    \item \textbf{Exportação de Dados:} Serialização em JSON (formato \texttt{node\_link}) para continuidade de estudo em outros ambientes (e.g. notebooks Jupyter). Não há backend Flask nem uso de D3.js na versão atual --- menções anteriores a tais camadas foram removidas para evitar inconsistência descritiva.
+    \item \textbf{Frontend:} HTML5 + Tailwind CSS para composição responsiva e estilos utilitários consistentes.
+    \item \textbf{Execução Python no cliente:} PyScript (carregado via CDN) provê execução de módulos Python (ex.: \texttt{networkx}, \texttt{matplotlib}) sem instalação local, reduzindo barreira de entrada didática.
+    \item \textbf{Bibliotecas centrais:} NetworkX para manipulação de grafos dirigidos; \texttt{matplotlib} para renderização de snapshots; (em páginas avançadas) Cytoscape.js previsto para interação rica (estrutura já importada em \texttt{chuliu.html} / \texttt{andrasfrank.html}).
+    \item \textbf{Empacotamento de estado:} Serialização JSON (formato \texttt{node\_link}) para exportação e reuso analítico.
+    \item \textbf{Isolamento:} Cada página carrega apenas os elementos necessários, evitando \emph{payload} excessivo e minimizando latência de interface (princípio de eficiência cognitiva).
 \end{itemize}
 
-\subsubsection{Arquitetura Lógica}
-O fluxo interativo segue um ciclo \emph{ação $\rightarrow$ feedback imediato $\rightarrow$ reflexão}: o usuário aciona eventos (botões com id específicos), decoradores \texttt{@when} do PyScript capturam a interação, atualizam o \texttt{DiGraph} e disparam tanto (i) renderização do grafo atualizado quanto (ii) registro textual no \emph{log} incremental. Esse log funciona como trilha de explicação (justificativa narrativa) apoiando metacognição e revisitação sequencial dos passos.
-
-\subsubsection{Funcionalidades Implementadas}
-Atualmente, o conjunto de ações reflete uma \emph{MVP} (mínimo produto viável) orientada ao algoritmo alvo:
-\begin{itemize}\setlength{\itemsep}{2pt}
-    \item \textbf{Construção Incremental de Grafo:} Inserção de arestas com pesos e limpeza total (\texttt{reset}). Não há ainda edição direta de vértices isolados ou remoção seletiva de arestas individuais via interface.
-    \item \textbf{Carga de Exemplo:} Grafo de teste pré-configurado para reduzir barreira inicial e possibilitar foco cognitivo em dinâmica algorítmica (reduz carga extrínseca inicial).
-    \item \textbf{Execução Passo a Passo do Algoritmo de Chu--Liu/Edmonds:} Chamada a uma função que encapsula (i) filtragem de arestas incidentes à raiz, (ii) seleção de arestas mínimas por vértice e (iii) detecção de ciclos para posterior contração. Cada fase produz visualizações acumuladas.
-    \item \textbf{Visualização Sequencial:} Estados são empilhados permitindo retrospectiva. A estabilidade posicional minimiza custo de acompanhamento (cf. Larkin \& Simon sobre carga de inferência espacial).
-    \item \textbf{Log Estruturado:} Mensagens textuais cronológicas que alinham eventos de interface a transformações de estrutura (apoio a coerência causal e integração verbal+visual conforme Dual Coding).
-    \item \textbf{Exportação JSON:} Captura a estrutura corrente permitindo reuso analítico.
-\end{itemize}
-
-\subsubsection{Funcionalidades Planejadas / Extensões}
-Para alinhamento mais amplo aos objetivos pedagógicos discutidos em seções anteriores, prevê-se:
-\begin{itemize}\setlength{\itemsep}{2pt}
-    \item Destacar explicitamente arestas escolhidas vs. rejeitadas (camadas de saliência cromática)
-    \item Animação de contrações e reexpansões de ciclos (reforçando laminaridade de subconjuntos)
-    \item Medidas adicionais (grau, centralidades, SCC enumeradas) sob demanda \emph{(details on demand)}
-    \item Passos reversíveis (navegação temporal) e anotações persistentes do estudante
-    \item Exportação de sequência (log + imagens) em pacote compacto para relato de solução
-\end{itemize}
-
-\subsubsection{Interface do Usuário}
-O layout adota separação conceitual clara: (i) entrada de dados (formulário de arestas, raiz), (ii) área de visualização cumulativa, (iii) log textual. A ausência de sobrecarga de múltiplos painéis evita fragmentação prematura de atenção, em linha com estratégia de \emph{progressive disclosure}. A semântica de cores (tons verdes para ações primárias) reforça affordances, enquanto a tipografia uniforme e espaçamento consistente reduzem ruído visual (Ware).
-
-\subsubsection{Exemplo de Uso (Fluxo Algorítmico)}
-Considere o usuário que deseja observar a construção de uma arborescência ótima:
+\paragraph{Componentes funcionais principais}
 \begin{enumerate}\setlength{\itemsep}{2pt}
-    \item Carrega o grafo de teste (botão dedicado), inspecionando pesos.
-    \item (Opcional) Adiciona arestas suplementares para explorar variações.
-    \item Informa (ou confirma) o nó raiz \texttt{r0}.
-    \item Aciona ``Executar Algoritmo'': a aplicação registra filtragem de arestas para a raiz, apresenta seleção de arestas mínimas por vértice e, se presentes, marca ciclo detectado.
-    \item Após contrações internas e reexpansão (se aplicável), a arborescência final é exibida; todas as imagens intermediárias permanecem acessíveis para revisão comparativa.
-    \item Exporta o grafo resultante para estudo em outro ambiente ou documentação.
+    \item \textbf{Editor de Grafo:} Inputs para origem, destino e peso + botões de inserção e limpeza (\texttt{add-edge}, \texttt{reset-graph}).
+    \item \textbf{Carregamento de exemplo:} Botão \texttt{load-test-graph} injeta um grafo de teste estruturado para reduzir \emph{time-to-first-insight}.
+    \item \textbf{Configuração de raiz:} Campo para definir / confirmar o vértice raiz (\texttt{root-node}).
+    \item \textbf{Execução algorítmica:} Botão \texttt{run-algorithm} dispara o pipeline de filtragem e cálculo da arborescência mínima.
+    \item \textbf{Visualização de estados:} Área cumulativa (\texttt{graph-area}) onde cada renderização mantém a coerência posicional (layout determinístico) para comparação mental entre passos.
+    \item \textbf{Log textual:} Caixa de texto incremental (\texttt{log-output}) correlaciona ações a transformações estruturais (dual coding: texto + imagem).
+    \item \textbf{Exportação:} Ação de exportar grafo em JSON para análise posterior ou reimportação.
+    \item \textbf{Incorporação de PDF:} \texttt{tese.html} exibe o \texttt{main.pdf} lado a lado à aplicação, incentivando leitura entrelaçada teoria-execução.
 \end{enumerate}
 
-\paragraph{}
-Assim, a aplicação materializa princípios de IHC educacional ao incorporar: (i) \emph{feedback imediato multi-modal}, (ii) \emph{camadas graduais de detalhe}, (iii) \emph{estabilidade posicional} entre estados, e (iv) suporte a externalização (log + export). O escopo atual foca profundidade conceitual de um algoritmo especializado como prova de conceito extensível.
+\paragraph{Fluxo de interação}\label{par:fluxo-interacao}
+\begin{enumerate}\setlength{\itemsep}{2pt}
+    \item Usuário monta ou carrega um grafo de teste.
+    \item Define (ou confirma) o vértice raiz \(r_0\).
+    \item Executa o algoritmo (Chu--Liu/Edmonds): são aplicadas normalizações e seleção de arestas (implementação apresentada em seções anteriores / listagens).
+    \item Observa estados sequenciais: cada snapshot reforça invariantes (arestas escolhidas, pesos, estrutura alcançada).
+    \item (Opcional) Exporta o grafo resultante para replicação em notebooks ou comparação com a abordagem dual futura.
+\end{enumerate}
+
+\paragraph{Estado e dados persistentes}
+O estado principal é mantido em memória (objeto \texttt{networkx.DiGraph}). O log textual funciona como uma \emph{trilha de auditoria didática}. Não há backend; portanto, a persistência entre sessões depende de exportação manual (JSON) — escolha deliberada para simplicidade e transparência pedagógica.
+
+\paragraph{Mapeamento aos princípios de IHC (Tabela~\ref{tab:principios-ihc})}
+Usabilidade: nomenclatura direta e ausência de menus profundos; Eficiência cognitiva: layout estável, ausência de animações distrativas; Feedback imediato: cada ação gera log + figura; Overview→Details: sequência de figuras + inspeção textual; Consistência semântica: estilos visuais fixos; Múltiplos registros: grafo, texto, parâmetros; Prevenção de erros: validações de campos e reinicialização controlada.
+
+\paragraph{Limitações atuais}
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item Ausência de visualização explícita de contração de ciclos (marcação diferenciada por cores/aglomerados ainda não implementada).
+    \item Não há comparação lado a lado (split view) entre algoritmos (Chu--Liu vs. Frank) ainda.
+    \item Layout planar simples pode falhar em instâncias mais densas (sobreposição de rótulos) — futura substituição por \texttt{spring} ou \texttt{dagre}-like adaptativo.
+    \item Falta camada de destaque cromático para custos reduzidos e arcos “apertados” \((c' = 0)\).
+    \item Exportação limita-se ao grafo final; não há pacote de estados intermediários (\emph{replay}).
+\end{itemize}
+
+\paragraph{Extensões planejadas}
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item Visualização animada da contração/reexpansão de ciclos com agrupamento colapsável.
+    \item Camada de coloração para arestas com custo reduzido zero e cortes ativos.
+    \item Geração automática de relatório (log + estados selecionados) em PDF/ZIP.
+    \item Módulo paralelo para a abordagem primal--dual de Frank (empacotamento de cortes e duas fases).
+    \item Modo “comparativo” exibindo diferenças de passos e métricas agregadas.
+    \item Instrumentação de métricas (tempo por passo, número de contrações, distribuição de pesos normalizados).
+\end{itemize}
+
+\paragraph{Síntese}
+A seção integra conceitos teóricos a affordances interativas concretas: cada decisão de design (layout estável, log paralelo, exportação explícita) funciona como um \emph{andame didático} alinhado aos princípios cognitivos e de IHC previamente discutidos, reduzindo a distância entre formalismo e experiência exploratória.
 
 \subsection{Detalhes de Implementação}
 A implementação da aplicação web interativa envolveu várias etapas, desde o planejamento da arquitetura até a codificação e testes. A seguir, detalhamos os principais aspectos técnicos da implementação.
