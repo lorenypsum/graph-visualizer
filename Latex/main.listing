@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Andras Frank</title>
+    <title>Chu-Liu/Edmonds</title>
     <link rel="icon" type="image/x-icon" href="../assets/logo.png"/>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/cytoscape@3.26.0/dist/cytoscape.min.js"></script>
@@ -29,8 +29,8 @@
 
     <!-- CONTEÚDO PRINCIPAL -->
     <div id="main-content" class="flex-1 bg-[#E5E5E5] p-6">
-        <span class="flex items-center gap-4 mb-10 text-4xl text-[#352B67]">Andras Frank</span>
-
+        <span class="flex items-center gap-4 mb-10 text-4xl text-[#352B67]">Chu-Liu / Edmonds</span>
+        <!-- Stepper -->
         <div class="grid grid-cols-50 gap-1">
             <div class="col-span-1 p-2">
             </div>
@@ -81,22 +81,20 @@
             <div class="col-span-1 p-2">
             </div>
         </div>
-
         <!-- Grafo original -->
         <div class="grid grid-cols-10 gap-4 py-4 px-4">
             <div class="col-span-2 p-4"></div>
             <div class="col-span-6 p-4">
                 <span class="mb-50 text-xl text-[#9993B7]">Grafo Original</span>
-                <div class="my-3 mt-50 py-4 px-50 rounded-lg bg-white">
-                    <!-- <span id="draw_warning" class="text-sm font-light text-[#787486] mx-9">Desenhe ou importe um grafo.</span> -->
-                    <div id="graph-editor" class="my-3 mt-50 py-4 px-50 rounded-lg bg-white h-[500px]">
-                    </div>
+                <div id="graph-editor" class="my-3 mt-50 py-4 px-50 rounded-lg bg-white h-[500px]">
                 </div>
             </div>
             <div class="col-span-2 p-4">
                 <div class="py-4 px-2 flex justify-left items-center gap-1">
                     <img src="../assets/download.png" alt="Download" id="export-graph-original"
-                        class="my-5 cursor-pointer w-8 h-8 rounded-lg hover:opacity-80 hidden" />
+                        class="my-5 cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
+                    <img src="../assets/delete.png" alt="Reset" id="reset-graph"
+                        class="my-5 cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
                 </div>
             </div>
 
@@ -106,7 +104,7 @@
             <div class="col-span-2 p-4"></div>
             <div class="col-span-6 p-4">
                 <span class="mb-50 text-xl text-[#9993B7]">Arborescência</span>
-                <div id="arborescence-viewer" class="my-3 mt-50 py-4 px-50 bg-white rounded-lg h-[500px]">
+                <div id="arborescence-viewer" class="my-3 mt-50 py-4 px-50 rounded-lg bg-white h-[500px]">
                 </div>
             </div>
             <div class="col-span-2 p-4">
@@ -115,7 +113,6 @@
                         class="my-5 cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
                 </div>
             </div>
-
         </div>
 
         <!-- Logs de execução -->
@@ -152,7 +149,7 @@
         </div>
     </div>
 
-    <!-- Toast de Erro -->
+    <!-- Toasts -->
     <div id="toast-danger" class="hidden fixed top-5 right-5 z-50 flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow-sm dark:text-gray-400 dark:bg-gray-800 transition-opacity duration-500 opacity-100" role="alert">
         <div class="inline-flex items-center justify-center shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200">
             <!-- SVG de erro -->
@@ -199,7 +196,6 @@
     <script src="../scripts/js/sidebar.js"></script>
     <script src="../scripts/js/main.js"></script>
     <script src="../scripts/js/draw_graph.js"></script>
-    <script type="py" src="../scripts/andrasfrank_page.py" config="../scripts/pyscript.json"></script>
+    <script type="py" src="../scripts/chuliu_page.py" config="../scripts/pyscript.json"></script>
 </body>
-
 </html>
