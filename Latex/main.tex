@@ -154,7 +154,7 @@
 
 % Resumo (PT) e Abstract (EN)
 \begin{abstract}
-Este trabalho investiga e implementa duas abordagens clássicas para o problema da r-arborescência inversa de custo mínimo em grafos dirigidos: o algoritmo de Chu--Liu/Edmonds (abordagem primal por normalização de custos e contração/reexpansão de ciclos) e o procedimento em duas fases de András Frank (abordagem dual por cortes c-viáveis e extração por arestas de custo zero). As implementações em Python são acompanhadas de uma aplicação web didática (PyScript, NetworkX, Matplotlib) que permite construir instâncias, escolher a raiz, executar os algoritmos e acompanhar logs e visualizações passo a passo. Testes em larga escala com instâncias aleatórias corroboram a correção (coincidência de custos) e evidenciam diferenças estruturais entre as abordagens. Discutimos ainda princípios de interação humano--computador e carga cognitiva aplicados ao design da ferramenta, visando apoiar o ensino de otimização combinatória e teoria dos grafos.
+Este trabalho investiga e implementa duas abordagens clássicas para o problema da r-arborescência inversa de custo mínimo em grafos dirigidos: o algoritmo de Chu--Liu/Edmonds (abordagem primal por normalização de custos e contração/reexpansão de ciclos) e o procedimento em duas fases de András Frank (abordagem dual por cortes c-viáveis e extração por arestas de custo zero). As implementações em Python são acompanhadas de uma aplicação \textit{web} didática (PyScript, NetworkX, Matplotlib) que permite construir instâncias, escolher a raiz, executar os algoritmos e acompanhar logs e visualizações passo a passo. Testes em larga escala com instâncias aleatórias corroboram a corretude (coincidência de custos) e evidenciam diferenças estruturais entre as abordagens. Discutimos ainda princípios de interação humano--computador e carga cognitiva aplicados ao design da ferramenta, visando apoiar o ensino de otimização combinatória e teoria dos grafos.
 
 \medskip
 \noindent\textbf{Palavras-chave:} arborescência inversa; Chu--Liu/Edmonds; András Frank; otimização combinatória; grafos dirigidos; visualização; PyScript; IHC.
@@ -184,9 +184,7 @@ This work studies and implements two classic approaches to the minimum-cost in-a
 Encontrar uma \textit{r-arborescência inversa de custo mínimo} em grafos dirigidos é um problema estudado em ciência da computação desde os anos 1960, com formulações fundamentais apresentadas por Jack Edmonds em 1967 \cite{edmonds1967optimum}.
 
 \paragraph{}
-Essa busca dialoga com um princípio formulado na Idade Média por Guilherme de Ockham: a navalha de Occam (princípio da parcimônia), uma heurística filosófica segundo a qual, entre explicações concorrentes para um fenômeno, devemos preferir a mais simples ou a que faz menos suposições.
-
-\paragraph{}
+Essa busca dialoga com um princípio filosófico formulado na Idade Média por Guilherme de Ockham: a navalha de Occam (princípio da parcimônia), uma heurística filosófica segundo a qual, entre explicações concorrentes para um fenômeno, devemos preferir a mais simples ou a que faz menos suposições.
 Podemos pensar na navalha de Occam como critério de escolha entre explicações por meio de uma \textit{teia explicativa mínima}: uma estrutura que conecta fatos ou observações com o mínimo de relações explicativas necessárias.
 Quando tais relações envolvem dependência ou causalidade, podemos representá-las pictograficamente como setas direcionadas entre os fatos (as hipóteses aparecem como rótulos dessas setas).
 Para refinar o modelo, associamos um custo a cada relação (por exemplo, o esforço para validar a relação ou a complexidade da explicação).
@@ -214,7 +212,7 @@ Do ponto de vista didático, a metáfora da “teia explicativa mínima” torna
 \subsection{Objetivos}
 
 \paragraph{}
-O objetivo principal deste trabalho é analisar, implementar e comparar duas abordagens clássicas para o problema de \textit{r-arborescência de custo mínimo} em grafos dirigidos oferecendo uma aplicação web interativa que facilite o entendimento e a experimentação com o algoritmo de Chu--Liu/Edmonds e o método de András Frank, tornando-o acessível para estudantes e educadores.
+O objetivo principal deste trabalho é analisar, implementar e comparar duas abordagens clássicas para o problema de \textit{r-arborescência de custo mínimo} em grafos dirigidos oferecendo uma aplicação \textit{web} interativa que facilite o entendimento e a experimentação com o algoritmo de Chu--Liu/Edmonds e o método de András Frank, tornando-o acessível para estudantes e educadores.
 
 \subsection{Estrutura do Trabalho}
 \paragraph{}
@@ -226,12 +224,12 @@ Resumidamente, o trabalho abrange as seguintes frentes:
     \item \textbf{Algoritmo de Chu--Liu/Edmonds}: detalhamento da abordagem primal por normalização/contração de ciclos, com ênfase em invariantes e correção.
     \item \textbf{Procedimento em Duas Fases de András Frank}: detalhamento da abordagem dual por cortes c‑viáveis, com ênfase em invariantes e correção.
     \item \textbf{Discussão e Resultados: Chu-liu/Edmonds vs Frank}: comparação de desempenho e estrutura das soluções, com testes em larga escala.
-    \item \textbf{Didática do Abstrato}: discussão de desafios do ensino de matemática no ensino superior especiamente quando há o envolvimento de conceito abstratos e como representações visuais atuam em favor da compreensão.
-    \item \textbf{A interação humano--computacional em ação - uma aplicação web interativa}: apresentação de conceitos em interação humano-computacional, a influência desses conceitos nas decisões tomadas para o desenvolvimento da aplicação web e detalhamento da implementação.
+    \item \textbf{Didática do Abstrato}: discussão de desafios do ensino de matemática no ensino superior especialmente quando há o envolvimento de conceitos abstratos e como representações visuais atuam em favor da compreensão.
+    \item \textbf{A interação humano--computacional em ação - uma aplicação \textit{web} interativa}: apresentação de conceitos em interação humano-computacional, a influência desses conceitos nas decisões tomadas para o desenvolvimento da aplicação \textit{web} e detalhamento da implementação.
     \item \textbf{Conclusão}: síntese das contribuições, limitações e trabalhos futuros.
 \end{enumerate}
 
-Deste modo, o trabalho entrega implementações verificadas de Chu--Liu/Edmonds e András Frank, um visualizador web interativo e testes de volume que confirmam a equivalência de custos, úteis ao estudo e ao ensino de arborescências.
+Deste modo, o trabalho entrega implementações verificadas de Chu--Liu/Edmonds e András Frank, um visualizador \textit{web} interativo e testes de volume que confirmam a equivalência de custos, úteis ao estudo e ao ensino de arborescências.
 
 \section{Definições Preliminares}
 \paragraph{}
@@ -598,7 +596,7 @@ Esses conceitos reaparecerão ao longo do texto, especialmente na diferença ent
 Desde a introdução, vimos a ideia filosófica de explicar como “ligar” fatos a hipóteses da forma mais parcimoniosa possível. Para tornar essa intuição precisa, precisamos de uma linguagem que descreva objetos (conjuntos) e como eles se conectam. É aqui que entram as \textbf{relações} e, de modo ainda mais disciplinado, as \textbf{funções}: regras que associam a cada elemento de um conjunto exatamente um elemento de outro. Com elas, passamos do discurso qualitativo sobre explicações para uma estrutura matemática que permite medir, comparar e, adiante, otimizar.
 
 \paragraph{}
-Para tornar essa discussão prática, desenvolvemos uma aplicação web interativa que permite visualizar passo a passo o funcionamento dos dois algoritmos, destacando suas diferenças e semelhanças. A seguir, discutimos a dimensão didática que motivou essas escolhas e como fundamentos de aprendizagem e visualização embasam o projeto.
+Para tornar essa discussão prática, desenvolvemos uma aplicação \textit{web} interativa que permite visualizar passo a passo o funcionamento dos dois algoritmos, destacando suas diferenças e semelhanças. A seguir, discutimos a dimensão didática que motivou essas escolhas e como fundamentos de aprendizagem e visualização embasam o projeto.
 
 \paragraph{}
 Uma \textbf{relação} \(R\) entre dois conjuntos \(A\) e \(B\) é um subconjunto do produto cartesiano \(A \times B\). Ou seja, \(R \subseteq A \times B\). Se \((a,b) \in R\), dizemos que \(a\) está relacionado a \(b\) pela relação \(R\), denotado \(aRb\).
@@ -1352,7 +1350,7 @@ Denote por $\mathrm{Cond}(D)$ o grafo \emph{condensado}, obtido ao contrair cada
 
 \paragraph{}
 \begin{lemabox}{Mínimo de arcos para conexidade forte}{min-arc}
-Se $k=1$, então $D$ já é fortemente conexo e o mínimo de arcos a adicionar é $0$. Se $k\ge 2$, o número mínimo de arcos a adicionar para tornar $D$ fortemente conexo é \[\boxed{\;\min = \max\{s,\,t\}\;}\,.\]
+Se $k=1$, então $D$ já é fortemente conexo e o mínimo de arcos a adicionar é $0$. Se $k\ge 2$, o número mínimo de arcos a adicionar para tornar $D$ fortemente conexo é \[\boxed{\;\max\{s,\,t\}\;}\,.\]
 
 \paragraph{}
 	\textbf{Prova (esboço).} 
@@ -4016,7 +4014,7 @@ Em síntese, os resultados empíricos alinham-se às previsões teóricas: custo
 Em síntese, os testes e as análises oferecem uma base robusta para a compreensão prática e teórica dos algoritmos de arborescência de custo mínimo, explicitando suas forças e nuances. A partir desses achados, avançamos para como transformá-los em aprendizagem efetiva.
 
 \paragraph{}
-Para tornar essa experiência concreta, desenvolvemos uma aplicação web interativa que permite acompanhar, passo a passo, o funcionamento de ambos os algoritmos, evidenciando suas semelhanças e diferenças.
+Para tornar essa experiência concreta, desenvolvemos uma aplicação \textit{web} interativa que permite acompanhar, passo a passo, o funcionamento de ambos os algoritmos, evidenciando suas semelhanças e diferenças.
 
 \paragraph{}
 A aprendizagem visual é especialmente útil: observar os algoritmos em ação ajuda a fixar os conceitos apresentados. A seguir, discutimos aspectos didáticos do ensino de dígrafos em cenários mais complexos e resumimos princípios de interação humano-computador que orientaram o desenho da ferramenta.
@@ -4101,7 +4099,7 @@ Ferramentas de exploração e edição de grafos permitem que os usuários inter
 
 
 \paragraph{}
-Dentre elas destacam-se Gephi, yEd e Cytoscape oferecem layouts automáticos, filtros e medidas de rede \cite{bastian2009gephi,yed,shannon2003cytoscape}. São adequadas para: (i) reconhecer padrões estruturais (componentes, comunidades), (ii) discutir implicações de layouts para percepção de estruturas, (iii) atividades de descoberta assistida ("overview \textrightarrow{} filter \textrightarrow{} details") \cite{shneiderman1996eyes}. Limitações: (i) foco em análise exploratória de dados, não em algoritmos específicos; (ii) carga extrínseca ao alternar entre interface gráfica e conceitos teóricos; (iii) falta de controle fino sobre estados intermediários de algoritmos.
+Dentre elas destacam-se Gephi, yEd e Cytoscape, que oferecem layouts automáticos, filtros e medidas de rede \cite{bastian2009gephi,yed,shannon2003cytoscape}. São adequadas para: (i) reconhecer padrões estruturais (componentes, comunidades), (ii) discutir implicações de layouts para percepção de estruturas, (iii) atividades de descoberta assistida ("overview \textrightarrow{} filter \textrightarrow{} details") \cite{shneiderman1996eyes}. Limitações: (i) foco em análise exploratória de dados, não em algoritmos específicos; (ii) carga extrínseca ao alternar entre interface gráfica e conceitos teóricos; (iii) falta de controle fino sobre estados intermediários de algoritmos.
 
 \paragraph{Visualização de algoritmos}
 \paragraph{}
@@ -4118,13 +4116,13 @@ Ferramentas como Jupyter Notebooks e bibliotecas como NetworkX permitem combinar
 Contudo, requerem familiaridade com programação e podem introduzir carga extrínseca se o foco se desviar para detalhes de implementação. A curadoria do conteúdo é essencial para manter o foco didático e evitar dispersão.
 
 \paragraph{}
-Tendo em vista essas categorias, desenvolvemos uma aplicação web interativa que combina elementos de visualização de algoritmos e ambientes programáveis, com foco específico nos algoritmos de arborescência de custo mínimo. A seguir, apresentamos princípios envolvendo a teoria de interação humano-computador que orientaram o desenho da ferramenta, e em seguida descrevemos a aplicação com seus respectivos detalhes de implementação e como ela se posiciona nesse ecossistema.
+Tendo em vista essas categorias, desenvolvemos uma aplicação \textit{web} interativa que combina elementos de visualização de algoritmos e ambientes programáveis, com foco específico nos algoritmos de arborescência de custo mínimo. A seguir, apresentamos princípios envolvendo a teoria de interação humano-computador que orientaram o desenho da ferramenta, e em seguida descrevemos a aplicação com seus respectivos detalhes de implementação e como ela se posiciona nesse ecossistema.
 
 
-\section{A interação humano--computacional em ação: uma aplicação web interativa}
+\section{A interação humano--computacional em ação: uma aplicação \textit{web} interativa}
 
 \paragraph{}
-A aplicação web interativa foi desenvolvida para ilustrar os algoritmos de Chu–Liu/Edmonds e Frank, permitindo aos usuários acompanhar passo a passo o funcionamento de ambos os métodos. A ferramenta foi projetada com base em princípios de interação humano-computador, visando maximizar a compreensão e o engajamento dos usuários.
+A aplicação \textit{web} interativa foi desenvolvida para ilustrar os algoritmos de Chu–Liu/Edmonds e Frank, permitindo aos usuários acompanhar passo a passo o funcionamento de ambos os métodos. A ferramenta foi projetada com base em princípios de interação humano-computador, visando maximizar a compreensão e o engajamento dos usuários.
 
 \subsection{Princípios de interação humano-computador}
 
@@ -4169,7 +4167,7 @@ Múltiplos registros de representação referem-se à capacidade de apresentar i
 A prevenção de erros envolve projetar o sistema de forma a minimizar a probabilidade de erros dos usuários. Implementamos medidas de prevenção de erros, como validação de entrada e feedback em tempo real, para ajudar os usuários a evitar ações indesejadas e compreender melhor as consequências de suas escolhas.
 
 \paragraph{}
-Esses princípios de interação humano-computador foram fundamentais para o desenvolvimento da nossa aplicação web interativa, garantindo que ela seja não apenas funcional, mas também acessível e eficaz como ferramenta de aprendizagem. A seguir, detalhamos a implementação técnica da aplicação e como ela se posiciona no ecossistema de ferramentas didáticas para o ensino de grafos.
+Esses princípios de interação humano-computador foram fundamentais para o desenvolvimento da nossa aplicação \textit{web} interativa, garantindo que ela seja não apenas funcional, mas também acessível e eficaz como ferramenta de aprendizagem. A seguir, detalhamos a implementação técnica da aplicação e como ela se posiciona no ecossistema de ferramentas didáticas para o ensino de grafos.
 
 \begin{table}[H]
     \centering
@@ -4185,7 +4183,7 @@ Esses princípios de interação humano-computador foram fundamentais para o des
     Eficiência\newline cognitiva & Reduzir elementos irrelevantes no estado atual & Layout estável entre passos; apenas arestas relevantes destacadas; eliminação de ornamentação visual; custos e rótulos legíveis sem rotação. \\
     Feedback\newline imediato & Mostrar efeito de uma ação logo após o clique & Cada ação dispara: (i) atualização do desenho do grafo, (ii) entrada no log textual explicando a mudança (ex.: contração, seleção de aresta). \\
     Engajamento\newline ativo & Usuário prediz antes de revelar próximo passo & Controles passo a passo permitem explorar sequencialmente; usuário insere/edita pesos e escolhe raiz antes de rodar o algoritmo. \\
-    Overview→\newline Details & Visão global com acesso a informação pontual & Visão completa do grafo em todos os passos + possibilidade de inspecionar pesos e arestas específicas no log sequencial; estados anteriores preservados para comparação mental. \\
+    Visão geral→\newline Detalhes & Visão global com acesso a informação pontual & Visão completa do grafo em todos os passos + possibilidade de inspecionar pesos e arestas específicas no log sequencial; estados anteriores preservados para comparação mental. \\
     Consistência\newline semântica & Mesmo conceito, mesma cor/forma & Raiz destacada de forma fixa; arestas selecionadas mantêm estilo; semântica cromática não muda entre passos (evita remapeamento mental). \\
     Múltiplos\newline registros & Texto + grafo + (futuro) estrutura derivada & Combinação de: descrição textual no log, representação visual do grafo, parâmetros simbólicos (pesos); prepara expansão futura para mostrar custos reduzidos. \\
     Prevenção /\newline recuperação\newline de erros & Impedir entrada inválida / ação reversível & Validação de pesos (numéricos); bloqueio de execução sem raiz definida; botão Reset para recompor estado limpo sem recarregar página. \\
@@ -4197,16 +4195,16 @@ Esses princípios de interação humano-computador foram fundamentais para o des
 
 \subsection{Descrição da aplicação}
 \paragraph{}
-A aplicação web interativa foi desenvolvida para ilustrar os algoritmos de Chu–Liu/Edmonds e Frank, permitindo aos usuários acompanhar passo a passo o funcionamento de ambos os métodos. A ferramenta foi projetada com base em princípios de interação humano-computador, visando maximizar a compreensão e o engajamento dos usuários.
+A aplicação \textit{web} interativa foi desenvolvida para ilustrar os algoritmos de Chu–Liu/Edmonds e Frank, permitindo aos usuários acompanhar passo a passo o funcionamento de ambos os métodos. A ferramenta foi projetada com base em princípios de interação humano-computador, visando maximizar a compreensão e o engajamento dos usuários.
 
 
 \subsubsection{Visão geral das páginas}
-A aplicação web é composta por páginas HTML autônomas carregadas no navegador, cada uma focada em um aspecto: (i) \texttt{home.html} (apresentação / resumo), (ii) \texttt{chuliu.html} (execução passo a passo do algoritmo de Chu--Liu/Edmonds), (iii) \texttt{andrasfrank.html} (estrutura para futura visualização da abordagem primal--dual), (iv) \texttt{draw\_graph.html} (editor livre de grafos), além do componente compartilhado de navegação lateral \texttt{sidebar.html}. Cada página injeta o \texttt{sidebar} dinamicamente e carrega scripts específicos.
+A aplicação \textit{web} é composta por páginas HTML autônomas carregadas no navegador, cada uma focada em um aspecto: (i) \texttt{home.html} (apresentação / resumo), (ii) \texttt{chuliu.html} (execução passo a passo do algoritmo de Chu--Liu/Edmonds), (iii) \texttt{andrasfrank.html} (estrutura para futura visualização da abordagem primal--dual), (iv) \texttt{draw\_graph.html} (editor livre de grafos), além do componente compartilhado de navegação lateral \texttt{sidebar.html}. Cada página injeta o \texttt{sidebar} dinamicamente e carrega scripts específicos.
 
 \paragraph{Bibliotecas e dependências}
 
 \paragraph{}
-O desenvolvimento utilizou tecnologias web modernas, incluindo HTML5, Tailwind CSS para estilos responsivos, e PyScript para execução de código Python diretamente no navegador. A biblioteca NetworkX foi empregada para manipulação de grafos, enquanto Matplotlib gerou visualizações estáticas dos estados intermediários. O código foi estruturado para modularidade e clareza, facilitando futuras extensões. Detalhamos abaixo esses aspectos:
+O desenvolvimento utilizou tecnologias \textit{web} modernas, incluindo HTML5, Tailwind CSS para estilos responsivos, e PyScript para execução de código Python diretamente no navegador. A biblioteca NetworkX foi empregada para manipulação de grafos, enquanto Matplotlib gerou visualizações estáticas dos estados intermediários. O código foi estruturado para modularidade e clareza, facilitando futuras extensões. Detalhamos abaixo esses aspectos:
 
 \begin{itemize}\setlength{\itemsep}{2pt}
     \item \textbf{Frontend:} HTML5 + Tailwind CSS para composição responsiva e estilos utilitários consistentes.
@@ -4277,7 +4275,7 @@ De modo geral, a aplicação serve como um protótipo funcional que demonstra o 
 
 \subsection{Detalhes de Implementação}
 \paragraph{}
-A aplicação foi implementada utilizando tecnologias web modernas, com foco em simplicidade, modularidade e reprodutibilidade. A seguir, detalhamos os principais aspectos técnicos da implementação.
+A aplicação foi implementada utilizando tecnologias \textit{web} modernas, com foco em simplicidade, modularidade e reprodutibilidade. A seguir, detalhamos os principais aspectos técnicos da implementação.
 
 \paragraph{Estrutura de arquivos}
 \paragraph{}
@@ -4583,7 +4581,7 @@ def run_algorithm(event):
 \end{htmlbox}
 
 
-\subsubsection{Demais Páginas da Aplicação Web}
+\subsubsection{Demais Páginas da Aplicação \textit{web}}
 Além da página principal do visualizador, a aplicação inclui um conjunto de páginas modulares que suportam a navegação e fornecem contexto adicional. A seguir, detalhamos a estrutura e função de cada uma dessas páginas.
 
 \paragraph{\texttt{Home.html}:} o arquivo \texttt{home.html} serve como a página inicial da aplicação, oferecendo uma visão geral do projeto, incluindo um resumo do trabalho e informações sobre os integrantes. A estrutura da página é projetada para ser acolhedora e informativa, utilizando Tailwind CSS para garantir uma aparência moderna e responsiva. Abaixo, apresentamos um exemplo de captura de tela da página.
@@ -5384,13 +5382,13 @@ A figura a seguir sumariza o fluxo e a reutilização arquitetural entre página
 \end{figure}
 
 \paragraph{}
-A arquitetura modular e reutilizável das páginas web facilita manutenção, extensão e consistência. A barra lateral comum reduz esforço cognitivo ao navegar, enquanto o padrão tripartido de conteúdo interativo reforça familiaridade. A sequência lógica de páginas guia o usuário do contexto à experimentação e formalização, alinhando-se a princípios pedagógicos. Essa estrutura coesa apoia o aprendizado eficaz des conceitos de arborescências dirigidas e algoritmos associados.
+A arquitetura modular e reutilizável das páginas \textit{web} facilita manutenção, extensão e consistência. A barra lateral comum reduz esforço cognitivo ao navegar, enquanto o padrão tripartido de conteúdo interativo reforça familiaridade. A sequência lógica de páginas guia o usuário do contexto à experimentação e formalização, alinhando-se a princípios pedagógicos. Essa estrutura coesa apoia o aprendizado eficaz des conceitos de arborescências dirigidas e algoritmos associados.
 
 \subsection{Avaliação da Interface}
 ...
 
-\subsection{Comentários finais sobre a Interface Web}
-Este capítulo detalhou a implementação técnica do visualizador interativo de arborescências dirigidas, cobrindo desde a arquitetura web até a integração de algoritmos complexos. A escolha de tecnologias modernas como HTML5, CSS3, JavaScript e PyScript permitiu criar uma interface intuitiva e responsiva, facilitando a experimentação e compreensão dos algoritmos de Chu-Liu/Edmonds e Andras Frank. A reutilização de padrões arquiteturais entre páginas promoveu consistência cognitiva, enquanto a estrutura modular facilitou manutenção e extensão futura. A avaliação preliminar indica que a ferramenta atende aos objetivos pedagógicos, embora melhorias possam ser feitas com base no feedback dos usuários. No próximo capítulo, discutiremos as considerações finais e perspectivas futuras para o projeto.
+\subsection{Comentários finais sobre a Interface \textit{web}}
+Este capítulo detalhou a implementação técnica do visualizador interativo de arborescências dirigidas, cobrindo desde a arquitetura \textit{web} até a integração de algoritmos complexos. A escolha de tecnologias modernas como HTML5, CSS3, JavaScript e PyScript permitiu criar uma interface intuitiva e responsiva, facilitando a experimentação e compreensão dos algoritmos de Chu-Liu/Edmonds e Andras Frank. A reutilização de padrões arquiteturais entre páginas promoveu consistência cognitiva, enquanto a estrutura modular facilitou manutenção e extensão futura. A avaliação preliminar indica que a ferramenta atende aos objetivos pedagógicos, embora melhorias possam ser feitas com base no feedback dos usuários. No próximo capítulo, discutiremos as considerações finais e perspectivas futuras para o projeto.
 
 \section{Conclusão}
 Iniciamos essa tese falando sobre o principío da Navalha de Ockham, que nos convida a buscar soluções simples, mas não simplificadas. Retomamos esse mote para refletir sobre o ponto de chegada: o visualizador interativo de arborescências dirigidas que procura apresentar de forma acessível e simples os algoritmos envolvidos no problema da r-arborescência de custo mínimo.
@@ -5405,7 +5403,7 @@ O algoritmo de Chu-Liu/Edmonds é um clássico da teoria dos grafos, com diversa
 Os algoritmos foram implementados em Python, aproveitando bibliotecas como NetworkX para manipulação de grafos e Matplotlib para visualização. A escolha do Python se deve à sua sintaxe clara e à vasta gama de bibliotecas científicas disponíveis, facilitando tanto a implementação quanto a compreensão dos algoritmos. A integração com PyScript permitiu que esses algoritmos fossem executados diretamente no navegador, eliminando a necessidade de instalações complexas e tornando a ferramenta acessível a um público mais amplo. Os resultados foram validados através de testes com grafos de diferentes tamanhos e estruturas, garantindo a correção e eficiência das implementações.
 
 \paragraph{}
-A interface web foi projetada com foco na usabilidade e na experiência do usuário, utilizando HTML5, CSS3 e JavaScript para criar uma plataforma interativa e intuitiva obedecendo a princípios de design centrados no usuário orientados por princípios de interação humano-computacional. A estrutura modular da página permite fácil navegação entre diferentes seções, como a criação de grafos, a execução dos algoritmos e a visualização dos resultados. Elementos interativos, como botões, menus suspensos e áreas de desenho, foram incorporados para facilitar a interação do usuário com a ferramenta. A reutilização de padrões arquiteturais entre as páginas promoveu consistência cognitiva, enquanto a sequência lógica de páginas guia o usuário do contexto à experimentação e formalização, alinhando-se a princípios pedagógicos orientados pela teoria da aprendizagem.
+A interface \textit{web} foi projetada com foco na usabilidade e na experiência do usuário, utilizando HTML5, CSS3 e JavaScript para criar uma plataforma interativa e intuitiva obedecendo a princípios de design centrados no usuário orientados por princípios de interação humano-computacional. A estrutura modular da página permite fácil navegação entre diferentes seções, como a criação de grafos, a execução dos algoritmos e a visualização dos resultados. Elementos interativos, como botões, menus suspensos e áreas de desenho, foram incorporados para facilitar a interação do usuário com a ferramenta. A reutilização de padrões arquiteturais entre as páginas promoveu consistência cognitiva, enquanto a sequência lógica de páginas guia o usuário do contexto à experimentação e formalização, alinhando-se a princípios pedagógicos orientados pela teoria da aprendizagem.
 
 \paragraph{}
 A partir desse desenvolvimento, o visualizador interativo de arborescências dirigidas se apresenta como uma ferramenta valiosa para estudantes, educadores e profissionais interessados em teoria dos grafos e algoritmos de otimização. A seguir destacamos algumas contribuições.
@@ -5416,7 +5414,7 @@ Este trabalho contribui para a interseção entre teoria dos grafos e design ped
 \begin{itemize}
     \item \textbf{Integração de Algoritmos Complexos:} Implementação detalhada dos algoritmos de Chu-Liu/Edmonds e Andras Frank, destacando suas bases teóricas e operacionais, e demonstrando como decisões locais se traduzem em garantias globais de otimalidade.
     \item \textbf{Design Pedagógico:} Aplicação de princípios de interação humano-computador e de aprendizagem multimídia para criar uma interface que facilita a compreensão de conceitos complexos, reduzindo a carga cognitiva e promovendo o engajamento ativo.
-    \item \textbf{Arquitetura Modular e Reutilizável:} Desenvolvimento de uma estrutura web que permite fácil manutenção, extensão e consistência cognitiva entre diferentes páginas, utilizando tecnologias modernas como PyScript, NetworkX e Matplotlib.
+    \item \textbf{Arquitetura Modular e Reutilizável:} Desenvolvimento de uma estrutura \textit{web} que permite fácil manutenção, extensão e consistência cognitiva entre diferentes páginas, utilizando tecnologias modernas como PyScript, NetworkX e Matplotlib.
     \item \textbf{Ferramenta Acessível e Reprodutível:} Criação de uma ferramenta que pode ser acessada diretamente no navegador, eliminando barreiras de adoção e permitindo que usuários experimentem e aprendam de forma autônoma.
     \item \textbf{Documentação e Avaliação:} Fornecimento de documentação detalhada e avaliação preliminar da interface, oferecendo insights sobre a eficácia pedagógica e identificando áreas para melhorias futuras.
 \end{itemize}
