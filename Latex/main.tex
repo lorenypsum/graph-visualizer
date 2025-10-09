@@ -3545,16 +3545,16 @@ def phase2_find_minimum_arborescence(
     D_original, r0, A_zero, draw_fn=None, log=None, boilerplate: bool = True, lang="pt"
 ):
     """
-    Find the minimum arborescence in a directed graph D with root r0.
-    The function returns the minimum arborescence as a DiGraph.
+    Encontra a arborescência mínima em um grafo dirigido D com raiz r0.
+    A função retorna a arborescência mínima como um DiGraph.
 
-    Parameters:
-        - D_original: directed graph (DiGraph)
-        - r0: root node
-        - A_zero: list of arcs (u, v) that form the minimum arborescence
+    Parâmetros:
+        - D_original: grafo dirigido (DiGraph)
+        - r0: vértice raiz
+        - A_zero: lista de arcos (u, v) que formam a arborescência mínima
 
-    Returns:
-        - Arb: directed graph (DiGraph) representing the minimum arborescence
+    Retorno:
+        - Arb: grafo dirigido (DiGraph) que representa a arborescência mínima
     """
     Arb = nx.DiGraph()
 
@@ -3602,16 +3602,16 @@ def phase2_find_minimum_arborescence_v2(
     D_original, r0, A_zero, draw_fn=None, log=None, boilerplate: bool = True, lang="pt"
 ):
     """
-    Find the minimum arborescence in a directed graph D with root r0.
-    The function returns the minimum arborescence as a DiGraph.
+    Encontra a arborescência mínima em um grafo dirigido D com raiz r0.
+    A função retorna a arborescência mínima como um DiGraph.
 
-    Parameters:
-        - D_original: directed graph (DiGraph)
-        - r0: root node
-        - A_zero: list of arcs (u, v) that form the minimum arborescence
+    Parâmetros:
+        - D_original: grafo dirigido (DiGraph)
+        - r0: vértice raiz
+        - A_zero: lista de arcos (u, v) que formam a arborescência mínima
 
-    Returns:
-        - Arb: directed graph (DiGraph) representing the minimum arborescence
+    Retorno:
+        - Arb: grafo dirigido (DiGraph) que representa a arborescência mínima
     """
     Arb = nx.DiGraph()
     for i, (u, v) in enumerate(A_zero):
@@ -3688,7 +3688,7 @@ def check_dual_optimality_condition(
         - Dual_list: lista de tuplas (X, z(X)) representando as variáveis duais
         - r0: nó raiz
 
-    Returns:
+    Retorno:
         - bool: True se a condição dual é satisfeita, False caso contrário
     """
     for X, z in Dual_list:
@@ -4141,13 +4141,13 @@ O desenvolvimento utilizou tecnologias web modernas, incluindo HTML5, Tailwind C
 A aplicação centraliza-se nas páginas \texttt{chuliu.html} e \texttt{andrasfrank.html}, que permitem executar os algoritmos de Chu--Liu/Edmonds e Frank, respectivamente. A seguir, detalhamos os componentes funcionais principais da interface:
 
 \begin{enumerate}\setlength{\itemsep}{2pt}
-    \item \textbf{Editor de Grafo:} Inputs para origem, destino e peso + botões de inserção e limpeza (\texttt{add-edge}, \texttt{reset-graph}).
-    \item \textbf{Carregamento de exemplo:} Botão \texttt{load-test-graph} injeta um grafo de teste estruturado para reduzir \emph{time-to-first-insight}.
-    \item \textbf{Configuração de raiz:} Campo para definir / confirmar o vértice raiz (\texttt{root-node}).
-    \item \textbf{Execução algorítmica:} Botão \texttt{run-algorithm} dispara o pipeline de filtragem e cálculo da arborescência mínima.
-    \item \textbf{Visualização de estados:} Área cumulativa (\texttt{graph-area}) onde cada renderização mantém a coerência posicional (layout determinístico) para comparação mental entre passos.
-    \item \textbf{Log textual:} Caixa de texto incremental (\texttt{log-output}) correlaciona ações a transformações estruturais (dual coding: texto + imagem).
-    \item \textbf{Exportação:} Ação de exportar grafo em JSON para análise posterior ou reimportação.
+    \item \textbf{Editor de Grafo:} inputs para origem, destino e peso + botões de inserção e limpeza (\texttt{add-edge}, \texttt{reset-graph}).
+    \item \textbf{Carregamento de exemplo:} botão \texttt{load-test-graph} injeta um grafo de teste estruturado para reduzir \emph{time-to-first-insight}.
+    \item \textbf{Configuração de raiz:} campo para definir / confirmar o vértice raiz (\texttt{root-node}).
+    \item \textbf{Execução algorítmica:} botão \texttt{run-algorithm} dispara o pipeline de filtragem e cálculo da arborescência mínima.
+    \item \textbf{Visualização de estados:} área cumulativa (\texttt{graph-area}) onde cada renderização mantém a coerência posicional (layout determinístico) para comparação mental entre passos.
+    \item \textbf{Log textual:} caixa de texto incremental (\texttt{log-output}) correlaciona ações a transformações estruturais (dual coding: texto + imagem).
+    \item \textbf{Exportação:} ação de exportar grafo em JSON para análise posterior ou reimportação.
     \item \textbf{Incorporação de PDF:} \texttt{tese.html} exibe o \texttt{main.pdf} lado a lado à aplicação, incentivando leitura entrelaçada teoria-execução.
 \end{enumerate}
 
