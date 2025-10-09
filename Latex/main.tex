@@ -637,7 +637,7 @@ Uma \textbf{função} \(f\) de um conjunto \(A\) em um conjunto \(B\) é uma rel
 No nosso exemplo-mestre, considere \(P=\{\text{todas as plantas}\}\) e \(\mathbb{N}=\{0,1,2,\ldots\}\) (números naturais). Definimos a função \(f: P \to \mathbb{N}\) que associa cada planta ao seu número de folhas. Se \(p \in P\) é uma árvore com 100 folhas, então \(f(p) = 100\).
 
 \paragraph{}
-Em teoria dos grafos, funções podem ser usadas para atribuir pesos às arestas. Por exemplo, se temos um grafo \(G\) com arestas \(e_1, e_2, \ldots, e_n\), podemos definir uma função \(c: E \to \mathbb{R}^+\) que atribui um peso \(c(e_i)\) a cada aresta \(e_i\).
+Em teoria dos grafos, funções podem ser usadas para atribuir valores numéricos -- também chamados de pesos ou custos -- às arestas. Por exemplo, se temos um grafo \(G\) com arestas \(e_1, e_2, \ldots, e_n\), podemos definir uma função \(c: E \to \mathbb{R}^+\) que atribui um peso \(c(e_i)\) a cada aresta \(e_i\).
 
 \paragraph{}
 Na ciência da computação, relações e funções são usadas para modelar conexões entre dados, estruturas de dados e operações. Por exemplo, em bancos de dados relacionais, tabelas representam relações entre diferentes entidades. Em programação funcional, funções são tratadas como cidadãos de primeira classe, permitindo a criação de funções de ordem superior que podem receber outras funções como argumentos ou retorná-las como resultados.
@@ -3042,7 +3042,7 @@ def find_optimum_arborescence_chuliu(
         return F_prime
 \end{pybox}
 
-\paragraph{Notas finais}
+\paragraph{Notas finais sobre a implementação}
 \paragraph{}
 A implementação acima segue diretamente a descrição do algoritmo de Chu–Liu/Edmonds, enfatizando clareza e correção. Para aplicações práticas, otimizações podem ser introduzidas, como estruturas de dados eficientes para seleção de mínimos, detecção rápida de ciclos e manipulação de grafos dinâmicos. Além disso, a função pode ser adaptada para lidar com casos especiais, como grafos desconexos ou múltiplas raízes, conforme necessário.
 
@@ -3050,8 +3050,9 @@ A implementação acima segue diretamente a descrição do algoritmo de Chu–Li
 A complexidade da implementação direta é \(O(mn)\) no pior caso, onde \(m\) é o número de arestas e \(n\) o número de vértices, devido à potencial profundidade de recursão e ao processamento linear em cada nível. Implementações mais sofisticadas podem reduzir isso para \(O(m \log n)\) usando estruturas avançadas, como heaps e union-find, mas a versão apresentada prioriza a compreensão do algoritmo fundamental.
 
 
+\paragraph{Decisões de projeto e implicações práticas}
 \paragraph{}
-Para fechar este capítulo, vale destacar algumas decisões de projeto e implicações práticas:
+Antes de prosseguir para uma visão alternativa do mesmo problema, vale destacar algumas decisões de projeto e implicações práticas da implementação de Chu–Liu/Edmonds:
 \begin{itemize}\setlength{\itemsep}{2pt}
     \item \textbf{Estruturas e efeitos colaterais:} Optamos por modificar grafos \emph{in-place} (por exemplo, durante a normalização e a contração de ciclos) para reduzir alocações e facilitar a visualização incremental. Isso exige invariantes explícitos e cuidado com referências ativas ao grafo original.
     \item \textbf{Empates, paralelos e laços:} Empates são resolvidos de forma determinística/local sem afetar a otimalidade. A contração pode induzir \emph{arcos paralelos}; preservamos apenas o de menor custo. Laços (self-loops) são descartados por construção.
@@ -3060,17 +3061,22 @@ Para fechar este capítulo, vale destacar algumas decisões de projeto e implica
     \item \textbf{Extensões:} Variantes com múltiplas raízes, restrições adicionais (p.ex., proibições por partição) e empacotamento de arborescências exigem ajustes na fase de extração/expansão ou formulações via matroides.
 \end{itemize}
 
+\paragraph{Transição para a abordagem primal-dual}
 \paragraph{}
-No capítulo seguinte revisitaremos o método sob uma \emph{ótica primal–dual} em duas fases, proposta por András Frank. Essa perspectiva organiza a normalização via \emph{potenciais}\footnote{No contexto primal–dual, “potenciais” são valores escalares \(y(v)\) atribuídos aos vértices para definir \emph{custos reduzidos} \(c'(u,v)=c(u,v)-y(v)\). Ajustar \(y\) desloca uniformemente os custos das arestas que \emph{entram} em \(v\), sem mudar a otimalidade global: preserva a ordem relativa entre entradas e torna “apertadas” (custo reduzido zero) as candidatas corretas, habilitando contrações e uma prova de corretude via cortes apertados.} \(y(\cdot)\), explica os \emph{custos reduzidos} e introduz a noção de \emph{cortes apertados} (família laminar) como guias das contrações. Veremos como a mesma mecânica operacional (normalizar \(\to\) contrair \(\to\) expandir) emerge de condições duais que também sugerem otimizações e generalizações.
+Embora o algoritmo de Chu–Liu/Edmonds seja elegante e eficiente, sua mecânica operacional — normalizar custos, selecionar mínimos, contrair ciclos — pode parecer um conjunto de heurísticas bem-sucedidas sem uma justificativa teórica unificadora aparente. Por que escolher a melhor entrada para cada vértice garante otimalidade global após o tratamento de ciclos? A resposta reside na \emph{dualidade em programação linear}.
+
+\paragraph{}
+No capítulo seguinte, revisitaremos o mesmo problema sob uma ótica primal–dual em duas fases, proposta por András Frank. Essa perspectiva organiza a normalização via potenciais\footnote{No contexto primal–dual, “potenciais” são valores escalares \(y(v)\) atribuídos aos vértices para definir custos reduzidos \(c'(u,v)=c(u,v)-y(v)\). Ajustar \(y\) desloca uniformemente os custos das arestas que entram em \(v\), sem mudar a otimalidade global: preserva a ordem relativa entre entradas e torna “apertadas” (custo reduzido zero) as candidatas corretas, habilitando contrações e uma prova de corretude via cortes apertados.} \(y(\cdot)\), explica os custos reduzidos e introduz a noção de cortes apertados (família laminar) como guias das contrações. Veremos como a mesma mecânica operacional (normalizar \(\to\) contrair \(\to\) expandir) emerge de condições duais que também sugerem otimizações e generalizações.
 
 
 \section{Procedimento em Duas Fases de András Frank}
 
+\paragraph{Contexto histórico e motivação}
 \paragraph{}
 Os primeiros algoritmos para arborescência de custo mínimo foram propostos por Chu–Liu (1965) e Edmonds (1967). Eles introduziram a ideia de contrair ciclos e de caracterizar quando um conjunto de arcos forma uma arborescência. Mais tarde, essa mesma lógica passou a ser lida no arcabouço \emph{primal–dual}.
 
 \paragraph{}
-Em 1981, András Frank apresentou um algoritmo em duas fases que resolve o problema de arborescência mínima usando técnicas primal–duais \cite{frank1981}. A seguir descrevemos esse método.
+Em 1981, András Frank apresentou um algoritmo em duas fases que resolve o problema de arborescência mínima usando técnicas primal–duais \cite{frank1981}. Enquanto Chu–Liu/Edmonds opera de forma mais combinatória e direta, Frank explicita a estrutura de otimização subjacente, revelando \emph{por que} as operações funcionam e conectando-as a certificados de otimalidade. A seguir descrevemos esse método.
 
 \subsection{Descrição do Algoritmo}
 \paragraph{}
@@ -3598,6 +3604,13 @@ def phase1_find_minimum_arborescence(
     return A_zero, Dual_list
 \end{pybox}
 
+\paragraph{Transição para a extração: Fase 2}
+\paragraph{}
+Ao término da Fase 1, o algoritmo de Frank produziu um subgrafo \(D_0\) contendo apenas arcos de custo reduzido zero, com a garantia de que cada vértice \(v\neq r\) possui ao menos uma entrada nesse subgrafo. Este é o resultado concreto dos ajustes de potenciais: transformamos o problema original em um grafo ``zerado'' onde sabemos que existe uma arborescência ótima.
+
+\paragraph{}
+A Fase 2 explora essa estrutura preparada: em vez de continuar ajustando custos ou potenciais, simplesmente extraímos uma arborescência usando exclusivamente os arcos apertados de \(D_0\). A separação entre as fases é clara: a Fase 1 prepara o terreno dual, e a Fase 2 colhe o resultado primal. Esta divisão não apenas simplifica a análise de corretude (todos os arcos escolhidos são apertados, satisfazendo complementaridade), mas também permite otimizações específicas em cada etapa.
+
 \paragraph{Fase 2 - algoritmo de Frank}
 	a função \texttt{phase2\_find\_minimum\_arborescence} recebe \texttt{D\_original}, \texttt{r0} e \texttt{A\_zero} e devolve \texttt{Arb} (um \texttt{DiGraph}) contendo a arborescência construída apenas com 0‑arestas. O fluxo é:
 \begin{itemize}\setlength{\itemsep}{1pt}
@@ -3890,10 +3903,15 @@ def andras_frank_algorithm(
     \item Parâmetros opcionais permitem controle sobre visualização e mensagens, facilitando depuração e entendimento do processo.
 \end{itemize}
 
+\paragraph{Das implementações à comparação sistemática}
 \paragraph{}
 De fato, o algoritmo de Frank é uma abordagem elegante e eficiente para encontrar arborescências de custo mínimo em dígrafos, combinando técnicas de programação linear, teoria dos grafos e estruturas de dados. A implementação acima captura os principais passos do algoritmo, permitindo a exploração prática dessa técnica. 
 
-Mas, depois de toda essa exploração do método de Frank, vale a pena revisitar o clássico algoritmo de Chu–Liu/Edmonds para entender as diferenças e semelhanças entre essas duas abordagens fundamentais para o problema da arborescência de custo mínimo. A seguir, discutiremos as diferenças e semelhanças entre os métodos de Chu–Liu/Edmonds e Frank.
+\paragraph{}
+Mas ter duas implementações funcionais — Chu–Liu/Edmonds e Frank — levanta questões naturais: \emph{como elas se relacionam conceitualmente?} Ambas resolvem o mesmo problema, mas suas organizações internas diferem. Chu–Liu/Edmonds opera de forma mais direta e combinatória, enquanto Frank explicita a estrutura dual subjacente. Essas diferenças conceituais se traduzem em diferenças práticas de desempenho, estruturas de dados ou facilidade de compreensão?
+
+\paragraph{}
+Antes de responder empiricamente (via testes), vale consolidar uma visão comparativa \emph{teórica} dessas abordagens. A próxima seção examina lado a lado as semelhanças e diferenças entre Chu–Liu/Edmonds e Frank, preparando o terreno para a análise experimental que virá em seguida.
 
 \section{Discussão e Resultados: Chu-liu/Edmonds vs. Frank}
 
@@ -3937,7 +3955,13 @@ As principais diferenças e semelhanças entre os dois métodos podem ser resumi
 \end{itemize}
 
 \paragraph{}
-Ambos os métodos são poderosos e amplamente aplicáveis, e a escolha entre eles pode depender do contexto, da familiaridade com técnicas primal–dual ou combinatórias, e das necessidades específicas de implementação. Entender as nuances de cada abordagem enriquece a compreensão do problema da arborescência de custo mínimo e das ferramentas disponíveis para resolvê-lo. Nesse sentido realizamos testes para garantir a corretude e avaliar o desempenho das implementações comparativamente, conforme descrito a seguir.
+Ambos os métodos são amplamente aplicáveis, e a escolha entre eles pode depender do contexto, da familiaridade com técnicas primal–dual ou combinatórias, e das necessidades específicas de implementação.
+
+\paragraph{}
+Estabelecidos os fundamentos teóricos e as distinções conceituais, uma questão natural emerge: \emph{como essas diferenças se manifestam na prática?} Ambas as abordagens garantem otimalidade, mas será que apresentam desempenhos similares em instâncias reais? A organização primal–dual de Frank, com suas duas fases distintas, oferece vantagens computacionais ou apenas elegância teórica?
+
+\paragraph{}
+Para responder a essas perguntas de forma empírica, realizamos uma bateria de testes sistemáticos comparando as implementações de Chu–Liu/Edmonds e Frank (em suas variantes com e sem heap) em grafos de diferentes tamanhos e densidades. Os objetivos são múltiplos: validar a corretude das implementações, caracterizar o comportamento temporal de cada método, e verificar se as previsões teóricas (como a dominância da Fase I em Frank) se confirmam na prática.
 
 \subsection{Testes e Resultados}
 
@@ -4011,13 +4035,13 @@ As Figuras~\ref{fig:times-boxplot}--\ref{fig:d0-vs-v} resumem esses achados. O b
 Em síntese, os resultados empíricos alinham-se às previsões teóricas: custos coincidem e satisfazem complementaridade; o \emph{Chu--Liu} apresenta boa escalabilidade nas faixas testadas; a Fase~I de Frank tende a dominar o tempo; e a variação com heap reduz significativamente o custo da Fase~II, refletindo o uso de extrações \(\log n\). Essas observações reforçam o quadro de \cite{frank2014,schrijver2003comb}: a organização primal--dual de Frank torna explícitas as estruturas (cortes ativos, apertude) que explicam tanto a corretude quanto caminhos de otimização.
 
 \paragraph{}
-Em síntese, os testes e as análises oferecem uma base robusta para a compreensão prática e teórica dos algoritmos de arborescência de custo mínimo, explicitando suas forças e nuances. A partir desses achados, avançamos para como transformá-los em aprendizagem efetiva.
+Os testes e as análises apresentados oferecem uma base robusta para a compreensão prática e teórica dos algoritmos de arborescência de custo mínimo, explicitando suas forças e nuances. Compreender os algoritmos teoricamente e validá-los empiricamente, porém, é apenas parte do desafio: como transformar esse conhecimento em aprendizagem efetiva para estudantes e profissionais?
 
 \paragraph{}
-Para tornar essa experiência concreta, desenvolvemos uma aplicação \textit{web} interativa que permite acompanhar, passo a passo, o funcionamento de ambos os algoritmos, evidenciando suas semelhanças e diferenças.
+A resposta que propomos envolve tornar essa experiência concreta e interativa. Para isso, desenvolvemos uma aplicação \textit{web} que permite acompanhar, passo a passo, o funcionamento de ambos os algoritmos, evidenciando suas semelhanças e diferenças de forma visual e manipulável.
 
 \paragraph{}
-A aprendizagem visual é especialmente útil: observar os algoritmos em ação ajuda a fixar os conceitos apresentados. A seguir, discutimos aspectos didáticos do ensino de dígrafos em cenários mais complexos e resumimos princípios de interação humano-computador que orientaram o desenho da ferramenta.
+A aprendizagem visual é especialmente útil nesse contexto: observar os algoritmos em ação, ver como normalizações transformam custos, como ciclos são contraídos e expandidos, e como potenciais duais guiam a seleção de arestas ajuda a fixar os conceitos apresentados de maneira que a leitura passiva não consegue. Antes de apresentar a aplicação em si, discutimos os fundamentos didáticos que orientaram seu design, explorando aspectos da didática de conceitos abstratos e princípios de interação humano-computador.
 
 \section{A Didática do Abstrato}
 
@@ -4120,6 +4144,12 @@ Tendo em vista essas categorias, desenvolvemos uma aplicação \textit{web} inte
 
 
 \section{A interação humano--computacional em ação: uma aplicação \textit{web} interativa}
+
+\paragraph{}
+Discutimos até aqui fundamentos teóricos dos algoritmos, análises de complexidade, resultados empíricos e princípios pedagógicos que justificam o uso de ferramentas interativas. Estabelecemos \emph{o quê} ensinar (Chu–Liu/Edmonds e Frank), \emph{por quê} usar visualizações (redução de carga cognitiva, dual coding, engajamento ativo) e \emph{como} estruturar o design (heurísticas de IHC, visão geral com detalhe sob demanda, feedback imediato).
+
+\paragraph{}
+Agora, traduzimos esses princípios em código e interface: a aplicação \textit{web} que desenvolvemos busca materializar cada uma das diretrizes discutidas. Isto é, cada botão, cada visualização e cada mensagem de log foi projetada intencionalmente, guiada pelos princípios de IHC e pelas necessidades pedagógicas identificadas.
 
 \paragraph{}
 A aplicação \textit{web} interativa foi desenvolvida para ilustrar os algoritmos de Chu–Liu/Edmonds e Frank, permitindo aos usuários acompanhar passo a passo o funcionamento de ambos os métodos. A ferramenta foi projetada com base em princípios de interação humano-computador, visando maximizar a compreensão e o engajamento dos usuários.
