@@ -1,128 +1,201 @@
-import networkx as nx
-from networkx.readwrite import json_graph
-import matplotlib.pyplot as plt
-from js import Blob, URL, document, alert
-from pyscript import when, display
-import json
+<!DOCTYPE html>
+<html lang="pt-BR">
 
-from chuliu import find_optimum_arborescence_chuliu, remove_edges_to_r0
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chu-Liu/Edmonds</title>
+    <link rel="icon" type="image/x-icon" href="../assets/logo.png"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/cytoscape@3.26.0/dist/cytoscape.min.js"></script>
 
-def log_in_box(msg: str):
-    log_box = document.getElementById("log-output")
-    log_box.value += msg + "\n"
-    log_box.scrollTop = log_box.scrollHeight
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
 
-def draw_graph(G: nx.DiGraph, title="Digrafo", append=True):
-    plt.clf()  # Limpa a figura atual
-    pos = nx.planar_layout(G)  # Layout para posicionamento dos nós
-    plt.figure(figsize=(6, 4))  # Tamanho da figura
-    # Desenha os nós e arestas
-    nx.draw(
-        G,
-        pos,
-        with_labels=True,
-        node_color="lightblue",
-        edge_color="gray",
-        node_size=2000,
-        font_size=12,
-    )
-    weights = nx.get_edge_attributes(G, "w")
-    nx.draw_networkx_edge_labels(
-        G, pos, edge_labels=weights, font_color="red", font_size=12
-    )
-    plt.title(title)
-    display(title, target="graph-area", append=append)
-    display(plt, target="graph-area", append=append)
-    plt.close()  # Fecha a figura para liberar memória
+    <link rel="stylesheet" href="https://pyscript.net/releases/2025.3.1/core.css" />
+    <script type="module" src="https://pyscript.net/releases/2025.3.1/core.js"></script>
+</head>
 
-G = nx.DiGraph()
+<body class="flex min-h-screen text-gray-800 bg-gray-100">
+    <style>
+        .py-error, .py-terminal-error {
+            display: none !important;
+        }
+    </style>
+    <div class="absolute top-[100px] w-full h-[1px] bg-[#DBDBDB]"></div>
 
-@when("click", "#add-edge")
-def add_edge():
-    global G
-    source = document.getElementById("source").value
-    target = document.getElementById("target").value
-    weight = document.getElementById("weight").value
-    if source and target and weight:
-        G.add_edge(source, target, w=float(weight))
-        log_in_box(f"Aresta adicionada: {source} → {target} (peso={weight})")
-        draw_graph(G, "Grafo com Arestas", append=False)
+    <!-- MENU LATERAL -->
+    <div id="sidebar"></div>
 
-@when("click", "#reset-graph")
-def reset_graph():
-    global G
-    G.clear()
-    document.getElementById("log-output").value = ""
-    draw_graph(G, "Grafo Resetado", append=False)
-    log_in_box("Grafo resetado.")
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div id="main-content" class="flex-1 bg-[#E5E5E5] p-6">
+        <span class="flex items-center gap-4 mb-10 text-4xl text-[#352B67]">Chu-Liu / Edmonds</span>
+        <!-- Stepper -->
+        <div class="grid grid-cols-50 gap-1">
+            <div class="col-span-1 p-2">
+            </div>
+            <div class="col-span-9 p-2">
+                <ol class="items-start gap-4 mx-4 space-y-2 sm:flex sm:space-x-4 sm:space-y-0 rtl:space-x-reverse">
+                    <li class="flex text-gray-500 dark:text-blue-500 space-x-2.5 rtl:space-x-reverse">
+                        <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-blue-500">
+                            1
+                        </span>
+                        <span>
+                            <h3 class="font-medium leading-tight">Crie um grafo</h3>
+                            <span class="text-sm text-gray-500">
+                                Desenhe um grafo,
+                                <span id="load-test-graph" class="cursor-pointer text-[#5A3CE5] hover:underline">carregue</span>
+                                um exemplo ou <br>
+                                <span id="import-graph" class="cursor-pointer text-[#5A3CE5] hover:underline">importe</span>
+                                <input type="file" id="file-input" style="display: none;" />
+                                um grafo já existente.
+                            </span>
+                        </span>
+                    </li>
+                    <li class="flex text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
+                        <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
+                            2
+                        </span>
+                        <span>
+                            <h3 class="font-medium leading-tight">Escolha o nó raiz</h3>
+                            <!-- <p class="text-sm mb-2">Defina o ponto inicial</p> -->
+                            <input type="text" id="root-node"
+                                class="w-full p-2 mt-2 rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 border-transparent"
+                                placeholder="node" />
+                        </span>
+                    </li>
+                    <li class="flex text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
+                        <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
+                            3
+                        </span>
+                        <span>
+                            <h3 class="font-medium leading-tight">Execute o algoritmo</h3>
+                            <div class="mt-1 flex justify-center items-center gap-1">
+                                <img id="run-algorithm" src="../assets/run.png" alt="Executar"
+                                    class="cursor-pointer w-8 h-8 rounded-lg hover:opacity-80 mt-2" />
+                            </div>
+                        </span>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-span-1 p-2">
+            </div>
+        </div>
+        <!-- Grafo original -->
+        <div class="grid grid-cols-10 gap-4 py-4 px-4">
+            <div class="col-span-2 p-4"></div>
+            <div class="col-span-6 p-4">
+                <span class="mb-50 text-xl text-[#9993B7]">Grafo Original</span>
+                <div id="graph-editor" class="my-3 mt-50 py-4 px-50 rounded-lg bg-white h-[500px]">
+                </div>
+            </div>
+            <div class="col-span-2 p-4">
+                <div class="py-4 px-2 flex justify-left items-center gap-1">
+                    <img src="../assets/download.png" alt="Download" id="export-graph-original"
+                        class="my-5 cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
+                    <img src="../assets/delete.png" alt="Reset" id="reset-graph"
+                        class="my-5 cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
+                </div>
+            </div>
 
-@when("click", "#export-graph")
-def export_graph(event):
-    log_in_box("Exportando grafo...")
-    global G
-    if G.number_of_nodes() == 0:
-        log_in_box("[ERRO] O grafo está vazio.")
-        return
+        </div>
+        <!-- Arborescência -->
+        <div id="arborescence-section" class="grid grid-cols-10 gap-4 py-4 px-4 hidden">
+            <div class="col-span-2 p-4"></div>
+            <div class="col-span-6 p-4">
+                <span class="mb-50 text-xl text-[#9993B7]">Arborescência</span>
+                <div id="arborescence-viewer" class="my-3 mt-50 py-4 px-50 rounded-lg bg-white h-[500px]">
+                </div>
+            </div>
+            <div class="col-span-2 p-4">
+                <div class="py-4 px-2 flex justify-left items-center gap-1">
+                    <img src="../assets/download.png" alt="Download" id="export-graph-arborescencia"
+                        class="my-5 cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
+                </div>
+            </div>
+        </div>
 
-    # Converte o grafo para JSON
-    data = json_graph.node_link_data(G, edges="links")
-    json_data = json.dumps(data, indent=4)
+        <!-- Logs de execução -->
+        <div id="log-section" class="grid grid-cols-10 gap-4 py-4 px-4 hidden">
+            <div class="col-span-2 p-4"></div>
+            <div class="col-span-6 p-4">
+                <button id="collapser-button"
+                    class="w-full bg-[#EEEEEE] text-[#948EB3] py-2 px-4 rounded-t-md text-left flex justify-between items-center"
+                    onclick="toggleCollapser()">
+                    Log de Execução
+                    <img id="collapser-icon" src="../assets/plus.png" alt="Contrair" class="w-5 h-5 hover:opacity-80" />
+                </button>
 
-    # Cria um link de download no navegador
-    blob = Blob.new([json_data], {"type": "application/json"})
-    url = URL.createObjectURL(blob)
+                <!-- Conteúdo colapsável -->
+                <div id="log-collapser-content"
+                    class="p-4 bg-[#EEEEEE] text-sm text-gray-400 rounded-b-md hidden transition-all duration-500 ease-in-out">
+                    <textarea id="log-output" readonly
+                        class="w-full p-3 rounded h-40 bg-[#EEEEEE] text-sm text-gray-400 border-transparent"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    # Configura e dispara o download
-    link = document.createElement("a")
-    link.href = url
-    link.download = "graph_teste.json"
-    link.click()
-    URL.revokeObjectURL(url)
+    <!-- Passo a Passo -->
+    <div id="right-sidebar" class="w-80 transition-all duration-300 border-l-[1px] bg-[#E5E5E5] border-[#DBDBDB] overflow-hidden">
+        <div id="title_step_area" class="flex items-center gap-6 py-8 mx-4 top-6">
+            <button id="toggle-sidebar" class="text-right text-[#4B4277] hover:text-[#2d255d]">
+                <img id="collapser-icon" src="../assets/back_arrow_right.png" alt="Contrair" class="w-5 h-5 hover:opacity-80" />
+            </button>
+            <span id="title_step" class="text-lg text-[#4B4277] font-medium">Passo A Passo</span>
+        </div>
+        <div id="container_step_by_step" class="my-6 mx-4 gap-4 py-2 px-2 bg-[#F5F5F5] rounded-lg">
+            <span id="step_warning" class="text-sm font-light text-[#787486]">Execute o algoritmo para visualizar o passo-a-passo</span>
+        </div>
+    </div>
 
-    log_in_box("Download do grafo iniciado.")
+    <!-- Toasts -->
+    <div id="toast-danger" class="hidden fixed top-5 right-5 z-50 flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow-sm dark:text-gray-400 dark:bg-gray-800 transition-opacity duration-500 opacity-100" role="alert">
+        <div class="inline-flex items-center justify-center shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200">
+            <!-- SVG de erro -->
+            <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 11.793a1 1 0 1 1-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L8.586 10 6.293 7.707a1 1 0 0 1 1.414-1.414L10 8.586l2.293-2.293a1 1 0 0 1 1.414 1.414L11.414 10l2.293 2.293Z"/>
+            </svg>
+            <span class="sr-only">Error icon</span>
+        </div>
+        <div id="toast-danger-msg" class="ms-3 text-sm font-normal">Ocorreu um erro.</div>
+        <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" data-dismiss-target="#toast-danger" aria-label="Close" onclick="document.getElementById('toast-danger').classList.add('hidden')">
+            <span class="sr-only">Close</span>
+            <svg class="w-3 h-3" aria-hidden="true" fill="none" viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+            </svg>
+        </button>
+    </div>
 
-@when("click", "#load-test-graph")
-def load_test_graph(event):
-    global G
-    G.clear()
-    G.add_edge("r0", "B", w=10)
-    G.add_edge("r0", "A", w=2)
-    G.add_edge("r0", "C", w=10)
-    G.add_edge("B", "A", w=1)
-    G.add_edge("A", "C", w=4)
-    G.add_edge("C", "D", w=2)
-    G.add_edge("D", "B", w=2)
-    G.add_edge("B", "E", w=8)
-    G.add_edge("C", "E", w=4)
+    <!-- Modal de Imagem -->
+    <div id="image-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 hidden">
+        <img id="image-modal-img" src="" alt="Imagem Ampliada" class="max-w-3xl max-h-[80vh] rounded-lg shadow-lg border-4 border-white">
+    </div>
 
-    log_in_box("Grafo de teste carregado.")
-    draw_graph(G, "Grafo de Teste (DG)", append=False)
+    <!-- Modal Loader -->
+    <div id="loader-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30 hidden">
+        <div class="flex flex-col items-center">
+            <div class="w-16 h-16 border-4 border-[#5a3ce5] border-t-transparent border-solid rounded-full animate-spin"></div>
+            <span class="mt-4 text-white text-lg">Processando...</span>
+        </div>
+    </div>
 
-@when("click", "#show-ready-arborescence")
-def show_ready_arborescence(event):
-    T = nx.DiGraph()
-    T.add_edge("r0", "A", w=2)
-    T.add_edge("A", "C", w=4)
-    T.add_edge("C", "D", w=2)
-    T.add_edge("D", "B", w=2)
-    T.add_edge("C", "E", w=4)
-    draw_graph(T, "Arborescência Pré-definida")
-    log_in_box("Arborescência pronta exibida.")
+    <!-- Modal para peso da aresta -->
+    <div id="edge-weight-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-80">
+            <h3 class="text-lg font-semibold mb-4 text-gray-800">Peso da aresta</h3>
+            <input id="edge-weight-input" type="number" min="1" class="w-full p-2 border rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Digite o peso" />
+            <div class="flex justify-end gap-2">
+            <button id="edge-weight-cancel" class="px-4 py-2 rounded bg-gray-200 text-gray-700 hover:bg-gray-300">Cancelar</button>
+            <button id="edge-weight-ok" class="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">OK</button>
+            </div>
+        </div>
+    </div>
 
-
-@when("click", "#run-algorithm")
-def run_algorithm(event):
-    global G
-    r0 = document.getElementById("root-node").value or "r0"
-    if r0 not in G:
-        alert(f"[ERRO] O nó raiz '{r0}' deve existir no grafo.")
-        return
-
-    log_in_box("Executando algoritmo de Chu-Liu...")
-    print(remove_edges_to_r0)
-    G_filtered = remove_edges_to_r0(G, r0)
-    T = find_optimum_arborescence_chuliu(
-        G_filtered, r0, draw_fn=draw_graph, log=log_in_box
-    )
-    draw_graph(T, "Arborescência Ótima")
-    log_in_box("Execução concluída com sucesso.")
+    <!-- Scripts -->
+    <script src="../scripts/js/sidebar.js"></script>
+    <script src="../scripts/js/main.js"></script>
+    <script src="../scripts/js/draw_graph.js"></script>
+    <script type="py" src="../scripts/chuliu_page.py" config="../scripts/pyscript.json"></script>
+</body>
+</html>
