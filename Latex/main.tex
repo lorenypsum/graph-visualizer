@@ -3477,7 +3477,7 @@ def has_arborescence(D, r0):
 \paragraph{}
 O laço faz o seguinte, de forma direta:
 \begin{itemize}
-    \item \emph{Construção do condensado:} constrói o condensado \(C=\mathrm{Cond}(D\_0)\) via \texttt{nx.condensation(D\_zero)} e coleta as \emph{fontes} de \(C\) (componentes com grau de entrada zero)\footnote{No grafo condensado \(C\) (um DAG cujos nós são as componentes fortemente conexas de \(D\_0\)), uma "fonte" é um nó com grau de entrada zero. Isso corresponde a um bloco de \(D\_0\) que não recebe arcos de custo reduzido zero vindos de fora do próprio bloco. Na Fase I, elevamos potenciais apenas para fontes distintas da que contém \(r\_0\) para garantir ao menos uma entrada apertada.};
+    \item \emph{Construção do condensado:} constrói o condensado \(C=\mathrm{Cond}(D_0)\) via \texttt{nx.condensation(D\_zero)} e coleta as \emph{fontes} de \(C\) (componentes com grau de entrada zero)\footnote{No grafo condensado \(C\) (um DAG cujos nós são as componentes fortemente conexas de \(D_0\)), uma "fonte" é um nó com grau de entrada zero. Isso corresponde a um bloco de \(D_0\) que não recebe arcos de custo reduzido zero vindos de fora do próprio bloco. Na Fase I, elevamos potenciais apenas para fontes distintas da que contém \(r\_0\) para garantir ao menos uma entrada apertada.};
     \item \emph{Fontes:} se restar apenas uma fonte (a que contém \(r0\)), termina;
     \item \emph{Processamento das fontes:} para cada fonte \(u\) com \(X=\text{members}(u)\) e \(r0\notin X\):
     \begin{itemize}
