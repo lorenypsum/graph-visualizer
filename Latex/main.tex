@@ -4485,7 +4485,7 @@ Além da página principal do visualizador, a aplicação inclui um conjunto de 
 
 \paragraph{\texttt{Home.html}:} o arquivo \texttt{home.html} serve como a página inicial da aplicação, oferecendo uma visão geral do projeto, incluindo um resumo do trabalho e informações sobre os integrantes. A estrutura da página é projetada para ser acolhedora e informativa, utilizando Tailwind CSS para garantir uma aparência moderna e responsiva. A seguir, apresentamos o código completo dessa página.
 
-\begin{htmlbox}{Estrutura resumida de home.html}
+\begin{htmlbox}{home.html}
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -4582,7 +4582,6 @@ Além da página principal do visualizador, a aplicação inclui um conjunto de 
 </html>
 \end{htmlbox}
 
-
 \begin{figure}[H]\centering
 \begin{tikzpicture}[>=Stealth, node distance=1.8cm]
     \node[draw,rounded corners,fill=gray!10] (sb) {Sidebar};
@@ -4595,8 +4594,119 @@ Além da página principal do visualizador, a aplicação inclui um conjunto de 
 \end{figure}
     \textit{Comentário:} Estrutura linear vertical facilita \emph{progressive disclosure}; separação lateral reduz interferência visual com conteúdo principal.
 
+\paragraph{\texttt{Draw\_graph.html}:} editor de grafos livre com funcionalidades de criação, edição, importação e exportação. Utiliza \texttt{Cytoscape.js} para visualização interativa e \texttt{PyScript} para lógica algorítmica. A seguir, apresentamos o código completo dessa página. 
+\begin{htmlbox}{draw\_graph.html}
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Desenhe seu grafo</title>
+    <link rel="icon" type="image/x-icon" href="../assets/logo.png"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/cytoscape@3.26.0/dist/cytoscape.min.js"></script>
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+
+    <link rel="stylesheet" href="https://pyscript.net/releases/2025.3.1/core.css" />
+    <script type="module" src="https://pyscript.net/releases/2025.3.1/core.js"></script>
+</head>
+
+<body class="flex min-h-screen text-gray-800 bg-gray-100">
+    <style>
+        .py-error, .py-terminal-error {
+            display: none !important;
+        }
+    </style>
+    <div class="absolute top-[100px] w-full h-[1px] bg-[#DBDBDB]"></div>
+
+    <!-- MENU LATERAL -->
+    <div id="sidebar"></div>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div id="main-content" class="flex-1 bg-[#E5E5E5] p-6">
+        <span class="flex items-center gap-4 mb-10 text-4xl text-[#352B67]">Desenhe seu grafo</span>
+        <!-- Inputs -->
+        <div class="w-full flex justify-center">
+            <div class="grid grid-cols-10 gap-4 w-full mx-auto">
+                <div class="col-span-2 p-4"></div>
+                <!-- Coluna 1 -->
+                <div class="col-span-3 p-4">
+                    <span class="text-sm text-gray-500">
+                        1. Desenhe um grafo,
+                        <span id="load-test-graph" class="cursor-pointer text-[#5A3CE5] hover:underline">carregue</span>
+                        um exemplo ou
+                        <span id="import-graph" class="cursor-pointer text-[#5A3CE5] hover:underline">importe</span>
+                        <input type="file" id="file-input" style="display: none;" />
+                        um grafo já existente.
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+
+        <!-- Grafo original -->
+        <div class="grid grid-cols-10 gap-4 py-4 px-4">
+            <div class="col-span-2 p-4"></div>
+            <div class="col-span-6 p-4">
+                <span class="mb-50 text-xl text-[#9993B7]">Grafo Original</span>
+                <div id="graph-editor" class="my-3 mt-50 py-4 px-50 rounded-lg bg-white h-[500px]">
+                    
+                </div>
+            </div>
+            <div class="col-span-2 p-4">
+                <div class="py-4 px-2 flex justify-left items-center gap-1">
+                    <img src="../assets/download.png" alt="Download" id="export-graph-original"
+                        class="my-5 cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
+                    <img src="../assets/delete.png" alt="Reset" id="reset-graph"
+                        class="my-5 cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="toast-danger" class="hidden fixed top-5 right-5 z-50 flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow-sm dark:text-gray-400 dark:bg-gray-800 transition-opacity duration-500 opacity-100" role="alert">
+        <div class="inline-flex items-center justify-center shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200">
+            <!-- SVG de erro -->
+            <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 11.793a1 1 0 1 1-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L8.586 10 6.293 7.707a1 1 0 0 1 1.414-1.414L10 8.586l2.293-2.293a1 1 0 0 1 1.414 1.414L11.414 10l2.293 2.293Z"/>
+            </svg>
+            <span class="sr-only">Error icon</span>
+        </div>
+        <div id="toast-danger-msg" class="ms-3 text-sm font-normal">Ocorreu um erro.</div>
+        <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" data-dismiss-target="#toast-danger" aria-label="Close" onclick="document.getElementById('toast-danger').classList.add('hidden')">
+            <span class="sr-only">Close</span>
+            <svg class="w-3 h-3" aria-hidden="true" fill="none" viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../scripts/js/sidebar.js"></script>
+    <script src="../scripts/js/main.js"></script>
+    <script src="../scripts/js/draw_graph.js"></script>
+    <script type="py" src="../scripts/draw_page.py" config="../scripts/pyscript.json"></script>
+</body>
+
+</html>
+\end{htmlbox}
+\begin{figure}[H]\centering
+\begin{tikzpicture}[node distance=1.2cm]
+    \node[draw,rounded corners,fill=gray!10] (sb3) {Sidebar};
+    \node[draw,rounded corners,fill=white,right=3cm of sb3,minimum width=6cm,minimum height=2.2cm] (ed) {Editor de Grafo};
+    \node[draw,rounded corners,fill=white,below=0.2cm of ed,minimum width=3.6cm] (act) {Ações};
+    \draw[->] (act) -- (ed);
+\end{tikzpicture}
+\caption{\texttt{draw\_graph.html}: foco primordial no componente editor.}
+\end{figure}
+\textit{Comentário:} a estrutura modular permite fácil adaptação e reutilização de componentes. 
+
 \paragraph{\texttt{sidebar.html}} Fragmento reutilizável injetado em múltiplas páginas. Estabelece consistência de navegação (heurística de Nielsen) e reduz custo de orientação espacial.
-\begin{htmlbox}{Estrutura resumida de sidebar.html}
+\begin{htmlbox}{sidebar.html}
 <aside class="sidebar">
     <a href="home.html">Home</a>
     <a href="chuliu.html">Chu-Liu</a>
@@ -4617,52 +4727,7 @@ Além da página principal do visualizador, a aplicação inclui um conjunto de 
 \caption{\texttt{sidebar.html}: lista vertical reforçando modelo mental estável de navegação.}
 \end{figure}
 
-\paragraph{\texttt{tese.html}} Contém um \texttt{iframe} para o PDF da dissertação e botão de download. Fornece \emph{transição de modalidade} (exploração interativa \textrightarrow leitura formal).
-\begin{htmlbox}{Estrutura resumida de tese.html}
-<body>
-    <div id="sidebar"></div>
-    <div id="main-content">
-        <button id="download-tese">Download</button>
-        <iframe src="../Latex/main.pdf"></iframe>
-    </div>
-</body>
-\end{htmlbox}
-
-\paragraph{}
-A figura a seguir ilustra a estrutura funcional dessa página.
-
-\begin{figure}[H]\centering
-\begin{tikzpicture}[node distance=2.2cm]
-    \node[draw,rounded corners,fill=gray!10] (sb2) {Sidebar};
-    \node[draw,rounded corners,fill=blue!10,right=3cm of sb2,minimum width=5.2cm,minimum height=2.6cm] (pdf) {Viewer PDF};
-    \node[draw,rounded corners,fill=white,above=0.1cm of pdf,minimum width=3cm] (dl) {Botão Download};
-    \draw[->] (dl) -- (pdf);
-\end{tikzpicture}
-\caption{\texttt{tese.html}: acesso rápido à versão formal do texto.}
-\end{figure}
-\textit{Comentário:} Integração de PDF via \texttt{iframe} mantém usuário no contexto da aplicação, reduzindo carga cognitiva de alternância entre janelas.
-
-\paragraph{\texttt{Draw\_graph.html}:} Espaço de experimentação livre: desenhar/carrear/importar grafo base. Suporta \emph{exploração divergente} antes de foco em algoritmo específico.
-\begin{htmlbox}{Estrutura resumida de draw\_graph.html}
-<body>
-    <div id="sidebar"></div>
-    <div id="main-content">
-        <span>Desenhe seu grafo</span>
-        <div id="graph-editor">...</div>
-        <div class="actions">(download, reset)</div>
-    </div>
-</body>
-\end{htmlbox}
-\begin{figure}[H]\centering
-\begin{tikzpicture}[node distance=1.2cm]
-    \node[draw,rounded corners,fill=gray!10] (sb3) {Sidebar};
-    \node[draw,rounded corners,fill=white,right=3cm of sb3,minimum width=6cm,minimum height=2.2cm] (ed) {Editor de Grafo};
-    \node[draw,rounded corners,fill=white,below=0.2cm of ed,minimum width=3.6cm] (act) {Ações};
-    \draw[->] (act) -- (ed);
-\end{tikzpicture}
-\caption{\texttt{draw\_graph.html}: foco primordial no componente editor.}
-\end{figure}
-	extit{Comentário:} Reduz sobrecarga inicial ocultando passos algorítmicos até que o usuário tenha modelo mental da instância.
+    
 
 \paragraph{\texttt{chuliu.html}} Página específica para execução guiada do algoritmo de Chu--Liu/Edmonds. Introduz componentes de passo-a-passo, logs e visualizações separadas (grafo original vs. arborescência) com possibilidade de esconder/mostrar seções (colapso).
 \begin{htmlbox}{Estrutura resumida de chuliu.html}
