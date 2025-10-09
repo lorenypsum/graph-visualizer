@@ -4195,7 +4195,20 @@ A estrutura de arquivos da aplicação é organizada da seguinte forma:
 \paragraph{}
 A seguir, apresentamos os códigos desenvolvidos para os algoritmos implementados realizarem a interação com os usuários.
 
-\paragraph{Main.py - Lógica de manipulação de grafos:} o arquivo \texttt{main.py} contém funções para manipulação de grafos, execução dos algoritmos e geração de visualizações. A seguir, destacamos o código:
+\paragraph{Main.py - Lógica de manipulação de grafos:} o arquivo \texttt{main.py} contém funções para manipulação de grafos, execução dos algoritmos e geração de visualizações. 
+
+\paragraph{}
+As funções principais incluem:
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item \texttt{draw\_graph(G, title, append)}: Renderiza o grafo \(G\) com título e opção de anexar ou substituir a visualização.
+    \item \texttt{add\_edge()}: Adiciona uma aresta ao grafo com base nos inputs do usuário.
+    \item \texttt{reset\_graph()}: Limpa o grafo atual e o log.
+    \item \texttt{export\_graph()}: Exporta o grafo atual em formato JSON.
+    \item \texttt{load\_test\_graph()}: Carrega um grafo de teste predefinido.
+    \item \texttt{run\_algorithm()}: Executa o algoritmo de Chu--Liu/Edmonds, aplicando filtragem e visualizando cada passo.
+\end{itemize}
+
+A seguir, apresentamos essas funções conforme implementadas no arquivo \texttt{main.py}.
 
 \begin{pybox}[label={lst:draw_graph}]{Main.py: manipulação e visualização de grafos}
 import networkx as nx
@@ -4203,111 +4216,130 @@ from networkx.readwrite import json_graph
 import matplotlib.pyplot as plt
 from js import Blob, URL, document, alert
 from pyscript import when, display
+import json
 
 from chuliu import find_optimum_arborescence_chuliu, remove_edges_to_r0
 
 def log_in_box(msg: str):
-        log_box = document.getElementById("log-output")
-        log_box.value += msg + "\n"
-        log_box.scrollTop = log_box.scrollHeight
+    log_box = document.getElementById("log-output")
+    log_box.value += msg + "\n"
+    log_box.scrollTop = log_box.scrollHeight
 
 def draw_graph(G: nx.DiGraph, title="Digrafo", append=True):
-        plt.clf()
-        pos = nx.planar_layout(G)  # Stable layout for comparison between steps
-        plt.figure(figsize=(6, 4))
-        nx.draw(G, pos, with_labels=True, node_color="lightblue",
-                        edge_color="gray", node_size=2000, font_size=12)
-        weights = nx.get_edge_attributes(G, "w")
-        nx.draw_networkx_edge_labels(G, pos, edge_labels=weights,
-                                                                 font_color="red", font_size=12)
-        plt.title(title)
-        display(title, target="graph-area", append=append)
-        display(plt, target="graph-area", append=append)
-        plt.close()
+    plt.clf()  # Limpa a figura atual
+    pos = nx.planar_layout(G)  # Layout para posicionamento dos nós
+    plt.figure(figsize=(6, 4))  # Tamanho da figura
+    # Desenha os nós e arestas
+    nx.draw(
+        G,
+        pos,
+        with_labels=True,
+        node_color="lightblue",
+        edge_color="gray",
+        node_size=2000,
+        font_size=12,
+    )
+    weights = nx.get_edge_attributes(G, "w")
+    nx.draw_networkx_edge_labels(
+        G, pos, edge_labels=weights, font_color="red", font_size=12
+    )
+    plt.title(title)
+    display(title, target="graph-area", append=append)
+    display(plt, target="graph-area", append=append)
+    plt.close()  # Fecha a figura para liberar memória
 
 G = nx.DiGraph()
-\end{pybox}
 
-\paragraph{Comentários.} O layout planar aproxima uma ancoragem espacial consistente entre quadros, reduzindo carga extrínseca (Sweller). Labels de arestas (pesos) são renderizados em vermelho para maximizar contraste sem conflitar com o canal de cor reservado a outras categorias futuras (arestas selecionadas, contraídas, etc.). O acoplamento \emph{log textual + figura} concretiza dual coding \cite{paivio1990}.
-
-\subsubsection{Manipulação Incremental do Grafo}
-O usuário constrói o exemplo incrementalmente; cada ação gera feedback imediato e persistente no log, reforçando mapeamento ação-estado (heurísticas de Nielsen).
-\begin{pybox}[label={lst:event_handlers}]{Manipuladores de eventos para edição e preparação de exemplos}
 @when("click", "#add-edge")
 def add_edge():
-        global G
-        source = document.getElementById("source").value
-        target = document.getElementById("target").value
-        weight = document.getElementById("weight").value
-        if source and target and weight:
-                G.add_edge(source, target, w=float(weight))
-                log_in_box(f"Aresta adicionada: {source} → {target} (peso={weight})")
-                draw_graph(G, "Grafo com Arestas", append=False)
+    global G
+    source = document.getElementById("source").value
+    target = document.getElementById("target").value
+    weight = document.getElementById("weight").value
+    if source and target and weight:
+        G.add_edge(source, target, w=float(weight))
+        log_in_box(f"Aresta adicionada: {source} → {target} (peso={weight})")
+        draw_graph(G, "Grafo com Arestas", append=False)
 
 @when("click", "#reset-graph")
 def reset_graph():
-        global G
-        G.clear()
-        document.getElementById("log-output").value = ""
-        draw_graph(G, "Grafo Resetado", append=False)
-        log_in_box("Grafo resetado.")
-
-@when("click", "#load-test-graph")
-def load_test_graph(event):
-        global G
-        G.clear()
-        # Grafo de teste predefinido para reduzir barreira inicial
-        G.add_edge("r0", "B", w=10)
-        G.add_edge("r0", "A", w=2)
-        G.add_edge("r0", "C", w=10)
-        G.add_edge("B", "A", w=1)
-        G.add_edge("A", "C", w=4)
-        G.add_edge("C", "D", w=2)
-        G.add_edge("D", "B", w=2)
-        G.add_edge("B", "E", w=8)
-        G.add_edge("C", "E", w=4)
-        log_in_box("Grafo de teste carregado.")
-        draw_graph(G, "Grafo de Teste (DG)", append=False)
-    \end{pybox}
-
-\paragraph{Comentários.} O grafo de teste diminui o \emph{time-to-first-insight}. A função \texttt{reset} fornece um ponto de recuperação, reduzindo medo de erro exploratório (aprendizagem ativa). A atualização visual não é animada quadro a quadro ainda, mas a substituição instantânea mantém latência cognitiva baixa.
-
-\subsubsection{Execução do Algoritmo e Exportação}
-O núcleo pedagógico está na execução do algoritmo de Chu--Liu/Edmonds; a exportação viabiliza reuso analítico e reprodutibilidade.
-\begin{pybox}[label={lst:algorithm_export}]{Execução do algoritmo e exportação}
-@when("click", "#run-algorithm")
-def run_algorithm(event):
-        global G
-        r0 = document.getElementById("root-node").value or "r0"
-        if r0 not in G:
-                alert(f"[ERRO] O no raiz '{r0}' deve existir no grafo.")
-                return
-        log_in_box("Executando algoritmo de Chu-Liu...")
-        G_filtered = remove_edges_to_r0(G, r0)
-        T = find_optimum_arborescence_chuliu(G_filtered, r0,
-                                                                                 draw_fn=draw_graph, log=log_in_box)
-        draw_graph(T, "Arborescencia Otima")
-        log_in_box("Execução concluída com sucesso.")
+    global G
+    G.clear()
+    document.getElementById("log-output").value = ""
+    draw_graph(G, "Grafo Resetado", append=False)
+    log_in_box("Grafo resetado.")
 
 @when("click", "#export-graph")
 def export_graph(event):
-        log_in_box("Exportando grafo...")
-        if G.number_of_nodes() == 0:
-                log_in_box("[ERRO] O grafo esta vazio.")
-                return
-        data = json_graph.node_link_data(G, edges="links")
-        json_data = json.dumps(data, indent=4)
-        blob = Blob.new([json_data], {"type": "application/json"})
-        url = URL.createObjectURL(blob)
-        link = document.createElement("a")
-        link.href = url
-        link.download = "graph_teste.json"
-        link.click()
-        URL.revokeObjectURL(url)
-        log_in_box("Download do grafo iniciado.")
-    \end{pybox}
+    log_in_box("Exportando grafo...")
+    global G
+    if G.number_of_nodes() == 0:
+        log_in_box("[ERRO] O grafo está vazio.")
+        return
 
-\paragraph{Comentários.} O algoritmo delega visualização de cada estado à função de desenho, permitindo instrumentação de passos internos (seleção de arestas mínimas, detecção de ciclos) sem acoplar lógica à interface. O log textual sequencia narrativa dos marcos algorítmicos (\emph{storytelling procedural}) reforçando a formação de modelo mental dos invariantes.
+    # Converte o grafo para JSON
+    data = json_graph.node_link_data(G, edges="links")
+    json_data = json.dumps(data, indent=4)
+
+    # Cria um link de download no navegador
+    blob = Blob.new([json_data], {"type": "application/json"})
+    url = URL.createObjectURL(blob)
+
+    # Configura e dispara o download
+    link = document.createElement("a")
+    link.href = url
+    link.download = "graph_teste.json"
+    link.click()
+    URL.revokeObjectURL(url)
+
+    log_in_box("Download do grafo iniciado.")
+
+@when("click", "#load-test-graph")
+def load_test_graph(event):
+    global G
+    G.clear()
+    G.add_edge("r0", "B", w=10)
+    G.add_edge("r0", "A", w=2)
+    G.add_edge("r0", "C", w=10)
+    G.add_edge("B", "A", w=1)
+    G.add_edge("A", "C", w=4)
+    G.add_edge("C", "D", w=2)
+    G.add_edge("D", "B", w=2)
+    G.add_edge("B", "E", w=8)
+    G.add_edge("C", "E", w=4)
+
+    log_in_box("Grafo de teste carregado.")
+    draw_graph(G, "Grafo de Teste (DG)", append=False)
+
+@when("click", "#show-ready-arborescence")
+def show_ready_arborescence(event):
+    T = nx.DiGraph()
+    T.add_edge("r0", "A", w=2)
+    T.add_edge("A", "C", w=4)
+    T.add_edge("C", "D", w=2)
+    T.add_edge("D", "B", w=2)
+    T.add_edge("C", "E", w=4)
+    draw_graph(T, "Arborescência Pré-definida")
+    log_in_box("Arborescência pronta exibida.")
+
+
+@when("click", "#run-algorithm")
+def run_algorithm(event):
+    global G
+    r0 = document.getElementById("root-node").value or "r0"
+    if r0 not in G:
+        alert(f"[ERRO] O nó raiz '{r0}' deve existir no grafo.")
+        return
+
+    log_in_box("Executando algoritmo de Chu-Liu...")
+    print(remove_edges_to_r0)
+    G_filtered = remove_edges_to_r0(G, r0)
+    T = find_optimum_arborescence_chuliu(
+        G_filtered, r0, draw_fn=draw_graph, log=log_in_box
+    )
+    draw_graph(T, "Arborescência Ótima")
+    log_in_box("Execução concluída com sucesso.")
+\end{pybox}
 
 \subsubsection{Estrutura da Página HTML}
 O trecho estrutural da página define a hierarquia visual e a ligação com PyScript (carregando \texttt{main.py}) e demonstra uso de Tailwind para classes utilitárias.

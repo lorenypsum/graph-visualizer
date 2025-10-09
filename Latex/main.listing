@@ -1,5 +1,34 @@
-<body>
-    <div id="sidebar"></div>
-    <div id="main-content">(stepper + grafo + logs)</div>
-    <div id="right-sidebar">Passo a Passo</div>
-</body>
+def get_Fstar(D: nx.DiGraph, r0: str, lang="pt"):
+    """
+    Constrói o subgrafo funcional F* a partir do grafo D e da raiz r0.
+    Retorna um grafo direcionado F_star com exatamente uma aresta de entrada
+    para cada v != r0 e nenhuma aresta entrando em r0.
+
+    Parâmetros:
+        - D: Um grafo direcionado (networkx.DiGraph)
+        - r0: Vértice raiz (rótulo)
+        - lang: Idioma das mensagens de erro ("en" para inglês, "pt" para português)
+
+    Retorno:
+        - F_star: Um grafo direcionado (networkx.DiGraph) que representa F*
+    """
+
+    if lang == "en":
+        assert (
+            r0 in D
+        ), f"\nget_Fstar: The root vertex '{r0}' does not exist in the graph."
+    elif lang == "pt":
+        assert r0 in D, f"\nget_Fstar: O vértice raiz '{r0}' não existe no grafo."
+
+    # Create an empty directed graph for F_star
+    F_star = nx.DiGraph()
+
+    for v in D.nodes():
+        if v != r0:
+            in_edges = list(D.in_edges(v, data="w"))
+            if not in_edges:
+                continue  # No edges entering v
+            u = next((u for u, _, w in in_edges if w == 0), None)
+            if u:
+                F_star.add_edge(u, v, w=0)
+    return F_star
