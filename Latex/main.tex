@@ -5293,10 +5293,12 @@ A figura a seguir sumariza o fluxo e a reutilização arquitetural entre página
     \node[draw,rounded corners,fill=purple!10,right=of draw] (ch) {chuliu};
     \node[draw,rounded corners,fill=purple!10,right=of ch] (afp) {andrasfrank};
     \node[draw,rounded corners,fill=orange!20,above=of ch] (sb) {barra lateral};
+    \node[draw,rounded corners,fill=purple!20,above=of sb] (ts) {tese};
     \draw[->] (home) -- (draw);
     \draw[->] (draw) -- (ch);
     \draw[->] (ch) -- (afp);
-    \foreach \x in {home,draw,ch,afp} {\draw[->] (sb) -- (\x);}
+    \draw[->] (sb) -- (ts);
+    \foreach \x in {home,draw,ch,afp,ts} {\draw[->] (sb) -- (\x);}
 \end{tikzpicture}
 \caption{A \texttt{barra lateral} injeta navegação consistente; páginas de algoritmo formam trilha exploratória (instância livre \textrightarrow algoritmo 1 \textrightarrow algoritmo 2).}
 \end{figure}
