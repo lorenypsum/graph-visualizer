@@ -4026,37 +4026,46 @@ A aplicação web interativa foi desenvolvida para ilustrar os algoritmos de Chu
 \subsection{Princípios de interação humano-computador}
 
 \paragraph{}
-Nesta subseção consolidamos conceitos fundamentais de IHC e explicitamos como foram adaptados ao contexto de uma ferramenta para ensino de algoritmos de teoria dos grafos (em especial, arborescências de custo mínimo). A ênfase recai em como cada princípio mitiga barreiras didáticas típicas descritas anteriormente (articulação local--global, carga extrínseca, mapeamento operacional $\leftrightarrow$ invariantes / certificações).
+A interação humano-computador (IHC) estuda como projetar sistemas computacionais que sejam eficientes, eficazes e agradáveis para os usuários. 
 
-\subsubsection*{Usabilidade, eficiência cognitiva e representação}
-Clássicas heurísticas de usabilidade (consistência, visibilidade de estado, prevenção de erros, controle do usuário) desdobram-se aqui em decisões visuais e de fluxo que reduzem \emph{custo de coordenação} entre o que o estudante vê e o que precisa inferir. Diagramas bem projetados tornam explícitas relações espaciais e topológicas sem exigir reconstrução mental onerosa \cite{larkin1987diagram,ware2012information}. O alinhamento espacial/temporal entre explicação textual, notação e destaque visual reduz a necessidade de busca cruzada e, portanto, carga extrínseca \cite{mayer2009multimedia}.
+\paragraph{}
+Sintetizando heurísticas de usabilidade e descoberta \cite{nielsen1994heuristics,shneiderman2016designing} e quadros de interação e aprendizagem \cite{rogers2011interaction,mayer2009multimedia,sweller1988cognitive,naps2003engagement}, destacamos oito princípios orientadores: (i) usabilidade, (ii) eficiência cognitiva, (iii) feedback imediato, (iv) engajamento ativo, (v) visão geral com detalhe sob demanda (mantra \emph{overview→filter→details} de \cite{shneiderman1996eyes}), (vi) consistência semântica, (vii) múltiplos registros de representação e (viii) prevenção/recuperação de erros. A seguir descrevemos cada um e sua materialização na ferramenta.
 
-\subsubsection*{Carga cognitiva e gerenciamento de camadas de detalhe}
-Seguindo \cite{sweller1988cognitive,mayer2009multimedia}, separamos elementos em três camadas: (i) \emph{base estrutural} (grafo original, vértices, arestas), (ii) \emph{camada de invariantes} (cortes ativos, subgrafo de zeros $D_0$, SCCs/condensação), (iii) \emph{camada analítica} (custos reduzidos numéricos, potenciais duals, métricas de execução). O usuário pode alternar camadas para evitar sobrecarga perceptual inicial e, quando pronto, revelar artefatos que sustentam proofs (complementaridade, apertude). Essa gradação busca otimizar carga germane (focada na construção de esquemas) sem inflar carga extrínseca.
 
-\subsubsection*{Affordances e feedback}
-\emph{Affordances} visuais (cores, ícones de contração, setas de reexpansão) sinalizam ações possíveis sem exigir leitura extensa de instruções. O feedback imediato após cada passo (ex.: aresta escolhida, ciclo identificado, custo reduzido atualizado) reforça a ligação causal entre ação e mudança de estado — um requisito para engajamento ativo efetivo \cite{hundhausen2002meta,naps2003engagement}. Mensagens sintéticas ("ciclo contraído", "condição dual satisfeita") evitam verbosidade e mantêm foco sobre a transformação estrutural.
+\paragraph{Usabilidade}
+\paragraph{}
+Usabilidade refere-se à facilidade com que os usuários podem aprender a usar um sistema, realizar tarefas e alcançar seus objetivos. Na nossa aplicação, priorizamos uma interface limpa e intuitiva, com controles claros para navegar pelos passos dos algoritmos, selecionar arestas, visualizar cortes ativos e entender a evolução dos custos reduzidos.
 
-\subsubsection*{Engajamento ativo e estruturas de interação}
-Para escapar do consumo passivo de animações, incorporamos padrões: (i) \textbf{prever}: antes de revelar a próxima aresta, o usuário pode sinalizar qual espera ser escolhida; (ii) \textbf{manipular}: alterar pesos e observar impacto em $D_0$ e cortes ativos; (iii) \textbf{explicar}: prompts que pedem justificar por que uma aresta entra (ou não) na arborescência em termos de custo reduzido ou certificação. Esses mecanismos alinham-se a evidências de que a aprendizagem melhora quando a visualização exige participação cognitiva \cite{naps2003engagement,hundhausen2002meta}.
+\paragraph{Eficiência cognitiva}
+\paragraph{}
+Eficiência cognitiva envolve minimizar a carga cognitiva dos usuários, facilitando a compreensão e o processamento de informações. Implementamos visualizações que destacam mudanças importantes (como contrações e expansões) e fornecem explicações textuais concisas para cada passo, ajudando os usuários a conectar ações com conceitos teóricos.
 
-\subsubsection*{Visão geral, filtragem e detalhe sob demanda}
-Inspirado no mantra de exploração \cite{shneiderman1996eyes}, a interface apresenta primeiro um painel resumido (contagem de vértices, arestas, contrações realizadas), permite filtros (mostrar apenas arestas de custo reduzido zero ou apenas o ciclo atual) e, sob demanda, revela atributos completos (potenciais, justificativas duals). A filtragem reduz densidade visual nos momentos em que a atenção deve estar na lógica do passo.
+\paragraph{Feedback Imediato}
+\paragraph{}
+Feedback imediato é crucial para manter os usuários informados sobre o estado do sistema e as consequências de suas ações. Nossa ferramenta oferece feedback visual e textual em tempo real, mostrando como cada ação afeta o grafo e os custos associados, reforçando a compreensão causal.
 
-\subsubsection*{Consistência semântica e mapeamentos estáveis}
-Cada cor, forma e estilo de linha é reservado a um conceito (ex.: arestas de $D_0$; arestas escolhidas; arestas tensas vs. relaxadas). Uma vez internalizado o mapeamento, o estudante não paga custo adicional de interpretação a cada passo. Esta consistência reforça formação de esquemas estáveis (Tall) e explora vantagens perceptuais discutidas em \cite{ware2012information,larkin1987diagram,tall1991advanced}.
+\paragraph{Engajamento ativo}
+\paragraph{}
+Engajamento ativo refere-se à participação dos usuários no processo de aprendizagem, incentivando-os a explorar, experimentar e interagir com o sistema. Nossa aplicação promove o engajamento ativo ao permitir que os usuários manipulem o grafo, testem diferentes abordagens e visualizem os resultados de suas ações em tempo real.
 
-\subsubsection*{Multiplicidade de registros e transições explícitas}
-O design facilita transitar entre: (i) código (instrumentação Python/NetworkX), (ii) visualização dinâmica (grafo com destaques), (iii) representação simbólica (expressões de custo reduzido, $c' = c - y_{\text{origem}} + y_{\text{destino}}$), e (iv) justificativa formal (enunciado resumido de condições de otimalidade). A proximidade desses registros promove integração semântica (dual coding) \cite{paivio1990}.
 
-\subsubsection*{Prevenção de erros conceituais}
-Decisões consideradas perigosas para principiantes (ex.: apagar arestas críticas sem entender efeito) disparam avisos educacionais breves em vez de bloqueios duros, favorecendo reflexão sem interromper fluxo. Quando o usuário tenta "adiantar" múltiplos passos, a ferramenta insere checkpoints pedindo validação do invariante ("todos os vértices não-raiz têm exatamente uma aresta entrando?").
+\paragraph{Visão geral com detalhe sob demanda}
+\paragraph{}
+A visão geral com detalhe sob demanda permite que os usuários obtenham uma compreensão ampla do sistema, enquanto ainda têm acesso a informações detalhadas quando necessário. Implementamos essa abordagem ao fornecer uma visualização geral do grafo, com a opção de expandir informações sobre arestas e nós específicos conforme o interesse do usuário.
 
-\subsubsection*{Reprodutibilidade e análise pós-interação}
-Logs estruturados (CSV) e exportação JSON capturam sequências de ações, tempos e métricas, permitindo revisão posterior e comparação entre execuções. Integrar isso a notebooks facilita atividades investigativas e replicação de exemplos em avaliações \cite{kluyver2016jupyter}. A reprodutibilidade transforma a visualização de evento efêmero em objeto de estudo reanalisável.
+\paragraph{Consistência semântica}
+\paragraph{}
+A consistência semântica garante que os elementos da interface e suas interações sejam compreensíveis e previsíveis. Nossa ferramenta mantém a consistência semântica ao usar terminologia e representações visuais padronizadas em toda a aplicação, facilitando a compreensão dos usuários.
 
-\subsubsection*{Limitações e adaptações futuras}
-Alguns princípios clássicos (personalização extensiva, acessibilidade completa WCAG, suporte colaborativo síncrono) ainda não estão plenamente implementados — o foco inicial privilegiou fidelidade teórico-visual. Recomenda-se: (i) adicionar temas de alto contraste; (ii) incorporar modo de teclado e descrições textuais de eventos; (iii) permitir trilhas anotadas compartilháveis para discussão em grupo. Essas extensões aprofundam os objetivos pedagógicos sem comprometer a arquitetura atual.
+\paragraph{Múltiplos registros de representação}
+\paragraph{}
+Múltiplos registros de representação referem-se à capacidade de apresentar informações de diferentes maneiras, atendendo às preferências e estilos de aprendizagem dos usuários. Nossa aplicação oferece várias representações do grafo (visual, textual, interativa), permitindo que os usuários escolham a forma que melhor se adapta às suas necessidades.
+
+\paragraph{Prevenção de erros}
+\paragraph{}
+A prevenção de erros envolve projetar o sistema de forma a minimizar a probabilidade de erros dos usuários. Implementamos medidas de prevenção de erros, como validação de entrada e feedback em tempo real, para ajudar os usuários a evitar ações indesejadas e compreender melhor as consequências de suas escolhas.
+
+
 
 \paragraph{}
 Em síntese, adaptar princípios de IHC ao ensino de teoria dos grafos demanda traduzir heurísticas gerais em mecanismos que exponham invariantes estruturais e certificados de otimalidade sem inundar o estudante com detalhes. A ferramenta materializa esse mapeamento ao oferecer camadas graduais de complexidade, feedback causalmente rico e mapeamentos visuais estáveis conectados às provas subjacentes.
