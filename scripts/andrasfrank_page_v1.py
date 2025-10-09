@@ -6,7 +6,7 @@ import json
 import matplotlib as mpl
 mpl.use('Agg')
 import matplotlib.pyplot as plt
-from solver.andrasfrank import find_minimum_arborescence
+from solver.andrasfrank import find_minimum_arborescence_v1 as find_minimum_arborescence
 from util.visualization_utils import draw_step
 from util.ui_utils import show_error_toast, log_in_box, toggle_sidebar, fillScreen, clearScreen, download_json, hide_loader, clearArboArea
 from util.graph_utils import get_networkx_graph, update_cytoscape_from_networkx
@@ -138,7 +138,7 @@ def run_algorithm():
     try:
         clearArboArea()
         log_in_box("Executando algoritmo de Andras Frank...")
-        T = find_minimum_arborescence(G, r0, draw_step=draw_step, log=log_in_box)
+        T = find_minimum_arborescence(G, r0, draw_fn=None, draw_step=draw_step, log=log_in_box)
         if T.number_of_nodes() == 0:
             log_in_box("[ERRO] O grafo não possui uma arborescência.")
             show_error_toast("O grafo não possui uma arborescência.")

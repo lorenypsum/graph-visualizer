@@ -1,20 +1,20 @@
 import networkx as nx
 from networkx.readwrite import json_graph
 from js import window, document, alert, FileReader
-from pyscript import document, when
+from pyscript import when, display
 import json
 import matplotlib as mpl
 mpl.use('Agg')
 import matplotlib.pyplot as plt
-from solver.chuliu import find_optimum_arborescence_chuliu as find_optimum_arborescence
-from util.visualization_utils import draw_graph, draw_step
+from solver.andrasfrank import find_minimum_arborescence_v2 as find_minimum_arborescence
+from util.visualization_utils import draw_step, draw_graph
 from util.ui_utils import show_error_toast, log_in_box, toggle_sidebar, fillScreen, clearScreen, download_json, hide_loader, clearArboArea
 from util.graph_utils import get_networkx_graph, update_cytoscape_from_networkx
 
 G = nx.DiGraph()
 O = nx.DiGraph()
 T = nx.DiGraph()
-    
+
 @when("click", "#reset-graph")
 def reset_graph():
     global G
@@ -33,6 +33,7 @@ def reset_graph():
     document.dispatchEvent(event)
     log_in_box("Grafo resetado.")
 
+
 @when("click", "#export-graph-arborescencia")
 def export_arborescencia_graph(event):
     log_in_box("Botão 'Exportar Arborescência' clicado.")
@@ -44,7 +45,6 @@ def export_arborescencia_graph(event):
     data = json_graph.node_link_data(G, edges="links")
     json_data = json.dumps(data, indent=4)
     download_json(json_data, filename="graph.json")
-    
 
 @when("click", "#export-graph-original")
 def export_original_graph(event):
@@ -59,12 +59,13 @@ def export_original_graph(event):
     json_data = json.dumps(data, indent=4)
 
     download_json(json_data, filename="graph.json")
-    
+
 
 @when("click", "#import-graph")
 def open_file_selector(event):
     document.getElementById("file-input").click()
 
+# Lê o arquivo quando for selecionado
 @when("change", "#file-input")
 def handle_file_upload(event):
     file = event.target.files.item(0)
@@ -96,25 +97,20 @@ def load_test_graph(event):
     global T
     G.clear()
     O.clear()
-    G.add_edges_from([('0', '1', {"w": 3}),
-                    ('0', '2', {"w": 6}),
-                    ('1', '2', {"w": 1}),
-                    ('2', '1', {'w': 1}),
-                    ('1', '3', {"w": 2}),
-                    ('1', '4', {"w": 10}),
-                    ('3', '4', {"w": 1}),
-                    ('4', '2', {"w": 10}),
-                    ('4', '5', {'w': 1}),
-                    ('5', '6', {'w': 1}),
-                    ('6', '4', {'w': 1}),
-                    ('6', '7', {'w': 8}),
-                    ('7', '8', {'w': 4}),
-                    ('8', '6', {'w': 5}),
-                    ('6', '8', {'w': 2})])
+    G = nx.DiGraph()
+    G.add_edge("r0", "A", w=2)
+    G.add_edge("r0", "B", w=10)
+    G.add_edge("r0", "C", w=10)
+    G.add_edge("A", "C", w=4)
+    G.add_edge("B", "A", w=1)
+    G.add_edge("C", "D", w=2)
+    G.add_edge("D", "B", w=2)
+    G.add_edge("B", "E", w=8)
+    G.add_edge("C", "E", w=4)
     O = G.copy()
     
     input_element = document.getElementById("root-node")
-    input_element.value = "0"
+    input_element.value = "r0"
 
     log_in_box("Grafo de teste carregado.")
     print("Nós do NetworkX:", list(G.nodes))
@@ -128,7 +124,7 @@ def on_toggle_sidebar(event):
 
 # @when("click", "#run-algorithm")
 @when("custom-event", "#run-algorithm")
-def run_algorithm(event):
+def run_algorithm():
     global G
     global T
     r0 = document.getElementById("root-node").value or "r0"
@@ -138,12 +134,12 @@ def run_algorithm(event):
         log_in_box(f"[ERRO] O nó raiz '{r0}' deve existir no grafo.")
         show_error_toast(f"O nó raiz '{r0}' deve existir no grafo.")
         return
-
-    log_in_box("Executando algoritmo de Chu-Liu...")
+    
     try:
         clearArboArea()
-        T = find_optimum_arborescence(G, r0, draw_fn=draw_graph, draw_step=draw_step, log=log_in_box)
-        
+        log_in_box("Executando algoritmo de Andras Frank...")
+        T = find_minimum_arborescence(
+            D=G, r0=r0, draw_step=draw_step, draw_fn=None, log=log_in_box)
         if T.number_of_nodes() == 0:
             log_in_box("[ERRO] O grafo não possui uma arborescência.")
             show_error_toast("O grafo não possui uma arborescência.")
@@ -158,3 +154,4 @@ def run_algorithm(event):
         print(f"Erro ao executar o algoritmo: {e}")
     finally:
         hide_loader()
+        

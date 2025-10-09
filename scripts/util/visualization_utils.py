@@ -93,8 +93,11 @@ def draw_graph(G: nx.DiGraph, title="Digrafo", append=True, target="original-gra
         G, pos, edge_labels=weights, font_color="red", font_size=12
     )
     plt.title(title)
-    display(title, target=target, append=append)
-    display(plt, target=target, append=append)
+    try:
+        display(title, target=target, append=append)
+        display(plt, target=target, append=append)
+    except Exception as e:
+        alert(f"Erro ao exibir o gráfico: {e}")
     ax = plt.gca() 
     ax.set_facecolor("#e5e5e5")
     plt.close()  # Fecha a figura para liberar memória
