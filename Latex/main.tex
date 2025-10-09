@@ -4098,9 +4098,9 @@ A aplicação web interativa foi desenvolvida para ilustrar os algoritmos de Chu
 
 
 \subsubsection{Visão geral das páginas}
-A aplicação web é composta por páginas HTML autônomas carregadas no navegador, cada uma focada em um aspecto: (i) \texttt{home.html} (apresentação / resumo), (ii) \texttt{chuliu.html} (execução passo a passo do algoritmo de Chu--Liu/Edmonds), (iii) \texttt{andrasfrank.html} (estrutura para futura visualização da abordagem primal--dual), (iv) \texttt{draw\_graph.html} (editor livre de grafos), (v) \texttt{tese.html} (incorpora o PDF gerado em \LaTeX), além do componente compartilhado de navegação lateral \texttt{sidebar.html}. Cada página injeta o \texttt{sidebar} dinamicamente e carrega scripts específicos.
+A aplicação web é composta por páginas HTML autônomas carregadas no navegador, cada uma focada em um aspecto: (i) \texttt{home.html} (apresentação / resumo), (ii) \texttt{chuliu.html} (execução passo a passo do algoritmo de Chu--Liu/Edmonds), (iii) \texttt{andrasfrank.html} (estrutura para futura visualização da abordagem primal--dual), (iv) \texttt{draw\_graph.html} (editor livre de grafos), além do componente compartilhado de navegação lateral \texttt{sidebar.html}. Cada página injeta o \texttt{sidebar} dinamicamente e carrega scripts específicos.
 
-\paragraph{Arquitetura tecnológica}
+\paragraph{Bibliotecas e dependências}
 
 \paragraph{}
 O desenvolvimento utilizou tecnologias web modernas, incluindo HTML5, Tailwind CSS para estilos responsivos, e PyScript para execução de código Python diretamente no navegador. A biblioteca NetworkX foi empregada para manipulação de grafos, enquanto Matplotlib gerou visualizações estáticas dos estados intermediários. O código foi estruturado para modularidade e clareza, facilitando futuras extensões. Detalhamos abaixo esses aspectos:
@@ -4173,15 +4173,41 @@ Desse modo, entendemos que a aplicação, embora funcional, pode ser aprimorada 
 De modo geral, a aplicação serve como um protótipo funcional que demonstra o potencial de ferramentas interativas para o ensino de algoritmos complexos em teoria dos grafos. Com melhorias contínuas, pode se tornar uma plataforma robusta para aprendizagem ativa e visualização didática. Na seção seguinte, detalhamos aspectos técnicos da implementação.
 
 \subsection{Detalhes de Implementação}
-A implementação da aplicação web interativa envolveu várias etapas, desde o planejamento da arquitetura até a codificação e testes. A seguir, detalhamos os principais aspectos técnicos da implementação.
-\label{subsec:detalhes-implementacao}
+\paragraph{}
+A aplicação foi implementada utilizando tecnologias web modernas, com foco em simplicidade, modularidade e reprodutibilidade. A seguir, detalhamos os principais aspectos técnicos da implementação.
 
-\subsubsection{Organização Geral}
-A aplicação é estruturada em um único arquivo HTML que incorpora tanto o layout visual (HTML + Tailwind CSS) quanto o código Python (via PyScript). A organização do código segue uma lógica modular, com funções dedicadas para manipulação do grafo, renderização visual, tratamento de eventos e exportação de dados.
+\paragraph{Estrutura de arquivos}
+\paragraph{}
+A estrutura de arquivos da aplicação é organizada da seguinte forma:
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item \texttt{main.py}: Script Python principal contendo funções de manipulação de grafos e lógica algorítmica.
+    \item \texttt{index.html}: Página inicial com resumo e links para outras seções.
+    \item \texttt{chuliu.html}: Página dedicada à execução do algoritmo de Chu--Liu/Edmonds.
+    \item \texttt{andrasfrank.html}: Página para futura implementação do algoritmo de Frank.
+    \item \texttt{draw\_graph.html}: Editor livre de grafos.
+    \item \texttt{sidebar.html}: Componente de navegação lateral compartilhado.
+    \item \texttt{styles.css}: Arquivo de estilos customizados (além do Tailwind).
+    \item \texttt{scripts/}: Diretório contendo scripts Python e JavaScript.
+    \item \texttt{assets/}: Diretório para imagens, ícones e outros recursos estáticos.
+\end{itemize}
 
-\subsubsection{Estado e Função de Desenho}
-A listagem a seguir mostra a inicialização do grafo dirigido e a função de visualização incremental. Ela ilustra princípios de estabilidade posicional (layout consistente) e saliência seletiva (cores e pesos destacados), reduzindo custos de inferência espacial \cite{larkin1987diagram,ware2012information}.
-\begin{pybox}[label={lst:draw_graph}]{Estado global e função de desenho de grafos}
+\paragraph{Bibliotecas e dependências}
+\paragraph{}
+A aplicação utiliza as seguintes bibliotecas e dependências principais:
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item \textbf{PyScript:} Permite a execução de código Python diretamente no navegador.
+    \item \textbf{NetworkX:} Biblioteca para criação, manipulação e estudo de grafos complexos.
+    \item \textbf{Matplotlib:} Utilizada para gerar visualizações estáticas dos grafos.
+    \item \textbf{Tailwind CSS:} Framework CSS para estilos utilitários e design responsivo.
+    \item \textbf{Cytoscape.js:} (importada para futuras implementações) Biblioteca JavaScript para visualização interativa de grafos.
+\end{itemize}
+
+\paragraph{Main.py: Lógica de manipulação de grafos}
+\paragraph{}
+O arquivo \texttt{main.py} contém funções para manipulação de grafos, execução dos algoritmos e geração de visualizações. A seguir, destacamos o código:
+
+
+\begin{pybox}[label={lst:draw_graph}]{Main.py: manipulação e visualização de grafos}
 import networkx as nx
 from networkx.readwrite import json_graph
 import matplotlib.pyplot as plt
