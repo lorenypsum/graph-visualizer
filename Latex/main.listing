@@ -1,102 +1,133 @@
-def phase1_find_minimum_arborescence(
-    D_original, r0, draw_fn=None, log=None, boilerplate: bool = True, lang="pt"
-):
-    """
-    Find the minimum arborescence in a directed graph D with root r0.
-    The function returns the minimum arborescence as a list of arcs.
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Chu-Liu/Edmonds Visualizer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://pyscript.net/releases/2025.3.1/core.css"
+    />
+    <script
+      type="module"
+      src="https://pyscript.net/releases/2025.3.1/core.js"
+    ></script>
+  </head>
+  <body class="bg-gray-100">
+    <header class="bg-[#5b8f79] text-white text-center p-6">
+      <h1 class="text-3xl font-bold">Chu-Liu/Edmonds Visualizer</h1>
+      <p class="text-lg mt-2">
+        Visualização passo a passo de arborescências em grafos direcionados
+      </p>
+    </header>
 
-    Parameters:
-        - D_original: directed graph (DiGraph)
-        - r0: root node
+    <main class="flex flex-col items-center gap-8 py-8 px-8">
+      <section class="text-center w-full max-w-4xl">
+        <h2 class="text-2xl font-semibold text-[#5b8f79] mb-4">
+          Definir Di-grafo
+        </h2>
+        <div class="flex flex-wrap justify-center gap-4 items-center mb-4">
+          <input
+            type="text"
+            id="source"
+            placeholder="Origem"
+            class="p-3 border rounded border-gray-300 w-40"
+          />
+          <input
+            type="text"
+            id="target"
+            placeholder="Destino"
+            class="p-3 border rounded border-gray-300 w-40"
+          />
+          <input
+            type="number"
+            id="weight"
+            placeholder="Peso"
+            min="0"
+            class="p-3 border rounded border-gray-300 w-40"
+          />
+          <button
+            id="add-edge"
+            class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+          >
+                        Adicionar Aresta
+          </button>
+        </div>
+        <div class="flex flex-wrap justify-center gap-4 items-center mb-4">
+          <button
+            id="reset-graph"
+            class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+          >
+                        Limpar Grafo
+          </button>
+          <button
+            id="export-graph"
+            class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+          >
+                        Exportar Grafo para JSON
+          </button>
+        </div>
+        <div class="flex flex-wrap justify-center gap-4 items-center mb-4">
+          <button
+            id="load-test-graph"
+            class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+          >
+                        Carregar Grafo de Teste
+          </button>
+          <button
+            id="show-ready-arborescence"
+            class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+          >
+                        Mostrar Arborescência do Grafo de Teste
+          </button>
+        </div>
+      </section>
 
-    Returns:
-        - A_zero: list of arcs (u, v) that form the minimum arborescence
-        - Dual_list: list of tuples (X, z(X)) representing the dual variables
-    """
+      <section class="text-center w-full max-w-4xl">
+        <h2 class="text-2xl font-semibold text-[#5b8f79] mb-4">
+          Executar Algoritmo de Chu-Liu/Edmonds
+        </h2>
+        <div class="flex flex-wrap justify-center gap-4 items-center">
+          <label for="root-node" class="text-gray-700 font-medium"
+            >Nó Raiz:</label
+          >
+          <input
+            type="text"
+            id="root-node"
+            placeholder="Nó Raiz"
+            value="r0"
+            class="p-3 border rounded border-gray-300 w-40"
+          />
+          <button
+            id="run-algorithm"
+            class="p-3 bg-[#5b8f79] text-white font-bold rounded hover:bg-[#4a7a66]"
+          >
+                        Executar Algoritmo
+          </button>
+        </div>
+      </section>
 
-    D_copy = D_original.copy()
-    A_zero = []
-    Dual_list = []  # List to store the dual variables (X, z(X))
-    D_zero = build_D_zero(D_copy)
+      <section
+        id="graph-output"
+        class="w-full max-w-4xl bg-white p-6 rounded shadow"
+      >
+        <h2 class="text-2xl font-semibold text-[#5b8f79] mb-4">Grafo Atual</h2>
+        <py-script id="graph-area"></py-script>
+      </section>
 
-    iteration = 0
+      <section id="log" class="w-full max-w-4xl bg-white p-6 rounded shadow">
+        <h2 class="text-2xl font-semibold text-[#5b8f79] mb-4">
+          Log da Execução
+        </h2>
+        <textarea
+          id="log-output"
+          readonly
+          class="w-full p-3 border rounded border-gray-300 h-40"
+        ></textarea>
+      </section>
+    </main>
 
-    if boilerplate and draw_fn:
-        if lang == "en":
-            draw_fn(D_zero, title="Initial D_zero")
-        elif lang == "pt":
-            draw_fn(D_zero, title="D_zero Inicial")
-
-    while True:
-        iteration += 1
-        if boilerplate and log:
-            if lang == "en":
-                log(f"\nIteration {iteration} ----------------------------")
-            elif lang == "pt":
-                log(f"\nIteração {iteration} ----------------------------")
-
-        # Calculate the strongly connected components of the graph D_zero.
-        C = nx.condensation(D_zero)
-        if boilerplate and draw_fn:
-            if lang == "en":
-                draw_fn(
-                    C,
-                    title=f"Strongly connected components in D_zero - Iteration {iteration}",
-                )
-            elif lang == "pt":
-                draw_fn(
-                    C,
-                    title=f"Componentes fortemente conexos em D_zero - Iteração {iteration}",
-                )
-
-        # The sources are where there are no incoming arcs, R0 is always a source.
-        sources = [x for x in C.nodes() if C.in_degree(x) == 0]
-
-        if boilerplate and log:
-            if lang == "en":
-                log(f"\nSources: {sources}")
-            elif lang == "pt":
-                log(f"\nFontes: {sources}")
-
-        if len(sources) == 1:
-            # If there is only one source, it means it is R0 and there are no more arcs to be processed.
-            if boilerplate and log:
-                if lang == "en":
-                    log(f"\nOnly one source found, algorithm finished.")
-                elif lang == "pt":
-                    log(f"\nApenas uma fonte encontrada, algoritmo finalizado.")
-            break
-
-        for u in sources:
-            X = C.nodes[u]["members"]
-            if r0 in X:
-                continue
-            arcs = get_arcs_entering_X(D_copy, X)
-            min_weight = get_minimum_weight_cut(arcs)
-
-            if boilerplate and log:
-                if lang == "en":
-                    log(f"\nSet X: {X}")
-                    log(f"\nArcs entering X: {arcs}")
-                    log(f"\nMinimum weight found: {min_weight}")
-                elif lang == "pt":
-                    log(f"\nConjunto X: {X}")
-                    log(f"\nArestas que entram em X: {arcs}")
-                    log(f"\nPeso mínimo encontrado: {min_weight}")
-
-            update_weights_in_X(D_copy, arcs, min_weight, A_zero, D_zero)
-
-            if boilerplate and log:
-                if lang == "en":
-                    log(f"\nUpdated weights in arcs entering X")
-                elif lang == "pt":
-                    log(f"\nPesos atualizados nos arcos que entram em X")
-
-            # If min_weight is zero, ignore
-            if min_weight == 0:
-                continue
-            else:
-                # Otherwise, add to the dual list the set X and its min_weight
-                Dual_list.append((X, min_weight))
-
-    return A_zero, Dual_list
+    <script type="py" src="./main.py" config="./pyscript.json"></script>
+  </body>
+</html>
