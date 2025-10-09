@@ -96,7 +96,7 @@
              {ê}{{\^{e}}}1 {Ê}{{\^{E}}}1 {ô}{{\^{o}}}1 {Ô}{{\^{O}}}1 {õ}{{\~{o}}}1 {Õ}{{\~{O}}}1
              {ç}{{\c{c}}}1 {Ç}{{\c{C}}}1 {ü}{{\"{u}}}1 {Ü}{{\"{U}}}1
              {ñ}{{\~{n}}}1 {Ñ}{{\~{N}}}1
-             {“}{{``}}1 {”}{{''}}1 {’}{{'}}1 {–}{{-}}1 {—}{{-}}1 {…}{{...}}1 {‑}{{-}}1
+             {“}{{``}}1 {”}{{''}}1 {’}{{'}}1 {–}{{-}}1 {—}{{-}}1 {…}{{...}}1 {-}{{-}}1
              {✅}{{$\checkmark$}}1 {✔}{{$\checkmark$}}1 {❌}{{$\times$}}1 {✗}{{$\times$}}1
              {∈}{{$\in$}}1 {∉}{{$\notin$}}1 {→}{{$\to$}}1
 }
@@ -222,7 +222,7 @@ Resumidamente, o trabalho abrange as seguintes frentes:
     \item \textbf{Definições Preliminares}: fixação de notação e conceitos fundamentais (dígrafos, arborescências, custos e dualidade).
     \item \textbf{Em busca da Arborescência Perdida}: motivação do problema e intuições que guiam os algoritmos.
     \item \textbf{Algoritmo de Chu--Liu/Edmonds}: detalhamento da abordagem primal por normalização/contração de ciclos, com ênfase em invariantes e correção.
-    \item \textbf{Procedimento em Duas Fases de András Frank}: detalhamento da abordagem dual por cortes c‑viáveis, com ênfase em invariantes e correção.
+    \item \textbf{Procedimento em Duas Fases de András Frank}: detalhamento da abordagem dual por cortes c-viáveis, com ênfase em invariantes e correção.
     \item \textbf{Discussão e Resultados: Chu-liu/Edmonds vs Frank}: comparação de desempenho e estrutura das soluções, com testes em larga escala.
     \item \textbf{Didática do Abstrato}: discussão de desafios do ensino de matemática no ensino superior especialmente quando há o envolvimento de conceitos abstratos e como representações visuais atuam em favor da compreensão.
     \item \textbf{A interação humano--computacional em ação - uma aplicação \textit{web} interativa}: apresentação de conceitos em interação humano-computacional, a influência desses conceitos nas decisões tomadas para o desenvolvimento da aplicação \textit{web} e detalhamento da implementação.
@@ -859,11 +859,11 @@ Essas igualdades capturam a intuição central: o dual estabelece preços que ju
 No contexto de grafos, a otimização costuma aparecer como a busca por subestruturas (caminhos, árvores, cortes, fluxos) que minimizam ou maximizam um custo, sempre respeitando a topologia do grafo.
 
 \paragraph{}
-Nesta dissertação, essa noção de otimização é central: olhamos para o mesmo problema por dois ângulos que se completam. No lado “primal”, queremos montar diretamente a arborescência de menor custo. O algoritmo de Chu–Liu/Edmonds faz isso de forma gulosa: ajusta os custos por vértice, cria arestas de custo zero (0‑arestas), contrai ciclos quando aparecem e segue até montar a solução ótima. 
+Nesta dissertação, essa noção de otimização é central: olhamos para o mesmo problema por dois ângulos que se completam. No lado “primal”, queremos montar diretamente a arborescência de menor custo. O algoritmo de Chu–Liu/Edmonds faz isso de forma gulosa: ajusta os custos por vértice, cria arestas de custo zero (0-arestas), contrai ciclos quando aparecem e segue até montar a solução ótima. 
 (\cite{chu1965,edmonds1967optimum}).
 
 \paragraph{}
-No lado “dual”, em vez de montar a árvore, colocamos custos em cortes do grafo com raiz $r$. A regra é simples: nenhum custo pode ultrapassar o custo das arestas que cruzam o corte. Buscamos escolher esses custos para somar o máximo possível. As arestas que “batem no limite” viram 0‑arestas, e a partir delas conseguimos reconstruir uma arborescência ótima. Essa visão, desenvolvida por Frank, leva a um teorema min–max e a um procedimento em duas etapas: primeiro ajustamos os custos, depois extraímos a solução usando apenas 0‑arestas. 
+No lado “dual”, em vez de montar a árvore, colocamos custos em cortes do grafo com raiz $r$. A regra é simples: nenhum custo pode ultrapassar o custo das arestas que cruzam o corte. Buscamos escolher esses custos para somar o máximo possível. As arestas que “batem no limite” viram 0-arestas, e a partir delas conseguimos reconstruir uma arborescência ótima. Essa visão, desenvolvida por Frank, leva a um teorema min–max e a um procedimento em duas etapas: primeiro ajustamos os custos, depois extraímos a solução usando apenas 0-arestas. 
 (cf. \cite{frank2014,schrijver2003comb})
 
 \subsection{Problemas interessantes}
@@ -1902,7 +1902,7 @@ Exemplos clássicos de algoritmos gulosos incluem:
         \item \textbf{Prim}: inicia em um vértice e, a cada passo, adiciona a aresta mais leve que cruza o corte entre a árvore e o restante do grafo.
         \item \textbf{Dijkstra}: em dígrafos (ou grafos) com pesos não negativos, expande pelo vértice de menor distância conhecida e relaxa suas saídas.
         \item  \textbf{Kahn} (ordenação topológica): em DAGs, remove repetidamente vértices de grau de entrada zero e elimina suas saídas, construindo uma ordem topológica.
-        \item \textbf{Chu–Liu/Edmonds} (arborescência mínima): escolhe, para cada \(v\neq r\), o arco de menor custo que entra em \(v\); ao formar ciclos, contrai-os e usa custos reduzidos até obter a r‑arborescência de custo mínimo.
+        \item \textbf{Chu–Liu/Edmonds} (arborescência mínima): escolhe, para cada \(v\neq r\), o arco de menor custo que entra em \(v\); ao formar ciclos, contrai-os e usa custos reduzidos até obter a r-arborescência de custo mínimo.
        \item \textbf{Frank} (arborescência mínima em duas fases): na primeira fase, constrói uma arborescência qualquer; na segunda, ajusta os custos reduzidos e troca arcos para minimizar o custo total.
 \end{itemize}
 
@@ -1912,7 +1912,7 @@ Com esses conceitos em mente, estamos prontos para explorar os algoritmos espec�
 \section{Em busca da Arborescência Perdida}
 
 \paragraph{}
-Vamos usar esse capítulo para situar a evolução do problema: começamos revisitando como se encontra conectividade de menor custo em grafos não dirigidos por meio de \emph{árvores geradoras mínimas} (MST), onde estratégias gulosas são corretas graças aos princípios de \emph{corte} e de \emph{ciclo}. Em seguida veremos por que, ao passar para \emph{dígrafos} e buscar uma \textbf{r‑arborescência de custo mínimo}, essas mesmas receitas não se aplicam literalmente: surgem ciclos dirigidos e falta um “corte seguro” direto. Essa transição motiva as ferramentas certas — \emph{custos reduzidos} e \emph{contração de ciclos} — que aparecem no algoritmo de \textbf{Chu–Liu/Edmonds} e, adiante, no procedimento em duas fases de \textbf{Frank}.
+Vamos usar esse capítulo para situar a evolução do problema: começamos revisitando como se encontra conectividade de menor custo em grafos não dirigidos por meio de \emph{árvores geradoras mínimas} (MST), onde estratégias gulosas são corretas graças aos princípios de \emph{corte} e de \emph{ciclo}. Em seguida veremos por que, ao passar para \emph{dígrafos} e buscar uma \textbf{r-arborescência de custo mínimo}, essas mesmas receitas não se aplicam literalmente: surgem ciclos dirigidos e falta um “corte seguro” direto. Essa transição motiva as ferramentas certas — \emph{custos reduzidos} e \emph{contração de ciclos} — que aparecem no algoritmo de \textbf{Chu–Liu/Edmonds} e, adiante, no procedimento em duas fases de \textbf{Frank}.
 
 \subsection{Contexto Histórico}
 O problema de encontrar uma r-arborescência de custo mínimo em um dígrafo ponderado é de certa forma uma evolução do problema de conectividade de menor custo em grafos não dirigidos, mas traz desafios adicionais que exigem novas ferramentas e estratégias.
@@ -2137,7 +2137,7 @@ O algoritmo de Chu–Liu/Edmonds é um método clássico para encontrar uma r-ar
 Se tentarmos copiar a receita das MSTs — dar a cada vértice \(v\neq r\) o arco de entrada mais barato — corremos o risco de fechar um \emph{ciclo dirigido} que não chega à raiz \(r\). 
 
 \paragraph{}
-Por que isso é proibido? Em uma r‑arborescência cada \(v\neq r\) deve ter exatamente um arco de entrada e \(r\) tem grau de entrada zero. Se houvesse um ciclo dirigido \(C\), todos os vértices de \(C\) já receberiam seu único arco de entrada de dentro do próprio \(C\), logo nenhum arco entraria em \(C\) a partir de \(V\setminus C\) (o corte \(\delta^-(C)\) ficaria vazio). Como \(r\notin C\), não existe caminho de \(r\) para os vértices de \(C\), contrariando a alcançabilidade exigida. Portanto, ciclos dirigidos são incompatíveis com a estrutura de r‑arborescência.
+Por que isso é proibido? Em uma r-arborescência cada \(v\neq r\) deve ter exatamente um arco de entrada e \(r\) tem grau de entrada zero. Se houvesse um ciclo dirigido \(C\), todos os vértices de \(C\) já receberiam seu único arco de entrada de dentro do próprio \(C\), logo nenhum arco entraria em \(C\) a partir de \(V\setminus C\) (o corte \(\delta^-(C)\) ficaria vazio). Como \(r\notin C\), não existe caminho de \(r\) para os vértices de \(C\), contrariando a alcançabilidade exigida. Portanto, ciclos dirigidos são incompatíveis com a estrutura de r-arborescência.
 
 \paragraph{}
 Dessa forma, o desafio é duplo: preservar a informação local de “mais barato por vértice” (que é valiosa) e, ao mesmo tempo, impedir que essas escolhas locais se combinem em ciclos. 
@@ -2155,7 +2155,7 @@ Uma maneira direta de enxergar isso é com um microexemplo: tome três vértices
 
 
 \paragraph{}
-Partindo desse cenário, a ideia é \emph{normalizar os custos por vértice}: para cada \(v\neq r\), “descontamos” de todo arco que entra em \(v\) o menor custo que chega a \(v\). Após esse ajuste (custos reduzidos), cada \(v\neq r\) passa a ter ao menos um arco de custo reduzido zero entrando. Se os arcos de custo zero forem acíclicos, já temos a r‑arborescência. Se formarem um ciclo \(C\), isso indica que, dentro de \(C\), todos os vértices atingiram seus mínimos locais; então \emph{contraímos} \(C\) em um \textbf{supervértice} \(x_C\) e repetimos o processo no grafo menor. Ao final, \emph{expandimos} as contrações e, em cada ciclo expandido, removemos exatamente um arco para manter grau de entrada 1 e a aciclicidade global.
+Partindo desse cenário, a ideia é \emph{normalizar os custos por vértice}: para cada \(v\neq r\), “descontamos” de todo arco que entra em \(v\) o menor custo que chega a \(v\). Após esse ajuste (custos reduzidos), cada \(v\neq r\) passa a ter ao menos um arco de custo reduzido zero entrando. Se os arcos de custo zero forem acíclicos, já temos a r-arborescência. Se formarem um ciclo \(C\), isso indica que, dentro de \(C\), todos os vértices atingiram seus mínimos locais; então \emph{contraímos} \(C\) em um \textbf{supervértice} \(x_C\) e repetimos o processo no grafo menor. Ao final, \emph{expandimos} as contrações e, em cada ciclo expandido, removemos exatamente um arco para manter grau de entrada 1 e a aciclicidade global.
 
 \paragraph{Supervértices e contração de ciclos}
 
@@ -2212,7 +2212,7 @@ Aqui, apresentamos o algoritmo de Chu–Liu/Edmonds em uma visão operacional de
 Denotamos por \(A'\) o conjunto de arcos escolhidos na construção da r-arborescência. 
 
 \paragraph{}
-Construa \(A'\) escolhendo, para cada \(v\neq r\), um arco de menor custo que \emph{entra} em \(v\). Se \((V,A')\) é acíclico, então, pela caracterização de arborescências (grau de entrada 1 para todo \(v\neq r\) e ausência de ciclos), \(A'\) já é uma r‑arborescência; e é \emph{ótima}, pois realizamos o menor custo de entrada em cada vértice e nenhuma troca pode reduzir o custo mantendo as restrições \cite[Sec.~4.9]{kleinberg2006}. 
+Construa \(A'\) escolhendo, para cada \(v\neq r\), um arco de menor custo que \emph{entra} em \(v\). Se \((V,A')\) é acíclico, então, pela caracterização de arborescências (grau de entrada 1 para todo \(v\neq r\) e ausência de ciclos), \(A'\) já é uma r-arborescência; e é \emph{ótima}, pois realizamos o menor custo de entrada em cada vértice e nenhuma troca pode reduzir o custo mantendo as restrições \cite[Sec.~4.9]{kleinberg2006}. 
 
 \paragraph{}
 Se \(A'\) contiver um ciclo dirigido \(C\) (que não inclui \(r\)), normalizamos os custos de entrada (custos reduzidos) e \emph{contraímos} \(C\) em um supervértice \(x_C\), ajustando apenas arcos que \emph{entram} em \(C\) por \(c'(u,x_C)=c(u,w)-c(a_w)\). 
@@ -2314,22 +2314,22 @@ A Figura \ref{fig:chu-liu-reexpansion} detalha o processo de expansão e remoç�
 Abaixo, temos a descrição formal do algoritmo.
 \paragraph{}
 \begin{algobox}{Chu–Liu/Edmonds (visão operacional)}{chu-liu-edmonds}
-Entrada: dígrafo \(D=(V,A)\), custos \(c:A\to\mathbb{R}_{\ge 0}\), raiz \(r\).\footnote{Se algum \(v\neq r\) não possui arco de entrada, não existe r‑arborescência.}
+Entrada: dígrafo \(D=(V,A)\), custos \(c:A\to\mathbb{R}_{\ge 0}\), raiz \(r\).\footnote{Se algum \(v\neq r\) não possui arco de entrada, não existe r-arborescência.}
 \begin{enumerate}\setlength{\itemsep}{2pt}
     \item Para cada \(v\neq r\), escolha \(a_v\in\operatorname*{argmin}_{(u,v)\in A} c(u,v)\). Defina \(y(v):=c(a_v)\) e \(F^*:=\{a_v: v\neq r\}.\)
-    \item Se \((V,F^*)\) é acíclico, devolva \(F^*\). Por \cite[Obs.~4.36]{kleinberg2006}, trata‑se de uma r‑arborescência de custo mínimo.
+    \item Se \((V,F^*)\) é acíclico, devolva \(F^*\). Por \cite[Obs.~4.36]{kleinberg2006}, trata-se de uma r-arborescência de custo mínimo.
     \item Caso contrário, seja \(C\) um ciclo dirigido de \(F^*\) (com \(r\notin C\)). \textbf{Contração:} contraia \(C\) em um supervértice \(x_C\) e defina custos \(c'\) por
     \begin{align*}
         c'(u,x_C) &:= c(u,w) - y(w) = c(u,w) - c(a_w) && \text{para } u\notin C,\ w\in C, \\
         c'(x_C,v) &:= c(w,v) && \text{para } w\in C,\ v\notin C,
     \end{align*}
     descartando laços em \(x_C\) e permitindo paralelos. Denote o dígrafo contraído por \(D'=(V',A')\).
-    \item \textbf{Recursão:} compute uma r‑arborescência ótima \(T'\) de \(D'\) com custos \(c'\).
+    \item \textbf{Recursão:} compute uma r-arborescência ótima \(T'\) de \(D'\) com custos \(c'\).
     \item \textbf{Expansão:} seja \((u,x_C)\in T'\) o único arco que entra em \(x_C\). No grafo original, ele corresponde a \((u,w)\) com \(w\in C\). Forme
     \[
         T := \bigl(T'\setminus\{\text{arcos incidentes a } x_C\}\bigr)\ \cup\ \{(u,w)\}\ \cup\ \bigl((F^*\cap A(C))\setminus\{a_w\}\bigr).
     \]
-    Então \(T\) tem grau de entrada 1 em cada \(v\neq r\), é acíclico e tem o mesmo custo de \(T'\); logo, é uma r‑arborescência ótima de \(D\) \cite[Sec.~4.9]{kleinberg2006,schrijver2003comb}.
+    Então \(T\) tem grau de entrada 1 em cada \(v\neq r\), é acíclico e tem o mesmo custo de \(T'\); logo, é uma r-arborescência ótima de \(D\) \cite[Sec.~4.9]{kleinberg2006,schrijver2003comb}.
 \end{enumerate}
 \end{algobox}
 
@@ -2337,17 +2337,17 @@ Entrada: dígrafo \(D=(V,A)\), custos \(c:A\to\mathbb{R}_{\ge 0}\), raiz \(r\).\
 \paragraph{}
 A corretude do algoritmo de Chu–Liu/Edmonds baseia-se em três pilares principais:
 \begin{enumerate}\setlength{\itemsep}{2pt}
-    \item \emph{Normalização por custos reduzidos:} para cada \(v\neq r\), defina \(y(v):=\min\{c(u,v):(u,v)\in A\}\) e \(c'(u,v):=c(u,v)-y(v)\). Para qualquer r‑arborescência \(T\), vale
+    \item \emph{Normalização por custos reduzidos:} para cada \(v\neq r\), defina \(y(v):=\min\{c(u,v):(u,v)\in A\}\) e \(c'(u,v):=c(u,v)-y(v)\). Para qualquer r-arborescência \(T\), vale
     \[
         \sum_{a\in T} c'(a) \,=\, \sum_{a\in T} c(a) \, - \, \sum_{v\neq r} y(v),
     \]
     pois há exatamente um arco de \(T\) entrando em cada \(v\neq r\). O termo \(\sum_{v\neq r} y(v)\) é constante (independe de \(T\)); assim, minimizar \(\sum c\) equivale a minimizar \(\sum c'\) \cite[Obs.~4.37]{kleinberg2006}. Em particular, os arcos \(a_v\) de menor custo que entram em \(v\) têm custo reduzido zero e formam \(F^*\).
-    \item \emph{Caso acíclico:} se \((V,F^*)\) é acíclico, então já é uma r‑arborescência e, por realizar o mínimo custo de entrada em cada \(v\neq r\), é ótima \cite[Obs.~4.36]{kleinberg2006}.
+    \item \emph{Caso acíclico:} se \((V,F^*)\) é acíclico, então já é uma r-arborescência e, por realizar o mínimo custo de entrada em cada \(v\neq r\), é ótima \cite[Obs.~4.36]{kleinberg2006}.
     \item \emph{Caso com ciclo (contração/expansão):} se \(F^*\) contém um ciclo dirigido \(C\), todos os seus arcos têm custo reduzido zero. 
     \paragraph{}
     Contraia \(C\) em \(x_C\) e ajuste apenas arcos que \emph{entram} em \(C\): \(c'(u,x_C):=c(u,w)-y(w)=c(u,w)-c(a_w)\). 
     \paragraph{}
-    Resolva o problema no grafo contraído \(D'\), obtendo uma r‑arborescência ótima \(T'\) sob \(c'\). Na expansão, substitua o arco \((u,x_C)\in T'\) pelo correspondente \((u,w)\) (com \(w\in C\)) e remova \(a_w\) de \(C\). 
+    Resolva o problema no grafo contraído \(D'\), obtendo uma r-arborescência ótima \(T'\) sob \(c'\). Na expansão, substitua o arco \((u,x_C)\in T'\) pelo correspondente \((u,w)\) (com \(w\in C\)) e remova \(a_w\) de \(C\). 
     \paragraph{}
     Como os arcos de \(C\) têm custo reduzido zero e \(c'(u,x_C)=c(u,w)-y(w)\), a soma dos custos reduzidos é preservada na ida e na volta; logo, \(T'\) ótimo em \(D'\) mapeia para \(T\) ótimo em \(D\) para \(c'\). Pela equivalência entre \(c\) e \(c'\), \(T\) também é ótimo para \(c\). Repetindo o argumento a cada contração, obtemos a corretude por indução \cite[Sec.~4.9]{kleinberg2006,schrijver2003comb}.
 \end{enumerate}
@@ -2375,7 +2375,7 @@ Esta seção apresenta uma implementação em Python do algoritmo de Chu–Liu/E
     \item contração do ciclo em um supervértice, com ajuste de custos;
     \item recursão no grafo contraído;
     \item expansão do ciclo e remoção de um arco interno para quebrar o ciclo.
-    \item retorno da r‑arborescência ótima.
+    \item retorno da r-arborescência ótima.
 \end{itemize}
 
 \paragraph{Especificação da interface (entradas, saídas e hipóteses)}
@@ -2386,11 +2386,11 @@ Esta seção apresenta uma implementação em Python do algoritmo de Chu–Liu/E
         \begin{itemize}\setlength{\itemsep}{2pt}
             \item \(D\) é representado como um objeto \texttt{networkx.DiGraph}, com pesos armazenados no atributo de arestas \texttt{'w'}.
             \item \(D\) é conexo a partir de \(r\):
-            \item (i) todo \(v\neq r\) é alcançável a partir de \(r\) (caso contrário, não há r‑arborescência); (ii) para todo subconjunto não vazio \(X\subseteq V\setminus\{r\}\), existe ao menos um arco que entra em \(X\) (\(\delta^-(X)\neq\emptyset\); condições clássicas de existência \`a la Edmonds \cite{schrijver2003comb}).
+            \item (i) todo \(v\neq r\) é alcançável a partir de \(r\) (caso contrário, não há r-arborescência); (ii) para todo subconjunto não vazio \(X\subseteq V\setminus\{r\}\), existe ao menos um arco que entra em \(X\) (\(\delta^-(X)\neq\emptyset\); condições clássicas de existência \`a la Edmonds \cite{schrijver2003comb}).
             \item Os custos são não negativos: \(c(a)\ge 0\) para todo \(a\in A\).
         \end{itemize}
     \item \textbf{Saída:} conjunto \(A^*\subseteq A\) com \(|A^*|=|V|-1\), tal que cada \(v\neq r\) tem grau de entrada 1, todos os vértices são alcançáveis a partir de \(r\) e \(\sum_{a\in A^*} c(a)\) é mínimo.
-    \item \textbf{Convenções:} arcos paralelos (múltiplos arcos entre o mesmo par de vértices) são permitidos após contrações; laços (self‑loops) são descartados.
+    \item \textbf{Convenções:} arcos paralelos (múltiplos arcos entre o mesmo par de vértices) são permitidos após contrações; laços (self-loops) são descartados.
 \end{itemize}
 
 
@@ -2731,10 +2731,10 @@ A função principal implementa o algoritmo de Chu–Liu/Edmonds de forma recurs
 (iii) constrói o grafo funcional \(F^*\) selecionando, para cada \(v\neq r_0\), uma única entrada de menor custo reduzido (preferencialmente zero); 
 
 \paragraph{}
-(iv) verifica aciclicidade de \(F^*\); se acíclico, devolve \(F^*\) como r‑arborescência;
+(iv) verifica aciclicidade de \(F^*\); se acíclico, devolve \(F^*\) como r-arborescência;
 
 \paragraph{}
-(v) caso haja ciclo, contrai o ciclo em um supervértice, ajusta custos que \emph{entram} no componente contraído e chama‑se recursivamente na instância reduzida; ao retornar, expande o componente e remove exatamente uma aresta interna do ciclo para restaurar grau de entrada igual a 1 e aciclicidade.
+(v) caso haja ciclo, contrai o ciclo em um supervértice, ajusta custos que \emph{entram} no componente contraído e chama-se recursivamente na instância reduzida; ao retornar, expande o componente e remove exatamente uma aresta interna do ciclo para restaurar grau de entrada igual a 1 e aciclicidade.
 
 \paragraph{}
 Mais especificamente, o procedimento garante as seguintes propriedades e passos:
@@ -2745,7 +2745,7 @@ Mais especificamente, o procedimento garante as seguintes propriedades e passos:
     \item \textbf{Recursão e expansão:} Ao obter \(T'\) ótimo no grafo contraído, o método mapeia \(T'\) de volta para \(D\): substitui o arco \((u,x_C)\) por um \((u,w)\) apropriado (com \(w\in C\)) e remove uma única aresta interna de \(C\), restaurando a propriedade “uma entrada por vértice” e a aciclicidade.
     \item \textbf{Empates e robustez:} Empates de custo são resolvidos de modo determinístico/local, sem afetar a otimalidade. Arcos paralelos podem surgir após contrações e são tratados normalmente; laços são descartados por construção.
     \item \textbf{Logs e desenho (opcionais):} Se fornecidos, \texttt{log} recebe mensagens estruturadas por nível de recursão, e \texttt{draw\_fn} pode ser chamado para ilustrar passos relevantes (normalização, detecção/contração de ciclos, retorno da recursão e expansão).
-    \item \textbf{Casos‑limite:} Se algum \(v\neq r_0\) não possui arco de entrada na instância corrente, detecta‑se inviabilidade (não existe r‑arborescência). Se \(F^*\) já é acíclico, retorna imediatamente (base da recursão).
+    \item \textbf{Casos-limite:} Se algum \(v\neq r_0\) não possui arco de entrada na instância corrente, detecta-se inviabilidade (não existe r-arborescência). Se \(F^*\) já é acíclico, retorna imediatamente (base da recursão).
     \item \textbf{Complexidade:} Em uma implementação direta, cada nível de recursão executa seleção/checagem/ajustes em tempo proporcional a \(O(m)\), e há no máximo \(O(n)\) níveis devido às contrações, totalizando \(O(mn)\) e memória \(O(m+n)\).
 \end{itemize}
 
@@ -3097,7 +3097,7 @@ O algoritmo de Frank consiste em duas fases principais:
     \paragraph{}
     Se as escolhas formarem um ciclo, contraia-o e continue a seleção na instância contraída, \emph{sem} alterar potenciais; ao final, reexpanda cada contração removendo exatamente uma aresta interna (a que entra no vértice que recebe o arco externo). 
     \paragraph{}
-    O resultado é uma r‑arborescência; como todas as arestas escolhidas são apertadas (\(c'=0\)), a otimalidade segue por complementaridade primal–dual \cite{frank1981,frank2014,schrijver2003comb}.
+    O resultado é uma r-arborescência; como todas as arestas escolhidas são apertadas (\(c'=0\)), a otimalidade segue por complementaridade primal–dual \cite{frank1981,frank2014,schrijver2003comb}.
 \end{itemize}
 
 \paragraph{}
@@ -3339,13 +3339,13 @@ Se \(D_0\) contém um ciclo dirigido \(C\) de arcos com \(c'=0\), então contrai
 
 \paragraph{Lema 3: cortes ativos entram exatamente uma vez} 
 \paragraph{}
-Seja \(T\) uma r‑arborescência e \(X\subseteq V\setminus\{r\}\). Se contraímos \(X\) a um vértice, o grau de entrada desse vértice na imagem de \(T\) é 1; logo \(\sum_{a\in \delta^-(X)} x_a=1\). Em particular, para todo \(X\in\mathcal{L}\) com \(y(X)>0\), a restrição primal do corte é \emph{justa}.\newline
-Prova. Em uma r‑arborescência, todo vértice distinto de \(r\) tem grau de entrada 1. Após contrair \(X\), o vértice contraído também não é \(r\) e deve ter grau de entrada 1. Isso conta exatamente um arco de \(\delta^-(X)\). \qed
+Seja \(T\) uma r-arborescência e \(X\subseteq V\setminus\{r\}\). Se contraímos \(X\) a um vértice, o grau de entrada desse vértice na imagem de \(T\) é 1; logo \(\sum_{a\in \delta^-(X)} x_a=1\). Em particular, para todo \(X\in\mathcal{L}\) com \(y(X)>0\), a restrição primal do corte é \emph{justa}.\newline
+Prova. Em uma r-arborescência, todo vértice distinto de \(r\) tem grau de entrada 1. Após contrair \(X\), o vértice contraído também não é \(r\) e deve ter grau de entrada 1. Isso conta exatamente um arco de \(\delta^-(X)\). \qed
 
-\paragraph{Teorema: o algoritmo devolve uma r‑arborescência ótima para \(c\)}
+\paragraph{Teorema: o algoritmo devolve uma r-arborescência ótima para \(c\)}
 
 \paragraph{Prova:} 
-Ao término da Fase I (após contrações de Lema 2), todo \(v\neq r\) possui ao menos uma entrada com \(c'(u,v)=0\). A Fase II seleciona apenas arcos \emph{apertados} e trata ciclos por contração/expansão, produzindo uma r‑arborescência \(T\). Logo, para todo \((u,v)\in T\), a desigualdade dual do arco é \emph{justa} (\(c'(u,v)=0\)). Pelo Lema 3, para todo \(X\in\mathcal{L}\) com \(y(X)>0\), a restrição primal do corte é \emph{justa} (entra exatamente um arco de \(T\)). Assim, valem as condições de \emph{complementaridade}:
+Ao término da Fase I (após contrações de Lema 2), todo \(v\neq r\) possui ao menos uma entrada com \(c'(u,v)=0\). A Fase II seleciona apenas arcos \emph{apertados} e trata ciclos por contração/expansão, produzindo uma r-arborescência \(T\). Logo, para todo \((u,v)\in T\), a desigualdade dual do arco é \emph{justa} (\(c'(u,v)=0\)). Pelo Lema 3, para todo \(X\in\mathcal{L}\) com \(y(X)>0\), a restrição primal do corte é \emph{justa} (entra exatamente um arco de \(T\)). Assim, valem as condições de \emph{complementaridade}:
 \begin{align*}
     &x_{(u,v)}>0\ \Rightarrow\ c'(u,v)=0,\qquad
     y(X)>0\ \Rightarrow\ \sum_{a\in \delta^-(X)} x_a=1.
@@ -3478,7 +3478,7 @@ def has_arborescence(D, r0):
 \end{pybox}
 
 \paragraph{Fase 1 do algoritmo de Frank:}
-	a função \texttt{phase1\_find\_minimum\_arborescence} mantém três estruturas: (i) \texttt{D\_zero}, o subgrafo das arestas com peso 0; (ii) \texttt{A\_zero}, a lista dessas 0‑arestas; e (iii) \texttt{Dual\_list}, com pares \((X,\Delta)\) que registram os incrementos aplicados.
+	a função \texttt{phase1\_find\_minimum\_arborescence} mantém três estruturas: (i) \texttt{D\_zero}, o subgrafo das arestas com peso 0; (ii) \texttt{A\_zero}, a lista dessas 0-arestas; e (iii) \texttt{Dual\_list}, com pares \((X,\Delta)\) que registram os incrementos aplicados.
 
 \paragraph{}
 O laço faz o seguinte, de forma direta:
@@ -3494,7 +3494,7 @@ O laço faz o seguinte, de forma direta:
     \end{itemize}
 \end{itemize}
 
-Na prática, \texttt{update\_weights\_in\_X} é o passo que “cria” novas 0‑arestas: ele reduz os pesos das entradas de \(X\) e insere em \texttt{D\_zero}/\texttt{A\_zero} aquelas que atingirem 0. O processo se repete até que toda componente diferente da raiz tenha ao menos uma entrada de peso 0, preparando o terreno para a Fase II.
+Na prática, \texttt{update\_weights\_in\_X} é o passo que “cria” novas 0-arestas: ele reduz os pesos das entradas de \(X\) e insere em \texttt{D\_zero}/\texttt{A\_zero} aquelas que atingirem 0. O processo se repete até que toda componente diferente da raiz tenha ao menos uma entrada de peso 0, preparando o terreno para a Fase II.
 
 \paragraph{}
 Parâmetros opcionais \texttt{draw\_fn} e \texttt{log} controlam visualização e mensagens.
@@ -3612,7 +3612,7 @@ Ao término da Fase 1, o algoritmo de Frank produziu um subgrafo \(D_0\) contend
 A Fase 2 explora essa estrutura preparada: em vez de continuar ajustando custos ou potenciais, simplesmente extraímos uma arborescência usando exclusivamente os arcos apertados de \(D_0\). A separação entre as fases é clara: a Fase 1 prepara o terreno dual, e a Fase 2 colhe o resultado primal. Esta divisão não apenas simplifica a análise de corretude (todos os arcos escolhidos são apertados, satisfazendo complementaridade), mas também permite otimizações específicas em cada etapa.
 
 \paragraph{Fase 2 - algoritmo de Frank}
-	a função \texttt{phase2\_find\_minimum\_arborescence} recebe \texttt{D\_original}, \texttt{r0} e \texttt{A\_zero} e devolve \texttt{Arb} (um \texttt{DiGraph}) contendo a arborescência construída apenas com 0‑arestas. O fluxo é:
+	a função \texttt{phase2\_find\_minimum\_arborescence} recebe \texttt{D\_original}, \texttt{r0} e \texttt{A\_zero} e devolve \texttt{Arb} (um \texttt{DiGraph}) contendo a arborescência construída apenas com 0-arestas. O fluxo é:
 \begin{itemize}\setlength{\itemsep}{1pt}
     \item \emph{Inicialização:} \texttt{Arb = nx.DiGraph(); Arb.add\_node(r0); n = len(D\_original.nodes())}.
     \item \emph{Laço externo:} \texttt{for \_ in range(n-1)} força a inclusão de exatamente \(n-1\) arestas.
@@ -3670,9 +3670,9 @@ def phase2_find_minimum_arborescence(
 \end{pybox}
 
 \paragraph{Fase 2 - algoritmo de Frank: versão 2 (com heap)}
-	extbf{Implementação com fila de prioridade.} Nesta variação, mantemos uma \emph{fronteira} de arcos candidatos em uma heap (\texttt{heapq}) e sempre extraímos o próximo arco com menor prioridade. O código constrói um grafo auxiliar apenas com as 0‑arestas e usa um conjunto de visitados para garantir que cada vértice entre exatamente uma vez.
+	extbf{Implementação com fila de prioridade.} Nesta variação, mantemos uma \emph{fronteira} de arcos candidatos em uma heap (\texttt{heapq}) e sempre extraímos o próximo arco com menor prioridade. O código constrói um grafo auxiliar apenas com as 0-arestas e usa um conjunto de visitados para garantir que cada vértice entre exatamente uma vez.
 \begin{itemize}\setlength{\itemsep}{1pt}
-    \item \emph{Pré-processamento (grafo auxiliar):} criar \texttt{Arb = nx.DiGraph()} e inserir todas as 0‑arestas com um peso de prioridade indexado: \texttt{for i, (u,v) in enumerate(A\_zero): Arb.add\_edge(u, v, w=i)}. Aqui, \texttt{w} atua como \emph{chave de desempate} estável baseada na ordem de \texttt{A\_zero}.
+    \item \emph{Pré-processamento (grafo auxiliar):} criar \texttt{Arb = nx.DiGraph()} e inserir todas as 0-arestas com um peso de prioridade indexado: \texttt{for i, (u,v) in enumerate(A\_zero): Arb.add\_edge(u, v, w=i)}. Aqui, \texttt{w} atua como \emph{chave de desempate} estável baseada na ordem de \texttt{A\_zero}.
     \item \emph{Estados:} \texttt{V = \{r0\}} (vértices alcançados), \texttt{q = []} (heap de tuplas \texttt{(w, u, v)}), \texttt{A = nx.DiGraph()} (arborescência resultante).
     \item \emph{Semeadura da fronteira:} para cada \texttt{(u, v, data)} em \texttt{Arb.out\_edges(r0, data=True)}, empilhar \texttt{heapq.heappush(q, (data["w"], u, v))}.
     \item \emph{Laço principal:} enquanto \texttt{q} não estiver vazia,
@@ -3922,7 +3922,7 @@ Wittgenstein, em suas investigações filosóficas, propôs a ideia de ``semelha
 Chu–Liu/Edmonds e Frank são parentes próximos: perseguem o mesmo objetivo com blocos operacionais semelhantes, mas organizam o enredo de modos distintos — um com voz combinatória, o outro com abordagem primal–dual.
 
 \paragraph{}
-Em linhas gerais, os dois métodos são equivalentes quanto ao resultado (ambos devolvem uma r‑arborescência de custo mínimo), mas organizam a mecânica de normalizar → contrair → expandir de maneiras distintas:
+Em linhas gerais, os dois métodos são equivalentes quanto ao resultado (ambos devolvem uma r-arborescência de custo mínimo), mas organizam a mecânica de normalizar → contrair → expandir de maneiras distintas:
 
 \paragraph{}
 O algoritmo de Chu–Liu/Edmonds \cite{chu1965,edmonds1967optimum} é o método clássico para encontrar uma arborescência de custo mínimo em um dígrafo com pesos arbitrários. Ele funciona recursivamente, escolhendo a melhor entrada para cada vértice, detectando ciclos e contraindo-os, ajustando os custos conforme necessário. O processo se repete até que não haja mais ciclos, momento em que a arborescência é extraída.
@@ -4056,7 +4056,7 @@ Então, como ensinar e aprender conceitos abstratos de forma eficaz? O ensino de
 
 \subsection{Fundamentos cognitivos e didáticos}
 \paragraph{}
-O ensino de matemática no ensino superior exige transitar entre registros de representação (intuitivo, visual, simbólico, formal) com intencionalidade didática \cite{tall1991advanced}. À luz da teoria da carga cognitiva, é útil distinguir: (i) a \emph{carga intrínseca}, determinada pela complexidade dos esquemas a construir e pelos pré‑requisitos ativados; (ii) a \emph{carga extrínseca}, criada pela forma de apresentação; e (iii) a \emph{carga pertinente} (\emph{germane}), isto é, o esforço dedicado à organização e automatização de esquemas \cite{sweller1988cognitive}. Em cursos avançados, a extrínseca cresce quando definições, símbolos e figuras não são co‑referenciados no tempo e no espaço, dificultando a coordenação entre o que se lê, o que se vê e o que se infere.
+O ensino de matemática no ensino superior exige transitar entre registros de representação (intuitivo, visual, simbólico, formal) com intencionalidade didática \cite{tall1991advanced}. À luz da teoria da carga cognitiva, é útil distinguir: (i) a \emph{carga intrínseca}, determinada pela complexidade dos esquemas a construir e pelos pré-requisitos ativados; (ii) a \emph{carga extrínseca}, criada pela forma de apresentação; e (iii) a \emph{carga pertinente} (\emph{germane}), isto é, o esforço dedicado à organização e automatização de esquemas \cite{sweller1988cognitive}. Em cursos avançados, a extrínseca cresce quando definições, símbolos e figuras não são co-referenciados no tempo e no espaço, dificultando a coordenação entre o que se lê, o que se vê e o que se infere.
 
 \subsubsection{Desafios centrais}
 Aprender conteúdos de alta abstração envolve lidar com sobrecarga cognitiva intrínseca e extrínseca \cite{sweller1988cognitive}. Diretrizes de aprendizagem multimídia indicam que combinar representações verbais e visuais pode reduzir carga desnecessária e favorecer integração semântica \cite{mayer2009multimedia,paivio1990}. Em matemática avançada, a transição entre níveis de representação (intuitivo, formal, simbólico) exige mediação cuidadosa \cite{tall1991advanced} e atenção a como exemplos, contraexemplos e invariantes são apresentados.
