@@ -1,201 +1,288 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+def find_optimum_arborescence_chuliu(
+    D: nx.DiGraph,
+    r0: str,
+    level=0,
+    draw_fn=None,
+    log=None,
+    boilerplate: bool = True,
+    lang="pt",
+):
+    """
+    Encontra a arborescência ótima em um dígrafo D com raiz r0 usando o algoritmo de Chu–Liu/Edmonds.
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Chu-Liu/Edmonds</title>
-    <link rel="icon" type="image/x-icon" href="../assets/logo.png"/>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/cytoscape@3.26.0/dist/cytoscape.min.js"></script>
+    Parâmetros:
+        - D: Um grafo direcionado (networkx.DiGraph)
+        - r0: O vértice raiz
+        - level: Nível atual da recursão (usado para logs e visualização)
+        - draw_fn: Função opcional para visualizar o grafo em cada etapa
+        - log: Função opcional de logging para registrar informações
+        - boilerplate: Se True, habilita logging e visualização
+        - lang: Idioma das mensagens de logging ("en" para inglês, "pt" para português)
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+    Retorno:
+        - Um grafo direcionado (networkx.DiGraph) que representa a arborescência ótima
 
-    <link rel="stylesheet" href="https://pyscript.net/releases/2025.3.1/core.css" />
-    <script type="module" src="https://pyscript.net/releases/2025.3.1/core.js"></script>
-</head>
+    Exceções:
+        - AssertionError: Se o vértice raiz r0 não estiver presente no grafo D
+        - AssertionError: Se nenhum ciclo for encontrado em F_star quando esperado
+        - AssertionError: Se o rótulo contraído já existir no grafo D
+        - AssertionError: Se não houver aresta de entrada para o vértice contraído em F_prime
+        - AssertionError: Se nenhum vértice do ciclo for encontrado para receber a aresta de entrada
+        - AssertionError: Se o rótulo contraído não for encontrado em F_prime
+        - AssertionError: Se os vértices u ou v não forem encontrados no grafo original D
+    """
 
-<body class="flex min-h-screen text-gray-800 bg-gray-100">
-    <style>
-        .py-error, .py-terminal-error {
-            display: none !important;
-        }
-    </style>
-    <div class="absolute top-[100px] w-full h-[1px] bg-[#DBDBDB]"></div>
+    indent = "  " * level
 
-    <!-- MENU LATERAL -->
-    <div id="sidebar"></div>
+    if boilerplate and log:
+        if lang == "en":
+            log(f"\nfind_optimum_arborescence_chuliu:{indent}Starting level {level}")
+        elif lang == "pt":
+            log(f"\nfind_optimum_arborescence_chuliu:{indent}Iniciando nível {level}")
 
-    <!-- CONTEÚDO PRINCIPAL -->
-    <div id="main-content" class="flex-1 bg-[#E5E5E5] p-6">
-        <span class="flex items-center gap-4 mb-10 text-4xl text-[#352B67]">Chu-Liu / Edmonds</span>
-        <!-- Stepper -->
-        <div class="grid grid-cols-50 gap-1">
-            <div class="col-span-1 p-2">
-            </div>
-            <div class="col-span-9 p-2">
-                <ol class="items-start gap-4 mx-4 space-y-2 sm:flex sm:space-x-4 sm:space-y-0 rtl:space-x-reverse">
-                    <li class="flex text-gray-500 dark:text-blue-500 space-x-2.5 rtl:space-x-reverse">
-                        <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-blue-500">
-                            1
-                        </span>
-                        <span>
-                            <h3 class="font-medium leading-tight">Crie um grafo</h3>
-                            <span class="text-sm text-gray-500">
-                                Desenhe um grafo,
-                                <span id="load-test-graph" class="cursor-pointer text-[#5A3CE5] hover:underline">carregue</span>
-                                um exemplo ou <br>
-                                <span id="import-graph" class="cursor-pointer text-[#5A3CE5] hover:underline">importe</span>
-                                <input type="file" id="file-input" style="display: none;" />
-                                um grafo já existente.
-                            </span>
-                        </span>
-                    </li>
-                    <li class="flex text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
-                        <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
-                            2
-                        </span>
-                        <span>
-                            <h3 class="font-medium leading-tight">Escolha o nó raiz</h3>
-                            <!-- <p class="text-sm mb-2">Defina o ponto inicial</p> -->
-                            <input type="text" id="root-node"
-                                class="w-full p-2 mt-2 rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 border-transparent"
-                                placeholder="node" />
-                        </span>
-                    </li>
-                    <li class="flex text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">
-                        <span class="flex items-center justify-center w-8 h-8 border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
-                            3
-                        </span>
-                        <span>
-                            <h3 class="font-medium leading-tight">Execute o algoritmo</h3>
-                            <div class="mt-1 flex justify-center items-center gap-1">
-                                <img id="run-algorithm" src="../assets/run.png" alt="Executar"
-                                    class="cursor-pointer w-8 h-8 rounded-lg hover:opacity-80 mt-2" />
-                            </div>
-                        </span>
-                    </li>
-                </ol>
-            </div>
-            <div class="col-span-1 p-2">
-            </div>
-        </div>
-        <!-- Grafo original -->
-        <div class="grid grid-cols-10 gap-4 py-4 px-4">
-            <div class="col-span-2 p-4"></div>
-            <div class="col-span-6 p-4">
-                <span class="mb-50 text-xl text-[#9993B7]">Grafo Original</span>
-                <div id="graph-editor" class="my-3 mt-50 py-4 px-50 rounded-lg bg-white h-[500px]">
-                </div>
-            </div>
-            <div class="col-span-2 p-4">
-                <div class="py-4 px-2 flex justify-left items-center gap-1">
-                    <img src="../assets/download.png" alt="Download" id="export-graph-original"
-                        class="my-5 cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
-                    <img src="../assets/delete.png" alt="Reset" id="reset-graph"
-                        class="my-5 cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
-                </div>
-            </div>
+    if lang == "en":
+        assert (
+            r0 in D
+        ), f"\nfind_optimum_arborescence_chuliu: The root vertex '{r0}' is not present in the graph."
+    elif lang == "pt":
+        assert (
+            r0 in D
+        ), f"\nfind_optimum_arborescence_chuliu: O vértice raiz '{r0}' não está presente no grafo."
 
-        </div>
-        <!-- Arborescência -->
-        <div id="arborescence-section" class="grid grid-cols-10 gap-4 py-4 px-4 hidden">
-            <div class="col-span-2 p-4"></div>
-            <div class="col-span-6 p-4">
-                <span class="mb-50 text-xl text-[#9993B7]">Arborescência</span>
-                <div id="arborescence-viewer" class="my-3 mt-50 py-4 px-50 rounded-lg bg-white h-[500px]">
-                </div>
-            </div>
-            <div class="col-span-2 p-4">
-                <div class="py-4 px-2 flex justify-left items-center gap-1">
-                    <img src="../assets/download.png" alt="Download" id="export-graph-arborescencia"
-                        class="my-5 cursor-pointer w-8 h-8 rounded-lg hover:opacity-80" />
-                </div>
-            </div>
-        </div>
+    D_copy = D.copy()
 
-        <!-- Logs de execução -->
-        <div id="log-section" class="grid grid-cols-10 gap-4 py-4 px-4 hidden">
-            <div class="col-span-2 p-4"></div>
-            <div class="col-span-6 p-4">
-                <button id="collapser-button"
-                    class="w-full bg-[#EEEEEE] text-[#948EB3] py-2 px-4 rounded-t-md text-left flex justify-between items-center"
-                    onclick="toggleCollapser()">
-                    Log de Execução
-                    <img id="collapser-icon" src="../assets/plus.png" alt="Contrair" class="w-5 h-5 hover:opacity-80" />
-                </button>
+    if boilerplate and log:
+        if lang == "en":
+            log(
+                f"\nfind_optimum_arborescence_chuliu:{indent}Removing edges entering '{r0}'"
+            )
+        elif lang == "pt":
+            log(
+                f"\nfind_optimum_arborescence_chuliu:{indent}Removendo arestas que entram em '{r0}'"
+            )
+        if draw_fn:
+            if lang == "en":
+                draw_fn(
+                    D_copy,
+                    f"\nfind_optimum_arborescence_chuliu:{indent}After removing incoming edges",
+                )
+            elif lang == "pt":
+                draw_fn(
+                    D_copy,
+                    f"\nfind_optimum_arborescence_chuliu:{indent}Após remoção de entradas",
+                )
 
-                <!-- Conteúdo colapsável -->
-                <div id="log-collapser-content"
-                    class="p-4 bg-[#EEEEEE] text-sm text-gray-400 rounded-b-md hidden transition-all duration-500 ease-in-out">
-                    <textarea id="log-output" readonly
-                        class="w-full p-3 rounded h-40 bg-[#EEEEEE] text-sm text-gray-400 border-transparent"></textarea>
-                </div>
-            </div>
-        </div>
-    </div>
+    for v in D_copy.nodes:
+        if v != r0:
+            normalize_incoming_edge_weights(D_copy, v, lang=lang)
 
-    <!-- Passo a Passo -->
-    <div id="right-sidebar" class="w-80 transition-all duration-300 border-l-[1px] bg-[#E5E5E5] border-[#DBDBDB] overflow-hidden">
-        <div id="title_step_area" class="flex items-center gap-6 py-8 mx-4 top-6">
-            <button id="toggle-sidebar" class="text-right text-[#4B4277] hover:text-[#2d255d]">
-                <img id="collapser-icon" src="../assets/back_arrow_right.png" alt="Contrair" class="w-5 h-5 hover:opacity-80" />
-            </button>
-            <span id="title_step" class="text-lg text-[#4B4277] font-medium">Passo A Passo</span>
-        </div>
-        <div id="container_step_by_step" class="my-6 mx-4 gap-4 py-2 px-2 bg-[#F5F5F5] rounded-lg">
-            <span id="step_warning" class="text-sm font-light text-[#787486]">Execute o algoritmo para visualizar o passo-a-passo</span>
-        </div>
-    </div>
+        if boilerplate and log:
+            if lang == "en":
+                log(
+                    f"\nfind_optimum_arborescence_chuliu:{indent}Normalizing weights of incoming edges to '{v}'"
+                )
+            elif lang == "pt":
+                log(
+                    f"\nfind_optimum_arborescence_chuliu:{indent}Normalizando pesos de arestas de entrada para '{v}'"
+                )
+            if draw_fn:
+                if lang == "en":
+                    draw_fn(
+                        D_copy,
+                        f"\nfind_optimum_arborescence_chuliu:{indent}After weight adjustment",
+                    )
+                elif lang == "pt":
+                    draw_fn(
+                        D_copy,
+                        f"\nfind_optimum_arborescence_chuliu:{indent}Após ajuste de pesos",
+                    )
 
-    <!-- Toasts -->
-    <div id="toast-danger" class="hidden fixed top-5 right-5 z-50 flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow-sm dark:text-gray-400 dark:bg-gray-800 transition-opacity duration-500 opacity-100" role="alert">
-        <div class="inline-flex items-center justify-center shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200">
-            <!-- SVG de erro -->
-            <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 11.793a1 1 0 1 1-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L8.586 10 6.293 7.707a1 1 0 0 1 1.414-1.414L10 8.586l2.293-2.293a1 1 0 0 1 1.414 1.414L11.414 10l2.293 2.293Z"/>
-            </svg>
-            <span class="sr-only">Error icon</span>
-        </div>
-        <div id="toast-danger-msg" class="ms-3 text-sm font-normal">Ocorreu um erro.</div>
-        <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" data-dismiss-target="#toast-danger" aria-label="Close" onclick="document.getElementById('toast-danger').classList.add('hidden')">
-            <span class="sr-only">Close</span>
-            <svg class="w-3 h-3" aria-hidden="true" fill="none" viewBox="0 0 14 14">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-            </svg>
-        </button>
-    </div>
+    # Build F_star
+    F_star = get_Fstar(D_copy, r0, lang=lang)
 
-    <!-- Modal de Imagem -->
-    <div id="image-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 hidden">
-        <img id="image-modal-img" src="" alt="Imagem Ampliada" class="max-w-3xl max-h-[80vh] rounded-lg shadow-lg border-4 border-white">
-    </div>
+    if boilerplate and log:
+        if lang == "en":
+            log(f"\nfind_optimum_arborescence_chuliu:{indent}Building F_star")
+        elif lang == "pt":
+            log(f"\nfind_optimum_arborescence_chuliu:{indent}Construindo F_star")
+        if draw_fn:
+            if lang == "en":
+                draw_fn(F_star, f"\nfind_optimum_arborescence_chuliu:{indent}F_star")
+            elif lang == "pt":
+                draw_fn(F_star, f"\nfind_optimum_arborescence_chuliu:{indent}F_star")
 
-    <!-- Modal Loader -->
-    <div id="loader-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30 hidden">
-        <div class="flex flex-col items-center">
-            <div class="w-16 h-16 border-4 border-[#5a3ce5] border-t-transparent border-solid rounded-full animate-spin"></div>
-            <span class="mt-4 text-white text-lg">Processando...</span>
-        </div>
-    </div>
+    if nx.is_arborescence(F_star):
+        for u, v in F_star.edges:
+            F_star[u][v]["w"] = D[u][v]["w"]
+        return F_star
 
-    <!-- Modal para peso da aresta -->
-    <div id="edge-weight-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
-        <div class="bg-white rounded-lg shadow-lg p-6 w-80">
-            <h3 class="text-lg font-semibold mb-4 text-gray-800">Peso da aresta</h3>
-            <input id="edge-weight-input" type="number" min="1" class="w-full p-2 border rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Digite o peso" />
-            <div class="flex justify-end gap-2">
-            <button id="edge-weight-cancel" class="px-4 py-2 rounded bg-gray-200 text-gray-700 hover:bg-gray-300">Cancelar</button>
-            <button id="edge-weight-ok" class="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">OK</button>
-            </div>
-        </div>
-    </div>
+    else:
+        if boilerplate and log:
+            if lang == "en":
+                log(
+                    f"\nfind_optimum_arborescence_chuliu:{indent}F_star is not an arborescence. Continuing..."
+                )
+            elif lang == "pt":
+                log(
+                    f"\nfind_optimum_arborescence_chuliu:{indent}F_star não é uma arborescência. Continuando..."
+                )
 
-    <!-- Scripts -->
-    <script src="../scripts/js/sidebar.js"></script>
-    <script src="../scripts/js/main.js"></script>
-    <script src="../scripts/js/draw_graph.js"></script>
-    <script type="py" src="../scripts/chuliu_page.py" config="../scripts/pyscript.json"></script>
-</body>
-</html>
+        C: nx.DiGraph = find_cycle(F_star)
+
+        if lang == "en":
+            assert C, f"\nfind_optimum_arborescence_chuliu: No cycle found in F_star."
+        elif lang == "pt":
+            assert (
+                C
+            ), f"\nfind_optimum_arborescence_chuliu: Nenhum ciclo encontrado em F_star."
+
+        contracted_label = f"\n n*{level}"
+        in_to_cycle, out_from_cycle = contract_cycle(
+            D_copy, C, contracted_label, lang=lang
+        )
+
+        # Recursive call
+        F_prime = find_optimum_arborescence_chuliu(
+            D_copy,
+            r0,
+            level + 1,
+            draw_fn=None,
+            log=None,
+            boilerplate=boilerplate,
+            lang=lang,
+        )
+
+        # Identify the vertex in the cycle that received the only incoming edge from the arborescence
+        in_edge = next(iter(F_prime.in_edges(contracted_label, data="w")), None)
+
+        if lang == "en":
+            assert (
+                in_edge
+            ), f"\nfind_optimum_arborescence_chuliu: No incoming edge found for vertex '{contracted_label}'."
+        elif lang == "pt":
+            assert (
+                in_edge
+            ), f"\nfind_optimum_arborescence_chuliu: Nenhuma aresta encontrada entrando no vértice '{contracted_label}'."
+
+        u, _, _ = in_edge
+
+        v, _ = in_to_cycle[u]
+
+        if lang == "en":
+            assert (
+                v is not None
+            ), f"\nfind_optimum_arborescence_chuliu: No vertex in the cycle found to receive the incoming edge from '{u}'."
+        elif lang == "pt":
+            assert (
+                v is not None
+            ), f"\nfind_optimum_arborescence_chuliu: Nenhum vértice do ciclo encontrado que recebeu a aresta de entrada de '{u}'."
+
+        # Remove the internal edge entering vertex `v` from cycle C
+        remove_internal_edge_to_cycle_entry(
+            C, v
+        )  # Note: w is coming from F_prime, not from G
+
+        # Add the external edge entering the cycle (identified by in_edge), the weight will be corrected at the end using G
+        F_prime.add_edge(u, v)
+        if boilerplate and log:
+            if lang == "en":
+                log(
+                    f"\nfind_optimum_arborescence_chuliu:{indent}Adding incoming edge to cycle: ({u}, {v})"
+                )
+            elif lang == "pt":
+                log(
+                    f"\nfind_optimum_arborescence_chuliu:{indent}Adicionando aresta de entrada ao ciclo: ({u}, {v})"
+                )
+
+        # Add the remaining edges of the modified cycle C
+        for u_c, v_c in C.edges:
+            F_prime.add_edge(u_c, v_c)
+            if boilerplate and log:
+                if lang == "en":
+                    log(
+                        f"\nfind_optimum_arborescence_chuliu:{indent}Adding cycle edge: ({u_c}, {v_c})"
+                    )
+                elif lang == "pt":
+                    log(
+                        f"\nfind_optimum_arborescence_chuliu:{indent}Adicionando aresta do ciclo: ({u_c}, {v_c})"
+                    )
+
+        # Add the external edges leaving the cycle
+        for _, z, _ in F_prime.out_edges(contracted_label, data=True):
+
+            if lang == "en":
+                assert (
+                    z in out_from_cycle
+                ), f"\nfind_optimum_arborescence_chuliu: No outgoing edge found for vertex '{z}'."
+            elif lang == "pt":
+                assert (
+                    z in out_from_cycle
+                ), f"\nfind_optimum_arborescence_chuliu: Nenhuma aresta de saída encontrada para o vértice '{z}'."
+
+            u_cycle, _ = out_from_cycle[z]
+            F_prime.add_edge(u_cycle, z)
+
+            if boilerplate and log:
+                if lang == "en":
+                    log(
+                        f"\nfind_optimum_arborescence_chuliu:{indent}Adding outgoing edge from cycle: ({u_cycle}, {z})"
+                    )
+                elif lang == "pt":
+                    log(
+                        f"\nfind_optimum_arborescence_chuliu:{indent}Adicionando aresta externa de saída: ({u_cycle}, {z})"
+                    )
+
+        # Remove the contracted node
+        if lang == "en":
+            assert (
+                contracted_label in F_prime
+            ), f"\nfind_optimum_arborescence_chuliu: Vertex '{contracted_label}' not found in the graph."
+        elif lang == "pt":
+            assert (
+                contracted_label in F_prime
+            ), f"\nfind_optimum_arborescence_chuliu: Vértice '{contracted_label}' não encontrado no grafo."
+        F_prime.remove_node(contracted_label)
+
+        if boilerplate and log:
+            if lang == "en":
+                log(
+                    f"\nfind_optimum_arborescence_chuliu:{indent}Contracted vertex '{contracted_label}' removed."
+                )
+            elif lang == "pt":
+                log(
+                    f"\nfind_optimum_arborescence_chuliu:{indent}Vértice contraído '{contracted_label}' removido."
+                )
+
+        # Update the edge weights with the original weights from G
+        for u, v in F_prime.edges:
+            if lang == "en":
+                assert (
+                    u in D and v in D
+                ), f"\nfind_optimum_arborescence_chuliu: Vertex '{u}' or '{v}' not found in the original graph."
+            elif lang == "pt":
+                assert (
+                    u in D and v in D
+                ), f"\nfind_optimum_arborescence_chuliu: Vértice '{u}' ou '{v}' não encontrado no grafo original."
+            F_prime[u][v]["w"] = D[u][v]["w"]
+
+        if boilerplate and log:
+            if lang == "en":
+                log(
+                    f"\n✅{indent}Final arborescence: {list(F_prime.edges)}"
+                )
+            elif lang == "pt":
+                log(
+                    f"\n✅{indent}Arborescência final: {list(F_prime.edges)}"
+                )
+            if draw_fn:
+                if lang == "en":
+                    draw_fn(
+                        F_prime,
+                        f"\n{indent}Final Arborescence.",
+                    )
+                elif lang == "pt":
+                    draw_fn(
+                        F_prime,
+                        f"\n{indent}Arborescência final.",
+                    )
+        return F_prime
