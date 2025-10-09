@@ -4760,17 +4760,17 @@ A figura a seguir destaca o foco primordial no componente editor de grafos.
 \end{htmlbox}
 \begin{figure}[H]\centering
 \begin{tikzpicture}[node distance=0.9cm]
+    % Ordem vertical: Home -> Chu-Liu -> Andras Frank -> Draw
     \node[draw,rounded corners,fill=gray!15,minimum width=3cm] (h) {Home};
-    \node[draw,rounded corners,fill=gray!15,below=of h,minimum width=3cm] (cl) {Chu-Liu};
-    \node[draw,rounded corners,fill=gray!15,below=of cl,minimum width=3cm] (af) {Andras Frank};
-    \node[draw,rounded corners,fill=gray!15,below=of af,minimum width=3cm] (dg) {Draw};
-    \node[draw,rounded corners,fill=gray!15,below=of dg,minimum width=3cm] (te) {Tese};
-    \foreach \x in {h,cl,af,dg} {\draw[->] (\x.south) -- ++(0,-0.25);}
+    \node[draw,rounded corners,fill=gray!15,below=of h,minimum width=3cm] (cl) {Draw};
+    \node[draw,rounded corners,fill=gray!15,below=of cl,minimum width=3cm] (af) {Chu-Liu/Edmonds};
+    \node[draw,rounded corners,fill=gray!15,below=of af,minimum width=3cm] (dg) {Andras Frank};
+    % Seta indicando hierarquia linear
+    \foreach \x/\y in {h/cl,cl/af,af/dg} {\draw[->] (\x.south) -- (\y.north);} 
 \end{tikzpicture}
 \caption{\texttt{sidebar.html}: lista vertical reforçando modelo mental estável de navegação.}
 \end{figure}
-
-    
+    \textit{Comentário:} A consistência visual e funcional do menu lateral em todas as páginas reduz a carga cognitiva associada à navegação, permitindo que os usuários se concentrem no conteúdo principal.
 
 \paragraph{\texttt{chuliu.html}} Página específica para execução guiada do algoritmo de Chu--Liu/Edmonds. Introduz componentes de passo-a-passo, logs e visualizações separadas (grafo original vs. arborescência) com possibilidade de esconder/mostrar seções (colapso).
 \begin{htmlbox}{Estrutura resumida de chuliu.html}
