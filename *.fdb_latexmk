@@ -1,7 +1,0 @@
-# Fdb version 4
-["pdflatex"] 1759450376.14909 "*.tex" "*.pdf" "*" 1759450376.33253 2
-  (generated)
-  "*.aux"
-  "*.log"
-  "*.pdf"
-  (rewritten before read)
