@@ -2237,10 +2237,14 @@ Resolvemos recursivamente no grafo contraído. As arborescências do grafo contr
         \node[circle,draw,minimum size=6mm] (q2) at (5.6,1.2) {$q$};
         \node[circle,draw,minimum size=6mm] (u2b) at (6.8,-0.2) {$u$};
         % cycle C
-        \draw[dashed,rounded corners] (2.6,-0.9) rectangle (4.6,1.7) node[above right] {$C$};
+        % \draw[dashed,rounded corners] (2.6,-0.9) rectangle (4.6,1.7) node[above right] {$C$};
+        % cycle C
+        % \draw[dashed,rounded corners] (2.6,-0.9) rectangle (4.6,1.7) node[below right] {$C$};   
+        \draw[dashed,rounded corners] (2.6,-0.9) rectangle (4.6,1.7);
+        \node at (4.55,-0.95) {$C$}; 
         \node[circle,draw,minimum size=6mm] (aC) at (3.0,1.2) {$a$};
         \node[circle,draw,minimum size=6mm] (bC) at (4.2,0.4) {$w$};
-        \node[circle,draw,minimum size=6mm] (cC) at (3.2,-0.2) {$c$};
+        \node[circle,draw,minimum size=6mm, above right] (cC) at (3.2,-0.2) {$c$};
         \draw[->] (aC) -- (bC);
         \draw[->] (bC) -- (cC);
         \draw[->] (cC) -- (aC);
@@ -2248,7 +2252,7 @@ Resolvemos recursivamente no grafo contraído. As arborescências do grafo contr
         \draw[->] (r2) -- (q2);
         \draw[->] (r2) -- (p2);
         \draw[->] (q2) -- (aC);
-        \draw[->,very thick] (u2b) -- node[above] {entra em $w$} (bC);
+        \draw[->,very thick] (u2b) -- node[above,xshift=15pt] {entra em $w$} (bC);
     \end{tikzpicture}
     \caption{Bijeção entre arborescências no grafo contraído e no original: (a) toda arborescência em $D'$ escolhe exatamente um arco que entra em $x_C$; (b) ao expandir $C$, esse arco corresponde a um $(u,w)$ que entra em algum $w\in C$ e os arcos internos (de custo reduzido zero) são mantidos. O custo total é preservado.}
     \label{fig:chu-liu-bijection}
