@@ -2181,9 +2181,9 @@ Dado um subconjunto \(C\subseteq V\) que forma um ciclo dirigido, a \emph{contra
 
         % (b) Contraído
         \node at (3.7,2.0) {(b) Contraído};
-        \node[circle,draw,minimum size=8mm,fill=gray!10,label={[label distance=4mm]above:$x_C$}] (xC) at (3.6,0.4) {$x_C$};
-        \node[circle,draw,minimum size=6mm,label={[label distance=4mm]right:$u$}] (u2) at (6.8,0.4) {$u$};
-        \draw[->] (u2) -- node[above,align=center] {$c'(u,x_C)=c(u,w)-c(a_w)$} (xC);
+        \node[circle,draw,minimum size=8mm,fill=gray!10] (xC) at (3.6,0.4) {$x_C$};
+        \node[circle,draw,minimum size=6mm] (u2) at (6.8,0.4) {$u$};
+        \draw[->] (u2) -- node[below,align=center,yshift=-10pt] {$c'(u,x_C)=c(u,w)-c(a_w)$} (xC);
     \end{tikzpicture}
     \caption{Ajuste de custo reduzido para um arco \emph{entrando}: ao contrair um ciclo $C$, o arco $(u,w)$ com $w\in C$ passa a $(u,x_C)$ com custo reduzido $c'(u,x_C)=c(u,w)-c(a_w)$, onde $a_w$ é o arco de menor custo que entra em $w$.}
     \label{fig:chu-liu-reduced-cost}
@@ -2237,11 +2237,8 @@ Resolvemos recursivamente no grafo contraído. As arborescências do grafo contr
         \node[circle,draw,minimum size=6mm] (q2) at (5.6,1.2) {$q$};
         \node[circle,draw,minimum size=6mm] (u2b) at (6.8,-0.2) {$u$};
         % cycle C
-        % \draw[dashed,rounded corners] (2.6,-0.9) rectangle (4.6,1.7) node[above right] {$C$};
-        % cycle C
-        % \draw[dashed,rounded corners] (2.6,-0.9) rectangle (4.6,1.7) node[below right] {$C$};   
         \draw[dashed,rounded corners] (2.6,-0.9) rectangle (4.6,1.7);
-        \node at (4.55,-0.95) {$C$}; 
+        \node at (5.10,-1.10) {$C$}; 
         \node[circle,draw,minimum size=6mm] (aC) at (3.0,1.2) {$a$};
         \node[circle,draw,minimum size=6mm] (bC) at (4.2,0.4) {$w$};
         \node[circle,draw,minimum size=6mm, above right] (cC) at (3.2,-0.2) {$c$};
@@ -2278,7 +2275,7 @@ Na expansão, reintroduzimos \(C\) e removemos exatamente um arco interno para m
 
         % (b) Expandido
         \node at (0.0,2.0) {(b) Expandido};
-        \draw[dashed,rounded corners] (-1.2,-0.8) rectangle (1.2,1.6) node[above right] {$C$};
+        \draw[dashed,rounded corners] (-1.2,-0.8) rectangle (1.2,1.6) node[below right] {$C$};
         \node[circle,draw,minimum size=6mm] (a3) at (-0.8,1.0) {$a$};
         \node[circle,draw,minimum size=6mm] (w3) at (0.8,0.4) {$w$};
         \node[circle,draw,minimum size=6mm] (c3) at (-0.4,0.0) {$c$};
