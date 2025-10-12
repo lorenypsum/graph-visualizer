@@ -1,12 +1,12 @@
 import networkx as nx
 import heapq
 
+
 # TODO: Verificar se precisa mesmo dessa função
 def build_D_zero(D):
     """
     Build a directed graph D_zero and from the input directed graph D,
     where D_zero contains only the edges with weight zero.
-    The function also returns a list of tuples representing the edges with weight zero in D_zero.
 
     Parameters:
     - D: directed graph (DiGraph)
@@ -102,7 +102,13 @@ def has_arborescence(D, r0):
 
 
 def phase1_find_minimum_arborescence(
-    D_original, r0, draw_fn=None, log=None, boilerplate: bool = True, lang="pt"
+    D_original,
+    r0,
+    draw_fn=None,
+    log=None,
+    boilerplate: bool = True,
+    lang="pt",
+    metrics: dict | None = None,
 ):
     """
     Find the minimum arborescence in a directed graph D with root r0.
@@ -201,6 +207,13 @@ def phase1_find_minimum_arborescence(
             else:
                 # Otherwise, add to the dual list the set X and its min_weight
                 Dual_list.append((X, min_weight))
+
+    # Collect metrics if requested
+    if metrics is not None:
+        metrics["phase1_iterations"] = iteration
+        metrics["d0_edges"] = D_zero.number_of_edges()
+        metrics["d0_nodes"] = D_zero.number_of_nodes()
+        metrics["dual_count"] = len(Dual_list)
 
     return A_zero, Dual_list
 
@@ -340,7 +353,12 @@ def check_dual_optimality_condition(
 
 # empacotar as chamadas em função.
 def andras_frank_algorithm(
-    D, draw_fn=None, log=None, boilerplate: bool = True, lang="pt"
+    D,
+    draw_fn=None,
+    log=None,
+    boilerplate: bool = True,
+    lang="pt",
+    metrics: dict | None = None,
 ):
     if boilerplate and log:
         if lang == "en":
@@ -349,7 +367,13 @@ def andras_frank_algorithm(
             log(f"\nExecutando algoritmo de András Frank...")
 
     A_zero, Dual_list = phase1_find_minimum_arborescence(
-        D, "r0", draw_fn=draw_fn, log=log, boilerplate=boilerplate, lang=lang
+        D,
+        "r0",
+        draw_fn=draw_fn,
+        log=log,
+        boilerplate=boilerplate,
+        lang=lang,
+        metrics=metrics,
     )
 
     if boilerplate and log:

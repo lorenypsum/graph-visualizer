@@ -1,0 +1,36 @@
+% !TEX program = latexmk
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{microtype}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,fit,calc}
+
+\begin{document}
+\centering
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, e/.style={semithick, draw=gray!70}}
+
+    % vértices da árvore
+    \node[v, label=below:$r$] (r) at (0,0) {};
+    \node[v, label=above:$a$] (a) at (-1.6,1.4) {};
+    \node[v, label=above:$b$] (b) at (0.0,1.8) {};
+    \node[v, label=above:$c$] (c) at (1.6,1.4) {};
+    \node[v, label=above:$d$] (d) at (-2.4,2.8) {};
+    \node[v, label=above:$e$] (e) at (-0.8,3.0) {};
+    \node[v, label=above:$f$] (f) at (0.8,3.0) {};
+
+    % arestas da árvore (sem ciclos)
+    \draw[e] (r) -- (a);
+    \draw[e] (r) -- (b);
+    \draw[e] (r) -- (c);
+    \draw[e] (a) -- (d);
+    \draw[e] (a) -- (e);
+    \draw[e] (b) -- (f);
+
+    % indicação de |E| = |V| - 1
+    \node[align=left, anchor=west] at (3.0,1.8) {$|V_T|=7,\; |E_T|=6$\\ $|E_T|=|V_T|-1$};
+\end{tikzpicture}
+\end{document}

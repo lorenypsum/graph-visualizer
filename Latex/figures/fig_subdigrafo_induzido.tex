@@ -1,0 +1,37 @@
+% !TEX program = latexmk
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{microtype}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,fit,calc}
+
+\begin{document}
+\centering
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!60}, ind/.style={->, very thick, draw=blue!60}}
+    % vértices
+    \node[v, label=below:$a$] (a) at (0,0) {};
+    \node[v, label=below:$b$] (b) at (2,0) {};
+    \node[v, label=above:$c$] (c) at (1,1.6) {};
+    \node[v, label=above:$d$] (d) at (3,1.6) {};
+    \node[v, label=below:$e$] (e) at (4.2,0) {};
+    \node[v, label=below:$f$] (f) at (5.4,0) {};
+    % arcos do dígrafo (cinza)
+    \draw[a] (a) -- (b);
+    \draw[a] (c) -- (a);
+    \draw[a] (e) -- (d);
+    \draw[a] (f) -- (e);
+    \draw[a] (b) to[bend left=20] (e);
+    \draw[a] (e) to[bend left=20] (b);
+    % arcos em D[V'] (azul): todas as arestas com ambas as extremidades em V'
+    \draw[ind] (b) -- (c);
+    \draw[ind] (c) -- (d);
+    \draw[ind] (d) -- (b);
+    % destaque do conjunto de vértices V'
+    \node[draw=blue!40, rounded corners, fit=(b)(c)(d), inner sep=12pt, label={[blue!60]above:$V'=\{b,c,d\}$}] {};
+\end{tikzpicture}
+$, o subdígrafo $D[V']$ contém todos os arcos de $D$ cujas extremidades pertencem a $V'$ (em azul). Arcos que incidem em $V'$ mas conectam a vértices fora de $V'$ não pertencem a $D[V']$.}
+\end{document}
