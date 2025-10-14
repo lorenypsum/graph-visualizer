@@ -75,6 +75,16 @@
 \renewcommand{\theHtable}{\thesection.\arabic{table}}
 \makeatother
 
+\usepackage{amsmath,amssymb}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins, breakable, listings}
+\usepackage{listings}
+\newcommand{\pto}{\mathrel{\rightharpoonup}}
+\newcommand{\dom}{\operatorname{dom}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\seq}[1]{\langle #1 \rangle}
+\tcbuselibrary{skins, breakable, listings}
+
 % Estilo para listagens Python
 \lstdefinestyle{pystyle}{
     language=Python,
@@ -2302,7 +2312,6 @@ Na expansão, reintroduzimos \(C\) e removemos exatamente um arco interno para m
     \label{fig:chu-liu-reexpansion}
 \end{figure}
 
-
 \paragraph{}
 A Figura \ref{fig:chu-liu-reexpansion} detalha o processo de expansão e remoção de um arco interno para quebrar o ciclo, garantindo que a estrutura de r-arborescência seja mantida.
 
@@ -2328,6 +2337,72 @@ Abaixo, temos a descrição formal do algoritmo.
               Então \(T\) tem grau de entrada 1 em cada \(v\neq r\), é acíclico e tem o mesmo custo de \(T'\); logo, é uma r-arborescência ótima de \(D\) \cite[Sec.~4.9]{kleinberg2006,schrijver2003comb}.
     \end{enumerate}
 \end{algobox}
+
+
+\subsubsection{Exemplo prático: Chu–Liu/Edmonds passo a passo}
+
+\paragraph{}
+A seguir, ilustramos o funcionamento do algoritmo de Chu–Liu/Edmonds em um grafo de teste. Mostramos o grafo original, os principais passos do algoritmo e a arborescência final encontrada.
+
+% \begin{tcolorbox}[
+%   enhanced, breakable,
+%   colframe=blue!60!black, colback=blue!2,
+%   colbacktitle=blue!15, coltitle=black,
+%   title={Exemplo prático: execução do algoritmo},
+%   boxed title style={sharp corners, boxrule=0.6pt},
+%   sharp corners, boxrule=0.6pt
+% ]
+% \paragraph{Grafo original:}
+% \begin{center}
+% \begin{tikzpicture}[>=Stealth, node distance=1.5cm, scale=0.9, every node/.style={scale=0.9}]
+%   % Nodes
+%   \foreach \i/\x/\y in {0/0/0, 1/2/1, 2/4/0, 3/2/-1, 4/6/1, 5/8/0, 6/6/-1, 7/8/2, 8/10/1}
+%     \node[circle,draw,minimum size=7mm] (n\i) at (\x,\y) {\i};
+%   % Edges (sample, not all from your JSON)
+%   \draw[->] (n0) -- node[above] {3} (n1);
+%   \draw[->] (n0) -- node[above] {6} (n2);
+%   \draw[->] (n1) -- node[left] {1} (n2);
+%   \draw[->] (n1) -- node[left] {2} (n3);
+%   \draw[->] (n1) -- node[above] {10} (n4);
+%   \draw[->] (n2) -- node[right] {1} (n1);
+%   \draw[->] (n3) -- node[below] {1} (n4);
+%   \draw[->] (n4) -- node[above] {10} (n2);
+%   \draw[->] (n4) -- node[above] {1} (n5);
+%   \draw[->] (n5) -- node[above] {1} (n6);
+%   \draw[->] (n6) -- node[above] {1} (n4);
+%   \draw[->] (n6) -- node[right] {8} (n7);
+%   \draw[->] (n6) -- node[below] {2} (n8);
+%   \draw[->] (n7) -- node[above] {4} (n8);
+%   \draw[->] (n8) -- node[right] {5} (n6);
+% \end{tikzpicture}
+% \end{center}
+
+\paragraph{Passos principais do algoritmo:}
+\begin{itemize}
+  \item Remover arestas que entram na raiz (vértice $0$).
+  \item Normalizar pesos das arestas de entrada para cada vértice.
+  \item Construir $F^*$: selecionar para cada vértice a aresta de menor custo de entrada.
+  \item Detectar ciclos e contrair, se necessário.
+  \item Repetir o processo recursivamente até obter uma arborescência.
+\end{itemize}
+
+% \paragraph{Arborescência final encontrada:}
+% \begin{center}
+% \begin{tikzpicture}[>=Stealth, node distance=1.5cm, scale=0.9, every node/.style={scale=0.9}]
+%   % Nodes
+%   \foreach \i/\x/\y in {0/0/0, 1/2/1, 2/4/0, 3/2/-1, 4/6/1, 5/8/0, 6/6/-1, 7/8/2, 8/10/1}
+%     \node[circle,draw,minimum size=7mm,fill=blue!10] (n\i) at (\x,\y) {\i};
+%   % Arborescência (edges from your result)
+%   \draw[->,thick,blue] (n0) -- (n1);
+%   \draw[->,thick,blue] (n1) -- (n2);
+%   \draw[->,thick,blue] (n1) -- (n3);
+%   \draw[->,thick,blue] (n3) -- (n4);
+%   \draw[->,thick,blue] (n4) -- (n5);
+%   \draw[->,thick,blue] (n5) -- (n6);
+%   \draw[->,thick,blue] (n6) -- (n7);
+%   \draw[->,thick,blue] (n6) -- (n8);
+% \end{tikzpicture}
+% \end{center}
 
 \subsubsection{Corretude}
 \paragraph{}
@@ -2396,26 +2471,38 @@ Com isso, ao menos uma entrada em $v$ passa a ter custo reduzido zero e a ordem 
 \paragraph{}
 A função executa em $O(\deg^-(v))$. Pois, dado o vértice $v$, obtemos suas arestas de entrada em $O(\deg^-(v))$; calcular o mínimo e ajustar os pesos também leva $O(\deg^-(v))$.
 
-\begin{pybox}[title={Normalização por vértice: custos reduzidos},colback=blue!5!white,colframe=blue!75!black]{Altera os pesos das arestas que entram em `node` subtraindo de cada uma o menor peso de entrada no grafo D.}
-def normalize_incoming_edge_weights(D: nx.DiGraph, node: str):
+\begin{tcolorbox}[
+  enhanced, breakable,
+  colframe=blue!60!black, colback=blue!2,
+  colbacktitle=blue!15, coltitle=black,
+  title={Normalização por vértice: custos reduzidos},
+  boxed title style={sharp corners, boxrule=0.6pt},
+  sharp corners, boxrule=0.6pt
+]
+\emph{Altera os pesos das arestas que entram em `node` subtraindo de cada uma o menor peso de entrada no grafo D.}
+\tcblower
+\begin{lstlisting}[language=Python]
+% def normalize_incoming_edge_weights(D: nx.DiGraph, node: str):
     
-    assert (
-        node in D
-    ), f"\nnormalize_incoming_edge_weights: O vértice '{node}' não existe no grafo."
+%     assert (
+%         node in D
+%     ), f"\nnormalize_incoming_edge_weights: O vértice '{node}' não existe no grafo."
         
-    # Get the incoming edges of the node with their weights
-    predecessors = list(D.in_edges(node, data="w"))
+%     # Get the incoming edges of the node with their weights
+%     predecessors = list(D.in_edges(node, data="w"))
 
-    if not predecessors:
-        return
+%     if not predecessors:
+%         return
 
-    # Calculate the minimum weight among the incoming edges
-    yv = min((w for _, _, w in predecessors))
+%     # Calculate the minimum weight among the incoming edges
+%     yv = min((w for _, _, w in predecessors))
 
-    # Subtract Yv from each incoming edge
-    for u, _, _ in predecessors:
-        D[u][node]["w"] -= yv
-\end{pybox}
+%     # Subtract Yv from each incoming edge
+%     for u, _, _ in predecessors:
+%         D[u][node]["w"] -= yv   
+\end{lstlisting}
+\end{tcolorbox}
+
 
 \paragraph{Construção de \(F^*\):}
 a função constrói o subdígrafo \(F^*\) selecionando, para cada vértice \(v\neq r_0\), uma única aresta de menor custo que entra em \(v\) (isto é, um \(\operatorname*{argmin}_{(u,v)\in A} w(u,v)\)).
@@ -2426,24 +2513,36 @@ Se os custos já foram normalizados por vértice, o arco escolhido tem custo red
 \paragraph{}
 Isso ocorre porque a função itera sobre todos os vértices do grafo e, para cada vértice, verifica suas arestas de entrada para encontrar a de menor peso. Como cada aresta é considerada no máximo uma vez durante essa iteração, o tempo total é proporcional ao número de arestas, ou seja, \(O(m)\). A função não modifica o grafo original, mas cria um novo grafo direcionado \(F^*\).
 
-\begin{pybox}[title={Construção de $F^*$},colback=blue!5!white,colframe=blue!75!black]{Constrói o subgrafo funcional F* a partir do grafo D e da raiz r0. Por fim, retorna um grafo direcionado F_star com exatamente uma aresta de entrada para cada v != r0 e nenhuma aresta entrando em r0.}
-def get_Fstar(D: nx.DiGraph, r0: str):
+
+\begin{tcolorbox}[
+  enhanced, breakable,
+  colframe=blue!60!black, colback=blue!2,
+  colbacktitle=blue!15, coltitle=black,
+    title={Construção de F star },
+  boxed title style={sharp corners, boxrule=0.6pt},
+  sharp corners, boxrule=0.6pt
+]
+\emph{Constrói o subgrafo funcional F star a partir do grafo D e da raiz r0 entrando em r0.}
+\tcblower 
+\begin{lstlisting}[mathescape=true, language=Python]
+% def get_Fstar(D: nx.DiGraph, r0: str):
     
-    assert r0 in D, f"\nget_Fstar: O vértice raiz '{r0}' não existe no grafo."
+%     assert r0 in D, f"get_Fstar: O vértice raiz '\{r0\}' não existe no grafo."
 
-    # Create an empty directed graph for F_star
-    F_star = nx.DiGraph()
+%     # Create an empty directed graph for F_star
+%     F_star \eq nx.DiGraph()
 
-    for v in D.nodes():
-        if v != r0:
-            in_edges = list(D.in_edges(v, data="w"))
-            if not in_edges:
-                continue  # No edges entering v
-            u = next((u for u, _, w in in_edges if w == 0), None)
-            if u:
-                F_star.add_edge(u, v, w=0)
-    return F_star
-\end{pybox}
+%     for v in D.nodes():
+%         if v \neq r0:
+%             in_edges \eq list(D.in_edges(v, data\eq"w"))
+%             if not in_edges:
+%                 continue  # No edges entering v
+%             u \eq next((u for u, _, w in in_edges if w \eq\eq 0), None)
+%             if u:
+%                 F_star.add_edge(u, v, w\eq0)
+%     return F_star  
+\end{lstlisting}
+\end{tcolorbox}
 
 \paragraph{Detecção de ciclo:}
 a função detecta um ciclo dirigido em \(F^*\) (se existir) e retorna um subgrafo contendo o ciclo. Caso contrário, retorna None. A função utiliza a função \texttt{find\_cycle} do NetworkX, que implementa um algoritmo eficiente de detecção de ciclos.
@@ -2454,19 +2553,31 @@ A função executa em \(O(m)\). Isso ocorre porque a função \texttt{find\_cycl
 \paragraph{}
 A complexidade dessa abordagem é linear em relação ao número de vértices e arestas do grafo, ou seja, \(O(m)\), onde \(m\) é o número de arestas. A função não modifica o grafo original, mas cria um subgrafo contendo apenas os vértices e arestas que fazem parte do ciclo detectado.
 
-\begin{pybox}[title={Detecção de ciclo dirigido em $F^*$},colback=blue!5!white,colframe=blue!75!black]{Encontra um ciclo dirigido no grafo. Por fim, retorna um subgrafo contendo o ciclo, ou None caso não exista.}
-def find_cycle(F_star: nx.DiGraph):
-    try:
-        nodes_in_cycle = set()
-        # Extract nodes involved in the cycle
-        for u, v, _ in nx.find_cycle(F_star, orientation="original"):
-            nodes_in_cycle.update([u, v])
-        # Create a subgraph containing only the cycle
-        return F_star.subgraph(nodes_in_cycle).copy()
+\begin{tcolorbox}[
+  enhanced, breakable,
+  colframe=blue!60!black, colback=blue!2,
+  colbacktitle=blue!15, coltitle=black,
+  title={Detecção de ciclo dirigido em $F^*$},
+  boxed title style={sharp corners, boxrule=0.6pt},
+  sharp corners, boxrule=0.6pt
+]
+\emph{Encontra um ciclo dirigido no grafo. Por fim, retorna um subgrafo contendo o ciclo, ou None caso não exista.}
+\tcblower
+\begin{lstlisting}[mathescape=true, language=Python]
+% def find_cycle(F_star: nx.DiGraph):
+%     try:
+%         nodes_in_cycle = set()
+%         # Extract nodes involved in the cycle
+%         for u, v, _ in nx.find_cycle(F_star, orientation="original"):
+%             nodes_in_cycle.update([u, v])
+%         # Create a subgraph containing only the cycle
+%         return F_star.subgraph(nodes_in_cycle).copy()
 
-    except nx.NetworkXNoCycle:
-        return None
-\end{pybox}
+%     except nx.NetworkXNoCycle:
+%         return None  
+\end{lstlisting}
+\end{tcolorbox}
+
 
 \paragraph{Contração de ciclo:}
 a função contrai um ciclo dirigido simples \(C\) em um \textbf{supervértice} \(x_C\), redirecionando arcos incidentes a \(C\) e ajustando custos de acordo com a regra de \emph{custos reduzidos}. O grafo é modificado \emph{in-place} e a rotina devolve dicionários auxiliares para permitir a \emph{reexpansão} correta do ciclo.
@@ -2505,54 +2616,66 @@ Essas escolhas garantem a \emph{equivalência de custo} entre soluções ótimas
 
 \noindent A expressão “no próprio lugar (in\-place)” no docstring abaixo\footnote{“In\-place” significa que a função altera diretamente a estrutura de dados existente, sem criar uma cópia. Assim, após a chamada, o grafo \(D\) já refletirá as remoções, inserções e ajustes feitos. Isso reduz alocações e pode ser mais eficiente, mas exige cuidado com aliasing/referências ativas, pois o estado anterior não é preservado a menos que seja salvo explicitamente.} indica que o grafo \(D\) é modificado diretamente.
 
-\begin{pybox}[title={Contração de ciclo},colback=blue!5!white,colframe=blue!75!black]{Contrai um ciclo C no grafo D, substituindo-o por um supervértice rotulado `label`. Nesse processo, modifica o grafo D no próprio lugar (in-place) e por fim, devolve dicionários auxiliares para a reexpansão.}
-def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: str):
+\begin{tcolorbox}[
+  enhanced, breakable,
+  colframe=blue!60!black, colback=blue!2,
+  colbacktitle=blue!15, coltitle=black,
+  title={Contração de ciclo},
+  boxed title style={sharp corners, boxrule=0.6pt},
+  sharp corners, boxrule=0.6pt
+]
+\emph{Contrai um ciclo C no grafo D, substituindo-o por um supervértice rotulado `label`. Nesse processo, modifica o grafo D no próprio lugar (in-place) e por fim, devolve dicionários auxiliares para a reexpansão.}
+\tcblower
+\begin{lstlisting}[mathescape=true, language=Python]
+% def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: str):
     
-    assert (
-            label not in D
-        ), f"\ncontract_cycle: O rótulo '{label}' já existe como vértice em G."
+%     assert (
+%             label not in D
+%         ), f"\ncontract_cycle: O rótulo '{label}' já existe como vértice em G."
 
-    cycle_nodes: set[str] = set(C.nodes())
+%     cycle_nodes: set[str] = set(C.nodes())
 
-    # Stores the vertex u outside the cycle and the vertex v inside the cycle that receives the minimum weight edge
-    in_to_cycle: dict[str, tuple[str, float]] = {}
+%     # Stores the vertex u outside the cycle and the vertex v inside the cycle that receives the minimum weight edge
+%     in_to_cycle: dict[str, tuple[str, float]] = {}
 
-    for u in D.nodes:
-        if u not in cycle_nodes:
-            # Find the minimum weight edge that u has to any vertex in C
-            min_weight_edge_to_cycle = min(
-                ((v, w) for _, v, w in D.out_edges(u, data="w") if v in cycle_nodes),
-                key=lambda x: x[1],
-                default=None,
-            )
-            if min_weight_edge_to_cycle:
-                in_to_cycle[u] = min_weight_edge_to_cycle
+%     for u in D.nodes:
+%         if u not in cycle_nodes:
+%             # Find the minimum weight edge that u has to any vertex in C
+%             min_weight_edge_to_cycle = min(
+%                 ((v, w) for _, v, w in D.out_edges(u, data="w") if v in cycle_nodes),
+%                 key=lambda x: x[1],
+%                 default=None,
+%             )
+%             if min_weight_edge_to_cycle:
+%                 in_to_cycle[u] = min_weight_edge_to_cycle
 
-    for u, (v, w) in in_to_cycle.items():
-        D.add_edge(u, label, w=w)
+%     for u, (v, w) in in_to_cycle.items():
+%         D.add_edge(u, label, w=w)
 
-    # Stores the vertex v outside the cycle that receives the minimum weight edge from a vertex u inside the cycle
-    out_from_cycle: dict[str, tuple[str, float]] = {}
+%     # Stores the vertex v outside the cycle that receives the minimum weight edge from a vertex u inside the cycle
+%     out_from_cycle: dict[str, tuple[str, float]] = {}
 
-    for v in D.nodes:
-        if v not in cycle_nodes:
-            # Find the minimum weight edge that v receives from any vertex in C
-            min_weight_edge_from_cycle = min(
-                ((u, w) for u, _, w in D.in_edges(v, data="w") if u in cycle_nodes),
-                key=lambda x: x[1],
-                default=None,
-            )
-            if min_weight_edge_from_cycle:
-                out_from_cycle[v] = min_weight_edge_from_cycle
+%     for v in D.nodes:
+%         if v not in cycle_nodes:
+%             # Find the minimum weight edge that v receives from any vertex in C
+%             min_weight_edge_from_cycle = min(
+%                 ((u, w) for u, _, w in D.in_edges(v, data="w") if u in cycle_nodes),
+%                 key=lambda x: x[1],
+%                 default=None,
+%             )
+%             if min_weight_edge_from_cycle:
+%                 out_from_cycle[v] = min_weight_edge_from_cycle
 
-    for v, (u, w) in out_from_cycle.items():
-        D.add_edge(label, v, w=w)
+%     for v, (u, w) in out_from_cycle.items():
+%         D.add_edge(label, v, w=w)
 
-    # Remove all nodes in the cycle from G
-    D.remove_nodes_from(cycle_nodes)
+%     # Remove all nodes in the cycle from G
+%     D.remove_nodes_from(cycle_nodes)
 
-    return in_to_cycle, out_from_cycle
-\end{pybox}
+%     return in_to_cycle, out_from_cycle  
+% \end{lstlisting}
+\end{tcolorbox}
+
 
 \paragraph{Remoção de arestas que entram na raiz:}
 a função remove todas as arestas que entram no vértice raiz \(r_0\) do grafo \(G\). A função modifica o grafo \emph{in-place} e executa em \(O(\deg^-(r_0))\).
@@ -2563,32 +2686,58 @@ Isso ocorre porque a função obtém todas as arestas que entram em \(r_0\) usan
 \paragraph{}
 Em seguida, a função remove essas arestas usando o método \texttt{remove\_edges\_from}, que também opera em tempo linear em relação ao número de arestas sendo removidas. Portanto, o tempo total de execução da função é \(O(\deg^-(r_0))\). A função não cria uma cópia do grafo original, mas altera diretamente a estrutura de dados do grafo fornecido.
 
-\begin{pybox}[title={Remoção de arestas que entram na raiz},colback=blue!5!white,colframe=blue!75!black]{Remove todas as arestas que entram no vértice raiz r0 no grafo D. Por fim, retorna o grafo atualizado.}
-def remove_edges_to_r0(
-    D: nx.DiGraph, r0: str
-):
-    # Verify that r0 exists in G
-    assert (
-            r0 in D
-        ), f"\nremove_edges_to_r0: O vértice raiz '{r0}' não existe no grafo."
 
-    # Remove all edges entering r0
-    in_edges = list(D.in_edges(r0))
-    if in_edges:
-        D.remove_edges_from(in_edges)
-    return D
-\end{pybox}
+\begin{tcolorbox}[
+  enhanced, breakable,
+  colframe=blue!60!black, colback=blue!2,
+  colbacktitle=blue!15, coltitle=black,
+  title={Remoção de arestas que entram na raiz},
+  boxed title style={sharp corners, boxrule=0.6pt},
+  sharp corners, boxrule=0.6pt
+]
+\emph{Remove todas as arestas que entram no vértice raiz r0 no grafo D. Por fim, retorna o grafo atualizado.}
+\tcblower
+\begin{lstlisting}[mathescape=true, language=Python]
+% def remove_edges_to_r0(
+%     D: nx.DiGraph, r0: str
+% ):
+%     # Verify that r0 exists in G
+%     assert (
+%             r0 in D
+%         ), f"\nremove_edges_to_r0: O vértice raiz '{r0}' não existe no grafo."
+
+%     # Remove all edges entering r0
+%     in_edges = list(D.in_edges(r0))
+%     if in_edges:
+%         D.remove_edges_from(in_edges)
+%     return D
+\end{lstlisting}
+\end{tcolorbox}
+
 
 \paragraph{Remoção de arco interno:}
 ao expandir o ciclo \(C\), a função remove o arco interno que entra no vértice de entrada \(v\) do ciclo, já que \(v\) agora recebe um arco externo do grafo. A função modifica o subgrafo do ciclo \emph{in-place} e executa em \(O(\deg^-(v))\).
 
-\begin{pybox}[title={Remover arco interno na reexpansão},colback=blue!5!white,colframe=blue!75!black]{Remove a aresta interna que entra no vértice de entrada `v` do ciclo C, pois `v` passa a receber uma aresta externa do grafo.}
-def remove_internal_edge_to_cycle_entry(C: nx.DiGraph, v):
+\begin{tcolorbox}[
+  enhanced, breakable,
+  colframe=blue!60!black, colback=blue!2,
+  colbacktitle=blue!15, coltitle=black,
+  title={Remover arco interno na reexpansão},
+  boxed title style={sharp corners, boxrule=0.6pt},
+  sharp corners, boxrule=0.6pt
+]
+\emph{Remove a aresta interna que entra no vértice de entrada `v` do ciclo C, pois `v` passa a receber uma aresta externa do grafo.}
+\tcblower
+\begin{lstlisting}[mathescape=true, language=Python]
+% def remove_internal_edge_to_cycle_entry(C: nx.DiGraph, v):
 
-    predecessor = next((u for u, _ in C.in_edges(v)), None)
+%     predecessor = next((u for u, _ in C.in_edges(v)), None)
 
-    C.remove_edge(predecessor, v)
-\end{pybox}
+%     C.remove_edge(predecessor, v) 
+\end{lstlisting}
+\end{tcolorbox}
+
+
 
 \paragraph{Procedimento principal (recursivo):}
 A função principal implementa o algoritmo de Chu–Liu/Edmonds de forma recursiva e atua como um orquestrador das fases do método. Em alto nível, ela mantém a seguinte lógica:
@@ -2627,104 +2776,115 @@ Mais especificamente, o procedimento garante as seguintes propriedades e passos:
 
 Essa rotina encapsula, portanto, a estratégia primal do método: induzir arestas de custo reduzido zero por normalização local, extrair uma estrutura funcional \(F^*\) de uma entrada por vértice, e resolver conflitos cíclicos por contração/expansão, preservando custos e correção em todas as etapas.
 
-\begin{pybox}[title={Procedimento principal (recursivo)},colback=blue!5!white,colframe=blue!75!black]{Função recursiva que encontra a arborescência ótima em um dígrafo D com raiz r0 usando o algoritmo de Chu–Liu/Edmonds.}
-def find_optimum_arborescence_chuliu(
-    D: nx.DiGraph,
-    r0: str,
-    level=0,
-):
+\begin{tcolorbox}[
+  enhanced, breakable,
+  colframe=blue!60!black, colback=blue!2,
+  colbacktitle=blue!15, coltitle=black,
+  title={Procedimento principal (recursivo)},
+  boxed title style={sharp corners, boxrule=0.6pt},
+  sharp corners, boxrule=0.6pt
+]
+\emph{Função recursiva que encontra a arborescência ótima em um dígrafo D com raiz r0 usando o algoritmo de Chu–Liu/Edmonds.}
+\tcblower
+\begin{lstlisting}[mathescape=true, language=Python]
+% def find_optimum_arborescence_chuliu(
+%     D: nx.DiGraph,
+%     r0: str,
+%     level=0,
+% ):
 
-    indent = "  " * level
+%     indent = "  " * level
 
-    assert (
-        r0 in D
-    ), f"\nfind_optimum_arborescence_chuliu: O vértice raiz '{r0}' não está presente no grafo."
+%     assert (
+%         r0 in D
+%     ), f"\nfind_optimum_arborescence_chuliu: O vértice raiz '{r0}' não está presente no grafo."
 
-    D_copy = D.copy()
+%     D_copy = D.copy()
 
-    for v in D_copy.nodes:
-        if v != r0:
-            normalize_incoming_edge_weights(D_copy, v)
+%     for v in D_copy.nodes:
+%         if v != r0:
+%             normalize_incoming_edge_weights(D_copy, v)
 
-    # Build F_star
-    F_star = get_Fstar(D_copy, r0)
+%     # Build F_star
+%     F_star = get_Fstar(D_copy, r0)
 
-    if nx.is_arborescence(F_star):
-        for u, v in F_star.edges:
-            F_star[u][v]["w"] = D[u][v]["w"]
-        return F_star
+%     if nx.is_arborescence(F_star):
+%         for u, v in F_star.edges:
+%             F_star[u][v]["w"] = D[u][v]["w"]
+%         return F_star
 
-    else:
-        C: nx.DiGraph = find_cycle(F_star)
+%     else:
+%         C: nx.DiGraph = find_cycle(F_star)
 
-        assert (
-            C
-        ), f"\nfind_optimum_arborescence_chuliu: Nenhum ciclo encontrado em F_star."
+%         assert (
+%             C
+%         ), f"\nfind_optimum_arborescence_chuliu: Nenhum ciclo encontrado em F_star."
             
-        contracted_label = f"\n n*{level}"
-        in_to_cycle, out_from_cycle = contract_cycle(
-            D_copy, C, contracted_label
-        )
+%         contracted_label = f"\n n*{level}"
+%         in_to_cycle, out_from_cycle = contract_cycle(
+%             D_copy, C, contracted_label
+%         )
 
-        # Recursive call
-        F_prime = find_optimum_arborescence_chuliu(
-            D_copy,
-            r0,
-            level + 1
-        )
+%         # Recursive call
+%         F_prime = find_optimum_arborescence_chuliu(
+%             D_copy,
+%             r0,
+%             level + 1
+%         )
 
-        # Identify the vertex in the cycle that received the only incoming edge from the arborescence
-        in_edge = next(iter(F_prime.in_edges(contracted_label, data="w")), None)
+%         # Identify the vertex in the cycle that received the only incoming edge from the arborescence
+%         in_edge = next(iter(F_prime.in_edges(contracted_label, data="w")), None)
 
-        assert (
-            in_edge
-        ), f"\nfind_optimum_arborescence_chuliu: Nenhuma aresta encontrada entrando no vértice '{contracted_label}'."
+%         assert (
+%             in_edge
+%         ), f"\nfind_optimum_arborescence_chuliu: Nenhuma aresta encontrada entrando no vértice '{contracted_label}'."
 
-        u, _, _ = in_edge
+%         u, _, _ = in_edge
 
-        v, _ = in_to_cycle[u]
+%         v, _ = in_to_cycle[u]
 
-        assert (
-            v is not None
-        ), f"\nfind_optimum_arborescence_chuliu: Nenhum vértice do ciclo encontrado que recebeu a aresta de entrada de '{u}'."
+%         assert (
+%             v is not None
+%         ), f"\nfind_optimum_arborescence_chuliu: Nenhum vértice do ciclo encontrado que recebeu a aresta de entrada de '{u}'."
 
-        # Remove the internal edge entering vertex `v` from cycle C
-        remove_internal_edge_to_cycle_entry(
-            C, v
-        )  # Note: w is coming from F_prime, not from G
+%         # Remove the internal edge entering vertex `v` from cycle C
+%         remove_internal_edge_to_cycle_entry(
+%             C, v
+%         )  # Note: w is coming from F_prime, not from G
 
-        # Add the external edge entering the cycle (identified by in_edge), the weight will be corrected at the end using G
-        F_prime.add_edge(u, v)
+%         # Add the external edge entering the cycle (identified by in_edge), the weight will be corrected at the end using G
+%         F_prime.add_edge(u, v)
 
-        # Add the remaining edges of the modified cycle C
-        for u_c, v_c in C.edges:
-            F_prime.add_edge(u_c, v_c)
+%         # Add the remaining edges of the modified cycle C
+%         for u_c, v_c in C.edges:
+%             F_prime.add_edge(u_c, v_c)
             
-        # Add the external edges leaving the cycle
-        for _, z, _ in F_prime.out_edges(contracted_label, data=True):
+%         # Add the external edges leaving the cycle
+%         for _, z, _ in F_prime.out_edges(contracted_label, data=True):
 
-            assert (
-                z in out_from_cycle
-            ), f"\nfind_optimum_arborescence_chuliu: Nenhuma aresta de saída encontrada para o vértice '{z}'."
+%             assert (
+%                 z in out_from_cycle
+%             ), f"\nfind_optimum_arborescence_chuliu: Nenhuma aresta de saída encontrada para o vértice '{z}'."
 
-            u_cycle, _ = out_from_cycle[z]
-            F_prime.add_edge(u_cycle, z)
+%             u_cycle, _ = out_from_cycle[z]
+%             F_prime.add_edge(u_cycle, z)
 
-        # Remove the contracted node
-        assert (
-            contracted_label in F_prime
-        ), f"\nfind_optimum_arborescence_chuliu: Vértice '{contracted_label}' não encontrado no grafo."
-        F_prime.remove_node(contracted_label)
+%         # Remove the contracted node
+%         assert (
+%             contracted_label in F_prime
+%         ), f"\nfind_optimum_arborescence_chuliu: Vértice '{contracted_label}' não encontrado no grafo."
+%         F_prime.remove_node(contracted_label)
 
-        # Update the edge weights with the original weights from G
-        for u, v in F_prime.edges:
-            assert (
-                u in D and v in D
-            ), f"\nfind_optimum_arborescence_chuliu: Vértice '{u}' ou '{v}' não encontrado no grafo original."
-            F_prime[u][v]["w"] = D[u][v]["w"]
+%         # Update the edge weights with the original weights from G
+%         for u, v in F_prime.edges:
+%             assert (
+%                 u in D and v in D
+%             ), f"\nfind_optimum_arborescence_chuliu: Vértice '{u}' ou '{v}' não encontrado no grafo original."
+%             F_prime[u][v]["w"] = D[u][v]["w"]
 
-        return F_prime
-\end{pybox}
+%         return F_prime 
+\end{lstlisting}
+\end{tcolorbox}
 
 \paragraph{Notas finais sobre a implementação}
 \paragraph{}
