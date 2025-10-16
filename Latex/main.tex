@@ -2339,70 +2339,184 @@ Abaixo, temos a descrição formal do algoritmo.
 \end{algobox}
 
 
-\subsubsection{Exemplo prático: Chu–Liu/Edmonds passo a passo}
+\subsubsection{Exemplo prático: Chu–Liu/Edmonds}
+
 
 \paragraph{}
 A seguir, ilustramos o funcionamento do algoritmo de Chu–Liu/Edmonds em um grafo de teste. Mostramos o grafo original, os principais passos do algoritmo e a arborescência final encontrada.
+A Figura abaixo apresenta o grafo original com os pesos das arestas
 
-% \begin{tcolorbox}[
-%   enhanced, breakable,
-%   colframe=blue!60!black, colback=blue!2,
-%   colbacktitle=blue!15, coltitle=black,
-%   title={Exemplo prático: execução do algoritmo},
-%   boxed title style={sharp corners, boxrule=0.6pt},
-%   sharp corners, boxrule=0.6pt
-% ]
-% \paragraph{Grafo original:}
-% \begin{center}
-% \begin{tikzpicture}[>=Stealth, node distance=1.5cm, scale=0.9, every node/.style={scale=0.9}]
-%   % Nodes
-%   \foreach \i/\x/\y in {0/0/0, 1/2/1, 2/4/0, 3/2/-1, 4/6/1, 5/8/0, 6/6/-1, 7/8/2, 8/10/1}
-%     \node[circle,draw,minimum size=7mm] (n\i) at (\x,\y) {\i};
-%   % Edges (sample, not all from your JSON)
-%   \draw[->] (n0) -- node[above] {3} (n1);
-%   \draw[->] (n0) -- node[above] {6} (n2);
-%   \draw[->] (n1) -- node[left] {1} (n2);
-%   \draw[->] (n1) -- node[left] {2} (n3);
-%   \draw[->] (n1) -- node[above] {10} (n4);
-%   \draw[->] (n2) -- node[right] {1} (n1);
-%   \draw[->] (n3) -- node[below] {1} (n4);
-%   \draw[->] (n4) -- node[above] {10} (n2);
-%   \draw[->] (n4) -- node[above] {1} (n5);
-%   \draw[->] (n5) -- node[above] {1} (n6);
-%   \draw[->] (n6) -- node[above] {1} (n4);
-%   \draw[->] (n6) -- node[right] {8} (n7);
-%   \draw[->] (n6) -- node[below] {2} (n8);
-%   \draw[->] (n7) -- node[above] {4} (n8);
-%   \draw[->] (n8) -- node[right] {5} (n6);
-% \end{tikzpicture}
-% \end{center}
 
-\paragraph{Passos principais do algoritmo:}
-\begin{itemize}
-  \item Remover arestas que entram na raiz (vértice $0$).
-  \item Normalizar pesos das arestas de entrada para cada vértice.
-  \item Construir $F^*$: selecionar para cada vértice a aresta de menor custo de entrada.
-  \item Detectar ciclos e contrair, se necessário.
-  \item Repetir o processo recursivamente até obter uma arborescência.
-\end{itemize}
+% ...insira dentro de um ambiente center ou tcolorbox...
+\begin{tikzpicture}[>=Stealth, node distance=2cm, scale=1, every node/.style={scale=1}]
+  % Nodes (posições aproximadas da imagem)
+  \node[circle,draw,fill=blue!40,minimum size=7mm] (n0) at (6.2,2.2) {0};
+  \node[circle,draw,fill=blue!40,minimum size=7mm] (n1) at (4.2,2.7) {1};
+  \node[circle,draw,fill=blue!40,minimum size=7mm] (n2) at (2.5,2.2) {2};
+  \node[circle,draw,fill=blue!40,minimum size=7mm] (n3) at (4.2,4.1) {3};
+  \node[circle,draw,fill=blue!40,minimum size=7mm] (n4) at (2.5,4.1) {4};
+  \node[circle,draw,fill=blue!40,minimum size=7mm] (n5) at (1.0,4.8) {5};
+  \node[circle,draw,fill=blue!40,minimum size=7mm] (n6) at (1.0,3.2) {6};
+  \node[circle,draw,fill=blue!40,minimum size=7mm] (n7) at (0.2,2.0) {7};
+  \node[circle,draw,fill=blue!40,minimum size=7mm] (n8) at (2.0,1.0) {8};
 
-% \paragraph{Arborescência final encontrada:}
-% \begin{center}
-% \begin{tikzpicture}[>=Stealth, node distance=1.5cm, scale=0.9, every node/.style={scale=0.9}]
-%   % Nodes
-%   \foreach \i/\x/\y in {0/0/0, 1/2/1, 2/4/0, 3/2/-1, 4/6/1, 5/8/0, 6/6/-1, 7/8/2, 8/10/1}
-%     \node[circle,draw,minimum size=7mm,fill=blue!10] (n\i) at (\x,\y) {\i};
-%   % Arborescência (edges from your result)
-%   \draw[->,thick,blue] (n0) -- (n1);
-%   \draw[->,thick,blue] (n1) -- (n2);
-%   \draw[->,thick,blue] (n1) -- (n3);
-%   \draw[->,thick,blue] (n3) -- (n4);
-%   \draw[->,thick,blue] (n4) -- (n5);
-%   \draw[->,thick,blue] (n5) -- (n6);
-%   \draw[->,thick,blue] (n6) -- (n7);
-%   \draw[->,thick,blue] (n6) -- (n8);
-% \end{tikzpicture}
-% \end{center}
+  % Edges with weights and bends
+  \draw[->,thick,gray!80,bend left=10] (n0) to node[above right] {3} (n1);
+  \draw[->,thick,gray!80,bend left=10] (n0) to node[right] {6} (n2);
+  \draw[->,thick,gray!80,bend left=10] (n1) to node[above] {1} (n2);
+  \draw[->,thick,gray!80,bend left=10] (n1) to node[right] {2} (n3);
+  \draw[->,thick,gray!80,bend left=10] (n1) to node[below right] {10} (n4);
+  \draw[->,thick,gray!80,bend left=10] (n2) to node[above left] {1} (n1);
+  \draw[->,thick,gray!80,bend left=10] (n3) to node[above] {1} (n4);
+  \draw[->,thick,gray!80,bend left=10] (n4) to node[below left] {10} (n2);
+  \draw[->,thick,gray!80,bend left=10] (n4) to node[above left] {1} (n5);
+  \draw[->,thick,gray!80,bend left=10] (n5) to node[left] {1} (n6);
+  \draw[->,thick,gray!80,bend left=10] (n6) to node[below left] {1} (n4);
+  \draw[->,thick,gray!80,bend left=10] (n6) to node[left] {8} (n7);
+  \draw[->,thick,gray!80,bend left=10] (n6) to node[below] {2} (n8);
+  \draw[->,thick,gray!80,bend left=10] (n7) to node[below left] {4} (n8);
+  \draw[->,thick,gray!80,bend left=10] (n8) to node[above left] {5} (n6);
+
+\end{tikzpicture}
+
+
+O primeiro passo do nosso algoritmo seria remover as arestas que entram na raiz (vértice $0$), porém não há nenhuma nesse caso, logo não existe a necessidade de alterar o grafo.
+
+Dessa forma, o próximo passo é normalizar os pesos das arestas de entrada para cada vértice, nessa etapa, Para cada vértice X (exceto a raiz), o algoritmo encontra a aresta de menor peso que entra em X e subtrai esse menor peso de todas as arestas que entram em X (relembrando que isso serve para zerar o peso da aresta mínima de entrada em cada vértice)
+
+
+Normalizando pesos de arestas de entrada para '1': Nesse processo notamos que as únicas arestas de entrada são 0 e 2 onde (0 → 1) tem peso 3.0 e (2 → 1) tem peso 1.0, elegendo a aresta 2 como a de menor peso podemos subtrair o peso das arestas restantes (no caso, o peso da aresta 0) pelo valor do peso da aresta 2, resultando em um novo peso de '2' para a aresta 0
+    
+  
+    \begin{tikzpicture}[>=Stealth, node distance=2cm, scale=1, every node/.style={scale=1}]
+      % Nodes (posições aproximadas da imagem)
+      \node[circle,draw,fill=blue!40,minimum size=7mm] (n0) at (6.2,2.2) {0};
+      \node[circle,draw,fill=blue!40,minimum size=7mm] (n1) at (4.2,2.7) {1};
+      \node[circle,draw,fill=blue!40,minimum size=7mm] (n2) at (2.5,2.2) {2};
+      \node[circle,draw,fill=blue!40,minimum size=7mm] (n3) at (4.2,4.1) {3};
+      \node[circle,draw,fill=blue!40,minimum size=7mm] (n4) at (2.5,4.1) {4};
+      \node[circle,draw,fill=blue!40,minimum size=7mm] (n5) at (1.0,4.8) {5};
+      \node[circle,draw,fill=blue!40,minimum size=7mm] (n6) at (1.0,3.2) {6};
+      \node[circle,draw,fill=blue!40,minimum size=7mm] (n7) at (0.2,2.0) {7};
+      \node[circle,draw,fill=blue!40,minimum size=7mm] (n8) at (2.0,1.0) {8};
+
+      % Edges with weights and bends
+      \draw[->,thick,red!80,bend left=10] (n0) to node[above right] {2} (n1);
+      \draw[->,thick,gray!80,bend left=10] (n0) to node[right] {6} (n2);
+      \draw[->,thick,gray!80,bend left=10] (n1) to node[above] {1} (n2);
+      \draw[->,thick,gray!80,bend left=10] (n1) to node[right] {2} (n3);
+      \draw[->,thick,gray!80,bend left=10] (n1) to node[below right] {10} (n4);
+      \draw[->,thick,red!80,bend left=10] (n2) to node[above left] {0} (n1);
+      \draw[->,thick,gray!80,bend left=10] (n3) to node[above] {1} (n4);
+      \draw[->,thick,gray!80,bend left=10] (n4) to node[below left] {10} (n2);
+      \draw[->,thick,gray!80,bend left=10] (n4) to node[above left] {1} (n5);
+      \draw[->,thick,gray!80,bend left=10] (n5) to node[left] {1} (n6);
+      \draw[->,thick,gray!80,bend left=10] (n6) to node[below left] {1} (n4);
+      \draw[->,thick,gray!80,bend left=10] (n6) to node[left] {8} (n7);
+      \draw[->,thick,gray!80,bend left=10] (n6) to node[below] {2} (n8);
+      \draw[->,thick,gray!80,bend left=10] (n7) to node[below left] {4} (n8);
+      \draw[->,thick,gray!80,bend left=10] (n8) to node[above left] {5} (n6);
+
+    \end{tikzpicture}
+
+
+  Repetiremos o passo anterior para todas as outras arestas
+  
+Com os pesos normalizados, o próximo passo é construir $F^*$, para isso, selecionamos para cada vértice, a aresta de menor custo de entrada. 
+Além disso, detectamos um ciclo em $F^*$, formado pelos vértices $\{1$ e $2\}$. Portanto, precisamos contrair esse ciclo em um supervértice $n*0$. O resultado é o seguinte:
+
+
+\begin{tikzpicture}[>=Stealth, node distance=2cm, scale=1, every node/.style={scale=1}]
+
+    \node[circle,draw,fill=blue!40,minimum size=8mm] (n6) at (0,4) {6};
+    \node[circle,draw,fill=blue!40,minimum size=8mm] (n8) at (1.5,2.8) {8};
+    \node[circle,draw,fill=blue!40,minimum size=8mm] (n7) at (4,3.5) {7};
+    \node[circle,draw,fill=blue!40,minimum size=8mm] (n5) at (0,1.6) {5};
+    \node[circle,draw,fill=blue!40,minimum size=8mm] (n4) at (1.5,1.2) {4};
+    \node[circle,draw,fill=blue!40,minimum size=8mm] (n0) at (6,0.3) {0};
+    \node[circle,draw,fill=red!20,minimum size=8mm] (n1) at (4.5,0.6) {n*0};
+    \node[circle,draw,fill=blue!40,minimum size=8mm] (n3) at (-0.5,0.1) {3};
+
+    % Edges with weights
+    \draw[->,thick,gray!70,bend left=8] (n0) to node[above] {2} (n1);
+    \draw[->,thick,gray!70,bend left=8] (n3) to node[above] {0} (n4);
+    \draw[->,thick,gray!70,bend left=8] (n4) to node[above] {0} (n5);
+    \draw[->,thick,gray!70,bend left=8] (n4) to node[below] {9} (n1);
+    \draw[->,thick,gray!70,bend left=8] (n5) to node[left] {0} (n6);
+    \draw[->,thick,gray!70,bend left=8] (n6) to node[above] {0} (n4);
+    \draw[->,thick,gray!70,bend left=8] (n6) to node[above] {0} (n7);
+    \draw[->,thick,gray!70,bend left=8] (n6) to node[right] {0} (n8);
+    \draw[->,thick,gray!70,bend left=8] (n7) to node[below] {2} (n8);
+    \draw[->,thick,gray!70,bend left=8] (n8) to node[above] {4} (n6);
+    \draw[->,thick,gray!70,bend left=8] (n1) to node[below] {0} (n3);
+    \draw[->,thick,gray!70,bend left=8] (n1) to node[above] {9} (n4);
+\end{tikzpicture}
+
+
+
+Agora, repetimos o processo recursivamente no grafo contraído até obter uma arborescência. 
+
+
+\begin{tikzpicture}[>=Stealth, node distance=2cm, scale=1, every node/.style={scale=1}]
+  % Nós
+  \node[circle,draw,fill=blue!40,minimum size=8mm] (n0) at (0,0) {0};
+  \node[circle,draw,fill=red!20,minimum size=8mm] (n1) at (2,0) {$n*0$};
+  \node[circle,draw,fill=blue!40,minimum size=8mm] (n2) at (4,0) {3};
+  \node[circle,draw,fill=blue!40,minimum size=8mm] (n3) at (6,0) {4};
+  \node[circle,draw,fill=blue!40,minimum size=8mm] (n4) at (8,0) {5};
+  \node[circle,draw,fill=blue!40,minimum size=8mm] (n5) at (10,0) {6};
+  \node[circle,draw,fill=blue!40,minimum size=8mm] (n6) at (12,0) {7};
+  \node[circle,draw,fill=blue!40,minimum size=8mm] (n7) at (14,0) {8};
+
+  % Arestas
+  \draw[->,thick,gray!70] (n1) to node[midway,above,red]{0} (n2);
+  \draw[->,thick,gray!70] (n2) to node[midway,above,red]{0} (n3);
+  \draw[->,thick,gray!70] (n3) to node[midway,above,red]{0} (n4);
+  \draw[->,thick,gray!70] (n4) to node[midway,above,red]{0} (n5);
+  \draw[->,thick,gray!70] (n5) to node[midway,above,red]{0} (n6);
+  \draw[->,thick,gray!70] (n5) to[bend left=30] node[midway,above,red]{0} (n7);
+  \draw[->,thick,gray!70] (n0) to node[midway,above,red]{0} (n1);
+
+\end{tikzpicture}
+
+
+Após validarmos que a F* não possuí mais ciclos e notarmos que F* forma uma arborescência  iremos começar 
+o processo de expanção do ciclo contraído para obter a arborescência final no grafo original. 
+Dessa forma,  Adicionamos a aresta de entrada ao ciclo: (0, 1), (1, 2) e a aresta externa de saída: (1, 3), chegando em uma arborescência válida.
+
+
+\begin{tikzpicture}[>=Stealth, node distance=2cm, scale=1, every node/.style={scale=1}]
+  % Nós (posições aproximadas baseadas na imagem)
+  \node[circle,draw,fill=blue!40,minimum size=8mm] (n0) at (0,4) {0};
+  \node[circle,draw,fill=blue!40,minimum size=8mm] (n1) at (2,3) {1};
+  \node[circle,draw,fill=blue!40,minimum size=8mm] (n2) at (4,4) {2};
+  \node[circle,draw,fill=blue!40,minimum size=8mm] (n3) at (2,1.5) {3};
+  \node[circle,draw,fill=blue!40,minimum size=8mm] (n4) at (4,1.5) {4};
+  \node[circle,draw,fill=blue!40,minimum size=8mm] (n5) at (6,2) {5};
+  \node[circle,draw,fill=blue!40,minimum size=8mm] (n6) at (8,1.5) {6};
+  \node[circle,draw,fill=blue!40,minimum size=8mm] (n7) at (8,0) {7};
+  \node[circle,draw,fill=blue!40,minimum size=8mm] (n8) at (10,1) {8};
+
+  % Arestas com pesos
+  \draw[->,thick,gray!70,bend left=8] (n0) to node[midway,left,red]{3} (n1);
+  \draw[->,thick,gray!70,bend left=8] (n0) to node[midway,above,red]{6} (n2);
+  \draw[->,thick,gray!70,bend left=8] (n1) to node[midway,above,red]{1} (n2);
+  \draw[->,thick,gray!70,bend left=8] (n1) to node[midway,left,red]{2} (n3);
+  \draw[->,thick,gray!70,bend left=8] (n1) to node[midway,above,red]{10} (n4);
+  \draw[->,thick,gray!70,bend left=8] (n2) to node[midway,right,red]{1} (n1);
+  \draw[->,thick,gray!70,bend left=8] (n3) to node[midway,left,red]{1} (n4);
+  \draw[->,thick,gray!70,bend left=8] (n4) to node[midway,left,red]{10} (n2);
+  \draw[->,thick,gray!70,bend left=8] (n4) to node[midway,above,red]{1} (n5);
+  \draw[->,thick,gray!70,bend left=8] (n5) to node[midway,above,red]{1} (n6);
+  \draw[->,thick,gray!70,bend left=8] (n6) to node[midway,left,red]{1} (n4);
+  \draw[->,thick,gray!70,bend left=8] (n6) to node[midway,left,red]{8} (n7);
+  \draw[->,thick,gray!70,bend left=8] (n6) to node[midway,above,red]{2} (n8);
+  \draw[->,thick,gray!70,bend left=8] (n7) to node[midway,right,red]{4} (n8);
+  \draw[->,thick,gray!70,bend left=8] (n8) to node[midway,right,red]{5} (n6);
+
+\end{tikzpicture}
+
+
 
 \subsubsection{Corretude}
 \paragraph{}

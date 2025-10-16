@@ -42,6 +42,9 @@ def draw_step(G: nx.DiGraph, id=1, title="Passo do Algoritmo", description=""):
             </div>
         </div>
     """
+    print("Drawing step", id)
+    print(G.edges(data=True))
+    print(G.nodes)
     container = document.getElementById("container_step_by_step")
     container.insertAdjacentHTML("beforeend", html_content)
     target = f"graph-step-{id}"
