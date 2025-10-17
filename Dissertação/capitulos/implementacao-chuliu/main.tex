@@ -397,7 +397,7 @@ A seguir, detalhamos as implementações das funções principais e auxiliares, 
 
 Esta função normaliza\footnote{Aqui, "normalizar" significa subtrair do peso de cada aresta que entra em $v$ o menor peso de entrada (custos reduzidos), preservando a ordem relativa; assim, ao menos uma entrada em $v$ passa a ter custo 0, sem afetar a comparação entre soluções.} os custos das arestas que entram em um vértice \(v\): calcula \(y(v)=\min\{w(u,v)\}\) e substitui cada peso \(w(u,v)\) por \(w(u,v)-y(v)\).
 
-A função recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}) e o identificador \texttt{node} do vértice cujas arestas de entrada devem ser normalizadas. A implementação coleta todas as arestas de entrada de \texttt{node} com seus pesos (linha 2) e, se a lista estiver vazia, retorna imediatamente sem fazer alterações (linhas 3--4). Caso contrário, calcula o peso mínimo \texttt{yv} usando uma compreensão de gerador\footnote{Em Python, uma \emph{compreensão de gerador} (generator comprehension) é uma expressão da forma \texttt{(expr for item in iterable)} que produz valores sob demanda, sem criar uma lista completa na memória. Aqui, \texttt{(w for \_, \_, w in predecessors)} extrai apenas os pesos das tuplas, permitindo calcular o mínimo de forma eficiente.} que extrai o terceiro elemento de cada tupla (linha 5) e, para cada predecessor \texttt{u}, subtrai \texttt{yv} do peso armazenado em \texttt{D[u][node]["w"]} (linha 6).
+A função recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}\footnote{\texttt{nx.DiGraph} é a classe da biblioteca NetworkX que representa grafos dirigidos (directed graphs). Ela armazena vértices e arestas direcionadas, permitindo associar atributos arbitrários (como pesos) às arestas através de dicionários. A notação \texttt{D[u][v]["w"]} acessa o peso da aresta \((u,v)\).}) e o rótulo \texttt{node} do vértice cujas arestas de entrada devem ser normalizadas. A implementação coleta todas as arestas de entrada de \texttt{node} com seus pesos (linha 2) e, se a lista estiver vazia, retorna imediatamente sem fazer alterações (linhas 3--4). Caso contrário, calcula o peso mínimo \texttt{yv} usando uma compreensão de gerador\footnote{Em Python, uma \emph{compreensão de gerador} (generator comprehension) é uma expressão da forma \texttt{(expr for item in iterable)} que produz valores sob demanda, sem criar uma lista completa na memória. Aqui, \texttt{(w for \_, \_, w in predecessors)} extrai apenas os pesos das tuplas, permitindo calcular o mínimo de forma eficiente.} que extrai o terceiro elemento de cada tupla (linha 5) e, para cada predecessor \texttt{u}, subtrai \texttt{yv} do peso armazenado em \texttt{D[u][node]["w"]} (linha 6).
 
 A função não retorna nenhum valor (retorno implícito \texttt{None}), pois a operação é realizada \emph{in-place}\footnote{No jargão de programação, "in-place" significa que a estrutura original é alterada diretamente, sem criar uma cópia. Isso economiza memória e tempo, mas introduz efeitos colaterais.}: o grafo \texttt{D} passado como parâmetro é modificado diretamente. Como efeito colateral, ao menos uma aresta de entrada de \texttt{node} terá custo reduzido zero após a execução. A complexidade é \(O(\deg^-(v))\), pois cada operação percorre as arestas de entrada uma única vez.
 
@@ -423,14 +423,12 @@ def normalize_incoming_edge_weights(D: nx.DiGraph, node: str):
 
 
 \subsection{Construção de \(F^*\):}
-A função constrói o subdigrafo \(F^*\) selecionando, para cada vértice \(v\neq r_0\), uma única aresta de menor custo que entra em \(v\) (isto é, um \(\operatorname*{argmin}_{(u,v)\in A} w(u,v)\)).
 
+A função constrói o subdigrafo \(F^*\) selecionando, para cada vértice \(v\neq r_0\), uma única aresta de custo reduzido zero que entra em \(v\).
 
-Se os custos já foram normalizados por vértice, o arco escolhido tem custo reduzido zero; caso contrário, ele devolve None. O resultado é um digrafo com exatamente uma aresta entrando em cada \(v\neq r_0\) e nenhuma aresta entrando em \(r_0\). A função executa em \(O(m)\), onde \(m\) é o número de arestas.
+A função recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}) e o identificador \texttt{r0} da raiz. A implementação cria um novo digrafo vazio \texttt{F\_star} (linha 2). Em seguida, para cada vértice \texttt{v} diferente de \texttt{r0} (linhas 3--4), coleta todas as arestas de entrada de \texttt{v} com seus pesos em uma lista e armazena na variável \texttt{in\_edges} (linha 5). Se não houver arestas de entrada, prossegue para o próximo vértice (linhas 6--7). Caso contrário, utiliza uma compreensão de gerador para encontrar o primeiro predecessor \texttt{u} cuja aresta \texttt{(u, v)} tem peso zero (linha 8) e, se existir, adiciona essa aresta a \texttt{F\_star} com peso zero (linhas 9--10).
 
-
-Isso ocorre porque a função itera sobre todos os vértices do grafo e, para cada vértice, verifica suas arestas de entrada para encontrar a de menor peso. Como cada aresta é considerada no máximo uma vez durante essa iteração, o tempo total é proporcional ao número de arestas, ou seja, \(O(m)\). A função não modifica o grafo original, mas cria um novo grafo direcionado \(F^*\).
-
+A função retorna o digrafo \texttt{F\_star} contendo exatamente uma aresta entrando em cada \(v\neq r_0\), todas com custo reduzido zero. O grafo original \texttt{D} não é modificado. A complexidade é \(O(m)\), onde \(m\) é o número de arestas, pois cada aresta é considerada no máximo uma vez durante a iteração sobre todos os vértices.
 
 \begin{tcolorbox}[
         enhanced, breakable,
@@ -443,20 +441,17 @@ Isso ocorre porque a função itera sobre todos os vértices do grafo e, para ca
     \emph{Constrói o subgrafo funcional F star a partir do grafo D e da raiz r0 entrando em r0.}
     \tcblower
     \begin{lstlisting}[mathescape=true, language=Python]
-% def get_Fstar(D: nx.DiGraph, r0: str):
-    
-%     # Create an empty directed graph for F_star
-%     F_star = nx.DiGraph()
-
-%     for v in D.nodes():
-%         if v != r0:
-%             in_edges = list(D.in_edges(v, data="w"))
-%             if not in_edges:
-%                 continue  # No edges entering v
-%             u = next((u for u, _, w in in_edges if w \eq\eq 0), None)
-%             if u:
-%                 F_star.add_edge(u, v, w\eq0)
-%     return F_star  
+def get_Fstar(D: nx.DiGraph, r0: str):
+    F_star = nx.DiGraph()
+    for v in D.nodes():
+        if v != r0:
+            in_edges = list(D.in_edges(v, data="w"))
+            if not in_edges:
+                continue
+            u = next((u for u, _, w in in_edges if w == 0), None)
+            if u:
+                F_star.add_edge(u, v, w=0)
+    return F_star
 \end{lstlisting}
 \end{tcolorbox}
 
