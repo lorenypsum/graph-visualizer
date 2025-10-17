@@ -1,21 +1,31 @@
 % Configurações para código fonte
 
-\lstset{
-	basicstyle=\ttfamily\small,
-	numbers=left,
-	numberstyle=\tiny,
-	stepnumber=1,
-	numbersep=5pt,
-	showspaces=false,
-	showstringspaces=false,
-	showtabs=false,
-	frame=single,
-	rulecolor=\color{black},
-	tabsize=2,
-	captionpos=b,
-	breaklines=true,
-	breakatwhitespace=false,
-	keywordstyle=\color{blue},
-	commentstyle=\color{green!50!black},
-	stringstyle=\color{red}
+\lstdefinestyle{pystyle}{
+language=Python,
+basicstyle=\ttfamily\small,
+numbers=left,
+numbersep=6pt,
+tabsize=4,
+showstringspaces=false,
+breaklines=true,
+keywordstyle=\color{blue!70!black}\bfseries,
+commentstyle=\color{green!50!black}\itshape,
+stringstyle=\color{red!60!black},
+inputencoding=utf8,
+extendedchars=true,
+% Mapear caracteres UTF-8 comuns em PT/BR e símbolos especiais
+literate={á}{{\'{a}}}1 {é}{{\'{e}}}1 {í}{{\'{\i}}}1 {ó}{{\'{o}}}1 {ú}{{\'{u}}}1
+{Á}{{\'{A}}}1 {É}{{\'{E}}}1 {Í}{{\'{\I}}}1 {Ó}{{\'{O}}}1 {Ú}{{\'{U}}}1
+{à}{{\`{a}}}1 {À}{{\`{A}}}1 {â}{{\^{a}}}1 {Â}{{\^{A}}}1 {ã}{{\~{a}}}1 {Ã}{{\~{A}}}1
+{ê}{{\^{e}}}1 {Ê}{{\^{E}}}1 {ô}{{\^{o}}}1 {Ô}{{\^{O}}}1 {õ}{{\~{o}}}1 {Õ}{{\~{O}}}1
+{ç}{{\c{c}}}1 {Ç}{{\c{C}}}1 {ü}{{\"{u}}}1 {Ü}{{\"{U}}}1
+{ñ}{{\~{n}}}1 {Ñ}{{\~{N}}}1
+{"}{{``}}1 {"}{{''}}1 {'}{{'}}1 {–}{{-}}1 {—}{{-}}1 {…}{{...}}1
+{→}{{$\to$}}1 {←}{{$\leftarrow$}}1 {↔}{{$\leftrightarrow$}}1
+{∈}{{$\in$}}1 {∉}{{$\notin$}}1 {⊆}{{$\subseteq$}}1
+{∪}{{$\cup$}}1 {∩}{{$\cap$}}1 {∅}{{$\emptyset$}}1
+{≤}{{$\leq$}}1 {≥}{{$\geq$}}1 {≠}{{$\neq$}}1
+{✓}{{[OK]}}1 {✗}{{[X]}}1 {✅}{{$\checkmark$}}1 {❌}{{$\times$}}1
 }
+
+\lstset{style=pystyle}

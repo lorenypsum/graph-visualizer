@@ -1,0 +1,33 @@
+% !TEX program = latexmk
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{microtype}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,fit,calc}
+
+\begin{document}
+\centering
+\begin{tikzpicture}[>=Stealth, node distance=1.4cm]
+    % estilos
+    \tikzset{
+        box/.style={draw, rounded corners, fill=blue!5, minimum width=37mm, minimum height=10mm, align=center},
+        arrow/.style={->, semithick, draw=gray!70},
+        badge/.style={draw=green!50!black, rounded corners, fill=green!10, inner sep=4pt, font=\scriptsize}
+    }
+
+    % caixas primal (min) e dual (max)
+    \node[box] (min) {Minimização\\(cobrir)};
+    \node[box, right=4.2cm of min] (max) {Maximização\\(empacotar)};
+
+    % relação de valores dual <= primal
+    \draw[arrow] (max.west) -- node[above, font=\scriptsize, black!70]{valor dual $\;\le\;$ valor primal} (min.east);
+
+    % destaque do "min--max" (igualdade no ótimo)
+    \path (min) -- (max) node[pos=0.5, yshift=12mm, badge] (mm) {teorema min--max: igualdade no ótimo};
+
+    % certificado de otimalidade
+    \path (min) -- (max) node[pos=0.5, yshift=-12mm, badge] (cert) {certificado: verificação simples do ótimo};
+\end{tikzpicture}
+\end{document}

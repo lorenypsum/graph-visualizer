@@ -1,12 +1,38 @@
 \chapter{Conclusão}
-\label{cap:conclusao}
+Iniciamos essa tese falando sobre o principío da Navalha de Ockham, que nos convida a buscar soluções simples, mas não simplificadas. Retomamos esse mote para refletir sobre o ponto de chegada: o visualizador interativo de arborescências dirigidas que procura apresentar de forma acessível e simples os algoritmos envolvidos no problema da r-arborescência de custo mínimo.
 
-Este trabalho apresentou uma análise e implementação de algoritmos de busca de uma r-arborescência inversa de custo mínimo em grafos dirigidos.
+
+Nessa trajetória, os fins não justificam os meios, pois os meios pelos quais resolvemos o problema é o ponto central de discussão desse trabalho, os algoritmos de Chu-liu e Edmonds e o de Andras Frank.
+
+
+O algoritmo de Chu-Liu/Edmonds é um clássico da teoria dos grafos, com diversas aplicações práticas. Já o algoritmo de Andras Frank, embora menos conhecido, oferece uma abordagem elegante e eficiente para o mesmo problema, utilizando conceitos avançados de otimização combinatória. Ambos os algoritmos possuem complexidades e sutilezas que podem ser desafiadoras para estudantes e profissionais que buscam compreendê-los profundamente. Nesse contexto ressaltamos invariantes, cortes e custos reduzidos, e mostrando como escolhas locais se conectam a garantias globais de otimalidade. Procuramos menos descrever “o que o algoritmo faz” e mais explicitar “por que” cada passo se justifica, aproximando a mecânica operacional da linguagem primal--dual e de suas condições de complementaridade.
+
+
+Os algoritmos foram implementados em Python, aproveitando bibliotecas como NetworkX para manipulação de grafos e Matplotlib para visualização. A escolha do Python se deve à sua sintaxe clara e à vasta gama de bibliotecas científicas disponíveis, facilitando tanto a implementação quanto a compreensão dos algoritmos. A integração com PyScript permitiu que esses algoritmos fossem executados diretamente no navegador, eliminando a necessidade de instalações complexas e tornando a ferramenta acessível a um público mais amplo. Os resultados foram validados através de testes com grafos de diferentes tamanhos e estruturas, garantindo a correção e eficiência das implementações.
+
+
+A interface \textit{web} foi projetada com foco na usabilidade e na experiência do usuário, utilizando HTML5, CSS3 e JavaScript para criar uma plataforma interativa e intuitiva obedecendo a princípios de design centrados no usuário orientados por princípios de interação humano-computacional. A estrutura modular da página permite fácil navegação entre diferentes seções, como a criação de grafos, a execução dos algoritmos e a visualização dos resultados. Elementos interativos, como botões, menus suspensos e áreas de desenho, foram incorporados para facilitar a interação do usuário com a ferramenta. A reutilização de padrões arquiteturais entre as páginas promoveu consistência cognitiva, enquanto a sequência lógica de páginas guia o usuário do contexto à experimentação e formalização, alinhando-se a princípios pedagógicos orientados pela teoria da aprendizagem.
+
+
+A partir desse desenvolvimento, o visualizador interativo de arborescências dirigidas se apresenta como uma ferramenta valiosa para estudantes, educadores e profissionais interessados em teoria dos grafos e algoritmos de otimização. A seguir destacamos algumas contribuições.
+
 
 \section{Contribuições}
+Este trabalho contribui para a interseção entre teoria dos grafos e design pedagógico criando um visualizador interativo de arborescências dirigidas que promove a compreensão de algoritmos que resolvem o problema da r-arborescência de custo-mínimo. As principais contribuições incluem:
+\begin{itemize}
+    \item \textbf{Integração de Algoritmos Complexos:} Implementação detalhada dos algoritmos de Chu-Liu/Edmonds e Andras Frank, destacando suas bases teóricas e operacionais, e demonstrando como decisões locais se traduzem em garantias globais de otimalidade.
+    \item \textbf{Design Pedagógico:} Aplicação de princípios de interação humano-computador e de aprendizagem multimídia para criar uma interface que facilita a compreensão de conceitos complexos, reduzindo a carga cognitiva e promovendo o engajamento ativo.
+    \item \textbf{Arquitetura Modular e Reutilizável:} Desenvolvimento de uma estrutura \textit{web} que permite fácil manutenção, extensão e consistência cognitiva entre diferentes páginas, utilizando tecnologias modernas como PyScript, NetworkX e Matplotlib.
+    \item \textbf{Ferramenta Acessível e Reprodutível:} Criação de uma ferramenta que pode ser acessada diretamente no navegador, eliminando barreiras de adoção e permitindo que usuários experimentem e aprendam de forma autônoma.
+    \item \textbf{Documentação e Avaliação:} Fornecimento de documentação detalhada e avaliação preliminar da interface, oferecendo insights sobre a eficácia pedagógica e identificando áreas para melhorias futuras.
+\end{itemize}
+Essas contribuições avançam o estado da arte na visualização e ensino de algoritmos de grafos, oferecendo uma plataforma que combina rigor teórico com práticas de design centradas no usuário.
 
-As principais contribuições deste trabalho são...
+\section{Limitações}
+Apesar dos avanços alcançados, a implementação apresenta algumas limitações que devem ser consideradas. A complexidade dos algoritmos pode levar a tempos de execução elevados para grafos muito grandes, o que pode impactar a experiência do usuário. Além disso, a interface, embora intuitiva, pode beneficiar-se de melhorias adicionais em termos de acessibilidade e usabilidade, especialmente para usuários com menos experiência em manipulação de grafos. A dependência de bibliotecas externas, como Cytoscape.js e PyScript, também pode introduzir desafios de compatibilidade e manutenção a longo prazo. Finalmente, a avaliação da ferramenta foi preliminar e baseada em um número limitado de usuários; estudos mais abrangentes são necessários para validar sua eficácia pedagógica.
 
 \section{Trabalhos Futuros}
+Para aprimorar a ferramenta, futuras iterações podem focar em otimizações de desempenho para lidar com grafos maiores de forma mais eficiente. A interface pode ser refinada com base em testes de usabilidade mais extensos, incorporando feedback de uma base de usuários diversificada. A adição de funcionalidades avançadas, como suporte a diferentes tipos de grafos e algoritmos adicionais, pode expandir o escopo da ferramenta. A integração de análises de aprendizado, como rastreamento do progresso do usuário e sugestões personalizadas, também pode enriquecer a experiência educacional. Finalmente, a realização de estudos formais para avaliar o impacto pedagógico da ferramenta em ambientes educacionais contribuirá para validar sua eficácia e orientar futuras melhorias.
 
-Como trabalhos futuros, sugere-se...
+\clearpage
+\appendix

@@ -1,16 +1,52 @@
 \chapter{Introdução}
-\label{cap:introducao}
 
-Este trabalho tem como objetivo apresentar uma análise e implementação de algoritmos de busca de uma r-arborescência inversa de custo mínimo em grafos dirigidos.
 
-\section{Motivação}
+Encontrar uma \textit{r-arborescência inversa de custo mínimo} em grafos dirigidos é um problema estudado em ciência da computação desde os anos 1960, com formulações fundamentais apresentadas por Jack Edmonds em 1967 \cite{edmonds1967optimum}.
 
-A teoria dos grafos é uma área fundamental da matemática discreta com diversas aplicações práticas.
+
+Essa busca dialoga com um princípio filosófico formulado na Idade Média por Guilherme de Ockham: a navalha de Occam (princípio da parcimônia), uma heurística filosófica segundo a qual, entre explicações concorrentes para um fenômeno, devemos preferir a mais simples ou a que faz menos suposições.
+Podemos pensar na navalha de Occam como critério de escolha entre explicações por meio de uma \textit{teia explicativa mínima}: uma estrutura que conecta fatos ou observações com o mínimo de relações explicativas necessárias.
+Quando tais relações envolvem dependência ou causalidade, podemos representá-las pictograficamente como setas direcionadas entre os fatos (as hipóteses aparecem como rótulos dessas setas).
+Para refinar o modelo, associamos um custo a cada relação (por exemplo, o esforço para validar a relação ou a complexidade da explicação).
+
+
+Encontrar a \textit{teia explicativa mínima} equivale, nessa metáfora, a encontrar uma \textit{r-arborescência de custo mínimo}: fixamos um vértice raiz \(r\) (a explicação inicial) e escolhemos um conjunto mínimo de relações explicativas de modo que todos os fatos tenham um caminho dirigido que leve a \(r\), minimizando o custo total das arestas.
+
+
+A \textit{r-arborescência} (também chamada \textit{out-arborescência}) orienta as arestas para fora de \(r\): cada vértice \(v\neq r\) tem exatamente uma aresta de entrada, e há um caminho dirigido único de \(r\) até \(v\). Já a \textit{r-arborescência inversa} (\textit{in-arborescência}) orienta as arestas em direção a \(r\): cada \(v\neq r\) tem exatamente uma aresta de saída, e de cada vértice parte um caminho dirigido único até \(r\) \cite{edmonds1967optimum,frank2014}.
+
+
+Com essa distinção em mente, este trabalho concentra-se na variante inversa. Formalmente, dado um grafo dirigido \(G=(V,E)\) com custos \(c:E\to\mathbb{R}^+\) nas arestas e um vértice raiz \(r\in V\), procura-se uma \textit{r-arborescência inversa} — isto é, uma árvore direcionada que atinja todos os vértices por caminhos dirigidos até \(r\) — que minimize o custo total das arestas selecionadas (cf. \cite{edmonds1967optimum,frank2014}).
+
+
+Nosso interesse, porém, não é apenas encontrar a arborescência mínima: o percurso até ela também importa, pois revela propriedades estruturais dos digrafos e ilumina técnicas distintas de otimização. Por isso, investigamos duas rotas clássicas e complementares: (i) o algoritmo de Chu--Liu/Edmonds, que opera por normalização dos custos das arestas de entrada, seleção sistemática de arestas de custo zero e contração de ciclos até obter um grafo reduzido, seguida pela reexpansão para reconstrução da solução \cite{chu1965,edmonds1967optimum}; e (ii) a abordagem dual, em duas fases, de András Frank, fundamentada em cortes dirigidos, na qual se maximiza uma função de cortes c-viável para induzir arestas de custo zero e, em seguida, extrai-se a arborescência apenas a partir dessas arestas \cite{frank2014}. Embora assentados em princípios distintos — contração de ciclos no plano primal versus empacotamento/dualidade por cortes —, ambos os paradigmas produzem soluções ótimas e tornam explícitas a variedade de abordagens matemáticas que podem ser empregadas para resolver o mesmo problema.
+
+\section{Justificativa}
+
+
+A busca por uma \textit{r-arborescência inversa de custo mínimo} em grafos dirigidos é um problema clássico com aplicações em diversas áreas, como redes de comunicação, planejamento de rotas, análise de dependências e modelagem de processos. Mas, não precisamos dessa justificação prática para nos interessarmos pelo problema: a riqueza estrutural dos digrafos e a variedade de técnicas algorítmicas disponíveis o tornam um excelente caso de estudo em otimização combinatória.
+
+
+Do ponto de vista didático, a metáfora da “teia explicativa mínima” torna concreto o porquê de estudarmos arborescências enraizadas: ela mapeia perguntas sobre explicação, alcance e economia de recursos para estruturas dirigidas, servindo de fio condutor nas implementações e nos experimentos que apresentamos.
 
 \section{Objetivos}
 
-O objetivo principal deste trabalho é...
 
-\section{Organização do Trabalho}
+O objetivo principal deste trabalho é analisar, implementar e comparar duas abordagens clássicas para o problema de \textit{r-arborescência de custo mínimo} em grafos dirigidos oferecendo uma aplicação \textit{web} interativa que facilite o entendimento e a experimentação com o algoritmo de Chu--Liu/Edmonds e o método de András Frank, tornando-o acessível para estudantes e educadores.
 
-Este trabalho está organizado da seguinte forma...
+\section{Estrutura do Trabalho}
+
+Resumidamente, o trabalho abrange as seguintes frentes:
+
+\begin{enumerate}
+    \item \textbf{Definições Preliminares}: fixação de notação e conceitos fundamentais (digrafos, arborescências, custos e dualidade).
+    \item \textbf{Em busca da Arborescência Perdida}: motivação do problema e intuições que guiam os algoritmos.
+    \item \textbf{Algoritmo de Chu--Liu/Edmonds}: detalhamento da abordagem primal por normalização/contração de ciclos, com ênfase em invariantes e correção.
+    \item \textbf{Procedimento em Duas Fases de András Frank}: detalhamento da abordagem dual por cortes c-viáveis, com ênfase em invariantes e correção.
+    \item \textbf{Discussão e Resultados: Chu-liu/Edmonds vs Frank}: comparação de desempenho e estrutura das soluções, com testes em larga escala.
+    \item \textbf{Didática do Abstrato}: discussão de desafios do ensino de matemática no ensino superior especialmente quando há o envolvimento de conceitos abstratos e como representações visuais atuam em favor da compreensão.
+    \item \textbf{A interação humano--computacional em ação - uma aplicação \textit{web} interativa}: apresentação de conceitos em interação humano-computacional, a influência desses conceitos nas decisões tomadas para o desenvolvimento da aplicação \textit{web} e detalhamento da implementação.
+    \item \textbf{Conclusão}: síntese das contribuições, limitações e trabalhos futuros.
+\end{enumerate}
+
+Deste modo, o trabalho entrega implementações verificadas de Chu--Liu/Edmonds e András Frank, um visualizador \textit{web} interativo e testes de volume que confirmam a equivalência de custos, úteis ao estudo e ao ensino de arborescências.

@@ -1,0 +1,40 @@
+% !TEX program = latexmk
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{microtype}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,fit,calc}
+
+\begin{document}
+\centering
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!70}, sub/.style={->, draw=blue!60}}
+    % vértices
+    \node[v, label=below:$a$] (a) at (0,0) {};
+    \node[v, label=below:$b$] (b) at (2,0) {};
+    \node[v, label=above:$c$] (c) at (1,1.5) {};
+    \node[v, label=above:$d$] (d) at (3,1.5) {};
+    \node[v, label=below:$e$] (e) at (4,0) {};
+    \node[v, label=below:$f$] (f) at (5,0) {};
+    \node[v, label=above:$g$] (g) at (4.5,1.5) {};
+    \node[v, label=above:$h$] (h) at (5.5,1.5) {};
+    % arcos
+    \draw[a] (a) -- (b);
+    \draw[a] (c) -- (a);
+    \draw[a] (b) -- (c);
+    \draw[a] (d) -- (b);
+    \draw[a] (e) -- (d);
+    \draw[a] (f) -- (e);
+    \draw[a] (g) -- (f);
+    \draw[a] (h) -- (g);
+    \draw[sub] (b) to[bend left=30] (e);
+    \draw[sub] (e) to[bend left=30] (b);
+    \draw[sub] (f) to[bend left=40] (f); % laço
+    % subdígrafo destacado
+    \node[draw=blue!40, rounded corners, fit=(b)(c)(d)(e), inner sep=15pt, label={[blue!60]above:$D'$}] {};
+\end{tikzpicture}
+% Texto explicativo removido.
+\end{document}
