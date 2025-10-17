@@ -484,8 +484,8 @@ def find_cycle(F_star: nx.DiGraph):
 \end{tcolorbox}
 
 
-\subsubsection{Contração de ciclo:}
-a função contrai um ciclo dirigido simples \(C\) em um \textbf{supervértice} \(x_C\), redirecionando arcos incidentes a \(C\) e ajustando custos de acordo com a regra de \emph{custos reduzidos}. O grafo é modificado \emph{in-place} e a rotina devolve dicionários auxiliares para permitir a \emph{reexpansão} correta do ciclo.
+\subsection{Contração de ciclo:}
+A função contrai um ciclo dirigido simples \(C\) em um \textbf{supervértice} \(x_C\), redirecionando arcos incidentes a \(C\) e ajustando custos de acordo com a regra de \emph{custos reduzidos}. O grafo é modificado \emph{in-place} e a rotina devolve dicionários auxiliares para permitir a \emph{reexpansão} correta do ciclo.
 
 Em alto nível, o procedimento de contração de ciclo recebe como entrada um ciclo dirigido $C$ em $D$, a raiz $r_0$ (que não pertence a $C$), e um rótulo novo para o supervértice $x_C$. Para cada arco que entra em $C$, cria um arco para $x_C$ com custo ajustado; para cada arco que sai de $C$, redireciona a saída para partir de $x_C$; laços internos são descartados. O procedimento devolve dicionários que permitem reexpansão correta do ciclo ao final. Como efeito colateral, remove os vértices de $C$ e insere $x_C$ no grafo. Se não houver arco entrando em $C$, não existe r-arborescência; se não houver arco saindo, $x_C$ pode isolar componentes. O custo total é preservado e o procedimento é linear no número de arestas.
 
