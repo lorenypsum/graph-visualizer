@@ -1,27 +1,38 @@
 \chapter{Algoritmo de Chu–Liu/Edmonds}
 
-O algoritmo de Chu–Liu/Edmonds encontra uma r-arborescência de custo mínimo em um digrafo ponderado. A estratégia gulosa de escolher, para cada vértice \(v\neq r\), o arco de entrada mais barato pode gerar ciclos dirigidos, incompatíveis com a estrutura de arborescência. O algoritmo resolve esse problema combinando normalização de custos, contração de ciclos em supervértices e expansão controlada para garantir otimalidade.
 
-\section{O problema dos ciclos e a solução por contração}
+O algoritmo de Chu–Liu/Edmonds é um método clássico para encontrar uma r-arborescência de custo mínimo em um digrafo ponderado. Ele combina estratégias gulosas com técnicas de normalização de custos e contração de ciclos para garantir a otimalidade da solução.
 
-Em uma r-arborescência, cada \(v\neq r\) deve ter exatamente um arco de entrada e \(r\) tem grau de entrada zero. Se escolhermos para cada vértice o arco mais barato que nele entra, podemos formar um ciclo dirigido \(C\) onde todos os vértices recebem seu único arco de dentro do próprio \(C\). Nesse caso, nenhum arco entraria em \(C\) a partir de \(V\setminus C\) (o corte \(\delta^-(C)\) ficaria vazio) e, como \(r\notin C\), não existiria caminho de \(r\) para os vértices de \(C\), contrariando a alcançabilidade exigida.
 
-A Figura \ref{fig:chu-liu-cycle-micro} ilustra com um microexemplo: três vértices \(a,b,c\) (todos fora de \(r\)) onde o arco mais barato que entra em \(b\) vem de \(a\), o de \(c\) vem de \(b\) e o de \(a\) vem de \(c\), formando o ciclo \(a\to b\to c\to a\). Embora existam arcos de \(r\) para cada vértice, eles são mais caros e não são escolhidos pelo critério local, deixando os vértices "presos" no ciclo sem conexão com a raiz.
+Se tentarmos copiar a receita das MSTs — dar a cada vértice \(v\neq r\) o arco de entrada mais barato — corremos o risco de fechar um \emph{ciclo dirigido} que não chega à raiz \(r\).
+
+
+Por que isso é proibido? Em uma r-arborescência cada \(v\neq r\) deve ter exatamente um arco de entrada e \(r\) tem grau de entrada zero. Se houvesse um ciclo dirigido \(C\), todos os vértices de \(C\) já receberiam seu único arco de entrada de dentro do próprio \(C\), logo nenhum arco entraria em \(C\) a partir de \(V\setminus C\) (o corte \(\delta^-(C)\) ficaria vazio). Como \(r\notin C\), não existe caminho de \(r\) para os vértices de \(C\), contrariando a alcançabilidade exigida. Portanto, ciclos dirigidos são incompatíveis com a estrutura de r-arborescência.
+
+
+Dessa forma, o desafio é duplo: preservar a informação local de “mais barato por vértice” (que é valiosa) e, ao mesmo tempo, impedir que essas escolhas locais se combinem em ciclos.
+
+
+Uma maneira direta de enxergar isso é com um microexemplo: tome três vértices \(a,b,c\) (todos fora de \(r\)). Se o arco mais barato que entra em \(b\) vem de \(a\), o de \(c\) vem de \(b\) e o de \(a\) vem de \(c\), então as escolhas “mais baratas” formam o ciclo \(a\to b\to c\to a\). Note que, entre essas escolhas locais, nenhum deles recebe o arco vindo de \(r\) (mesmo que existam \(r\to a\), \(r\to b\), \(r\to c\) mais caros); ficamos presos dentro do ciclo e não alcançamos a raiz. É exatamente esse impasse que o algoritmo resolve ao zerar custos por vértice e contrair ciclos, deixando para decidir qual arco interno remover apenas na expansão.
+
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\linewidth]{figures/fig_chu_liu_cycle_micro.pdf}
-    \caption{Ciclo gerado pelas escolhas locais "mais baratas por vértice". Os arcos grossos (custo 1) entram em \(a,b,c\) e formam \(a\to b\to c\to a\). Os arcos tracejados partindo de \(r\) existem, mas são mais caros e por isso não são escolhidos pelo critério local.}
-    \label{fig:chu-liu-cycle-micro}
-\end{figure}
 
-A solução consiste em \emph{normalizar os custos por vértice}: para cada \(v\neq r\), subtraímos de todo arco que entra em \(v\) o menor custo entre os arcos que chegam a \(v\). Após esse ajuste (custos reduzidos), cada \(v\neq r\) passa a ter ao menos um arco de custo reduzido zero. Se os arcos de custo zero forem acíclicos, já temos a r-arborescência ótima. Se formarem um ciclo \(C\), \emph{contraímos} \(C\) em um \textbf{supervértice} \(x_C\), ajustamos os custos dos arcos externos e resolvemos recursivamente no grafo menor. Ao final, \emph{expandimos} as contrações removendo exatamente um arco interno de cada ciclo para manter grau de entrada 1 e aciclicidade global.
+    \caption{Ciclo gerado pelas escolhas locais “mais baratas por vértice”. Os arcos grossos (custo 1) entram em \(a,b,c\) e formam \(a\to b\to c\to a\). Os arcos tracejados partindo de \(r\) existem, mas são mais caros e por isso não são escolhidos pelo critério local.}
+    \label{fig:chu-liu-cycle-micro}\end{figure}
 
-\subsection{Supervértices e contração de ciclos}
 
-Dado um subconjunto \(C\subseteq V\) que forma um ciclo dirigido, a \emph{contração de \(C\)} substitui todos os vértices de \(C\) por um único vértice \(x_C\) — o supervértice. Todo arco com exatamente uma ponta em \(C\) passa a ser incidente a \(x_C\): arcos \((u,w)\) com \(u\notin C\), \(w\in C\) tornam-se \((u, x_C)\); arcos \((w,v)\) com \(w\in C\), \(v\notin C\) tornam-se \((x_C, v)\); e arcos com ambas as pontas em \(C\) são descartados.
 
-Para preservar a comparação relativa dos custos, ajustamos os arcos que \emph{entram} em \(C\): para um arco \((u,w)\) com \(w\in C\), definimos \(c'(u,x_C) = c(u,w) - c(a_w)\), onde \(a_w\) é o arco mais barato que entra em \(w\). Essa normalização garante que decisões ótimas no grafo contraído podem ser traduzidas de volta na expansão.
+Partindo desse cenário, a ideia é \emph{normalizar os custos por vértice}: para cada \(v\neq r\), "descontamos" de todo arco que entra em \(v\) o menor custo que chega a \(v\). Após esse ajuste (custos reduzidos), cada \(v\neq r\) passa a ter ao menos um arco de custo reduzido zero entrando. Se os arcos de custo zero forem acíclicos, já temos a r-arborescência. Se formarem um ciclo \(C\), isso indica que, dentro de \(C\), todos os vértices atingiram seus mínimos locais; então \emph{contraímos} \(C\) em um \textbf{supervértice} \(x_C\) e repetimos o processo no grafo menor. Ao final, \emph{expandimos} as contrações e, em cada ciclo expandido, removemos exatamente um arco para manter grau de entrada 1 e a aciclicidade global.
+
+\section{Supervértices e contração de ciclos}
+
+
+
+Dado um subconjunto \(C\subseteq V\) que forma um ciclo dirigido, a \emph{contração de \(C\)} substitui todos os vértices de \(C\) por um único vértice \(x_C\) - \textbf{o supervértice}. Todo arco com exatamente uma ponta em \(C\) passa a ser incidente a \(x_C\): arcos \((u,w)\) com \(u\notin C\), \(w\in C\) tornam-se \((u, x_C)\); arcos \((w,v)\) com \(w\in C\), \(v\notin C\) tornam-se \((x_C, v)\); e arcos com as duas pontas em \(C\) tornam-se laços em \(x_C\) e são descartados. Quando trabalhamos com \emph{custos reduzidos}, ajustamos em particular os arcos que \emph{entram} em \(C\) para preservar a comparação relativa: para um arco \((u,w)\) com \(w\in C\), definimos \(c'(u,x_C) = c(u,w) - c(a_w)\), onde \(a_w\) é o arco mais barato que entra em \(w\). Essa normalização garante que, ao resolver no grafo contraído, decisões ótimas podem ser traduzidas de volta na etapa de expansão.
+
 
 \begin{figure}[H]\centering
     \begin{tikzpicture}[>=Stealth, node distance=1.4cm]
@@ -44,21 +55,36 @@ Para preservar a comparação relativa dos custos, ajustamos os arcos que \emph{
         \node[circle,draw,minimum size=6mm] (u2) at (6.8,0.4) {$u$};
         \draw[->] (u2) -- node[below,align=center,yshift=-10pt] {$c'(u,x_C)=c(u,w)-c(a_w)$} (xC);
     \end{tikzpicture}
-    \caption{Ajuste de custo reduzido para um arco entrando em um ciclo contraído: o arco $(u,w)$ com $w\in C$ torna-se $(u,x_C)$ com custo reduzido $c'(u,x_C)=c(u,w)-c(a_w)$, onde $a_w$ é o arco de menor custo que entra em $w$.}
+    \caption{Ajuste de custo reduzido para um arco \emph{entrando}: ao contrair um ciclo $C$, o arco $(u,w)$ com $w\in C$ passa a $(u,x_C)$ com custo reduzido $c'(u,x_C)=c(u,w)-c(a_w)$, onde $a_w$ é o arco de menor custo que entra em $w$.}
     \label{fig:chu-liu-reduced-cost}
 \end{figure}
 
-A Figura \ref{fig:chu-liu-reduced-cost} mostra o ajuste: o arco \((u,b)\) com custo \(7\) torna-se \((u,x_C)\) com custo reduzido \(7-5=2\), já que \(a_b=(a\to b)\) tem custo \(5\).
+
+Para cada arco \((u,w)\) com \(w\in C\), ajustamos o custo reduzido para \(c'(u,x_C)=c(u,w)-c(a_w)\), onde \(a_w\) é o arco mais barato que entra em \(w\). No exemplo da Figura \ref{fig:chu-liu-reduced-cost}, o arco \((u,b)\) com custo \(7\) torna-se \((u,x_C)\) com custo reduzido \(7-5=2\), já que \(a_b=(a\to b)\) tem custo \(5\). Arcos que saem de \(C\) ou laços internos não são ajustados.
 
 \section{Descrição do algoritmo}
 
-Apresentamos o algoritmo em visão operacional de alto nível, focando na lógica e nos passos principais. Detalhes de implementação serão discutidos na próxima seção. Denotamos por \(A'\) o conjunto de arcos escolhidos na construção da r-arborescência.
 
-Construa \(A'\) escolhendo, para cada \(v\neq r\), um arco de menor custo que entra em \(v\). Se \((V,A')\) é acíclico, então \(A'\) já é uma r-arborescência ótima, pois realizamos o menor custo de entrada em cada vértice e nenhuma troca pode reduzir o custo mantendo as restrições \cite[Sec.~4.9]{kleinberg2006}.
+Em computação falamos em linguagem de alto nível quando uma linguagem de programação é próxima da linguagem humana, com abstrações que facilitam o entendimento. Em contraste, linguagens de baixo nível são mais próximas do código de máquina, exigindo detalhes explícitos.
 
-Se \(A'\) contiver um ciclo dirigido \(C\) (que não inclui \(r\)), normalizamos os custos de entrada, contraímos \(C\) em um supervértice \(x_C\) ajustando arcos que entram em \(C\) por \(c'(u,x_C)=c(u,w)-c(a_w)\), e resolvemos recursivamente no grafo contraído.
 
-As arborescências do grafo contraído correspondem, em bijeção, às arborescências do grafo original com exatamente um arco entrando em \(C\). Como os arcos internos de \(C\) têm custo reduzido zero, os custos são preservados na ida e na volta.
+Podemos falar também em visão operacional de alto nível quando descrevemos um algoritmo focando na lógica e nos passos principais, sem entrar em detalhes de implementação específicos.
+
+
+Aqui, apresentamos o algoritmo de Chu–Liu/Edmonds em uma visão operacional de alto nível, focando na lógica e nos passos principais, sem entrar em detalhes de implementação específicos. E dedicaremos a próxima subseção apenas para discutir detalhes práticos de implementação.
+
+
+Denotamos por \(A'\) o conjunto de arcos escolhidos na construção da r-arborescência.
+
+
+Construa \(A'\) escolhendo, para cada \(v\neq r\), um arco de menor custo que \emph{entra} em \(v\). Se \((V,A')\) é acíclico, então, pela caracterização de arborescências (grau de entrada 1 para todo \(v\neq r\) e ausência de ciclos), \(A'\) já é uma r-arborescência; e é \emph{ótima}, pois realizamos o menor custo de entrada em cada vértice e nenhuma troca pode reduzir o custo mantendo as restrições \cite[Sec.~4.9]{kleinberg2006}.
+
+
+Se \(A'\) contiver um ciclo dirigido \(C\) (que não inclui \(r\)), normalizamos os custos de entrada (custos reduzidos) e \emph{contraímos} \(C\) em um supervértice \(x_C\), ajustando apenas arcos que \emph{entram} em \(C\) por \(c'(u,x_C)=c(u,w)-c(a_w)\).
+
+
+Resolvemos recursivamente no grafo contraído. As arborescências do grafo contraído correspondem, em bijeção, às arborescências do grafo original com exatamente um arco entrando em \(C\); como os arcos de \(C\) têm custo reduzido zero, os custos são preservados na ida e na volta.
+
 
 \begin{figure}[H]\centering
     \begin{tikzpicture}[>=Stealth, node distance=1.2cm]
@@ -95,11 +121,17 @@ As arborescências do grafo contraído correspondem, em bijeção, às arboresc�
         \draw[->] (q2) -- (aC);
         \draw[->,very thick] (u2b) -- node[above,xshift=15pt] {entra em $w$} (bC);
     \end{tikzpicture}
-    \caption{Bijeção entre arborescências no grafo contraído e no original: toda arborescência em $D'$ escolhe exatamente um arco que entra em $x_C$; ao expandir $C$, esse arco corresponde a um $(u,w)$ que entra em algum $w\in C$ e os arcos internos (de custo reduzido zero) são mantidos, preservando o custo total.}
+    \caption{Bijeção entre arborescências no grafo contraído e no original: (a) toda arborescência em $D'$ escolhe exatamente um arco que entra em $x_C$; (b) ao expandir $C$, esse arco corresponde a um $(u,w)$ que entra em algum $w\in C$ e os arcos internos (de custo reduzido zero) são mantidos. O custo total é preservado.}
     \label{fig:chu-liu-bijection}
 \end{figure}
 
+
+
+A Figura \ref{fig:chu-liu-bijection} ilustra a bijeção entre arborescências no grafo contraído e no grafo original, destacando a preservação de custos e a manutenção das propriedades estruturais necessárias.
+
+
 Na expansão, reintroduzimos \(C\) e removemos exatamente um arco interno para manter grau de entrada 1 e aciclicidade global \cite{schrijver2003comb,kleinberg2006}.
+
 
 \begin{figure}[H]\centering
     \begin{tikzpicture}[>=Stealth]
@@ -136,11 +168,13 @@ Na expansão, reintroduzimos \(C\) e removemos exatamente um arco interno para m
         \draw[red,very thick] (4.35,0.55) -- (4.45,0.45);
         \draw[red,very thick] (4.35,0.45) -- (4.45,0.55);
     \end{tikzpicture}
-    \caption{Reexpansão de $C$: no grafo contraído seleciona-se um arco que entra em $x_C$; ao expandir, $x_C$ é substituído por $C$ e o arco selecionado entra em algum $w\in C$; remove-se exatamente um arco interno de $C$ para eliminar o ciclo, preservando conectividade e custo total (arcos internos têm custo reduzido zero).}
+    \caption{Reexpansão de $C$: (a) no grafo contraído seleciona-se um único arco que entra em $x_C$; (b) ao expandir, $x_C$ é substituído por $C$ e o arco selecionado passa a entrar em algum $w\in C$; (c) remove-se exatamente um arco interno de $C$ para eliminar o ciclo, preservando conectividade a partir de $r$ e o custo total (os arcos internos têm custo reduzido zero).}
     \label{fig:chu-liu-reexpansion}
 \end{figure}
 
-Abaixo, a descrição formal do algoritmo.
+
+A Figura \ref{fig:chu-liu-reexpansion} detalha o processo de expansão e remoção de um arco interno para quebrar o ciclo, garantindo que a estrutura de r-arborescência seja mantida.
+
 
 Abaixo, temos a descrição formal do algoritmo.
 
