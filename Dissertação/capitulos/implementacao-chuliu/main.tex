@@ -397,7 +397,7 @@ A seguir, detalhamos as implementações das funções principais e auxiliares, 
 
 Esta função normaliza\footnote{Aqui, "normalizar" significa subtrair do peso de cada aresta que entra em $v$ o menor peso de entrada (custos reduzidos), preservando a ordem relativa; assim, ao menos uma entrada em $v$ passa a ter custo 0, sem afetar a comparação entre soluções.} os custos das arestas que entram em um vértice \(v\): calcula \(y(v)=\min\{w(u,v)\}\) e substitui cada peso \(w(u,v)\) por \(w(u,v)-y(v)\).
 
-Recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}\footnote{\texttt{nx.DiGraph} é a classe da biblioteca NetworkX que representa grafos dirigidos (directed graphs). Ela armazena vértices e arestas direcionadas, permitindo associar atributos arbitrários (como pesos) às arestas através de dicionários. A notação \texttt{D[u][v]["w"]} acessa o peso da aresta \((u,v)\).}) e o rótulo \texttt{node} do vértice cujas arestas de entrada devem ser normalizadas. A implementação coleta todas as arestas de entrada de \texttt{node} com seus pesos (linha 2) e, se a lista estiver vazia, retorna imediatamente sem fazer alterações (linhas 3--4). Caso contrário, calcula o peso mínimo \texttt{yv} usando uma compreensão de gerador\footnote{Em Python, uma \emph{compreensão de gerador} (generator comprehension) é uma expressão da forma \texttt{(expr for item in iterable)} que produz valores sob demanda, sem criar uma lista completa na memória. Aqui, \texttt{(w for \_, \_, w in predecessors)} extrai apenas os pesos das tuplas, permitindo calcular o mínimo de forma eficiente.} que extrai o terceiro elemento de cada tupla (linha 5) e, para cada predecessor \texttt{u}, subtrai \texttt{yv} do peso armazenado em \texttt{D[u][node]["w"]} (linha 6).
+Recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}\footnote{\texttt{nx.DiGraph} é a classe da biblioteca NetworkX que representa grafos dirigidos (directed graphs). Ela armazena vértices e arestas direcionadas, permitindo associar atributos arbitrários (como pesos) às arestas através de dicionários. A notação \texttt{D[u][v]["w"]} acessa o peso da aresta \((u,v)\).}) e o rótulo \texttt{node} do vértice cujas arestas de entrada devem ser normalizadas. A implementação coleta todas as arestas de entrada de \texttt{node} com seus pesos usando o método \texttt{D.in\_edges(node, data="w")}\footnote{O método \texttt{in\_edges} é parte da API da biblioteca NetworkX para grafos dirigidos. Ele retorna uma visão iterável (EdgeDataView) sobre todas as arestas que \emph{entram} no vértice especificado, ou seja, arestas da forma \((u, node)\) onde \(u\) é qualquer predecessor de \texttt{node}. O parâmetro opcional \texttt{data="w"} instrui o método a incluir o valor do atributo \texttt{"w"} (peso) de cada aresta na tupla retornada, resultando em tuplas da forma \((u, node, w)\). Internamente, NetworkX mantém estruturas de adjacência bidirecionais (sucessores e predecessores) para permitir acesso eficiente tanto a arestas de saída (\texttt{out\_edges}) quanto de entrada (\texttt{in\_edges}) em tempo proporcional ao grau do vértice.}, que retorna uma lista de tuplas \((u, node, w)\) (linha 2). Em seguida, verifica se a lista está vazia e se estiver retorna imediatamente sem fazer alterações (linhas 3--4). Caso contrário, calcula o peso mínimo \texttt{yv} usando uma compreensão de gerador\footnote{Em Python, uma \emph{compreensão de gerador} (generator comprehension) é uma expressão da forma \texttt{(expr for item in iterable)} que produz valores sob demanda, sem criar uma lista completa na memória. Aqui, \texttt{(w for \_, \_, w in predecessors)} extrai apenas os pesos das tuplas, permitindo calcular o mínimo de forma eficiente.} que extrai o terceiro elemento de cada tupla (linha 5) e, para cada predecessor \texttt{u}, subtrai \texttt{yv} do peso armazenado em \texttt{D[u][node]["w"]} (linha 6).
 
 Não retorna nenhum valor (retorno implícito \texttt{None}), pois a operação é realizada \emph{in-place}\footnote{No jargão de programação, "in-place" significa que a estrutura original é alterada diretamente, sem criar uma cópia. Isso economiza memória e tempo, mas introduz efeitos colaterais.}: o grafo \texttt{D} passado como parâmetro é modificado diretamente, e ao menos uma aresta de entrada de \texttt{node} terá custo reduzido zero após a execução. A complexidade é \(O(\deg^-(v))\), pois cada operação percorre as arestas de entrada uma única vez.
 
@@ -485,14 +485,15 @@ def find_cycle(F_star: nx.DiGraph):
 
 
 \subsection{Contração de ciclo:}
-A função contrai um ciclo dirigido simples \(C\) em um \textbf{supervértice} \(x_C\), redirecionando arcos incidentes a \(C\) e ajustando custos de acordo com a regra de \emph{custos reduzidos}. O grafo é modificado \emph{in-place} e a rotina devolve dicionários auxiliares para permitir a \emph{reexpansão} correta do ciclo.
+Esta função contrai um ciclo dirigido \(C\) em um supervértice \(x_C\), redirecionando arcos incidentes e ajustando custos segundo a regra de custos reduzidos. Retorna dicionários auxiliares para reexpansão.
 
-Em alto nível, o procedimento de contração de ciclo recebe como entrada um ciclo dirigido $C$ em $D$, a raiz $r_0$ (que não pertence a $C$), e um rótulo novo para o supervértice $x_C$. Para cada arco que entra em $C$, cria um arco para $x_C$ com custo ajustado; para cada arco que sai de $C$, redireciona a saída para partir de $x_C$; laços internos são descartados. O procedimento devolve dicionários que permitem reexpansão correta do ciclo ao final. Como efeito colateral, remove os vértices de $C$ e insere $x_C$ no grafo. Se não houver arco entrando em $C$, não existe r-arborescência; se não houver arco saindo, $x_C$ pode isolar componentes. O custo total é preservado e o procedimento é linear no número de arestas.
+Recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}), o ciclo \texttt{C} a ser contraído e o rótulo \texttt{label} do novo supervértice. A implementação coleta os vértices de \texttt{C} em um conjunto (linha 2) e inicializa \texttt{in\_to\_cycle} (linha 3), um dicionário que tem como chave vértices externos ao ciclo e como valor tuplas \((v,w)\), onde \(v\) é o vértice do ciclo conectado a \(u\) e \(w\) é o peso da aresta \((u,v)\). Para cada vértice \texttt{u} no digrafo \texttt{D} (linha 4), se \texttt{u} não pertence ao ciclo (linha 5), identifica a aresta de menor peso que sai de \texttt{u} e entra em \texttt{C} (linhas 6--9) usando uma compreensão de gerador: a expressão \texttt{((v, w) for \_, v, w in D.out\_edges(u, data="w") if v in cycle\_nodes)} itera sobre todas as arestas que saem de \texttt{u}, desempacota cada aresta na forma \texttt{(\_, v, w)} (ignorando a origem com \texttt{\_}, capturando o destino \texttt{v} e o peso \texttt{w}), filtra apenas aquelas cujo destino \texttt{v} pertence ao ciclo, e produz tuplas \texttt{(v, w)}; a função \texttt{min} (linha 6) então seleciona a tupla de menor peso usando \texttt{key=lambda x: x[1]} (linha 7) para comparar pelo segundo elemento (o peso), e retorna \texttt{None} se não houver arestas (linha 8). Se tal aresta existir, armazena em \texttt{in\_to\_cycle} (linhas 9--10). Em seguida, itera sobre \texttt{in\_to\_cycle} e cria arestas de cada vértice \texttt{u} para \texttt{label} com os respectivos pesos (linhas 11--12).
 
-Essas escolhas garantem a \emph{equivalência de custo} entre soluções ótimas no grafo contraído e no original após a reexpansão: os arcos internos de \(C\) têm custo reduzido zero e apenas as entradas em \(C\) recebem o desconto \(y(w)\), mantendo a bijeção entre arborescências descrita anteriormente.
+De forma análoga, constrói o dicionário \texttt{out\_from\_cycle} (linha 13) para mapear arestas que saem do ciclo. Para cada vértice \texttt{v} em \texttt{D} (linha 14), se \texttt{v} não pertence ao ciclo (linha 15), identifica a aresta de menor peso que sai de \texttt{C} e entra em \texttt{v} (linhas 16--17) usando uma compreensão de gerador análoga: a expressão \texttt{((u, w) for u, \_, w in D.in\_edges(v, data="w") if u in cycle\_nodes)} itera sobre todas as arestas que entram em \texttt{v}, desempacota cada aresta na forma \texttt{(u, \_, w)} (capturando a origem \texttt{u}, ignorando o destino com \texttt{\_}, e capturando o peso \texttt{w}), filtra apenas aquelas cuja origem \texttt{u} pertence ao ciclo, e produz tuplas \texttt{(u, w)}; a função \texttt{min} seleciona a de menor peso. Se existir, armazena em \texttt{out\_from\_cycle} (linhas 18--19). Depois, itera sobre \texttt{out\_from\_cycle} e cria arestas de \texttt{label} para cada vértice \texttt{v} com os respectivos pesos (linhas 20--21). Por fim, remove todos os vértices de \texttt{C} do grafo (linha 22).
 
+Retorna dois dicionários: \texttt{in\_to\_cycle} mapeia vértices externos aos pontos de entrada no ciclo original, e \texttt{out\_from\_cycle} mapeia vértices externos aos pontos de saída. O digrafo \texttt{D} é modificado in-place: os vértices de \texttt{C} são removidos e substituídos por \texttt{label}. A complexidade é \(O(m)\), onde \(m\) é o número de arestas, pois cada aresta incidente ao ciclo é processada uma vez.
 
-\noindent A expressão “no próprio lugar (in\-place)” no docstring abaixo\footnote{“In\-place” significa que a função altera diretamente a estrutura de dados existente, sem criar uma cópia. Assim, após a chamada, o grafo \(D\) já refletirá as remoções, inserções e ajustes feitos. Isso reduz alocações e pode ser mais eficiente, mas exige cuidado com aliasing/referências ativas, pois o estado anterior não é preservado a menos que seja salvo explicitamente.} indica que o grafo \(D\) é modificado diretamente.
+\emph{Observação:} o digrafo \(D\) ao ser alterado in-place já refletirá as remoções, inserções e ajustes feitos. Isso reduz alocações e pode ser mais eficiente, mas exige cuidado com aliasing/referências ativas, pois o estado anterior não é preservado a menos que seja salvo explicitamente.
 
 \begin{tcolorbox}[
         enhanced, breakable,
@@ -502,55 +503,35 @@ Essas escolhas garantem a \emph{equivalência de custo} entre soluções ótimas
         boxed title style={sharp corners, boxrule=0.6pt},
         sharp corners, boxrule=0.6pt
     ]
-    \emph{Contrai um ciclo C no grafo D, substituindo-o por um supervértice rotulado `label`. Nesse processo, modifica o grafo D no próprio lugar (in-place) e por fim, devolve dicionários auxiliares para a reexpansão.}
+    \emph{Contrai o ciclo $C$ em um supervértice \texttt{label}, redirecionando arcos incidentes e ajustando custos. Modifica $D$ in-place e retorna dicionários para reexpansão.}
     \tcblower
     \begin{lstlisting}[mathescape=true, language=Python]
-% def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: str):
-    
-
-%     cycle_nodes: set[str] = set(C.nodes())
-
-%     # Stores the vertex u outside the cycle and the vertex v inside the cycle that receives the minimum weight edge
-%     in_to_cycle: dict[str, tuple[str, float]] = {}
-
-%     for u in D.nodes:
-%         if u not in cycle_nodes:
-%             # Find the minimum weight edge that u has to any vertex in C
-%             min_weight_edge_to_cycle = min(
-%                 ((v, w) for _, v, w in D.out_edges(u, data="w") if v in cycle_nodes),
-%                 key=lambda x: x[1],
-%                 default=None,
-%             )
-%             if min_weight_edge_to_cycle:
-%                 in_to_cycle[u] = min_weight_edge_to_cycle
-
-%     for u, (v, w) in in_to_cycle.items():
-%         D.add_edge(u, label, w=w)
-
-%     # Stores the vertex v outside the cycle that receives the minimum weight edge from a vertex u inside the cycle
-%     out_from_cycle: dict[str, tuple[str, float]] = {}
-
-%     for v in D.nodes:
-%         if v not in cycle_nodes:
-%             # Find the minimum weight edge that v receives from any vertex in C
-%             min_weight_edge_from_cycle = min(
-%                 ((u, w) for u, _, w in D.in_edges(v, data="w") if u in cycle_nodes),
-%                 key=lambda x: x[1],
-%                 default=None,
-%             )
-%             if min_weight_edge_from_cycle:
-%                 out_from_cycle[v] = min_weight_edge_from_cycle
-
-%     for v, (u, w) in out_from_cycle.items():
-%         D.add_edge(label, v, w=w)
-
-%     # Remove all nodes in the cycle from G
-%     D.remove_nodes_from(cycle_nodes)
-
-%     return in_to_cycle, out_from_cycle  
-% \end{lstlisting}
+def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: str):
+    cycle_nodes: set[str] = set(C.nodes())
+    in_to_cycle: dict[str, tuple[str, float]] = {}
+    for u in D.nodes:
+        if u not in cycle_nodes:
+            min_weight_edge_to_cycle = min(
+                ((v, w) for _, v, w in D.out_edges(u, data="w") if v in cycle_nodes),
+                key=lambda x: x[1],
+                default=None,)
+            if min_weight_edge_to_cycle:
+                in_to_cycle[u] = min_weight_edge_to_cycle
+    for u, (v, w) in in_to_cycle.items():
+        D.add_edge(u, label, w=w)
+    out_from_cycle: dict[str, tuple[str, float]] = {}
+    for v in D.nodes:
+        if v not in cycle_nodes:
+            min_weight_edge_from_cycle = min(
+                ((u, w) for u, _, w in D.in_edges(v, data="w") if u in cycle_nodes),key=lambda x: x[1], default=None,)
+            if min_weight_edge_from_cycle:
+                out_from_cycle[v] = min_weight_edge_from_cycle
+    for v, (u, w) in out_from_cycle.items():
+        D.add_edge(label, v, w=w)
+    D.remove_nodes_from(cycle_nodes)
+    return in_to_cycle, out_from_cycle  
+\end{lstlisting}
 \end{tcolorbox}
-
 
 \subsubsection{Remoção de arestas que entram na raiz:}
 a função remove todas as arestas que entram no vértice raiz \(r_0\) do grafo \(G\). A função modifica o grafo \emph{in-place} e executa em \(O(\deg^-(r_0))\).
@@ -563,16 +544,16 @@ Em seguida, a função remove essas arestas usando o método \texttt{remove\_edg
 
 
 \begin{tcolorbox}[
-  enhanced, breakable,
-  colframe=blue!60!black, colback=blue!2,
-  colbacktitle=blue!15, coltitle=black,
-  title={Remoção de arestas que entram na raiz},
-  boxed title style={sharp corners, boxrule=0.6pt},
-  sharp corners, boxrule=0.6pt
-]
-\emph{Remove todas as arestas que entram no vértice raiz r0 no grafo D. Por fim, retorna o grafo atualizado.}
-\tcblower
-\begin{lstlisting}[mathescape=true, language=Python]
+        enhanced, breakable,
+        colframe=blue!60!black, colback=blue!2,
+        colbacktitle=blue!15, coltitle=black,
+        title={Remoção de arestas que entram na raiz},
+        boxed title style={sharp corners, boxrule=0.6pt},
+        sharp corners, boxrule=0.6pt
+    ]
+    \emph{Remove todas as arestas que entram no vértice raiz r0 no grafo D. Por fim, retorna o grafo atualizado.}
+    \tcblower
+    \begin{lstlisting}[mathescape=true, language=Python]
 % def remove_edges_to_r0(
 %     D: nx.DiGraph, r0: str
 % ):
