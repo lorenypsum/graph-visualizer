@@ -377,8 +377,6 @@ O uso de memória é \(O(m+n)\), incluindo mapeamentos de contração/expansão 
 
 Esta seção apresenta uma implementação em Python do algoritmo de Chu–Liu/Edmonds. A arquitetura segue os passos teóricos: recebe como entrada um digrafo ponderado, os custos das arestas e o vértice raiz. O procedimento seleciona, para cada vértice, o arco de menor custo de entrada, verifica se o grafo é acíclico e, se necessário, contrai ciclos e ajusta custos. Ao final, retorna como saída a r-arborescência ótima: um conjunto de arestas que conecta todos os vértices à raiz com custo mínimo.
 
-\subsection{Especificação da interface (entradas, saídas e hipóteses)}
-
 \begin{itemize}\setlength{\itemsep}{2pt}
     \item \textbf{Entrada:} digrafo ponderado \(D=(V,A)\), custos \(c:A\to\mathbb{R}\), raiz \(r\in V\).
     \item \textbf{Hipóteses:}
@@ -393,23 +391,15 @@ Esta seção apresenta uma implementação em Python do algoritmo de Chu–Liu/E
 \end{itemize}
 
 
-\subsection{Funções principais}
+A seguir, detalhamos as implementações das funções principais e auxiliares, começando pela normalização dos custos por vértice.
 
+\subsection{Normalização por vértice}
 
-O código a seguir implementa o algoritmo de Chu–Liu/Edmonds em Python, utilizando a biblioteca NetworkX para manipulação de grafos. A implementação segue a estrutura descrita na seção anterior, com funções auxiliares para cada etapa do algoritmo.
+Esta função normaliza\footnote{Aqui, "normalizar" significa subtrair do peso de cada aresta que entra em $v$ o menor peso de entrada (custos reduzidos), preservando a ordem relativa; assim, ao menos uma entrada em $v$ passa a ter custo 0, sem afetar a comparação entre soluções.} os custos das arestas que entram em um vértice \(v\): calcula \(y(v)=\min\{w(u,v)\}\) e substitui cada peso \(w(u,v)\) por \(w(u,v)-y(v)\).
 
+A função recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}) e o identificador \texttt{node} do vértice cujas arestas de entrada devem ser normalizadas. A implementação coleta todas as arestas de entrada de \texttt{node} com seus pesos (linha 2) e, se a lista estiver vazia, retorna imediatamente sem fazer alterações (linhas 3--4). Caso contrário, calcula o peso mínimo \texttt{yv} usando uma compreensão de gerador\footnote{Em Python, uma \emph{compreensão de gerador} (generator comprehension) é uma expressão da forma \texttt{(expr for item in iterable)} que produz valores sob demanda, sem criar uma lista completa na memória. Aqui, \texttt{(w for \_, \_, w in predecessors)} extrai apenas os pesos das tuplas, permitindo calcular o mínimo de forma eficiente.} que extrai o terceiro elemento de cada tupla (linha 5) e, para cada predecessor \texttt{u}, subtrai \texttt{yv} do peso armazenado em \texttt{D[u][node]["w"]} (linha 6).
 
-A seguir, detalhamos as implementações das funções auxiliares e as principais, começando pela normalização dos custos por vértice.
-
-\subsubsection{Normalização por vértice:}
-para um vértice alvo $v$, a função normaliza\footnote{Aqui, “normalizar” significa subtrair do peso de cada aresta que entra em $v$ o menor peso de entrada de $v$ (custos reduzidos), preservando a ordem relativa entre as entradas; assim, ao menos uma entrada em $v$ passa a ter custo 0, sem afetar a comparação entre soluções.} os custos das arestas que \emph{entram} em $v$: calcula $y(v)=\min\{w(u,v)\}$ e
-substitui cada peso $w(u,v)$ por $w(u,v)-y(v)$.
-
-
-Com isso, ao menos uma entrada em $v$ passa a ter custo reduzido zero e a ordem relativa entre as entradas é preservada. A função modifica o grafo \emph{in-place}\footnote{No jargão de programação, significa “no próprio lugar”: a estrutura de dados original é alterada diretamente, sem criar uma cópia. Isso economiza memória e tempo, mas introduz efeitos colaterais — outras referências ao mesmo objeto verão as mudanças.}, ou seja, sem criar uma cópia.
-
-
-A função executa em $O(\deg^-(v))$. Pois, dado o vértice $v$, obtemos suas arestas de entrada em $O(\deg^-(v))$; calcular o mínimo e ajustar os pesos também leva $O(\deg^-(v))$.
+A função não retorna nenhum valor (retorno implícito \texttt{None}), pois a operação é realizada \emph{in-place}\footnote{No jargão de programação, "in-place" significa que a estrutura original é alterada diretamente, sem criar uma cópia. Isso economiza memória e tempo, mas introduz efeitos colaterais.}: o grafo \texttt{D} passado como parâmetro é modificado diretamente. Como efeito colateral, ao menos uma aresta de entrada de \texttt{node} terá custo reduzido zero após a execução. A complexidade é \(O(\deg^-(v))\), pois cada operação percorre as arestas de entrada uma única vez.
 
 \begin{tcolorbox}[
         enhanced, breakable,
@@ -422,19 +412,11 @@ A função executa em $O(\deg^-(v))$. Pois, dado o vértice $v$, obtemos suas ar
     \emph{Altera os pesos das arestas que entram em `node` subtraindo de cada uma o menor peso de entrada no grafo D.}
     \tcblower
     \begin{lstlisting}[language=Python]
-def normalize_incoming_edge_weights(D: nx.DiGraph, node: str):
-            
-    # Get the incoming edges of the node with their weights
+def normalize_incoming_edge_weights(D: nx.DiGraph, node: str):    
     predecessors = list(D.in_edges(node, data="w"))
-
     if not predecessors:
         return
-
-    # Calculate the minimum weight among the incoming edges
     yv = min((w for _, _, w in predecessors))
-
-    # Subtract Yv from each incoming edge
-    for u, _, _ in predecessors:
         D[u][node]["w"] -= yv   
 \end{lstlisting}
 \end{tcolorbox}
