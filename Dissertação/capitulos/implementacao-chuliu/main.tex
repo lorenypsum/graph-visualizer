@@ -1,6 +1,6 @@
 \chapter{Algoritmo de Chu–Liu/Edmonds}
 
-O algoritmo de Chu–Liu/Edmonds encontra uma r-arborescência de custo mínimo em um digrafo ponderado. A estratégia gulosa de escolher, para cada vértice \(v\neq r\), o arco de entrada mais barato pode gerar ciclos dirigidos, incompatíveis com a estrutura de arborescência. O algoritmo resolve esse problema combinando normalização de custos, contração de ciclos em supervértices e expansão controlada para garantir otimalidade.
+O algoritmo de Chu–Liu/Edmonds encontra uma r-arborescência de custo mínimo em um digrafo ponderado. A estratégia funciona de forma gulosa ao escolher, para cada vértice \(v\neq r\), o arco de entrada mais barato. No entanto, essa abordagem pode gerar ciclos dirigidos, incompatíveis com a estrutura de arborescência. O algoritmo resolve esse problema combinando normalização de custos, contração de ciclos em supervértices e expansão controlada para garantir otimalidade.
 
 \section{O problema dos ciclos e a solução por contração}
 
@@ -422,20 +422,20 @@ A função executa em $O(\deg^-(v))$. Pois, dado o vértice $v$, obtemos suas ar
     \emph{Altera os pesos das arestas que entram em `node` subtraindo de cada uma o menor peso de entrada no grafo D.}
     \tcblower
     \begin{lstlisting}[language=Python]
-% def normalize_incoming_edge_weights(D: nx.DiGraph, node: str):
+def normalize_incoming_edge_weights(D: nx.DiGraph, node: str):
             
-%     # Get the incoming edges of the node with their weights
-%     predecessors = list(D.in_edges(node, data="w"))
+    # Get the incoming edges of the node with their weights
+    predecessors = list(D.in_edges(node, data="w"))
 
-%     if not predecessors:
-%         return
+    if not predecessors:
+        return
 
-%     # Calculate the minimum weight among the incoming edges
-%     yv = min((w for _, _, w in predecessors))
+    # Calculate the minimum weight among the incoming edges
+    yv = min((w for _, _, w in predecessors))
 
-%     # Subtract Yv from each incoming edge
-%     for u, _, _ in predecessors:
-%         D[u][node]["w"] -= yv   
+    # Subtract Yv from each incoming edge
+    for u, _, _ in predecessors:
+        D[u][node]["w"] -= yv   
 \end{lstlisting}
 \end{tcolorbox}
 
