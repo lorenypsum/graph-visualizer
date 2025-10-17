@@ -454,14 +454,12 @@ def get_Fstar(D: nx.DiGraph, r0: str):
 \end{lstlisting}
 \end{tcolorbox}
 
-\subsubsection{Detecção de ciclo:}
-a função detecta um ciclo dirigido em \(F^*\) (se existir) e retorna um subgrafo contendo o ciclo. Caso contrário, retorna None. A função utiliza a função \texttt{find\_cycle} do NetworkX, que implementa um algoritmo eficiente de detecção de ciclos.
+\subsection{Detecção de ciclo:}
+Esta função detecta a presença de um ciclo dirigido em \(F^*\) e retorna um subgrafo que o contém; se \(F^*\) for acíclico, retorna \texttt{None}.
 
+Recebe como entrada um digrafo \texttt{F\_star} (objeto \texttt{nx.DiGraph}). A implementação utiliza um bloco \texttt{try} (linha 2) para capturar exceções caso não haja ciclo. Inicializa um conjunto vazio \texttt{nodes\_in\_cycle} (linha 3) e emprega a função \texttt{nx.find\_cycle} do NetworkX (linha 4), que realiza uma busca em profundidade (DFS) para detectar ciclos. Para cada aresta \((u,v)\) retornada, adiciona ambos os vértices ao conjunto (linha 5). Após coletar todos os vértices do ciclo, constrói e retorna uma cópia do subgrafo induzido por eles (linha 7); a cópia é necessária porque \texttt{subgraph} retorna apenas uma visão, e alterações posteriores afetariam o grafo original. Se nenhum ciclo existir, a exceção \texttt{nx.NetworkXNoCycle} é capturada (linha 8) e a função retorna \texttt{None} (linha 9).
 
-A função executa em \(O(m)\). Isso ocorre porque a função \texttt{find\_cycle} do NetworkX utiliza uma abordagem baseada em busca em profundidade (DFS) para detectar ciclos em grafos direcionados.
-
-
-A complexidade dessa abordagem é linear em relação ao número de vértices e arestas do grafo, ou seja, \(O(m)\), onde \(m\) é o número de arestas. A função não modifica o grafo original, mas cria um subgrafo contendo apenas os vértices e arestas que fazem parte do ciclo detectado.
+Retorna um subgrafo contendo os vértices e arestas do ciclo detectado, ou \texttt{None} se não houver ciclo. O grafo original \texttt{F\_star} não é modificado. A complexidade é \(O(m)\), onde \(m\) é o número de arestas, pois a DFS visita cada aresta no máximo uma vez.
 
 \begin{tcolorbox}[
         enhanced, breakable,
@@ -471,20 +469,17 @@ A complexidade dessa abordagem é linear em relação ao número de vértices e 
         boxed title style={sharp corners, boxrule=0.6pt},
         sharp corners, boxrule=0.6pt
     ]
-    \emph{Encontra um ciclo dirigido no grafo. Por fim, retorna um subgrafo contendo o ciclo, ou None caso não exista.}
+    \emph{Detecta um ciclo dirigido em $F^*$ e retorna um subgrafo contendo seus vértices e arestas, ou \texttt{None} se for acíclico.}
     \tcblower
     \begin{lstlisting}[mathescape=true, language=Python]
-% def find_cycle(F_star: nx.DiGraph):
-%     try:
-%         nodes_in_cycle = set()
-%         # Extract nodes involved in the cycle
-%         for u, v, _ in nx.find_cycle(F_star, orientation="original"):
-%             nodes_in_cycle.update([u, v])
-%         # Create a subgraph containing only the cycle
-%         return F_star.subgraph(nodes_in_cycle).copy()
-
-%     except nx.NetworkXNoCycle:
-%         return None  
+def find_cycle(F_star: nx.DiGraph):
+    try:
+        nodes_in_cycle = set()
+        for u, v, _ in nx.find_cycle(F_star, orientation="original"):
+            nodes_in_cycle.update([u, v])
+        return F_star.subgraph(nodes_in_cycle).copy()
+    except nx.NetworkXNoCycle:
+        return None  
 \end{lstlisting}
 \end{tcolorbox}
 
