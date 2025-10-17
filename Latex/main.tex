@@ -2597,11 +2597,7 @@ A função executa em $O(\deg^-(v))$. Pois, dado o vértice $v$, obtemos suas ar
 \tcblower
 \begin{lstlisting}[language=Python]
 % def normalize_incoming_edge_weights(D: nx.DiGraph, node: str):
-    
-%     assert (
-%         node in D
-%     ), f"\nnormalize_incoming_edge_weights: O vértice '{node}' não existe no grafo."
-        
+            
 %     # Get the incoming edges of the node with their weights
 %     predecessors = list(D.in_edges(node, data="w"))
 
@@ -2641,17 +2637,15 @@ Isso ocorre porque a função itera sobre todos os vértices do grafo e, para ca
 \begin{lstlisting}[mathescape=true, language=Python]
 % def get_Fstar(D: nx.DiGraph, r0: str):
     
-%     assert r0 in D, f"get_Fstar: O vértice raiz '\{r0\}' não existe no grafo."
-
 %     # Create an empty directed graph for F_star
-%     F_star \eq nx.DiGraph()
+%     F_star = nx.DiGraph()
 
 %     for v in D.nodes():
-%         if v \neq r0:
-%             in_edges \eq list(D.in_edges(v, data\eq"w"))
+%         if v != r0:
+%             in_edges = list(D.in_edges(v, data="w"))
 %             if not in_edges:
 %                 continue  # No edges entering v
-%             u \eq next((u for u, _, w in in_edges if w \eq\eq 0), None)
+%             u = next((u for u, _, w in in_edges if w \eq\eq 0), None)
 %             if u:
 %                 F_star.add_edge(u, v, w\eq0)
 %     return F_star  
@@ -2696,33 +2690,6 @@ A complexidade dessa abordagem é linear em relação ao número de vértices e 
 \paragraph{Contração de ciclo:}
 a função contrai um ciclo dirigido simples \(C\) em um \textbf{supervértice} \(x_C\), redirecionando arcos incidentes a \(C\) e ajustando custos de acordo com a regra de \emph{custos reduzidos}. O grafo é modificado \emph{in-place} e a rotina devolve dicionários auxiliares para permitir a \emph{reexpansão} correta do ciclo.
 
-% \paragraph{} Em alto nível, a rotina:
-% \begin{itemize}\setlength{\itemsep}{2pt}
-%     \item \textbf{Pré-condições:}
-%           \paragraph{}
-%           (i) \(C\) induz um ciclo dirigido em \(D\);
-%           \paragraph{}
-%           (ii) a raiz \(r_0\) não pertence a \(C\);
-%           \paragraph{}
-%           (iii) o rótulo \(\texttt{label}\) não existe como vértice em \(D\) (é o nome de \(x_C\)).
-%     \item \textbf{Ajuste de custos (entradas em \(C\)):} para cada arco \((u,w)\) com \(u\notin C\), \(w\in C\), cria \((u, x_C)\) com custo \(c'(u,x_C) := c(u,w) - y(w) = c(u,w) - c(a_w)\), onde \(a_w\) é a entrada mais barata em \(w\). Mantém-se, para cada \(u\), apenas o mínimo entre paralelos \((u, x_C)\).
-%     \item \textbf{Arcos que saem de \(C\):} para cada arco \((w,v)\) com \(w\in C\), \(v\notin C\), cria \((x_C, v)\) com o \emph{mesmo} custo \(c(w,v)\); se surgirem paralelos, conserva-se o menor.
-%     \item \textbf{Laços e arcos internos:} arcos com ambas as pontas em \(C\) tornam-se laços em \(x_C\) e são descartados (não influenciam a solução).
-%     \item \textbf{Mapeamentos para reexpansão:} devolve dicionários
-%           \begin{itemize}\setlength{\itemsep}{1pt}
-%               \item \(\texttt{in\_to\_cycle}[u] = (w^*, c'(u,x_C))\): o vértice \(w^*\in C\) que recebeu, de \(u\), a entrada mínima ao contrair (após o ajuste), e o custo reduzido correspondente; usado para substituir \((u,x_C)\) por \((u,w^*)\) na expansão e remover \(a_{w^*}\) de \(C\).
-%               \item \(\texttt{out\_from\_cycle}[v] = (w^*, c(w^*,v))\): o vértice \(w^*\in C\) que envia a \(v\) o arco de menor custo antes da contração; útil para reconstruir paralelos e decidir empates.
-%           \end{itemize}
-%     \item \textbf{Efeitos colaterais:} remove todos os vértices de \(C\) de \(D\), insere \(x_C\) e adiciona os arcos redirecionados com os custos apropriados.
-%     \item \textbf{Complexidade:} \(O(m)\) no tamanho do grafo atual: cada aresta incidente a \(C\) é examinada no máximo uma vez; a manutenção de mínimos entre paralelos é feita em tempo total linear.
-%     \item \textbf{Casos de borda:}
-%           (i) se não houver arco entrando em \(C\), \(x_C\) ficará sem entradas, impossibilitando uma r-arborescência (instância inviável);
-%           \paragraph{}
-%           (ii) se não houver arco saindo de \(C\), \(x_C\) ficará sem saídas (permitido, mas pode isolar componentes);
-%           \paragraph{}
-%           (iii) pesos negativos são suportados — a normalização por custos reduzidos preserva comparações relativas.
-% \end{itemize}
-
 \paragraph{} Em alto nível, o procedimento de contração de ciclo recebe como entrada um ciclo dirigido $C$ em $D$, a raiz $r_0$ (que não pertence a $C$), e um rótulo novo para o supervértice $x_C$. Para cada arco que entra em $C$, cria um arco para $x_C$ com custo ajustado; para cada arco que sai de $C$, redireciona a saída para partir de $x_C$; laços internos são descartados. O procedimento devolve dicionários que permitem reexpansão correta do ciclo ao final. Como efeito colateral, remove os vértices de $C$ e insere $x_C$ no grafo. Se não houver arco entrando em $C$, não existe r-arborescência; se não houver arco saindo, $x_C$ pode isolar componentes. O custo total é preservado e o procedimento é linear no número de arestas.
 
 Essas escolhas garantem a \emph{equivalência de custo} entre soluções ótimas no grafo contraído e no original após a reexpansão: os arcos internos de \(C\) têm custo reduzido zero e apenas as entradas em \(C\) recebem o desconto \(y(w)\), mantendo a bijeção entre arborescências descrita anteriormente.
@@ -2743,9 +2710,6 @@ Essas escolhas garantem a \emph{equivalência de custo} entre soluções ótimas
 \begin{lstlisting}[mathescape=true, language=Python]
 % def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: str):
     
-%     assert (
-%             label not in D
-%         ), f"\ncontract_cycle: O rótulo '{label}' já existe como vértice em G."
 
 %     cycle_nodes: set[str] = set(C.nodes())
 
@@ -2815,11 +2779,6 @@ Em seguida, a função remove essas arestas usando o método \texttt{remove\_edg
 % def remove_edges_to_r0(
 %     D: nx.DiGraph, r0: str
 % ):
-%     # Verify that r0 exists in G
-%     assert (
-%             r0 in D
-%         ), f"\nremove_edges_to_r0: O vértice raiz '{r0}' não existe no grafo."
-
 %     # Remove all edges entering r0
 %     in_edges = list(D.in_edges(r0))
 %     if in_edges:
@@ -2907,12 +2866,6 @@ Essa rotina encapsula, portanto, a estratégia primal do método: induzir aresta
 %     level=0,
 % ):
 
-%     indent = "  " * level
-
-%     assert (
-%         r0 in D
-%     ), f"\nfind_optimum_arborescence_chuliu: O vértice raiz '{r0}' não está presente no grafo."
-
 %     D_copy = D.copy()
 
 %     for v in D_copy.nodes:
@@ -2929,10 +2882,6 @@ Essa rotina encapsula, portanto, a estratégia primal do método: induzir aresta
 
 %     else:
 %         C: nx.DiGraph = find_cycle(F_star)
-
-%         assert (
-%             C
-%         ), f"\nfind_optimum_arborescence_chuliu: Nenhum ciclo encontrado em F_star."
             
 %         contracted_label = f"\n n*{level}"
 %         in_to_cycle, out_from_cycle = contract_cycle(
@@ -2949,17 +2898,9 @@ Essa rotina encapsula, portanto, a estratégia primal do método: induzir aresta
 %         # Identify the vertex in the cycle that received the only incoming edge from the arborescence
 %         in_edge = next(iter(F_prime.in_edges(contracted_label, data="w")), None)
 
-%         assert (
-%             in_edge
-%         ), f"\nfind_optimum_arborescence_chuliu: Nenhuma aresta encontrada entrando no vértice '{contracted_label}'."
-
 %         u, _, _ = in_edge
 
 %         v, _ = in_to_cycle[u]
-
-%         assert (
-%             v is not None
-%         ), f"\nfind_optimum_arborescence_chuliu: Nenhum vértice do ciclo encontrado que recebeu a aresta de entrada de '{u}'."
 
 %         # Remove the internal edge entering vertex `v` from cycle C
 %         remove_internal_edge_to_cycle_entry(
@@ -2976,24 +2917,13 @@ Essa rotina encapsula, portanto, a estratégia primal do método: induzir aresta
 %         # Add the external edges leaving the cycle
 %         for _, z, _ in F_prime.out_edges(contracted_label, data=True):
 
-%             assert (
-%                 z in out_from_cycle
-%             ), f"\nfind_optimum_arborescence_chuliu: Nenhuma aresta de saída encontrada para o vértice '{z}'."
-
 %             u_cycle, _ = out_from_cycle[z]
 %             F_prime.add_edge(u_cycle, z)
 
-%         # Remove the contracted node
-%         assert (
-%             contracted_label in F_prime
-%         ), f"\nfind_optimum_arborescence_chuliu: Vértice '{contracted_label}' não encontrado no grafo."
 %         F_prime.remove_node(contracted_label)
 
 %         # Update the edge weights with the original weights from G
 %         for u, v in F_prime.edges:
-%             assert (
-%                 u in D and v in D
-%             ), f"\nfind_optimum_arborescence_chuliu: Vértice '{u}' ou '{v}' não encontrado no grafo original."
 %             F_prime[u][v]["w"] = D[u][v]["w"]
 
 %         return F_prime 
