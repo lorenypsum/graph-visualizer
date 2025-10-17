@@ -209,12 +209,12 @@ A \textit{r-arborescência} (também chamada \textit{out-arborescência}) orient
 Com essa distinção em mente, este trabalho concentra-se na variante inversa. Formalmente, dado um grafo dirigido \(G=(V,E)\) com custos \(c:E\to\mathbb{R}^+\) nas arestas e um vértice raiz \(r\in V\), procura-se uma \textit{r-arborescência inversa} — isto é, uma árvore direcionada que atinja todos os vértices por caminhos dirigidos até \(r\) — que minimize o custo total das arestas selecionadas (cf. \cite{edmonds1967optimum,frank2014}).
 
 \paragraph{}
-Nosso interesse, porém, não é apenas encontrar a arborescência mínima: o percurso até ela também importa, pois revela propriedades estruturais dos dígrafos e ilumina técnicas distintas de otimização. Por isso, investigamos duas rotas clássicas e complementares: (i) o algoritmo de Chu--Liu/Edmonds, que opera por normalização dos custos das arestas de entrada, seleção sistemática de arestas de custo zero e contração de ciclos até obter um grafo reduzido, seguida pela reexpansão para reconstrução da solução \cite{chu1965,edmonds1967optimum}; e (ii) a abordagem dual, em duas fases, de András Frank, fundamentada em cortes dirigidos, na qual se maximiza uma função de cortes c-viável para induzir arestas de custo zero e, em seguida, extrai-se a arborescência apenas a partir dessas arestas \cite{frank2014}. Embora assentados em princípios distintos — contração de ciclos no plano primal versus empacotamento/dualidade por cortes —, ambos os paradigmas produzem soluções ótimas e tornam explícitas a variedade de abordagens matemáticas que podem ser empregadas para resolver o mesmo problema.
+Nosso interesse, porém, não é apenas encontrar a arborescência mínima: o percurso até ela também importa, pois revela propriedades estruturais dos digrafos e ilumina técnicas distintas de otimização. Por isso, investigamos duas rotas clássicas e complementares: (i) o algoritmo de Chu--Liu/Edmonds, que opera por normalização dos custos das arestas de entrada, seleção sistemática de arestas de custo zero e contração de ciclos até obter um grafo reduzido, seguida pela reexpansão para reconstrução da solução \cite{chu1965,edmonds1967optimum}; e (ii) a abordagem dual, em duas fases, de András Frank, fundamentada em cortes dirigidos, na qual se maximiza uma função de cortes c-viável para induzir arestas de custo zero e, em seguida, extrai-se a arborescência apenas a partir dessas arestas \cite{frank2014}. Embora assentados em princípios distintos — contração de ciclos no plano primal versus empacotamento/dualidade por cortes —, ambos os paradigmas produzem soluções ótimas e tornam explícitas a variedade de abordagens matemáticas que podem ser empregadas para resolver o mesmo problema.
 
 \subsection{Justificativa}
 
 \paragraph{}
-A busca por uma \textit{r-arborescência inversa de custo mínimo} em grafos dirigidos é um problema clássico com aplicações em diversas áreas, como redes de comunicação, planejamento de rotas, análise de dependências e modelagem de processos. Mas, não precisamos dessa justificação prática para nos interessarmos pelo problema: a riqueza estrutural dos dígrafos e a variedade de técnicas algorítmicas disponíveis o tornam um excelente caso de estudo em otimização combinatória.
+A busca por uma \textit{r-arborescência inversa de custo mínimo} em grafos dirigidos é um problema clássico com aplicações em diversas áreas, como redes de comunicação, planejamento de rotas, análise de dependências e modelagem de processos. Mas, não precisamos dessa justificação prática para nos interessarmos pelo problema: a riqueza estrutural dos digrafos e a variedade de técnicas algorítmicas disponíveis o tornam um excelente caso de estudo em otimização combinatória.
 
 \paragraph{}
 Do ponto de vista didático, a metáfora da “teia explicativa mínima” torna concreto o porquê de estudarmos arborescências enraizadas: ela mapeia perguntas sobre explicação, alcance e economia de recursos para estruturas dirigidas, servindo de fio condutor nas implementações e nos experimentos que apresentamos.
@@ -229,7 +229,7 @@ O objetivo principal deste trabalho é analisar, implementar e comparar duas abo
 Resumidamente, o trabalho abrange as seguintes frentes:
 
 \begin{enumerate}
-    \item \textbf{Definições Preliminares}: fixação de notação e conceitos fundamentais (dígrafos, arborescências, custos e dualidade).
+    \item \textbf{Definições Preliminares}: fixação de notação e conceitos fundamentais (digrafos, arborescências, custos e dualidade).
     \item \textbf{Em busca da Arborescência Perdida}: motivação do problema e intuições que guiam os algoritmos.
     \item \textbf{Algoritmo de Chu--Liu/Edmonds}: detalhamento da abordagem primal por normalização/contração de ciclos, com ênfase em invariantes e correção.
     \item \textbf{Procedimento em Duas Fases de András Frank}: detalhamento da abordagem dual por cortes c-viáveis, com ênfase em invariantes e correção.
@@ -245,7 +245,7 @@ Deste modo, o trabalho entrega implementações verificadas de Chu--Liu/Edmonds 
 \paragraph{}
 Neste capítulo, reunimos as noções matemáticas básicas necessárias para compreensão completa do texto.
 
-Fixaremos notações e conceitos (conjuntos, relações, funções, dígrafos, propriedade em dígrafos, dígrafos ponderados, ramificações geradoras, arborescências, funções de custo, dualidade, problemas duais e algoritmos), até chegar à formulação do problema da r-arborescência inversa de custo mínimo e adiamos descrições algorítmicas para capítulos posteriores.
+Fixaremos notações e conceitos (conjuntos, relações, funções, digrafos, propriedade em digrafos, digrafos ponderados, ramificações geradoras, arborescências, funções de custo, dualidade, problemas duais e algoritmos), até chegar à formulação do problema da r-arborescência inversa de custo mínimo e adiamos descrições algorítmicas para capítulos posteriores.
 
 \subsection{Conjuntos}
 \paragraph{}
@@ -720,7 +720,7 @@ O \textbf{somatório}, por exemplo, é uma função de agregação linear que ma
 Esse conceito é especialmente útil em otimização e em análise combinatória: somatórios aparecem o tempo todo e serão explorados ao longo deste trabalho.
 
 \paragraph{Exemplos com grafos.}
-As sessões seguintes explorarão em maiores detalhes grafos e dígrafos, mas agora, consideremos a ideia básica: um \textbf{grafo} é um conjunto de pontos (\emph{vértices}) ligados por linhas (\emph{arestas}). No caso \emph{não dirigido}, as linhas não têm seta; no caso \emph{dirigido}, cada linha tem um sentido e é chamada de \emph{arco}.
+As sessões seguintes explorarão em maiores detalhes grafos e digrafos, mas agora, consideremos a ideia básica: um \textbf{grafo} é um conjunto de pontos (\emph{vértices}) ligados por linhas (\emph{arestas}). No caso \emph{não dirigido}, as linhas não têm seta; no caso \emph{dirigido}, cada linha tem um sentido e é chamada de \emph{arco}.
 
 \paragraph{}
 A noção de somatória aparecerá naturalmente quando lidamos com propriedades dos grafos. Por exemplo:
@@ -734,7 +734,7 @@ Em grafos dirigidos, distinguimos \(\deg^{-}(v)\) (quantos arcos \emph{chegam} e
 \paragraph{}
 Agora suponha que cada aresta/arco \(e\in E\) tenha um \emph{peso} (ou \emph{custo}) \(c(e)\ge 0\). O \textbf{custo total} de um subconjunto \(F\subseteq E\) é simplesmente a soma dos pesos das arestas escolhidas:
 \[C(F) = \sum_{e\in F} c(e).\]
-De maneira análoga, se \(X\subseteq V\) é um conjunto de vértices, o \textbf{valor total} (ou peso total) dos arcos que \emph{saem} de \(X\) é a soma dos pesos dessas setas. Usaremos mais adiante a notação \(\delta^{+}(X)\) para o conjunto de arcos que saem de \(X\) (ver a seção de dígrafos); com essa notação,
+De maneira análoga, se \(X\subseteq V\) é um conjunto de vértices, o \textbf{valor total} (ou peso total) dos arcos que \emph{saem} de \(X\) é a soma dos pesos dessas setas. Usaremos mais adiante a notação \(\delta^{+}(X)\) para o conjunto de arcos que saem de \(X\) (ver a seção de digrafos); com essa notação,
 \[\operatorname{val}^+(X) = \sum_{e\in \delta^{+}(X)} c(e).\]
 Esses exemplos mostram como somatórios capturam propriedades estruturais do grafo por meio de funções simples de agregação.
 
@@ -1002,12 +1002,12 @@ Além disso, uma árvore com \(n\) vértices sempre tem exatamente \(n-1\) arest
 \paragraph{}
 Para o nosso objetivo principal, nos interessa entendê-las em grafos que a direção das conexões (arestas) importa.
 
-\subsection{Dígrafos: quando a direção importa}
+\subsection{digrafos: quando a direção importa}
 \paragraph{}
-Existem problemas que a direção das arestas faz toda a diferença. Por exemplo, em uma rede de tráfego, algumas ruas são de mão única, ou em uma rede de comunicação, os dados podem ser enviados em uma direção específica. Nesses casos, usamos \emph{grafos dirigidos} (ou grafos direcionados ou simplesmente dígrafos), onde as arestas são pares de vértices ordenados.
+Existem problemas que a direção das arestas faz toda a diferença. Por exemplo, em uma rede de tráfego, algumas ruas são de mão única, ou em uma rede de comunicação, os dados podem ser enviados em uma direção específica. Nesses casos, usamos \emph{grafos dirigidos} (ou grafos direcionados ou simplesmente digrafos), onde as arestas são pares de vértices ordenados.
 
 \paragraph{}
-Um \textbf{grafo dirigido - dígrafo} (grafos direcionados) é uma estrutura matemática composta por um conjunto \(V\) de \emph{vértices} e um conjunto \(A\) de \emph{arcos} (ou \emph{arestas direcionadas}) que conectam pares ordenados de vértices.
+Um \textbf{grafo dirigido - digrafo} (grafos direcionados) é uma estrutura matemática composta por um conjunto \(V\) de \emph{vértices} e um conjunto \(A\) de \emph{arcos} (ou \emph{arestas direcionadas}) que conectam pares ordenados de vértices.
 
 \paragraph{}
 Por vértices entendemos o mesmo conjunto que em grafos comuns, mas agora as arestas entre eles têm uma direção específica. Cada arco \((u, v) \in A\) indica uma conexão direcionada do vértice \(u\) para o vértice \(v\), significando que a relação ou fluxo ocorre de \(u\) para \(v\).
@@ -1020,7 +1020,7 @@ Assim, temos os conceitos de cabeça e cauda de um arco: em \((u, v)\), \(u\) é
     \centering
     \includegraphics[width=0.9\linewidth]{figures/fig_def_digrafo.pdf}
 
-    \caption{Dígrafos: arcos têm direção. No arco $a=(u,v)$, $u$ é a \emph{cauda} e $v$ é a \emph{cabeça}.}
+    \caption{digrafos: arcos têm direção. No arco $a=(u,v)$, $u$ é a \emph{cauda} e $v$ é a \emph{cabeça}.}
     \label{fig:def-digrafo}
 \end{figure}
 
@@ -1033,25 +1033,25 @@ Em digrafos podem ocorrer laços (arcos que conectam um vértice a ele mesmo, co
     \centering
     \includegraphics[width=0.9\linewidth]{figures/fig_def_digrafo_simples.pdf}
 
-    \caption{Dígrafo: exemplo de grafo dirigido \(D=(V,A)\). Pontos representam os vértices \(V\) e setas representam os arcos \(A\), que são pares ordenados de vértices. Laços (como \((f,f)\)) e múltiplos arcos (como \((b,e)\) e \((e,b)\)) são permitidos.}
+    \caption{digrafo: exemplo de grafo dirigido \(D=(V,A)\). Pontos representam os vértices \(V\) e setas representam os arcos \(A\), que são pares ordenados de vértices. Laços (como \((f,f)\)) e múltiplos arcos (como \((b,e)\) e \((e,b)\)) são permitidos.}
     \label{fig:def-digrafo-simples}\end{figure}
 
 
 \paragraph{}
-Tal qual os grafos comuns, os dígrafos podem ter custos associados aos arcos. A função de custo \(c: A \to \mathbb{R}^+\) atribui um valor numérico geralmente não negativo a cada arco do dígrafo. Assim, para cada arco \((u, v) \in A\), \(c((u, v))\) representa o custo associado a essa conexão direcionada.
+Tal qual os grafos comuns, os digrafos podem ter custos associados aos arcos. A função de custo \(c: A \to \mathbb{R}^+\) atribui um valor numérico geralmente não negativo a cada arco do digrafo. Assim, para cada arco \((u, v) \in A\), \(c((u, v))\) representa o custo associado a essa conexão direcionada.
 
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\linewidth]{figures/fig_digrafo_custos.pdf}
 
-    \caption{Dígrafos com custos nos arcos: a função $c:A\to\mathbb{R}^+$ atribui um custo não negativo a cada arco.}
+    \caption{digrafos com custos nos arcos: a função $c:A\to\mathbb{R}^+$ atribui um custo não negativo a cada arco.}
     \label{fig:digrafo-custos}
 \end{figure}
 
 
 \paragraph{}
-Um conceito importante em dígrafos é o de grau de um vértice. O \textbf{grau de entrada} (ou \emph{in-degree}) de um vértice \(v\), denotado por \(d^-(v)\), é o número de arcos que chegam a \(v\) (ou seja, o número de arcos cujo destino é \(v\)). O \textbf{grau de saída} (ou \emph{out-degree}) de um vértice \(v\), denotado por \(d^+(v)\), é o número de arcos que saem de \(v\) (ou seja, o número de arcos cuja origem é \(v\)). Formalmente, temos:
+Um conceito importante em digrafos é o de grau de um vértice. O \textbf{grau de entrada} (ou \emph{in-degree}) de um vértice \(v\), denotado por \(d^-(v)\), é o número de arcos que chegam a \(v\) (ou seja, o número de arcos cujo destino é \(v\)). O \textbf{grau de saída} (ou \emph{out-degree}) de um vértice \(v\), denotado por \(d^+(v)\), é o número de arcos que saem de \(v\) (ou seja, o número de arcos cuja origem é \(v\)). Formalmente, temos:
 \[d^-(v) = |\{(u, v) \in A \mid u \in V\}|\]
 \[d^+(v) = |\{(v, w) \in A \mid w \in V\}|\]
 
@@ -1059,39 +1059,39 @@ Um conceito importante em dígrafos é o de grau de um vértice. O \textbf{grau 
 Esse conceito é útil para analisar conectividade, o que nos leva ao próximo tópico, empacotamento de vértices.
 
 \paragraph{Empacotamento de Vértices}
-\paragraph{}Um \textbf{empacotamento de vértices} (conjunto independente) em um dígrafo é um conjunto \(S\subseteq V\) tal que, no subdígrafo induzido por \(S\), todo vértice tem grau de entrada e de saída iguais a zero. Em notação de graus, se denotamos por \(D[S]\) o subdígrafo induzido, então para todo \(v\in S\) vale \(d^-_{D[S]}(v)=0\) e \(d^+_{D[S]}(v)=0\). Isso é equivalente a dizer que não existe arco com ambas as extremidades em \(S\) (isto é, nenhum \((u,v)\in A\) com \(u,v\in S\)).
+\paragraph{}Um \textbf{empacotamento de vértices} (conjunto independente) em um digrafo é um conjunto \(S\subseteq V\) tal que, no subdigrafo induzido por \(S\), todo vértice tem grau de entrada e de saída iguais a zero. Em notação de graus, se denotamos por \(D[S]\) o subdigrafo induzido, então para todo \(v\in S\) vale \(d^-_{D[S]}(v)=0\) e \(d^+_{D[S]}(v)=0\). Isso é equivalente a dizer que não existe arco com ambas as extremidades em \(S\) (isto é, nenhum \((u,v)\in A\) com \(u,v\in S\)).
 
 \paragraph{Empacotamento Máximo de Vértices}
 \paragraph{}
-Um \textbf{empacotamento máximo de vértices} é um empacotamento de vértices que contém o maior número possível de vértices. Em outras palavras, é um conjunto \(S\subseteq V\) tal que não existem arcos entre vértices em \(S\) e \(S\) é o maior possível em termos de cardinalidade. Encontrar um empacotamento máximo em um dígrafo é um problema NP-difícil, vamos falar sobre o que isso significa na sessão de algoritmos e complexidade.
+Um \textbf{empacotamento máximo de vértices} é um empacotamento de vértices que contém o maior número possível de vértices. Em outras palavras, é um conjunto \(S\subseteq V\) tal que não existem arcos entre vértices em \(S\) e \(S\) é o maior possível em termos de cardinalidade. Encontrar um empacotamento máximo em um digrafo é um problema NP-difícil, vamos falar sobre o que isso significa na sessão de algoritmos e complexidade.
 
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\linewidth]{figures/fig_empacotamento_max.pdf}
 
-    \caption{Empacotamento máximo de vértices: para este dígrafo, $S^{*}$ é um conjunto independente de maior cardinalidade.}
+    \caption{Empacotamento máximo de vértices: para este digrafo, $S^{*}$ é um conjunto independente de maior cardinalidade.}
     \label{fig:empacotamento-max}
 \end{figure}
 
 
 \paragraph{}
-Esses conceitos de conectividade e empacotamento de vértices nos levam a explorar as subestruturas especiais que existem em dígrafos, que são similares às que vimos em grafos comuns, mas com algumas diferenças importantes devido à direção dos arcos.
+Esses conceitos de conectividade e empacotamento de vértices nos levam a explorar as subestruturas especiais que existem em digrafos, que são similares às que vimos em grafos comuns, mas com algumas diferenças importantes devido à direção dos arcos.
 
-\subsubsection{Subestruturas em dígrafos}
-
-\paragraph{}
-Tal qual os grafos que discutimos na sessão anterior, os dígrafos também possuem as mesmas estruturas especiais, essas estruturas chamadas sub-digrafos mudam um pouco em nomenclatura: caminhos quando direcionados são chamados de trilhas, e ciclos são chamados de circuitos e componentes conexas são componentes fortemente conexas e árvores viram arborescências. Além da nomenclatura, a direção dos arcos traz algumas nuances importantes, discutiremos sobre essas nuances apenas na sessão de arborescências e como os algoritmos de busca mudam bastante em complexidade se estamos tratando de arborescências ou árvores comuns.
+\subsubsection{Subestruturas em digrafos}
 
 \paragraph{}
-Um \textbf{subdígrafo} \(D' = (V', A')\) de um dígrafo \(D = (V, A)\) é um dígrafo onde \(V' \subseteq V\) e \(A' \subseteq A\). Ou seja, \(D'\) é formado por um subconjunto dos vértices e arcos de \(D\).
+Tal qual os grafos que discutimos na sessão anterior, os digrafos também possuem as mesmas estruturas especiais, essas estruturas chamadas sub-digrafos mudam um pouco em nomenclatura: caminhos quando direcionados são chamados de trilhas, e ciclos são chamados de circuitos e componentes conexas são componentes fortemente conexas e árvores viram arborescências. Além da nomenclatura, a direção dos arcos traz algumas nuances importantes, discutiremos sobre essas nuances apenas na sessão de arborescências e como os algoritmos de busca mudam bastante em complexidade se estamos tratando de arborescências ou árvores comuns.
+
+\paragraph{}
+Um \textbf{subdigrafo} \(D' = (V', A')\) de um digrafo \(D = (V, A)\) é um digrafo onde \(V' \subseteq V\) e \(A' \subseteq A\). Ou seja, \(D'\) é formado por um subconjunto dos vértices e arcos de \(D\).
 
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\linewidth]{figures/fig_subdigrafo.pdf}
 
-    \caption{Subdígrafo: o subdígrafo $D'=(V',A')$ está destacado em azul. Aqui, $V'=\{b,c,d,e\}$ e $A'$ contém apenas arcos entre esses vértices.}
+    \caption{Subdigrafo: o subdigrafo $D'=(V',A')$ está destacado em azul. Aqui, $V'=\{b,c,d,e\}$ e $A'$ contém apenas arcos entre esses vértices.}
     \label{fig:subdigrafo}
 \end{figure}
 
@@ -1105,7 +1105,7 @@ Um subdigrafo pode ser \emph{induzido} por um conjunto de vértices \(V' \subset
     \centering
     \includegraphics[width=0.9\linewidth]{figures/fig_subdigrafo_induzido.pdf}
 
-    \caption{Subdígrafo induzido: para $V'=\{b,c,d\}$, $D[V']$ mantém todos os arcos com ambas as extremidades em $V'$.}
+    \caption{Subdigrafo induzido: para $V'=\{b,c,d\}$, $D[V']$ mantém todos os arcos com ambas as extremidades em $V'$.}
     \label{fig:subdigrafo-induzido}
 \end{figure}
 
@@ -1119,20 +1119,20 @@ Um subdigrafo é tido como maximal se não é possível adicionar mais vértices
     \centering
     \includegraphics[width=0.9\linewidth]{figures/fig_subdigrafo_maximal.pdf}
 
-    \caption{Subdígrafo maximal (por aciclicidade): $D'$ é acíclico e maximal em $D$; adicionar o arco restante $(d,b)$ cria um circuito.}
+    \caption{Subdigrafo maximal (por aciclicidade): $D'$ é acíclico e maximal em $D$; adicionar o arco restante $(d,b)$ cria um circuito.}
     \label{fig:subdigrafo-maximal}\end{figure}
 
 
 \paragraph{Subdigrafo Gerador}
 \paragraph{}
-Um subdigrafo é tido como gerador se inclui todos os vértices do dígrafo original, ou seja, \(V' = V\). Nesse caso, o subdigrafo é formado por um subconjunto dos arcos do dígrafo original.
+Um subdigrafo é tido como gerador se inclui todos os vértices do digrafo original, ou seja, \(V' = V\). Nesse caso, o subdigrafo é formado por um subconjunto dos arcos do digrafo original.
 
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\linewidth]{figures/fig_subdigrafo_gerador.pdf}
 
-    \caption{Subdígrafo gerador: inclui todos os vértices do dígrafo original ($V'=V$) e apenas um subconjunto dos arcos (em azul).}
+    \caption{Subdigrafo gerador: inclui todos os vértices do digrafo original ($V'=V$) e apenas um subconjunto dos arcos (em azul).}
     \label{fig:subdigrafo-gerador}\end{figure}
 
 
@@ -1144,14 +1144,14 @@ Com essas definições em mente, podemos explorar as subdigrafos específicos qu
 \paragraph{Trilhas}
 
 \paragraph{}
-Uma \textbf{trilha} (ou caminho direcionado) em um dígrafo é uma sequência de vértices conectados por arcos que respeitam a direção. Formalmente, uma trilha \(P\) de comprimento \(k \geq 1\) é uma sequência de vértices \(P = (v_1, v_2, \ldots, v_{k+1})\) tal que cada par consecutivo \((v_i, v_{i+1})\) é um arco em \(A\). O comprimento da trilha é o número de arcos que ela contém, que é \(k\).
+Uma \textbf{trilha} (ou caminho direcionado) em um digrafo é uma sequência de vértices conectados por arcos que respeitam a direção. Formalmente, uma trilha \(P\) de comprimento \(k \geq 1\) é uma sequência de vértices \(P = (v_1, v_2, \ldots, v_{k+1})\) tal que cada par consecutivo \((v_i, v_{i+1})\) é um arco em \(A\). O comprimento da trilha é o número de arcos que ela contém, que é \(k\).
 
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\linewidth]{figures/fig_trilha.pdf}
 
-    \caption{Trilha em dígrafo: a trilha $P=(v_1,v_2,v_3,v_4)$ está destacada em azul. Seu comprimento é o número de arcos percorridos, $|P|=3$.}
+    \caption{Trilha em digrafo: a trilha $P=(v_1,v_2,v_3,v_4)$ está destacada em azul. Seu comprimento é o número de arcos percorridos, $|P|=3$.}
     \label{fig:trilha}\end{figure}
 
 
@@ -1160,20 +1160,20 @@ Uma conceito importante relacionado às trilhas é o de cortes.
 
 \paragraph{Cortes e Min-cortes}
 \paragraph{}
-Um \textbf{corte} em um dígrafo é um conjunto de arcos cuja remoção desconecta o dígrafo, ou seja, impede que haja uma trilha entre certos pares de vértices. Formalmente, dado um dígrafo \(D = (V, A)\), um corte \(C\) é um subconjunto de arcos \(C \subseteq A\) tal que a remoção dos arcos em \(C\) resulta em um dígrafo \(D' = (V, A \setminus C)\) onde não existe mais uma trilha (caminho direcionado) entre pelo menos um par de vértices \(u, v \in V\).
+Um \textbf{corte} em um digrafo é um conjunto de arcos cuja remoção desconecta o digrafo, ou seja, impede que haja uma trilha entre certos pares de vértices. Formalmente, dado um digrafo \(D = (V, A)\), um corte \(C\) é um subconjunto de arcos \(C \subseteq A\) tal que a remoção dos arcos em \(C\) resulta em um digrafo \(D' = (V, A \setminus C)\) onde não existe mais uma trilha (caminho direcionado) entre pelo menos um par de vértices \(u, v \in V\).
 
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\linewidth]{figures/fig_corte.pdf}
 
-    \caption{Corte em dígrafo: o corte $C=\{(b,d)\}$ remove conectividade de $b$ para $d$.}
+    \caption{Corte em digrafo: o corte $C=\{(b,d)\}$ remove conectividade de $b$ para $d$.}
     \label{fig:corte}
 \end{figure}
 
 
 \paragraph{}
-De forma resumida, dado um dígrafo \(D=(V,A)\) e um subconjunto \(X\subseteq V\), denotamos por um corte \(s\text{--}t\) é determinado pela escolha de um conjunto de vértices \(X\subseteq V\) tal que \(s\in X\) e \(t\notin X\); pensa-se nele como a “divisão” do grafo em dois lados: \(X\) e \(V\setminus X\).
+De forma resumida, dado um digrafo \(D=(V,A)\) e um subconjunto \(X\subseteq V\), denotamos por um corte \(s\text{--}t\) é determinado pela escolha de um conjunto de vértices \(X\subseteq V\) tal que \(s\in X\) e \(t\notin X\); pensa-se nele como a “divisão” do grafo em dois lados: \(X\) e \(V\setminus X\).
 
 Para tornar a notação precisa e fácil de ler:
 \begin{itemize}
@@ -1188,23 +1188,23 @@ Para tornar a notação precisa e fácil de ler:
 \paragraph{Exemplo:} se \(\delta^+(X)=\{(u_1,v_1),(u_2,v_2)\}\) com \(c((u_1,v_1))=2\) e \(c((u_2,v_2))=3\), então \(c(\delta^+(X))=2+3=5\).
 
 \paragraph{}
-Um min-corte é um corte de tamanho mínimo, ou seja, é o corte com o menor número possível de arcos cuja remoção desconecta o dígrafo. Formalmente, dado um dígrafo \(D = (V, A)\), um min-corte \(C_{min}\) é um corte tal que para qualquer outro corte \(C\), \(|C_{min}| \leq |C|\). O tamanho do min-corte é o número de arcos em \(C_{min}\).
+Um min-corte é um corte de tamanho mínimo, ou seja, é o corte com o menor número possível de arcos cuja remoção desconecta o digrafo. Formalmente, dado um digrafo \(D = (V, A)\), um min-corte \(C_{min}\) é um corte tal que para qualquer outro corte \(C\), \(|C_{min}| \leq |C|\). O tamanho do min-corte é o número de arcos em \(C_{min}\).
 
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\linewidth]{figures/fig_min_corte.pdf}
 
-    \caption{Min-corte em dígrafo: o min-corte $C_{min}$ é um corte de menor cardinalidade (ou custo) que separa $s$ de $t$.}
+    \caption{Min-corte em digrafo: o min-corte $C_{min}$ é um corte de menor cardinalidade (ou custo) que separa $s$ de $t$.}
     \label{fig:min-corte}
 \end{figure}
 
 
-Um teorema importante relacionado a min-cortes é o Teorema do Fluxo Máximo - Corte Mínimo, que estabelece uma relação entre o fluxo máximo que pode ser enviado de uma fonte \(s\) para um sumidouro \(t\) em um dígrafo e o valor do min-corte que separa \(s\) de \(t\). Escolhemos apresensentar esse teorema aqui pois ele traz uma intuição interessante sobre a relação entre fluxos e cortes em dígrafos, relevantes para os algoritmos que discutiremos mais adiante.
+Um teorema importante relacionado a min-cortes é o Teorema do Fluxo Máximo - Corte Mínimo, que estabelece uma relação entre o fluxo máximo que pode ser enviado de uma fonte \(s\) para um sumidouro \(t\) em um digrafo e o valor do min-corte que separa \(s\) de \(t\). Escolhemos apresensentar esse teorema aqui pois ele traz uma intuição interessante sobre a relação entre fluxos e cortes em digrafos, relevantes para os algoritmos que discutiremos mais adiante.
 
 \paragraph{}
 \begin{teobox}{Fluxo–Corte Máximo = Mínimo Corte.}{fluxo-corte}
-    Em dígrafos com limites/pesos não negativos nos arcos, o valor de um fluxo máximo de \(s\) para \(t\) é igual ao valor de um min-corte \(s\text{--}t\). Em símbolos: \(\max\,\text{valor}(f) = \min\, c(\delta^+(X))\), onde o mínimo é sobre \(X\subseteq V\) com \(s\in X\), \(t\notin X\), e \(c(\delta^+(X))=\sum_{a\in\delta^+(X)} c(a)\).
+    Em digrafos com limites/pesos não negativos nos arcos, o valor de um fluxo máximo de \(s\) para \(t\) é igual ao valor de um min-corte \(s\text{--}t\). Em símbolos: \(\max\,\text{valor}(f) = \min\, c(\delta^+(X))\), onde o mínimo é sobre \(X\subseteq V\) com \(s\in X\), \(t\notin X\), e \(c(\delta^+(X))=\sum_{a\in\delta^+(X)} c(a)\).
     \paragraph{}
     \textbf{Prova (esboço):}
     \paragraph{}
@@ -1238,7 +1238,7 @@ Um \textbf{circuito} é um caminho direcionado que começa e termina no mesmo v�
     \centering
     \includegraphics[width=0.9\linewidth]{figures/fig_ciclo_direcionado.pdf}
 
-    \caption{Ciclo direcionado em dígrafo: o ciclo $C=(v_1,v_2,v_3,v_4,v_1)$ está destacado em azul. Seu comprimento é o número de arcos, $|C|=4$.}
+    \caption{Ciclo direcionado em digrafo: o ciclo $C=(v_1,v_2,v_3,v_4,v_1)$ está destacado em azul. Seu comprimento é o número de arcos, $|C|=4$.}
     \label{fig:ciclo-direcionado}\end{figure}
 
 
@@ -1246,7 +1246,7 @@ Um \textbf{circuito} é um caminho direcionado que começa e termina no mesmo v�
 Propriedades importantes dos circuitos incluem:
 \begin{itemize}
     \item \textbf{Circuito simples}: um circuito é dito simples se não repete vértices, exceto o vértice inicial/final. Ou seja, \(v_i \neq v_j\) para \(1 \leq i < j \leq k\).
-    \item \textbf{Circuito Euleriano}: um circuito que percorre cada arco exatamente uma vez. Um dígrafo possui um circuito euleriano se e somente se é fortemente conexo e o grau de entrada é igual ao grau de saída para cada vértice.
+    \item \textbf{Circuito Euleriano}: um circuito que percorre cada arco exatamente uma vez. Um digrafo possui um circuito euleriano se e somente se é fortemente conexo e o grau de entrada é igual ao grau de saída para cada vértice.
     \item \textbf{Circuito Hamiltoniano}: um circuito que visita cada vértice exatamente uma vez, exceto o vértice inicial/final. Determinar a existência de um circuito hamiltoniano é um problema que chamamos de NP-completo. Vamos explicar mais sobre isso na seção de algoritmos e complexidade computacional.
 \end{itemize}
 
@@ -1254,14 +1254,14 @@ Propriedades importantes dos circuitos incluem:
 Existe um princípio chamado de princípio da casa dos pombos, que diz que se você tem mais pombos do que casas, pelo menos uma casa deve conter mais de um pombo. Em termos de grafos, isso se traduz na ideia de que se um grafo tem mais arestas do que vértices, ele deve conter pelo menos um ciclo.
 
 \paragraph{}
-Esse princípio também se aplica a dígrafos, mas com uma nuance importante: em dígrafos, o critério correto para garantir a existência de um circuito dirigido é que o grau mínimo de saída (ou de entrada) seja pelo menos 1. Ou seja, se cada vértice em um dígrafo tem pelo menos um arco saindo dele (ou entrando nele), então o dígrafo deve conter pelo menos um circuito dirigido. Abaixo apresentamos esse resultado formalmente.
+Esse princípio também se aplica a digrafos, mas com uma nuance importante: em digrafos, o critério correto para garantir a existência de um circuito dirigido é que o grau mínimo de saída (ou de entrada) seja pelo menos 1. Ou seja, se cada vértice em um digrafo tem pelo menos um arco saindo dele (ou entrando nele), então o digrafo deve conter pelo menos um circuito dirigido. Abaixo apresentamos esse resultado formalmente.
 
 \paragraph{}
 \begin{lemabox}{Princípio da casa dos pombos para circuitos.}{casa-dos-pombos}
-    Se \(D=(V,A)\) é um dígrafo finito em que todo vértice tem grau de saída ao menos 1, isto é, \(d^+(v)\ge 1\) para todo \(v\in V\), então \(D\) contém pelo menos um circuito dirigido. (De forma equivalente, a afirmação vale trocando ``saída'' por ``entrada''.)
+    Se \(D=(V,A)\) é um digrafo finito em que todo vértice tem grau de saída ao menos 1, isto é, \(d^+(v)\ge 1\) para todo \(v\in V\), então \(D\) contém pelo menos um circuito dirigido. (De forma equivalente, a afirmação vale trocando ``saída'' por ``entrada''.)
 
     \paragraph{}
-    \textbf{Prova:} Escolha para cada \(v\in V\) um arco \((v,f(v))\) que sai de \(v\) (possível porque \(d^+(v)\ge 1\)). Fixa\-do um vértice \(v_0\), considere a sequência \(v_0, v_1=f(v_0), v_2=f(v_1),\dots\). Como \(V\) é finito, algum vértice repete: existem \(i<j\) com \(v_i=v_j\). O trecho \(v_i\to v_{i+1}\to\cdots\to v_j=v_i\) é um circuito dirigido em \(D\). A versão com graus de entrada segue aplicando o argumento ao dígrafo com arcos invertidos. \hfill$\square$
+    \textbf{Prova:} Escolha para cada \(v\in V\) um arco \((v,f(v))\) que sai de \(v\) (possível porque \(d^+(v)\ge 1\)). Fixa\-do um vértice \(v_0\), considere a sequência \(v_0, v_1=f(v_0), v_2=f(v_1),\dots\). Como \(V\) é finito, algum vértice repete: existem \(i<j\) com \(v_i=v_j\). O trecho \(v_i\to v_{i+1}\to\cdots\to v_j=v_i\) é um circuito dirigido em \(D\). A versão com graus de entrada segue aplicando o argumento ao digrafo com arcos invertidos. \hfill$\square$
 
     \paragraph{}
     \smallskip
@@ -1276,10 +1276,10 @@ Esse princípio ajuda a entender o comportamento básico dos métodos que os alg
 No algoritmo de Chu--Liu/Edmonds que exploraremos em detalhes em capítulo posterior, para cada vértice \(v\neq r\), escolhemos a aresta de menor custo que entra em \(v\), o subgrafo obtido fica com grau de entrada igual a 1 em todos os \(v\neq r\). Pelo lema, enquanto esse subgrafo ainda não for uma arborescência, ele necessariamente contém um circuito: assim o algoritmo se baseia em detectar o circuitos, contraí-lo a um único vértice e repetir a seleção sob custos reduzidos. Quando não houver mais circuitos, as arestas escolhidas formam uma arborescência ótima enraizada em \(r\).
 
 \paragraph{Componentes fortemente conexas}
-\paragraph{}Uma \textbf{componente fortemente conexa} (abreviaremos como \textbf{CFC}) é um subdígrafo maximal onde existe um caminho direcionado (trilha) entre qualquer par de vértices.
+\paragraph{}Uma \textbf{componente fortemente conexa} (abreviaremos como \textbf{CFC}) é um subdigrafo maximal onde existe um caminho direcionado (trilha) entre qualquer par de vértices.
 
 \paragraph{}
-Formalmente, uma componente fortemente conexa \(C\) é um subdígrafo \(C = (V_C, A_C)\) onde \(V_C \subseteq V\) e \(A_C \subseteq A\), que satisfaz a seguinte propriedade:
+Formalmente, uma componente fortemente conexa \(C\) é um subdigrafo \(C = (V_C, A_C)\) onde \(V_C \subseteq V\) e \(A_C \subseteq A\), que satisfaz a seguinte propriedade:
 \begin{itemize}
     \item \(C\) é fortemente conexo: existe um caminho direcionado entre qualquer par de vértices em \(V_C\).
 \end{itemize}
@@ -1289,7 +1289,7 @@ Além disso, \(C\) é maximal, o que significa que não é possível adicionar m
     \centering
     \includegraphics[width=0.9\linewidth]{figures/figure_028.pdf}
 
-    \caption{Componentes fortemente conexas: o dígrafo possui três componentes $C_1$, $C_2$ e $C_3$. Cada $C_i$ é fortemente conexo e \emph{maximal}.}
+    \caption{Componentes fortemente conexas: o digrafo possui três componentes $C_1$, $C_2$ e $C_3$. Cada $C_i$ é fortemente conexo e \emph{maximal}.}
 \end{figure}
 
 
@@ -1298,8 +1298,8 @@ A seguir falaremos sobre a propriedade de alcançabilidade mútua em CFC, que é
 
 \begin{itemize}
     \item \textbf{CFCs e alcançabilidade mútua:} dois vértices \(u\) e \(v\) pertencem à mesma CFC se, e somente se, \(u\leadsto v\) e \(v\leadsto u\). Ou seja, existe um caminho direcionado de \(u\) para \(v\) e um caminho direcionado de \(v\) para \(u\). A relação de pertencer à mesma CFC é uma relação de equivalência que particiona o conjunto de vértices \(V\) em subconjuntos disjuntos, cada um correspondendo a uma CFC.
-    \item \textbf{Arborescências em dígrafos fortemente conexos:} um dígrafo é fortemente conexo se, e somente se, para algum (equiv., para todo) vértice $r$ existem uma \emph{arborescência de saída} enraizada em $r$ que alcança todos os vértices e uma \emph{arborescência de entrada} enraizada em $r$ que é alcançada por todos os vértices. De fato, se $D$ é fortemente conexo, basta rodar buscas a partir de $r$; no sentido inverso, $r\leadsto v$ pela arborescência de saída e $v\leadsto r$ pela de entrada, implicando alcançabilidade mútua entre quaisquer dois vértices via $r$.
-    \item \textbf{CFC e DAG.} Ao \emph{contrair} cada CFC a um único vértice obtemos o grafo condensado $\mathrm{Cond}(D)$\footnote{O grafo condensado é uma representação simplificada do dígrafo original, onde as CFCs são representadas como vértices únicos.}. Não há circuitos dirigidos em $\mathrm{Cond}(D)$; portanto, ele é um DAG.
+    \item \textbf{Arborescências em digrafos fortemente conexos:} um digrafo é fortemente conexo se, e somente se, para algum (equiv., para todo) vértice $r$ existem uma \emph{arborescência de saída} enraizada em $r$ que alcança todos os vértices e uma \emph{arborescência de entrada} enraizada em $r$ que é alcançada por todos os vértices. De fato, se $D$ é fortemente conexo, basta rodar buscas a partir de $r$; no sentido inverso, $r\leadsto v$ pela arborescência de saída e $v\leadsto r$ pela de entrada, implicando alcançabilidade mútua entre quaisquer dois vértices via $r$.
+    \item \textbf{CFC e DAG.} Ao \emph{contrair} cada CFC a um único vértice obtemos o grafo condensado $\mathrm{Cond}(D)$\footnote{O grafo condensado é uma representação simplificada do digrafo original, onde as CFCs são representadas como vértices únicos.}. Não há circuitos dirigidos em $\mathrm{Cond}(D)$; portanto, ele é um DAG.
 
           \paragraph{Consequências:}
           todo DAG tem ao menos uma componente-fonte (falaremos em seguida sobre eles) e uma componente-sumidouro; logo, $\mathrm{Cond}(D)$ também tem ao menos uma CFC-fonte e ao menos uma CFC-sumidouro.
@@ -1318,7 +1318,7 @@ A seguir falaremos sobre a propriedade de alcançabilidade mútua em CFC, que é
     \centering
     \includegraphics[width=0.9\linewidth]{figures/fig_componente_fonte.pdf}
 
-    \caption{Componente-fonte: o dígrafo possui três componentes $C_1$, $C_2$ e $C_3$. A componente $C_1$ é uma componente-fonte porque não há arcos saindo dela para outras componentes. Já $C_2$ e $C_3$ não são componentes-fonte, pois há ar  cos entrando nelas.}
+    \caption{Componente-fonte: o digrafo possui três componentes $C_1$, $C_2$ e $C_3$. A componente $C_1$ é uma componente-fonte porque não há arcos saindo dela para outras componentes. Já $C_2$ e $C_3$ não são componentes-fonte, pois há ar  cos entrando nelas.}
     \label{fig:componente-fonte}\end{figure}
 
 
@@ -1335,12 +1335,12 @@ A seguir falaremos sobre a propriedade de alcançabilidade mútua em CFC, que é
     \centering
     \includegraphics[width=0.9\linewidth]{figures/fig_componente_sumidouro.pdf}
 
-    \caption{Componente-sumidouro: o dígrafo possui três componentes $C_1$, $C_2$ e $C_3$. A componente $C_3$ é uma componente-sumidouro porque não há arcos entrando nela vindos de outras componentes. Já $C_1$ e $C_2$ não são componentes-sumidouro, pois há arcos saindo delas.}
+    \caption{Componente-sumidouro: o digrafo possui três componentes $C_1$, $C_2$ e $C_3$. A componente $C_3$ é uma componente-sumidouro porque não há arcos entrando nela vindos de outras componentes. Já $C_1$ e $C_2$ não são componentes-sumidouro, pois há arcos saindo delas.}
     \label{fig:componente-sumidouro}\end{figure}
 
 
 \paragraph{}
-Existe um resultado clássico que relaciona o número de componentes-fonte e componentes-sumidouro em um dígrafo com o número mínimo de arcos necessários para torná-lo fortemente conexo.
+Existe um resultado clássico que relaciona o número de componentes-fonte e componentes-sumidouro em um digrafo com o número mínimo de arcos necessários para torná-lo fortemente conexo.
 
 
 \begin{figure}[H]
@@ -1353,7 +1353,7 @@ Existe um resultado clássico que relaciona o número de componentes-fonte e com
 
 
 \paragraph{}
-Seja $D=(V,A)$ um dígrafo com $k$ componentes fortemente conexas (CFCs):
+Seja $D=(V,A)$ um digrafo com $k$ componentes fortemente conexas (CFCs):
 
 \paragraph{}
 Denote por $\mathrm{Cond}(D)$ o grafo \emph{condensado}, obtido ao contrair cada CFC de $D$ em um único vértice; $\mathrm{Cond}(D)$ é sempre um DAG. Escreva $s$ para o número de CFCs-\emph{fonte} (vértices de $\mathrm{Cond}(D)$ sem arcos de \emph{entrada}) e $t$ para o número de CFCs-\emph{sumidouro} (vértices de $\mathrm{Cond}(D)$ sem arcos de \emph{saída}). Com essa notação, vale o seguinte:
@@ -1371,18 +1371,18 @@ Denote por $\mathrm{Cond}(D)$ o grafo \emph{condensado}, obtido ao contrair cada
     \emph{Suficiência:} numa ordenação topológica de $\mathrm{Cond}(D)$, conecte CFCs-sumidouro a CFCs-fonte de modo a formar um ciclo que percorra todas as CFCs. Isso pode ser feito com exatamente $\max\{s,t\}$ arcos, mesmo quando $s\ne t$, emparelhando sobras de um lado com o outro.
 
     \paragraph{}
-    Ver, por exemplo, textos clássicos sobre dígrafos (e.g., \cite{schrijver2003comb}).
+    Ver, por exemplo, textos clássicos sobre digrafos (e.g., \cite{schrijver2003comb}).
 \end{lemabox}
 
 \paragraph{}
-Esse lema explica por que todo dígrafo com mais de uma CFC-fonte ou mais de uma CFC-sumidouro não pode ser fortemente conexo. Além disso, ele é útil em algoritmos que buscam tornar um dígrafo fortemente conexo, pois fornece um limite inferior para o número de arcos que precisam ser adicionados.
+Esse lema explica por que todo digrafo com mais de uma CFC-fonte ou mais de uma CFC-sumidouro não pode ser fortemente conexo. Além disso, ele é útil em algoritmos que buscam tornar um digrafo fortemente conexo, pois fornece um limite inferior para o número de arcos que precisam ser adicionados.
 
 \paragraph{}
-As noções de CFCs e componentes-fonte conversam diretamente com o conceito de \emph{arborescências}. Pois, em uma arborescência, todos os vértices são alcançáveis a partir da raiz, o que não implica que a arborescência é fortemente conexa, mas encontrar essas componentes dentro de um dígrafo pode nos ajudar em uma busca otimizada por arborescências.
+As noções de CFCs e componentes-fonte conversam diretamente com o conceito de \emph{arborescências}. Pois, em uma arborescência, todos os vértices são alcançáveis a partir da raiz, o que não implica que a arborescência é fortemente conexa, mas encontrar essas componentes dentro de um digrafo pode nos ajudar em uma busca otimizada por arborescências.
 
 \paragraph{Arborescências}
 
-\paragraph{}Uma \textbf{arborescência} é um dígrafo acíclico e conexo, onde há um vértice especial chamado \emph{raiz} que tem um caminho direcionado para todos os outros vértices. Formalmente, uma arborescência \(T\) é um dígrafo \(T = (V_T, A_T)\) onde \(V_T \subseteq V\) e \(A_T \subseteq A\), que satisfaz as seguintes propriedades:
+\paragraph{}Uma \textbf{arborescência} é um digrafo acíclico e conexo, onde há um vértice especial chamado \emph{raiz} que tem um caminho direcionado para todos os outros vértices. Formalmente, uma arborescência \(T\) é um digrafo \(T = (V_T, A_T)\) onde \(V_T \subseteq V\) e \(A_T \subseteq A\), que satisfaz as seguintes propriedades:
 \begin{itemize}
     \item \(T\) é conexo: existe um caminho direcionado da raiz para qualquer vértice em \(V_T\).
     \item \(T\) é acíclico: não contém ciclos direcionados.
@@ -1393,13 +1393,13 @@ Além disso, uma arborescência com \(n\) vértices sempre tem exatamente \(n-1\
     \centering
     \includegraphics[width=0.9\linewidth]{figures/fig_arborescencia.pdf}
 
-    \caption{Arborescência: dígrafo conexo e acíclico com raiz $r$ de onde há um caminho direcionado para todos os outros vértices em azul. No exemplo, $|V_T|=7$ e $|A_T|=6$, satisfazendo $|A_T|=|V_T|-1$. Em cinza, arcos que não fazem parte da arborescência.}
+    \caption{Arborescência: digrafo conexo e acíclico com raiz $r$ de onde há um caminho direcionado para todos os outros vértices em azul. No exemplo, $|V_T|=7$ e $|A_T|=6$, satisfazendo $|A_T|=|V_T|-1$. Em cinza, arcos que não fazem parte da arborescência.}
     \label{fig:arborescencia}\end{figure}
 
 
 \paragraph{Definições e notação adicionais}
 \paragraph{}
-Para facilitar a discussão sobre arborescências, introduzimos algumas definições e notações adicionais: seja \(D = (V, A)\) um dígrafo e \(r \in V\) um vértice específico (a raiz). Denotamos por \(d_D^+(v)\) o grau de saída de um vértice \(v\) em \(D\), ou seja, o número de arcos que saem de \(v\). Analogamente, \(d_D^-(v)\) é o grau de entrada de \(v\), o número de arcos que entram em \(v\).
+Para facilitar a discussão sobre arborescências, introduzimos algumas definições e notações adicionais: seja \(D = (V, A)\) um digrafo e \(r \in V\) um vértice específico (a raiz). Denotamos por \(d_D^+(v)\) o grau de saída de um vértice \(v\) em \(D\), ou seja, o número de arcos que saem de \(v\). Analogamente, \(d_D^-(v)\) é o grau de entrada de \(v\), o número de arcos que entram em \(v\).
 
 
 \paragraph{}
@@ -1411,13 +1411,13 @@ As arborescências são o principal objeto de investigação desse trabalho, por
 Já tratamos do conceito básico de arborescência, agora falaremos de arborescências especiais:
 
 \paragraph{Arborescência Geradora:}
-Uma arborescência é considerada geradora se inclui todos os vértices do dígrafo original, ou seja, \(V_T = V\). Nesse caso, a arborescência é formada por um subconjunto dos arcos do dígrafo original.
+Uma arborescência é considerada geradora se inclui todos os vértices do digrafo original, ou seja, \(V_T = V\). Nesse caso, a arborescência é formada por um subconjunto dos arcos do digrafo original.
 
 \paragraph{Arborescência Maximal:}
-Uma arborescência é dita maximal se não é possível adicionar mais vértices ou arcos a ela sem perder a propriedade de ser uma arborescência, ou seja, sem criar ciclos ou desconectar o dígrafo.
+Uma arborescência é dita maximal se não é possível adicionar mais vértices ou arcos a ela sem perder a propriedade de ser uma arborescência, ou seja, sem criar ciclos ou desconectar o digrafo.
 
 \paragraph{Ramificações Geradoras}
-\paragraph{}Uma \textbf{ramificação geradora} é um subdígrafo que é uma arborescência que inclui todos os vértices do dígrafo original. Formalmente, uma ramificação geradora \(R\) é um subdígrafo \(R = (V_R, A_R)\) onde \(V_R = V\) e \(A_R \subseteq A\), que satisfaz as seguintes propriedades:
+\paragraph{}Uma \textbf{ramificação geradora} é um subdigrafo que é uma arborescência que inclui todos os vértices do digrafo original. Formalmente, uma ramificação geradora \(R\) é um subdigrafo \(R = (V_R, A_R)\) onde \(V_R = V\) e \(A_R \subseteq A\), que satisfaz as seguintes propriedades:
 \begin{itemize}
     \item \(R\) é uma arborescência: existe um vértice especial chamado raiz que tem um caminho direcionado para todos os outros vértices.
     \item \(R\) é maximal: não é possível adicionar mais arcos a \(R\) sem perder a propriedade de ser uma arborescência.
@@ -1428,7 +1428,7 @@ Uma arborescência é dita maximal se não é possível adicionar mais vértices
     \centering
     \includegraphics[width=0.9\linewidth]{figures/fig_ramificacao_geradora.pdf}
 
-    \caption{Ramificação geradora: arborescência que inclui todos os vértices do dígrafo original, em azul. No exemplo, $|V_T|=7$ e $|A_T|=6$, satisfazendo $|A_T|=|V_T|-1$. Em cinza, arcos que não fazem parte da ramificação geradora.}
+    \caption{Ramificação geradora: arborescência que inclui todos os vértices do digrafo original, em azul. No exemplo, $|V_T|=7$ e $|A_T|=6$, satisfazendo $|A_T|=|V_T|-1$. Em cinza, arcos que não fazem parte da ramificação geradora.}
     \label{fig:ramificacao-geradora}\end{figure}
 
 
@@ -1436,7 +1436,7 @@ Uma arborescência é dita maximal se não é possível adicionar mais vértices
 Quando falamaos de ramificações geradoras, podemos falar de uma estrutura que fixa um vértice raiz \(r\) e constrói uma arborescência que alcança todos os outros vértices a partir dessa raiz. Essa estrutura é conhecida como \emph{r-arborescência}.
 
 \paragraph{Arborescência de Raiz Específica:}
-uma arborescência de raiz específica é uma arborescência onde a raiz é um vértice pré-determinado do dígrafo. Isso é útil em situações onde um ponto de origem específico deve ser o início dos caminhos direcionados para todos os outros vértices. Podemos chamá-la de r-arborescência, onde \(r\) é o vértice raiz.
+uma arborescência de raiz específica é uma arborescência onde a raiz é um vértice pré-determinado do digrafo. Isso é útil em situações onde um ponto de origem específico deve ser o início dos caminhos direcionados para todos os outros vértices. Podemos chamá-la de r-arborescência, onde \(r\) é o vértice raiz.
 
 \paragraph{}
 Em uma arborescência \(T = (V_T, A_T)\) enraizada em \(r\), temos as seguintes propriedades:
@@ -1447,7 +1447,7 @@ Em uma arborescência \(T = (V_T, A_T)\) enraizada em \(r\), temos as seguintes 
 \end{itemize}
 
 \paragraph{Arborescência inversa (in-arborescência):}
-uma \emph{arborescência inversa} enraizada em \(r\) — também chamada de \emph{in-arborescência} — é o resultado de inverter a orientação de todos os arcos de uma arborescência (out-arborescência) enraizada em \(r\). Equivalentemente: é um dígrafo acíclico no qual, para todo \(v\neq r\), existe \emph{exatamente um} caminho direcionado de \(v\) até \(r\) (isto é, todos os arcos estão orientados \emph{em direção} à raiz). Em termos de graus, numa in-arborescência cada vértice \(v\neq r\) tem grau de saída igual a 1 (o arco para seu “pai”) e a raiz \(r\) tem grau de saída 0; os graus de entrada são complementares aos de uma out-arborescência.
+uma \emph{arborescência inversa} enraizada em \(r\) — também chamada de \emph{in-arborescência} — é o resultado de inverter a orientação de todos os arcos de uma arborescência (out-arborescência) enraizada em \(r\). Equivalentemente: é um digrafo acíclico no qual, para todo \(v\neq r\), existe \emph{exatamente um} caminho direcionado de \(v\) até \(r\) (isto é, todos os arcos estão orientados \emph{em direção} à raiz). Em termos de graus, numa in-arborescência cada vértice \(v\neq r\) tem grau de saída igual a 1 (o arco para seu “pai”) e a raiz \(r\) tem grau de saída 0; os graus de entrada são complementares aos de uma out-arborescência.
 
 \paragraph{}
 As arborecências podem ter custos associados aos seus arcos, o que nos leva ao conceito de arborescência de custo mínimo.
@@ -1460,7 +1460,7 @@ Uma \textbf{arborescência de custo mínimo} é uma arborescência que minimiza 
 Finalmente podemos conceituar a principal estrutura que estudaremos nesta dissertação: a r-arborescência de custo mínimo e sua variante, a r-arborescência inversa de custo mínimo.
 
 \paragraph{r-arborescência de custo mínimo:}
-é uma arborescência enraizada em um vértice específico \(r\) que minimiza a soma dos pesos dos arcos que a compõem. Formalmente, dada uma função de custo \(c: A \to \mathbb{R}_{\geq 0}\) que atribui um custo a cada arco do dígrafo \(D = (V, A)\), uma r-arborescência de custo mínimo \(T\) é uma arborescência \(T = (V_T, A_T)\) onde \(V_T \subseteq V\) e \(A_T \subseteq A\), que satisfaz as seguintes propriedades:
+é uma arborescência enraizada em um vértice específico \(r\) que minimiza a soma dos pesos dos arcos que a compõem. Formalmente, dada uma função de custo \(c: A \to \mathbb{R}_{\geq 0}\) que atribui um custo a cada arco do digrafo \(D = (V, A)\), uma r-arborescência de custo mínimo \(T\) é uma arborescência \(T = (V_T, A_T)\) onde \(V_T \subseteq V\) e \(A_T \subseteq A\), que satisfaz as seguintes propriedades:
 \begin{itemize}
     \item \(T\) é uma arborescência enraizada em \(r\): existe um caminho direcionado de \(r\) para qualquer vértice em \(V_T\).
     \item \(T\) minimiza o custo total: a soma dos custos dos arcos em \(A_T\) é mínima, ou seja, \(\sum_{a \in A_T} c(a)\) é minimizada.
@@ -1475,7 +1475,7 @@ Finalmente podemos conceituar a principal estrutura que estudaremos nesta disser
 
 
 \paragraph{r-arborescência inversa de custo mínimo:}
-é uma arborescência inversa enraizada em um vértice específico \(r\) que minimiza a soma dos pesos dos arcos que a compõem. Formalmente, dada uma função de custo \(c: A \to \mathbb{R}_{\geq 0}\) que atribui um custo a cada arco do dígrafo \(D = (V, A)\), uma r-arborescência inversa de custo mínimo \(T\) é uma arborescência inversa \(T = (V_T, A_T)\) onde \(V_T \subseteq V\) e \(A_T \subseteq A\), que satisfaz as seguintes propriedades:
+é uma arborescência inversa enraizada em um vértice específico \(r\) que minimiza a soma dos pesos dos arcos que a compõem. Formalmente, dada uma função de custo \(c: A \to \mathbb{R}_{\geq 0}\) que atribui um custo a cada arco do digrafo \(D = (V, A)\), uma r-arborescência inversa de custo mínimo \(T\) é uma arborescência inversa \(T = (V_T, A_T)\) onde \(V_T \subseteq V\) e \(A_T \subseteq A\), que satisfaz as seguintes propriedades:
 \begin{itemize}
     \item \(T\) é uma arborescência inversa enraizada em \(r\): existe um caminho direcionado de qualquer vértice em \(V_T\) até \(r\).
     \item \(T\) minimiza o custo total: a soma dos custos dos arcos em \(A_T\) é mínima, ou seja, \(\sum_{a \in A_T} c(a)\) é minimizada.
@@ -1492,7 +1492,7 @@ Finalmente podemos conceituar a principal estrutura que estudaremos nesta disser
 
 
 \paragraph{}
-As arborescências são a principal estrutura que exploraremos ao longo desta dissertação, especialmente a r-arborescência de custo mínimo e r-arborescência inversa de custo mínimo, abordaremos o problema de encontrá-las eficientemente em dígrafos com custos associados aos arcos.
+As arborescências são a principal estrutura que exploraremos ao longo desta dissertação, especialmente a r-arborescência de custo mínimo e r-arborescência inversa de custo mínimo, abordaremos o problema de encontrá-las eficientemente em digrafos com custos associados aos arcos.
 
 
 
@@ -1512,28 +1512,28 @@ Seja $T$ uma out-arborescência enraizada em $r$ com $n$ vértices. Ela é exata
 De forma simétrica, numa in-arborescência (arborescência inversa) valem as versões “espelhadas”: cada $v\neq r$ tem exatamente um arco \emph{saindo} ($d_T^+(v)=1$) e a raiz tem grau de saída zero ($d_T^+(r)=0$).
 
 \paragraph{}
-Reciprocamente, qualquer subdígrafo que satisfaça (1)--(3) é uma out-arborescência enraizada em $r$ (e análogamente no caso inverso).
+Reciprocamente, qualquer subdigrafo que satisfaça (1)--(3) é uma out-arborescência enraizada em $r$ (e análogamente no caso inverso).
 
 \paragraph{Discussões importantes sobre arborescências}
 
 \paragraph{}
-Dado um Dígrafo \(D = (V, A)\) e um vértice raiz \(r \in V\), uma questão fundamental é determinar quando existe uma arborescência enraizada em \(r\).
-Existem alguns resultados clássicos que caracterizam a existência de arborescências em dígrafos, bem como condições para a existência de múltiplas arborescências disjuntas. Vamos apresentar dois teoremas fundamentais nesse contexto.
+Dado um digrafo \(D = (V, A)\) e um vértice raiz \(r \in V\), uma questão fundamental é determinar quando existe uma arborescência enraizada em \(r\).
+Existem alguns resultados clássicos que caracterizam a existência de arborescências em digrafos, bem como condições para a existência de múltiplas arborescências disjuntas. Vamos apresentar dois teoremas fundamentais nesse contexto.
 
 \paragraph{Teorema de Fulkerson}
 
 \paragraph{}
-Existem várias formas de caracterizar a existência de arborescências em um dígrafo. Uma delas é via a condição de cortes, que estabelece uma relação entre a existência de arborescências e a estrutura dos cortes no dígrafo.
+Existem várias formas de caracterizar a existência de arborescências em um digrafo. Uma delas é via a condição de cortes, que estabelece uma relação entre a existência de arborescências e a estrutura dos cortes no digrafo.
 
 \paragraph{}
 Esse resultado é conhecido como o \textbf{Teorema de Fulkerson} e para entendermos ele precisamos ter em mente as seguintes definições:
 
 \begin{itemize}
-    \item Seja \(D = (V, A)\) um dígrafo e \(X \subseteq V\) um subconjunto de vértices. O conjunto \(\delta^-(X)\) é definido como o conjunto de todos os arcos que entram em \(X\) vindos de \(V \setminus X\). Formalmente,
+    \item Seja \(D = (V, A)\) um digrafo e \(X \subseteq V\) um subconjunto de vértices. O conjunto \(\delta^-(X)\) é definido como o conjunto de todos os arcos que entram em \(X\) vindos de \(V \setminus X\). Formalmente,
           \[
               \delta^-(X) = \{(u, v) \in A : u \in V \setminus X, v \in X\}.
           \]
-    \item Um corte em um dígrafo é uma partição dos vértices em dois subconjuntos disjuntos. O conjunto \(\delta^-(X)\) representa o corte que separa \(X\) do resto do grafo.
+    \item Um corte em um digrafo é uma partição dos vértices em dois subconjuntos disjuntos. O conjunto \(\delta^-(X)\) representa o corte que separa \(X\) do resto do grafo.
 \end{itemize}
 
 \paragraph{}
@@ -1565,7 +1565,7 @@ A seguir apresentamos o teorema propriamente dito e um esboço de sua prova.
 \end{teobox}
 
 \paragraph{}
-Outro resultado clássico é o teorema que caracteriza a existência de múltiplas arborescências arcodisjuntas em um dígrafo, conhecido como o \textbf{Teorema de Edmonds}. Precisamos de algumas definições antes de enunciá-lo:
+Outro resultado clássico é o teorema que caracteriza a existência de múltiplas arborescências arcodisjuntas em um digrafo, conhecido como o \textbf{Teorema de Edmonds}. Precisamos de algumas definições antes de enunciá-lo:
 
 \begin{itemize}
     \item Duas arborescências são ditas \emph{arcodisjuntas} se não compartilham nenhum arco, ou seja, \(A_{T_1} \cap A_{T_2} = \emptyset\).
@@ -1575,7 +1575,7 @@ Outro resultado clássico é o teorema que caracteriza a existência de múltipl
           \[
               \delta^-(X) = \{(u, v) \in A : u \in V \setminus X, v \in X\}.
           \]
-    \item Um corte em um dígrafo é uma partição dos vértices em dois subconjuntos disjuntos. O conjunto \(\delta^-(X)\) representa o corte que separa \(X\) do resto do grafo.
+    \item Um corte em um digrafo é uma partição dos vértices em dois subconjuntos disjuntos. O conjunto \(\delta^-(X)\) representa o corte que separa \(X\) do resto do grafo.
 \end{itemize}
 
 \paragraph{}
@@ -1593,7 +1593,7 @@ Antes de enunciar o teorema, vale a pena mencionar o conceito de \emph{interseç
     \centering
     \includegraphics[width=0.9\linewidth]{figures/fig_exemplo_multiplas_arborescencias.pdf}
 
-    \caption{Dígrafo de exemplo para múltiplas arborescências arcodisjuntas.}
+    \caption{digrafo de exemplo para múltiplas arborescências arcodisjuntas.}
     \label{fig:exemplo-multiplas-arborescencias}\end{figure}
 
 
@@ -1648,7 +1648,7 @@ Um resultado central agora é a caracterização de \emph{optimalidade} para r-a
 
 \paragraph{Terminologia:}
 \paragraph{}
-Para um dígrafo $D=(V,A)$, raiz $r$ e custos $c:A\to \mathbb{R}_{\ge 0}$, um subconjunto não vazio $X\subseteq V\setminus\{r\}$ é dito \textbf{apertado} (para uma família de pesos $y$) se exatamente um arco da solução escolhida entra em $X$ e $y(X)>0$.
+Para um digrafo $D=(V,A)$, raiz $r$ e custos $c:A\to \mathbb{R}_{\ge 0}$, um subconjunto não vazio $X\subseteq V\setminus\{r\}$ é dito \textbf{apertado} (para uma família de pesos $y$) se exatamente um arco da solução escolhida entra em $X$ e $y(X)>0$.
 
 \paragraph{}
 Diremos que um arco $a=(u,v)$ \emph{entra} em $X$ se $u\notin X$ e $v\in X$.
@@ -1694,7 +1694,7 @@ Dada uma família de pesos $y: \{X\subseteq V\setminus\{r\}: X\neq\emptyset\}\to
     \]
     logo $\textbf{custo}(T) \le \textbf{custo}(B)$ para qualquer $B$; $T$ é ótimo.
 
-    \paragraph{(1 $\Rightarrow$ 2).} (Ideia) Execute o procedimento clássico: enquanto houver vértice (ou componente contraída) $v\neq r$ sem arco de custo reduzido zero entrando, subtraia do custo de todos os arcos que entram em $v$ o menor custo positivo entre eles (isso equivale a aumentar uniformemente $y(X)$ para cada subconjunto $X$ cujo primeiro arco zero estamos “criando”). Quando um ciclo de arcos de custo reduzido zero surge, contraia-o e continue no dígrafo comprimido. Ao final, os arcos de custo reduzido zero selecionados formam $T$. As quantidades subtraídas definem $y$: cada vez que subtraímos $\alpha>0$ para um subconjunto/componente $X$, somamos $\alpha$ a $y(X)$. Construção garante (a)–(c).
+    \paragraph{(1 $\Rightarrow$ 2).} (Ideia) Execute o procedimento clássico: enquanto houver vértice (ou componente contraída) $v\neq r$ sem arco de custo reduzido zero entrando, subtraia do custo de todos os arcos que entram em $v$ o menor custo positivo entre eles (isso equivale a aumentar uniformemente $y(X)$ para cada subconjunto $X$ cujo primeiro arco zero estamos “criando”). Quando um ciclo de arcos de custo reduzido zero surge, contraia-o e continue no digrafo comprimido. Ao final, os arcos de custo reduzido zero selecionados formam $T$. As quantidades subtraídas definem $y$: cada vez que subtraímos $\alpha>0$ para um subconjunto/componente $X$, somamos $\alpha$ a $y(X)$. Construção garante (a)–(c).
 
     \paragraph{Intuição.} Os pesos $y$ “pagam” parcialmente cada arco de fora para dentro dos subconjuntos; arcos da solução ficam exatamente “quitados” (custo reduzido 0). Se algum arco restante tivesse custo reduzido negativo, poderíamos baixar o custo da solução trocando-o por um arco de $T$, contradizendo optimalidade. Conjuntos com $y(X)>0$ exigem uso único de um arco para não desperdiçar potencial.
 
@@ -1910,7 +1910,7 @@ Exemplos clássicos de algoritmos gulosos incluem:
 \begin{itemize}
     \item \textbf{Kruskal}: seleciona as arestas de menor peso, evitando formar ciclos; produz uma árvore geradora mínima.
     \item \textbf{Prim}: inicia em um vértice e, a cada passo, adiciona a aresta mais leve que cruza o corte entre a árvore e o restante do grafo.
-    \item \textbf{Dijkstra}: em dígrafos (ou grafos) com pesos não negativos, expande pelo vértice de menor distância conhecida e relaxa suas saídas.
+    \item \textbf{Dijkstra}: em digrafos (ou grafos) com pesos não negativos, expande pelo vértice de menor distância conhecida e relaxa suas saídas.
     \item  \textbf{Kahn} (ordenação topológica): em DAGs, remove repetidamente vértices de grau de entrada zero e elimina suas saídas, construindo uma ordem topológica.
     \item \textbf{Chu–Liu/Edmonds} (arborescência mínima): escolhe, para cada \(v\neq r\), o arco de menor custo que entra em \(v\); ao formar ciclos, contrai-os e usa custos reduzidos até obter a r-arborescência de custo mínimo.
     \item \textbf{Frank} (arborescência mínima em duas fases): na primeira fase, constrói uma arborescência qualquer; na segunda, ajusta os custos reduzidos e troca arcos para minimizar o custo total.
@@ -1922,10 +1922,10 @@ Com esses conceitos em mente, estamos prontos para explorar os algoritmos espec�
 \section{Em busca da Arborescência Perdida}
 
 \paragraph{}
-Vamos usar esse capítulo para situar a evolução do problema: começamos revisitando como se encontra conectividade de menor custo em grafos não dirigidos por meio de \emph{árvores geradoras mínimas} (MST), onde estratégias gulosas são corretas graças aos princípios de \emph{corte} e de \emph{ciclo}. Em seguida veremos por que, ao passar para \emph{dígrafos} e buscar uma \textbf{r-arborescência de custo mínimo}, essas mesmas receitas não se aplicam literalmente: surgem ciclos dirigidos e falta um “corte seguro” direto. Essa transição motiva as ferramentas certas — \emph{custos reduzidos} e \emph{contração de ciclos} — que aparecem no algoritmo de \textbf{Chu–Liu/Edmonds} e, adiante, no procedimento em duas fases de \textbf{Frank}.
+Vamos usar esse capítulo para situar a evolução do problema: começamos revisitando como se encontra conectividade de menor custo em grafos não dirigidos por meio de \emph{árvores geradoras mínimas} (MST), onde estratégias gulosas são corretas graças aos princípios de \emph{corte} e de \emph{ciclo}. Em seguida veremos por que, ao passar para \emph{digrafos} e buscar uma \textbf{r-arborescência de custo mínimo}, essas mesmas receitas não se aplicam literalmente: surgem ciclos dirigidos e falta um “corte seguro” direto. Essa transição motiva as ferramentas certas — \emph{custos reduzidos} e \emph{contração de ciclos} — que aparecem no algoritmo de \textbf{Chu–Liu/Edmonds} e, adiante, no procedimento em duas fases de \textbf{Frank}.
 
 \subsection{Contexto Histórico}
-O problema de encontrar uma r-arborescência de custo mínimo em um dígrafo ponderado é de certa forma uma evolução do problema de conectividade de menor custo em grafos não dirigidos, mas traz desafios adicionais que exigem novas ferramentas e estratégias.
+O problema de encontrar uma r-arborescência de custo mínimo em um digrafo ponderado é de certa forma uma evolução do problema de conectividade de menor custo em grafos não dirigidos, mas traz desafios adicionais que exigem novas ferramentas e estratégias.
 
 \paragraph{A busca em grafos}
 
@@ -2023,7 +2023,7 @@ Com base nos princípios acima, duas soluções gulosas são propostas: \textbf{
 \paragraph{}Prim também é correto pelo princípio do corte; com fila de prioridades binária, executa em \(O(m\log n)\) (ou em \(O(m+n\log n)\)); em grafos densos com \emph{heaps} de Fibonacci\footnote{\emph{Heaps} (montes) são implementações clássicas de filas de prioridades. O \textbf{heap binário} mantém uma árvore quase completa e executa \texttt{insert}/\texttt{extract-min}/\texttt{decrease-key} em \(O(\log n)\). Já o \textbf{heap de Fibonacci} é uma estrutura amortizada com \texttt{decrease-key} e \texttt{meld} (união) em \(O(1)\) amortizado e \texttt{extract-min} em \(O(\log n)\). Em algoritmos como Prim e Dijkstra, onde \texttt{decrease-key} é frequente, isso leva a \(O(m+n\log n)\). Apesar da melhor garantia assintótica, constantes e implementação mais simples fazem heaps binários (ou \emph{pairing heaps}) serem frequentemente competitivos na prática.}, pode-se obter \(O(m+n\log n)\) \cite{cormen2009,kleinberg2006,west2001introduction,diestel2017graph}.
 
 \paragraph{}
-Os algoritmos gulosos de MST são corretos em grafos não dirigidos, mas a passagem para dígrafos \emph{não} é direta. No caso dirigido, buscamos uma \textbf{r-arborescência de custo mínimo}: para cada \(v\neq r\), exatamente um arco entra em \(v\), e o conjunto deve ser acíclico e alcançável a partir de \(r\). Se imitarmos a receita de MST (escolher sempre o arco de entrada mais barato), aparecem \emph{ciclos dirigidos}, e não há um análogo imediato do “corte seguro”.
+Os algoritmos gulosos de MST são corretos em grafos não dirigidos, mas a passagem para digrafos \emph{não} é direta. No caso dirigido, buscamos uma \textbf{r-arborescência de custo mínimo}: para cada \(v\neq r\), exatamente um arco entra em \(v\), e o conjunto deve ser acíclico e alcançável a partir de \(r\). Se imitarmos a receita de MST (escolher sempre o arco de entrada mais barato), aparecem \emph{ciclos dirigidos}, e não há um análogo imediato do “corte seguro”.
 
 \paragraph{}
 Duas abordagens clássicas contornam essas dificuldades: (i) \textbf{Chu–Liu/Edmonds}, que mantém \emph{custos reduzidos} (criando arcos de custo reduzido zero) e resolve conflitos por \emph{contração de ciclos}; e (ii) o procedimento em duas fases de \textbf{Frank}, que parte de uma arborescência qualquer e a refina via ajustes de custos e trocas de arcos. Em ambos os casos, escolhas locais são acopladas a um mecanismo global de consistência, garantindo otimalidade no caso dirigido \cite{schrijver2003comb}.
@@ -2031,10 +2031,10 @@ Duas abordagens clássicas contornam essas dificuldades: (i) \textbf{Chu–Liu/E
 \subsubsection{A busca em digrafos}
 
 \paragraph{}
-O primeiro avanço significativo na busca por arborescências de custo mínimo em dígrafos foi feito por Y. Chu e T. Liu em 1965, que propuseram um algoritmo para encontrar a arborescência de custo mínimo em um dígrafo. Esse algoritmo foi posteriormente aprimorado por Jack Edmonds em 1967, que introduziu o conceito de custos reduzidos e a técnica de contração de ciclos, tornando o algoritmo mais eficiente e robusto.
+O primeiro avanço significativo na busca por arborescências de custo mínimo em digrafos foi feito por Y. Chu e T. Liu em 1965, que propuseram um algoritmo para encontrar a arborescência de custo mínimo em um digrafo. Esse algoritmo foi posteriormente aprimorado por Jack Edmonds em 1967, que introduziu o conceito de custos reduzidos e a técnica de contração de ciclos, tornando o algoritmo mais eficiente e robusto.
 
 \paragraph{}
-Desde então, a pesquisa nessa área tem se concentrado em melhorar a eficiência dos algoritmos existentes, bem como em explorar novas técnicas e abordagens para lidar com diferentes tipos de dígrafos e restrições adicionais. A contribuição de András Frank, que propôs um procedimento em duas fases para encontrar arborescências de custo mínimo, é um exemplo notável dessa evolução contínua.
+Desde então, a pesquisa nessa área tem se concentrado em melhorar a eficiência dos algoritmos existentes, bem como em explorar novas técnicas e abordagens para lidar com diferentes tipos de digrafos e restrições adicionais. A contribuição de András Frank, que propôs um procedimento em duas fases para encontrar arborescências de custo mínimo, é um exemplo notável dessa evolução contínua.
 
 \subsection{Os meios para um fim}
 
@@ -2102,7 +2102,7 @@ Existe inclusive uma prova matemática\footnote{Em modelos padrão de computaç�
     \item \textbf{Chu–Liu/Edmonds} é um algoritmo recursivo que contrai ciclos e resolve o problema em subinstâncias menores, usando custos reduzidos para manter a otimalidade.
     \item O procedimento em \textbf{Frank} é iterativo, começando com uma arborescência qualquer e refinando-a por trocas locais guiadas por custos reduzidos, até alcançar a otimalidade.
 \end{itemize}
-Ambos os algoritmos são corretos e eficientes, mas adotam meios diferentes para alcançar o mesmo fim: encontrar uma r-arborescência de custo mínimo em um dígrafo ponderado.
+Ambos os algoritmos são corretos e eficientes, mas adotam meios diferentes para alcançar o mesmo fim: encontrar uma r-arborescência de custo mínimo em um digrafo ponderado.
 
 \paragraph{}
 Antes de entrar nos detalhes, faremos uma breve revisão dos conceitos e técnicas que utilizaremos adiante, para uniformizar a notação e tornar a leitura mais fluida.
@@ -2114,11 +2114,11 @@ Antes de mergulharmos nos algoritmos específicos, é importante revisitar algun
 
 \paragraph{Conceitos Fundamentais:}
 \begin{itemize}\setlength{\itemsep}{2pt}
-    \item \textbf{Dígrafo}: um grafo direcionado onde os arcos têm uma direção específica, indo de um vértice a outro.
+    \item \textbf{digrafo}: um grafo direcionado onde os arcos têm uma direção específica, indo de um vértice a outro.
     \item \textbf{Arborescência}: uma árvore direcionada onde todos os caminhos partem de um vértice raiz e alcançam todos os outros vértices.
-    \item \textbf{Custo dos Arcos}: cada arco em um dígrafo pode ter um custo associado, representando, por exemplo, o custo de transporte ou a distância.
+    \item \textbf{Custo dos Arcos}: cada arco em um digrafo pode ter um custo associado, representando, por exemplo, o custo de transporte ou a distância.
     \item \textbf{r-Arborescência de Custo Mínimo}: uma arborescência enraizada em um vértice \(r\) que minimiza a soma dos custos dos arcos que a compõem.
-    \item \textbf{Cortes e Conectividade}: a importância dos cortes em dígrafos para garantir a conectividade e a existência de arborescências.
+    \item \textbf{Cortes e Conectividade}: a importância dos cortes em digrafos para garantir a conectividade e a existência de arborescências.
     \item \textbf{Condicionalidade de Fulkerson}: as condições necessárias e suficientes para a existência de uma r-arborescência de custo mínimo.
 \end{itemize}
 
@@ -2127,11 +2127,11 @@ Antes de mergulharmos nos algoritmos específicos, é importante revisitar algun
 Para encontrar r-arborescências de custo mínimo, utilizaremos algumas técnicas e abordagens específicas:
 \begin{itemize}\setlength{\itemsep}{2pt}
     \item \textbf{Normalização de Custos}: ajustaremos os custos dos arcos para facilitar a identificação de arcos de custo reduzido zero.
-    \item \textbf{Contração de Ciclos}: quando formos encontrar ciclos de arcos de custo reduzido zero, os contrairemos para simplificar o dígrafo.
+    \item \textbf{Contração de Ciclos}: quando formos encontrar ciclos de arcos de custo reduzido zero, os contrairemos para simplificar o digrafo.
     \item \textbf{Custos Reduzidos}: utilizaremos custos reduzidos para identificar arcos que podem ser incluídos na arborescência sem aumentar o custo total.
     \item \textbf{Estratégias Gulosas}: aplicaremos estratégias gulosas para selecionar arcos de forma eficiente, garantindo que cada escolha local contribua para a solução global ótima.
-    \item \textbf{Recursão e Expansão}: usaremos recursão para resolver subproblemas em dígrafos contraídos e expandiremos as soluções para o dígrafo original.
-    \item \textbf{Análise de Complexidade}: avaliaremos a eficiência dos algoritmos em termos de tempo e espaço, garantindo que sejam viáveis para grandes dígrafos.
+    \item \textbf{Recursão e Expansão}: usaremos recursão para resolver subproblemas em digrafos contraídos e expandiremos as soluções para o digrafo original.
+    \item \textbf{Análise de Complexidade}: avaliaremos a eficiência dos algoritmos em termos de tempo e espaço, garantindo que sejam viáveis para grandes digrafos.
     \item \textbf{Provas de Corretude}: forneceremos argumentos formais para garantir que os algoritmos realmente produzem a r-arborescência de custo mínimo.
 \end{itemize}
 
@@ -2141,7 +2141,7 @@ No capítulo seguinte, detalharemos o algoritmo de Chu–Liu/Edmonds, bem como o
 \section{Algoritmo de Chu–Liu/Edmonds}
 
 \paragraph{}
-O algoritmo de Chu–Liu/Edmonds é um método clássico para encontrar uma r-arborescência de custo mínimo em um dígrafo ponderado. Ele combina estratégias gulosas com técnicas de normalização de custos e contração de ciclos para garantir a otimalidade da solução.
+O algoritmo de Chu–Liu/Edmonds é um método clássico para encontrar uma r-arborescência de custo mínimo em um digrafo ponderado. Ele combina estratégias gulosas com técnicas de normalização de custos e contração de ciclos para garantir a otimalidade da solução.
 
 \paragraph{}
 Se tentarmos copiar a receita das MSTs — dar a cada vértice \(v\neq r\) o arco de entrada mais barato — corremos o risco de fechar um \emph{ciclo dirigido} que não chega à raiz \(r\).
@@ -2319,7 +2319,7 @@ A Figura \ref{fig:chu-liu-reexpansion} detalha o processo de expansão e remoç�
 Abaixo, temos a descrição formal do algoritmo.
 \paragraph{}
 \begin{algobox}{Chu–Liu/Edmonds (visão operacional)}{chu-liu-edmonds}
-    Entrada: dígrafo \(D=(V,A)\), custos \(c:A\to\mathbb{R}_{\ge 0}\), raiz \(r\).\footnote{Se algum \(v\neq r\) não possui arco de entrada, não existe r-arborescência.}
+    Entrada: digrafo \(D=(V,A)\), custos \(c:A\to\mathbb{R}_{\ge 0}\), raiz \(r\).\footnote{Se algum \(v\neq r\) não possui arco de entrada, não existe r-arborescência.}
     \begin{enumerate}\setlength{\itemsep}{2pt}
         \item Para cada \(v\neq r\), escolha \(a_v\in\operatorname*{argmin}_{(u,v)\in A} c(u,v)\). Defina \(y(v):=c(a_v)\) e \(F^*:=\{a_v: v\neq r\}.\)
         \item Se \((V,F^*)\) é acíclico, devolva \(F^*\). Por \cite[Obs.~4.36]{kleinberg2006}, trata-se de uma r-arborescência de custo mínimo.
@@ -2328,7 +2328,7 @@ Abaixo, temos a descrição formal do algoritmo.
                   c'(u,x_C) & := c(u,w) - y(w) = c(u,w) - c(a_w) &  & \text{para } u\notin C,\ w\in C, \\
                   c'(x_C,v) & := c(w,v)                          &  & \text{para } w\in C,\ v\notin C,
               \end{align*}
-              descartando laços em \(x_C\) e permitindo paralelos. Denote o dígrafo contraído por \(D'=(V',A')\).
+              descartando laços em \(x_C\) e permitindo paralelos. Denote o digrafo contraído por \(D'=(V',A')\).
         \item \textbf{Recursão:} compute uma r-arborescência ótima \(T'\) de \(D'\) com custos \(c'\).
         \item \textbf{Expansão:} seja \((u,x_C)\in T'\) o único arco que entra em \(x_C\). No grafo original, ele corresponde a \((u,w)\) com \(w\in C\). Forme
               \[
@@ -2549,12 +2549,12 @@ O uso de memória é \(O(m+n)\), incluindo mapeamentos de contração/expansão 
 \subsection{Implementação em Python}
 
 \paragraph{}
-Esta seção apresenta uma implementação em Python do algoritmo de Chu–Liu/Edmonds. A arquitetura segue os passos teóricos: recebe como entrada um dígrafo ponderado, os custos das arestas e o vértice raiz. O procedimento seleciona, para cada vértice, o arco de menor custo de entrada, verifica se o grafo é acíclico e, se necessário, contrai ciclos e ajusta custos. Ao final, retorna como saída a r-arborescência ótima: um conjunto de arestas que conecta todos os vértices à raiz com custo mínimo.
+Esta seção apresenta uma implementação em Python do algoritmo de Chu–Liu/Edmonds. A arquitetura segue os passos teóricos: recebe como entrada um digrafo ponderado, os custos das arestas e o vértice raiz. O procedimento seleciona, para cada vértice, o arco de menor custo de entrada, verifica se o grafo é acíclico e, se necessário, contrai ciclos e ajusta custos. Ao final, retorna como saída a r-arborescência ótima: um conjunto de arestas que conecta todos os vértices à raiz com custo mínimo.
 
 \paragraph{Especificação da interface (entradas, saídas e hipóteses)}
 
 \begin{itemize}\setlength{\itemsep}{2pt}
-    \item \textbf{Entrada:} dígrafo ponderado \(D=(V,A)\), custos \(c:A\to\mathbb{R}\), raiz \(r\in V\).
+    \item \textbf{Entrada:} digrafo ponderado \(D=(V,A)\), custos \(c:A\to\mathbb{R}\), raiz \(r\in V\).
     \item \textbf{Hipóteses:}
           \begin{itemize}\setlength{\itemsep}{2pt}
               \item \(D\) é representado como um objeto \texttt{networkx.DiGraph}, com pesos armazenados no atributo de arestas \texttt{'w'}.
@@ -2619,10 +2619,10 @@ A função executa em $O(\deg^-(v))$. Pois, dado o vértice $v$, obtemos suas ar
 
 
 \paragraph{Construção de \(F^*\):}
-a função constrói o subdígrafo \(F^*\) selecionando, para cada vértice \(v\neq r_0\), uma única aresta de menor custo que entra em \(v\) (isto é, um \(\operatorname*{argmin}_{(u,v)\in A} w(u,v)\)).
+a função constrói o subdigrafo \(F^*\) selecionando, para cada vértice \(v\neq r_0\), uma única aresta de menor custo que entra em \(v\) (isto é, um \(\operatorname*{argmin}_{(u,v)\in A} w(u,v)\)).
 
 \paragraph{}
-Se os custos já foram normalizados por vértice, o arco escolhido tem custo reduzido zero; caso contrário, ele devolve None. O resultado é um dígrafo com exatamente uma aresta entrando em cada \(v\neq r_0\) e nenhuma aresta entrando em \(r_0\). A função executa em \(O(m)\), onde \(m\) é o número de arestas.
+Se os custos já foram normalizados por vértice, o arco escolhido tem custo reduzido zero; caso contrário, ele devolve None. O resultado é um digrafo com exatamente uma aresta entrando em cada \(v\neq r_0\) e nenhuma aresta entrando em \(r_0\). A função executa em \(O(m)\), onde \(m\) é o número de arestas.
 
 \paragraph{}
 Isso ocorre porque a função itera sobre todos os vértices do grafo e, para cada vértice, verifica suas arestas de entrada para encontrar a de menor peso. Como cada aresta é considerada no máximo uma vez durante essa iteração, o tempo total é proporcional ao número de arestas, ou seja, \(O(m)\). A função não modifica o grafo original, mas cria um novo grafo direcionado \(F^*\).
@@ -2878,7 +2878,7 @@ O procedimento principal do algoritmo segue estes passos: prepara a instância r
 Mais especificamente, o procedimento garante as seguintes propriedades e passos:
 % NÃO ACHEI NECESSÁRIO REESCREVER ISSO, MAS SE QUISEREM PODEMOS REFAZER E DEIXAR SEM O FORMATO DE BULLET POINT
 \begin{itemize}\setlength{\itemsep}{2pt}
-    \item \textbf{Função (entradas/saídas):} Entrada: dígrafo ponderado \(D=(V,A)\), raiz \(r_0\), e, opcionalmente, funções \texttt{draw\_fn} e \texttt{log} para visualização e registro. Saída: um subdígrafo dirigido \(T\) de \(D\) com \(|V|-1\) arcos em que todo \(v\neq r_0\) tem grau de entrada 1, todos os vértices alcançam \(r_0\) e o custo total \(\sum_{a\in T} c(a)\) é mínimo.
+    \item \textbf{Função (entradas/saídas):} Entrada: digrafo ponderado \(D=(V,A)\), raiz \(r_0\), e, opcionalmente, funções \texttt{draw\_fn} e \texttt{log} para visualização e registro. Saída: um subdigrafo dirigido \(T\) de \(D\) com \(|V|-1\) arcos em que todo \(v\neq r_0\) tem grau de entrada 1, todos os vértices alcançam \(r_0\) e o custo total \(\sum_{a\in T} c(a)\) é mínimo.
     \item \textbf{Invariantes:} Após a normalização por vértice, cada \(v\neq r_0\) tem pelo menos uma entrada de custo reduzido zero; o conjunto \(F^*\) contém exatamente uma entrada por vértice distinto de \(r_0\); em toda contração, apenas arcos que \emph{entram} no componente têm seus custos reduzidos ajustados por \(c'(u,x_C)=c(u,w)-c(a_w)\), preservando comparações relativas.
     \item \textbf{Detecção de ciclo e contração:} Se \(F^*\) contém um ciclo \(C\), todos os seus arcos têm custo reduzido zero. O procedimento forma o supervértice \(x_C\), reescreve arcos incidentes (descarta laços internos) e prossegue na instância menor. Essa etapa pode manter arcos paralelos e ignora laços.
     \item \textbf{Recursão e expansão:} Ao obter \(T'\) ótimo no grafo contraído, o método mapeia \(T'\) de volta para \(D\): substitui o arco \((u,x_C)\) por um \((u,w)\) apropriado (com \(w\in C\)) e remove uma única aresta interna de \(C\), restaurando a propriedade “uma entrada por vértice” e a aciclicidade.
@@ -2898,7 +2898,7 @@ Essa rotina encapsula, portanto, a estratégia primal do método: induzir aresta
   boxed title style={sharp corners, boxrule=0.6pt},
   sharp corners, boxrule=0.6pt
 ]
-\emph{Função recursiva que encontra a arborescência ótima em um dígrafo D com raiz r0 usando o algoritmo de Chu–Liu/Edmonds.}
+\emph{Função recursiva que encontra a arborescência ótima em um digrafo D com raiz r0 usando o algoritmo de Chu–Liu/Edmonds.}
 \tcblower
 \begin{lstlisting}[mathescape=true, language=Python]
 % def find_optimum_arborescence_chuliu(
@@ -3241,7 +3241,7 @@ As Fases I e II estão formalizadas nos Alg.\ \ref{th:frank-fase-I} e \ref{th:fr
 
 
 \begin{algobox}{Frank: fase I}{frank-fase-I}
-    Entrada: dígrafo \(D=(V,A)\), custos \(c:A\to\mathbb{R}\), raiz \(r\).
+    Entrada: digrafo \(D=(V,A)\), custos \(c:A\to\mathbb{R}\), raiz \(r\).
     \paragraph{}
     \textbf{Fase I — normalização primal–dual (potenciais e cortes).}
     \begin{enumerate}\setlength{\itemsep}{1pt}
@@ -3340,16 +3340,16 @@ Implementamos duas versões do algoritmo de Frank: uma primeira versão didátic
 Utilizamos a biblioteca NetworkX para a manipulação de grafos e funções auxiliares para modularizar o código, o que facilita a leitura e a manutenção. A seguir, apresentamos essas funções e os detalhes de implementação de ambas as versões.
 
 \paragraph{Arestas que entram em X e peso mínimo:}
-a função \texttt{get\_arcs\_entering\_X} recebe um dígrafo \(D\) e um conjunto de vértices \(X\), retornando uma lista de arestas que entram em \(X\). Cada aresta é representada como uma tupla \texttt{(u, v, data)}, onde \(u\) é o vértice de origem, \(v\) é o vértice de destino e \texttt{data} contém os atributos da aresta, incluindo o peso.
+a função \texttt{get\_arcs\_entering\_X} recebe um digrafo \(D\) e um conjunto de vértices \(X\), retornando uma lista de arestas que entram em \(X\). Cada aresta é representada como uma tupla \texttt{(u, v, data)}, onde \(u\) é o vértice de origem, \(v\) é o vértice de destino e \texttt{data} contém os atributos da aresta, incluindo o peso.
 
 \begin{pybox}{Arestas que entram em X e mínimo}
 def get_arcs_entering_X(D, X):
     """
-    Obter as arestas que entram em um conjunto X em um dígrafo D.
+    Obter as arestas que entram em um conjunto X em um digrafo D.
     A função retorna uma lista de tuplas que representam as arestas que entram em X com seus respectivos pesos.
 
     Parâmetros:
-    - D: dígrafo (DiGraph)
+    - D: digrafo (DiGraph)
     - X: conjunto de vértices
 
     Retorno:
@@ -3384,7 +3384,7 @@ def get_minimum_weight_cut(arcs):
 \end{pybox}    
 
 \paragraph{Atualizar pesos em X:}
-a função \texttt{update\_weights\_in\_X} atualiza os pesos das arestas que entram em um conjunto \(X\) em um dígrafo \(D\). Ela subtrai um valor mínimo dos pesos dessas arestas e registra aquelas que atingem peso zero em uma lista e em um novo dígrafo. Essa função tem efeito colateral, pois modifica o dígrafo original.
+a função \texttt{update\_weights\_in\_X} atualiza os pesos das arestas que entram em um conjunto \(X\) em um digrafo \(D\). Ela subtrai um valor mínimo dos pesos dessas arestas e registra aquelas que atingem peso zero em uma lista e em um novo digrafo. Essa função tem efeito colateral, pois modifica o digrafo original.
 
 \begin{pybox}{Atualizar pesos em X}
 def update_weights_in_X(D, arcs, min_weight, A_zero, D_zero):
@@ -3412,7 +3412,7 @@ def update_weights_in_X(D, arcs, min_weight, A_zero, D_zero):
 \end{pybox}
 
 \paragraph{Identificar arborescência:}
-a função \texttt{has\_arborescence} verifica se um dígrafo \(D\) possui uma arborescência com raiz \(r0\). Ela retorna True se uma arborescência existir, caso contrário, retorna False. Isso é feito verificando se o dígrafo é uma árvore de busca em profundidade (DFS) com raiz \(r0\).
+a função \texttt{has\_arborescence} verifica se um digrafo \(D\) possui uma arborescência com raiz \(r0\). Ela retorna True se uma arborescência existir, caso contrário, retorna False. Isso é feito verificando se o digrafo é uma árvore de busca em profundidade (DFS) com raiz \(r0\).
 
 \begin{pybox}{Identificar Arborescência}
 def has_arborescence(D, r0):
@@ -3760,7 +3760,7 @@ def check_dual_optimality_condition(
 \end{pybox}
 
 \paragraph{Rotina principal:}
-a função \texttt{andras\_frank\_algorithm} orquestra a execução das fases 1 e 2, além da verificação da condição dual. Ela recebe o dígrafo \(D\), a raiz \(r0\) (fixa), e parâmetros opcionais \texttt{draw\_fn}, \texttt{log}, \texttt{boilerplate} e \texttt{lang} para controle de visualização, mensagens e idioma. O fluxo é:
+a função \texttt{andras\_frank\_algorithm} orquestra a execução das fases 1 e 2, além da verificação da condição dual. Ela recebe o digrafo \(D\), a raiz \(r0\) (fixa), e parâmetros opcionais \texttt{draw\_fn}, \texttt{log}, \texttt{boilerplate} e \texttt{lang} para controle de visualização, mensagens e idioma. O fluxo é:
 
 \begin{itemize}\setlength{\itemsep}{1pt}
     \item \texttt{A\_zero, Dual\_list = phase1\_find\_minimum\_arborescence()} executa a Fase I;
@@ -3862,7 +3862,7 @@ def andras_frank_algorithm(
 
 \paragraph{Das implementações à comparação sistemática}
 \paragraph{}
-De fato, o algoritmo de Frank é uma abordagem elegante e eficiente para encontrar arborescências de custo mínimo em dígrafos, combinando técnicas de programação linear, teoria dos grafos e estruturas de dados. A implementação acima captura os principais passos do algoritmo, permitindo a exploração prática dessa técnica.
+De fato, o algoritmo de Frank é uma abordagem elegante e eficiente para encontrar arborescências de custo mínimo em digrafos, combinando técnicas de programação linear, teoria dos grafos e estruturas de dados. A implementação acima captura os principais passos do algoritmo, permitindo a exploração prática dessa técnica.
 
 \paragraph{}
 Mas ter duas implementações funcionais — Chu–Liu/Edmonds e Frank — levanta questões naturais: \emph{como elas se relacionam conceitualmente?} Ambas resolvem o mesmo problema, mas suas organizações internas diferem. Chu–Liu/Edmonds opera de forma mais direta e combinatória, enquanto Frank explicita a estrutura dual subjacente. Essas diferenças conceituais se traduzem em diferenças práticas de desempenho, estruturas de dados ou facilidade de compreensão?
@@ -3882,7 +3882,7 @@ Chu–Liu/Edmonds e Frank são parentes próximos: perseguem o mesmo objetivo co
 Em linhas gerais, os dois métodos são equivalentes quanto ao resultado (ambos devolvem uma r-arborescência de custo mínimo), mas organizam a mecânica de normalizar → contrair → expandir de maneiras distintas:
 
 \paragraph{}
-O algoritmo de Chu–Liu/Edmonds \cite{chu1965,edmonds1967optimum} é o método clássico para encontrar uma arborescência de custo mínimo em um dígrafo com pesos arbitrários. Ele funciona recursivamente, escolhendo a melhor entrada para cada vértice, detectando ciclos e contraindo-os, ajustando os custos conforme necessário. O processo se repete até que não haja mais ciclos, momento em que a arborescência é extraída.
+O algoritmo de Chu–Liu/Edmonds \cite{chu1965,edmonds1967optimum} é o método clássico para encontrar uma arborescência de custo mínimo em um digrafo com pesos arbitrários. Ele funciona recursivamente, escolhendo a melhor entrada para cada vértice, detectando ciclos e contraindo-os, ajustando os custos conforme necessário. O processo se repete até que não haja mais ciclos, momento em que a arborescência é extraída.
 
 \paragraph{}
 Já o método de Frank \cite{frank1981,frank2014} adota uma abordagem primal–dual, elevando potenciais para criar um subgrafo de arcos de custo reduzido zero e, em seguida, extraindo a arborescência apenas com esses arcos. Ciclos são tratados por contração/expansão, mas sem novos ajustes de custos após a fase inicial.
@@ -4006,7 +4006,7 @@ A aprendizagem visual é especialmente útil nesse contexto: observar os algorit
 Thomás de Aquino, em sua obra \emph{De veritate}, argumenta que o conhecimento humano começa com a percepção sensorial do mundo concreto, mas alcança sua plenitude ao transcender o particular e abraçar o universal através da abstração. Esse processo de abstração é fundamental para a matemática e a ciência da computação, onde conceitos complexos são frequentemente representados por meio de símbolos e estruturas que vão além da experiência direta.
 
 \paragraph{}
-Grafos e dígrafos são simultaneamente concretos (nós e arestas) e abstratos (propriedades globais como cortes, conectividade, laminaridade). A multiplicidade de noções (caminhos, ciclos, cortes, componentes, condensação) \cite{bondy2008graph,diestel2017graph,west2001introduction}. Essas noções exigem transitar entre níveis de representação (intuitivo, visual, simbólico, formal) \cite{tall1991advanced}, o que pode ser desafiador. A abstração é poderosa, mas também pode ser uma barreira: conceitos como “corte ativo” ou “complementaridade primal–dual” são difíceis de visualizar e internalizar sem apoio didático adequado.
+Grafos e digrafos são simultaneamente concretos (nós e arestas) e abstratos (propriedades globais como cortes, conectividade, laminaridade). A multiplicidade de noções (caminhos, ciclos, cortes, componentes, condensação) \cite{bondy2008graph,diestel2017graph,west2001introduction}. Essas noções exigem transitar entre níveis de representação (intuitivo, visual, simbólico, formal) \cite{tall1991advanced}, o que pode ser desafiador. A abstração é poderosa, mas também pode ser uma barreira: conceitos como “corte ativo” ou “complementaridade primal–dual” são difíceis de visualizar e internalizar sem apoio didático adequado.
 
 \paragraph{}
 Então, como ensinar e aprender conceitos abstratos de forma eficaz? O ensino de matemática no ensino superior, especialmente em áreas como teoria dos grafos parecem sofrer com dificuldades específicas. A seguir, discutimos essas dificuldades e como o uso de ferramentas visuais e interativas pode ajudar a superá-las.
@@ -4021,8 +4021,8 @@ Aprender conteúdos de alta abstração envolve lidar com sobrecarga cognitiva i
 \paragraph{}
 No caso específico de algoritmos com provas baseadas em complementaridade primal--dual, é frequente que estudantes compreendam os passos operacionais sem internalizar a estrutura teórica que garante correção e otimalidade.
 
-\subsubsection{Lidando com grafos e dígrafos}
-Na prática, o que mais dificulta o ensino de dígrafos não é definir vértices e arcos, mas articular o que fazemos localmente com as estruturas globais que sustentam as provas de correção e de otimalidade em arborescências de custo mínimo — em particular, nos métodos de Chu–Liu/Edmonds e de Frank —: cortes ativos, componentes fortemente conexas (SCCs) e famílias laminares de conjuntos \cite{bondy2008graph,diestel2017graph,west2001introduction}. Quando essa articulação não aparece, cresce a \emph{carga intrínseca} (múltiplas dependências simultâneas) e também a \emph{carga extrínseca} (o esforço de alinhar texto, fórmulas e figuras). Nesse contexto específico destacamos três desafios didáticos:
+\subsubsection{Lidando com grafos e digrafos}
+Na prática, o que mais dificulta o ensino de digrafos não é definir vértices e arcos, mas articular o que fazemos localmente com as estruturas globais que sustentam as provas de correção e de otimalidade em arborescências de custo mínimo — em particular, nos métodos de Chu–Liu/Edmonds e de Frank —: cortes ativos, componentes fortemente conexas (SCCs) e famílias laminares de conjuntos \cite{bondy2008graph,diestel2017graph,west2001introduction}. Quando essa articulação não aparece, cresce a \emph{carga intrínseca} (múltiplas dependências simultâneas) e também a \emph{carga extrínseca} (o esforço de alinhar texto, fórmulas e figuras). Nesse contexto específico destacamos três desafios didáticos:
 \begin{itemize}\setlength{\itemsep}{2pt}
     \item \textbf{Articular o local com o global:} escolher a melhor aresta de entrada para cada vértice não garante coerência global; isso pode criar ciclos. Ver o grafo \emph{condensado} em SCCs (cada ciclo vira um ``bloco'') torna esse efeito visível e manipulável (Fig.~\ref{fig:didatica-condensado}). \emph{Dificuldade típica:} estudantes tendem a projetar a heurística local para o todo e se surpreendem com ciclos “inesperados” — uma fonte comum de sobrecarga por conflito entre intuições locais e restrições globais.
     \item \textbf{Acompanhar efeitos de contração/expansão:} contrair um ciclo (substituí\-lo por um supervértice) e depois reexpandir impacta os custos reduzidos \(c'\) e os cortes que ficam ``ativos''. A laminaridade — cortes aninhados, sem interseções conflitantes — fornece uma geometria simples para seguir essas mudanças (Fig.~\ref{fig:didatica-laminar}). \emph{Dificuldade típica:} perder o fio entre representações (grafo original, condensado, reexpansão) aumenta a carga extrínseca; sinalizar o que mudou em cada etapa reduz esse atrito.
@@ -4030,7 +4030,7 @@ Na prática, o que mais dificulta o ensino de dígrafos não é definir vértice
 \end{itemize}
 
 \paragraph{}
-No exemplo da figura abaixo, a condensação do dígrafo \(D\) em \(D_0\) torna visível a relação entre escolhas locais (entradas por vértice) e estrutura global (ciclos, cortes). Cada SCC (bloco) pode ser tratado como uma unidade, facilitando a compreensão de como ciclos surgem e são resolvidos. Apesar de não ser suficiente para ilustrar situações mais complexas, essa visualização ajuda criar intuição sobre a atualização de custos reduzidos e a dinâmica de contração/expansão.
+No exemplo da figura abaixo, a condensação do digrafo \(D\) em \(D_0\) torna visível a relação entre escolhas locais (entradas por vértice) e estrutura global (ciclos, cortes). Cada SCC (bloco) pode ser tratado como uma unidade, facilitando a compreensão de como ciclos surgem e são resolvidos. Apesar de não ser suficiente para ilustrar situações mais complexas, essa visualização ajuda criar intuição sobre a atualização de custos reduzidos e a dinâmica de contração/expansão.
 
 \begin{figure}[H]
     \centering
@@ -4062,7 +4062,7 @@ Tendo em vista esses fundamentos, ferramentas digitais podem ajudar a reduzir ca
 
 \subsubsection{Ferramentas didáticas no ensino de teoria dos grafos}
 \paragraph{}
-Várias ferramentas digitais podem apoiar o ensino de grafos e dígrafos, cada uma com forças e limitações específicas. A seguir, discutimos quatro categorias principais: (i) diagramas programáveis e tipografia matemática, (ii) exploração e edição de grafos, (iii) visualização de algoritmos, e (iv) ambientes programáveis e reprodutibilidade.
+Várias ferramentas digitais podem apoiar o ensino de grafos e digrafos, cada uma com forças e limitações específicas. A seguir, discutimos quatro categorias principais: (i) diagramas programáveis e tipografia matemática, (ii) exploração e edição de grafos, (iii) visualização de algoritmos, e (iv) ambientes programáveis e reprodutibilidade.
 
 \paragraph{Diagramas e matemática}
 \paragraph{}
@@ -5444,7 +5444,7 @@ No contexto de arborescências dirigidas, estruturas do tipo “no máximo um ar
 
 \section{Conceitos de Álgebra Linear}
 \label{ap:algebra-linear}
-Este apêndice reúne noções básicas de álgebra linear úteis como referência rápida. O foco recai sobre ideias que aparecem implicitamente ao longo do texto (por exemplo, ao tratar de potenciais, estruturas matriciais de dígrafos e decomposições ortogonais).
+Este apêndice reúne noções básicas de álgebra linear úteis como referência rápida. O foco recai sobre ideias que aparecem implicitamente ao longo do texto (por exemplo, ao tratar de potenciais, estruturas matriciais de digrafos e decomposições ortogonais).
 
 \paragraph{Espaços vetoriais, combinações e base}
 \paragraph{}
@@ -5468,7 +5468,7 @@ Um \textbf{produto interno} $\langle x,y\rangle$ induz norma $\|x\|=\sqrt{\langl
 
 \paragraph{Matrizes de grafos e o Laplaciano}
 \paragraph{}
-Para um dígrafo $G=(V,E)$, a \textbf{matriz de incidência} $B\in\mathbb{R}^{|V|\times |E|}$ codifica a orientação dos arcos; seu posto relaciona-se ao número de componentes fortemente conexas. O \textbf{Laplaciano} dirigido pode ser definido como $L=D_{\text{out}}-A$ (ou variações), onde $A$ é a matriz de adjacência e $D_{\text{out}}$ é diagonal com graus de saída. Em grafos não dirigidos, cofatores de $L$ contam árvores geradoras (\emph{teorema matriz--árvore}); em variantes dirigidas, cofatores apropriados contam arborescências enraizadas em $r$, conectando linearmente estruturas combinatórias e contagem de arborescências.
+Para um digrafo $G=(V,E)$, a \textbf{matriz de incidência} $B\in\mathbb{R}^{|V|\times |E|}$ codifica a orientação dos arcos; seu posto relaciona-se ao número de componentes fortemente conexas. O \textbf{Laplaciano} dirigido pode ser definido como $L=D_{\text{out}}-A$ (ou variações), onde $A$ é a matriz de adjacência e $D_{\text{out}}$ é diagonal com graus de saída. Em grafos não dirigidos, cofatores de $L$ contam árvores geradoras (\emph{teorema matriz--árvore}); em variantes dirigidas, cofatores apropriados contam arborescências enraizadas em $r$, conectando linearmente estruturas combinatórias e contagem de arborescências.
 
 \paragraph{Observação sobre potenciais e custos reduzidos}
 \paragraph{}
