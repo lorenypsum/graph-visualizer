@@ -9,3 +9,8 @@
 *.out
 *.bbl
 *.blg
+
+# Test files
+test_log.txt
+test_results.csv
+test_results copy.csv
