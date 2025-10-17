@@ -409,7 +409,7 @@ Não retorna nenhum valor (retorno implícito \texttt{None}), pois a operação 
         boxed title style={sharp corners, boxrule=0.6pt},
         sharp corners, boxrule=0.6pt
     ]
-    \emph{Altera os pesos das arestas que entram em `node` subtraindo de cada uma o menor peso de entrada no grafo D.}
+    \emph{Altera os pesos das arestas que entram em um vértice rotulado como `node` subtraindo de cada uma o menor peso de entrada diretamente no grafo original D.}
     \tcblower
     \begin{lstlisting}[language=Python]
 def normalize_incoming_edge_weights(D: nx.DiGraph, node: str):    
