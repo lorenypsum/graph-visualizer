@@ -368,6 +368,8 @@ Em termos intuitivos, \(y\) funciona como um potencial nos vértices: torna “a
 
 Na implementação direta, selecionar os \(a_v\), detectar/contrair ciclos e atualizar estruturas custa \(O(m)\) por nível; como o número de vértices decresce a cada contração, temos no máximo \(O(n)\) níveis e tempo total \(O(mn)\), com \(n=|V|\), \(m=|A|\).
 
+
+
 O uso de memória é \(O(m+n)\), incluindo mapeamentos de contração/expansão e as filas de prioridade dos arcos de entrada. A implementação a seguir adota a versão \(O(mn)\) por simplicidade e está disponível no repositório do projeto (\url{https://github.com/lorenypsum/GraphVisualizer}).
 
 \section{Implementação em Python}
@@ -395,7 +397,7 @@ A seguir, detalhamos as implementações das funções principais e auxiliares, 
 
 Esta função normaliza\footnote{Aqui, "normalizar" significa subtrair do peso de cada aresta que entra em $v$ o menor peso de entrada (custos reduzidos), preservando a ordem relativa; assim, ao menos uma entrada em $v$ passa a ter custo 0, sem afetar a comparação entre soluções.} os custos das arestas que entram em um vértice \(v\): calcula \(y(v)=\min\{w(u,v)\}\) e substitui cada peso \(w(u,v)\) por \(w(u,v)-y(v)\).
 
-A função recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}) e o identificador \texttt{node} do vértice cujas arestas de entrada devem ser normalizadas. A implementação coleta todas as arestas de entrada de \texttt{node} com seus pesos (linha 2) e, se a lista estiver vazia, retorna imediatamente sem fazer alterações (linhas 3--4). Caso contrário, calcula o peso mínimo \texttt{yv} usando uma compreensão de gerador\footnote{Em Python, uma \emph{compreensão de gerador} (generator comprehension) é uma expressão da forma \texttt{(expr for item in iterable)} que produz valores sob demanda, sem criar uma lista completa na memória. Aqui, \texttt{(w for \_, \_, w in predecessors)} extrai apenas os pesos das tuplas, permitindo calcular o mínimo de forma eficiente.} que extrai o terceiro elemento de cada tupla (linha 5) e, para cada predecessor \texttt{u}, subtrai \texttt{yv} do peso armazenado em \texttt{D[u][node]["w"]} (linha 6).
+A função recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}\footnote{\texttt{nx.DiGraph} é a classe da biblioteca NetworkX que representa grafos dirigidos (directed graphs). Ela armazena vértices e arestas direcionadas, permitindo associar atributos arbitrários (como pesos) às arestas através de dicionários. A notação \texttt{D[u][v]["w"]} acessa o peso da aresta \((u,v)\).}) e o rótulo \texttt{node} do vértice cujas arestas de entrada devem ser normalizadas. A implementação coleta todas as arestas de entrada de \texttt{node} com seus pesos (linha 2) e, se a lista estiver vazia, retorna imediatamente sem fazer alterações (linhas 3--4). Caso contrário, calcula o peso mínimo \texttt{yv} usando uma compreensão de gerador\footnote{Em Python, uma \emph{compreensão de gerador} (generator comprehension) é uma expressão da forma \texttt{(expr for item in iterable)} que produz valores sob demanda, sem criar uma lista completa na memória. Aqui, \texttt{(w for \_, \_, w in predecessors)} extrai apenas os pesos das tuplas, permitindo calcular o mínimo de forma eficiente.} que extrai o terceiro elemento de cada tupla (linha 5) e, para cada predecessor \texttt{u}, subtrai \texttt{yv} do peso armazenado em \texttt{D[u][node]["w"]} (linha 6).
 
 A função não retorna nenhum valor (retorno implícito \texttt{None}), pois a operação é realizada \emph{in-place}\footnote{No jargão de programação, "in-place" significa que a estrutura original é alterada diretamente, sem criar uma cópia. Isso economiza memória e tempo, mas introduz efeitos colaterais.}: o grafo \texttt{D} passado como parâmetro é modificado diretamente. Como efeito colateral, ao menos uma aresta de entrada de \texttt{node} terá custo reduzido zero após a execução. A complexidade é \(O(\deg^-(v))\), pois cada operação percorre as arestas de entrada uma única vez.
 
@@ -420,13 +422,13 @@ def normalize_incoming_edge_weights(D: nx.DiGraph, node: str):
 \end{tcolorbox}
 
 
-\subsection[Construção de F*]{Construção de $F^*$}
-Esta função constrói o subdigrafo \(F^*\) selecionando, para cada vértice \(v\neq r_0\), uma única aresta de menor custo (com peso zero, se os custos já foram normalizados) que entra em \(v\).
+\subsection{Construção de \(F^*\):}
 
-A função recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}) e o identificador \texttt{r0} da raiz. A implementação itera sobre todos os vértices do grafo (linha 3) e, para cada \(v\neq r_0\), coleta as arestas de entrada com seus pesos (linha 5). Se não houver arestas de entrada, o laço avança para o próximo vértice (linhas 6--7). Caso contrário, utiliza uma compreensão de gerador com \texttt{next} para encontrar o primeiro predecessor \texttt{u} cuja aresta \((u,v)\) tem peso zero (linha 8). Se tal aresta existe, adiciona-a ao grafo \texttt{F\_star} com peso zero (linhas 9--10).
+A função constrói o subdigrafo \(F^*\) selecionando, para cada vértice \(v\neq r_0\), uma única aresta de custo reduzido zero que entra em \(v\).
 
-A função retorna o grafo \texttt{F\_star} construído, sem modificar o grafo \texttt{D} original. O resultado é um digrafo com exatamente uma aresta entrando em cada \(v\neq r_0\) e nenhuma aresta entrando em \(r_0\). A complexidade é \(O(m)\), onde \(m\) é o número de arestas, pois cada aresta é examinada no máximo uma vez durante a iteração sobre os vértices.
+A função recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}) e o identificador \texttt{r0} da raiz. A implementação cria um novo digrafo vazio \texttt{F\_star} (linha 2). Em seguida, para cada vértice \texttt{v} diferente de \texttt{r0} (linhas 3--4), coleta todas as arestas de entrada de \texttt{v} com seus pesos em uma lista e armazena na variável \texttt{in\_edges} (linha 5). Se não houver arestas de entrada, prossegue para o próximo vértice (linhas 6--7). Caso contrário, utiliza uma compreensão de gerador para encontrar o primeiro predecessor \texttt{u} cuja aresta \texttt{(u, v)} tem peso zero (linha 8) e, se existir, adiciona essa aresta a \texttt{F\_star} com peso zero (linhas 9--10).
 
+A função retorna o digrafo \texttt{F\_star} contendo exatamente uma aresta entrando em cada \(v\neq r_0\), todas com custo reduzido zero. O grafo original \texttt{D} não é modificado. A complexidade é \(O(m)\), onde \(m\) é o número de arestas, pois cada aresta é considerada no máximo uma vez durante a iteração sobre todos os vértices.
 
 \begin{tcolorbox}[
         enhanced, breakable,
@@ -453,10 +455,12 @@ def get_Fstar(D: nx.DiGraph, r0: str):
 \end{lstlisting}
 \end{tcolorbox}
 
-\subsection{Detecção de ciclo:}
-A função detecta um ciclo dirigido em \(F^*\) (se existir) e retorna um subgrafo contendo o ciclo. Caso contrário, retorna None. A função utiliza a função \texttt{find\_cycle} do NetworkX, que implementa um algoritmo eficiente de detecção de ciclos.
+\subsubsection{Detecção de ciclo:}
+a função detecta um ciclo dirigido em \(F^*\) (se existir) e retorna um subgrafo contendo o ciclo. Caso contrário, retorna None. A função utiliza a função \texttt{find\_cycle} do NetworkX, que implementa um algoritmo eficiente de detecção de ciclos.
+
 
 A função executa em \(O(m)\). Isso ocorre porque a função \texttt{find\_cycle} do NetworkX utiliza uma abordagem baseada em busca em profundidade (DFS) para detectar ciclos em grafos direcionados.
+
 
 A complexidade dessa abordagem é linear em relação ao número de vértices e arestas do grafo, ou seja, \(O(m)\), onde \(m\) é o número de arestas. A função não modifica o grafo original, mas cria um subgrafo contendo apenas os vértices e arestas que fazem parte do ciclo detectado.
 
@@ -471,19 +475,22 @@ A complexidade dessa abordagem é linear em relação ao número de vértices e 
     \emph{Encontra um ciclo dirigido no grafo. Por fim, retorna um subgrafo contendo o ciclo, ou None caso não exista.}
     \tcblower
     \begin{lstlisting}[mathescape=true, language=Python]
-def find_cycle(F_star: nx.DiGraph):
-    try:
-        nodes_in_cycle = set()
-        for u, v, _ in nx.find_cycle(F_star, orientation="original"):
-            nodes_in_cycle.update([u, v])
-        return F_star.subgraph(nodes_in_cycle).copy()
-    except nx.NetworkXNoCycle:
-        return None  
+% def find_cycle(F_star: nx.DiGraph):
+%     try:
+%         nodes_in_cycle = set()
+%         # Extract nodes involved in the cycle
+%         for u, v, _ in nx.find_cycle(F_star, orientation="original"):
+%             nodes_in_cycle.update([u, v])
+%         # Create a subgraph containing only the cycle
+%         return F_star.subgraph(nodes_in_cycle).copy()
+
+%     except nx.NetworkXNoCycle:
+%         return None  
 \end{lstlisting}
 \end{tcolorbox}
 
 
-\subsection{Contração de ciclo:}
+\subsubsection{Contração de ciclo:}
 a função contrai um ciclo dirigido simples \(C\) em um \textbf{supervértice} \(x_C\), redirecionando arcos incidentes a \(C\) e ajustando custos de acordo com a regra de \emph{custos reduzidos}. O grafo é modificado \emph{in-place} e a rotina devolve dicionários auxiliares para permitir a \emph{reexpansão} correta do ciclo.
 
 Em alto nível, o procedimento de contração de ciclo recebe como entrada um ciclo dirigido $C$ em $D$, a raiz $r_0$ (que não pertence a $C$), e um rótulo novo para o supervértice $x_C$. Para cada arco que entra em $C$, cria um arco para $x_C$ com custo ajustado; para cada arco que sai de $C$, redireciona a saída para partir de $x_C$; laços internos são descartados. O procedimento devolve dicionários que permitem reexpansão correta do ciclo ao final. Como efeito colateral, remove os vértices de $C$ e insere $x_C$ no grafo. Se não houver arco entrando em $C$, não existe r-arborescência; se não houver arco saindo, $x_C$ pode isolar componentes. O custo total é preservado e o procedimento é linear no número de arestas.
@@ -504,42 +511,62 @@ Essas escolhas garantem a \emph{equivalência de custo} entre soluções ótimas
     \emph{Contrai um ciclo C no grafo D, substituindo-o por um supervértice rotulado `label`. Nesse processo, modifica o grafo D no próprio lugar (in-place) e por fim, devolve dicionários auxiliares para a reexpansão.}
     \tcblower
     \begin{lstlisting}[mathescape=true, language=Python]
-def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: str):
-    cycle_nodes: set[str] = set(C.nodes())
-    in_to_cycle: dict[str, tuple[str, float]] = {}
-    for u in D.nodes:
-        if u not in cycle_nodes:
-            min_weight_edge_to_cycle = min(
-                ((v, w) for _, v, w in D.out_edges(u, data="w") if v in cycle_nodes),
-                key=lambda x: x[1],
-                default=None,)
-            if min_weight_edge_to_cycle:
-                in_to_cycle[u] = min_weight_edge_to_cycle
-    for u, (v, w) in in_to_cycle.items():
-        D.add_edge(u, label, w=w)
-    out_from_cycle: dict[str, tuple[str, float]] = {}
-    for v in D.nodes:
-        if v not in cycle_nodes:
-            min_weight_edge_from_cycle = min(
-                ((u, w) for u, _, w in D.in_edges(v, data="w") if u in cycle_nodes),
-                key=lambda x: x[1],
-                default=None,)
-            if min_weight_edge_from_cycle:
-                out_from_cycle[v] = min_weight_edge_from_cycle
-    for v, (u, w) in out_from_cycle.items():
-        D.add_edge(label, v, w=w)
-    D.remove_nodes_from(cycle_nodes)
-    return in_to_cycle, out_from_cycle  
-\end{lstlisting}
+% def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: str):
+    
+
+%     cycle_nodes: set[str] = set(C.nodes())
+
+%     # Stores the vertex u outside the cycle and the vertex v inside the cycle that receives the minimum weight edge
+%     in_to_cycle: dict[str, tuple[str, float]] = {}
+
+%     for u in D.nodes:
+%         if u not in cycle_nodes:
+%             # Find the minimum weight edge that u has to any vertex in C
+%             min_weight_edge_to_cycle = min(
+%                 ((v, w) for _, v, w in D.out_edges(u, data="w") if v in cycle_nodes),
+%                 key=lambda x: x[1],
+%                 default=None,
+%             )
+%             if min_weight_edge_to_cycle:
+%                 in_to_cycle[u] = min_weight_edge_to_cycle
+
+%     for u, (v, w) in in_to_cycle.items():
+%         D.add_edge(u, label, w=w)
+
+%     # Stores the vertex v outside the cycle that receives the minimum weight edge from a vertex u inside the cycle
+%     out_from_cycle: dict[str, tuple[str, float]] = {}
+
+%     for v in D.nodes:
+%         if v not in cycle_nodes:
+%             # Find the minimum weight edge that v receives from any vertex in C
+%             min_weight_edge_from_cycle = min(
+%                 ((u, w) for u, _, w in D.in_edges(v, data="w") if u in cycle_nodes),
+%                 key=lambda x: x[1],
+%                 default=None,
+%             )
+%             if min_weight_edge_from_cycle:
+%                 out_from_cycle[v] = min_weight_edge_from_cycle
+
+%     for v, (u, w) in out_from_cycle.items():
+%         D.add_edge(label, v, w=w)
+
+%     # Remove all nodes in the cycle from G
+%     D.remove_nodes_from(cycle_nodes)
+
+%     return in_to_cycle, out_from_cycle  
+% \end{lstlisting}
 \end{tcolorbox}
 
 
-\subsection{Remoção de arestas que entram na raiz:}
-A função remove todas as arestas que entram no vértice raiz \(r_0\) do grafo \(G\). A função modifica o grafo \emph{in-place} e executa em \(O(\deg^-(r_0))\).
+\subsubsection{Remoção de arestas que entram na raiz:}
+a função remove todas as arestas que entram no vértice raiz \(r_0\) do grafo \(G\). A função modifica o grafo \emph{in-place} e executa em \(O(\deg^-(r_0))\).
+
 
 Isso ocorre porque a função obtém todas as arestas que entram em \(r_0\) usando o método \texttt{in\_edges} do NetworkX, que tem complexidade \(O(\deg^-(r_0))\).
 
+
 Em seguida, a função remove essas arestas usando o método \texttt{remove\_edges\_from}, que também opera em tempo linear em relação ao número de arestas sendo removidas. Portanto, o tempo total de execução da função é \(O(\deg^-(r_0))\). A função não cria uma cópia do grafo original, mas altera diretamente a estrutura de dados do grafo fornecido.
+
 
 \begin{tcolorbox}[
   enhanced, breakable,
@@ -552,15 +579,19 @@ Em seguida, a função remove essas arestas usando o método \texttt{remove\_edg
 \emph{Remove todas as arestas que entram no vértice raiz r0 no grafo D. Por fim, retorna o grafo atualizado.}
 \tcblower
 \begin{lstlisting}[mathescape=true, language=Python]
-def remove_edges_to_r0(D: nx.DiGraph, r0: str):
-    in_edges = list(D.in_edges(r0))
-    if in_edges:
-        D.remove_edges_from(in_edges)
-    return D
+% def remove_edges_to_r0(
+%     D: nx.DiGraph, r0: str
+% ):
+%     # Remove all edges entering r0
+%     in_edges = list(D.in_edges(r0))
+%     if in_edges:
+%         D.remove_edges_from(in_edges)
+%     return D
 \end{lstlisting}
 \end{tcolorbox}
 
-\subsection{Remoção de arco interno:}
+
+\subsubsection{Remoção de arco interno:}
 ao expandir o ciclo \(C\), a função remove o arco interno que entra no vértice de entrada \(v\) do ciclo, já que \(v\) agora recebe um arco externo do grafo. A função modifica o subgrafo do ciclo \emph{in-place} e executa em \(O(\deg^-(v))\).
 
 \begin{tcolorbox}[
@@ -574,13 +605,17 @@ ao expandir o ciclo \(C\), a função remove o arco interno que entra no vértic
     \emph{Remove a aresta interna que entra no vértice de entrada `v` do ciclo C, pois `v` passa a receber uma aresta externa do grafo.}
     \tcblower
     \begin{lstlisting}[mathescape=true, language=Python]
-def remove_internal_edge_to_cycle_entry(C: nx.DiGraph, v):
-    predecessor = next((u for u, _ in C.in_edges(v)), None)
-    C.remove_edge(predecessor, v) 
+% def remove_internal_edge_to_cycle_entry(C: nx.DiGraph, v):
+
+%     predecessor = next((u for u, _ in C.in_edges(v)), None)
+
+%     C.remove_edge(predecessor, v) 
 \end{lstlisting}
 \end{tcolorbox}
 
-\subsection{Procedimento principal (recursivo):}
+
+
+\subsubsection{Procedimento principal (recursivo):}
 A função principal implementa o algoritmo de Chu–Liu/Edmonds de forma recursiva e atua como um orquestrador das fases do método. Em alto nível, ela mantém a seguinte lógica:
 
 % 
@@ -597,6 +632,7 @@ A função principal implementa o algoritmo de Chu–Liu/Edmonds de forma recurs
 
 % 
 % (v) caso haja ciclo, contrai o ciclo em um supervértice, ajusta custos que \emph{entram} no componente contraído e chama-se recursivamente na instância reduzida; ao retornar, expande o componente e remove exatamente uma aresta interna do ciclo para restaurar grau de entrada igual a 1 e aciclicidade.
+
 
 O procedimento principal do algoritmo segue estes passos: prepara a instância removendo entradas na raiz, normaliza os custos das arestas que entram em cada vértice (exceto a raiz) para garantir pelo menos uma entrada de custo reduzido zero, constrói o grafo funcional $F^*$ escolhendo para cada vértice a entrada de menor custo reduzido, verifica se $F^*$ é acíclico (se for, retorna como r-arborescência ótima), e, caso haja ciclo, contrai o ciclo em um supervértice, ajusta os custos das entradas e resolve recursivamente; ao retornar, expande o ciclo e remove uma aresta interna para garantir aciclicidade e grau de entrada igual a 1.
 
@@ -627,38 +663,73 @@ Essa rotina encapsula, portanto, a estratégia primal do método: induzir aresta
     \emph{Função recursiva que encontra a arborescência ótima em um digrafo D com raiz r0 usando o algoritmo de Chu–Liu/Edmonds.}
     \tcblower
     \begin{lstlisting}[mathescape=true, language=Python]
-def find_optimum_arborescence_chuliu(
-    D: nx.DiGraph, r0: str, level=0):
-    D_copy = D.copy()
-    for v in D_copy.nodes:
-        if v != r0:
-            normalize_incoming_edge_weights(D_copy, v)
-    F_star = get_Fstar(D_copy, r0)
-    if nx.is_arborescence(F_star):
-        for u, v in F_star.edges:
-            F_star[u][v]["w"] = D[u][v]["w"]
-        return F_star
-    else:
-        C: nx.DiGraph = find_cycle(F_star)
-        contracted_label = f"\n n*{level}"
-        in_to_cycle, out_from_cycle = contract_cycle(D_copy, C, contracted_label)
-        F_prime = find_optimum_arborescence_chuliu(
-        D_copy, r0, level + 1)
-        in_edge = next(iter(F_prime.in_edges(contracted_label, data="w")), None)
-        u, _, _ = in_edge
-        v, _ = in_to_cycle[u]
-        remove_internal_edge_to_cycle_entry(
-            C, v)
-        F_prime.add_edge(u, v)
-        for u_c, v_c in C.edges:
-            F_prime.add_edge(u_c, v_c)
-        for _, z, _ in F_prime.out_edges(contracted_label, data=True):
-            u_cycle, _ = out_from_cycle[z]
-            F_prime.add_edge(u_cycle, z)
-        F_prime.remove_node(contracted_label)
-        for u, v in F_prime.edges:
-            F_prime[u][v]["w"] = D[u][v]["w"]
-        return F_prime 
+% def find_optimum_arborescence_chuliu(
+%     D: nx.DiGraph,
+%     r0: str,
+%     level=0,
+% ):
+
+%     D_copy = D.copy()
+
+%     for v in D_copy.nodes:
+%         if v != r0:
+%             normalize_incoming_edge_weights(D_copy, v)
+
+%     # Build F_star
+%     F_star = get_Fstar(D_copy, r0)
+
+%     if nx.is_arborescence(F_star):
+%         for u, v in F_star.edges:
+%             F_star[u][v]["w"] = D[u][v]["w"]
+%         return F_star
+
+%     else:
+%         C: nx.DiGraph = find_cycle(F_star)
+            
+%         contracted_label = f"\n n*{level}"
+%         in_to_cycle, out_from_cycle = contract_cycle(
+%             D_copy, C, contracted_label
+%         )
+
+%         # Recursive call
+%         F_prime = find_optimum_arborescence_chuliu(
+%             D_copy,
+%             r0,
+%             level + 1
+%         )
+
+%         # Identify the vertex in the cycle that received the only incoming edge from the arborescence
+%         in_edge = next(iter(F_prime.in_edges(contracted_label, data="w")), None)
+
+%         u, _, _ = in_edge
+
+%         v, _ = in_to_cycle[u]
+
+%         # Remove the internal edge entering vertex `v` from cycle C
+%         remove_internal_edge_to_cycle_entry(
+%             C, v
+%         )  # Note: w is coming from F_prime, not from G
+
+%         # Add the external edge entering the cycle (identified by in_edge), the weight will be corrected at the end using G
+%         F_prime.add_edge(u, v)
+
+%         # Add the remaining edges of the modified cycle C
+%         for u_c, v_c in C.edges:
+%             F_prime.add_edge(u_c, v_c)
+            
+%         # Add the external edges leaving the cycle
+%         for _, z, _ in F_prime.out_edges(contracted_label, data=True):
+
+%             u_cycle, _ = out_from_cycle[z]
+%             F_prime.add_edge(u_cycle, z)
+
+%         F_prime.remove_node(contracted_label)
+
+%         # Update the edge weights with the original weights from G
+%         for u, v in F_prime.edges:
+%             F_prime[u][v]["w"] = D[u][v]["w"]
+
+%         return F_prime 
 \end{lstlisting}
 \end{tcolorbox}
 
@@ -669,7 +740,8 @@ A implementação acima segue diretamente a descrição do algoritmo de Chu–Li
 
 A complexidade da implementação direta é \(O(mn)\) no pior caso, onde \(m\) é o número de arestas e \(n\) o número de vértices, devido à potencial profundidade de recursão e ao processamento linear em cada nível. Implementações mais sofisticadas podem reduzir isso para \(O(m \log n)\) usando estruturas avançadas, como heaps e union-find, mas a versão apresentada prioriza a compreensão do algoritmo fundamental.
 
-\subsection{Decisões de projeto e implicações práticas}
+SAMIRA
+\subsubsection{Decisões de projeto e implicações práticas}
 
 Antes de prosseguir para uma visão alternativa do mesmo problema, vale destacar algumas decisões de projeto e implicações práticas da implementação de Chu–Liu/Edmonds:
 \begin{itemize}\setlength{\itemsep}{2pt}
@@ -680,8 +752,9 @@ Antes de prosseguir para uma visão alternativa do mesmo problema, vale destacar
     \item \textbf{Extensões:} Variantes com múltiplas raízes, restrições adicionais (p.ex., proibições por partição) e empacotamento de arborescências exigem ajustes na fase de extração/expansão ou formulações via matroides.
 \end{itemize}
 
-\subsection{Transição para a abordagem primal-dual}
+\subsubsection{Transição para a abordagem primal-dual}
 
 Embora o algoritmo de Chu–Liu/Edmonds seja elegante e eficiente, sua mecânica operacional — normalizar custos, selecionar mínimos, contrair ciclos — pode parecer um conjunto de heurísticas bem-sucedidas sem uma justificativa teórica unificadora aparente. Por que escolher a melhor entrada para cada vértice garante otimalidade global após o tratamento de ciclos? A resposta reside na \emph{dualidade em programação linear}.
+
 
 No capítulo seguinte, revisitaremos o mesmo problema sob uma ótica primal–dual em duas fases, proposta por András Frank. Essa perspectiva organiza a normalização via potenciais\footnote{No contexto primal–dual, “potenciais” são valores escalares \(y(v)\) atribuídos aos vértices para definir custos reduzidos \(c'(u,v)=c(u,v)-y(v)\). Ajustar \(y\) desloca uniformemente os custos das arestas que entram em \(v\), sem mudar a otimalidade global: preserva a ordem relativa entre entradas e torna “apertadas” (custo reduzido zero) as candidatas corretas, habilitando contrações e uma prova de corretude via cortes apertados.} \(y(\cdot)\), explica os custos reduzidos e introduz a noção de cortes apertados (família laminar) como guias das contrações. Veremos como a mesma mecânica operacional (normalizar \(\to\) contrair \(\to\) expandir) emerge de condições duais que também sugerem otimizações e generalizações.
