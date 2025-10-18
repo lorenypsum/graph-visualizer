@@ -746,42 +746,66 @@ A Figura~\ref{fig:remove-internal-edge-example} ilustra o objetivo da função:
     \label{fig:remove-internal-edge-example}
 \end{figure}
 
-\subsubsection{Procedimento principal (recursivo):}
-A função principal implementa o algoritmo de Chu–Liu/Edmonds de forma recursiva e atua como um orquestrador das fases do método. Em alto nível, ela mantém a seguinte lógica:
+\subsection{Procedimento principal (recursivo):}
+Esta função implementa o algoritmo de Chu–Liu/Edmonds de forma recursiva, orquestrando todas as fases do método descritas anteriormente. A implementação segue diretamente os três passos da descrição teórica apresentada nas caixas verdes anteriores.
 
-% 
-% (i) prepara a instância (opcionalmente removendo entradas em \(r_0\));
+Recebe como entrada um digrafo ponderado \texttt{D} (objeto \texttt{nx.DiGraph}), o vértice raiz \texttt{r0}, e um parâmetro \texttt{level} (padrão 0) usado para rotular supervértices em níveis recursivos distintos. A estrutura da implementação espelha a formulação teórica:
 
-% 
-% (ii) normaliza, para cada \(v\neq r_0\), os custos das arestas que \emph{entram} em \(v\) para induzir pelo menos uma entrada de custo reduzido zero;
+\begin{tcolorbox}[
+        enhanced, breakable,
+        colframe=green!60!black, colback=green!5,
+        colbacktitle=green!20, coltitle=black,
+        title={Passo 1: Normalização e construção de $F^*$},
+        boxed title style={sharp corners, boxrule=0.6pt},
+        sharp corners, boxrule=0.6pt
+    ]
+    \textbf{Descrição teórica:} Para cada \(v\neq r\), escolha \(a_v\in\mathop{\mathrm{arg\,min}}_{(u,v)\in A} c(u,v)\). Defina \(y(v):=c(a_v)\) e \(F^*:=\{a_v : v\neq r\}\).
 
-% 
-% (iii) constrói o grafo funcional \(F^*\) selecionando, para cada \(v\neq r_0\), uma única entrada de menor custo reduzido (preferencialmente zero);
+    \tcblower
 
-% 
-% (iv) verifica aciclicidade de \(F^*\); se acíclico, devolve \(F^*\) como r-arborescência;
+    \textbf{Implementação (linhas 2--6):} Primeiro, cria uma cópia do grafo original \texttt{D\_copy} (linha 2) para preservar os pesos originais. Em seguida, normaliza os custos de todas as arestas que entram em cada vértice \(v \neq r_0\) (linhas 3--5): para cada vértice, chama \texttt{normalize\_incoming\_edge\_weights}, que implementa a definição de potencial \(y(v):=c(a_v)\) onde \(a_v\in\mathop{\mathrm{arg\,min}}_{(u,v)\in A} c(u,v)\), subtraindo este valor mínimo de cada aresta de entrada para criar custos reduzidos \(c'(u,v)=c(u,v)-y(v)\). Após a normalização, constrói o grafo funcional \(F^*\) (linha 6) chamando \texttt{get\_Fstar}, que implementa exatamente \(F^*:=\{a_v : v\neq r\}\), selecionando uma aresta de custo reduzido zero entrando em cada vértice não-raiz.
+\end{tcolorbox}
 
-% 
-% (v) caso haja ciclo, contrai o ciclo em um supervértice, ajusta custos que \emph{entram} no componente contraído e chama-se recursivamente na instância reduzida; ao retornar, expande o componente e remove exatamente uma aresta interna do ciclo para restaurar grau de entrada igual a 1 e aciclicidade.
+\begin{tcolorbox}[
+        enhanced, breakable,
+        colframe=green!60!black, colback=green!5,
+        colbacktitle=green!20, coltitle=black,
+        title={Passo 2: Verificação de aciclicidade},
+        boxed title style={sharp corners, boxrule=0.6pt},
+        sharp corners, boxrule=0.6pt
+    ]
+    \textbf{Descrição teórica:} Se \((V,F^*)\) é acíclico, devolva \(F^*\). Por Observação 4.36 de \cite{kleinberg2006}, trata-se de uma r-arborescência de custo mínimo.
 
+    \tcblower
 
-O procedimento principal do algoritmo segue estes passos: prepara a instância removendo entradas na raiz, normaliza os custos das arestas que entram em cada vértice (exceto a raiz) para garantir pelo menos uma entrada de custo reduzido zero, constrói o grafo funcional $F^*$ escolhendo para cada vértice a entrada de menor custo reduzido, verifica se $F^*$ é acíclico (se for, retorna como r-arborescência ótima), e, caso haja ciclo, contrai o ciclo em um supervértice, ajusta os custos das entradas e resolve recursivamente; ao retornar, expande o ciclo e remove uma aresta interna para garantir aciclicidade e grau de entrada igual a 1.
+    \textbf{Implementação (linhas 7--10):} Verifica se \(F^*\) é uma arborescência válida usando \texttt{nx.is\_arborescence} (linha 7), que testa se o grafo é conexo, acíclico e possui exatamente uma entrada por vértice (exceto a raiz). Se \(F^*\) for uma arborescência, o algoritmo alcançou o caso base. A implementação restaura os pesos originais de \texttt{D} para cada aresta de \(F^*\) (linhas 8--9) e retorna \(F^*\) como a r-arborescência de custo mínimo (linha 10), que pela Observação 4.36 de Kleinberg garante otimalidade.
+\end{tcolorbox}
 
+\begin{tcolorbox}[
+        enhanced, breakable,
+        colframe=green!60!black, colback=green!5,
+        colbacktitle=green!20, coltitle=black,
+        title={Passo 3: Contração, recursão e reexpansão},
+        boxed title style={sharp corners, boxrule=0.6pt},
+        sharp corners, boxrule=0.6pt
+    ]
+    \textbf{Descrição teórica:} Caso contrário, seja \(C\) um ciclo dirigido de \(F^*\) (com \(r\notin C\)). Contração: contraia \(C\) em um supervértice \(x_C\) e defina custos \(c'\) por
+    \begin{align*}
+        c'(u,x_C) & := c(u,w) - y(w) = c(u,w) - c(a_w) &  & \text{para } u\notin C,\ w\in C, \\
+        c'(x_C,v) & := c(w,v)                          &  & \text{para } w\in C,\ v\notin C,
+    \end{align*}
+    descartando laços em \(x_C\) e permitindo paralelos. Denote o digrafo contraído por \(D'=(V',A')\). Resolva recursivamente em \(D'\) e expanda o resultado.
 
-Mais especificamente, o procedimento garante as seguintes propriedades e passos:
-% NÃO ACHEI NECESSÁRIO REESCREVER ISSO, MAS SE QUISEREM PODEMOS REFAZER E DEIXAR SEM O FORMATO DE BULLET POINT
-\begin{itemize}\setlength{\itemsep}{2pt}
-    \item \textbf{Função (entradas/saídas):} Entrada: digrafo ponderado \(D=(V,A)\), raiz \(r_0\), e, opcionalmente, funções \texttt{draw\_fn} e \texttt{log} para visualização e registro. Saída: um subdigrafo dirigido \(T\) de \(D\) com \(|V|-1\) arcos em que todo \(v\neq r_0\) tem grau de entrada 1, todos os vértices alcançam \(r_0\) e o custo total \(\sum_{a\in T} c(a)\) é mínimo.
-    \item \textbf{Invariantes:} Após a normalização por vértice, cada \(v\neq r_0\) tem pelo menos uma entrada de custo reduzido zero; o conjunto \(F^*\) contém exatamente uma entrada por vértice distinto de \(r_0\); em toda contração, apenas arcos que \emph{entram} no componente têm seus custos reduzidos ajustados por \(c'(u,x_C)=c(u,w)-c(a_w)\), preservando comparações relativas.
-    \item \textbf{Detecção de ciclo e contração:} Se \(F^*\) contém um ciclo \(C\), todos os seus arcos têm custo reduzido zero. O procedimento forma o supervértice \(x_C\), reescreve arcos incidentes (descarta laços internos) e prossegue na instância menor. Essa etapa pode manter arcos paralelos e ignora laços.
-    \item \textbf{Recursão e expansão:} Ao obter \(T'\) ótimo no grafo contraído, o método mapeia \(T'\) de volta para \(D\): substitui o arco \((u,x_C)\) por um \((u,w)\) apropriado (com \(w\in C\)) e remove uma única aresta interna de \(C\), restaurando a propriedade “uma entrada por vértice” e a aciclicidade.
-    \item \textbf{Empates e robustez:} Empates de custo são resolvidos de modo determinístico/local, sem afetar a otimalidade. Arcos paralelos podem surgir após contrações e são tratados normalmente; laços são descartados por construção.
-    \item \textbf{Logs e desenho (opcionais):} Na implementação disponibilizada no repositório do projeto integramos o solver com a interface do projeto de forma que se fornecidos, \texttt{log} recebe mensagens estruturadas por nível de recursão, e \texttt{draw\_fn} e \texttt{draw\_step} pode ser chamado para ilustrar passos relevantes (normalização, detecção/contração de ciclos, retorno da recursão e expansão).
-    \item \textbf{Casos-limite:} Se algum \(v\neq r_0\) não possui arco de entrada na instância corrente, detecta-se inviabilidade (não existe r-arborescência). Se \(F^*\) já é acíclico, retorna imediatamente (base da recursão).
-    \item \textbf{Complexidade:} Em uma implementação direta, cada nível de recursão executa seleção/checagem/ajustes em tempo proporcional a \(O(m)\), e há no máximo \(O(n)\) níveis devido às contrações, totalizando \(O(mn)\) e memória \(O(m+n)\).
-\end{itemize}
+    \tcblower
 
-Essa rotina encapsula, portanto, a estratégia primal do método: induzir arestas de custo reduzido zero por normalização local, extrair uma estrutura funcional \(F^*\) de uma entrada por vértice, e resolver conflitos cíclicos por contração/expansão, preservando custos e correção em todas as etapas.
+    \textbf{Implementação (linhas 11--30):} Caso \(F^*\) contenha um ciclo, entra no caso recursivo (linha 11). Detecta um ciclo \(C\) chamando \texttt{find\_cycle} (linha 12), correspondendo a "\emph{seja \(C\) um ciclo dirigido de \(F^*\)}". Cria um rótulo único \texttt{contracted\_label} para o supervértice \(x_C\) usando o nível de recursão (linha 13), e contrai o ciclo chamando \texttt{contract\_cycle} (linhas 14--15), que implementa a operação "\emph{contraia \(C\) em um supervértice \(x_C\)}" e os ajustes de custos reduzidos especificados nas fórmulas \(c'(u,x_C) := c(u,w) - y(w)\) e \(c'(x_C,v) := c(w,v)\). A função modifica \texttt{D\_copy} in-place criando o digrafo contraído \(D'=(V',A')\) e retorna os dicionários \texttt{in\_to\_cycle} e \texttt{out\_from\_cycle} que armazenam os mapeamentos necessários para a reexpansão. Chama-se recursivamente (linha 16) no grafo contraído com \texttt{level+1}, obtendo a arborescência ótima \(F'\) da instância reduzida \(D'\).
+
+    \textbf{Reexpansão:} Na fase de reexpansão, a implementação desfaz a substituição do supervértice pelo ciclo original. Identifica a aresta externa que entra no supervértice em \(F'\) (linha 17), extrai o vértice externo \texttt{u} dessa aresta (linha 18), consulta \texttt{in\_to\_cycle[u]} para determinar o vértice \texttt{v} dentro do ciclo original que deve receber essa conexão (linha 19), implementando o mapeamento inverso da contração. Remove a aresta interna que entrava em \texttt{v} chamando \texttt{remove\_internal\_edge\_to\_cycle\_entry} (linha 20), "quebrando" o ciclo \(C\) no ponto de entrada \(v\) e garantindo que cada vértice mantenha exatamente uma entrada (propriedade fundamental de arborescência). Adiciona a aresta externa \texttt{(u,v)} a \(F'\) (linha 21), reintegra todas as arestas restantes do ciclo \(C\) (linhas 22--23), processa as arestas de saída do supervértice consultando \texttt{out\_from\_cycle} (linhas 24--26), e remove o supervértice \texttt{contracted\_label} de \(F'\) (linha 27), completando a substituição de \(x_C\) pelo ciclo modificado. Por fim, restaura os pesos originais de \texttt{D} para todas as arestas de \(F'\) (linhas 28--29), desfazendo os custos reduzidos e retornando aos custos do problema original, e retorna \(F'\) como a r-arborescência de custo mínimo (linha 30).
+\end{tcolorbox}
+
+A função retorna um digrafo contendo exatamente \(|V|-1\) arestas onde cada vértice \(v \neq r_0\) tem grau de entrada 1, todos os vértices são alcançáveis a partir de \(r_0\), e o custo total é mínimo. O grafo original \texttt{D} não é modificado devido à cópia na linha 2. A complexidade é \(O(mn)\) no pior caso, onde cada nível de recursão (até \(O(n)\) níveis) processa \(O(m)\) arestas durante normalização, detecção de ciclos e contração/expansão.
+
+Essa correspondência direta entre implementação e teoria, agora destacada nas caixas verdes acima, demonstra como os três passos abstratos do algoritmo de Chu–Liu/Edmonds se traduzem em operações concretas: o Passo 1 se manifesta na normalização e construção de \(F^*\) (linhas 2--6), o Passo 2 na verificação de aciclicidade e retorno (linhas 7--10), e o Passo 3 na contração, recursão e reexpansão (linhas 11--30). A estratégia primal do método — induzir custos reduzidos zero, extrair estrutura funcional, e resolver ciclos por contração/expansão — emerge naturalmente dessa correspondência entre formulação teórica e código.
 
 \begin{tcolorbox}[
         enhanced, breakable,
@@ -791,76 +815,39 @@ Essa rotina encapsula, portanto, a estratégia primal do método: induzir aresta
         boxed title style={sharp corners, boxrule=0.6pt},
         sharp corners, boxrule=0.6pt
     ]
-    \emph{Função recursiva que encontra a arborescência ótima em um digrafo D com raiz r0 usando o algoritmo de Chu–Liu/Edmonds.}
+    \emph{Implementa o algoritmo de Chu–Liu/Edmonds de forma recursiva para encontrar a r-arborescência de custo mínimo em um digrafo ponderado \texttt{D} com raiz \texttt{r0}. Normaliza custos, constrói $F^*$, detecta ciclos e, se houver, contrai em supervértice, resolve recursivamente no grafo reduzido e reexpande, restaurando a arborescência ótima no grafo original. Retorna um \texttt{nx.DiGraph} contendo exatamente $|V|-1$ arestas com grau de entrada 1 para cada vértice exceto a raiz.}
     \tcblower
     \begin{lstlisting}[mathescape=true, language=Python]
-% def find_optimum_arborescence_chuliu(
-%     D: nx.DiGraph,
-%     r0: str,
-%     level=0,
-% ):
-
-%     D_copy = D.copy()
-
-%     for v in D_copy.nodes:
-%         if v != r0:
-%             normalize_incoming_edge_weights(D_copy, v)
-
-%     # Build F_star
-%     F_star = get_Fstar(D_copy, r0)
-
-%     if nx.is_arborescence(F_star):
-%         for u, v in F_star.edges:
-%             F_star[u][v]["w"] = D[u][v]["w"]
-%         return F_star
-
-%     else:
-%         C: nx.DiGraph = find_cycle(F_star)
-            
-%         contracted_label = f"\n n*{level}"
-%         in_to_cycle, out_from_cycle = contract_cycle(
-%             D_copy, C, contracted_label
-%         )
-
-%         # Recursive call
-%         F_prime = find_optimum_arborescence_chuliu(
-%             D_copy,
-%             r0,
-%             level + 1
-%         )
-
-%         # Identify the vertex in the cycle that received the only incoming edge from the arborescence
-%         in_edge = next(iter(F_prime.in_edges(contracted_label, data="w")), None)
-
-%         u, _, _ = in_edge
-
-%         v, _ = in_to_cycle[u]
-
-%         # Remove the internal edge entering vertex `v` from cycle C
-%         remove_internal_edge_to_cycle_entry(
-%             C, v
-%         )  # Note: w is coming from F_prime, not from G
-
-%         # Add the external edge entering the cycle (identified by in_edge), the weight will be corrected at the end using G
-%         F_prime.add_edge(u, v)
-
-%         # Add the remaining edges of the modified cycle C
-%         for u_c, v_c in C.edges:
-%             F_prime.add_edge(u_c, v_c)
-            
-%         # Add the external edges leaving the cycle
-%         for _, z, _ in F_prime.out_edges(contracted_label, data=True):
-
-%             u_cycle, _ = out_from_cycle[z]
-%             F_prime.add_edge(u_cycle, z)
-
-%         F_prime.remove_node(contracted_label)
-
-%         # Update the edge weights with the original weights from G
-%         for u, v in F_prime.edges:
-%             F_prime[u][v]["w"] = D[u][v]["w"]
-
-%         return F_prime 
+def find_optimum_arborescence_chuliu(D: nx.DiGraph,r0: str,level=0,):
+    D_copy = D.copy()
+    for v in D_copy.nodes:
+        if v != r0:
+            normalize_incoming_edge_weights(D_copy, v)
+    F_star = get_Fstar(D_copy, r0)
+    if nx.is_arborescence(F_star):
+        for u, v in F_star.edges:
+            F_star[u][v]["w"] = D[u][v]["w"]
+        return F_star
+    else:
+        C: nx.DiGraph = find_cycle(F_star)   
+        contracted_label = f"\n n*{level}"
+        in_to_cycle, out_from_cycle = contract_cycle(
+        D_copy, C, contracted_label)
+        F_prime = find_optimum_arborescence_chuliu(D_copy,r0,level + 1)
+        in_edge = next(iter(F_prime.in_edges(contracted_label, data="w")), None)
+        u, _, _ = in_edge
+        v, _ = in_to_cycle[u]
+        remove_internal_edge_to_cycle_entry(C, v)
+        F_prime.add_edge(u, v)
+        for u_c, v_c in C.edges:
+            F_prime.add_edge(u_c, v_c)
+        for _, z, _ in F_prime.out_edges(contracted_label, data=True):
+            u_cycle, _ = out_from_cycle[z]
+            F_prime.add_edge(u_cycle, z)
+        F_prime.remove_node(contracted_label)
+        for u, v in F_prime.edges:
+            F_prime[u][v]["w"] = D[u][v]["w"]
+        return F_prime 
 \end{lstlisting}
 \end{tcolorbox}
 
