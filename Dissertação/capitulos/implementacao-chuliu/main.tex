@@ -533,15 +533,12 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: str):
 \end{lstlisting}
 \end{tcolorbox}
 
-\subsubsection{Remoção de arestas que entram na raiz:}
-a função remove todas as arestas que entram no vértice raiz \(r_0\) do grafo \(G\). A função modifica o grafo \emph{in-place} e executa em \(O(\deg^-(r_0))\).
+\subsection{Remoção de arestas que entram na raiz:}
+Esta função remove todas as arestas que entram no vértice raiz \(r_0\), garantindo que a raiz não tenha predecessores.
 
+Recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}) e o rótulo \texttt{r0} da raiz. A implementação armazena em uma lista todas as arestas que entram em \texttt{r0} usando o método \texttt{in\_edges} (linha 2). Se a lista não estiver vazia (linha 3), remove todas essas arestas usando o método \texttt{remove\_edges\_from} (linha 4). Este método da biblioteca NetworkX recebe como parâmetro uma lista de tuplas representando arestas na forma \texttt{(u, v)} e remove cada uma delas do grafo. A operação é realizada em lote: NetworkX itera sobre a lista fornecida e, para cada tupla \texttt{(u, v)}, remove a aresta correspondente da estrutura interna de adjacência. Se alguma aresta especificada não existir no grafo, ela é silenciosamente ignorada sem gerar erro. A complexidade de \texttt{remove\_edges\_from} é \(O(k)\), onde \(k\) é o número de arestas na lista de entrada, pois cada remoção individual tem custo \(O(1)\) em média devido ao uso de dicionários aninhados para armazenar arestas.
 
-Isso ocorre porque a função obtém todas as arestas que entram em \(r_0\) usando o método \texttt{in\_edges} do NetworkX, que tem complexidade \(O(\deg^-(r_0))\).
-
-
-Em seguida, a função remove essas arestas usando o método \texttt{remove\_edges\_from}, que também opera em tempo linear em relação ao número de arestas sendo removidas. Portanto, o tempo total de execução da função é \(O(\deg^-(r_0))\). A função não cria uma cópia do grafo original, mas altera diretamente a estrutura de dados do grafo fornecido.
-
+Por fim, a função retorna o grafo \texttt{D} atualizado in-place com todas as arestas de entrada em \texttt{r0} são removidas (linha 5). A complexidade total da função é \(O(\deg^-(r_0))\), pois a operação coleta e remove cada aresta de entrada uma única vez.
 
 \begin{tcolorbox}[
         enhanced, breakable,
@@ -551,17 +548,14 @@ Em seguida, a função remove essas arestas usando o método \texttt{remove\_edg
         boxed title style={sharp corners, boxrule=0.6pt},
         sharp corners, boxrule=0.6pt
     ]
-    \emph{Remove todas as arestas que entram no vértice raiz r0 no grafo D. Por fim, retorna o grafo atualizado.}
+    \emph{Remove todas as arestas que entram na raiz \texttt{r0}, modificando \texttt{D} in-place e retornando o grafo atualizado.}
     \tcblower
     \begin{lstlisting}[mathescape=true, language=Python]
-% def remove_edges_to_r0(
-%     D: nx.DiGraph, r0: str
-% ):
-%     # Remove all edges entering r0
-%     in_edges = list(D.in_edges(r0))
-%     if in_edges:
-%         D.remove_edges_from(in_edges)
-%     return D
+def remove_edges_to_r0(D: nx.DiGraph, r0: str):
+    in_edges = list(D.in_edges(r0))
+    if in_edges:
+        D.remove_edges_from(in_edges)
+    return D
 \end{lstlisting}
 \end{tcolorbox}
 
