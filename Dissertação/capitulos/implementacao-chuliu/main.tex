@@ -152,13 +152,11 @@ Em termos intuitivos, \(y\) funciona como um potencial nos vértices: torna “a
 
 Na implementação direta, selecionar os \(a_v\), detectar/contrair ciclos e atualizar estruturas custa \(O(m)\) por nível; como o número de vértices decresce a cada contração, temos no máximo \(O(n)\) níveis e tempo total \(O(mn)\), com \(n=|V|\), \(m=|A|\).
 
-
-
-O uso de memória é \(O(m+n)\), incluindo mapeamentos de contração/expansão e as filas de prioridade dos arcos de entrada. A implementação a seguir adota a versão \(O(mn)\) por simplicidade e está disponível no repositório do projeto (\url{https://github.com/lorenypsum/GraphVisualizer}).
+O uso de memória é \(O(m+n)\), incluindo mapeamentos de contração/expansão e as filas de prioridade dos arcos de entrada. 
 
 \section{Implementação em Python}
 
-Esta seção apresenta uma implementação em Python do algoritmo de Chu--Liu/Edmonds. Antes de detalhar o algoritmo propriamente dito, estabelecemos a infraestrutura necessária: a biblioteca NetworkX para representação de digrafos, as operações fundamentais sobre essas estruturas e a busca em profundidade para detecção de ciclos.
+Esta seção apresenta uma implementação em Python do algoritmo de Chu--Liu/Edmonds. Antes de detalhar o algoritmo propriamente dito, estabelecemos a infraestrutura necessária: a biblioteca NetworkX para representação de digrafos, as operações fundamentais sobre essas estruturas e a busca em profundidade para detecção de ciclos. A implementação a seguir adota a versão \(O(mn)\) por simplicidade e está disponível no repositório do projeto (\url{https://github.com/lorenypsum/GraphVisualizer}).
 
 \subsection{Representação de Digrafos: NetworkX}
 
@@ -200,16 +198,16 @@ Essas operações são utilizadas intensivamente nas fases de normalização, co
 
 A detecção de ciclos dirigidos é crucial no algoritmo de Chu--Liu/Edmonds: após selecionar os arcos de custo reduzido zero, precisamos verificar se formam um grafo acíclico (caso base) ou contêm um ciclo que exige contração (caso recursivo). A biblioteca NetworkX implementa essa verificação através da busca em profundidade (Depth-First Search, DFS).
 
-\paragraph{Fundamentos da DFS:} A partir de um vértice \(s\), a DFS marca \(s\) como visitado e recursivamente explora cada vizinho não visitado até atingir a máxima profundidade de cada ramo antes de retroceder (backtrack). Durante a travessia, cada vértice passa por três estados:
+A partir de um vértice \(s\), a DFS marca \(s\) como visitado e recursivamente explora cada vizinho não visitado até atingir a máxima profundidade de cada ramo antes de retroceder (backtrack). Durante a travessia, cada vértice passa por três estados:
 \begin{itemize}\setlength{\itemsep}{2pt}
     \item \textbf{Não visitado:} ainda não explorado pela DFS.
     \item \textbf{Em processamento:} na pilha de recursão atual (ancestral no caminho DFS).
     \item \textbf{Concluído:} totalmente processado (todos os descendentes explorados).
 \end{itemize}
 
-\paragraph{Detecção de ciclos:} Um ciclo é detectado quando a DFS encontra uma aresta \((u,v)\) onde \(v\) está \emph{em processamento}, indicando que existe um caminho de \(v\) até \(u\) na árvore DFS e \((u,v)\) fecha um ciclo. A complexidade desta operação é \(O(n+m)\), pois cada vértice é visitado exatamente uma vez e cada aresta é examinada no máximo uma vez.
+Um ciclo é detectado quando a DFS encontra uma aresta \((u,v)\) onde \(v\) está \emph{em processamento}, indicando que existe um caminho de \(v\) até \(u\) na árvore DFS e \((u,v)\) fecha um ciclo. A complexidade desta operação é \(O(n+m)\), pois cada vértice é visitado exatamente uma vez e cada aresta é examinada no máximo uma vez.
 
-\paragraph{API NetworkX:} A função \texttt{nx.find\_cycle(G, orientation="original")} implementa detecção de ciclos via DFS. Aceita como parâmetros o digrafo \texttt{G} e opcionalmente \texttt{orientation}, que controla o formato de saída das arestas. A função percorre \texttt{G} executando DFS a partir de cada vértice não visitado e, ao detectar uma aresta de retorno \((u,v)\) onde \(v\) está na pilha de recursão, identifica um ciclo.
+A função \texttt{nx.find\_cycle(G, orientation="original")} implementa detecção de ciclos via DFS. Aceita como parâmetros o digrafo \texttt{G} e opcionalmente \texttt{orientation}, que controla o formato de saída das arestas. A função percorre \texttt{G} executando DFS a partir de cada vértice não visitado e, ao detectar uma aresta de retorno \((u,v)\) onde \(v\) está na pilha de recursão, identifica um ciclo.
 
 O retorno é um \emph{iterador} (não uma lista materializada) sobre as arestas do ciclo, onde cada elemento é uma tupla \texttt{(u, v, key)} contendo os vértices da aresta e metadados de orientação (tipicamente ignorados via desempacotamento com \texttt{\_}). Esta escolha de retornar um iterador reduz o uso de memória.
 
