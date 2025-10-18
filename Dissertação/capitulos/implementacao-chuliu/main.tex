@@ -164,186 +164,6 @@ Abaixo, temos a descrição formal do algoritmo.
     \end{enumerate}
 \end{algobox}
 
-
-\subsection{Exemplo prático: Chu–Liu/Edmonds}
-
-
-
-A seguir, ilustramos o funcionamento do algoritmo de Chu–Liu/Edmonds em um grafo de teste. Mostramos o grafo original, os principais passos do algoritmo e a arborescência final encontrada.
-A Figura abaixo apresenta o grafo original com os pesos das arestas
-
-
-% ...insira dentro de um ambiente center ou tcolorbox...
-\begin{tikzpicture}[>=Stealth, node distance=2cm, scale=1, every node/.style={scale=1}]
-    % Nodes (posições aproximadas da imagem)
-    \node[circle,draw,fill=blue!40,minimum size=7mm] (n0) at (6.2,2.2) {0};
-    \node[circle,draw,fill=blue!40,minimum size=7mm] (n1) at (4.2,2.7) {1};
-    \node[circle,draw,fill=blue!40,minimum size=7mm] (n2) at (2.5,2.2) {2};
-    \node[circle,draw,fill=blue!40,minimum size=7mm] (n3) at (4.2,4.1) {3};
-    \node[circle,draw,fill=blue!40,minimum size=7mm] (n4) at (2.5,4.1) {4};
-    \node[circle,draw,fill=blue!40,minimum size=7mm] (n5) at (1.0,4.8) {5};
-    \node[circle,draw,fill=blue!40,minimum size=7mm] (n6) at (1.0,3.2) {6};
-    \node[circle,draw,fill=blue!40,minimum size=7mm] (n7) at (0.2,2.0) {7};
-    \node[circle,draw,fill=blue!40,minimum size=7mm] (n8) at (2.0,1.0) {8};
-
-    % Edges with weights and bends
-    \draw[->,thick,gray!80,bend left=10] (n0) to node[above right] {3} (n1);
-    \draw[->,thick,gray!80,bend left=10] (n0) to node[right] {6} (n2);
-    \draw[->,thick,gray!80,bend left=10] (n1) to node[above] {1} (n2);
-    \draw[->,thick,gray!80,bend left=10] (n1) to node[right] {2} (n3);
-    \draw[->,thick,gray!80,bend left=10] (n1) to node[below right] {10} (n4);
-    \draw[->,thick,gray!80,bend left=10] (n2) to node[above left] {1} (n1);
-    \draw[->,thick,gray!80,bend left=10] (n3) to node[above] {1} (n4);
-    \draw[->,thick,gray!80,bend left=10] (n4) to node[below left] {10} (n2);
-    \draw[->,thick,gray!80,bend left=10] (n4) to node[above left] {1} (n5);
-    \draw[->,thick,gray!80,bend left=10] (n5) to node[left] {1} (n6);
-    \draw[->,thick,gray!80,bend left=10] (n6) to node[below left] {1} (n4);
-    \draw[->,thick,gray!80,bend left=10] (n6) to node[left] {8} (n7);
-    \draw[->,thick,gray!80,bend left=10] (n6) to node[below] {2} (n8);
-    \draw[->,thick,gray!80,bend left=10] (n7) to node[below left] {4} (n8);
-    \draw[->,thick,gray!80,bend left=10] (n8) to node[above left] {5} (n6);
-
-\end{tikzpicture}
-
-
-O primeiro passo do nosso algoritmo seria remover as arestas que entram na raiz (vértice $0$), porém não há nenhuma nesse caso, logo não existe a necessidade de alterar o grafo.
-
-Dessa forma, o próximo passo é normalizar os pesos das arestas de entrada para cada vértice, nessa etapa, Para cada vértice X (exceto a raiz), o algoritmo encontra a aresta de menor peso que entra em X e subtrai esse menor peso de todas as arestas que entram em X (relembrando que isso serve para zerar o peso da aresta mínima de entrada em cada vértice)
-
-
-Normalizando pesos de arestas de entrada para '1': Nesse processo notamos que as únicas arestas de entrada são 0 e 2 onde (0 → 1) tem peso 3.0 e (2 → 1) tem peso 1.0, elegendo a aresta 2 como a de menor peso podemos subtrair o peso das arestas restantes (no caso, o peso da aresta 0) pelo valor do peso da aresta 2, resultando em um novo peso de '2' para a aresta 0
-
-
-\begin{tikzpicture}[>=Stealth, node distance=2cm, scale=1, every node/.style={scale=1}]
-    % Nodes (posições aproximadas da imagem)
-    \node[circle,draw,fill=blue!40,minimum size=7mm] (n0) at (6.2,2.2) {0};
-    \node[circle,draw,fill=blue!40,minimum size=7mm] (n1) at (4.2,2.7) {1};
-    \node[circle,draw,fill=blue!40,minimum size=7mm] (n2) at (2.5,2.2) {2};
-    \node[circle,draw,fill=blue!40,minimum size=7mm] (n3) at (4.2,4.1) {3};
-    \node[circle,draw,fill=blue!40,minimum size=7mm] (n4) at (2.5,4.1) {4};
-    \node[circle,draw,fill=blue!40,minimum size=7mm] (n5) at (1.0,4.8) {5};
-    \node[circle,draw,fill=blue!40,minimum size=7mm] (n6) at (1.0,3.2) {6};
-    \node[circle,draw,fill=blue!40,minimum size=7mm] (n7) at (0.2,2.0) {7};
-    \node[circle,draw,fill=blue!40,minimum size=7mm] (n8) at (2.0,1.0) {8};
-
-    % Edges with weights and bends
-    \draw[->,thick,red!80,bend left=10] (n0) to node[above right] {2} (n1);
-    \draw[->,thick,gray!80,bend left=10] (n0) to node[right] {6} (n2);
-    \draw[->,thick,gray!80,bend left=10] (n1) to node[above] {1} (n2);
-    \draw[->,thick,gray!80,bend left=10] (n1) to node[right] {2} (n3);
-    \draw[->,thick,gray!80,bend left=10] (n1) to node[below right] {10} (n4);
-    \draw[->,thick,red!80,bend left=10] (n2) to node[above left] {0} (n1);
-    \draw[->,thick,gray!80,bend left=10] (n3) to node[above] {1} (n4);
-    \draw[->,thick,gray!80,bend left=10] (n4) to node[below left] {10} (n2);
-    \draw[->,thick,gray!80,bend left=10] (n4) to node[above left] {1} (n5);
-    \draw[->,thick,gray!80,bend left=10] (n5) to node[left] {1} (n6);
-    \draw[->,thick,gray!80,bend left=10] (n6) to node[below left] {1} (n4);
-    \draw[->,thick,gray!80,bend left=10] (n6) to node[left] {8} (n7);
-    \draw[->,thick,gray!80,bend left=10] (n6) to node[below] {2} (n8);
-    \draw[->,thick,gray!80,bend left=10] (n7) to node[below left] {4} (n8);
-    \draw[->,thick,gray!80,bend left=10] (n8) to node[above left] {5} (n6);
-
-\end{tikzpicture}
-
-
-Repetiremos o passo anterior para todas as outras arestas
-
-Com os pesos normalizados, o próximo passo é construir $F^*$, para isso, selecionamos para cada vértice, a aresta de menor custo de entrada.
-Além disso, detectamos um ciclo em $F^*$, formado pelos vértices $\{1$ e $2\}$. Portanto, precisamos contrair esse ciclo em um supervértice $n*0$. O resultado é o seguinte:
-
-
-\begin{tikzpicture}[>=Stealth, node distance=2cm, scale=1, every node/.style={scale=1}]
-
-    \node[circle,draw,fill=blue!40,minimum size=8mm] (n6) at (0,4) {6};
-    \node[circle,draw,fill=blue!40,minimum size=8mm] (n8) at (1.5,2.8) {8};
-    \node[circle,draw,fill=blue!40,minimum size=8mm] (n7) at (4,3.5) {7};
-    \node[circle,draw,fill=blue!40,minimum size=8mm] (n5) at (0,1.6) {5};
-    \node[circle,draw,fill=blue!40,minimum size=8mm] (n4) at (1.5,1.2) {4};
-    \node[circle,draw,fill=blue!40,minimum size=8mm] (n0) at (6,0.3) {0};
-    \node[circle,draw,fill=red!20,minimum size=8mm] (n1) at (4.5,0.6) {n*0};
-    \node[circle,draw,fill=blue!40,minimum size=8mm] (n3) at (-0.5,0.1) {3};
-
-    % Edges with weights
-    \draw[->,thick,gray!70,bend left=8] (n0) to node[above] {2} (n1);
-    \draw[->,thick,gray!70,bend left=8] (n3) to node[above] {0} (n4);
-    \draw[->,thick,gray!70,bend left=8] (n4) to node[above] {0} (n5);
-    \draw[->,thick,gray!70,bend left=8] (n4) to node[below] {9} (n1);
-    \draw[->,thick,gray!70,bend left=8] (n5) to node[left] {0} (n6);
-    \draw[->,thick,gray!70,bend left=8] (n6) to node[above] {0} (n4);
-    \draw[->,thick,gray!70,bend left=8] (n6) to node[above] {0} (n7);
-    \draw[->,thick,gray!70,bend left=8] (n6) to node[right] {0} (n8);
-    \draw[->,thick,gray!70,bend left=8] (n7) to node[below] {2} (n8);
-    \draw[->,thick,gray!70,bend left=8] (n8) to node[above] {4} (n6);
-    \draw[->,thick,gray!70,bend left=8] (n1) to node[below] {0} (n3);
-    \draw[->,thick,gray!70,bend left=8] (n1) to node[above] {9} (n4);
-\end{tikzpicture}
-
-
-
-Agora, repetimos o processo recursivamente no grafo contraído até obter uma arborescência.
-
-
-\begin{tikzpicture}[>=Stealth, node distance=2cm, scale=1, every node/.style={scale=1}]
-    % Nós
-    \node[circle,draw,fill=blue!40,minimum size=8mm] (n0) at (0,0) {0};
-    \node[circle,draw,fill=red!20,minimum size=8mm] (n1) at (2,0) {$n*0$};
-    \node[circle,draw,fill=blue!40,minimum size=8mm] (n2) at (4,0) {3};
-    \node[circle,draw,fill=blue!40,minimum size=8mm] (n3) at (6,0) {4};
-    \node[circle,draw,fill=blue!40,minimum size=8mm] (n4) at (8,0) {5};
-    \node[circle,draw,fill=blue!40,minimum size=8mm] (n5) at (10,0) {6};
-    \node[circle,draw,fill=blue!40,minimum size=8mm] (n6) at (12,0) {7};
-    \node[circle,draw,fill=blue!40,minimum size=8mm] (n7) at (14,0) {8};
-
-    % Arestas
-    \draw[->,thick,gray!70] (n1) to node[midway,above,red]{0} (n2);
-    \draw[->,thick,gray!70] (n2) to node[midway,above,red]{0} (n3);
-    \draw[->,thick,gray!70] (n3) to node[midway,above,red]{0} (n4);
-    \draw[->,thick,gray!70] (n4) to node[midway,above,red]{0} (n5);
-    \draw[->,thick,gray!70] (n5) to node[midway,above,red]{0} (n6);
-    \draw[->,thick,gray!70] (n5) to[bend left=30] node[midway,above,red]{0} (n7);
-    \draw[->,thick,gray!70] (n0) to node[midway,above,red]{0} (n1);
-
-\end{tikzpicture}
-
-
-Após validarmos que a F* não possuí mais ciclos e notarmos que F* forma uma arborescência  iremos começar
-o processo de expanção do ciclo contraído para obter a arborescência final no grafo original.
-Dessa forma,  Adicionamos a aresta de entrada ao ciclo: (0, 1), (1, 2) e a aresta externa de saída: (1, 3), chegando em uma arborescência válida.
-
-
-\begin{tikzpicture}[>=Stealth, node distance=2cm, scale=1, every node/.style={scale=1}]
-    % Nós (posições aproximadas baseadas na imagem)
-    \node[circle,draw,fill=blue!40,minimum size=8mm] (n0) at (0,4) {0};
-    \node[circle,draw,fill=blue!40,minimum size=8mm] (n1) at (2,3) {1};
-    \node[circle,draw,fill=blue!40,minimum size=8mm] (n2) at (4,4) {2};
-    \node[circle,draw,fill=blue!40,minimum size=8mm] (n3) at (2,1.5) {3};
-    \node[circle,draw,fill=blue!40,minimum size=8mm] (n4) at (4,1.5) {4};
-    \node[circle,draw,fill=blue!40,minimum size=8mm] (n5) at (6,2) {5};
-    \node[circle,draw,fill=blue!40,minimum size=8mm] (n6) at (8,1.5) {6};
-    \node[circle,draw,fill=blue!40,minimum size=8mm] (n7) at (8,0) {7};
-    \node[circle,draw,fill=blue!40,minimum size=8mm] (n8) at (10,1) {8};
-
-    % Arestas com pesos
-    \draw[->,thick,gray!70,bend left=8] (n0) to node[midway,left,red]{3} (n1);
-    \draw[->,thick,gray!70,bend left=8] (n0) to node[midway,above,red]{6} (n2);
-    \draw[->,thick,gray!70,bend left=8] (n1) to node[midway,above,red]{1} (n2);
-    \draw[->,thick,gray!70,bend left=8] (n1) to node[midway,left,red]{2} (n3);
-    \draw[->,thick,gray!70,bend left=8] (n1) to node[midway,above,red]{10} (n4);
-    \draw[->,thick,gray!70,bend left=8] (n2) to node[midway,right,red]{1} (n1);
-    \draw[->,thick,gray!70,bend left=8] (n3) to node[midway,left,red]{1} (n4);
-    \draw[->,thick,gray!70,bend left=8] (n4) to node[midway,left,red]{10} (n2);
-    \draw[->,thick,gray!70,bend left=8] (n4) to node[midway,above,red]{1} (n5);
-    \draw[->,thick,gray!70,bend left=8] (n5) to node[midway,above,red]{1} (n6);
-    \draw[->,thick,gray!70,bend left=8] (n6) to node[midway,left,red]{1} (n4);
-    \draw[->,thick,gray!70,bend left=8] (n6) to node[midway,left,red]{8} (n7);
-    \draw[->,thick,gray!70,bend left=8] (n6) to node[midway,above,red]{2} (n8);
-    \draw[->,thick,gray!70,bend left=8] (n7) to node[midway,right,red]{4} (n8);
-    \draw[->,thick,gray!70,bend left=8] (n8) to node[midway,right,red]{5} (n6);
-
-\end{tikzpicture}
-
-
-
 \subsection{Corretude}
 
 A corretude do algoritmo de Chu–Liu/Edmonds baseia-se em três pilares principais:
@@ -763,7 +583,7 @@ Recebe como entrada um digrafo ponderado \texttt{D} (objeto \texttt{nx.DiGraph})
 
     \tcblower
 
-    \textbf{Implementação (linhas 2--6):} Primeiro, cria uma cópia do grafo original \texttt{D\_copy} (linha 2) para preservar os pesos originais. Em seguida, normaliza os custos de todas as arestas que entram em cada vértice \(v \neq r_0\) (linhas 3--5): para cada vértice, chama \texttt{normalize\_incoming\_edge\_weights}, que implementa a definição de potencial \(y(v):=c(a_v)\) onde \(a_v\in\mathop{\mathrm{arg\,min}}_{(u,v)\in A} c(u,v)\), subtraindo este valor mínimo de cada aresta de entrada para criar custos reduzidos \(c'(u,v)=c(u,v)-y(v)\). Após a normalização, constrói o grafo funcional \(F^*\) (linha 6) chamando \texttt{get\_Fstar}, que implementa exatamente \(F^*:=\{a_v : v\neq r\}\), selecionando uma aresta de custo reduzido zero entrando em cada vértice não-raiz.
+    \textbf{Implementação (linhas 2--6):} Primeiro, cria uma cópia do grafo original \texttt{D\_copy} (linha 2) para preservar os pesos originais. \emph{Justificativa:} A cópia é essencial porque a normalização modifica os pesos in-place; sem preservar os valores originais, seria impossível restaurar os custos corretos na arborescência final retornada (linhas 28--29), violando a correção do algoritmo. Em seguida, normaliza os custos de todas as arestas que entram em cada vértice \(v \neq r_0\) (linhas 3--5): para cada vértice, chama \texttt{normalize\_incoming\_edge\_weights}, que implementa a definição de potencial \(y(v):=c(a_v)\) onde \(a_v\in\mathop{\mathrm{arg\,min}}_{(u,v)\in A} c(u,v)\), subtraindo este valor mínimo de cada aresta de entrada para criar custos reduzidos \(c'(u,v)=c(u,v)-y(v)\). \emph{Justificativa:} A normalização garante que cada vértice tenha pelo menos uma entrada de custo zero, propriedade fundamental que permite construir \(F^*\) selecionando arestas de custo reduzido zero sem perder otimalidade (pela teoria de dualidade). Após a normalização, constrói o grafo funcional \(F^*\) (linha 6) chamando \texttt{get\_Fstar}, que implementa exatamente \(F^*:=\{a_v : v\neq r\}\), selecionando uma aresta de custo reduzido zero entrando em cada vértice não-raiz. \emph{Justificativa:} Selecionar apenas arestas de custo reduzido zero (ao invés de simplesmente o mínimo) é crucial porque garante que a solução seja ótima em relação aos custos normalizados, e a normalização preserva a estrutura de otimalidade do problema original.
 \end{tcolorbox}
 
 \begin{tcolorbox}[
@@ -778,7 +598,7 @@ Recebe como entrada um digrafo ponderado \texttt{D} (objeto \texttt{nx.DiGraph})
 
     \tcblower
 
-    \textbf{Implementação (linhas 7--10):} Verifica se \(F^*\) é uma arborescência válida usando \texttt{nx.is\_arborescence} (linha 7), que testa se o grafo é conexo, acíclico e possui exatamente uma entrada por vértice (exceto a raiz). Se \(F^*\) for uma arborescência, o algoritmo alcançou o caso base. A implementação restaura os pesos originais de \texttt{D} para cada aresta de \(F^*\) (linhas 8--9) e retorna \(F^*\) como a r-arborescência de custo mínimo (linha 10), que pela Observação 4.36 de Kleinberg garante otimalidade.
+    \textbf{Implementação (linhas 7--10):} Verifica se \(F^*\) é uma arborescência válida usando \texttt{nx.is\_arborescence} (linha 7), que testa se o grafo é conexo, acíclico e possui exatamente uma entrada por vértice (exceto a raiz). \emph{Justificativa:} O uso de \texttt{nx.is\_arborescence} (ao invés de apenas verificar aciclicidade) garante não apenas ausência de ciclos, mas também conectividade e grau de entrada correto, todas propriedades necessárias para certificar que \(F^*\) é uma r-arborescência válida. Se \(F^*\) for uma arborescência, o algoritmo alcançou o caso base. A implementação restaura os pesos originais de \texttt{D} para cada aresta de \(F^*\) (linhas 8--9) e retorna \(F^*\) como a r-arborescência de custo mínimo (linha 10). \emph{Justificativa:} A restauração dos pesos originais é obrigatória porque o algoritmo trabalha com custos reduzidos internamente, mas deve retornar uma solução expressa nos custos do problema original; a Observação 4.36 de Kleinberg garante que a estrutura ótima encontrada com custos reduzidos corresponde à solução ótima nos custos originais.
 \end{tcolorbox}
 
 \begin{tcolorbox}[
@@ -798,14 +618,14 @@ Recebe como entrada um digrafo ponderado \texttt{D} (objeto \texttt{nx.DiGraph})
 
     \tcblower
 
-    \textbf{Implementação (linhas 11--30):} Caso \(F^*\) contenha um ciclo, entra no caso recursivo (linha 11). Detecta um ciclo \(C\) chamando \texttt{find\_cycle} (linha 12), correspondendo a "\emph{seja \(C\) um ciclo dirigido de \(F^*\)}". Cria um rótulo único \texttt{contracted\_label} para o supervértice \(x_C\) usando o nível de recursão (linha 13), e contrai o ciclo chamando \texttt{contract\_cycle} (linhas 14--15), que implementa a operação "\emph{contraia \(C\) em um supervértice \(x_C\)}" e os ajustes de custos reduzidos especificados nas fórmulas \(c'(u,x_C) := c(u,w) - y(w)\) e \(c'(x_C,v) := c(w,v)\). A função modifica \texttt{D\_copy} in-place criando o digrafo contraído \(D'=(V',A')\) e retorna os dicionários \texttt{in\_to\_cycle} e \texttt{out\_from\_cycle} que armazenam os mapeamentos necessários para a reexpansão. Chama-se recursivamente (linha 16) no grafo contraído com \texttt{level+1}, obtendo a arborescência ótima \(F'\) da instância reduzida \(D'\).
+    \textbf{Implementação (linhas 11--30):} Caso \(F^*\) contenha um ciclo, entra no caso recursivo (linha 11). Detecta um ciclo \(C\) chamando \texttt{find\_cycle} (linha 12), correspondendo a "\emph{seja \(C\) um ciclo dirigido de \(F^*\)}". Cria um rótulo único \texttt{contracted\_label} para o supervértice \(x_C\) usando o nível de recursão (linha 13), e contrai o ciclo chamando \texttt{contract\_cycle} (linhas 14--15), que implementa a operação "\emph{contraia \(C\) em um supervértice \(x_C\)}" e os ajustes de custos reduzidos especificados nas fórmulas \(c'(u,x_C) := c(u,w) - y(w)\) e \(c'(x_C,v) := c(w,v)\). \emph{Justificativa:} O rótulo baseado em \texttt{level} garante que supervértices em diferentes níveis de recursão tenham identificadores únicos, evitando colisões; a contração reduz o problema a uma instância menor preservando a estrutura de otimalidade (provado pela teoria de dualidade), permitindo resolver recursivamente. A função modifica \texttt{D\_copy} in-place criando o digrafo contraído \(D'=(V',A')\) e retorna os dicionários \texttt{in\_to\_cycle} e \texttt{out\_from\_cycle} que armazenam os mapeamentos necessários para a reexpansão. \emph{Justificativa:} A modificação in-place (ao invés de criar nova cópia) reduz significativamente o uso de memória em grafos grandes ou com múltiplos níveis recursivos; os dicionários são essenciais para a reexpansão correta, pois armazenam qual vértice do ciclo original deve receber cada conexão externa. Chama-se recursivamente (linha 16) no grafo contraído com \texttt{level+1}, obtendo a arborescência ótima \(F'\) da instância reduzida \(D'\).
 
-    \textbf{Reexpansão:} Na fase de reexpansão, a implementação desfaz a substituição do supervértice pelo ciclo original. Identifica a aresta externa que entra no supervértice em \(F'\) (linha 17), extrai o vértice externo \texttt{u} dessa aresta (linha 18), consulta \texttt{in\_to\_cycle[u]} para determinar o vértice \texttt{v} dentro do ciclo original que deve receber essa conexão (linha 19), implementando o mapeamento inverso da contração. Remove a aresta interna que entrava em \texttt{v} chamando \texttt{remove\_internal\_edge\_to\_cycle\_entry} (linha 20), "quebrando" o ciclo \(C\) no ponto de entrada \(v\) e garantindo que cada vértice mantenha exatamente uma entrada (propriedade fundamental de arborescência). Adiciona a aresta externa \texttt{(u,v)} a \(F'\) (linha 21), reintegra todas as arestas restantes do ciclo \(C\) (linhas 22--23), processa as arestas de saída do supervértice consultando \texttt{out\_from\_cycle} (linhas 24--26), e remove o supervértice \texttt{contracted\_label} de \(F'\) (linha 27), completando a substituição de \(x_C\) pelo ciclo modificado. Por fim, restaura os pesos originais de \texttt{D} para todas as arestas de \(F'\) (linhas 28--29), desfazendo os custos reduzidos e retornando aos custos do problema original, e retorna \(F'\) como a r-arborescência de custo mínimo (linha 30).
+    \textbf{Reexpansão:} Na fase de reexpansão, a implementação desfaz a substituição do supervértice pelo ciclo original. Identifica a aresta externa que entra no supervértice em \(F'\) (linha 17), extrai o vértice externo \texttt{u} dessa aresta (linha 18), consulta \texttt{in\_to\_cycle[u]} para determinar o vértice \texttt{v} dentro do ciclo original que deve receber essa conexão (linha 19), implementando o mapeamento inverso da contração. Remove a aresta interna que entrava em \texttt{v} chamando \texttt{remove\_internal\_edge\_to\_cycle\_entry} (linha 20), "quebrando" o ciclo \(C\) no ponto de entrada \(v\) e garantindo que cada vértice mantenha exatamente uma entrada (propriedade fundamental de arborescência). \emph{Justificativa:} A remoção da aresta interna é obrigatória porque o vértice \(v\) recebe uma nova entrada vinda do exterior; manter ambas violaria a propriedade de arborescência (\(\deg^-(v)=1\) para todo \(v\neq r\)); a escolha de qual aresta remover é determinada univocamente pela solução recursiva em \(D'\). Adiciona a aresta externa \texttt{(u,v)} a \(F'\) (linha 21), reintegra todas as arestas restantes do ciclo \(C\) (linhas 22--23), processa as arestas de saída do supervértice consultando \texttt{out\_from\_cycle} (linhas 24--26), e remove o supervértice \texttt{contracted\_label} de \(F'\) (linha 27), completando a substituição de \(x_C\) pelo ciclo modificado. \emph{Justificativa:} A reintegração do ciclo (menos uma aresta) combina a solução recursiva no grafo contraído com a estrutura cíclica original, preservando otimalidade: o ciclo reduzido contribui com \(n_C-1\) arestas (onde \(n_C\) é o tamanho do ciclo), e a aresta externa estabelece a conexão correta com o resto da arborescência. Por fim, restaura os pesos originais de \texttt{D} para todas as arestas de \(F'\) (linhas 28--29), desfazendo os custos reduzidos e retornando aos custos do problema original, e retorna \(F'\) como a r-arborescência de custo mínimo (linha 30). \emph{Justificativa:} Como no caso base, a restauração é necessária para que a solução retornada reflita os custos originais do problema, não os custos reduzidos usados internamente pelo algoritmo.
 \end{tcolorbox}
 
 A função retorna um digrafo contendo exatamente \(|V|-1\) arestas onde cada vértice \(v \neq r_0\) tem grau de entrada 1, todos os vértices são alcançáveis a partir de \(r_0\), e o custo total é mínimo. O grafo original \texttt{D} não é modificado devido à cópia na linha 2. A complexidade é \(O(mn)\) no pior caso, onde cada nível de recursão (até \(O(n)\) níveis) processa \(O(m)\) arestas durante normalização, detecção de ciclos e contração/expansão.
 
-Essa correspondência direta entre implementação e teoria, agora destacada nas caixas verdes acima, demonstra como os três passos abstratos do algoritmo de Chu–Liu/Edmonds se traduzem em operações concretas: o Passo 1 se manifesta na normalização e construção de \(F^*\) (linhas 2--6), o Passo 2 na verificação de aciclicidade e retorno (linhas 7--10), e o Passo 3 na contração, recursão e reexpansão (linhas 11--30). A estratégia primal do método — induzir custos reduzidos zero, extrair estrutura funcional, e resolver ciclos por contração/expansão — emerge naturalmente dessa correspondência entre formulação teórica e código.
+Essa correspondência direta entre implementação e teoria, agora destacada nas caixas verdes acima com justificativas explícitas, demonstra como os três passos abstratos do algoritmo de Chu–Liu/Edmonds se traduzem em operações concretas: o Passo 1 se manifesta na normalização e construção de \(F^*\) (linhas 2--6), o Passo 2 na verificação de aciclicidade e retorno (linhas 7--10), e o Passo 3 na contração, recursão e reexpansão (linhas 11--30). A estratégia primal do método — induzir custos reduzidos zero, extrair estrutura funcional, e resolver ciclos por contração/expansão — emerge naturalmente dessa correspondência entre formulação teórica e código, com cada escolha de implementação fundamentada em necessidades de correção, eficiência ou clareza algorítmica.
 
 \begin{tcolorbox}[
         enhanced, breakable,
@@ -851,26 +671,56 @@ def find_optimum_arborescence_chuliu(D: nx.DiGraph,r0: str,level=0,):
 \end{lstlisting}
 \end{tcolorbox}
 
-\subsubsection{Notas finais sobre a implementação}
+A seguir, ilustramos o funcionamento do algoritmo de Chu–Liu/Edmonds em um grafo de teste. Mostramos o grafo original, os principais passos do algoritmo e a arborescência final encontrada.
 
-A implementação acima segue diretamente a descrição do algoritmo de Chu–Liu/Edmonds, enfatizando clareza e correção. Para aplicações práticas, otimizações podem ser introduzidas, como estruturas de dados eficientes para seleção de mínimos, detecção rápida de ciclos e manipulação de grafos dinâmicos. Além disso, a função pode ser adaptada para lidar com casos especiais, como grafos desconexos ou múltiplas raízes, conforme necessário.
+\subsubsection{Exemplo de execução do algoritmo}
 
+A seguir, demonstramos a execução completa do algoritmo de Chu--Liu/Edmonds em um grafo exemplo, ilustrando cada fase do processo: normalização, construção de $F^*$, detecção de ciclos, contração, resolução recursiva e reexpansão.
 
-A complexidade da implementação direta é \(O(mn)\) no pior caso, onde \(m\) é o número de arestas e \(n\) o número de vértices, devido à potencial profundidade de recursão e ao processamento linear em cada nível. Implementações mais sofisticadas podem reduzir isso para \(O(m \log n)\) usando estruturas avançadas, como heaps e union-find, mas a versão apresentada prioriza a compreensão do algoritmo fundamental.
+\begin{figure}[H]
+    \centering
+    \input{capitulos/implementacao-chuliu/figures/fig_exemplo_grafo_inicial.tex}
+    \caption{Grafo direcionado ponderado inicial com raiz no vértice 0. O grafo contém 9 vértices e múltiplas arestas com pesos variados. O primeiro passo do algoritmo seria remover arestas que entram na raiz, porém não há nenhuma neste caso, logo não existe necessidade de alterar o grafo.}
+    \label{fig:exemplo-grafo-inicial}
+\end{figure}
 
-SAMIRA
-\subsubsection{Decisões de projeto e implicações práticas}
+O próximo passo é normalizar os pesos das arestas de entrada para cada vértice. Nessa etapa, para cada vértice $v$ (exceto a raiz), o algoritmo encontra a aresta de menor peso que entra em $v$ e subtrai esse menor peso de todas as arestas que entram em $v$ (isso serve para zerar o peso da aresta mínima de entrada em cada vértice).
 
-Antes de prosseguir para uma visão alternativa do mesmo problema, vale destacar algumas decisões de projeto e implicações práticas da implementação de Chu–Liu/Edmonds:
-\begin{itemize}\setlength{\itemsep}{2pt}
-    \item \textbf{Estruturas e efeitos colaterais:} Optamos por modificar grafos \emph{in-place} (por exemplo, durante a normalização e a contração de ciclos) para reduzir alocações e facilitar a visualização incremental. Isso exige invariantes explícitos e cuidado com referências ativas ao grafo original.
-    \item \textbf{Empates, paralelos e laços:} Empates são resolvidos de forma determinística/local sem afetar a otimalidade. A contração pode induzir \emph{arcos paralelos}; preservamos apenas o de menor custo. Laços (self-loops) são descartados por construção.
-    \item \textbf{Validação e testes:}  O repositório inclui artefatos úteis para experimentação (por exemplo, \texttt{tests.py}, \texttt{test\_results.csv}, \texttt{test\_log.txt}). Onde um volume de grafos é gerado aleatoriamente, a função é executada e os resultados são validados são comparados com soluções de força bruta.
-    \item \textbf{Integração com visualização e logs:} A função \texttt{draw\_fn} permite registrar \emph{snapshots} (normalização, formação de \(F^*\), contração/expansão). O \texttt{log} facilita auditoria e depuração em execuções recursivas.
-    \item \textbf{Extensões:} Variantes com múltiplas raízes, restrições adicionais (p.ex., proibições por partição) e empacotamento de arborescências exigem ajustes na fase de extração/expansão ou formulações via matroides.
-\end{itemize}
+\begin{figure}[H]
+    \centering
+    \input{capitulos/implementacao-chuliu/figures/fig_exemplo_normalizacao_parcial.tex}
+    \caption{Normalização parcial das arestas de entrada para o vértice 1. As arestas de entrada são $(0 \to 1)$ com peso original 3 e $(2 \to 1)$ com peso original 1. Elegendo a aresta $(2 \to 1)$ como a de menor peso (peso mínimo = 1), subtraímos este valor de todas as arestas de entrada: $(0 \to 1)$ passa de peso 3 para 2, e $(2 \to 1)$ passa de peso 1 para 0 (destacadas em vermelho). Esse processo é repetido para todos os demais vértices.}
+    \label{fig:exemplo-normalizacao-parcial}
+\end{figure}
 
-\subsubsection{Transição para a abordagem primal-dual}
+Com os pesos normalizados, o próximo passo é construir $F^*$: para isso, selecionamos para cada vértice a aresta de custo reduzido zero de entrada. Detectamos um ciclo em $F^*$, formado pelos vértices $\{1, 2\}$. Portanto, precisamos contrair esse ciclo em um supervértice $n*0$.
+
+\begin{figure}[H]
+    \centering
+    \input{capitulos/implementacao-chuliu/figures/fig_exemplo_grafo_contraido.tex}
+    \caption{Grafo contraído após detecção do ciclo $C = \{1, 2\}$ em $F^*$. O ciclo foi contraído no supervértice $n*0$ (destacado em vermelho). As arestas que entravam ou saíam do ciclo foram redirecionadas para o supervértice, com custos ajustados segundo as fórmulas $c'(u,x_C) := c(u,w) - y(w)$ para arestas de entrada e $c'(x_C,v) := c(w,v)$ para arestas de saída.}
+    \label{fig:exemplo-grafo-contraido}
+\end{figure}
+
+Agora, repetimos o processo recursivamente no grafo contraído até obter uma arborescência válida.
+
+\begin{figure}[H]
+    \centering
+    \input{capitulos/implementacao-chuliu/figures/fig_exemplo_arborescencia_contraida.tex}
+    \caption{Arborescência ótima $F'$ obtida no grafo contraído. Todas as arestas selecionadas têm custo reduzido 0 (destacados em vermelho), e o grafo forma uma arborescência válida enraizada em 0: cada vértice (exceto a raiz) tem exatamente uma aresta de entrada, não há ciclos, e todos os vértices são alcançáveis a partir da raiz. Como $F'$ é acíclico, alcançamos o caso base da recursão.}
+    \label{fig:exemplo-arborescencia-contraida}
+\end{figure}
+
+Após validarmos que $F^*$ não possui mais ciclos e forma uma arborescência, iniciamos o processo de reexpansão do ciclo contraído para obter a arborescência final no grafo original. Adicionamos a aresta de entrada ao ciclo $(0, 1)$, as arestas internas do ciclo modificado $(1, 2)$, e as arestas de saída $(1, 3)$, chegando a uma arborescência válida.
+
+\begin{figure}[H]
+    \centering
+    \input{capitulos/implementacao-chuliu/figures/fig_exemplo_arborescencia_final.tex}
+    \caption{Arborescência ótima final no grafo original com pesos restaurados. O supervértice $n*0$ foi expandido de volta para os vértices 1 e 2, com a aresta externa $(0, 1)$ escolhida pela solução recursiva conectando ao ciclo. A aresta interna $(2, 1)$ do ciclo original foi removida para manter a propriedade de arborescência ($\deg^{-}(v)=1$). O resultado é uma 0-arborescência de custo mínimo com exatamente 8 arestas, onde cada vértice não-raiz tem grau de entrada 1 e todos são alcançáveis a partir da raiz 0.}
+    \label{fig:exemplo-arborescencia-final}
+\end{figure}
+
+\subsection{Transição para a abordagem primal-dual}
 
 Embora o algoritmo de Chu–Liu/Edmonds seja elegante e eficiente, sua mecânica operacional — normalizar custos, selecionar mínimos, contrair ciclos — pode parecer um conjunto de heurísticas bem-sucedidas sem uma justificativa teórica unificadora aparente. Por que escolher a melhor entrada para cada vértice garante otimalidade global após o tratamento de ciclos? A resposta reside na \emph{dualidade em programação linear}.
 
