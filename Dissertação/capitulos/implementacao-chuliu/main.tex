@@ -548,14 +548,11 @@ As funções de normalização por vértice e construção de \(F^*\) juntas imp
         enhanced, breakable,
         colframe=green!60!black, colback=green!5,
         colbacktitle=green!20, coltitle=black,
-        title={Passo 1 o Algoritmo de Chu–Liu/Edmonds},
+        title={Passo 1 do Algoritmo de Chu–Liu/Edmonds},
         boxed title style={sharp corners, boxrule=0.6pt},
         sharp corners, boxrule=0.6pt
     ]
-
-    \begin{enumerate}
-        \item Para cada \(v\neq r\), escolha \(a_v\in\mathop{\mathrm{arg\,min}}_{(u,v)\in A} c(u,v)\). Defina \(y(v):=c(a_v)\) e \(F^*:=\{a_v : v\neq r\}\).
-    \end{enumerate}
+    \textbf{Passo 1:} Para cada \(v\neq r\), escolha \(a_v\in\mathop{\mathrm{arg\,min}}_{(u,v)\in A} c(u,v)\). Defina \(y(v):=c(a_v)\) e \(F^*:=\{a_v : v\neq r\}\).
 \end{tcolorbox}
 
 
@@ -665,6 +662,26 @@ A Figura~\ref{fig:contract-cycle-example} ilustra o processo de contração de c
     \caption{Exemplo de contração de ciclo. À esquerda, grafo original \(D\) com ciclo \(C=\{v_2, v_3, v_4\}\) (em amarelo). Vértices externos \(r\), \(v_1\) e \(v_5\) têm arestas conectando ao ciclo: \(r\) envia aresta para \(v_2\) (peso 2) e \(v_4\) (peso 5); \(v_4\) envia aresta para \(v_5\) (peso 1). À direita, após a contração: o ciclo é substituído pelo supervértice \(x_C\) (vermelho). As arestas de entrada são redirecionadas: \((r, x_C)\) recebe peso 2 (menor entre 2 e 5). A aresta de saída \((x_C, v_5)\) mantém peso 1. Os dicionários \texttt{in\_to\_cycle} e \texttt{out\_from\_cycle} armazenam os mapeamentos originais para posterior reexpansão.}
     \label{fig:contract-cycle-example}
 \end{figure}
+
+A função de deteção de ciclo e a de contração juntas implementam os passos 2 e 3 da descrição do algoritmo de Chu–Liu/Edmonds:
+
+\begin{tcolorbox}[
+        enhanced, breakable,
+        colframe=green!60!black, colback=green!5,
+        colbacktitle=green!20, coltitle=black,
+        title={Passos 2 e 3 do Algoritmo de Chu–Liu/Edmonds},
+        boxed title style={sharp corners, boxrule=0.6pt},
+        sharp corners, boxrule=0.6pt
+    ]
+    \textbf{Passo 2:} Se \((V,F^*)\) é acíclico, devolva \(F^*\). Por \cite[Obs.~4.36]{kleinberg2006}, trata-se de uma r-arborescência de custo mínimo.
+
+    \textbf{Passo 3:} Caso contrário, seja \(C\) um ciclo dirigido de \(F^*\) (com \(r\notin C\)). \textbf{Contração:} contraia \(C\) em um supervértice \(x_C\) e defina custos \(c'\) por
+    \begin{align*}
+        c'(u,x_C) & := c(u,w) - y(w) = c(u,w) - c(a_w) &  & \text{para } u\notin C,\ w\in C, \\
+        c'(x_C,v) & := c(w,v)                          &  & \text{para } w\in C,\ v\notin C,
+    \end{align*}
+    descartando laços em \(x_C\) e permitindo paralelos. Denote o digrafo contraído por \(D'=(V',A')\).
+\end{tcolorbox}
 
 \subsection{Remoção de arestas que entram na raiz:}
 Esta função remove todas as arestas que entram no vértice raiz \(r_0\), garantindo que a raiz não tenha predecessores.
