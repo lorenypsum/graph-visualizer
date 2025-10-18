@@ -2,9 +2,7 @@
 
 O algoritmo de Chu–Liu/Edmonds encontra uma r-arborescência de custo mínimo em um digrafo ponderado. A estratégia funciona de forma gulosa ao escolher, para cada vértice \(v\neq r\), o arco de entrada mais barato. No entanto, essa abordagem pode gerar ciclos dirigidos, incompatíveis com a estrutura de arborescência. O algoritmo resolve esse problema combinando normalização de custos, contração de ciclos em supervértices e expansão controlada para garantir otimalidade.
 
-\section{O problema dos ciclos e a solução por contração}
-
-Em uma r-arborescência, cada \(v\neq r\) deve ter exatamente um arco de entrada e \(r\) tem grau de entrada zero. Se escolhermos para cada vértice o arco mais barato que nele entra, podemos formar um ciclo dirigido \(C\) onde todos os vértices recebem seu único arco de dentro do próprio \(C\). Nesse caso, nenhum arco entraria em \(C\) a partir de \(V\setminus C\) (o corte \(\delta^-(C)\) ficaria vazio) e, como \(r\notin C\), não existiria caminho de \(r\) para os vértices de \(C\), contrariando a alcançabilidade exigida.
+Para entender por que a estratégia gulosa ingênua falha, consideremos as restrições estruturais de uma r-arborescência: cada \(v\neq r\) deve ter exatamente um arco de entrada e \(r\) tem grau de entrada zero. Se escolhermos para cada vértice o arco mais barato que nele entra, podemos formar um ciclo dirigido \(C\) onde todos os vértices recebem seu único arco de dentro do próprio \(C\). Nesse caso, nenhum arco entraria em \(C\) a partir de \(V\setminus C\) (o corte \(\delta^-(C)\) ficaria vazio) e, como \(r\notin C\), não existiria caminho de \(r\) para os vértices de \(C\), contrariando a alcançabilidade exigida.
 
 A Figura \ref{fig:chu-liu-cycle-micro} ilustra com um microexemplo: três vértices \(a,b,c\) (todos fora de \(r\)) onde o arco mais barato que entra em \(b\) vem de \(a\), o de \(c\) vem de \(b\) e o de \(a\) vem de \(c\), formando o ciclo \(a\to b\to c\to a\). Embora existam arcos de \(r\) para cada vértice, eles são mais caros e não são escolhidos pelo critério local, deixando os vértices "presos" no ciclo sem conexão com a raiz.
 
@@ -17,42 +15,10 @@ A Figura \ref{fig:chu-liu-cycle-micro} ilustra com um microexemplo: três vérti
 
 A solução consiste em \emph{normalizar os custos por vértice}: para cada \(v\neq r\), subtraímos de todo arco que entra em \(v\) o menor custo entre os arcos que chegam a \(v\). Após esse ajuste (custos reduzidos), cada \(v\neq r\) passa a ter ao menos um arco de custo reduzido zero. Se os arcos de custo zero forem acíclicos, já temos a r-arborescência ótima. Se formarem um ciclo \(C\), \emph{contraímos} \(C\) em um \textbf{supervértice} \(x_C\), ajustamos os custos dos arcos externos e resolvemos recursivamente no grafo menor. Ao final, \emph{expandimos} as contrações removendo exatamente um arco interno de cada ciclo para manter grau de entrada 1 e aciclicidade global.
 
-\subsection{Supervértices e contração de ciclos}
 
-Dado um subconjunto \(C\subseteq V\) que forma um ciclo dirigido, a \emph{contração de \(C\)} substitui todos os vértices de \(C\) por um único vértice \(x_C\) — o supervértice. Todo arco com exatamente uma ponta em \(C\) passa a ser incidente a \(x_C\): arcos \((u,w)\) com \(u\notin C\), \(w\in C\) tornam-se \((u, x_C)\); arcos \((w,v)\) com \(w\in C\), \(v\notin C\) tornam-se \((x_C, v)\); e arcos com ambas as pontas em \(C\) são descartados.
-
-Para preservar a comparação relativa dos custos, ajustamos os arcos que \emph{entram} em \(C\): para um arco \((u,w)\) com \(w\in C\), definimos \(c'(u,x_C) = c(u,w) - c(a_w)\), onde \(a_w\) é o arco mais barato que entra em \(w\). Essa normalização garante que decisões ótimas no grafo contraído podem ser traduzidas de volta na expansão.
-
-\begin{figure}[H]\centering
-    \begin{tikzpicture}[>=Stealth, node distance=1.4cm]
-        % (a) Original
-        \node at (-4.4,2.0) {(a) Original};
-        \draw[dashed,rounded corners] (-7.2,-1.2) rectangle (-1.6,2.2) node[above right] {$C$};
-        \node[circle,draw,minimum size=6mm] (a) at (-6.2,1.2) {$a$};
-        \node[circle,draw,minimum size=6mm] (b) at (-4.2,0.4) {$b$};
-        \node[circle,draw,minimum size=6mm] (c) at (-6.0,-0.6) {$c$};
-        \draw[->] (a) -- (b);
-        \draw[->] (b) -- (c);
-        \draw[->] (c) -- (a);
-        \node[circle,draw,minimum size=6mm] (u) at (-0.2,0.4) {$u$};
-        \draw[->] (u) -- node[above] {$c(u,w)$} (b);
-        \draw[->,gray] (a) to[bend left=18] node[above,sloped,gray] {$a_b$} (b);
-
-        % (b) Contraído
-        \node at (3.7,2.0) {(b) Contraído};
-        \node[circle,draw,minimum size=8mm,fill=gray!10] (xC) at (3.6,0.4) {$x_C$};
-        \node[circle,draw,minimum size=6mm] (u2) at (6.8,0.4) {$u$};
-        \draw[->] (u2) -- node[below,align=center,yshift=-10pt] {$c'(u,x_C)=c(u,w)-c(a_w)$} (xC);
-    \end{tikzpicture}
-    \caption{Ajuste de custo reduzido para um arco entrando em um ciclo contraído: o arco $(u,w)$ com $w\in C$ torna-se $(u,x_C)$ com custo reduzido $c'(u,x_C)=c(u,w)-c(a_w)$, onde $a_w$ é o arco de menor custo que entra em $w$.}
-    \label{fig:chu-liu-reduced-cost}
-\end{figure}
-
-A Figura \ref{fig:chu-liu-reduced-cost} mostra o ajuste: o arco \((u,b)\) com custo \(7\) torna-se \((u,x_C)\) com custo reduzido \(7-5=2\), já que \(a_b=(a\to b)\) tem custo \(5\).
 
 \section{Descrição do algoritmo}
-
-Apresentamos o algoritmo em visão operacional de alto nível, focando na lógica e nos passos principais. Detalhes de implementação serão discutidos na próxima seção. Denotamos por \(A'\) o conjunto de arcos escolhidos na construção da r-arborescência.
+A seguir apresentamos uma descrição do algoritmo de Chu–Liu/Edmonds. Detalhes de implementação serão discutidos na próxima seção. Denotamos por \(A'\) o conjunto de arcos escolhidos na construção da r-arborescência.
 
 Construa \(A'\) escolhendo, para cada \(v\neq r\), um arco de menor custo que entra em \(v\). Se \((V,A')\) é acíclico, então \(A'\) já é uma r-arborescência ótima, pois realizamos o menor custo de entrada em cada vértice e nenhuma troca pode reduzir o custo mantendo as restrições \cite[Sec.~4.9]{kleinberg2006}.
 
@@ -140,8 +106,6 @@ Na expansão, reintroduzimos \(C\) e removemos exatamente um arco interno para m
     \label{fig:chu-liu-reexpansion}
 \end{figure}
 
-Abaixo, a descrição formal do algoritmo.
-
 Abaixo, temos a descrição formal do algoritmo.
 
 \begin{algobox}{Chu–Liu/Edmonds (visão operacional)}{chu-liu-edmonds}
@@ -194,68 +158,62 @@ O uso de memória é \(O(m+n)\), incluindo mapeamentos de contração/expansão 
 
 \section{Implementação em Python}
 
-Esta seção apresenta uma implementação em Python do algoritmo de Chu–Liu/Edmonds. A arquitetura segue os passos teóricos: recebe como entrada um digrafo ponderado, os custos das arestas e o vértice raiz. O procedimento seleciona, para cada vértice, o arco de menor custo de entrada, verifica se o grafo é acíclico e, se necessário, contrai ciclos e ajusta custos. Ao final, retorna como saída a r-arborescência ótima: um conjunto de arestas que conecta todos os vértices à raiz com custo mínimo.
+Esta seção apresenta uma implementação em Python do algoritmo de Chu--Liu/Edmonds. Antes de detalhar o algoritmo propriamente dito, estabelecemos a infraestrutura necessária: a biblioteca NetworkX para representação de digrafos, as operações fundamentais sobre essas estruturas e a busca em profundidade para detecção de ciclos.
 
 \subsection{Representação de Digrafos: NetworkX}
 
-A implementação utiliza a biblioteca NetworkX\footnote{NetworkX é uma biblioteca Python para criação, manipulação e estudo de estruturas, dinâmicas e funções de redes complexas. Disponível em \url{https://networkx.org/}.}, que fornece estruturas de dados eficientes para grafos e digrafos. A classe \texttt{nx.DiGraph} representa grafos direcionados (directed graphs) e constitui a base para todas as operações do algoritmo.
+A implementação utiliza a biblioteca NetworkX\footnote{NetworkX é uma biblioteca Python para criação, manipulação e estudo de estruturas, dinâmicas e funções de redes complexas. Disponível em \url{https://networkx.org/}.}, que fornece a classe \texttt{nx.DiGraph} para representar grafos direcionados. Esta classe constitui a base para todas as operações do algoritmo, oferecendo estruturas de dados eficientes e uma API rica para manipulação de digrafos.
 
 \subsubsection{Estrutura Interna}
 
-Internamente, \texttt{nx.DiGraph} armazena o grafo usando dicionários aninhados do Python. Para um digrafo \(D=(V,A)\):
+A classe \texttt{nx.DiGraph} utiliza dicionários aninhados do Python para armazenar o digrafo \(D=(V,A)\), combinando simplicidade conceitual com eficiência computacional:
 
 \begin{itemize}\setlength{\itemsep}{2pt}
-    \item \textbf{Vértices:} mantidos em um dicionário que mapeia cada vértice para seus atributos. O método \texttt{D.nodes()} retorna uma visão (NodeView) sobre o conjunto de vértices, permitindo iteração em tempo \(O(n)\).
-    \item \textbf{Arestas:} armazenadas em estruturas de adjacência bidirecionais. Para cada vértice \(u\), mantém-se:
+    \item \textbf{Vértices:} um dicionário mapeia cada vértice para seus atributos. O método \texttt{D.nodes()} retorna uma visão (NodeView) sobre \(V\), permitindo iteração e verificação de pertinência em tempo \(O(n)\).
+    \item \textbf{Arestas:} estruturas de adjacência bidirecionais mantêm, para cada \(u\in V\):
           \begin{itemize}\setlength{\itemsep}{2pt}
-              \item Um dicionário de \emph{sucessores}: vértices \(v\) tais que \((u,v)\in A\), acessível via \texttt{D[u]}.
-              \item Um dicionário de \emph{predecessores}: vértices \(w\) tais que \((w,u)\in A\), usado por \texttt{D.in\_edges(u)}.
+              \item \emph{Sucessores}: dicionário com vértices \(v\) tais que \((u,v)\in A\), acessível via \texttt{D[u]}.
+              \item \emph{Predecessores}: dicionário com vértices \(w\) tais que \((w,u)\in A\), consultado por \texttt{D.in\_edges(u)}.
           \end{itemize}
-    \item \textbf{Atributos de arestas:} cada aresta pode ter atributos arbitrários armazenados como dicionários. A notação \texttt{D[u][v]["w"]} acessa o atributo \texttt{"w"} (peso) da aresta \((u,v)\).
+    \item \textbf{Atributos de arestas:} cada aresta armazena atributos arbitrários como dicionários. A notação \texttt{D[u][v]["w"]} acessa o atributo \texttt{"w"} (peso) da aresta \((u,v)\).
 \end{itemize}
 
-Esta representação garante acesso eficiente: adicionar ou remover uma aresta tem complexidade \(O(1)\) em média, consultar os vizinhos de um vértice custa \(O(\deg(v))\), e iterar sobre todas as arestas leva tempo \(O(m)\).
+Esta representação garante operações eficientes: adicionar ou remover uma aresta custa \(O(1)\) em média, consultar os vizinhos de \(u\) requer \(O(\deg(u))\), e iterar sobre todas as arestas leva tempo \(O(m)\).
 
 \subsubsection{Operações Fundamentais}
 
-As operações básicas usadas na implementação incluem:
+A implementação do algoritmo de Chu--Liu/Edmonds utiliza as seguintes operações da API NetworkX:
 
 \begin{itemize}\setlength{\itemsep}{2pt}
-    \item \texttt{D.nodes()}: retorna visão sobre os vértices, permitindo iteração e verificação de pertinência.
-    \item \texttt{D.in\_edges(v, data="w")}: retorna as arestas que entram em \(v\), opcionalmente incluindo atributos. Com \texttt{data="w"}, produz tuplas \((u, v, w)\) onde \(w\) é o peso.
-    \item \texttt{D.out\_edges(u, data="w")}: retorna as arestas que saem de \(u\), análogo a \texttt{in\_edges}.
-    \item \texttt{D.add\_edge(u, v, **attr)}: adiciona a aresta \((u,v)\) com atributos opcionais. Se \(u\) ou \(v\) não existirem, são criados automaticamente.
+    \item \texttt{D.nodes()}: retorna visão sobre \(V\), permitindo iteração e testes de pertinência.
+    \item \texttt{D.in\_edges(v, data="w")}: retorna as arestas entrantes em \(v\), opcionalmente com atributos. O parâmetro \texttt{data="w"} produz tuplas \((u, v, w)\) onde \(w\) é o peso da aresta.
+    \item \texttt{D.out\_edges(u, data="w")}: retorna as arestas saintes de \(u\), com semântica análoga a \texttt{in\_edges}.
+    \item \texttt{D.add\_edge(u, v, **attr)}: adiciona \((u,v)\) com atributos opcionais, criando \(u\) e \(v\) automaticamente se não existirem.
     \item \texttt{D.remove\_edges\_from(edges)}: remove múltiplas arestas em lote, recebendo lista de tuplas \((u,v)\).
     \item \texttt{D.remove\_nodes\_from(nodes)}: remove múltiplos vértices e todas as suas arestas incidentes.
 \end{itemize}
 
-\subsubsection{Busca em Profundidade (DFS)}
+Essas operações são utilizadas intensivamente nas fases de normalização, contração de ciclos e reexpansão do algoritmo.
+
+\subsubsection{Detecção de Ciclos via Busca em Profundidade}
 \label{sec:dfs}
 
-A busca em profundidade (Depth-First Search, DFS) é um algoritmo fundamental de travessia de grafos que explora sistematicamente cada ramo do grafo até sua máxima profundidade antes de retroceder. Em digrafos, a DFS é particularmente útil para detectar ciclos dirigidos, uma operação essencial no algoritmo de Chu--Liu/Edmonds.
+A detecção de ciclos dirigidos é crucial no algoritmo de Chu--Liu/Edmonds: após selecionar os arcos de custo reduzido zero, precisamos verificar se formam um grafo acíclico (caso base) ou contêm um ciclo que exige contração (caso recursivo). A biblioteca NetworkX implementa essa verificação através da busca em profundidade (Depth-First Search, DFS).
 
-\paragraph{Funcionamento básico:} A partir de um vértice inicial \(s\), a DFS marca \(s\) como visitado e recursivamente visita cada vizinho não visitado. Quando todos os vizinhos de um vértice foram explorados, o algoritmo retrocede (backtrack) para o vértice anterior na pilha de recursão.
-
-\paragraph{Detecção de ciclos em digrafos:} Para detectar ciclos, a DFS mantém três estados para cada vértice:
+\paragraph{Fundamentos da DFS:} A partir de um vértice \(s\), a DFS marca \(s\) como visitado e recursivamente explora cada vizinho não visitado até atingir a máxima profundidade de cada ramo antes de retroceder (backtrack). Durante a travessia, cada vértice passa por três estados:
 \begin{itemize}\setlength{\itemsep}{2pt}
-    \item \textbf{Não visitado:} vértice ainda não explorado.
-    \item \textbf{Em processamento:} vértice na pilha de recursão atual (ancestral no caminho DFS).
-    \item \textbf{Concluído:} vértice totalmente processado (todos os descendentes explorados).
+    \item \textbf{Não visitado:} ainda não explorado pela DFS.
+    \item \textbf{Em processamento:} na pilha de recursão atual (ancestral no caminho DFS).
+    \item \textbf{Concluído:} totalmente processado (todos os descendentes explorados).
 \end{itemize}
 
-Um ciclo é detectado quando a DFS encontra uma aresta \((u,v)\) onde \(v\) está \emph{em processamento}: isso significa que existe um caminho de \(v\) até \(u\) na árvore DFS atual, e a aresta \((u,v)\) fecha um ciclo.
+\paragraph{Detecção de ciclos:} Um ciclo é detectado quando a DFS encontra uma aresta \((u,v)\) onde \(v\) está \emph{em processamento}, indicando que existe um caminho de \(v\) até \(u\) na árvore DFS e \((u,v)\) fecha um ciclo. A complexidade desta operação é \(O(n+m)\), pois cada vértice é visitado exatamente uma vez e cada aresta é examinada no máximo uma vez.
 
-\paragraph{Complexidade:} A DFS visita cada vértice exatamente uma vez e examina cada aresta no máximo uma vez (ao explorar os vizinhos). Portanto, a complexidade é \(O(n+m)\), onde \(n=|V|\) e \(m=|A|\).
+\paragraph{API NetworkX:} A função \texttt{nx.find\_cycle(G, orientation="original")} implementa detecção de ciclos via DFS. Aceita como parâmetros o digrafo \texttt{G} e opcionalmente \texttt{orientation}, que controla o formato de saída das arestas. A função percorre \texttt{G} executando DFS a partir de cada vértice não visitado e, ao detectar uma aresta de retorno \((u,v)\) onde \(v\) está na pilha de recursão, identifica um ciclo.
 
-\paragraph{Implementação em NetworkX:} A biblioteca NetworkX fornece a função \texttt{nx.find\_cycle(G, orientation="original")} que implementa detecção de ciclos baseada em DFS. Esta função aceita dois parâmetros principais: o grafo \texttt{G} a ser analisado e o parâmetro opcional \texttt{orientation} que controla o formato de saída das arestas encontradas.
+O retorno é um \emph{iterador} (não uma lista materializada) sobre as arestas do ciclo, onde cada elemento é uma tupla \texttt{(u, v, key)} contendo os vértices da aresta e metadados de orientação (tipicamente ignorados via desempacotamento com \texttt{\_}). Esta escolha de retornar um iterador reduz o uso de memória.
 
-Quando invocada, a função percorre o grafo executando DFS a partir de cada vértice não visitado. Durante a travessia, mantém o estado de cada vértice (não visitado, em processamento, ou concluído) e, ao detectar uma aresta de retorno — isto é, uma aresta \((u,v)\) onde \(v\) está atualmente na pilha de recursão —, identifica a presença de um ciclo.
-
-O retorno da função é um \emph{iterador} (não uma lista materializada) sobre as arestas que compõem o ciclo detectado. Cada elemento do iterador é uma tupla \texttt{(u, v, key)} quando \texttt{orientation="original"}, onde \texttt{u} e \texttt{v} são os vértices da aresta e \texttt{key} contém metadados de orientação (que tipicamente ignoramos usando desempacotamento com \texttt{\_}). A escolha de retornar um iterador em vez de uma lista reduz o uso de memória, permitindo processamento sob demanda das arestas do ciclo.
-
-Um aspecto crucial do design desta função é seu comportamento em grafos acíclicos: em vez de retornar um valor especial como \texttt{None} ou uma lista vazia, a função lança a exceção \texttt{NetworkXNoCycle}. Esta decisão de design segue o princípio EAFP (\emph{Easier to Ask for Forgiveness than Permission}) do Python, onde operações excepcionais são sinalizadas por exceções em vez de valores de sentinela. Isso força o código cliente a tratar explicitamente o caso acíclico com um bloco \texttt{try-except}, resultando em código mais robusto e com intenção clara.
-
-A complexidade da função é \(O(n+m)\), onde \(n=|V|\) e \(m=|A|\), pois no pior caso (grafo acíclico) a DFS visita todos os vértices e examina todas as arestas exatamente uma vez antes de concluir que não há ciclos.
+Um aspecto crucial do design é o tratamento de grafos acíclicos: em vez de retornar \texttt{None} ou lista vazia, a função lança a exceção \texttt{NetworkXNoCycle}. Esta decisão segue o princípio EAFP (\emph{Easier to Ask for Forgiveness than Permission}) do Python, forçando o código cliente a tratar explicitamente o caso acíclico com \texttt{try-except}, o que resulta em código mais robusto e com intenção clara — exatamente o padrão usado no algoritmo de Chu--Liu/Edmonds para distinguir caso base (acíclico) de caso recursivo (com ciclo).
 
 \subsection{Especificação do Algoritmo}
 
