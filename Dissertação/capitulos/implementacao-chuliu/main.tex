@@ -401,17 +401,12 @@ Esta representação garante acesso eficiente: adicionar ou remover uma aresta t
 As operações básicas usadas na implementação incluem:
 
 \begin{itemize}\setlength{\itemsep}{2pt}
-    \item \texttt{D.nodes()}: retorna uma visão (NodeView) sobre o conjunto de vértices do grafo. Esta visão é iterável e permite percorrer todos os vértices em tempo \(O(n)\), onde \(n=|V|\). A visão é dinâmica: se vértices forem adicionados ou removidos do grafo após a chamada, a visão reflete essas mudanças automaticamente.
-
-    \item \texttt{D.in\_edges(v, data="w")}: retorna uma visão iterável (EdgeDataView) sobre todas as arestas que \emph{entram} no vértice \(v\), ou seja, arestas da forma \((u, v)\) onde \(u\) é qualquer predecessor de \(v\). O parâmetro opcional \texttt{data="w"} instrui o método a incluir o valor do atributo \texttt{"w"} (peso) de cada aresta na tupla retornada, resultando em tuplas da forma \((u, v, w)\). O tempo de execução é proporcional ao grau de entrada do vértice.
-
-    \item \texttt{D.out\_edges(u, data="w")}: análogo a \texttt{in\_edges}, mas retorna as arestas que \emph{saem} de \(u\), ou seja, arestas da forma \((u, v)\).
-
-    \item \texttt{D.add\_edge(u, v, **attr)}: adiciona uma aresta direcionada de \(u\) para \(v\) no grafo. Se os vértices \(u\) ou \(v\) ainda não existirem no grafo, eles são criados automaticamente. O parâmetro opcional \texttt{**attr} permite especificar atributos da aresta como pares chave-valor; por exemplo, \texttt{w=0} define o atributo \texttt{"w"} (peso) com valor 0. Se a aresta já existir, seus atributos são atualizados. A operação tem complexidade \(O(1)\) em média.
-
-    \item \texttt{D.remove\_edges\_from(edges)}: remove múltiplas arestas em lote, recebendo uma lista de tuplas \((u,v)\). Remove cada aresta especificada do grafo, com complexidade \(O(k)\) onde \(k\) é o número de arestas a remover. Arestas não existentes são silenciosamente ignoradas.
-
-    \item \texttt{D.remove\_nodes\_from(nodes)}: remove múltiplos vértices e todas as suas arestas incidentes (tanto de entrada quanto de saída).
+    \item \texttt{D.nodes()}: retorna visão sobre os vértices, permitindo iteração e verificação de pertinência.
+    \item \texttt{D.in\_edges(v, data="w")}: retorna as arestas que entram em \(v\), opcionalmente incluindo atributos. Com \texttt{data="w"}, produz tuplas \((u, v, w)\) onde \(w\) é o peso.
+    \item \texttt{D.out\_edges(u, data="w")}: retorna as arestas que saem de \(u\), análogo a \texttt{in\_edges}.
+    \item \texttt{D.add\_edge(u, v, **attr)}: adiciona a aresta \((u,v)\) com atributos opcionais. Se \(u\) ou \(v\) não existirem, são criados automaticamente.
+    \item \texttt{D.remove\_edges\_from(edges)}: remove múltiplas arestas em lote, recebendo lista de tuplas \((u,v)\).
+    \item \texttt{D.remove\_nodes\_from(nodes)}: remove múltiplos vértices e todas as suas arestas incidentes.
 \end{itemize}
 
 \subsection{Especificação do Algoritmo}
@@ -435,11 +430,11 @@ A seguir, detalhamos as implementações das funções auxiliares, apresentamos 
 
 \subsection{Normalização por vértice}
 
-Esta função implementa a normalização de custos reduzidos para as arestas que entram em um vértice \(v\): calcula \(y(v)=\min\{w(u,v)\}\) e substitui cada peso \(w(u,v)\) por \(w(u,v)-y(v)\), preservando as diferenças relativas entre arestas. Essa transformação garante que ao menos uma aresta de entrada tenha custo zero, sem alterar a estrutura de otimalidade do problema.
+Esta função implementa a normalização de custos reduzidos: calcula \(y(v)=\min\{w(u,v)\}\) e substitui cada peso \(w(u,v)\) por \(w(u,v)-y(v)\), garantindo que ao menos uma aresta de entrada tenha custo zero. Como cada r-arborescência possui exatamente uma aresta entrando em cada vértice não-raiz, a soma total dos valores \(y(v)\) subtraídos é constante para qualquer solução, preservando assim a ordem de otimalidade entre diferentes arborescências.
 
-Recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph})\footnote{Ver seção sobre Estrutura Interna e Operações Fundamentais para detalhes sobre a representação e API do NetworkX.} e o rótulo \texttt{node} do vértice a ser normalizado. A implementação coleta todas as arestas de entrada com seus respectivos pesos usando \texttt{D.in\_edges(node, data="w")}, obtendo uma lista de tuplas \((u, node, w)\). Se a lista estiver vazia, retorna imediatamente. Caso contrário, determina o peso mínimo \texttt{yv} extraindo os valores \(w\) das tuplas e, em seguida, subtrai \texttt{yv} de cada peso armazenado em \texttt{D[u][node]["w"]}.
+Recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}) e o rótulo \texttt{node} do vértice a ser normalizado. A implementação coleta todas as arestas de entrada de \texttt{node} com seus pesos usando o método \texttt{D.in\_edges(node, data="w")}, que retorna uma lista de tuplas \((u, node, w)\) (linha 2). Em seguida, verifica se a lista está vazia e se estiver retorna imediatamente sem fazer alterações (linhas 3--4). Caso contrário, calcula o peso mínimo \texttt{yv} através de uma compreensão de gerador que extrai o terceiro elemento de cada tupla (linha 5) e, para cada predecessor \texttt{u}, subtrai \texttt{yv} do peso armazenado em \texttt{D[u][node]["w"]} (linha 6).
 
-O procedimento não retorna valor explícito (retorno implícito \texttt{None}), modificando o grafo in-place. Após a execução, ao menos uma aresta de entrada de \texttt{node} terá custo reduzido zero. A complexidade temporal é \(O(\deg^-(v))\), proporcional ao grau de entrada do vértice.
+Não retorna nenhum valor (retorno implícito \texttt{None}), pois a operação é realizada in-place: o grafo \texttt{D} passado como parâmetro é modificado diretamente, e ao menos uma aresta de entrada de \texttt{node} terá custo reduzido zero após a execução. A complexidade é \(O(\deg^-(v))\), pois cada operação percorre as arestas de entrada uma única vez.
 
 \begin{tcolorbox}[
         enhanced, breakable,
@@ -461,16 +456,17 @@ def normalize_incoming_edge_weights(D: nx.DiGraph, node: str):
 \end{lstlisting}
 \end{tcolorbox}
 
-A Figura~\ref{fig:normalize-example} ilustra o funcionamento com um exemplo concreto: considere o vértice \(v\) com três arestas de entrada de pesos 5, 3 e 7. A função identifica \(y(v)=3\) e o subtrai de todas as entradas, resultando em pesos 2, 0 e 4.
+A Figura~\ref{fig:normalize-example} ilustra o funcionamento da normalização:
 
 \begin{figure}[H]
     \centering
     \input{capitulos/implementacao-chuliu/figures/fig_normalize_example.tex}
-    \caption{Exemplo de normalização de custos reduzidos. À esquerda, o grafo original com arestas de entrada em \(v\) com pesos 5, 3 e 7. À direita, após normalização: o menor peso \(y(v)=3\) é subtraído de todas as entradas, produzindo pesos 2, 0 e 4. A aresta \((u_2,v)\) (destacada em vermelho) atinge custo zero, enquanto as diferenças relativas entre arestas são preservadas.}
+    \caption{Exemplo de normalização de custos reduzidos. À esquerda, vértice \(v\) com três arestas de entrada (pesos 5, 3 e 7). À direita, após aplicar \texttt{normalize\_incoming\_edge\_weights(D, v)}: o menor peso \(y(v)=3\) é subtraído de todas as entradas, resultando em custos reduzidos 2, 0 e 4. A aresta \((u_2,v)\) (em vermelho) tem custo zero e será selecionada para \(F^*\).}
     \label{fig:normalize-example}
 \end{figure}
 
-A aresta \((u_2,v)\) agora possui custo reduzido zero, enquanto as demais mantêm suas diferenças relativas: \((u_1,v)\) permanece 2 unidades mais cara e \((u_3,v)\) permanece 4 unidades mais cara. Como o termo \(\sum_{w\neq r} y(w)\) é constante para todas as r-arborescências, qualquer solução ótima para os custos originais permanece ótima após a normalização.
+Observe que as diferenças relativas são preservadas: a aresta mais cara permanece 4 unidades acima da mais barata, e a intermediária mantém sua posição relativa. Como cada r-arborescência contém exatamente uma aresta entrando em cada vértice não-raiz, a soma \(\sum_{w\neq r} y(w)\) é constante para qualquer solução, garantindo que a ordem de otimalidade seja preservada.
+
 
 \subsection{Construção de \texorpdfstring{\(F^*\)}{F*}:}
 Esta função constrói o subdigrafo \(F^*\) selecionando, para cada vértice \(v\neq r_0\), uma única aresta de custo reduzido zero que entra em \(v\).
