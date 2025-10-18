@@ -712,8 +712,13 @@ def remove_edges_to_r0(D: nx.DiGraph, r0: str):
 \end{tcolorbox}
 
 
-\subsubsection{Remoção de arco interno:}
-ao expandir o ciclo \(C\), a função remove o arco interno que entra no vértice de entrada \(v\) do ciclo, já que \(v\) agora recebe um arco externo do grafo. A função modifica o subgrafo do ciclo \emph{in-place} e executa em \(O(\deg^-(v))\).
+\subsection{Remoção de arco interno:}
+
+Esta função é invocada durante a fase de reexpansão do ciclo contraído, após a chamada recursiva retornar com a arborescência ótima \(T'\) do grafo contraído. Quando o supervértice \(x_C\) é expandido de volta para o ciclo original \(C\), uma aresta externa \((u,v)\) é adicionada conectando um vértice externo \(u\) a um vértice \(v\) dentro do ciclo. Como o ciclo \(C\) originalmente continha exatamente uma aresta entrando em cada um de seus vértices (formando um ciclo fechado), e agora \(v\) recebe uma aresta adicional vinda do exterior, esse vértice teria grau de entrada 2, violando a propriedade fundamental de arborescência (cada vértice não-raiz deve ter exatamente uma entrada). Para restaurar essa propriedade, a função remove a aresta interna que anteriormente entrava em \(v\), mantendo apenas a nova aresta externa. Essa remoção "quebra" o ciclo no ponto de entrada, transformando-o em um caminho que se integra corretamente à estrutura de árvore.
+
+A função recebe como entrada o subgrafo do ciclo \texttt{C} (objeto \texttt{nx.DiGraph}) e o vértice de entrada \texttt{v}. A implementação utiliza uma compreensão de gerador combinada com \texttt{next} para encontrar o predecessor de \texttt{v} dentro do ciclo (linha 2): a expressão \texttt{(u for u, \_ in C.in\_edges(v))} itera sobre as arestas de entrada de \texttt{v}, extraindo apenas o vértice origem \texttt{u} (ignorando metadados com \texttt{\_}), e \texttt{next} retorna o primeiro (e teoricamente único) predecessor. Em seguida, remove a aresta \texttt{(predecessor, v)} do ciclo usando o método \texttt{remove\_edge} (linha 3).
+
+A função modifica o subgrafo \texttt{C} in-place e não retorna valor. A complexidade é \(O(\deg^-(v))\), dominada pela operação de busca das arestas de entrada, embora em ciclos simples isso seja tipicamente \(O(1)\) pois cada vértice tem exatamente um predecessor.
 
 \begin{tcolorbox}[
         enhanced, breakable,
@@ -723,18 +728,23 @@ ao expandir o ciclo \(C\), a função remove o arco interno que entra no vértic
         boxed title style={sharp corners, boxrule=0.6pt},
         sharp corners, boxrule=0.6pt
     ]
-    \emph{Remove a aresta interna que entra no vértice de entrada `v` do ciclo C, pois `v` passa a receber uma aresta externa do grafo.}
+    \emph{Remove a aresta interna que entra no vértice de entrada \texttt{v} do ciclo \texttt{C} durante a reexpansão, pois \texttt{v} passa a receber uma aresta externa, e manter ambas violaria a propriedade de arborescência.}
     \tcblower
     \begin{lstlisting}[mathescape=true, language=Python]
-% def remove_internal_edge_to_cycle_entry(C: nx.DiGraph, v):
-
-%     predecessor = next((u for u, _ in C.in_edges(v)), None)
-
-%     C.remove_edge(predecessor, v) 
+def remove_internal_edge_to_cycle_entry(C: nx.DiGraph, v):
+    predecessor = next((u for u, _ in C.in_edges(v)), None)
+    C.remove_edge(predecessor, v) 
 \end{lstlisting}
 \end{tcolorbox}
 
+A Figura~\ref{fig:remove-internal-edge-example} ilustra o objetivo da função:
 
+\begin{figure}[H]
+    \centering
+    \input{capitulos/implementacao-chuliu/figures/fig_remove_internal_edge_example.tex}
+    \caption{Remoção de aresta interna durante reexpansão. À esquerda, ciclo $C=\{v_2, v_3, v_4\}$ após adicionar aresta externa $(u, v_2)$ vindoura da arborescência $T'$: o vértice $v_2$ tem grau de entrada 2 (aresta externa vermelha de $u$ e aresta interna do ciclo vinda de $v_4$), violando a propriedade de arborescência. À direita, após remover a aresta interna $(v_4, v_2)$: o vértice $v_2$ passa a ter grau de entrada 1, o ciclo é "quebrado" no ponto de entrada, transformando-se em um caminho que se integra corretamente à estrutura de árvore. A aresta removida é mostrada tracejada em cinza.}
+    \label{fig:remove-internal-edge-example}
+\end{figure}
 
 \subsubsection{Procedimento principal (recursivo):}
 A função principal implementa o algoritmo de Chu–Liu/Edmonds de forma recursiva e atua como um orquestrador das fases do método. Em alto nível, ela mantém a seguinte lógica:

@@ -1,0 +1,51 @@
+\begin{tikzpicture}[
+        node distance=1.5cm,
+        vertex/.style={circle, draw=black, fill=white, minimum size=0.7cm, font=\small},
+        cycle_vertex/.style={circle, draw=black, fill=yellow!30, minimum size=0.7cm, font=\small},
+        super_vertex/.style={circle, draw=black, fill=red!40, minimum size=0.7cm, font=\small},
+        edge/.style={->, >=stealth, thick},
+        highlight/.style={->, >=stealth, very thick, red},
+        removed/.style={->, >=stealth, thick, dashed, gray}
+    ]
+
+    % Left: Cycle before reexpansion
+    \begin{scope}[local bounding box=left]
+        \node[vertex] (u) at (0,0) {$u$};
+        \node[cycle_vertex] (v2) at (2,1) {$v_2$};
+        \node[cycle_vertex] (v3) at (3.5,0) {$v_3$};
+        \node[cycle_vertex] (v4) at (2,-1) {$v_4$};
+
+        % External edge entering the cycle
+        \draw[highlight] (u) -- node[above, font=\scriptsize] {nova} (v2);
+
+        % Cycle edges
+        \draw[edge] (v2) -- (v3);
+        \draw[edge] (v3) -- (v4);
+        \draw[edge] (v4) -- (v2);
+
+        \node[above=0.3cm of v2, font=\small] {$\deg^-(v_2) = 2$};
+        \node[below=2cm of v3, font=\small, text width=3cm, align=center] {Ciclo $C$ após adicionar\\aresta externa $(u,v_2)$};
+    \end{scope}
+
+    % Right: After removing internal edge
+    \begin{scope}[shift={(6,0)}, local bounding box=right]
+        \node[vertex] (u2) at (0,0) {$u$};
+        \node[cycle_vertex] (v2b) at (2,1) {$v_2$};
+        \node[cycle_vertex] (v3b) at (3.5,0) {$v_3$};
+        \node[cycle_vertex] (v4b) at (2,-1) {$v_4$};
+
+        % External edge entering (now the only one)
+        \draw[edge] (u2) -- node[above, font=\scriptsize] {única} (v2b);
+
+        % Remaining cycle edges (path)
+        \draw[edge] (v2b) -- (v3b);
+        \draw[edge] (v3b) -- (v4b);
+
+        % Removed edge (dashed)
+        \draw[removed] (v4b) -- node[right, font=\scriptsize] {removida} (v2b);
+
+        \node[above=0.3cm of v2b, font=\small] {$\deg^-(v_2) = 1$};
+        \node[below=2cm of v3b, font=\small, text width=3cm, align=center] {Após remover aresta\\interna $(v_4,v_2)$};
+    \end{scope}
+
+\end{tikzpicture}
