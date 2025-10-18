@@ -1,0 +1,57 @@
+\begin{tikzpicture}[>=Stealth, scale=1.2, every node/.style={scale=1}]
+    % F* completo - lado esquerdo
+    \begin{scope}[xshift=0cm]
+        % Nós
+        \node[circle,draw,fill=green!20,minimum size=8mm] (r) at (1.5,3) {$r$};
+        \node[circle,draw,fill=blue!20,minimum size=8mm] (v1) at (0,2) {$v_1$};
+        \node[circle,draw,fill=yellow!40,minimum size=8mm] (v2) at (0,0.5) {$v_2$};
+        \node[circle,draw,fill=yellow!40,minimum size=8mm] (v3) at (1.5,0) {$v_3$};
+        \node[circle,draw,fill=yellow!40,minimum size=8mm] (v4) at (3,0.5) {$v_4$};
+        \node[circle,draw,fill=blue!20,minimum size=8mm] (v5) at (3,2) {$v_5$};
+
+        % Arestas de F* (todas com peso 0)
+        \draw[->,very thick,blue!70] (r) to[bend left=15] node[midway,above left,black,font=\footnotesize] {0} (v1);
+        \draw[->,very thick,red,line width=1.2pt] (r) to[bend right=20] node[midway,left,black,font=\footnotesize] {0} (v2);
+        \draw[->,very thick,red,line width=1.2pt] (v2) to node[midway,below,black,font=\footnotesize] {0} (v3);
+        \draw[->,very thick,red,line width=1.2pt] (v3) to node[midway,below right,black,font=\footnotesize] {0} (v4);
+        \draw[->,very thick,red,line width=1.2pt] (v4) to[bend right=20] node[midway,right,black,font=\footnotesize] {0} (v2);
+        \draw[->,very thick,blue!70] (r) to[bend right=15] node[midway,above right,black,font=\footnotesize] {0} (v5);
+
+        % Destaque do ciclo detectado
+        \draw[dashed,red,thick,rounded corners=10pt] (-0.5,-0.3) rectangle (3.5,1.1);
+        \node[above,red,font=\small] at (1.5,1.2) {ciclo detectado pela DFS};
+
+        % Ordem de visita DFS (pequenos números)
+        \node[circle,fill=white,font=\tiny,inner sep=1pt] at (0.3,2.3) {1};
+        \node[circle,fill=white,font=\tiny,inner sep=1pt] at (0.3,0.8) {2};
+        \node[circle,fill=white,font=\tiny,inner sep=1pt] at (1.8,0.3) {3};
+        \node[circle,fill=white,font=\tiny,inner sep=1pt] at (3.3,0.8) {4};
+
+        % Título
+        \node[below] at (1.5,-1) {\textbf{Subgrafo $F^*$ com ciclo}};
+    \end{scope}
+
+    % Seta de transformação
+    \node[font=\Large] at (5,1.5) {$\Rightarrow$};
+    \node[above,font=\footnotesize,align=center] at (5,2.3) {\texttt{find\_cycle(F\_star)}};
+    \node[below,font=\footnotesize,align=center] at (5,0.7) {retorna\\subgrafo};
+
+    % Subgrafo do ciclo - lado direito
+    \begin{scope}[xshift=7cm]
+        % Apenas os vértices do ciclo
+        \node[circle,draw,fill=yellow!40,minimum size=8mm] (cv2) at (0,0.5) {$v_2$};
+        \node[circle,draw,fill=yellow!40,minimum size=8mm] (cv3) at (1.5,0) {$v_3$};
+        \node[circle,draw,fill=yellow!40,minimum size=8mm] (cv4) at (3,0.5) {$v_4$};
+
+        % Apenas as arestas do ciclo
+        \draw[->,very thick,red,line width=1.2pt] (cv2) to node[midway,below,black,font=\footnotesize] {0} (cv3);
+        \draw[->,very thick,red,line width=1.2pt] (cv3) to node[midway,below right,black,font=\footnotesize] {0} (cv4);
+        \draw[->,very thick,red,line width=1.2pt] (cv4) to[bend right=20] node[midway,right,black,font=\footnotesize] {0} (cv2);
+
+        % Indicação do conjunto de vértices
+        \node[below,font=\footnotesize,align=center] at (1.5,-0.8) {\texttt{nodes\_in\_cycle} = \{$v_2$, $v_3$, $v_4$\}};
+
+        % Título
+        \node[below] at (1.5,-1.5) {\textbf{Ciclo extraído (cópia)}};
+    \end{scope}
+\end{tikzpicture}

@@ -409,6 +409,26 @@ As operações básicas usadas na implementação incluem:
     \item \texttt{D.remove\_nodes\_from(nodes)}: remove múltiplos vértices e todas as suas arestas incidentes.
 \end{itemize}
 
+\subsubsection{Busca em Profundidade (DFS)}
+\label{sec:dfs}
+
+A busca em profundidade (Depth-First Search, DFS) é um algoritmo fundamental de travessia de grafos que explora sistematicamente cada ramo do grafo até sua máxima profundidade antes de retroceder. Em digrafos, a DFS é particularmente útil para detectar ciclos dirigidos, uma operação essencial no algoritmo de Chu--Liu/Edmonds.
+
+\paragraph{Funcionamento básico:} A partir de um vértice inicial \(s\), a DFS marca \(s\) como visitado e recursivamente visita cada vizinho não visitado. Quando todos os vizinhos de um vértice foram explorados, o algoritmo retrocede (backtrack) para o vértice anterior na pilha de recursão.
+
+\paragraph{Detecção de ciclos em digrafos:} Para detectar ciclos, a DFS mantém três estados para cada vértice:
+\begin{itemize}\setlength{\itemsep}{2pt}
+    \item \textbf{Não visitado:} vértice ainda não explorado.
+    \item \textbf{Em processamento:} vértice na pilha de recursão atual (ancestral no caminho DFS).
+    \item \textbf{Concluído:} vértice totalmente processado (todos os descendentes explorados).
+\end{itemize}
+
+Um ciclo é detectado quando a DFS encontra uma aresta \((u,v)\) onde \(v\) está \emph{em processamento}: isso significa que existe um caminho de \(v\) até \(u\) na árvore DFS atual, e a aresta \((u,v)\) fecha um ciclo.
+
+\paragraph{Complexidade:} A DFS visita cada vértice exatamente uma vez e examina cada aresta no máximo uma vez (ao explorar os vizinhos). Portanto, a complexidade é \(O(n+m)\), onde \(n=|V|\) e \(m=|A|\).
+
+\paragraph{Implementação em NetworkX:} A função \texttt{nx.find\_cycle(G)} implementa essa estratégia: percorre o grafo usando DFS e, ao detectar um ciclo, retorna um iterador sobre as arestas que o compõem. Se não houver ciclos, lança a exceção \texttt{NetworkXNoCycle}.
+
 \subsection{Especificação do Algoritmo}
 
 Com a representação estabelecida, especificamos formalmente o algoritmo implementado:
@@ -500,17 +520,27 @@ def get_Fstar(D: nx.DiGraph, r0: str):
 \end{lstlisting}
 \end{tcolorbox}
 
-Essas três funções foram implementadas para atenderem o passo 1 da descrição do algoritmo de Chu–Liu/Edmonds:
+A Figura~\ref{fig:get-fstar-example} ilustra a construção de \(F^*\):
+
+\begin{figure}[H]
+    \centering
+    \input{capitulos/implementacao-chuliu/figures/fig_get_fstar_example.tex}
+    \caption{Exemplo de construção de \(F^*\) a partir de um digrafo normalizado. À esquerda, o digrafo \(D\) após normalização, onde cada vértice não-raiz possui ao menos uma aresta de entrada com custo zero (em vermelho). À direita, o subgrafo \(F^*\) resultante contém apenas as arestas de custo zero selecionadas, uma por vértice. Note que \(F^*\) pode conter ciclos (como \(\{v_1, v_2\}\)) que serão tratados nas etapas subsequentes.}
+    \label{fig:get-fstar-example}
+\end{figure}
+
+A detecção de ciclos é crucial, pois a presença de um ciclo em \(F^*\) indica que a escolha de arestas de custo reduzido zero não formou uma arborescência válida. Esses ciclos precisam ser tratados nas etapas subsequentes do algoritmo.
+
+As funções de normalização por vértice e construção de \(F^*\) juntas implementam o passo 1 da descrição do algoritmo de Chu–Liu/Edmonds:
 
 \begin{tcolorbox}[
         enhanced, breakable,
         colframe=green!60!black, colback=green!5,
         colbacktitle=green!20, coltitle=black,
-        title={Passos 1 o Algoritmo de Chu–Liu/Edmonds},
+        title={Passo 1 o Algoritmo de Chu–Liu/Edmonds},
         boxed title style={sharp corners, boxrule=0.6pt},
         sharp corners, boxrule=0.6pt
     ]
-    \textbf{Entrada:} digrafo \(D=(V,A)\), custos \(c:A\to\mathbb{R}_{\ge 0}\), raiz \(r\).
 
     \begin{enumerate}
         \item Para cada \(v\neq r\), escolha \(a_v\in\mathop{\mathrm{arg\,min}}_{(u,v)\in A} c(u,v)\). Defina \(y(v):=c(a_v)\) e \(F^*:=\{a_v : v\neq r\}\).
@@ -522,9 +552,9 @@ Essas três funções foram implementadas para atenderem o passo 1 da descriçã
 \subsection{Detecção de ciclo:}
 Esta função detecta a presença de um ciclo dirigido em \(F^*\) e retorna um subgrafo que o contém; se \(F^*\) for acíclico, retorna \texttt{None}.
 
-Recebe como entrada um digrafo \texttt{F\_star} (objeto \texttt{nx.DiGraph}). A implementação utiliza um bloco \texttt{try} (linha 2) para capturar exceções caso não haja ciclo. Inicializa um conjunto vazio \texttt{nodes\_in\_cycle} (linha 3) e emprega a função \texttt{nx.find\_cycle} do NetworkX (linha 4), que realiza uma busca em profundidade (DFS) para detectar ciclos. Para cada aresta \((u,v)\) retornada, adiciona ambos os vértices ao conjunto (linha 5). Após coletar todos os vértices do ciclo, constrói e retorna uma cópia do subgrafo induzido por eles (linha 7); a cópia é necessária porque \texttt{subgraph} retorna apenas uma visão, e alterações posteriores afetariam o grafo original. Se nenhum ciclo existir, a exceção \texttt{nx.NetworkXNoCycle} é capturada (linha 8) e a função retorna \texttt{None} (linha 9).
+Recebe como entrada um digrafo \texttt{F\_star} (objeto \texttt{nx.DiGraph}). A implementação utiliza um bloco \texttt{try} (linha 2) para capturar exceções caso não haja ciclo. Inicializa um conjunto vazio \texttt{nodes\_in\_cycle} (linha 3) e emprega a função \texttt{nx.find\_cycle} do NetworkX (linha 4), que realiza uma busca em profundidade (DFS) para detectar ciclos (ver Seção~\ref{sec:dfs}). A função \texttt{nx.find\_cycle} percorre o grafo visitando vértices e arestas: ao encontrar uma aresta \((u,v)\) onde \(v\) já está na pilha de recursão da DFS, identifica um ciclo e retorna um iterador sobre todas as arestas que compõem esse ciclo. O laço na linha 4 itera sobre essas arestas retornadas, desempacotando cada uma na forma \texttt{(u, v, \_)} (ignorando o terceiro elemento com \texttt{\_}, que contém metadados de orientação), e para cada aresta \((u,v)\) adiciona ambos os vértices ao conjunto \texttt{nodes\_in\_cycle} (linha 5). Após coletar todos os vértices do ciclo, constrói e retorna uma cópia do subgrafo induzido por eles (linha 7); a cópia é necessária porque \texttt{subgraph} retorna apenas uma visão, e alterações posteriores afetariam o grafo original. Se nenhum ciclo existir, a exceção \texttt{nx.NetworkXNoCycle} é capturada (linha 8) e a função retorna \texttt{None} (linha 9).
 
-Retorna um subgrafo contendo os vértices e arestas do ciclo detectado, ou \texttt{None} se não houver ciclo. O grafo original \texttt{F\_star} não é modificado. A complexidade é \(O(m)\), onde \(m\) é o número de arestas, pois a DFS visita cada aresta no máximo uma vez.
+No final, um subgrafo contendo os vértices e arestas do ciclo detectado é retornado, ou \texttt{None} se não houver ciclo. O grafo original \texttt{F\_star} não é modificado. A complexidade é \(O(m)\), onde \(m\) é o número de arestas, pois a DFS visita cada aresta no máximo uma vez.
 
 \begin{tcolorbox}[
         enhanced, breakable,
@@ -548,11 +578,27 @@ def find_cycle(F_star: nx.DiGraph):
 \end{lstlisting}
 \end{tcolorbox}
 
+A Figura~\ref{fig:find-cycle-example} ilustra o processo de detecção de ciclo:
+
+\begin{figure}[H]
+    \centering
+    \input{capitulos/implementacao-chuliu/figures/fig_find_cycle_example.tex}
+    \caption{Exemplo de detecção de ciclo em \(F^*\). À esquerda, o subgrafo \(F^*\) contém um ciclo formado pelos vértices \(\{v_2, v_3, v_4\}\) (destacados em amarelo). A DFS percorre o grafo e detecta o ciclo ao encontrar a aresta \((v_4, v_2)\), onde \(v_2\) já está na pilha de recursão. À direita, a função retorna uma cópia do subgrafo induzido pelos vértices do ciclo, contendo apenas os três vértices e as três arestas que formam o ciclo.}
+    \label{fig:find-cycle-example}
+\end{figure}
+
+Ao detectar um ciclo, a função permite que o algoritmo de Chu–Liu/Edmonds prossiga para a etapa de contração, onde o ciclo será reduzido a um supervértice, facilitando a resolução do problema no grafo modificado.
+
+
 
 \subsection{Contração de ciclo:}
 Esta função contrai um ciclo dirigido \(C\) em um supervértice \(x_C\), redirecionando arcos incidentes e ajustando custos segundo a regra de custos reduzidos. Retorna dicionários auxiliares para reexpansão.
 
-Recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}), o ciclo \texttt{C} a ser contraído e o rótulo \texttt{label} do novo supervértice. A implementação coleta os vértices de \texttt{C} em um conjunto (linha 2) e inicializa \texttt{in\_to\_cycle} (linha 3), um dicionário que tem como chave vértices externos ao ciclo e como valor tuplas \((v,w)\), onde \(v\) é o vértice do ciclo conectado a \(u\) e \(w\) é o peso da aresta \((u,v)\). Para cada vértice \texttt{u} no digrafo \texttt{D} (linha 4), se \texttt{u} não pertence ao ciclo (linha 5), identifica a aresta de menor peso que sai de \texttt{u} e entra em \texttt{C} (linhas 6--9) usando uma compreensão de gerador: a expressão \texttt{((v, w) for \_, v, w in D.out\_edges(u, data="w") if v in cycle\_nodes)} itera sobre todas as arestas que saem de \texttt{u}, desempacota cada aresta na forma \texttt{(\_, v, w)} (ignorando a origem com \texttt{\_}, capturando o destino \texttt{v} e o peso \texttt{w}), filtra apenas aquelas cujo destino \texttt{v} pertence ao ciclo, e produz tuplas \texttt{(v, w)}; a função \texttt{min} (linha 6) então seleciona a tupla de menor peso usando \texttt{key=lambda x: x[1]} (linha 7) para comparar pelo segundo elemento (o peso), e retorna \texttt{None} se não houver arestas (linha 8). Se tal aresta existir, armazena em \texttt{in\_to\_cycle} (linhas 9--10). Em seguida, itera sobre \texttt{in\_to\_cycle}\footnote{O método \texttt{items()} é parte da API de dicionários em Python. Ele retorna uma visão (dict\_items) sobre os pares chave-valor do dicionário, permitindo iterar simultaneamente sobre chaves e valores. A expressão \texttt{for u, (v, w) in in\_to\_cycle.items()} desempacota cada par: \texttt{u} é a chave (vértice externo) e \texttt{(v, w)} é o valor (tupla com vértice do ciclo e peso). A visão é dinâmica e reflete mudanças no dicionário, mas não deve ser modificada durante a iteração. A complexidade de percorrer todos os itens é \(O(n)\), onde \(n\) é o número de entradas no dicionário.} e cria arestas de cada vértice \texttt{u} para \texttt{label} com os respectivos pesos (linhas 11--12).
+Recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}), o ciclo \texttt{C} a ser contraído e o rótulo \texttt{label} do novo supervértice. A implementação coleta os vértices de \texttt{C} em um conjunto (linha 2) e inicializa \texttt{in\_to\_cycle} (linha 3), um dicionário que tem como chave vértices externos ao ciclo e como valor tuplas \((v,w)\), onde \(v\) é o vértice do ciclo conectado a \(u\) e \(w\) é o peso da aresta \((u,v)\).
+
+Para cada vértice \texttt{u} no digrafo \texttt{D} (linha 4), se \texttt{u} não pertence ao ciclo (linha 5), identifica a aresta de menor peso que sai de \texttt{u} e entra em \texttt{C} (linhas 6--9) usando uma compreensão de gerador: a expressão \texttt{((v, w) for \_, v, w in D.out\_edges(u, data="w") if v in cycle\_nodes)} itera sobre todas as arestas que saem de \texttt{u}, desempacota cada aresta na forma \texttt{(\_, v, w)} (ignorando a origem com \texttt{\_}, capturando o destino \texttt{v} e o peso \texttt{w}), filtra apenas aquelas cujo destino \texttt{v} pertence ao ciclo, e produz tuplas \texttt{(v, w)}; a função \texttt{min} (linha 6) então seleciona a tupla de menor peso usando \texttt{key=lambda x: x[1]} (linha 7) para comparar pelo segundo elemento (o peso), e retorna \texttt{None} se não houver arestas (linha 8). Se tal aresta existir, armazena em \texttt{in\_to\_cycle} (linhas 9--10).
+
+Em seguida, usando o método \texttt{items()} que retorna uma visão sobre os pares chave-valor do dicionário, a implementação itera sobre \texttt{in\_to\_cycle} desempacotando cada entrada na forma \texttt{(u, (v, w))}, onde \texttt{u} é o vértice externo e \texttt{(v, w)} é a tupla com o vértice do ciclo e o peso (linhas 11--12). Para cada par, cria uma aresta de \texttt{u} para \texttt{label} com peso \texttt{w}, efetivamente redirecionando as arestas de entrada para o supervértice.
 
 De forma análoga, constrói o dicionário \texttt{out\_from\_cycle} (linha 13) para mapear arestas que saem do ciclo. Para cada vértice \texttt{v} em \texttt{D} (linha 14), se \texttt{v} não pertence ao ciclo (linha 15), identifica a aresta de menor peso que sai de \texttt{C} e entra em \texttt{v} (linhas 16--17) usando uma compreensão de gerador análoga: a expressão \texttt{((u, w) for u, \_, w in D.in\_edges(v, data="w") if u in cycle\_nodes)} itera sobre todas as arestas que entram em \texttt{v}, desempacota cada aresta na forma \texttt{(u, \_, w)} (capturando a origem \texttt{u}, ignorando o destino com \texttt{\_}, e capturando o peso \texttt{w}), filtra apenas aquelas cuja origem \texttt{u} pertence ao ciclo, e produz tuplas \texttt{(u, w)}; a função \texttt{min} seleciona a de menor peso. Se existir, armazena em \texttt{out\_from\_cycle} (linhas 18--19). Depois, itera sobre \texttt{out\_from\_cycle} e cria arestas de \texttt{label} para cada vértice \texttt{v} com os respectivos pesos (linhas 20--21). Por fim, remove todos os vértices de \texttt{C} do grafo (linha 22).
 
@@ -597,6 +643,15 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: str):
     return in_to_cycle, out_from_cycle  
 \end{lstlisting}
 \end{tcolorbox}
+
+A Figura~\ref{fig:contract-cycle-example} ilustra o processo de contração de ciclo:
+
+\begin{figure}[H]
+    \centering
+    \input{capitulos/implementacao-chuliu/figures/fig_contract_cycle_example.tex}
+    \caption{Exemplo de contração de ciclo. À esquerda, grafo original \(D\) com ciclo \(C=\{v_2, v_3, v_4\}\) (em amarelo). Vértices externos \(r\), \(v_1\) e \(v_5\) têm arestas conectando ao ciclo: \(r\) envia aresta para \(v_2\) (peso 2) e \(v_4\) (peso 5); \(v_4\) envia aresta para \(v_5\) (peso 1). À direita, após a contração: o ciclo é substituído pelo supervértice \(x_C\) (vermelho). As arestas de entrada são redirecionadas: \((r, x_C)\) recebe peso 2 (menor entre 2 e 5). A aresta de saída \((x_C, v_5)\) mantém peso 1. Os dicionários \texttt{in\_to\_cycle} e \texttt{out\_from\_cycle} armazenam os mapeamentos originais para posterior reexpansão.}
+    \label{fig:contract-cycle-example}
+\end{figure}
 
 \subsection{Remoção de arestas que entram na raiz:}
 Esta função remove todas as arestas que entram no vértice raiz \(r_0\), garantindo que a raiz não tenha predecessores.
