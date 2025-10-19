@@ -565,6 +565,8 @@ A seguir, demonstramos a execução completa do algoritmo de Chu--Liu/Edmonds em
     \label{fig:exemplo-grafo-inicial}
 \end{figure}
 
+O primeiro passo do nosso algoritmo seria remover as arestas que entram na raiz (vértice $0$), porém não há nenhuma nesse caso, logo não existe a necessidade de alterar o grafo.
+
 O próximo passo é normalizar os pesos das arestas de entrada para cada vértice. Nessa etapa, para cada vértice $v$ (exceto a raiz), o algoritmo encontra a aresta de menor peso que entra em $v$ e subtrai esse menor peso de todas as arestas que entram em $v$ (isso serve para zerar o peso da aresta mínima de entrada em cada vértice).
 
 \begin{figure}[H]
