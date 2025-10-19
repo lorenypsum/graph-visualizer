@@ -40,12 +40,12 @@
         \node[above, red, font=\small\bfseries] at (3, 4) {Ciclo $C$};
 
         % Título
-        \node[above, font=\small\bfseries] at (3, 4.8) {Grafo original $D$};
+        \node[above, font=\small\bfseries, draw=none, fill=none] at (3, 4.8) {Grafo original $D$};
     \end{scope}
 
     % SETA DE TRANSFORMAÇÃO
     \node[font=\Large, right=2.5cm of left] (arrow) {$\Rightarrow$};
-    \node[below=0.2cm of arrow, font=\scriptsize, text width=2cm, align=center] {\texttt{contract\_cycle(D, C, "x\_C")}};
+    \node[above=0.2cm of arrow, left=0.5cm of arrow, font=\scriptsize, text width=2cm, align=center, draw=none, fill=none] {\texttt{contract\_cycle(D, C, "x\_C")}};
 
     % LADO DIREITO: Grafo contraído D' com supervértice x_C
     \begin{scope}[local bounding box=right, xshift=11cm]
@@ -68,10 +68,10 @@
         \draw[arrow] (r2) -- node[midway, left, fill=white, inner sep=1pt, font=\tiny] {6} (v1_2);
 
         % Título
-        \node[above, font=\small\bfseries] at (3, 4.8) {Grafo contraído $D'$};
+        \node[above, font=\small\bfseries, draw=none, fill=none] at (3, 4.8) {Grafo contraído $D'$};
 
         % Anotações dos dicionários
-        \node[below, font=\tiny, text width=5cm, align=left] at (3, -0.8) {
+        \node[below, font=\tiny, text width=5cm, align=left, draw=none, fill=none] at (3, -0.8) {
             \texttt{in\_to\_cycle} $= \{r: (v_2, 2), v_1: (v_2, 3)\}$ \\
             \texttt{out\_from\_cycle} $= \{v_5: (v_4, 1)\}$
         };
