@@ -22,7 +22,8 @@ Construa \(A'\) escolhendo, para cada \(v\neq r\), um arco de menor custo que en
 
 Se \(A'\) contiver um ciclo dirigido \(C\) (que não inclui \(r\)), normalizamos os custos de entrada, contraímos \(C\) em um supervértice \(x_C\) ajustando arcos que entram em \(C\) por \(c'(u,x_C)=c(u,w)-c(a_w)\), e resolvemos recursivamente no grafo contraído.
 
-As arborescências do grafo contraído correspondem, em bijeção, às arborescências do grafo original com exatamente um arco entrando em \(C\). Como os arcos internos de \(C\) têm custo reduzido zero, os custos são preservados na ida e na volta.
+As arborescências obtidas no grafo contraído estão em correspondência bijetiva com as arborescências do grafo original que possuem exatamente um arco entrando no ciclo \(C\). Como, após a normalização, todos os arcos internos de \(C\) passam a ter custo reduzido igual a zero, a expansão do supervértice recupera uma arborescência válida no grafo original sem alterar o custo total da solução.
+
 
 \begin{figure}[H]\centering
     \begin{tikzpicture}[>=Stealth, node distance=1.2cm]
@@ -159,7 +160,7 @@ Esta seção apresenta uma implementação em Python do algoritmo. A arquitetura
 Formalizamos a implementação do algoritmo de Chu--Liu/Edmonds:
 
 \begin{itemize}\setlength{\itemsep}{2pt}
-    \item \textbf{Entrada:} digrafo \(D=(V,A)\) (objeto \texttt{nx.DiGraph}), custos \(c:A\to\mathbb{R}\) no atributo \texttt{"w"}, raiz \(r\in V\).
+    \item \textbf{Entrada:} digrafo \(D=(V,A)\), custos \(c:A\to\mathbb{R}\) no atributo \texttt{"w"}, raiz \(r\in V\).
     \item \textbf{Hipóteses:} (i) \(D\) é conexo a partir de \(r\) — todo \(v\neq r\) é alcançável; (ii) para todo \(X\subseteq V\setminus\{r\}\), existe arco entrando em \(X\) (condições de Edmonds \cite{schrijver2003comb}); (iii) custos não negativos.
     \item \textbf{Saída:} subgrafo \(T\) com \(|A_T|=|V|-1\) arestas, grau de entrada 1 para todo \(v\neq r\), alcançabilidade a partir de \(r\) e custo \(\sum_{a\in A_T} c(a)\) mínimo.
     \item \textbf{Convenções:} arcos paralelos permitidos após contrações; laços descartados.
