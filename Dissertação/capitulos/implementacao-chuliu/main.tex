@@ -343,6 +343,80 @@ Vamos agora formalizar a operação de contração de ciclos. Seja \((D, c, r)\)
 \]
 O conjunto de arcos \(A'\) é construído a partir de \(A\) da seguinte forma: para cada arco \(a = (u,v) \in A\), mantemos \(a\) inalterado em \(A'\) se ambos \(u\) e \(v\) estão fora de \(C\); descartamos \(a\) se ambos pertencem a \(C\); criamos um arco \((u, x_C)\) se \(u \notin C\) e \(v \in C\); e criamos um arco \((x_C, v)\) se \(u \in C\) e \(v \notin C\).
 
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[>=Stealth]
+        % Estilos
+        \tikzset{
+            vtx/.style={circle, draw, thick, inner sep=1.2pt, minimum size=6mm},
+            super/.style={circle, draw, very thick, fill=gray!10, inner sep=1.2pt, minimum size=8mm},
+            cyclevtx/.style={circle, draw, thick, fill=blue!8, inner sep=1.2pt, minimum size=6mm},
+            internal/.style={->, semithick, draw=blue!70},
+            external/.style={->, semithick, draw=black!60},
+            entering/.style={->, very thick, draw=red!60},
+            leaving/.style={->, very thick, draw=green!60!black}
+        }
+
+        % --- (a) Dígrafo original D ---
+        \node at (-5.2,2.6) {(a) Dígrafo original \(D\)};
+
+        % Vértices externos ao ciclo
+        \node[vtx] (p) at (-7.6,0.8) {$p$};
+        \node[vtx] (q) at (-7.6,-0.8) {$q$};
+        \node[vtx] (s) at (-2.2,0.0) {$s$};
+
+        % Ciclo C (destacado com região sombreada)
+        \begin{scope}[on background layer]
+            \fill[blue!5, rounded corners] (-6.2,-0.7) rectangle (-3.8,1.9);
+            \draw[dashed, blue!40, thick, rounded corners] (-6.2,-0.7) rectangle (-3.8,1.9);
+        \end{scope}
+        \node[blue!60, font=\small] at (-3.5,-1.0) {$C$};
+        \node[cyclevtx] (a) at (-5.8,1.4) {$a$};
+        \node[cyclevtx] (b) at (-5.8,0.2) {$b$};
+        \node[cyclevtx] (c) at (-4.2,0.8) {$c$};
+
+        % Arcos internos ao ciclo
+        \draw[internal] (a) -- (b);
+        \draw[internal] (b) -- (c);
+        \draw[internal] (c) -- (a);
+
+        % Arcos externos mantidos
+        \draw[external] (p) -- (q);
+        \draw[external] (q) to[bend right=12] (s);
+
+        % Arcos que entram no ciclo
+        \draw[entering] (p) to[bend right=8] (a);
+        \draw[entering] (q) to[bend left=8] (b);
+
+        % Arco que sai do ciclo
+        \draw[leaving] (c) to[bend left=8] (s);
+
+        % --- (b) Dígrafo contraído D' ---
+        \node at (1.6,2.6) {(b) Dígrafo contraído \(D'\)};
+
+        % Vértices externos
+        \node[vtx] (p2) at (-0.8,0.8) {$p$};
+        \node[vtx] (q2) at (-0.8,-0.8) {$q$};
+        \node[vtx] (s2) at (4.0,0.0) {$s$};
+
+        % Supervértice xC
+        \node[super] (xC) at (1.6,0.0) {$x_C$};
+
+        % Arcos externos mantidos
+        \draw[external] (p2) -- (q2);
+        \draw[external] (q2) to[bend right=12] (s2);
+
+        % Arcos que entravam no ciclo agora entram em xC
+        \draw[entering] (p2) to[bend right=12] (xC);
+        \draw[entering] (q2) to[bend left=12] (xC);
+
+        % Arco que saía do ciclo agora sai de xC
+        \draw[leaving] (xC) to[bend left=8] (s2);
+    \end{tikzpicture}
+    \caption{Ilustração da contração de um ciclo \(C = \{a, b, c\}\). No dígrafo original (a), o ciclo \(C\) está destacado em azul claro; arcos internos ao ciclo (em azul) são descartados na contração; arcos que entram em \(C\) (em vermelho) e que saem de \(C\) (em verde) são redirecionados. No dígrafo contraído (b), o ciclo é substituído pelo supervértice \(x_C\), e os arcos externos são ajustados apropriadamente.}
+    \label{fig:contracao-ciclo}
+\end{figure}
+
 Observamos que a contração pode gerar arcos paralelos entre um mesmo par de vértices, mas descartamos laços em \(x_C\). Os custos dos arcos que entram no supervértice \(x_C\) devem ser ajustados de modo a preservar a otimalidade, conforme estabelecido na proposição a seguir.
 
 \begin{proposicao}
