@@ -335,6 +335,51 @@ Consequentemente, $S \cdot u$ é um ciclo de $H$.
 
 A solução consiste em \emph{normalizar os custos por vértice}: para cada \(v\neq r\), subtraímos de todo arco que entra em \(v\) o menor custo entre os arcos que chegam a \(v\). Após esse ajuste (custos reduzidos), cada \(v\neq r\) passa a ter ao menos um arco de custo reduzido zero. Se os arcos de custo zero forem acíclicos, já temos a r-arborescência ótima. Se formarem um ciclo \(C\), \emph{contraímos} \(C\) em um \textbf{supervértice} \(x_C\), ajustamos os custos dos arcos externos e resolvemos recursivamente no grafo menor. Ao final, \emph{expandimos} as contrações removendo exatamente um arco interno de cada ciclo para manter grau de entrada 1 e aciclicidade global.
 
+\subsection{Contração de ciclos}
+
+Vamos agora formalizar a operação de contração de ciclos. Seja \((D, c, r)\) um \(r\)-dígrafo ponderado e seja \(C\) um ciclo dirigido de \(D\) tal que \(r \notin C\). A \textbf{contração de \(C\)} consiste em formar um novo dígrafo \(D' = (V', A')\) substituindo todos os vértices de \(C\) por um único \textbf{supervértice} \(x_C\). Formalmente, o conjunto de vértices de \(D'\) é dado por
+\[
+    V' \;:=\; (V \setminus C) \cup \{x_C\}.
+\]
+O conjunto de arcos \(A'\) é construído a partir de \(A\) da seguinte forma: para cada arco \(a = (u,v) \in A\), mantemos \(a\) inalterado em \(A'\) se ambos \(u\) e \(v\) estão fora de \(C\); descartamos \(a\) se ambos pertencem a \(C\); criamos um arco \((u, x_C)\) se \(u \notin C\) e \(v \in C\); e criamos um arco \((x_C, v)\) se \(u \in C\) e \(v \notin C\).
+
+Observamos que a contração pode gerar arcos paralelos entre um mesmo par de vértices, mas descartamos laços em \(x_C\). Os custos dos arcos que entram no supervértice \(x_C\) devem ser ajustados de modo a preservar a otimalidade, conforme estabelecido na proposição a seguir.
+
+\begin{proposicao}
+    Seja \(C\) um ciclo dirigido em \(D\) com \(r \notin C\), e seja \(D'\) o dígrafo obtido pela contração de \(C\). Para cada vértice \(v \in C\), seja \(a_v\) o único arco de \(C\) que entra em \(v\), e suponha que \(c_\lambda(a_v) = 0\) para todo \(v \in C\), onde \(\lambda(v) = \min\{c(a) : a \in \delta^-(v)\}\). Defina os custos \(c' : A' \to \mathbb{R}\) por
+    \[
+        c'(a') \;:=\;
+        \begin{cases}
+            c_\lambda(a)   & \text{se } a' = a \text{ e } a \text{ não envolve } C,                      \\
+            c_\lambda(u,w) & \text{se } a' = (u, x_C) \text{ corresponde a } (u,w) \text{ com } w \in C, \\
+            c_\lambda(u,v) & \text{se } a' = (x_C, v) \text{ corresponde a } (u,v) \text{ com } u \in C.
+        \end{cases}
+    \]
+    Então existe uma correspondência bijetiva entre as \(r\)-arborescências de \(D'\) com custos \(c'\) e as \(r\)-arborescências de \(D\) com custos \(c_\lambda\) que contêm exatamente um arco entrando em \(C\).
+\end{proposicao}
+
+\begin{proof}[Prova.]
+    Seja \(T'\) uma \(r\)-arborescência de \(D'\). Como \(x_C\) é um vértice de \(D'\) e \(x_C \neq r\), existe exatamente um arco de \(T'\) que entra em \(x_C\). Seja \((u, x_C)\) esse arco. No dígrafo original \(D\), o arco \((u, x_C)\) corresponde a um arco \((u, w)\) para algum \(w \in C\).
+
+    Definimos \(T \subseteq A\) da seguinte forma: para cada arco \(a' \in T'\) que não envolve \(x_C\), incluímos o arco correspondente \(a \in A\) em \(T\); para o arco \((u, x_C) \in T'\), incluímos \((u,w) \in A\) em \(T\); e incluímos todos os arcos de \(C\), com exceção do arco \(a_w\) que entra em \(w\).
+
+    Afirmamos que \(T\) é uma \(r\)-arborescência de \(D\). De fato, para cada vértice \(v \in V \setminus \{r\}\), se \(v \notin C\), então \(v \in V'\) e há exatamente um arco de \(T'\) entrando em \(v\), logo há exatamente um arco de \(T\) entrando em \(v\). Se \(v \in C\) e \(v \neq w\), então o único arco de \(T\) entrando em \(v\) é o arco \(a_v\) do ciclo \(C\). Finalmente, se \(v = w\), o único arco de \(T\) entrando em \(w\) é precisamente \((u,w)\).
+
+    Além disso, como \(T'\) é acíclico em \(D'\) e os arcos do ciclo \(C\) formam um caminho de \(w\) até seus predecessores em \(C\) (exceto o arco removido \(a_w\)), o conjunto \(T\) permanece acíclico. Portanto, \(T\) é uma \(r\)-arborescência de \(D\).
+
+    Reciprocamente, seja \(T\) uma \(r\)-arborescência de \(D\) que contém exatamente um arco entrando em \(C\), digamos \((u,w)\) com \(u \notin C\) e \(w \in C\). Definimos \(T' \subseteq A'\) mantendo cada arco de \(T\) que não envolve vértices de \(C\), substituindo o arco \((u,w)\) por \((u, x_C)\), e descartando os arcos internos de \(C\) presentes em \(T\). É direto verificar que \(T'\) é uma \(r\)-arborescência de \(D'\) e que essa correspondência é bijetiva.
+
+    Finalmente, como todos os arcos \(a_v\) do ciclo \(C\) têm custo \(c_\lambda\)-reduzido zero, temos
+    \[
+        c_\lambda(T) \;=\; \sum_{a \in T \setminus C} c_\lambda(a) + c_\lambda(u,w)
+        \;=\; c'(T'),
+    \]
+    o que estabelece a correspondência entre custos.
+\end{proof}
+
+Essa proposição justifica a estratégia recursiva do algoritmo: resolver o problema no grafo contraído \(D'\) com custos ajustados \(c'\) e, em seguida, expandir a solução para o grafo original \(D\).
+
+
 \section{Descrição do algoritmo}
 A seguir apresentamos uma descrição do algoritmo de Chu–Liu/Edmonds. Detalhes de implementação serão discutidos na próxima seção. Denotamos por \(A'\) o conjunto de arcos escolhidos na construção da r-arborescência.
 
