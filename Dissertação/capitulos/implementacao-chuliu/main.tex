@@ -1,17 +1,342 @@
-\chapter{Algoritmo de Chu–Liu/Edmonds}
+\chapter{Algoritmo de Chu–Liu--Edmonds}
 
-O algoritmo de Chu–Liu/Edmonds encontra uma r-arborescência de custo mínimo em um digrafo ponderado. A estratégia funciona de forma gulosa ao escolher, para cada vértice \(v\neq r\), o arco de entrada mais barato. No entanto, essa abordagem pode gerar ciclos dirigidos, incompatíveis com a estrutura de arborescência. O algoritmo resolve esse problema combinando normalização de custos, contração de ciclos em supervértices e expansão controlada para garantir otimalidade.
+Neste capítulo, apresentaremos o algoritmo de Chu--Liu--Edmonds, que determina
+uma arborescência de custo mínimo em um dígrafo ponderado.
+O algoritmo baseia-se em duas operações fundamentais:
+(i) a redução gulosa dos custos dos arcos e (ii) a contração de ciclos,
+de modo a resolver recursivamente uma instância menor do problema e, em seguida,
+estender a solução para o problema original.
+O propósito deste capítulo é fornecer uma descrição precisa tanto do algoritmo
+quanto da implementação desenvolvida neste trabalho.
 
-O algoritmo se baseia que no fato que em uma r-arborescência, cada \(v\neq r\) deve ter exatamente um arco de entrada e \(r\) tem grau de entrada zero. Se escolhermos para cada vértice o arco mais barato que nele entra, podemos formar um ciclo dirigido \(C\) onde todos os vértices recebem seu único arco de dentro do próprio \(C\). Nesse caso, nenhum arco entraria em \(C\) a partir de \(V\setminus C\) (o corte \(\delta^-(C)\) ficaria vazio) e, como \(r\notin C\), não existiria caminho de \(r\) para os vértices de \(C\), contrariando a alcançabilidade exigida.
 
-A Figura \ref{fig:chu-liu-cycle-micro} ilustra com um microexemplo: três vértices \(a,b,c\) (todos fora de \(r\)) onde o arco mais barato que entra em \(b\) vem de \(a\), o de \(c\) vem de \(b\) e o de \(a\) vem de \(c\), formando o ciclo \(a\to b\to c\to a\). Embora existam arcos de \(r\) para cada vértice, eles são mais caros e não são escolhidos pelo critério local, deixando os vértices "presos" no ciclo sem conexão com a raiz.
+\section{O algoritmo}
+
+
+O algoritmo de Chu--Liu--Edmonds recebe uma tripla \((D,c,r)\), em que \(D=(V,A)\) é um dígrafo, \(c\colon A\to\mathbb{R}\) é uma função custo e \(r\in V\) é a raiz, sob a hipótese de que \(D\) admite ao menos uma \(r\)-arborescência. O algoritmo devolve uma \(r\)-arborescência \(c\)-mínima de \(D\).
+
+Para evitar repetir essa hipótese, introduzimos a seguinte definição.
+Uma tripla \((D,c, r)\) é um \textbf{\(r\)-dígrafo ponderado} se $(D, c)$
+é um digrafo ponderado, $r$ é um vértice de $D$, $\delta^-(r) = \varnothing$
+e $D$ possui uma $r$-arborescência. Note que a hipótese $\delta^-(r)$ é uma trivialidade,
+pois uma $r$-arborescência não contém nenhum arco que entra em $r$ e, portanto,
+tais arcos podem ser eliminados de $D$ sem nenhum prejuízo.
+
+Vamos tecer algumas considerações para motivar o algoritmo.
+Suponha doravante que $(D, c, r)$ é um $r$-digrafo ponderado.
+O algoritmo tem um caráter guloso. Note que, se \(T\) é uma \(r\)-arborescência de $D$,
+então, para cada vértice \(v \neq r\), existe exatamente um arco de \(T\) que entra em \(v\). Isso sugere a seguinte escolha gulosa: para cada vértice \(v \neq r\), selecione um arco \(a_v\) de custo mínimo que entra em \(v\) e forme o conjunto \(T := \{a_v : v \in V \setminus \{r\}\}\).
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[>=Stealth]
+        % estilos
+        \tikzset{
+            vtx/.style={circle, draw, thick, inner sep=1.2pt, minimum size=6mm},
+            chosen/.style={->, very thick, draw=blue},
+            other/.style={->, semithick, draw=black!35},
+            costB/.style={font=\scriptsize, fill=white, inner sep=1pt, text=blue},
+            costG/.style={font=\scriptsize, fill=white, inner sep=1pt, text=black!55}
+        }
+
+        % layout (mais espaçado)
+        \node[vtx] (r) at (0,0) {$r$};
+        \node[vtx] (a) at (3,1.6) {$a$};
+        \node[vtx] (b) at (3,-1.6) {$b$};
+        \node[vtx] (c) at (6,2.2) {$c$};
+        \node[vtx] (d) at (6,0.0) {$d$};
+        \node[vtx] (e) at (6,-2.2) {$e$};
+
+        % --- arcos NÃO escolhidos (cinza), agora com curvaturas mais limpas ---
+        \draw[other] (b) to[bend left=12] node[costG, above] {4} (a);   % b->a
+        \draw[other] (a) to[bend left=14] node[costG, below] {5} (b);   % a->b
+
+        % r->c: externo por cima, suave (pontos de controle explícitos)
+        \draw[other]
+        (r) .. controls (0.8,2.4) and (5.2,3.0) ..
+        node[costG, yshift=4pt, pos=0.53] {3} (c);
+
+        % a->d (referência)
+        \draw[other] (a) -- node[costG, right] {3} (d);
+
+        % c->e: leve curvatura pela direita (sem "barriga")
+        \draw[other]
+        (c) .. controls (7.6,2.6) and (7.6,-2.6) ..
+        node[costG, xshift=8pt, pos=0.52] {5} (e);
+
+        % --- arcos ESCOLHIDOS (AZUL) — formam a r-arborescência T ---
+        \draw[chosen] (r) -- node[costB, above] {1} (a);   % r->a
+        \draw[chosen] (r) -- node[costB, below] {2} (b);   % r->b
+        \draw[chosen] (a) -- node[costB, above] {1} (c);   % a->c
+        \draw[chosen] (b) -- node[costB, above] {1} (d);   % b->d
+        \draw[chosen] (b) -- node[costB, below] {2} (e);   % b->e
+
+        % legenda compacta
+        \node[align=left, anchor=west] at (8.4,1.9) {\footnotesize \textbf{Escolha gulosa:}\\[-2pt]
+            \footnotesize para cada \(v\neq r\), escolher\\[-1pt]
+            \footnotesize um arco de custo mínimo\\[-1pt]
+            \footnotesize que entra em \(v\).};
+        \draw[chosen] (9.0,0.8) -- +(0.9,0) node[right, costB] {\footnotesize arcos de \(T\)};
+        \draw[other]  (9.0,0.2) -- +(0.9,0) node[right, costG] {\footnotesize demais arcos};
+    \end{tikzpicture}
+
+    \caption{A figura ilustra a escolha gulosa quando esta produz uma $r$-arborescência.
+        Os arcos em \textcolor{blue}{azul} são os escolhidos; os cinza são os demais arcos
+        de digrafo.}
+\end{figure}
+
+
+Suponha que \(T\) é uma \(r\)-arborescência. Não é difícil verificar que \(T\) tem custo mínimo.
+De fato, seja \(F\) uma \(r\)-arborescência de \(D\). Para cada vértice \(v \neq r\), escreva \(b_v\) para o \emph{único} arco de \(F\) que entra em \(v\). Pela escolha gulosa,
+\[
+    c(a_v) \leq c(b_v) \quad \text{para todo } v \neq r.
+\]
+Logo,
+\[
+    c(F) \;=\; \sum_{v \in V \setminus \{r\}} c(b_v)
+    \;\;\geq\;\; \sum_{v \in V \setminus \{r\}} c(a_v)
+    \;=\; c(T).
+\]
+Portanto, \(T\) é uma \(r\)-arborescência de custo mínimo.
+
+
+A seguinte figura ilustra que podemos não ter tanta sorte.
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[>=Stealth, node distance=2.0cm]
+        % estilos
+        \tikzset{
+            v/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
+            cheap/.style={->, very thick, draw=blue!70},
+            expensive/.style={->, dashed, draw=gray!60}
+        }
+        % nós
+        \node[v] (r) {\small $r$};
+        \node[v] (a) [right=2.2cm of r] {\small $a$};
+        \node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
+        \node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
+        % ciclo de escolhas mais baratas (custo 1)
+        \draw[cheap] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (b);
+        \draw[cheap] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
+        \draw[cheap] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (a);
+        % arcos da raiz mais caros (não escolhidos pelo critério local)
+        \draw[expensive] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (a);
+        \draw[expensive] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (b);
+        \draw[expensive] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (c);
+    \end{tikzpicture}
+    \caption{Os arcos azuis são os da escolha gulosa.}
+\end{figure}
+Ora, se no lugar do arco $(c,a)$ tivessemos escolhido o arco $(r, a)$, então
+$r$-arborescência resultante seria de custo mínimo.
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[>=Stealth, node distance=2.0cm]
+        % estilos
+        \tikzset{
+            v/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
+            cheap/.style={->, very thick, draw=blue!70},
+            expensive/.style={->, dashed, draw=gray!60}
+        }
+        % nós
+        \node[v] (r) {\small $r$};
+        \node[v] (a) [right=2.2cm of r] {\small $a$};
+        \node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
+        \node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
+        % ciclo de escolhas mais baratas (custo 1)
+        \draw[cheap] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (b);
+        \draw[cheap] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
+        \draw[expensive] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (a);
+        % arcos da raiz mais caros (não escolhidos pelo critério local)
+        \draw[cheap] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (a);
+        \draw[expensive] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (b);
+        \draw[expensive] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (c);
+    \end{tikzpicture}
+    \caption{Os arcos azuis são os da escolha gulosa.}
+\end{figure}
+
+O exemplo acima sugere que devemos formar o subdigrafo $H$ de $D$
+com \(V(H)=V(D)\) e
+\[
+    A(H)\;:=\; \bigcup_{v \in V \setminus \{r\}}
+    \arg\min\{\, c(a) : a \in \delta^{-}(v) \,\}.
+\]
+Ou seja, para cada \(v \neq r\) incluímos em \(H\) \emph{todos} os arcos de custo mínimo que entram em \(v\).
+Um argumento análogo ao anterior mostra que, se \(H\) contém uma \(r\)-arborescência, então ela é de custo mínimo.
+
+
+Infelizmente, só isso não é suficiente, como mostra a próxima figura.
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[>=Stealth, node distance=2.0cm]
+        % estilos
+        \tikzset{
+            v/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
+            cheap/.style={->, very thick, draw=blue!70},
+            expensive/.style={->, dashed, draw=gray!60}
+        }
+        % nós
+        \node[v] (r) {\small $r$};
+        \node[v] (a) [right=2.2cm of r] {\small $a$};
+        \node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
+        \node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
+        % ciclo de escolhas mais baratas (custo 1)
+        \draw[cheap] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (b);
+        \draw[cheap] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
+        \draw[cheap] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 1} (a);
+        % arcos da raiz mais caros (não escolhidos pelo critério local)
+        \draw[expensive] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (a);
+        \draw[expensive] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (b);
+        \draw[expensive] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (c);
+    \end{tikzpicture}
+    \caption{Os arcos azuis são os da escolha gulosa.}
+    \label{fig:antes:red}
+\end{figure}
+
+O ideal, do ponto de vista algorítmico, é dispor de uma forma simples de identificar o subdigrafo \(H\).
+Uma transformação nos custos fornece exatamente isso. Para tanto, introduzimos a noção de
+\textbf{custo \(q\)-reduzido}.
+
+Seja \(q : V \setminus \{r\} \to \mathbb{R}\) (convencionamos \(q(r)=0\)).
+Definimos o \textbf{custo \(q\)-reduzido} \(c_q : A \to \mathbb{R}\) por
+\[
+    c_q(a) := c(a) - q\bigl(\head(a)\bigr), \qquad a \in A.
+\]
+Para um conjunto \(X \subseteq V\), escrevemos \(q(X) := \sum_{u \in X} q(u)\).
+
+A próxima proposição mostra que a transformação por custo \(q\)-reduzido preserva a otimalidade.
+
+\begin{proposicao}
+    Para toda função \(q: V\setminus \{r\} \to \mathbb{R}\),
+    uma \(r\)-arborescência \(T\) é \(c\)-mínima em \(D\) se, e somente se, \(T\) é \(c_q\)-mínima em \(D\).
+\end{proposicao}
+\begin{proof}[Prova.]
+    Seja \(F\) uma \(r\)-arborescência. Para cada \(u \in V \setminus \{r\}\), seja \(a_u\) o único arco de \(F\) que entra em \(u\). Então
+    \begin{align*}
+        c_q(F)
+         & = \sum_{u \in V \setminus \{r\}} c_q(a_u)                                     \\
+         & = \sum_{u \in V \setminus \{r\}} \bigl(c(a_u) - q(u)\bigr)                    \\
+         & = \sum_{u \in V \setminus \{r\}} c(a_u) - \sum_{u \in V \setminus \{r\}} q(u) \\
+         & = c(F) - q(V \setminus \{r\}).
+    \end{align*}
+    Assim, para quaisquer $r$-arborescências $T$ e $F$,
+    \[
+        c(T) \le c(F)
+        \;\;\Longleftrightarrow\;\;
+        c'(T) = c(T) - q(V \setminus \{r\}) \le c(F) - q(V \setminus \{r\}) = c_q(F),
+    \]
+    o que prova a proposição.
+\end{proof}
+
+Para cada \(v \in V \setminus \{r\}\), defina
+\[
+    \lambda(v) := \lambda_c(v) := \min\{\, c(a) : a \in \delta^{-}(v) \,\}.
+\]
+Note que $\lambda$ está bem definida uma vez que $D$ possui uma $r$-arborescência e, portanto,
+existe ao menos um arco que entra em cada vértice diferente de $r$.
+Então, para todo \(v \in V \setminus \{r\}\),
+\[
+    \min\{\, c_\lambda(a) : a \in \delta^{-}(v) \,\} = 0,
+\]
+isto é, precisamente os arcos de custo mínimo que entram em \(v\) passam a ter custo zero, e os demais ficam com custo positivo.
+Consequentemente, o subdigrafo \(H\) obtém-se simplesmente como o subdigrafo induzido pelos arcos de custo zero de \(c_\lambda\):
+\[
+    V(H) = V(D)
+    \quad\text{e}\quad
+    A(H) = \{\, a \in A : c_\lambda(a) = 0 \,\}.
+\]
+
+A figura a seguir ilustra a redução de custos no digrafo da Figura~\ref{fig:antes:red}.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\linewidth]{figures/fig_chu_liu_cycle_micro.pdf}
-    \caption{Ciclo gerado pelas escolhas locais "mais baratas por vértice". Os arcos grossos (custo 1) entram em \(a,b,c\) e formam \(a\to b\to c\to a\). Os arcos tracejados partindo de \(r\) existem, mas são mais caros e por isso não são escolhidos pelo critério local.}
-    \label{fig:chu-liu-cycle-micro}
+    \begin{tikzpicture}[>=Stealth, node distance=2.0cm]
+        % estilos
+        \tikzset{
+            v/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
+            cheap/.style={->, very thick, draw=blue!70},
+            expensive/.style={->, dashed, draw=gray!60}
+        }
+        % nós
+        \node[v] (r) {\small $r$};
+        \node[v] (a) [right=2.2cm of r] {\small $a$};
+        \node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
+        \node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
+        % ciclo de escolhas mais baratas (custo 1)
+        \draw[cheap] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (b);
+        \draw[cheap] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (c);
+        \draw[cheap] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (a);
+        % arcos da raiz mais caros (não escolhidos pelo critério local)
+        \draw[expensive] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 2} (a);
+        \draw[expensive] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 1} (b);
+        \draw[expensive] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 3} (c);
+    \end{tikzpicture}
+    \caption{Os arcos azuis são os da escolha gulosa.}
 \end{figure}
+
+
+Podemos agora retomar o caso no qual o subdigrafo gerador $H$ de $D$, cujo
+arcos são aqueles cujo custo $\lambda$-reduzido é zero, não possui uma $r$-arborescência.
+Vamos mostrar que $H$ possui um ciclo.
+
+Seja $v \neq r$ um vértice de $V$ que \emph{não} é alcançável a partir de $r$ em $H$.
+Considere um caminho simples maximal%
+\footnote{Maximal aqui tem o seguinte sentido. Para cada vértice $u$
+    de $H$, as sequencias $P \cdot u$ e $u \cdot P$ não são caminhos simples.}
+de $H$ que termina em $v$.
+Seja $u$ o início de $P$. Como $v$ não é atingível a partir de $r$, temos que
+$u \neq r$. Logo, existe exatamente um arco, digamos $wv$, de $H$ que entra em $u$.
+Pela maximalidade de \(P\), o vértice \(w\) é um dos vértices de \(P\) (caso contrário,
+$w \cdot P$ é um caminho simples, o que contraria a escolha de $P$).
+Como \(P\) é um caminho simples que começa em \(u\), o vértice \(w\) aparece
+em \(P\) \emph{após} \(u\); portanto, \(P\) contém um subcaminho $S$ de \(u\) até \(w\).
+Consequentemente, $S \cdot u$ é um ciclo de $H$.
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[>=Stealth]
+        % estilos
+        \tikzset{
+            vtx/.style={circle, draw, thick, inner sep=1pt, minimum size=6mm},
+            Pdash/.style={->, thick, densely dashed},   % parte tracejada de P
+            cycleedge/.style={->, ultra thick}          % arco que fecha o ciclo
+        }
+
+        % vértices em coordenadas (distância maior entre u e w)
+        \node[vtx] (u) at (0,0) {$u$};
+        \node[vtx] (w) at (4.8,0) {$w$};
+        \node[vtx] (d) at (7.2,0) {$d$};
+        \node[vtx] (v) at (9.6,0) {$v$};
+
+        % raiz r (apenas contexto)
+        \node[vtx] (r) at (-2,1.6) {$r$};
+        \node at (-2,2.2) {\small raiz};
+
+        % --- Caminho P ---
+        % parte inicial de P (u ~~~> w) como arco ondulado azul (sem o vértice intermediário)
+        \draw[blue, very thick, -{Stealth[length=2mm]}, decorate,
+        decoration={snake, amplitude=1.2pt, segment length=5pt}]
+        (u) .. controls (1.4,1.2) and (3.4,1.2) .. node[midway, yshift=8pt] {$S$} (w);
+
+        % continuação de P (tracejada): w -> d -> v
+        \draw[Pdash] (w) -- (d);
+        \draw[Pdash] (d) -- (v);
+
+        % rótulo P (afastado do arco w->u)
+        \node at (7.2,-0.9) {\small \(P\)};
+
+        % arco que fecha o ciclo: w -> u
+        \draw[cycleedge, bend left=35] (w) to node[above, yshift=1pt] {$wu \in T$} (u);
+    \end{tikzpicture}
+
+    \caption{O caminho simples maximal \(P\) inicia em \(u\) e termina em \(v\).
+        A porção \(S\) de \(P\) entre \(u\) e \(w\) é indicada pelo arco ondulado azul; o
+        caminho $S \cdot u$ é um ciclo.}
+\end{figure}
+
+\textcolor{red}{Parei aqui!}
+
+
+
 
 A solução consiste em \emph{normalizar os custos por vértice}: para cada \(v\neq r\), subtraímos de todo arco que entra em \(v\) o menor custo entre os arcos que chegam a \(v\). Após esse ajuste (custos reduzidos), cada \(v\neq r\) passa a ter ao menos um arco de custo reduzido zero. Se os arcos de custo zero forem acíclicos, já temos a r-arborescência ótima. Se formarem um ciclo \(C\), \emph{contraímos} \(C\) em um \textbf{supervértice} \(x_C\), ajustamos os custos dos arcos externos e resolvemos recursivamente no grafo menor. Ao final, \emph{expandimos} as contrações removendo exatamente um arco interno de cada ciclo para manter grau de entrada 1 e aciclicidade global.
 
@@ -306,7 +631,7 @@ Esta função detecta a presença de um ciclo dirigido em \(F^*\) e retorna um s
 
 Recebe como entrada um digrafo \texttt{F\_star} (objeto \texttt{nx.DiGraph}). A implementação utiliza um bloco \texttt{try} (linha 2) para capturar exceções caso não haja ciclo; esta escolha de tratamento por exceção é necessária porque a API do NetworkX adota o padrão EAFP (\emph{Easier to Ask for Forgiveness than Permission}), onde \texttt{nx.find\_cycle} não retorna um valor especial (como \texttt{None}) quando o grafo é acíclico, mas sim lança a exceção \texttt{NetworkXNoCycle} para sinalizar a ausência de ciclos.
 
-Em seguida a função inicializa um conjunto vazio \texttt{nodes\_in\_cycle} (linha 3) e emprega a função \texttt{nx.find\_cycle} do NetworkX (linha 4), que realiza uma busca em profundidade (DFS) para detectar ciclos (ver Seção~\ref{sec:dfs}). A função \texttt{nx.find\_cycle} percorre o grafo visitando vértices e arestas: ao encontrar uma aresta \((u,v)\) onde \(v\) já está na pilha de recursão da DFS, identifica um ciclo e retorna um iterador sobre todas as arestas que compõem esse ciclo. O laço na linha 4 itera sobre essas arestas retornadas, desempacotando cada uma na forma \texttt{(u, v, \_)} (ignorando o terceiro elemento com \texttt{\_}, que contém metadados de orientação), e para cada aresta \((u,v)\) adiciona ambos os vértices ao conjunto \texttt{nodes\_in\_cycle} (linha 5); a escolha de usar conjunto em vez de lista garante que cada vértice seja adicionado apenas uma vez mesmo que o ciclo tenha múltiplas arestas incidentes, e a operação de adição tem complexidade \(O(1)\) amortizada.
+Em seguida a função inicializa um conjunto vazio \texttt{nodes\_in\_cycle} (linha 3) e emprega a função \texttt{nx.find\_cycle} do NetworkX (linha 4), que realiza uma busca em profundidade (DFS) para detectar ciclos. A função \texttt{nx.find\_cycle} percorre o grafo visitando vértices e arestas: ao encontrar uma aresta \((u,v)\) onde \(v\) já está na pilha de recursão da DFS, identifica um ciclo e retorna um iterador sobre todas as arestas que compõem esse ciclo. O laço na linha 4 itera sobre essas arestas retornadas, desempacotando cada uma na forma \texttt{(u, v, \_)} (ignorando o terceiro elemento com \texttt{\_}, que contém metadados de orientação), e para cada aresta \((u,v)\) adiciona ambos os vértices ao conjunto \texttt{nodes\_in\_cycle} (linha 5); a escolha de usar conjunto em vez de lista garante que cada vértice seja adicionado apenas uma vez mesmo que o ciclo tenha múltiplas arestas incidentes, e a operação de adição tem complexidade \(O(1)\) amortizada.
 
 Após coletar todos os vértices do ciclo, constrói e retorna uma cópia do subgrafo induzido por eles (linha 7); a cópia é necessária porque o método \texttt{subgraph} retorna apenas uma visão dinâmica sobre o grafo original.
 
