@@ -330,7 +330,7 @@ Consequentemente, $S \cdot u$ é um ciclo de $H$.
 
 A solução consiste em \emph{normalizar os custos por vértice}: para cada \(v\neq r\), subtraímos de todo arco que entra em \(v\) o menor custo entre os arcos que chegam a \(v\). Após esse ajuste (custos reduzidos), cada \(v\neq r\) passa a ter ao menos um arco de custo reduzido zero. Se os arcos de custo zero forem acíclicos, já temos a r-arborescência ótima. Se formarem um ciclo \(C\), \emph{contraímos} \(C\) em um \textbf{supervértice} \(x_C\), ajustamos os custos dos arcos externos e resolvemos recursivamente no grafo menor.
 
-Ao final, \emph{expandimos} as contrações removendo exatamente um arco interno de cada ciclo contraído. Essa remoção é necessária para preservar duas propriedades fundamentais da arborescência: primeiro, que cada vértice (exceto a raiz) possua grau de entrada exatamente igual a 1; segundo, que o dígrafo resultante seja \textbf{acíclico}, ou seja, não contenha nenhum ciclo dirigido. Chamamos essa segunda propriedade de \textbf{aciclicidade global}, pois deve valer para todo o dígrafo, e não apenas localmente para subconjuntos de vértices.
+A seguir, detalhamos essa operação de contração de ciclos.
 
 \subsection*{Contração de ciclos}
 
@@ -412,7 +412,9 @@ O conjunto de arcos \(A'\) é construído a partir de \(A\) da seguinte forma: p
 	\label{fig:contracao-ciclo}
 \end{figure}
 
-Observamos que a contração pode gerar arcos paralelos entre um mesmo par de vértices, mas descartamos laços em \(x_C\). Os custos dos arcos que entram no supervértice \(x_C\) devem ser ajustados de modo a preservar a otimalidade, conforme estabelecido na proposição a seguir.
+Observamos que descartamos laços em \(x_C\). Caso a contração gere arcos paralelos entre um mesmo par de vértices, mantemos apenas o arco de menor custo, já que na reexpansão qualquer escolha entre arcos paralelos conduz à mesma solução ótima.
+
+Para preservar a otimalidade na correspondência entre arborescências do grafo contraído e do grafo original, ajustamos os custos dos arcos que entram no supervértice \(x_C\) da seguinte forma: para cada arco \((u, w)\) com \(u \notin C\) e \(w \in C\), o custo do arco contraído \((u, x_C)\) é definido como \(c_\lambda(u,w)\), onde \(\lambda(w) = \min\{c(a) : a \in \delta^-(w)\}\) é o custo mínimo de entrada em \(w\). Esse ajuste garante que, ao selecionar um arco entrando em \(x_C\) no grafo contraído, o custo corresponde exatamente ao custo adicional necessário para conectar o ciclo ao restante da arborescência no grafo original, conforme estabelecido na proposição a seguir.
 
 \begin{proposicao}
 	Seja \(C\) um ciclo dirigido em \(D\) com \(r \notin C\), e seja \(D'\) o dígrafo obtido pela contração de \(C\). Para cada vértice \(v \in C\), seja \(a_v\) o único arco de \(C\) que entra em \(v\), e suponha que \(c_\lambda(a_v) = 0\) para todo \(v \in C\), onde \(\lambda(v) = \min\{c(a) : a \in \delta^-(v)\}\). Defina os custos \(c' : A' \to \mathbb{R}\) por
