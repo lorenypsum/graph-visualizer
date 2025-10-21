@@ -24,7 +24,7 @@ tais arcos podem ser eliminados de $D$ sem nenhum prejuízo.
 
 Vamos tecer algumas considerações para motivar o algoritmo.
 
-\subsection*{Contração de ciclos}
+\subsection{Contração de ciclos}
 Suponha doravante que $(D, c, r)$ é um $r$-digrafo ponderado.
 O algoritmo tem um caráter guloso. Note que, se \(T\) é uma \(r\)-arborescência de $D$,
 então, para cada vértice \(v \neq r\), existe exatamente um arco de \(T\) que entra em \(v\). Isso sugere a seguinte escolha gulosa: para cada vértice \(v \neq r\), selecione um arco \(a_v\) de custo mínimo que entra em \(v\) e forme o conjunto \(T := \{a_v : v \in V \setminus \{r\}\}\).
@@ -337,7 +337,7 @@ Consequentemente, $S \cdot u$ é um ciclo de $H$.
 
 A solução consiste em \emph{normalizar os custos por vértice}: para cada \(v\neq r\), subtraímos de todo arco que entra em \(v\) o menor custo entre os arcos que chegam a \(v\). Após esse ajuste (custos reduzidos), cada \(v\neq r\) passa a ter ao menos um arco de custo reduzido zero. Se os arcos de custo zero forem acíclicos, já temos a r-arborescência ótima. Se formarem um ciclo \(C\), \emph{contraímos} \(C\) em um \textbf{supervértice} \(x_C\), ajustamos os custos dos arcos externos e resolvemos recursivamente no grafo menor. Ao final, \emph{expandimos} as contrações removendo exatamente um arco interno de cada ciclo para manter grau de entrada 1 e aciclicidade global.
 
-\subsection*{Contração de ciclos}
+\subsection{Contração de ciclos}
 
 Vamos agora formalizar a operação de contração de ciclos. Seja \((D, c, r)\) um \(r\)-dígrafo ponderado e seja \(C\) um ciclo dirigido de \(D\) tal que \(r \notin C\). A \textbf{contração de \(C\)} consiste em formar um novo dígrafo \(D' = (V', A')\) substituindo todos os vértices de \(C\) por um único \textbf{supervértice} \(x_C\). Formalmente, o conjunto de vértices de \(D'\) é dado por
 \[
