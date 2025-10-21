@@ -328,7 +328,7 @@ Consequentemente, $S \cdot u$ é um ciclo de $H$.
 		caminho $S \cdot u$ é um ciclo.}
 \end{figure}
 
-A solução consiste em \emph{normalizar os custos por vértice}: para cada \(v\neq r\), subtraímos de todo arco que entra em \(v\) o menor custo entre os arcos que chegam a \(v\). Após esse ajuste (custos reduzidos), cada \(v\neq r\) passa a ter ao menos um arco de custo reduzido zero. Se os arcos de custo zero forem acíclicos, já temos a r-arborescência ótima. Se formarem um ciclo \(C\), \emph{contraímos} \(C\) em um \textbf{supervértice} \(x_C\), ajustamos os custos dos arcos externos e resolvemos recursivamente no grafo menor. 
+A solução consiste em \emph{normalizar os custos por vértice}: para cada \(v\neq r\), subtraímos de todo arco que entra em \(v\) o menor custo entre os arcos que chegam a \(v\). Após esse ajuste (custos reduzidos), cada \(v\neq r\) passa a ter ao menos um arco de custo reduzido zero. Se os arcos de custo zero forem acíclicos, já temos a r-arborescência ótima. Se formarem um ciclo \(C\), \emph{contraímos} \(C\) em um \textbf{supervértice} \(x_C\), ajustamos os custos dos arcos externos e resolvemos recursivamente no grafo menor.
 
 Ao final, \emph{expandimos} as contrações removendo exatamente um arco interno de cada ciclo contraído. Essa remoção é necessária para preservar duas propriedades fundamentais da arborescência: primeiro, que cada vértice (exceto a raiz) possua grau de entrada exatamente igual a 1; segundo, que o dígrafo resultante seja \textbf{acíclico}, ou seja, não contenha nenhum ciclo dirigido. Chamamos essa segunda propriedade de \textbf{aciclicidade global}, pois deve valer para todo o dígrafo, e não apenas localmente para subconjuntos de vértices.
 
