@@ -341,9 +341,7 @@ Vamos agora formalizar a operação de contração de ciclos. Seja \((D, c, r)\)
 
 O conjunto de arcos \(A'\) é construído a partir de \(A\) da seguinte forma: para cada arco \(a = (u,v) \in A\), mantemos \(a\) inalterado em \(A'\) se ambos \(u\) e \(v\) estão fora de \(C\); descartamos \(a\) se ambos pertencem a \(C\); criamos um arco \((u, x_C)\) se \(u \notin C\) e \(v \in C\); e criamos um arco \((x_C, v)\) se \(u \in C\) e \(v \notin C\).
 
-E em relação aos custos dos arcos que entram no supervértice \(x_C\) em \(D'\) ajustamos-os da seguinte forma: para cada arco \((u, w)\) com \(u \notin C\) e \(w \in C\), o custo do arco contraído \((u, x_C)\) é definido como \(c_\lambda(u,w)\), onde \(\lambda(w) = \min\{c(a) : a \in \delta^-(w)\}\) é o custo mínimo de entrada em \(w\).
-
-Para os custos em \(D'\), definimos o custo reduzido de cada arco conforme a seguinte regra: para cada arco \((u, x_C)\) com \(u \notin C\), correspondente a um arco \((u, w)\) com \(w \in C\) no grafo original, atribuímos \(c'((u, x_C)) := c_\lambda(u, w)\), onde \(c_\lambda(u, w) = c(u, w) - \lambda(w)\) e \(\lambda(w) = \min\{c(a) : a \in \delta^-(w)\}\) é o custo mínimo de entrada em \(w\). Os demais custos seguem a mesma lógica de redução, preservando a consistência com a definição anterior de custos reduzidos.
+Ajustamos os custos dos arcos que entram e saem do supervértice \(x_C\) em \(D'\) para refletir a contração do ciclo \(C\) da seguinte forma: para cada arco \((u, v)\) com \(u \notin C\) e \(v \in C\), o custo do arco contraído \((u, x_C)\) é definido como \(c_\lambda(u,v)\), onde \(\lambda(v) = \min\{c(a) : a \in \delta^-(v)\}\) é o custo mínimo de entrada em \(v\) e de forma semelhante,para cada arco \((u, v)\) com \(u \in C\) e \(v \notin C\), o custo do arco contraído \((x_C, v)\) é definido como \(c_\lambda(u,v)\), onde \(c_\lambda(u,v) = c(u,v) - \lambda(v)\) e \(\lambda(v) = \min\{c(a) : a \in \delta^-(v)\}\) é o custo mínimo de entrada em \(v\).
 
 Agora vamos ilustrar como essa contração é feita e como os custos são ajustados.
 
