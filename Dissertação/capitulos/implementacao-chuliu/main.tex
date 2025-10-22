@@ -334,10 +334,11 @@ A seguir, detalhamos essa operação de contração de ciclos.
 
 \subsection*{Contração de ciclos}
 
-Vamos agora formalizar a operação de contração de ciclos. Seja \((D, c, r)\) um \(r\)-dígrafo ponderado e seja \(C\) um ciclo dirigido de \(D\) tal que \(r \notin C\). A \textbf{contração de \(C\)} consiste em formar um novo dígrafo \(D' = (V', A')\) substituindo todos os vértices de \(C\) por um único \textbf{supervértice} \(x_C\). Formalmente, o conjunto de vértices de \(D'\) é dado por
+Vamos agora formalizar a operação de contração de ciclos. Seja \((D, c, r)\) um \(r\)-dígrafo ponderado e seja \(C\) um ciclo dirigido de \(D\) tal que \(r \notin C\). A \textbf{contração de \(C\)} consiste em formar um novo dígrafo \(D' = (V', A')\) substituindo todos os vértices de \(C\) por um único \textbf{supervértice} \(x_C\) tal que \(x_C \notin V\). Formalmente, o conjunto de vértices de \(D'\) é dado por
 \[
 	V' \;:=\; (V \setminus C) \cup \{x_C\}.
 \]
+
 O conjunto de arcos \(A'\) é construído a partir de \(A\) da seguinte forma: para cada arco \(a = (u,v) \in A\), mantemos \(a\) inalterado em \(A'\) se ambos \(u\) e \(v\) estão fora de \(C\); descartamos \(a\) se ambos pertencem a \(C\); criamos um arco \((u, x_C)\) se \(u \notin C\) e \(v \in C\); e criamos um arco \((x_C, v)\) se \(u \in C\) e \(v \notin C\).
 
 Para preservar a otimalidade na correspondência entre arborescências do grafo contraído e do grafo original, ajustamos os custos dos arcos que entram no supervértice \(x_C\) da seguinte forma: para cada arco \((u, w)\) com \(u \notin C\) e \(w \in C\), o custo do arco contraído \((u, x_C)\) é definido como \(c_\lambda(u,w)\), onde \(\lambda(w) = \min\{c(a) : a \in \delta^-(w)\}\) é o custo mínimo de entrada em \(w\).
