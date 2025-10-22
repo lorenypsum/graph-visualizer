@@ -353,8 +353,8 @@ Considere o dígrafo \(D\) a seguir, com o ciclo \(C = (v_1, v_2, v_3, v_1)\).
 		% estilos
 		\tikzset{
 			v/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
-			cheap/.style={->, very thick, draw=blue!70},
-			expensive/.style={->, dashed, draw=gray!60},
+			cycle/.style={->, very thick, draw=blue!70},
+			arcs/.style={->, dashed, draw=gray!60},
 		}
 		% nós
 		\node[v] (r) {\small $r$};
@@ -365,22 +365,22 @@ Considere o dígrafo \(D\) a seguir, com o ciclo \(C = (v_1, v_2, v_3, v_1)\).
 		\node[v] (u) [right=2.0cm of v2] {\small $u$};
 		\node[v] (w) [right=2.0cm of v3] {\small $w$};
 		% ciclo de escolhas mais baratas (custo 1)
-		\draw[cheap] (v1) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (v2);
-		\draw[cheap] (v2) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (v3);
-		\draw[cheap] (v3) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (v1);
+		\draw[cycle] (v1) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (v2);
+		\draw[cycle] (v2) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (v3);
+		\draw[cycle] (v3) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (v1);
 		% arcos da raiz mais caros (não escolhidos pelo critério local)
-		\draw[expensive] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (v1);
-		\draw[expensive] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (v2);
-		\draw[expensive] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (v3);
+		\draw[arcs] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (v1);
+		\draw[arcs] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (v2);
+		\draw[arcs] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (v3);
 		% arcos saindo do ciclo
-		\draw[expensive] (v2) -- node[midway, above] {\scriptsize 1} (u);
-		\draw[expensive] (v3) -- node[midway, below] {\scriptsize 2} (w);
-		\draw[expensive] (v3) -- node[midway, below] {\scriptsize 4} (u);
+		\draw[arcs] (v2) -- node[midway, above] {\scriptsize 1} (u);
+		\draw[arcs] (v3) -- node[midway, below] {\scriptsize 2} (w);
+		\draw[arcs] (v3) -- node[midway, below] {\scriptsize 4} (u);
 	\end{tikzpicture}
-	\caption{O dígrafo \(D\) com o ciclo \(C = (v_1, v_2, v_3, v_1)\). Os arcos azuis representam os arcos de custo mínimo; os tracejados representam arcos mais caros da raiz.}
+	\caption{O dígrafo \(D\) com o ciclo \(C = (v_1, v_2, v_3, v_1)\). Os arcos azuis representam os arcos do ciclo, os tracejados representam os demais arcos do digrafo.}
 \end{figure}
 
-Após a normalização dos custos, os arcos internos do ciclo passam a ter custo reduzido zero:
+Após a normalização dos custos, os arcos internos do ciclo passam a ter custo reduzido zero e os demais arcos são ajustados conforme a definição de custo \(\lambda\)-reduzido.:
 
 \begin{figure}[H]
 	\centering
@@ -388,9 +388,9 @@ Após a normalização dos custos, os arcos internos do ciclo passam a ter custo
 		% estilos
 		\tikzset{
 			v/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
-			cheap/.style={->, very thick, draw=blue!70},
-			expensive/.style={->, dashed, draw=gray!60},
-			redexpensive/.style={->, dashed, draw=red!60}
+			cycle/.style={->, very thick, draw=blue!70},
+			arc/.style={->, dashed, draw=gray!60},
+			redarc/.style={->, dashed, draw=red!60}
 		}
 		% nós
 		\node[v] (r) {\small $r$};
@@ -402,19 +402,19 @@ Após a normalização dos custos, os arcos internos do ciclo passam a ter custo
 		\node[v] (w) [right=2.0cm of v3] {\small $w$};
 
 		% ciclo com custo reduzido zero
-		\draw[cheap] (v1) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (v2);
-		\draw[cheap] (v2) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (v3);
-		\draw[cheap] (v3) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (v1);
+		\draw[cycle] (v1) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (v2);
+		\draw[cycle] (v2) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (v3);
+		\draw[cycle] (v3) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (v1);
 		% arcos da raiz com custos reduzidos
-		\draw[expensive] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (v1);
-		\draw[expensive] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (v2);
-		\draw[expensive] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 3} (v3);
+		\draw[arc] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 0} (v1);
+		\draw[arc] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 1} (v2);
+		\draw[arc] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 3} (v3);
 		% arcos saindo do ciclo com custo reduzido zero
-		\draw[redexpensive] (v2) -- node[midway, above] {\scriptsize 1} (u);
-		\draw[expensive] (v3) -- node[midway, below] {\scriptsize 2} (w);
-		\draw[redexpensive] (v3) -- node[midway, below] {\scriptsize 4} (u);
+		\draw[arc] (v2) -- node[midway, above] {\scriptsize 0} (u);
+		\draw[arc] (v3) -- node[midway, below] {\scriptsize 0} (w);
+		\draw[arc] (v3) -- node[midway, below] {\scriptsize 3} (u);
 	\end{tikzpicture}
-	\caption{Dígrafo com custos \(\lambda\)-reduzidos. Os arcos internos do ciclo \(C\) têm custo zero (em azul). Os arcos da raiz para o ciclo têm custos 4, 3 e 3 (tracejados).}
+	\caption{Dígrafo com custos \(\lambda\)-reduzidos. Os arcos internos do ciclo \(C\) têm custo zero (em azul). Os arcos da raiz para o ciclo têm custos 1, 0 e 3 (tracejados).}
 \end{figure}
 
 Após a contração do ciclo \(C\), obtemos o dígrafo \(D'\) com o supervértice \(x_C\).
@@ -435,15 +435,15 @@ Após a contração do ciclo \(C\), obtemos o dígrafo \(D'\) com o supervértic
 		\node[v] (u) [above right=1.2cm and 2.0cm of xC] {\small $u$};
 		\node[v] (w) [below right=1.2cm and 2.0cm of xC] {\small $w$};
 		% arcos do dígrafo contraído que entram em xC (mantêm arcos paralelos, escolhemos o de menor custo)
-		\draw[cheap] (r) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (xC);
+		\draw[cheap] (r) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (xC);
 		% arcos que saem de xC
-		\draw[cheap] (xC) to[bend left=8] node[midway, above] {\scriptsize 1} (u);
-		\draw[cheap] (xC) to[bend right=8] node[midway, below] {\scriptsize 2} (w);
+		\draw[cheap] (xC) to[bend left=8] node[midway, above] {\scriptsize 0} (u);
+		\draw[cheap] (xC) to[bend right=8] node[midway, below] {\scriptsize 0} (w);
 	\end{tikzpicture}
-	\caption{Dígrafo \(D'\) após a contração do ciclo \(C\). O supervértice \(x_C\) substitui todos os vértices do ciclo. Originalmente, havia três arcos paralelos de \(r\) para o ciclo: \((r, v_1)\), \((r, v_2)\) e \((r, v_3)\) com custos reduzidos 4, 3 e 3; mantemos apenas o de menor custo 3. Os arcos que saíam do ciclo agora saem de \(x_C\): \((x_C, u)\) com custo 1 e \((x_C, w)\) com custo 2. Note que havia dois arcos de vértices do ciclo para \(u\); mantemos apenas o de menor custo.}
+	\caption{Dígrafo \(D'\) após a contração do ciclo \(C\). O supervértice \(x_C\) substitui todos os vértices do ciclo. Originalmente, havia três arcos paralelos de \(r\) para o ciclo: \((r, v_1)\), \((r, v_2)\) e \((r, v_3)\) com custos reduzidos 1, 0 e 3; mantemos apenas o de menor custo 0. Os arcos que saíam do ciclo agora saem de \(x_C\): \((x_C, u)\) com custo 0 e \((x_C, w)\) com custo 0. Note que havia dois arcos de vértices do ciclo para \(u\); mantemos apenas o de menor custo.}
 \end{figure}
 
-Observamos que caso a contração gere arcos paralelos entre um mesmo par de vértices, mantemos apenas o arco de menor custo, conforme ilustrado do vértice \(r\) para o supervértice \(x_C\) e de \(x_C\) para \(u\) e isso não afeta a otimalidade, já que na reexpansão qualquer escolha entre arcos paralelos conduz à mesma solução ótima.
+Por definição não admitimos gerar arcos paralelos entre um mesmo par de vértices, mantemos apenas o arco de menor custo, conforme ilustrado do vértice \(r\) para o supervértice \(x_C\) e de \(x_C\) para \(u\) e isso não afeta a otimalidade, já que na reexpansão qualquer escolha entre arcos paralelos conduz à mesma solução ótima.
 
 Com isso, vale a pena destacar que, mesmo que arborescências ótimas diferentes em \(D\) possam levar a arborescências ótimas diferentes em \(D'\), o custo ótimo permanece o mesmo. E as arborescências ótimas em \(D'\) podem ser reexpandidas para obter arborescências ótimas em \(D\), mas não são necessariamente bijetivas, conforme o exemplo abaixo:
 
