@@ -447,9 +447,10 @@ Por definição não admitimos gerar arcos paralelos entre um mesmo par de vért
 
 \subsection*{Reexpansão de arborescências}
 
-Após resolver o problema no dígrafo contraído \(D'\), obtemos uma \(r\)-arborescência ótima \(T'\) em \(D'\). Para reexpandir \(T'\) em uma \(r\)-arborescência \(T\) em \(D\), substituímos o supervértice \(x_C\) pelo ciclo \(C\) e adicionamos os arcos do ciclo que formam a arborescência dentro de \(C\). Especificamente, se o arco \((u, x_C)\) em \(T'\) corresponde a um arco \((u, v_i)\) em \(D\) (onde \(v_i \in C\)), então incluímos esse arco em \(T\). Em seguida, adicionamos os arcos do ciclo \(C\) que conectam os vértices de \(C\) de forma a manter a estrutura de arborescência.
+Após resolver o problema no dígrafo contraído \(D'\), obtemos uma \(r\)-arborescência ótima \(T'\) em \(D'\). Para reexpandir \(T'\) em uma \(r\)-arborescência \(T\) em \(D\), substituímos o supervértice \(x_C\) pelo ciclo \(C\) e adicionamos os arcos do ciclo que formam a arborescência dentro de \(C\). Especificamente, se o arco \((u, x_C)\) em \(T'\) corresponde a um arco \((u, v_i)\) em \(D\) (onde \(v_i \in C\)), então incluímos esse arco em \(T\). Em seguida, adicionamos os arcos do ciclo \(C\) que conectam os vértices de \(C\) de forma a manter a estrutura de arborescência. Note que, devemos escolher todas os arcos do ciclo \(C\) exceto aquela que entra em \(v_i\), garantindo que cada vértice de \(C\) tenha grau de entrada igual a 1, exceto \(v_i\).
 
 Seguindo nosso exemplo anterior, ilustramos a reexpansão da \(r\)-arborescência ótima \(T'\) em \(D'\) para obter a \(r\)-arborescência \(T\) em \(D\) da seguinte forma:
+Seguindo o exemplo anterior, a figura abaixo ilustra a reexpansão de \(T'\) em \(D'\) para obter a \(r\)-arborescência \(T\) em \(D\):
 
 \begin{figure}[H]
 	\centering
@@ -485,7 +486,7 @@ Seguindo nosso exemplo anterior, ilustramos a reexpansão da \(r\)-arborescênci
 	\caption{Reexpansão da \(r\)-arborescência ótima \(T'\) em \(D'\) para obter a \(r\)-arborescência \(T\) em \(D\). Os arcos selecionados em verde fazem parte de \(T\).}
 \end{figure}
 
-Ao obtermos a \(r\)-arborescência \(T\) em \(D\) a partir de \(T'\) em \(D'\), garantimos que \(T\) é uma \(r\)-arborescência de custo mínimo em \(D\). Pois, os custos foram ajustados de forma a preservar a otimalidade durante a contração e reexpansão do ciclo \(C\). E assim, os custos finais nesse exemplo ficam da seguinte forma:
+Ao obtermos a \(r\)-arborescência \(T\) em \(D\) a partir de \(T'\) em \(D'\), garantimos que \(T\) é uma \(r\)-arborescência de custo mínimo em \(D\), pois os custos foram ajustados para preservar a otimalidade durante a contração e reexpansão do ciclo \(C\). A figura a seguir mostra os custos finais dos arcos selecionados:
 
 \begin{figure}[H]
 	\centering
@@ -508,24 +509,22 @@ Ao obtermos a \(r\)-arborescência \(T\) em \(D\) a partir de \(T'\) em \(D'\), 
 		% ciclo de escolhas mais baratas (custo 1)
 		\draw[selected] (v1) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (v2);
 		\draw[selected] (v2) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (v3);
-		\draw[arcs] (v3) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (v1);
+		\draw[arcs] (v3) to[bend left=14] node[midway, below, sloped] {\scriptsize} (v1);
 		% arcos da raiz mais caros (não escolhidos pelo critério local)
 		\draw[selected] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (v1);
-		\draw[arcs] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 0} (v2);
-		\draw[arcs] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 0} (v3);
+		\draw[arcs] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize} (v2);
+		\draw[arcs] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize} (v3);
 		% arcos saindo do ciclo
 		\draw[selected] (v2) -- node[midway, above] {\scriptsize 1} (u);
 		\draw[selected] (v3) -- node[midway, below] {\scriptsize 2} (w);
-		\draw[arcs] (v3) -- node[midway, below] {\scriptsize 0} (u);
+		\draw[arcs] (v3) -- node[midway, below] {\scriptsize} (u);
 	\end{tikzpicture}
 	\caption{Reexpansão da \(r\)-arborescência ótima \(T'\) em \(D'\) para obter a \(r\)-arborescência \(T\) em \(D\). Os arcos selecionados em verde fazem parte de \(T\).}
 \end{figure}
 
+É importante observar que, ao reexpandir uma arborescência ótima de \(D'\), podemos obter múltiplas arborescências ótimas em \(D\), o exemplo a seguir ilustra essa situação:
 
-
-É importante observar que, embora diferentes arborescências ótimas em \(D\) possam ser mapeadas para arborescências ótimas em \(D'\), o valor do custo ótimo é preservado no processo de contração. Além disso, ao reexpandir uma arborescência ótima de \(D'\), podemos obter múltiplas arborescências ótimas em \(D\), evidenciando que a correspondência entre soluções ótimas pode não ser bijetiva. O exemplo a seguir ilustra essa situação:
-
-Considere o dígrafo a seguir com custos originais:
+Considere o digrafo a seguir com custos originais:
 
 \begin{figure}[H]
 	\centering
@@ -545,18 +544,18 @@ Considere o dígrafo a seguir com custos originais:
 
 		% ciclo
 		\draw[cheap] (v1) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (v2);
-		\draw[cheap] (v2) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (v3);
-		\draw[cheap] (v3) to[bend left=14] node[midway, below, sloped] {\scriptsize 1} (v1);
+		\draw[cheap] (v2) to[bend left=12] node[midway, above, sloped] {\scriptsize 5} (v3);
+		\draw[cheap] (v3) to[bend left=14] node[midway, below, sloped] {\scriptsize 5} (v1);
 		% dois arcos paralelos da raiz para o ciclo com mesmo custo
-		\draw[expensive] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 4} (v1);
+		\draw[expensive] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 5} (v1);
 		\draw[expensive] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (v3);
 		% arco saindo do ciclo
 		\draw[expensive] (v2) -- node[midway, above] {\scriptsize 4} (u);
 	\end{tikzpicture}
-	\caption{Dígrafo \(D\) com custos originais. O ciclo \(C = (v_1, v_2, v_3, v_1)\) tem arcos com custos 2, 3 e 1. Existem dois arcos da raiz para o ciclo, ambos com custo 5: \((r, v_1)\) e \((r, v_3)\).}
+	\caption{Dígrafo \(D\) com custos originais. O ciclo \(C = (v_1, v_2, v_3, v_1)\) tem arcos com custos 5, 5 e 2. Existem dois arcos da raiz para o ciclo, ambos com custo 5: \((r, v_1)\) e \((r, v_3)\).}
 \end{figure}
 
-Após a normalização dos custos (subtraindo \(\lambda(v_1) = 5\), \(\lambda(v_2) = 2\), \(\lambda(v_3) = 3\) e \(\lambda(u) = 4\)), obtemos:
+Após a normalização dos custos (subtraindo \(\lambda(v_1) = 5\), \(\lambda(v_2) = 2\), \(\lambda(v_3) = 5\) e \(\lambda(u) = 4\)), obtemos:
 
 \begin{figure}[H]
 	\centering
@@ -579,15 +578,40 @@ Após a normalização dos custos (subtraindo \(\lambda(v_1) = 5\), \(\lambda(v_
 		\draw[cheap] (v2) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (v3);
 		\draw[cheap] (v3) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (v1);
 		% dois arcos paralelos da raiz para o ciclo com mesmo custo reduzido
-		\draw[expensive] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 4} (v1);
-		\draw[expensive] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (v3);
+		\draw[expensive] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 0} (v1);
+		\draw[expensive] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 0} (v3);
 		% arco saindo do ciclo
-		\draw[expensive] (v2) -- node[midway, above] {\scriptsize 4} (u);
+		\draw[expensive] (v2) -- node[midway, above] {\scriptsize 0} (u);
 	\end{tikzpicture}
 	\caption{Dígrafo \(D\) com custos \(\lambda\)-reduzidos. Todos os arcos do ciclo custo mínimo têm agora custo zero.}
 \end{figure}
 
-Após a normalização, existem duas \(r\)-arborescências ótimas distintas em \(D\), ilustradas a seguir:
+Após a contração do ciclo \(C\), ambas as arborescências \(T_1\) e \(T_2\) mapeiam para a mesma arborescência \(T'\) no dígrafo contraído \(D'\):
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[>=Stealth, node distance=2.0cm]
+		% estilos
+		\tikzset{
+			v/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
+			super/.style={circle, draw, fill=orange!15, minimum size=9mm, inner sep=0pt},
+			selected/.style={->, ultra thick, draw=blue!70}
+		}
+
+		\node at (0, 1.5) {\textbf{Arborescência \(T'\) em \(D'\)}};
+		% nós
+		\node[v] (r) {\small $r$};
+		\node[super] (xC) [right=3.5cm of r] {\small $x_C$};
+		\node[v] (u) [right=2.5cm of xC] {\small $u$};
+
+		% arcos selecionados
+		\draw[selected] (r) to node[midway, above] {\scriptsize 0} (xC);
+		\draw[selected] (xC) to node[midway, above] {\scriptsize 0} (u);
+	\end{tikzpicture}
+	\caption{Arborescência \(T'\) no dígrafo contraído \(D'\). O arco \((r, x_C)\) substitui ambos os arcos \((r, v_1)\) e \((r, v_3)\) em \(D\) e o arco \((x_C, u)\) corresponde ao arco normalizado \((v_2, u)\) em \(D\).}
+\end{figure}
+
+No processo de reexpansão, existem duas \(r\)-arborescências ótimas distintas em \(D\), ilustradas a seguir:
 
 \begin{figure}[H]
 	\centering
@@ -642,32 +666,7 @@ Após a normalização, existem duas \(r\)-arborescências ótimas distintas em 
 	\caption{Duas \(r\)-arborescências ótimas distintas em \(D\) com custos \(c_\lambda\)-reduzidos. \(T_1\) usa o arco \((r, v_1)\) e os arcos do ciclo \((v_1, v_2)\) e \((v_2, v_3)\). \(T_2\) usa o arco \((r, v_3)\) e os arcos do ciclo \((v_3, v_1)\) e \((v_1, v_2)\). Ambas incluem o arco \((v_2, u)\) e têm custo total zero.}
 \end{figure}
 
-Após a contração do ciclo \(C\), ambas as arborescências \(T_1\) e \(T_2\) mapeiam para a mesma arborescência \(T'\) no dígrafo contraído \(D'\):
-
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[>=Stealth, node distance=2.0cm]
-		% estilos
-		\tikzset{
-			v/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
-			super/.style={circle, draw, fill=orange!15, minimum size=9mm, inner sep=0pt},
-			selected/.style={->, ultra thick, draw=blue!70}
-		}
-
-		\node at (0, 1.5) {\textbf{Arborescência \(T'\) em \(D'\)}};
-		% nós
-		\node[v] (r) {\small $r$};
-		\node[super] (xC) [right=3.5cm of r] {\small $x_C$};
-		\node[v] (u) [right=2.5cm of xC] {\small $u$};
-
-		% arcos selecionados
-		\draw[selected] (r) to node[midway, above] {\scriptsize 0} (xC);
-		\draw[selected] (xC) to node[midway, above] {\scriptsize 0} (u);
-	\end{tikzpicture}
-	\caption{Arborescência \(T'\) no dígrafo contraído \(D'\). Tanto \(T_1\) quanto \(T_2\) são mapeadas para esta mesma arborescência, demonstrando que a correspondência não é bijetiva. O custo total de \(T'\) é zero, igual ao custo de \(T_1\) e \(T_2\).}
-\end{figure}
-
-Logo, a correspondência não é bijetiva, pois duas arborescências distintas em \(D\) correspondem à mesma arborescência em \(D'\). Isso ocorre porque ambos os arcos \((r, v_1)\) e \((r, v_3)\) têm o mesmo custo \(\lambda\)-reduzido (zero) e ambos entram no ciclo \(C\); após a contração, ambos são representados pelo único arco \((r, x_C)\) no dígrafo contraído.
+Assim, vemos que a correspondência entre as \(r\)-arborescências de \(D\) e \(D'\) não é bijetiva, pois duas arborescências distintas em \(D\) podem corresponder à mesma arborescência em \(D'\). Isso ocorre porque ambos os arcos \((r, v_1)\) e \((r, v_3)\) têm o mesmo custo \(\lambda\)-reduzido (zero) e ambos entram no ciclo \(C\); após a contração, ambos são representados pelo único arco \((r, x_C)\) no dígrafo contraído.
 
 A seguir, apresentamos a proposição que estabelece a correspondência entre as \(r\)-arborescências de \(D\) e \(D'\) após a contração do ciclo \(C\).
 
