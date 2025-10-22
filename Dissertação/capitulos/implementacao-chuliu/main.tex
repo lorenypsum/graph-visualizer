@@ -343,7 +343,7 @@ O conjunto de arcos \(A'\) é construído a partir de \(A\) da seguinte forma: p
 
 Ajustamos os custos dos arcos que entram e saem do supervértice \(x_C\) em \(D'\) para refletir a contração do ciclo \(C\) da seguinte forma: para cada arco \((u, v)\) com \(u \notin C\) e \(v \in C\), o custo do arco contraído \((u, x_C)\) é definido como \(c_\lambda(u,v)\), onde \(\lambda(v) = \min\{c(a) : a \in \delta^-(v)\}\) é o custo mínimo de entrada em \(v\) e de forma semelhante,para cada arco \((u, v)\) com \(u \in C\) e \(v \notin C\), o custo do arco contraído \((x_C, v)\) é definido como \(c_\lambda(u,v)\), onde \(c_\lambda(u,v) = c(u,v) - \lambda(v)\) e \(\lambda(v) = \min\{c(a) : a \in \delta^-(v)\}\) é o custo mínimo de entrada em \(v\).
 
-Agora vamos ilustrar como essa contração é feita e como os custos são ajustados.
+Agora vamos ilustrar um exemplo de como essa contração é feita e os custos são ajustados.
 
 Considere o dígrafo \(D\) a seguir, com o ciclo \(C = (v_1, v_2, v_3, v_1)\).
 
