@@ -470,24 +470,56 @@ Seguindo nosso exemplo anterior, ilustramos a reexpansão da \(r\)-arborescênci
 		\node[v] (u) [right=2.0cm of v2] {\small $u$};
 		\node[v] (w) [right=2.0cm of v3] {\small $w$};
 		% ciclo de escolhas mais baratas (custo 1)
-		\draw[arcs] (v1) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (v2);
-		\draw[arcs] (v2) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (v3);
-		\draw[arcs] (v3) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (v1);
+		\draw[selected] (v1) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (v2);
+		\draw[selected] (v2) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (v3);
+		\draw[arcs] (v3) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (v1);
 		% arcos da raiz mais caros (não escolhidos pelo critério local)
-		\draw[arcs] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (v1);
+		\draw[selected] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 0} (v1);
 		\draw[arcs] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 0} (v2);
 		\draw[arcs] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 0} (v3);
 		% arcos saindo do ciclo
-		\draw[arcs] (v2) -- node[midway, above] {\scriptsize 0} (u);
-		\draw[arcs] (v3) -- node[midway, below] {\scriptsize 0} (w);
+		\draw[selected] (v2) -- node[midway, above] {\scriptsize 0} (u);
+		\draw[selected] (v3) -- node[midway, below] {\scriptsize 0} (w);
 		\draw[arcs] (v3) -- node[midway, below] {\scriptsize 0} (u);
 	\end{tikzpicture}
 	\caption{Reexpansão da \(r\)-arborescência ótima \(T'\) em \(D'\) para obter a \(r\)-arborescência \(T\) em \(D\). Os arcos selecionados em verde fazem parte de \(T\).}
 \end{figure}
 
+Ao obtermos a \(r\)-arborescência \(T\) em \(D\) a partir de \(T'\) em \(D'\), garantimos que \(T\) é uma \(r\)-arborescência de custo mínimo em \(D\). Pois, os custos foram ajustados de forma a preservar a otimalidade durante a contração e reexpansão do ciclo \(C\). E assim, os custos finais nesse exemplo ficam da seguinte forma:
 
-
-
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[>=Stealth, node distance=2.0cm]
+		% estilos
+		\tikzset{
+			v/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
+			cycle/.style={->, very thick, draw=blue!70},
+			arcs/.style={->, dashed, draw=gray!60},
+			selected/.style={->, very thick, draw=green!70}
+		}
+		% nós
+		\node[v] (r) {\small $r$};
+		\node[v] (v1) [right=2.2cm of r] {\small $v_1$};
+		\node[v] (v2) [above right=1.2cm and 1.6cm of v1] {\small $v_2$};
+		\node[v] (v3) [below right=1.2cm and 1.6cm of v1] {\small $v_3$};
+		% vértices adicionais que saem do ciclo
+		\node[v] (u) [right=2.0cm of v2] {\small $u$};
+		\node[v] (w) [right=2.0cm of v3] {\small $w$};
+		% ciclo de escolhas mais baratas (custo 1)
+		\draw[selected] (v1) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (v2);
+		\draw[selected] (v2) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (v3);
+		\draw[arcs] (v3) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (v1);
+		% arcos da raiz mais caros (não escolhidos pelo critério local)
+		\draw[selected] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (v1);
+		\draw[arcs] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 0} (v2);
+		\draw[arcs] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 0} (v3);
+		% arcos saindo do ciclo
+		\draw[selected] (v2) -- node[midway, above] {\scriptsize 1} (u);
+		\draw[selected] (v3) -- node[midway, below] {\scriptsize 2} (w);
+		\draw[arcs] (v3) -- node[midway, below] {\scriptsize 0} (u);
+	\end{tikzpicture}
+	\caption{Reexpansão da \(r\)-arborescência ótima \(T'\) em \(D'\) para obter a \(r\)-arborescência \(T\) em \(D\). Os arcos selecionados em verde fazem parte de \(T\).}
+\end{figure}
 
 
 
