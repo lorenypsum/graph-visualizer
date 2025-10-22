@@ -846,18 +846,18 @@ O uso de memória é \(O(m+n)\), incluindo mapeamentos de contração/expansão 
 
 \section{Implementação em Python}
 
-Esta seção apresenta uma implementação em Python do algoritmo. A arquitetura segue os passos teóricos: recebe como entrada um digrafo ponderado, os custos das arestas e o vértice raiz. O procedimento seleciona, para cada vértice, o arco de menor custo de entrada, verifica se o grafo é acíclico e, se necessário, contrai ciclos e ajusta custos. Ao final, retorna como saída a r-arborescência ótima: um conjunto de arestas que conecta todos os vértices à raiz com custo mínimo.
 
-Formalizamos a implementação do algoritmo de Chu--Liu/Edmonds:
+Esta seção descreve a implementação do algoritmo de Chu--Liu--Edmonds em Python, estruturada para refletir com precisão as etapas formais discutidas anteriormente. Cada operação fundamental — normalização dos custos, construção do subgrafo gerador, contração de ciclos e reexpansão — é traduzida em procedimentos sobre dígrafos orientados, utilizando a biblioteca \texttt{networkx}.
 
-\begin{itemize}\setlength{\itemsep}{2pt}
-	\item \textbf{Entrada:} digrafo \(D=(V,A)\), custos \(c:A\to\mathbb{R}\) no atributo \texttt{"w"}, raiz \(r\in V\).
-	\item \textbf{Hipóteses:} (i) \(D\) é conexo a partir de \(r\) — todo \(v\neq r\) é alcançável; (ii) para todo \(X\subseteq V\setminus\{r\}\), existe arco entrando em \(X\) (condições de Edmonds \cite{schrijver2003comb}); (iii) custos não negativos.
-	\item \textbf{Saída:} subgrafo \(T\) com \(|A_T|=|V|-1\) arestas, grau de entrada 1 para todo \(v\neq r\), alcançabilidade a partir de \(r\) e custo \(\sum_{a\in A_T} c(a)\) mínimo.
-	\item \textbf{Convenções:} arcos paralelos permitidos após contrações; laços descartados.
-\end{itemize}
 
-A implementação consiste em funções auxiliares que traduzem cada passo teórico (normalização, construção de \(F^*\), contração, reexpansão) em operações sobre \texttt{nx.DiGraph}, orquestradas por uma função principal que gerencia o fluxo recursivo. As subseções seguintes detalham cada função auxiliar: lógica, parâmetros, retornos e complexidade.
+A entrada consiste em um dígrafo orientado \(D = (V, A)\), com custos dos arcos registrados no atributo \texttt{"w"}, e uma raiz \(r \in V\). As hipóteses adotadas são: (i) o grafo é conexo a partir de \(r\), isto é, todo vértice \(v \neq r\) é alcançável a partir da raiz; (ii) para todo subconjunto \(X \subseteq V \setminus \{r\}\), existe ao menos um arco entrando em \(X\) (condições de Edmonds, cf. \cite{schrijver2003comb}); e (iii) todos os custos são não negativos.
+
+
+A saída é um subgrafo \(T\) de \(D\) com \(|A_T| = |V| - 1\) arcos, tal que cada vértice \(v \neq r\) possui grau de entrada igual a 1, todos os vértices são alcançáveis a partir de \(r\), e o custo total \(\sum_{a \in A_T} c(a)\) é mínimo.
+
+Por limitações da representação com \texttt{networkx.DiGraph}, a implementação elimina arcos paralelos durante a contração de ciclos.
+
+A estrutura do código é modular: funções auxiliares tratam cada etapa do algoritmo — normalização dos custos, detecção e contração de ciclos, construção do subgrafo gerador e reexpansão da solução. Todas operam sobre objetos \texttt{nx.DiGraph} e são coordenadas por uma função principal que gerencia o fluxo recursivo. As subseções seguintes detalham cada função auxiliar, abordando lógica, parâmetros, retornos e complexidade.
 
 \subsection{Representação de digrafos e detecção de ciclos}
 
