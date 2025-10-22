@@ -445,7 +445,53 @@ Após a contração do ciclo \(C\), obtemos o dígrafo \(D'\) com o supervértic
 
 Por definição não admitimos gerar arcos paralelos entre um mesmo par de vértices, mantemos apenas o arco de menor custo, conforme ilustrado do vértice \(r\) para o supervértice \(x_C\) e de \(x_C\) para \(u\) e isso não afeta a otimalidade, já que na reexpansão qualquer escolha entre arcos paralelos conduz à mesma solução ótima.
 
-Com isso, vale a pena destacar que, mesmo que arborescências ótimas diferentes em \(D\) possam levar a arborescências ótimas diferentes em \(D'\), o custo ótimo permanece o mesmo. E as arborescências ótimas em \(D'\) podem ser reexpandidas para obter arborescências ótimas em \(D\), mas não são necessariamente bijetivas, conforme o exemplo abaixo:
+\subsection*{Reexpansão de arborescências}
+
+Após resolver o problema no dígrafo contraído \(D'\), obtemos uma \(r\)-arborescência ótima \(T'\) em \(D'\). Para reexpandir \(T'\) em uma \(r\)-arborescência \(T\) em \(D\), substituímos o supervértice \(x_C\) pelo ciclo \(C\) e adicionamos os arcos do ciclo que formam a arborescência dentro de \(C\). Especificamente, se o arco \((u, x_C)\) em \(T'\) corresponde a um arco \((u, v_i)\) em \(D\) (onde \(v_i \in C\)), então incluímos esse arco em \(T\). Em seguida, adicionamos os arcos do ciclo \(C\) que conectam os vértices de \(C\) de forma a manter a estrutura de arborescência.
+
+Seguindo nosso exemplo anterior, ilustramos a reexpansão da \(r\)-arborescência ótima \(T'\) em \(D'\) para obter a \(r\)-arborescência \(T\) em \(D\) da seguinte forma:
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[>=Stealth, node distance=2.0cm]
+		% estilos
+		\tikzset{
+			v/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
+			cycle/.style={->, very thick, draw=blue!70},
+			arcs/.style={->, dashed, draw=gray!60},
+			selected/.style={->, very thick, draw=green!70}
+		}
+		% nós
+		\node[v] (r) {\small $r$};
+		\node[v] (v1) [right=2.2cm of r] {\small $v_1$};
+		\node[v] (v2) [above right=1.2cm and 1.6cm of v1] {\small $v_2$};
+		\node[v] (v3) [below right=1.2cm and 1.6cm of v1] {\small $v_3$};
+		% vértices adicionais que saem do ciclo
+		\node[v] (u) [right=2.0cm of v2] {\small $u$};
+		\node[v] (w) [right=2.0cm of v3] {\small $w$};
+		% ciclo de escolhas mais baratas (custo 1)
+		\draw[arcs] (v1) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (v2);
+		\draw[arcs] (v2) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (v3);
+		\draw[arcs] (v3) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (v1);
+		% arcos da raiz mais caros (não escolhidos pelo critério local)
+		\draw[arcs] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (v1);
+		\draw[arcs] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 0} (v2);
+		\draw[arcs] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 0} (v3);
+		% arcos saindo do ciclo
+		\draw[arcs] (v2) -- node[midway, above] {\scriptsize 0} (u);
+		\draw[arcs] (v3) -- node[midway, below] {\scriptsize 0} (w);
+		\draw[arcs] (v3) -- node[midway, below] {\scriptsize 0} (u);
+	\end{tikzpicture}
+	\caption{Reexpansão da \(r\)-arborescência ótima \(T'\) em \(D'\) para obter a \(r\)-arborescência \(T\) em \(D\). Os arcos selecionados em verde fazem parte de \(T\).}
+\end{figure}
+
+
+
+
+
+
+
+É importante observar que, embora diferentes arborescências ótimas em \(D\) possam ser mapeadas para arborescências ótimas em \(D'\), o valor do custo ótimo é preservado no processo de contração. Além disso, ao reexpandir uma arborescência ótima de \(D'\), podemos obter múltiplas arborescências ótimas em \(D\), evidenciando que a correspondência entre soluções ótimas pode não ser bijetiva. O exemplo a seguir ilustra essa situação:
 
 Considere o dígrafo a seguir com custos originais:
 
