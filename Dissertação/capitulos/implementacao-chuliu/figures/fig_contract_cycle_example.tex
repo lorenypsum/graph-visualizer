@@ -20,32 +20,35 @@
         \node[cycle] (v4) at (4, 1) {$v_4$};
 
         % Arestas do ciclo C
-        \draw[arrow, red, thick] (v2) -- node[midway, above, fill=white, inner sep=1pt, font=\tiny] {3} (v3);
-        \draw[arrow, red, thick] (v3) -- node[midway, right, fill=white, inner sep=1pt, font=\tiny] {2} (v4);
-        \draw[arrow, red, thick] (v4) -- node[midway, below left, fill=white, inner sep=1pt, font=\tiny] {4} (v2);
+        \draw[arrow, red, thick] (v2) -- node[midway, above, fill=none, inner sep=1pt, font=\tiny, draw=none, fill=none] {3} (v3);
+        \draw[arrow, red, thick] (v3) -- node[midway, right, fill=none, inner sep=1pt, font=\tiny, draw=none, fill=none] {2} (v4);
+        \draw[arrow, red, thick] (v4) -- node[midway, below left, fill=none, inner sep=1pt, font=\tiny, draw=none, fill=none] {4} (v2);
 
         % Arestas de entrada no ciclo (de vértices externos)
-        \draw[arrow, blue] (r) -- node[midway, above, fill=white, inner sep=1pt, font=\tiny] {2} (v2);
-        \draw[arrow, blue] (r) to[bend right=15] node[midway, below, fill=white, inner sep=1pt, font=\tiny] {5} (v4);
-        \draw[arrow] (v1) -- node[midway, left, fill=white, inner sep=1pt, font=\tiny] {3} (v2);
+        \draw[arrow, blue] (r) -- node[midway, above, fill=none, inner sep=1pt, font=\tiny, draw=none, fill=none] {2} (v2);
+        \draw[arrow, blue] (r) to[bend right=15] node[midway, below, fill=none, inner sep=1pt, font=\tiny, draw=none, fill=none] {5} (v4);
+        \draw[arrow] (v1) -- node[midway, left, fill=none, inner sep=1pt, font=\tiny, draw=none, fill=none] {3} (v2);
 
         % Arestas de saída do ciclo (para vértices externos)
-        \draw[arrow, green!60!black] (v4) -- node[midway, above, fill=white, inner sep=1pt, font=\tiny] {1} (v5);
+        \draw[arrow, green!60!black] (v4) -- node[midway, above, fill=none, inner sep=1pt, font=\tiny, draw=none, fill=none] {1} (v5);
 
         % Outras arestas
-        \draw[arrow] (r) -- node[midway, left, fill=white, inner sep=1pt, font=\tiny] {6} (v1);
+        \draw[arrow] (r) -- node[midway, left, fill=none, inner sep=1pt, font=\tiny] {6} (v1);
 
         % Caixa destacando o ciclo
         \draw[dashed, red, thick, rounded corners] (1.5, 0.5) rectangle (4.5, 4);
-        \node[above, red, font=\small\bfseries] at (3, 4) {Ciclo $C$};
+        \node[above, red, font=\small\bfseries, draw=none, fill=none] at (3, 4) {Ciclo $C$};
 
         % Título
         \node[above, font=\small\bfseries, draw=none, fill=none] at (3, 4.8) {Grafo original $D$};
     \end{scope}
 
     % SETA DE TRANSFORMAÇÃO
-    \node[font=\Large, right=2.5cm of left] (arrow) {$\Rightarrow$};
-    \node[above=0.2cm of arrow, left=0.5cm of arrow, font=\scriptsize, text width=2cm, align=center, draw=none, fill=none] {\texttt{contract\_cycle(D, C, "x\_C")}};
+    % \node[font=\Large, right=2.5cm of left] (arrow) {$\Rightarrow$};
+    % \node[above=0.2cm of arrow, left=0.5cm of arrow, font=\scriptsize, text width=2cm, align=center, draw=none, fill=none] {\texttt{contract\_cycle(D, C, "x\_C")}};
+    \node[font=\Large, right=3.6cm of left.center, yshift=-0.5cm] (arrow) {$\Rightarrow$};
+    \node[below=0.2cm of arrow, font=\scriptsize, text width=0.2cm, align=center, draw=none, fill=none] {\texttt{contract\_cycle(D, C,"x\_C")}};
+    
 
     % LADO DIREITO: Grafo contraído D' com supervértice x_C
     \begin{scope}[local bounding box=right, xshift=11cm]
@@ -58,14 +61,14 @@
         \node[supervertex] (xc) at (3, 2.25) {$x_C$};
 
         % Aresta de entrada no supervértice (menor peso: r -> v2 com peso 2)
-        \draw[arrow, blue, thick] (r2) -- node[midway, above left, fill=white, inner sep=1pt, font=\tiny] {2} (xc);
-        \draw[arrow] (v1_2) -- node[midway, below left, fill=white, inner sep=1pt, font=\tiny] {3} (xc);
+        \draw[arrow, blue, thick] (r2) -- node[midway, above left, fill=none, inner sep=1pt, font=\tiny, draw=none, circle] {2} (xc);
+        \draw[arrow] (v1_2) -- node[midway, above left, fill=none, inner sep=1pt, font=\tiny, draw=none, circle, xshift=-1pt] {3} (xc);
 
         % Aresta de saída do supervértice
-        \draw[arrow, green!60!black, thick] (xc) -- node[midway, above, fill=white, inner sep=1pt, font=\tiny] {1} (v5_2);
+        \draw[arrow, green!60!black, thick] (xc) -- node[midway, above, fill=none, inner sep=1pt, font=\tiny, draw=none, circle] {1} (v5_2);
 
         % Outras arestas
-        \draw[arrow] (r2) -- node[midway, left, fill=white, inner sep=1pt, font=\tiny] {6} (v1_2);
+        \draw[arrow] (r2) -- node[midway, left, fill=none, inner sep=1pt, font=\tiny, draw=none, circle] {6} (v1_2);
 
         % Título
         \node[above, font=\small\bfseries, draw=none, fill=none] at (3, 4.8) {Grafo contraído $D'$};
