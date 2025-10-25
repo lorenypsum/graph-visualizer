@@ -449,8 +449,8 @@ Por definição não admitimos gerar arcos paralelos entre um mesmo par de vért
 
 Após resolver o problema no dígrafo contraído \(D'\), obtemos uma \(r\)-arborescência ótima \(T'\) em \(D'\). Para reexpandir \(T'\) em uma \(r\)-arborescência \(T\) em \(D\), substituímos o supervértice \(x_C\) pelo ciclo \(C\) e adicionamos os arcos do ciclo que formam a arborescência dentro de \(C\). Especificamente, se o arco \((u, x_C)\) em \(T'\) corresponde a um arco \((u, v_i)\) em \(D\) (onde \(v_i \in C\)), então incluímos esse arco em \(T\). Em seguida, adicionamos os arcos do ciclo \(C\) que conectam os vértices de \(C\) de forma a manter a estrutura de arborescência. Note que, devemos escolher todas os arcos do ciclo \(C\) exceto aquela que entra em \(v_i\), garantindo que cada vértice de \(C\) tenha grau de entrada igual a 1, exceto \(v_i\).
 
-Seguindo nosso exemplo anterior, ilustramos a reexpansão da \(r\)-arborescência ótima \(T'\) em \(D'\) para obter a \(r\)-arborescência \(T\) em \(D\) da seguinte forma:
-Seguindo o exemplo anterior, a figura abaixo ilustra a reexpansão de \(T'\) em \(D'\) para obter a \(r\)-arborescência \(T\) em \(D\):
+Seguindo nosso exemplo anterior, ilustramos a reexpansão da \(r\)-arborescência, primeiramente adicionando novamente os vértices que pertenciam ao ciclo \(C\) e, em seguida, incluindo os arcos apropriados para formar a \(r\)-arborescência \(T\) em \(D\):
+% Seguindo o exemplo anterior, a figura abaixo ilustra a reexpansão de \(T'\) em \(D'\) para obter a \(r\)-arborescência \(T\) em \(D\):
 
 \begin{figure}[H]
 	\centering
@@ -473,20 +473,20 @@ Seguindo o exemplo anterior, a figura abaixo ilustra a reexpansão de \(T'\) em 
 		% ciclo de escolhas mais baratas (custo 1)
 		\draw[selected] (v1) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (v2);
 		\draw[selected] (v2) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (v3);
-		\draw[arcs] (v3) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (v1);
+		% \draw[arcs] (v3) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (v1);
 		% arcos da raiz mais caros (não escolhidos pelo critério local)
 		\draw[selected] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 0} (v1);
-		\draw[arcs] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 0} (v2);
-		\draw[arcs] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 0} (v3);
+		% \draw[arcs] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 0} (v2);
+		% \draw[arcs] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 0} (v3);
 		% arcos saindo do ciclo
 		\draw[selected] (v2) -- node[midway, above] {\scriptsize 0} (u);
 		\draw[selected] (v3) -- node[midway, below] {\scriptsize 0} (w);
-		\draw[arcs] (v3) -- node[midway, below] {\scriptsize 0} (u);
+		% \draw[arcs] (v3) -- node[midway, below] {\scriptsize 0} (u);
 	\end{tikzpicture}
-	\caption{Reexpansão da \(r\)-arborescência ótima \(T'\) em \(D'\) para obter a \(r\)-arborescência \(T\) em \(D\). Os arcos selecionados em verde fazem parte de \(T\).}
+	\caption{Reexpansão da \(r\)-arborescência ótima \(T'\) em \(D'\) para obter a \(r\)-arborescência \(T\) em \(D\)}
 \end{figure}
 
-Ao obtermos a \(r\)-arborescência \(T\) em \(D\) a partir de \(T'\) em \(D'\), garantimos que \(T\) é uma \(r\)-arborescência de custo mínimo em \(D\), pois os custos foram ajustados para preservar a otimalidade durante a contração e reexpansão do ciclo \(C\). A figura a seguir mostra os custos finais dos arcos selecionados:
+Após isso reinserimos os pesos originais do arcos. A figura a seguir ilustra esse processo:
 
 \begin{figure}[H]
 	\centering
@@ -509,20 +509,23 @@ Ao obtermos a \(r\)-arborescência \(T\) em \(D\) a partir de \(T'\) em \(D'\), 
 		% ciclo de escolhas mais baratas (custo 1)
 		\draw[selected] (v1) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (v2);
 		\draw[selected] (v2) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (v3);
-		\draw[arcs] (v3) to[bend left=14] node[midway, below, sloped] {\scriptsize} (v1);
+		% \draw[arcs] (v3) to[bend left=14] node[midway, below, sloped] {\scriptsize} (v1);
 		% arcos da raiz mais caros (não escolhidos pelo critério local)
 		\draw[selected] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (v1);
-		\draw[arcs] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize} (v2);
-		\draw[arcs] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize} (v3);
+		% \draw[arcs] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize} (v2);
+		% \draw[arcs] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize} (v3);
 		% arcos saindo do ciclo
 		\draw[selected] (v2) -- node[midway, above] {\scriptsize 1} (u);
 		\draw[selected] (v3) -- node[midway, below] {\scriptsize 2} (w);
-		\draw[arcs] (v3) -- node[midway, below] {\scriptsize} (u);
+		% \draw[arcs] (v3) -- node[midway, below] {\scriptsize} (u);
 	\end{tikzpicture}
 	\caption{Reexpansão da \(r\)-arborescência ótima \(T'\) em \(D'\) para obter a \(r\)-arborescência \(T\) em \(D\). Os arcos selecionados em verde fazem parte de \(T\).}
 \end{figure}
 
-É importante observar que, ao reexpandir uma arborescência ótima de \(D'\), podemos obter múltiplas arborescências ótimas em \(D\), o exemplo a seguir ilustra essa situação:
+\textcolor{red}{\textbf{TODO: TEMOS QUE OLHAR ISSO AQUI DEPOIS}}
+
+
+É importante observar que, ao depender da forma com a qual extraímos a arborescência ótima de \(D'\) a partir do nosso diagrafo original, podemos obter múltiplas arborescências ótimas em \(D\), o exemplo a seguir ilustra essa situação:
 
 Considere o digrafo a seguir com custos originais:
 
