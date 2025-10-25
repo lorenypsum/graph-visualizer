@@ -801,9 +801,9 @@ Abaixo, temos a descrição formal do algoritmo.
 \begin{algobox}{Chu–Liu/Edmonds (visão operacional)}{chu-liu-edmonds}
 	Entrada: digrafo \(D=(V,A)\), custos \(c:A\to\mathbb{R}_{\ge 0}\), raiz \(r\).\footnote{Se algum \(v\neq r\) não possui arco de entrada, não existe r-arborescência.}
 	\begin{enumerate}\setlength{\itemsep}{2pt}
-		\item Para cada \(v\neq r\), escolha \(a_v\in\operatorname*{argmin}_{(u,v)\in A} c(u,v)\). Defina \(y(v):=c(a_v)\) e \(F^*:=\{a_v: v\neq r\}.\)
-		\item Se \((V,F^*)\) é acíclico, devolva \(F^*\). Por \cite[Obs.~4.36]{kleinberg2006}, trata-se de uma r-arborescência de custo mínimo.
-		\item Caso contrário, seja \(C\) um ciclo dirigido de \(F^*\) (com \(r\notin C\)). \textbf{Contração:} contraia \(C\) em um supervértice \(x_C\) e defina custos \(c'\) por
+		\item Para cada \(v\neq r\), escolha \(a_v\in\operatorname*{argmin}_{(u,v)\in A} c(u,v)\). Defina \(y(v):=c(a_v)\) e \(A_0:=\{a_v: v\neq r\}.\)
+		\item Se \((V,A_0)\) é acíclico, devolva \(A_0\). Por \cite[Obs.~4.36]{kleinberg2006}, trata-se de uma r-arborescência de custo mínimo.
+		\item Caso contrário, seja \(C\) um ciclo dirigido de \(A_0\) (com \(r\notin C\)). \textbf{Contração:} contraia \(C\) em um supervértice \(x_C\) e defina custos \(c'\) por
 		      \begin{align*}
 			      c'(u,x_C) & := c(u,w) - y(w) = c(u,w) - c(a_w) &  & \text{para } u\notin C,\ w\in C, \\
 			      c'(x_C,v) & := c(w,v)                          &  & \text{para } w\in C,\ v\notin C,
@@ -812,7 +812,7 @@ Abaixo, temos a descrição formal do algoritmo.
 		\item \textbf{Recursão:} compute uma r-arborescência ótima \(T'\) de \(D'\) com custos \(c'\).
 		\item \textbf{Expansão:} seja \((u,x_C)\in T'\) o único arco que entra em \(x_C\). No grafo original, ele corresponde a \((u,w)\) com \(w\in C\). Forme
 		      \[
-			      T := \bigl(T'\setminus\{\text{arcos incidentes a } x_C\}\bigr)\ \cup\ \{(u,w)\}\ \cup\ \bigl((F^*\cap A(C))\setminus\{a_w\}\bigr).
+			      T := \bigl(T'\setminus\{\text{arcos incidentes a } x_C\}\bigr)\ \cup\ \{(u,w)\}\ \cup\ \bigl((A_0\cap A(C))\setminus\{a_w\}\bigr).
 		      \]
 		      Então \(T\) tem grau de entrada 1 em cada \(v\neq r\), é acíclico e tem o mesmo custo de \(T'\); logo, é uma r-arborescência ótima de \(D\) \cite[Sec.~4.9]{kleinberg2006,schrijver2003comb}.
 	\end{enumerate}
@@ -826,9 +826,9 @@ A corretude do algoritmo de Chu–Liu/Edmonds baseia-se em três pilares princip
 	      \[
 		      \sum_{a\in T} c'(a) \,=\, \sum_{a\in T} c(a) \, - \, \sum_{v\neq r} y(v),
 	      \]
-	      pois há exatamente um arco de \(T\) entrando em cada \(v\neq r\). O termo \(\sum_{v\neq r} y(v)\) é constante (independe de \(T\)); assim, minimizar \(\sum c\) equivale a minimizar \(\sum c'\) \cite[Obs.~4.37]{kleinberg2006}. Em particular, os arcos \(a_v\) de menor custo que entram em \(v\) têm custo reduzido zero e formam \(F^*\).
-	\item \emph{Caso acíclico:} se \((V,F^*)\) é acíclico, então já é uma r-arborescência e, por realizar o mínimo custo de entrada em cada \(v\neq r\), é ótima \cite[Obs.~4.36]{kleinberg2006}.
-	\item \emph{Caso com ciclo (contração/expansão):} se \(F^*\) contém um ciclo dirigido \(C\), todos os seus arcos têm custo reduzido zero.
+	      pois há exatamente um arco de \(T\) entrando em cada \(v\neq r\). O termo \(\sum_{v\neq r} y(v)\) é constante (independe de \(T\)); assim, minimizar \(\sum c\) equivale a minimizar \(\sum c'\) \cite[Obs.~4.37]{kleinberg2006}. Em particular, os arcos \(a_v\) de menor custo que entram em \(v\) têm custo reduzido zero e formam \(A_0\).
+	\item \emph{Caso acíclico:} se \((V,A_0)\) é acíclico, então já é uma r-arborescência e, por realizar o mínimo custo de entrada em cada \(v\neq r\), é ótima \cite[Obs.~4.36]{kleinberg2006}.
+	\item \emph{Caso com ciclo (contração/expansão):} se \(A_0\) contém um ciclo dirigido \(C\), todos os seus arcos têm custo reduzido zero.
 
 	      Contraia \(C\) em \(x_C\) e ajuste apenas arcos que \emph{entram} em \(C\): \(c'(u,x_C):=c(u,w)-y(w)=c(u,w)-c(a_w)\).
 
@@ -924,22 +924,22 @@ A Figura~\ref{fig:normalize-example} ilustra o funcionamento da normalização:
 \begin{figure}[H]
 	\centering
 	\input{capitulos/implementacao-chuliu/figures/fig_normalize_example.tex}
-	\caption{Exemplo de normalização de custos reduzidos. À esquerda, vértice \(v\) com três arestas de entrada (pesos 5, 3 e 7). À direita, após aplicar \texttt{reduce\_weights(D, v)}: o menor peso \(y(v)=3\) é subtraído de todas as entradas, resultando em custos reduzidos 2, 0 e 4. A aresta \((u_2,v)\) (em vermelho) tem custo zero e será selecionada para \(F^*\).}
+	\caption{Exemplo de normalização de custos reduzidos. À esquerda, vértice \(v\) com três arestas de entrada (pesos 5, 3 e 7). À direita, após aplicar \texttt{reduce\_weights(D, v)}: o menor peso \(y(v)=3\) é subtraído de todas as entradas, resultando em custos reduzidos 2, 0 e 4. A aresta \((u_2,v)\) (em vermelho) tem custo zero e será selecionada para \(A_0\).}
 	\label{fig:normalize-example}
 \end{figure}
 
 Observe que as diferenças relativas são preservadas: a aresta mais cara permanece 4 unidades acima da mais barata, e a intermediária mantém sua posição relativa. Como cada r-arborescência contém exatamente uma aresta entrando em cada vértice não-raiz, a soma \(\sum_{w\neq r} y(w)\) é constante para qualquer solução, garantindo que a ordem de otimalidade seja preservada.
 
-\subsection{Construção de \texorpdfstring{\(F^*\)}{F*}:}
-Esta função constrói o subdigrafo \(F^*\) selecionando, para cada vértice \(v\neq r_0\), uma única aresta de custo reduzido zero que entra em \(v\).
+\subsection{Construção de \texorpdfstring{\(A_0\)}{A_0}:}
+Esta função constrói o subdigrafo \(A_0\) selecionando, para cada vértice \(v\neq r_0\), uma única aresta de custo reduzido zero que entra em \(v\).
 
-Recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}) e o rótulo \texttt{r0} da raiz. A implementação cria um novo digrafo vazio \texttt{F\_star} (linha 2) em vez de modificar \texttt{D} diretamente; essa escolha de criar uma estrutura separada é fundamental porque \(F^*\) é um subgrafo conceitual usado para detecção de ciclos, e preservar \texttt{D} inalterado permite que as operações subsequentes (como contração) trabalhem com o grafo original completo, evitando perda de informação sobre arestas não selecionadas que podem ser necessárias após reexpansões.
+Recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}) e o rótulo \texttt{r0} da raiz. A implementação cria um novo digrafo vazio \texttt{A\_zero} (linha 2) em vez de modificar \texttt{D} diretamente; essa escolha de criar uma estrutura separada é fundamental porque \(A_0\) é um subgrafo conceitual usado para detecção de ciclos, e preservar \texttt{D} inalterado permite que as operações subsequentes (como contração) trabalhem com o grafo original completo, evitando perda de informação sobre arestas não selecionadas que podem ser necessárias após reexpansões.
 
-Em seguida, para cada vértice \texttt{v} diferente de \texttt{r0} (linhas 3--4), utilizando o método \texttt{D.nodes()}, coleta todas as arestas de entrada de \texttt{v} com seus pesos em uma lista e armazena na variável \texttt{in\_edges} (linha 5); a materialização em lista é necessária porque a subsequente iteração sobre as arestas para encontrar aquela de peso zero poderia causar problemas se trabalhássemos diretamente com a visão retornada por \texttt{in\_edges}, especialmente em cenários de modificação concorrente. Se não houver arestas de entrada, prossegue para o próximo vértice (linhas 6--7) usando \texttt{continue}, pois um vértice isolado ou inacessível não contribui para \(F^*\) e sua ausência será detectada posteriormente como violação das hipóteses de conectividade.
+Em seguida, para cada vértice \texttt{v} diferente de \texttt{r0} (linhas 3--4), utilizando o método \texttt{D.nodes()}, coleta todas as arestas de entrada de \texttt{v} com seus pesos em uma lista e armazena na variável \texttt{in\_edges} (linha 5); a materialização em lista é necessária porque a subsequente iteração sobre as arestas para encontrar aquela de peso zero poderia causar problemas se trabalhássemos diretamente com a visão retornada por \texttt{in\_edges}, especialmente em cenários de modificação concorrente. Se não houver arestas de entrada, prossegue para o próximo vértice (linhas 6--7) usando \texttt{continue}, pois um vértice isolado ou inacessível não contribui para \(A_0\) e sua ausência será detectada posteriormente como violação das hipóteses de conectividade.
 
-Caso contrário, utiliza uma compreensão de gerador combinada com \texttt{next} para encontrar o primeiro predecessor \texttt{u} cuja aresta \texttt{(u, v)} tem peso zero (linha 8); a escolha de \texttt{next} com gerador em vez de uma busca exaustiva é eficiente porque interrompe a iteração assim que encontra a primeira aresta de custo zero, evitando processamento desnecessário das arestas restantes (embora teoricamente todas as arestas de custo zero sejam equivalentes, na prática apenas uma é necessária para \(F^*\)). A função \texttt{next} retorna \texttt{None} se nenhuma aresta de peso zero existir, o que teoricamente não deveria ocorrer após a normalização correta (que garante ao menos uma aresta de custo zero por vértice), mas o tratamento defensivo evita erros em casos degenerados. Se tal aresta existir, adiciona-a a \texttt{F\_star} com peso zero usando o método \texttt{add\_edge} (linhas 9--10); a especificação explícita de \texttt{w=0} garante que \(F^*\) contenha apenas arestas de custo reduzido zero, propriedade fundamental para a corretude do algoritmo.
+Caso contrário, utiliza uma compreensão de gerador combinada com \texttt{next} para encontrar o primeiro predecessor \texttt{u} cuja aresta \texttt{(u, v)} tem peso zero (linha 8); a escolha de \texttt{next} com gerador em vez de uma busca exaustiva é eficiente porque interrompe a iteração assim que encontra a primeira aresta de custo zero, evitando processamento desnecessário das arestas restantes (embora teoricamente todas as arestas de custo zero sejam equivalentes, na prática apenas uma é necessária para \(A_0\)). A função \texttt{next} retorna \texttt{None} se nenhuma aresta de peso zero existir, o que teoricamente não deveria ocorrer após a normalização correta (que garante ao menos uma aresta de custo zero por vértice), mas o tratamento defensivo evita erros em casos degenerados. Se tal aresta existir, adiciona-a a \texttt{A\_zero} com peso zero usando o método \texttt{add\_edge} (linhas 9--10); a especificação explícita de \texttt{w=0} garante que \(A_0\) contenha apenas arestas de custo reduzido zero, propriedade fundamental para a corretude do algoritmo.
 
-Retorna o digrafo \texttt{F\_star} contendo exatamente uma aresta entrando em cada \(v\neq r_0\), todas com custo reduzido zero. O grafo original \texttt{D} não é modificado, preservando o estado para operações futuras. A complexidade é \(O(m)\), onde \(m\) é o número de arestas, pois cada aresta é considerada no máximo uma vez durante a iteração sobre todos os vértices: para cada um dos \(n-1\) vértices não-raiz, examina-se suas arestas de entrada (totalizando no máximo \(m\) arestas ao longo de todas as iterações), e para cada vértice a busca por aresta de peso zero é interrompida no primeiro match, resultando em tempo linear no tamanho do grafo.
+Retorna o digrafo \texttt{A\_zero} contendo exatamente uma aresta entrando em cada \(v\neq r_0\), todas com custo reduzido zero. O grafo original \texttt{D} não é modificado, preservando o estado para operações futuras. A complexidade é \(O(m)\), onde \(m\) é o número de arestas, pois cada aresta é considerada no máximo uma vez durante a iteração sobre todos os vértices: para cada um dos \(n-1\) vértices não-raiz, examina-se suas arestas de entrada (totalizando no máximo \(m\) arestas ao longo de todas as iterações), e para cada vértice a busca por aresta de peso zero é interrompida no primeiro match, resultando em tempo linear no tamanho do grafo.
 
 \begin{tcolorbox}[
 		enhanced, breakable,
@@ -949,11 +949,11 @@ Retorna o digrafo \texttt{F\_star} contendo exatamente uma aresta entrando em ca
 		boxed title style={sharp corners, boxrule=0.6pt},
 		sharp corners, boxrule=0.6pt
 	]
-	\emph{Constrói o subdigrafo $F^*$ a partir do digrafo D, selecionando para cada vértice (exceto a raiz r0) uma aresta de custo reduzido zero que entra nele.}
+	\emph{Constrói o subdigrafo $A_0$ a partir do digrafo D, selecionando para cada vértice (exceto a raiz r0) uma aresta de custo reduzido zero que entra nele.}
 	\tcblower
 	\begin{lstlisting}[mathescape=true, language=Python]
-def get_Fstar(D: nx.DiGraph, r0: str):
-    F_star = nx.DiGraph()
+def get_Azero(D: nx.DiGraph, r0: str):
+    A_zero = nx.DiGraph()
     for v in D.nodes():
         if v != r0:
             in_edges = list(D.in_edges(v, data="w"))
@@ -961,23 +961,23 @@ def get_Fstar(D: nx.DiGraph, r0: str):
                 continue
             u = next((u for u, _, w in in_edges if w == 0), None)
             if u:
-                F_star.add_edge(u, v, w=0)
-    return F_star
+                A_zero.add_edge(u, v, w=0)
+    return A_zero
 \end{lstlisting}
 \end{tcolorbox}
 
-A Figura~\ref{fig:get-fstar-example} ilustra a construção de \(F^*\):
+A Figura~\ref{fig:get-Azero-example} ilustra a construção de \(A_0\):
 
 \begin{figure}[H]
 	\centering
-	\input{capitulos/implementacao-chuliu/figures/fig_get_fstar_example.tex}
-	\caption{Exemplo de construção de \(F^*\) a partir de um digrafo normalizado. À esquerda, o digrafo \(D\) após normalização, onde cada vértice não-raiz possui ao menos uma aresta de entrada com custo zero (em vermelho). À direita, o subgrafo \(F^*\) resultante contém apenas as arestas de custo zero selecionadas, uma por vértice. Note que \(F^*\) pode conter ciclos (como \(\{v_1, v_2\}\)) que serão tratados nas etapas subsequentes.}
-	\label{fig:get-fstar-example}
+	\input{capitulos/implementacao-chuliu/figures/fig_get_azero_example.tex}
+	\caption{Exemplo de construção de \(A_0\) a partir de um digrafo normalizado. À esquerda, o digrafo \(D\) após normalização, onde cada vértice não-raiz possui ao menos uma aresta de entrada com custo zero (em vermelho). À direita, o subgrafo \(A_0\) resultante contém apenas as arestas de custo zero selecionadas, uma por vértice. Note que \(A_0\) pode conter ciclos (como \(\{v_1, v_2\}\)) que serão tratados nas etapas subsequentes.}
+	\label{fig:get-Azero-example}
 \end{figure}
 
-A detecção de ciclos é crucial, pois a presença de um ciclo em \(F^*\) indica que a escolha de arestas de custo reduzido zero não formou uma arborescência válida. Esses ciclos precisam ser tratados nas etapas subsequentes do algoritmo.
+A detecção de ciclos é crucial, pois a presença de um ciclo em \(A_0\) indica que a escolha de arestas de custo reduzido zero não formou uma arborescência válida. Esses ciclos precisam ser tratados nas etapas subsequentes do algoritmo.
 
-As funções de normalização por vértice e construção de \(F^*\) juntas implementam o passo 1 da descrição do algoritmo de Chu–Liu/Edmonds:
+As funções de normalização por vértice e construção de \(A_0\) juntas implementam o passo 1 da descrição do algoritmo de Chu–Liu/Edmonds:
 
 \begin{tcolorbox}[
 		enhanced, breakable,
@@ -987,15 +987,15 @@ As funções de normalização por vértice e construção de \(F^*\) juntas imp
 		boxed title style={sharp corners, boxrule=0.6pt},
 		sharp corners, boxrule=0.6pt
 	]
-	\textbf{Passo 1:} Para cada \(v\neq r\), escolha \(a_v\in\mathop{\mathrm{arg\,min}}_{(u,v)\in A} c(u,v)\). Defina \(y(v):=c(a_v)\) e \(F^*:=\{a_v : v\neq r\}\).
+	\textbf{Passo 1:} Para cada \(v\neq r\), escolha \(a_v\in\mathop{\mathrm{arg\,min}}_{(u,v)\in A} c(u,v)\). Defina \(y(v):=c(a_v)\) e \(A_0:=\{a_v : v\neq r\}\).
 \end{tcolorbox}
 
 
 
 \subsection{Detecção de ciclo:}
-Esta função detecta a presença de um ciclo dirigido em \(F^*\) e retorna um subgrafo que o contém; se \(F^*\) for acíclico, retorna \texttt{None}.
+Esta função detecta a presença de um ciclo dirigido em \(A_0\) e retorna um subgrafo que o contém; se \(A_0\) for acíclico, retorna \texttt{None}.
 
-Recebe como entrada um digrafo \texttt{F\_star} (objeto \texttt{nx.DiGraph}). A implementação utiliza um bloco \texttt{try} (linha 2) para capturar exceções caso não haja ciclo; esta escolha de tratamento por exceção é necessária porque a API do NetworkX adota o padrão EAFP (\emph{Easier to Ask for Forgiveness than Permission}), onde \texttt{nx.find\_cycle} não retorna um valor especial (como \texttt{None}) quando o grafo é acíclico, mas sim lança a exceção \texttt{NetworkXNoCycle} para sinalizar a ausência de ciclos.
+Recebe como entrada um digrafo \texttt{A\_zero} (objeto \texttt{nx.DiGraph}). A implementação utiliza um bloco \texttt{try} (linha 2) para capturar exceções caso não haja ciclo; esta escolha de tratamento por exceção é necessária porque a API do NetworkX adota o padrão EAFP (\emph{Easier to Ask for Forgiveness than Permission}), onde \texttt{nx.find\_cycle} não retorna um valor especial (como \texttt{None}) quando o grafo é acíclico, mas sim lança a exceção \texttt{NetworkXNoCycle} para sinalizar a ausência de ciclos.
 
 Em seguida a função inicializa um conjunto vazio \texttt{nodes\_in\_cycle} (linha 3) e emprega a função \texttt{nx.find\_cycle} do NetworkX (linha 4), que realiza uma busca em profundidade para detectar ciclos. A função \texttt{nx.find\_cycle} \sout{percorre o grafo visitando vértices e arestas: ao encontrar uma aresta \((u,v)\) onde \(v\) já está na pilha de recursão da DFS, identifica um ciclo e retorna} devolve um iterador sobre todas as arestas que compõem esse ciclo. O laço na linha 4 itera sobre essas arestas retornadas, desempacotando cada uma na forma \texttt{(u, v, \_)} (ignorando o terceiro elemento com \texttt{\_}, que contém metadados de orientação), e para cada aresta \((u,v)\) adiciona ambos os vértices ao conjunto \texttt{nodes\_in\_cycle} (linha 5); a escolha de usar conjunto em vez de lista garante que cada vértice seja adicionado apenas uma vez mesmo que o ciclo tenha múltiplas arestas incidentes, e a operação de adição tem complexidade \(O(1)\) amortizada.
 
@@ -1003,25 +1003,25 @@ Após coletar todos os vértices do ciclo, constrói e retorna uma cópia do sub
 
 Se nenhum ciclo existir, a exceção \texttt{nx.NetworkXNoCycle} é capturada no bloco \texttt{except} (linha 8) e a função retorna \texttt{None} (linha 9);
 
-No final, um subgrafo contendo os vértices e arestas do ciclo detectado é retornado, ou \texttt{None} se não houver ciclo. O grafo original \texttt{F\_star} não é modificado. A complexidade é \(O(m)\), onde \(m\) é o número de arestas, pois a DFS visita cada aresta no máximo uma vez.
+No final, um subgrafo contendo os vértices e arestas do ciclo detectado é retornado, ou \texttt{None} se não houver ciclo. O grafo original \texttt{A\_zero} não é modificado. A complexidade é \(O(m)\), onde \(m\) é o número de arestas, pois a DFS visita cada aresta no máximo uma vez.
 
 \begin{tcolorbox}[
 		enhanced, breakable,
 		colframe=blue!60!black, colback=blue!2,
 		colbacktitle=blue!15, coltitle=black,
-		title={Detecção de ciclo dirigido em $F^*$},
+		title={Detecção de ciclo dirigido em $A_0$},
 		boxed title style={sharp corners, boxrule=0.6pt},
 		sharp corners, boxrule=0.6pt
 	]
-	\emph{Detecta um ciclo dirigido em $F^*$ e retorna um subgrafo contendo seus vértices e arestas, ou \texttt{None} se for acíclico.}
+	\emph{Detecta um ciclo dirigido em $A_0$ e retorna um subgrafo contendo seus vértices e arestas, ou \texttt{None} se for acíclico.}
 	\tcblower
 	\begin{lstlisting}[mathescape=true, language=Python]
-def find_cycle(F_star: nx.DiGraph):
+def find_cycle(A_zero: nx.DiGraph):
     try:
         nodes_in_cycle = set()
-        for u, v, _ in nx.find_cycle(F_star, orientation="original"):
+        for u, v, _ in nx.find_cycle(A_zero, orientation="original"):
             nodes_in_cycle.update([u, v])
-        return F_star.subgraph(nodes_in_cycle).copy()
+        return A_zero.subgraph(nodes_in_cycle).copy()
     except nx.NetworkXNoCycle:
         return None  
 \end{lstlisting}
@@ -1032,7 +1032,7 @@ A Figura~\ref{fig:find-cycle-example} ilustra o processo de detecção de ciclo:
 \begin{figure}[H]
 	\centering
 	\input{capitulos/implementacao-chuliu/figures/fig_find_cycle_example.tex}
-	\caption{Exemplo de detecção de ciclo em \(F^*\). À esquerda, o subgrafo \(F^*\) contém um ciclo formado pelos vértices \(\{v_2, v_3, v_4\}\) (destacados em amarelo). A DFS percorre o grafo e detecta o ciclo ao encontrar a aresta \((v_4, v_2)\), onde \(v_2\) já está na pilha de recursão. À direita, a função retorna uma cópia do subgrafo induzido pelos vértices do ciclo, contendo apenas os três vértices e as três arestas que formam o ciclo.}
+	\caption{Exemplo de detecção de ciclo em \(A_0\). À esquerda, o subgrafo \(A_0\) contém um ciclo formado pelos vértices \(\{v_2, v_3, v_4\}\) (destacados em amarelo). A DFS percorre o grafo e detecta o ciclo ao encontrar a aresta \((v_4, v_2)\), onde \(v_2\) já está na pilha de recursão. À direita, a função retorna uma cópia do subgrafo induzido pelos vértices do ciclo, contendo apenas os três vértices e as três arestas que formam o ciclo.}
 	\label{fig:find-cycle-example}
 \end{figure}
 
@@ -1108,9 +1108,9 @@ A função de deteção de ciclo e a de contração juntas implementam os passos
 		boxed title style={sharp corners, boxrule=0.6pt},
 		sharp corners, boxrule=0.6pt
 	]
-	\textbf{Passo 2:} Se \((V,F^*)\) é acíclico, devolva \(F^*\). Por \cite[Obs.~4.36]{kleinberg2006}, trata-se de uma r-arborescência de custo mínimo.
+	\textbf{Passo 2:} Se \((V,A_0)\) é acíclico, devolva \(A_0\). Por \cite[Obs.~4.36]{kleinberg2006}, trata-se de uma r-arborescência de custo mínimo.
 
-	\textbf{Passo 3:} Caso contrário, seja \(C\) um ciclo dirigido de \(F^*\) (com \(r\notin C\)). \textbf{Contração:} contraia \(C\) em um supervértice \(x_C\) e defina custos \(c'\) por
+	\textbf{Passo 3:} Caso contrário, seja \(C\) um ciclo dirigido de \(A_0\) (com \(r\notin C\)). \textbf{Contração:} contraia \(C\) em um supervértice \(x_C\) e defina custos \(c'\) por
 	\begin{align*}
 		c'(u,x_C) & := c(u,w) - y(w) = c(u,w) - c(a_w) &  & \text{para } u\notin C,\ w\in C, \\
 		c'(x_C,v) & := c(w,v)                          &  & \text{para } w\in C,\ v\notin C,
@@ -1188,11 +1188,11 @@ A implementação segue a estrutura do algoritmo:
 
 \paragraph*{Preservação do grafo original (linha 2):} Cria uma cópia \texttt{D\_copy = D.copy()} para preservar os pesos originais. Como as operações de normalização e contração modificam os pesos das arestas diretamente, a cópia é necessária para restaurar os custos corretos na arborescência final. Complexidade: \(O(m+n)\).
 
-\paragraph*{Normalização e construção de \(F^*\) (linhas 3--6):} Itera sobre todos os vértices não-raiz (linhas 3--5), chamando \texttt{reduce\_weights(D\_copy, v)} para cada um. Após normalizar todos os vértices, constrói \(F^*\) (linha 6) chamando \texttt{get\_Fstar(D\_copy, r0)}, que seleciona uma aresta de custo reduzido zero entrando em cada vértice não-raiz.
+\paragraph*{Normalização e construção de \(A_0\) (linhas 3--6):} Itera sobre todos os vértices não-raiz (linhas 3--5), chamando \texttt{reduce\_weights(D\_copy, v)} para cada um. Após normalizar todos os vértices, constrói \(A_0\) (linha 6) chamando \texttt{get\_Azero(D\_copy, r0)}, que seleciona uma aresta de custo reduzido zero entrando em cada vértice não-raiz.
 
-\paragraph*{Verificação de aciclicidade — caso base (linhas 7--10):} Verifica se \(F^*\) é uma arborescência válida usando \texttt{nx.is\_arborescence(F\_star)} (linha 7). Se sim, restaura os pesos originais de \texttt{D} para cada aresta de \(F^*\) (linhas 8--9) e retorna \texttt{F\_star} como solução (linha 10). A função \texttt{nx.is\_arborescence} testa conectividade, aciclicidade e grau de entrada correto simultaneamente.
+\paragraph*{Verificação de aciclicidade — caso base (linhas 7--10):} Verifica se \(A_0\) é uma arborescência válida usando \texttt{nx.is\_arborescence(A\_zero)} (linha 7). Se sim, restaura os pesos originais de \texttt{D} para cada aresta de \(A_0\) (linhas 8--9) e retorna \texttt{A\_zero} como solução (linha 10). A função \texttt{nx.is\_arborescence} testa conectividade, aciclicidade e grau de entrada correto simultaneamente.
 
-\paragraph*{Contração e resolução recursiva — caso recursivo (linhas 11--16):} Caso \(F^*\) contenha um ciclo, detecta \(C\) chamando \texttt{find\_cycle(F\_star)} (linha 12). Cria um rótulo único \texttt{contracted\_label = f"contracted\_\{level\}"} para o supervértice (linha 13). Contrai o ciclo chamando \texttt{contract\_cycle(D\_copy, C, contracted\_label)} (linhas 14--15), que modifica \texttt{D\_copy} diretamente criando o digrafo contraído \(D'\) e retorna os dicionários \texttt{in\_to\_cycle} e \texttt{out\_from\_cycle}. Chama-se recursivamente (linha 16) com \texttt{chuliu(D\_copy, r0, level+1)}, obtendo \(F'\).
+\paragraph*{Contração e resolução recursiva — caso recursivo (linhas 11--16):} Caso \(A_0\) contenha um ciclo, detecta \(C\) chamando \texttt{find\_cycle(A\_zero)} (linha 12). Cria um rótulo único \texttt{contracted\_label = f"contracted\_\{level\}"} para o supervértice (linha 13). Contrai o ciclo chamando \texttt{contract\_cycle(D\_copy, C, contracted\_label)} (linhas 14--15), que modifica \texttt{D\_copy} diretamente criando o digrafo contraído \(D'\) e retorna os dicionários \texttt{in\_to\_cycle} e \texttt{out\_from\_cycle}. Chama-se recursivamente (linha 16) com \texttt{chuliu(D\_copy, r0, level+1)}, obtendo \(F'\).
 
 \paragraph*{Reexpansão do ciclo contraído (linhas 17--30):} Identifica a aresta externa que entra no supervértice em \(F'\) (linha 17) e extrai o vértice externo \texttt{u} (linha 18). Consulta \texttt{v = in\_to\_cycle[u]} para determinar o vértice do ciclo que recebe a conexão (linha 19). Remove a aresta interna que entrava em \(v\) chamando \texttt{remove\_internal\_edge\_to\_cycle\_entry(C, v)} (linha 20), quebrando o ciclo no ponto de entrada. Adiciona a aresta externa \texttt{(u, v)} a \(F'\) (linha 21) e reintegra as demais arestas do ciclo (linhas 22--23). Processa as arestas de saída (linhas 24--26): para cada \texttt{(contracted\_label, w)} em \(F'\), adiciona \texttt{(v\_out, w)} usando \texttt{out\_from\_cycle[w]}. Remove o supervértice (linha 27), restaura os pesos originais (linhas 28--29) e retorna \texttt{F\_prime} (linha 30).
 
@@ -1208,7 +1208,7 @@ O código completo da função principal é apresentado a seguir:
 		boxed title style={sharp corners, boxrule=0.6pt},
 		sharp corners, boxrule=0.6pt
 	]
-	\emph{Implementa o algoritmo de Chu–Liu/Edmonds de forma recursiva para encontrar a r-arborescência de custo mínimo em um digrafo ponderado \texttt{D} com raiz \texttt{r0}. Normaliza custos, constrói $F^*$, detecta ciclos e, se houver, contrai em supervértice, resolve recursivamente no grafo reduzido e reexpande, restaurando a arborescência ótima no grafo original. Retorna um \texttt{nx.DiGraph} contendo exatamente $|V|-1$ arestas com grau de entrada 1 para cada vértice exceto a raiz.}
+	\emph{Implementa o algoritmo de Chu–Liu/Edmonds de forma recursiva para encontrar a r-arborescência de custo mínimo em um digrafo ponderado \texttt{D} com raiz \texttt{r0}. Normaliza custos, constrói $A_0$, detecta ciclos e, se houver, contrai em supervértice, resolve recursivamente no grafo reduzido e reexpande, restaurando a arborescência ótima no grafo original. Retorna um \texttt{nx.DiGraph} contendo exatamente $|V|-1$ arestas com grau de entrada 1 para cada vértice exceto a raiz.}
 	\tcblower
 	\begin{lstlisting}[mathescape=true, language=Python]
 def chuliu(D: nx.DiGraph,r0: str,level=0,):
@@ -1216,13 +1216,13 @@ def chuliu(D: nx.DiGraph,r0: str,level=0,):
     for v in D_copy.nodes:
         if v != r0:
             reduce_weights(D_copy, v)
-    F_star = get_Fstar(D_copy, r0)
-    if nx.is_arborescence(F_star):
-        for u, v in F_star.edges:
-            F_star[u][v]["w"] = D[u][v]["w"]
-        return F_star
+    A_zero = get_Azero(D_copy, r0)
+    if nx.is_arborescence(A_zero):
+        for u, v in A_zero.edges:
+            A_zero[u][v]["w"] = D[u][v]["w"]
+        return A_zero
     else:
-        C: nx.DiGraph = find_cycle(F_star)   
+        C: nx.DiGraph = find_cycle(A_zero)   
         contracted_label = f"\n n*{level}"
         in_to_cycle, out_from_cycle = contract_cycle(
         D_copy, C, contracted_label)
@@ -1248,7 +1248,7 @@ A seguir, ilustramos o funcionamento do algoritmo de Chu–Liu/Edmonds em um gra
 
 \subsubsection{Exemplo de execução do algoritmo}
 
-A seguir, demonstramos a execução completa do algoritmo de Chu--Liu/Edmonds em um grafo exemplo, ilustrando cada fase do processo: normalização, construção de $F^*$, detecção de ciclos, contração, resolução recursiva e reexpansão.
+A seguir, demonstramos a execução completa do algoritmo de Chu--Liu/Edmonds em um grafo exemplo, ilustrando cada fase do processo: normalização, construção de $A_0$, detecção de ciclos, contração, resolução recursiva e reexpansão.
 
 \begin{figure}[H]
 	\centering
@@ -1268,12 +1268,12 @@ O próximo passo é normalizar os pesos das arestas de entrada para cada vértic
 	\label{fig:exemplo-normalizacao-parcial}
 \end{figure}
 
-Com os pesos normalizados, o próximo passo é construir $F^*$: para isso, selecionamos para cada vértice a aresta de custo reduzido zero de entrada. Detectamos um ciclo em $F^*$, formado pelos vértices $\{1, 2\}$. Portanto, precisamos contrair esse ciclo em um supervértice $n*0$.
+Com os pesos normalizados, o próximo passo é construir $A_0$: para isso, selecionamos para cada vértice a aresta de custo reduzido zero de entrada. Detectamos um ciclo em $A_0$, formado pelos vértices $\{1, 2\}$. Portanto, precisamos contrair esse ciclo em um supervértice $n*0$.
 
 \begin{figure}[H]
 	\centering
 	\input{capitulos/implementacao-chuliu/figures/fig_exemplo_grafo_contraido.tex}
-	\caption{Grafo contraído após detecção do ciclo $C = \{1, 2\}$ em $F^*$. O ciclo foi contraído no supervértice $n*0$ (destacado em vermelho). As arestas que entravam ou saíam do ciclo foram redirecionadas para o supervértice, com custos ajustados segundo as fórmulas $c'(u,x_C) := c(u,w) - y(w)$ para arestas de entrada e $c'(x_C,v) := c(w,v)$ para arestas de saída.}
+	\caption{Grafo contraído após detecção do ciclo $C = \{1, 2\}$ em $A_0$. O ciclo foi contraído no supervértice $n*0$ (destacado em vermelho). As arestas que entravam ou saíam do ciclo foram redirecionadas para o supervértice, com custos ajustados segundo as fórmulas $c'(u,x_C) := c(u,w) - y(w)$ para arestas de entrada e $c'(x_C,v) := c(w,v)$ para arestas de saída.}
 	\label{fig:exemplo-grafo-contraido}
 \end{figure}
 
@@ -1286,7 +1286,7 @@ Agora, repetimos o processo recursivamente no grafo contraído até obter uma ar
 	\label{fig:exemplo-arborescencia-contraida}
 \end{figure}
 
-Após validarmos que $F^*$ não possui mais ciclos e forma uma arborescência, iniciamos o processo de reexpansão do ciclo contraído para obter a arborescência final no grafo original. Adicionamos a aresta de entrada ao ciclo $(0, 1)$, as arestas internas do ciclo modificado $(1, 2)$, e as arestas de saída $(1, 3)$, chegando a uma arborescência válida.
+Após validarmos que $A_0$ não possui mais ciclos e forma uma arborescência, iniciamos o processo de reexpansão do ciclo contraído para obter a arborescência final no grafo original. Adicionamos a aresta de entrada ao ciclo $(0, 1)$, as arestas internas do ciclo modificado $(1, 2)$, e as arestas de saída $(1, 3)$, chegando a uma arborescência válida.
 
 \begin{figure}[H]
 	\centering
@@ -1308,11 +1308,11 @@ A implementação em Python segue fielmente os cinco passos da descrição teór
 		\textbf{\large Descrição Teórica} & \textbf{\large Implementação Python} \\
 		\midrule
 		\rowcolor{blue!5}
-		\textbf{Passo 1:} Normalização e construção de \(F^*\)
+		\textbf{Passo 1:} Normalização e construção de \(A_0\)
 
 		Para cada \(v\neq r\), escolha \(a_v\in\mathop{\mathrm{arg\,min}}_{(u,v)\in A} c(u,v)\).
 
-		Defina \(y(v):=c(a_v)\) e \(F^*:=\{a_v : v\neq r\}\).
+		Defina \(y(v):=c(a_v)\) e \(A_0:=\{a_v : v\neq r\}\).
 		                                  &
 		\textbf{Linhas 3--6:}
 
@@ -1320,24 +1320,24 @@ A implementação em Python segue fielmente os cinco passos da descrição teór
 
 		\quad \texttt{reduce\_weights(D\_copy, v)}
 
-		\texttt{F\_star = get\_Fstar(D\_copy, r0)}
+		\texttt{A\_zero = get\_Azero(D\_copy, r0)}
 
 		\vspace{2mm}
-		Calcula \(y(v)\) e cria custos reduzidos, depois constrói \(F^*\) selecionando arestas de custo zero.
+		Calcula \(y(v)\) e cria custos reduzidos, depois constrói \(A_0\) selecionando arestas de custo zero.
 		\\
 		\midrule
 		\rowcolor{green!5}
 		\textbf{Passo 2:} Verificação de aciclicidade (caso base)
 
-		Se \((V,F^*)\) é acíclico, devolva \(F^*\). Por Obs. 4.36 de \cite{kleinberg2006}, trata-se de uma r-arborescência de custo mínimo.
+		Se \((V,A_0)\) é acíclico, devolva \(A_0\). Por Obs. 4.36 de \cite{kleinberg2006}, trata-se de uma r-arborescência de custo mínimo.
 		                                  &
 		\textbf{Linhas 7--10:}
 
-		\texttt{if nx.is\_arborescence(F\_star):}
+		\texttt{if nx.is\_arborescence(A\_zero):}
 
 		\quad \texttt{[restaura pesos originais]}
 
-		\quad \texttt{return F\_star}
+		\quad \texttt{return A\_zero}
 
 		\vspace{2mm}
 		Testa conectividade, aciclicidade e grau de entrada correto simultaneamente.
@@ -1346,7 +1346,7 @@ A implementação em Python segue fielmente os cinco passos da descrição teór
 		\rowcolor{orange!5}
 		\textbf{Passo 3:} Contração de ciclo
 
-		Caso contrário, seja \(C\) um ciclo dirigido de \(F^*\) (com \(r\notin C\)). Contraia \(C\) em supervértice \(x_C\) e defina custos \(c'\) por:
+		Caso contrário, seja \(C\) um ciclo dirigido de \(A_0\) (com \(r\notin C\)). Contraia \(C\) em supervértice \(x_C\) e defina custos \(c'\) por:
 
 		\(c'(u,x_C) := c(u,w) - y(w)\)
 
@@ -1356,7 +1356,7 @@ A implementação em Python segue fielmente os cinco passos da descrição teór
 		                                  &
 		\textbf{Linhas 11--15:}
 
-		\texttt{C = find\_cycle(F\_star)}
+		\texttt{C = find\_cycle(A\_zero)}
 
 		\texttt{label = f"contracted\_\{level\}"}
 
@@ -1408,7 +1408,7 @@ A implementação em Python segue fielmente os cinco passos da descrição teór
 	\label{tab:teoria-implementacao}
 \end{table}
 
-Esta correspondência demonstra que a implementação não é uma aproximação ou interpretação livre da teoria, mas uma tentativa de traduzir fielmente a descrição teórica. As funções auxiliares (\texttt{reduce\_weights}, \texttt{get\_Fstar}, \texttt{find\_cycle}, \texttt{contract\_cycle}, \texttt{remove\_internal\_edge\_to\_cycle\_entry}) encapsulam exatamente as operações descritas na formulação teórica, preservando as propriedades de correção e complexidade do algoritmo original.
+Esta correspondência demonstra que a implementação não é uma aproximação ou interpretação livre da teoria, mas uma tentativa de traduzir fielmente a descrição teórica. As funções auxiliares (\texttt{reduce\_weights}, \texttt{get\_Azero}, \texttt{find\_cycle}, \texttt{contract\_cycle}, \texttt{remove\_internal\_edge\_to\_cycle\_entry}) encapsulam exatamente as operações descritas na formulação teórica, preservando as propriedades de correção e complexidade do algoritmo original.
 
 \subsection{Transição para a abordagem primal-dual}
 
