@@ -21,9 +21,9 @@
     \node[circle,draw,fill=blue!20,minimum size=8mm] (u3b) at (7,-2) {\(u_3\)};
     \node[circle,draw,fill=green!20,minimum size=8mm] (v2) at (10,0) {\(v\)};
 
-    \draw[->,thick] (u1b) to node[above] {\(5-3=2\)} (v2);
-    \draw[->,thick,red] (u2b) to node[above] {\(3-3=0\)} (v2);
-    \draw[->,thick] (u3b) to node[below] {\(7-3=4\)} (v2);
+    \draw[->,thick] (u1b) to node[right, xshift=10pt] {\(5-3=2\)} (v2);
+    \draw[->,thick,red] (u2b) to node[above, xshift=-4pt] {\(3-3=0\)} (v2);
+    \draw[->,thick] (u3b) to node[right, xshift=10pt] {\(7-3=4\)} (v2);
 
     \node[above] at (8.5,2.8) {\textbf{Depois:} ao menos uma entrada tem custo 0};
 \end{tikzpicture}
