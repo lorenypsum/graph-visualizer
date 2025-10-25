@@ -870,21 +870,21 @@ Os métodos da API NetworkX utilizados na implementação dividem-se em três ca
 \paragraph*{Consulta de estrutura}
 \begin{itemize}\setlength{\itemsep}{2pt}
 	\item \texttt{D.nodes()}: retorna visão iterável sobre \(V\), permitindo percorrer todos os vértices.
-	\item \texttt{D.in\_edges(v, data="w")}: retorna arestas entrantes em \(v\) com pesos, produzindo tuplas \((u, v, w)\). Usado para encontrar o arco de menor custo que entra em cada vértice.
-	\item \texttt{D.out\_edges(u, data="w")}: retorna arestas saintes de \(u\) com pesos, análogo a \texttt{in\_edges}. Necessário na reexpansão para reintegrar arestas do ciclo.
-	\item \texttt{D[u][v]["w"]}: acessa diretamente o peso da aresta \((u,v)\) para leitura ou modificação. Usado na normalização para ajustar custos reduzidos.
+	\item \texttt{D.in\_edges(v, data="w")}: retorna arestas entrantes em \(v\) com pesos, produzindo tuplas \((u, v, w)\). 
+	\item \texttt{D.out\_edges(u, data="w")}: retorna arestas saintes de \(u\) com pesos, análogo a \texttt{in\_edges}. 
+	\item \texttt{D[u][v]["w"]}: acessa diretamente o peso da aresta \((u,v)\) para leitura ou modificação. 
 \end{itemize}
 
 \paragraph*{Modificação de estrutura}
 \begin{itemize}\setlength{\itemsep}{2pt}
-	\item \texttt{D.add\_edge(u, v, w=peso)}: adiciona aresta \((u,v)\) com peso especificado, criando vértices automaticamente se não existirem. Usado para construir \(F^*\) e reintegrar arestas na reexpansão.
-	\item \texttt{D.remove\_edges\_from(edges)}: remove múltiplas arestas em lote. Aplicado para eliminar arestas internas do ciclo contraído.
-	\item \texttt{D.remove\_nodes\_from(nodes)}: remove vértices e todas as suas arestas incidentes. Usado para eliminar os vértices do ciclo original após contração.
+	\item \texttt{D.add\_edge(u, v, w=peso)}: adiciona aresta \((u,v)\) com peso especificado, criando vértices automaticamente se não existirem. 
+	\item \texttt{D.remove\_edges\_from(edges)}: remove múltiplas arestas em lote. 
+	\item \texttt{D.remove\_nodes\_from(nodes)}: remove vértices e todas as suas arestas incidentes. 
 \end{itemize}
 
 \paragraph*{Detecção de ciclos}
 \begin{itemize}\setlength{\itemsep}{2pt}
-	\item \texttt{nx.find\_cycle(G, orientation="original")}: detecta ciclos via DFS (detalhado na próxima subseção).
+	\item \texttt{nx.find\_cycle(G, orientation="original")}: detecta ciclos via algoritmo de busca em profundidade (detalhado na próxima subseção).
 \end{itemize}
 
 Essa função retorna um iterador sobre as arestas do ciclo (tuplas \texttt{(u, v, key)}). Dois aspectos importantes, o retorno é iterador (não lista), economizando memória e em grafos acíclicos, lança a exceção \texttt{NetworkXNoCycle} em vez de retornar valor sentinela. Isso segue o princípio EAFP (\emph{Easier to Ask for Forgiveness than Permission}) do Python e casa naturalmente com o fluxo do algoritmo: tratamos o caso acíclico com \texttt{try-except}, distinguindo caso base (sem ciclo, retornar solução) de caso recursivo (com ciclo, contrair e recursão).
@@ -897,7 +897,7 @@ Esta função implementa a normalização de custos reduzidos: calcula \(y(v)=\m
 
 Recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}) e o rótulo \texttt{node} do vértice a ser normalizado. A implementação coleta todas as arestas de entrada de \texttt{node} com seus pesos usando o método \texttt{D.in\_edges(node, data="w")}, que retorna uma lista de tuplas \((u, node, w)\) (linha 2). Em seguida, verifica se a lista está vazia e se estiver retorna imediatamente sem fazer alterações (linhas 3--4). Caso contrário, calcula o peso mínimo \texttt{yv} através de uma compreensão de gerador que extrai o terceiro elemento de cada tupla (linha 5) e, para cada predecessor \texttt{u}, subtrai \texttt{yv} do peso armazenado em \texttt{D[u][node]["w"]} (linha 6).
 
-Não retorna nenhum valor (retorno implícito \texttt{None}), pois a operação é realizada in-place: o grafo \texttt{D} passado como parâmetro é modificado diretamente, e ao menos uma aresta de entrada de \texttt{node} terá custo reduzido zero após a execução. A complexidade é \(O(\deg^-(v))\), pois cada operação percorre as arestas de entrada uma única vez.
+Não retorna nenhum valor (retorno implícito \texttt{None}), pois a operação é realizada modificando diretamente a estrutura: o grafo \texttt{D} passado como parâmetro é modificado diretamente, e ao menos uma aresta de entrada de \texttt{node} terá custo reduzido zero após a execução. A complexidade é \(O(\deg^-(v))\), pois cada operação percorre as arestas de entrada uma única vez.
 
 \begin{tcolorbox}[
 		enhanced, breakable,
@@ -907,10 +907,10 @@ Não retorna nenhum valor (retorno implícito \texttt{None}), pois a operação 
 		boxed title style={sharp corners, boxrule=0.6pt},
 		sharp corners, boxrule=0.6pt
 	]
-	\emph{Normaliza os pesos das arestas que entram em \texttt{node}, subtraindo de cada uma o menor peso de entrada. Modifica o grafo D in-place.}
+	\emph{Normaliza os pesos das arestas que entram em \texttt{node}, subtraindo de cada uma o menor peso de entrada. Modifica o grafo D no próprio objeto.}
 	\tcblower
 	\begin{lstlisting}[language=Python]
-def normalize_incoming_edge_weights(D: nx.DiGraph, node: str):    
+def reduce_weights(D: nx.DiGraph, node: str):    
     predecessors = list(D.in_edges(node, data="w"))
     if not predecessors:
         return
@@ -924,7 +924,7 @@ A Figura~\ref{fig:normalize-example} ilustra o funcionamento da normalização:
 \begin{figure}[H]
 	\centering
 	\input{capitulos/implementacao-chuliu/figures/fig_normalize_example.tex}
-	\caption{Exemplo de normalização de custos reduzidos. À esquerda, vértice \(v\) com três arestas de entrada (pesos 5, 3 e 7). À direita, após aplicar \texttt{normalize\_incoming\_edge\_weights(D, v)}: o menor peso \(y(v)=3\) é subtraído de todas as entradas, resultando em custos reduzidos 2, 0 e 4. A aresta \((u_2,v)\) (em vermelho) tem custo zero e será selecionada para \(F^*\).}
+	\caption{Exemplo de normalização de custos reduzidos. À esquerda, vértice \(v\) com três arestas de entrada (pesos 5, 3 e 7). À direita, após aplicar \texttt{reduce\_weights(D, v)}: o menor peso \(y(v)=3\) é subtraído de todas as entradas, resultando em custos reduzidos 2, 0 e 4. A aresta \((u_2,v)\) (em vermelho) tem custo zero e será selecionada para \(F^*\).}
 	\label{fig:normalize-example}
 \end{figure}
 
@@ -997,7 +997,7 @@ Esta função detecta a presença de um ciclo dirigido em \(F^*\) e retorna um s
 
 Recebe como entrada um digrafo \texttt{F\_star} (objeto \texttt{nx.DiGraph}). A implementação utiliza um bloco \texttt{try} (linha 2) para capturar exceções caso não haja ciclo; esta escolha de tratamento por exceção é necessária porque a API do NetworkX adota o padrão EAFP (\emph{Easier to Ask for Forgiveness than Permission}), onde \texttt{nx.find\_cycle} não retorna um valor especial (como \texttt{None}) quando o grafo é acíclico, mas sim lança a exceção \texttt{NetworkXNoCycle} para sinalizar a ausência de ciclos.
 
-Em seguida a função inicializa um conjunto vazio \texttt{nodes\_in\_cycle} (linha 3) e emprega a função \texttt{nx.find\_cycle} do NetworkX (linha 4), que realiza uma busca em profundidade (DFS) para detectar ciclos. A função \texttt{nx.find\_cycle} percorre o grafo visitando vértices e arestas: ao encontrar uma aresta \((u,v)\) onde \(v\) já está na pilha de recursão da DFS, identifica um ciclo e retorna um iterador sobre todas as arestas que compõem esse ciclo. O laço na linha 4 itera sobre essas arestas retornadas, desempacotando cada uma na forma \texttt{(u, v, \_)} (ignorando o terceiro elemento com \texttt{\_}, que contém metadados de orientação), e para cada aresta \((u,v)\) adiciona ambos os vértices ao conjunto \texttt{nodes\_in\_cycle} (linha 5); a escolha de usar conjunto em vez de lista garante que cada vértice seja adicionado apenas uma vez mesmo que o ciclo tenha múltiplas arestas incidentes, e a operação de adição tem complexidade \(O(1)\) amortizada.
+Em seguida a função inicializa um conjunto vazio \texttt{nodes\_in\_cycle} (linha 3) e emprega a função \texttt{nx.find\_cycle} do NetworkX (linha 4), que realiza uma busca em profundidade para detectar ciclos. A função \texttt{nx.find\_cycle} \sout{percorre o grafo visitando vértices e arestas: ao encontrar uma aresta \((u,v)\) onde \(v\) já está na pilha de recursão da DFS, identifica um ciclo e retorna} devolve um iterador sobre todas as arestas que compõem esse ciclo. O laço na linha 4 itera sobre essas arestas retornadas, desempacotando cada uma na forma \texttt{(u, v, \_)} (ignorando o terceiro elemento com \texttt{\_}, que contém metadados de orientação), e para cada aresta \((u,v)\) adiciona ambos os vértices ao conjunto \texttt{nodes\_in\_cycle} (linha 5); a escolha de usar conjunto em vez de lista garante que cada vértice seja adicionado apenas uma vez mesmo que o ciclo tenha múltiplas arestas incidentes, e a operação de adição tem complexidade \(O(1)\) amortizada.
 
 Após coletar todos os vértices do ciclo, constrói e retorna uma cópia do subgrafo induzido por eles (linha 7); a cópia é necessária porque o método \texttt{subgraph} retorna apenas uma visão dinâmica sobre o grafo original.
 
@@ -1049,7 +1049,7 @@ Em seguida, a implementação itera sobre \texttt{in\_to\_cycle} usando o métod
 
 De forma análoga, constrói o dicionário \texttt{out\_from\_cycle} (linha 13) para mapear arestas que saem do ciclo. Para cada vértice \texttt{v} em \texttt{D} (linha 14), se \texttt{v} não pertence ao ciclo (linha 15), identifica a aresta de menor peso que sai de \texttt{C} e entra em \texttt{v} (linhas 16--17) usando uma compreensão de gerador análoga: a expressão \texttt{((u, w) for u, \_, w in D.in\_edges(v, data="w") if u in cycle\_nodes)} itera sobre todas as arestas que entram em \texttt{v}, desempacota cada aresta na forma \texttt{(u, \_, w)} (capturando a origem \texttt{u}, ignorando o destino com \texttt{\_}, e capturando o peso \texttt{w}), filtra apenas aquelas cuja origem \texttt{u} pertence ao ciclo, e produz tuplas \texttt{(u, w)}; a função \texttt{min} seleciona a de menor peso pela mesma razão de otimalidade. Se existir, armazena em \texttt{out\_from\_cycle} (linhas 18--19). Depois, itera sobre \texttt{out\_from\_cycle} e cria arestas de \texttt{label} para cada vértice \texttt{v} com os respectivos pesos (linhas 20--21). Por fim, remove todos os vértices de \texttt{C} do grafo (linha 22); essa remoção é realizada por último para garantir que todas as operações de consulta (linhas 4--21) tenham acesso aos dados originais antes da modificação estrutural.
 
-Retorna dois dicionários: \texttt{in\_to\_cycle} mapeia vértices externos aos pontos de entrada no ciclo original, e \texttt{out\_from\_cycle} mapeia vértices externos aos pontos de saída. Esses dicionários são essenciais para a fase de reexpansão, onde será necessário determinar exatamente qual aresta interna do ciclo deve ser removida para restaurar a propriedade de arborescência. O digrafo \texttt{D} é modificado in-place: os vértices de \texttt{C} são removidos e substituídos por \texttt{label}. A escolha de modificação in-place (em vez de criar uma cópia) reduz significativamente o uso de memória e o tempo de execução, especialmente em grafos grandes ou com múltiplos níveis de recursão, embora exija atenção cuidadosa ao gerenciamento de referências. A complexidade é \(O(m)\), onde \(m\) é o número de arestas, pois cada aresta incidente ao ciclo é processada uma vez: os laços nas linhas 4--10 e 14--19 examinam cada aresta no máximo uma vez, e as operações de adição (linhas 11--12, 20--21) e remoção (linha 22) têm custo proporcional ao número de arestas afetadas.
+Retorna dois dicionários: \texttt{in\_to\_cycle} mapeia vértices externos aos pontos de entrada no ciclo original, e \texttt{out\_from\_cycle} mapeia vértices externos aos pontos de saída. Esses dicionários são essenciais para a fase de reexpansão, onde será necessário determinar exatamente qual aresta interna do ciclo deve ser removida para restaurar a propriedade de arborescência. O digrafo \texttt{D} é modificado sem criar uma cópia: os vértices de \texttt{C} são removidos e substituídos por \texttt{label}. A escolha de modificação no próprio objeto (em vez de criar uma cópia) reduz significativamente o uso de memória e o tempo de execução, especialmente em grafos grandes ou com múltiplos níveis de recursão, embora exija atenção cuidadosa ao gerenciamento de referências. A complexidade é \(O(m)\), onde \(m\) é o número de arestas, pois cada aresta incidente ao ciclo é processada uma vez: os laços nas linhas 4--10 e 14--19 examinam cada aresta no máximo uma vez, e as operações de adição (linhas 11--12, 20--21) e remoção (linha 22) têm custo proporcional ao número de arestas afetadas.
 
 \begin{tcolorbox}[
 		enhanced, breakable,
@@ -1059,7 +1059,7 @@ Retorna dois dicionários: \texttt{in\_to\_cycle} mapeia vértices externos aos 
 		boxed title style={sharp corners, boxrule=0.6pt},
 		sharp corners, boxrule=0.6pt
 	]
-	\emph{Contrai o ciclo $C$ em um supervértice \texttt{label}, redirecionando arcos incidentes e ajustando custos. Modifica $D$ in-place e retorna dicionários para reexpansão.}
+	\emph{Contrai o ciclo $C$ em um supervértice \texttt{label}, redirecionando arcos incidentes e ajustando custos. Modifica $D$ no próprio objeto e retorna dicionários para reexpansão.}
 	\tcblower
 	\begin{lstlisting}[mathescape=true, language=Python]
 def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: str):
@@ -1125,7 +1125,7 @@ A escolha de implementar esta operação como uma função auxiliar separada (em
 
 Em detalhes, ela recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}) e o rótulo \texttt{r0} da raiz. A implementação armazena em uma lista todas as arestas que entram em \texttt{r0} usando o método \texttt{in\_edges} (linha 2). Se a lista não estiver vazia (linha 3), remove todas essas arestas usando o método \texttt{remove\_edges\_from} (linha 4). Este método da biblioteca NetworkX recebe como parâmetro uma lista de tuplas representando arestas na forma \texttt{(u, v)} e remove cada uma delas do grafo. A operação é realizada em lote: NetworkX itera sobre a lista fornecida e, para cada tupla \texttt{(u, v)}, remove a aresta correspondente da estrutura interna de adjacência. Se alguma aresta especificada não existir no grafo, ela é silenciosamente ignorada sem gerar erro. A complexidade de \texttt{remove\_edges\_from} é \(O(k)\), onde \(k\) é o número de arestas na lista de entrada, pois cada remoção individual tem custo \(O(1)\) em média devido ao uso de dicionários aninhados para armazenar arestas.
 
-Por fim, a função retorna o grafo \texttt{D} atualizado in-place com todas as arestas de entrada em \texttt{r0} são removidas (linha 5). A complexidade total da função é \(O(\deg^-(r_0))\), pois a operação coleta e remove cada aresta de entrada uma única vez.
+Por fim, a função retorna o grafo \texttt{D} atualizado no próprio objeto com todas as arestas de entrada em \texttt{r0} são removidas (linha 5). A complexidade total da função é \(O(\deg^-(r_0))\), pois a operação coleta e remove cada aresta de entrada uma única vez.
 
 \begin{tcolorbox}[
 		enhanced, breakable,
@@ -1135,7 +1135,7 @@ Por fim, a função retorna o grafo \texttt{D} atualizado in-place com todas as 
 		boxed title style={sharp corners, boxrule=0.6pt},
 		sharp corners, boxrule=0.6pt
 	]
-	\emph{Remove todas as arestas que entram na raiz \texttt{r0}, modificando \texttt{D} in-place e retornando o grafo atualizado.}
+	\emph{Remove todas as arestas que entram na raiz \texttt{r0}, modificando \texttt{D} ao invés de criar uma cópia e retornando o grafo atualizado.}
 	\tcblower
 	\begin{lstlisting}[mathescape=true, language=Python]
 def remove_edges_to_r0(D: nx.DiGraph, r0: str):
@@ -1153,7 +1153,7 @@ Esta função é invocada durante a fase de reexpansão do ciclo contraído, ap�
 
 A função recebe como entrada o subgrafo do ciclo \texttt{C} (objeto \texttt{nx.DiGraph}) e o vértice de entrada \texttt{v}. A implementação utiliza uma compreensão de gerador combinada com \texttt{next} para encontrar o predecessor de \texttt{v} dentro do ciclo (linha 2): a expressão \texttt{(u for u, \_ in C.in\_edges(v))} itera sobre as arestas de entrada de \texttt{v}, extraindo apenas o vértice origem \texttt{u} (ignorando metadados com \texttt{\_}), e \texttt{next} retorna o primeiro (e teoricamente único) predecessor. Em seguida, remove a aresta \texttt{(predecessor, v)} do ciclo usando o método \texttt{remove\_edge} (linha 3).
 
-A função modifica o subgrafo \texttt{C} in-place e não retorna valor. A complexidade é \(O(\deg^-(v))\), dominada pela operação de busca das arestas de entrada, embora em ciclos simples isso seja tipicamente \(O(1)\) pois cada vértice tem exatamente um predecessor.
+A função modifica diretamente o subgrafo \texttt{C} e não retorna valor. A complexidade é \(O(\deg^-(v))\), dominada pela operação de busca das arestas de entrada, embora em ciclos simples isso seja tipicamente \(O(1)\) pois cada vértice tem exatamente um predecessor.
 
 \begin{tcolorbox}[
 		enhanced, breakable,
@@ -1186,13 +1186,13 @@ Esta função implementa o algoritmo de Chu–Liu/Edmonds de forma recursiva, or
 
 A implementação segue a estrutura do algoritmo:
 
-\paragraph*{Preservação do grafo original (linha 2):} Cria uma cópia \texttt{D\_copy = D.copy()} para preservar os pesos originais. Como as operações de normalização e contração modificam os pesos das arestas in-place, a cópia é necessária para restaurar os custos corretos na arborescência final. Complexidade: \(O(m+n)\).
+\paragraph*{Preservação do grafo original (linha 2):} Cria uma cópia \texttt{D\_copy = D.copy()} para preservar os pesos originais. Como as operações de normalização e contração modificam os pesos das arestas diretamente, a cópia é necessária para restaurar os custos corretos na arborescência final. Complexidade: \(O(m+n)\).
 
-\paragraph*{Normalização e construção de \(F^*\) (linhas 3--6):} Itera sobre todos os vértices não-raiz (linhas 3--5), chamando \texttt{normalize\_incoming\_edge\_weights(D\_copy, v)} para cada um. Após normalizar todos os vértices, constrói \(F^*\) (linha 6) chamando \texttt{get\_Fstar(D\_copy, r0)}, que seleciona uma aresta de custo reduzido zero entrando em cada vértice não-raiz.
+\paragraph*{Normalização e construção de \(F^*\) (linhas 3--6):} Itera sobre todos os vértices não-raiz (linhas 3--5), chamando \texttt{reduce\_weights(D\_copy, v)} para cada um. Após normalizar todos os vértices, constrói \(F^*\) (linha 6) chamando \texttt{get\_Fstar(D\_copy, r0)}, que seleciona uma aresta de custo reduzido zero entrando em cada vértice não-raiz.
 
 \paragraph*{Verificação de aciclicidade — caso base (linhas 7--10):} Verifica se \(F^*\) é uma arborescência válida usando \texttt{nx.is\_arborescence(F\_star)} (linha 7). Se sim, restaura os pesos originais de \texttt{D} para cada aresta de \(F^*\) (linhas 8--9) e retorna \texttt{F\_star} como solução (linha 10). A função \texttt{nx.is\_arborescence} testa conectividade, aciclicidade e grau de entrada correto simultaneamente.
 
-\paragraph*{Contração e resolução recursiva — caso recursivo (linhas 11--16):} Caso \(F^*\) contenha um ciclo, detecta \(C\) chamando \texttt{find\_cycle(F\_star)} (linha 12). Cria um rótulo único \texttt{contracted\_label = f"contracted\_\{level\}"} para o supervértice (linha 13). Contrai o ciclo chamando \texttt{contract\_cycle(D\_copy, C, contracted\_label)} (linhas 14--15), que modifica \texttt{D\_copy} in-place criando o digrafo contraído \(D'\) e retorna os dicionários \texttt{in\_to\_cycle} e \texttt{out\_from\_cycle}. Chama-se recursivamente (linha 16) com \texttt{find\_optimum\_arborescence\_chuliu(D\_copy, r0, level+1)}, obtendo \(F'\).
+\paragraph*{Contração e resolução recursiva — caso recursivo (linhas 11--16):} Caso \(F^*\) contenha um ciclo, detecta \(C\) chamando \texttt{find\_cycle(F\_star)} (linha 12). Cria um rótulo único \texttt{contracted\_label = f"contracted\_\{level\}"} para o supervértice (linha 13). Contrai o ciclo chamando \texttt{contract\_cycle(D\_copy, C, contracted\_label)} (linhas 14--15), que modifica \texttt{D\_copy} diretamente criando o digrafo contraído \(D'\) e retorna os dicionários \texttt{in\_to\_cycle} e \texttt{out\_from\_cycle}. Chama-se recursivamente (linha 16) com \texttt{chuliu(D\_copy, r0, level+1)}, obtendo \(F'\).
 
 \paragraph*{Reexpansão do ciclo contraído (linhas 17--30):} Identifica a aresta externa que entra no supervértice em \(F'\) (linha 17) e extrai o vértice externo \texttt{u} (linha 18). Consulta \texttt{v = in\_to\_cycle[u]} para determinar o vértice do ciclo que recebe a conexão (linha 19). Remove a aresta interna que entrava em \(v\) chamando \texttt{remove\_internal\_edge\_to\_cycle\_entry(C, v)} (linha 20), quebrando o ciclo no ponto de entrada. Adiciona a aresta externa \texttt{(u, v)} a \(F'\) (linha 21) e reintegra as demais arestas do ciclo (linhas 22--23). Processa as arestas de saída (linhas 24--26): para cada \texttt{(contracted\_label, w)} em \(F'\), adiciona \texttt{(v\_out, w)} usando \texttt{out\_from\_cycle[w]}. Remove o supervértice (linha 27), restaura os pesos originais (linhas 28--29) e retorna \texttt{F\_prime} (linha 30).
 
@@ -1211,11 +1211,11 @@ O código completo da função principal é apresentado a seguir:
 	\emph{Implementa o algoritmo de Chu–Liu/Edmonds de forma recursiva para encontrar a r-arborescência de custo mínimo em um digrafo ponderado \texttt{D} com raiz \texttt{r0}. Normaliza custos, constrói $F^*$, detecta ciclos e, se houver, contrai em supervértice, resolve recursivamente no grafo reduzido e reexpande, restaurando a arborescência ótima no grafo original. Retorna um \texttt{nx.DiGraph} contendo exatamente $|V|-1$ arestas com grau de entrada 1 para cada vértice exceto a raiz.}
 	\tcblower
 	\begin{lstlisting}[mathescape=true, language=Python]
-def find_optimum_arborescence_chuliu(D: nx.DiGraph,r0: str,level=0,):
+def chuliu(D: nx.DiGraph,r0: str,level=0,):
     D_copy = D.copy()
     for v in D_copy.nodes:
         if v != r0:
-            normalize_incoming_edge_weights(D_copy, v)
+            reduce_weights(D_copy, v)
     F_star = get_Fstar(D_copy, r0)
     if nx.is_arborescence(F_star):
         for u, v in F_star.edges:
@@ -1226,7 +1226,7 @@ def find_optimum_arborescence_chuliu(D: nx.DiGraph,r0: str,level=0,):
         contracted_label = f"\n n*{level}"
         in_to_cycle, out_from_cycle = contract_cycle(
         D_copy, C, contracted_label)
-        F_prime = find_optimum_arborescence_chuliu(D_copy,r0,level + 1)
+        F_prime = chuliu(D_copy,r0,level + 1)
         in_edge = next(iter(F_prime.in_edges(contracted_label, data="w")), None)
         u, _, _ = in_edge
         v, _ = in_to_cycle[u]
@@ -1318,7 +1318,7 @@ A implementação em Python segue fielmente os cinco passos da descrição teór
 
 		\texttt{for v in D\_copy.nodes:}
 
-		\quad \texttt{normalize\_incoming\_edge\_weights(D\_copy, v)}
+		\quad \texttt{reduce\_weights(D\_copy, v)}
 
 		\texttt{F\_star = get\_Fstar(D\_copy, r0)}
 
@@ -1375,7 +1375,7 @@ A implementação em Python segue fielmente os cinco passos da descrição teór
 		                                  &
 		\textbf{Linha 16:}
 
-		\texttt{F\_prime = find\_optimum\_arborescence\_chuliu(}
+		\texttt{F\_prime = chuliu(}
 
 		\quad \texttt{D\_copy, r0, level+1)}
 
@@ -1408,7 +1408,7 @@ A implementação em Python segue fielmente os cinco passos da descrição teór
 	\label{tab:teoria-implementacao}
 \end{table}
 
-Esta correspondência demonstra que a implementação não é uma aproximação ou interpretação livre da teoria, mas uma tentativa de traduzir fielmente a descrição teórica. As funções auxiliares (\texttt{normalize\_incoming\_edge\_weights}, \texttt{get\_Fstar}, \texttt{find\_cycle}, \texttt{contract\_cycle}, \texttt{remove\_internal\_edge\_to\_cycle\_entry}) encapsulam exatamente as operações descritas na formulação teórica, preservando as propriedades de correção e complexidade do algoritmo original.
+Esta correspondência demonstra que a implementação não é uma aproximação ou interpretação livre da teoria, mas uma tentativa de traduzir fielmente a descrição teórica. As funções auxiliares (\texttt{reduce\_weights}, \texttt{get\_Fstar}, \texttt{find\_cycle}, \texttt{contract\_cycle}, \texttt{remove\_internal\_edge\_to\_cycle\_entry}) encapsulam exatamente as operações descritas na formulação teórica, preservando as propriedades de correção e complexidade do algoritmo original.
 
 \subsection{Transição para a abordagem primal-dual}
 
