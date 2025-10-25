@@ -947,7 +947,7 @@ Retorna o digrafo \texttt{A\_zero} contendo exatamente uma aresta entrando em ca
 		enhanced, breakable,
 		colframe=blue!60!black, colback=blue!2,
 		colbacktitle=blue!15, coltitle=black,
-		title={Construção de F star },
+		title={Construção de A zero },
 		boxed title style={sharp corners, boxrule=0.6pt},
 		sharp corners, boxrule=0.6pt
 	]
@@ -959,8 +959,6 @@ def get_Azero(D: nx.DiGraph, r0: str):
     for v in D.nodes():
         if v != r0:
             in_edges = list(D.in_edges(v, data="w"))
-            if not in_edges:
-                continue
             u = next((u for u, _, w in in_edges if w == 0), None)
             if u:
                 A_zero.add_edge(u, v, w=0)
