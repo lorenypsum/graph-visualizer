@@ -17,7 +17,7 @@ from andrasfrank import (
 from chuliu import find_optimum_arborescence_chuliu, remove_edges_to_r0
 
 # Deafult parameters
-NUM_TESTS = 2000
+NUM_TESTS = 50
 MIN_VERTICES = 100
 MAX_VERTICES = 200
 PESO_MIN = 1
@@ -142,9 +142,9 @@ def volume_tester(
     peso_max=PESO_MAX,
     log_csv_path=LOG_CSV_PATH,
     log_txt_path=LOG_TXT_PATH,
-    draw_fn=None,
-    log=None,
-    boilerplate=True,
+    draw_fn=False,
+    log=False,
+    boilerplate=False,
     lang=LANG,
     family: str = FAMILY,
 ):

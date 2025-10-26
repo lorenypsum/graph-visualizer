@@ -1,9 +1,8 @@
 import networkx as nx
 from typing import Optional, cast
 
-
 # Normalização dos pesos das arestas que entram em um vértice
-def normalize_incoming_edge_weights(D: nx.DiGraph, node: str, lang="pt"):
+def reduce_weights(D: nx.DiGraph, node: str, lang="pt"):
     """
     Change the weights of incoming edges into the `node`
     by subtracting the minimum incoming weight from each in the Graph G.
@@ -17,37 +16,22 @@ def normalize_incoming_edge_weights(D: nx.DiGraph, node: str, lang="pt"):
         - Nothing (the graph G is modified in place)
     """
 
-    if lang == "en":
-        assert (
-            node in D
-        ), f"\nnormalize_incoming_edge_weights: The vertex '{node}' does not exist in the graph."
-    elif lang == "pt":
-        assert (
-            node in D
-        ), f"\nnormalize_incoming_edge_weights: O vértice '{node}' não existe no grafo."
-
-    # Get the incoming edges of the node with their weights
-    predecessors = list(D.in_edges(node, data=True))
-
-    if not predecessors:
-        return
-
     # Calculate the minimum weight among the incoming edges
-    yv = min((data.get("w", 0) for _, _, data in predecessors))
+    yv = min((data.get("w", 0) for _, _, data in D.in_edges(node, data=True)))
 
     # Subtract Yv from each incoming edge
-    for u, _, _ in predecessors:
+    for u, _, _ in D.in_edges(node, data=True):
         # Ensure the edge has a weight attribute
         if "w" not in D[u][node]:
             D[u][node]["w"] = 0
         D[u][node]["w"] -= yv
 
 
-# Cria o conjunto F*
-def get_Fstar(D: nx.DiGraph, r0: str, lang="pt"):
+# Cria o conjunto A0
+def get_Azero(D: nx.DiGraph, r0: str, lang="pt"):
     """
-    Creates the set F_star from graph G and root r0.
-    An returns a directed graph F_star.
+    Creates the set A_zero from graph G and root r0.
+    An returns a directed graph A_zero.
 
     Parameters:
         - D: A directed graph (networkx.DiGraph)
@@ -55,54 +39,39 @@ def get_Fstar(D: nx.DiGraph, r0: str, lang="pt"):
         - lang: Language for error messages ("en" for English, "pt" for Portuguese)
 
     Returns:
-        - F_star: A directed graph (networkx.DiGraph) representing F*
+        - A_zero: A directed graph (networkx.DiGraph) representing F*
     """
 
-    if lang == "en":
-        assert (
-            r0 in D
-        ), f"\nget_Fstar: The root vertex '{r0}' does not exist in the graph."
-    elif lang == "pt":
-        assert r0 in D, f"\nget_Fstar: O vértice raiz '{r0}' não existe no grafo."
-
-    # Create an empty directed graph for F_star
-    F_star = nx.DiGraph()
+    # Create an empty directed graph for A_zero
+    A_zero = nx.DiGraph()
 
     for v in D.nodes():
         if v != r0:
-            in_edges = list(D.in_edges(v, data=True))
-            if not in_edges:
-                continue  # No edges entering v
-            u = next((u for u, _, data in in_edges if data.get("w", None) == 0), None)
-            if u:
-                F_star.add_edge(u, v, w=0)
-    return F_star
+            in_edges = D.in_edges(v, data=True)
+            u = next((u for u, _, data in in_edges if data.get("w") == 0))
+            A_zero.add_edge(u, v, w=0)
+    return A_zero
 
 
 # Encontra um circuito (ciclo dirigido) em G
-def find_cycle(F_star: nx.DiGraph):
+def find_cycle(A_zero: nx.DiGraph):
     """
     Finds a directed cycle in the graph.
     Returns a subgraph containing the cycle, or None if there is none.
 
     Parameters:
-        - F_star: A directed graph (networkx.DiGraph)
+        - A_zero: A directed graph (networkx.DiGraph)
 
     Returns:
         - A directed graph (networkx.DiGraph) representing the cycle, or None if no cycle is found.
     """
 
-    try:
-        nodes_in_cycle = set()
-        # Extract nodes involved in the cycle
-        for u, v, _ in nx.find_cycle(F_star, orientation="original"):
-            nodes_in_cycle.update([u, v])
-        # Create a subgraph containing only the cycle
-        return F_star.subgraph(nodes_in_cycle).copy()
-
-    except nx.NetworkXNoCycle:
-        return None
-
+    nodes_in_cycle = set()
+    # Extract nodes involved in the cycle
+    for u, v, _ in nx.find_cycle(A_zero, orientation="original"):
+        nodes_in_cycle.update([u, v])
+    # Create a subgraph containing only the cycle
+    return A_zero.subgraph(nodes_in_cycle).copy()
 
 # Contrai um ciclo C em G, substituindo-o por um supernó rotulado pelo `label`
 def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: str, lang="pt"):
@@ -121,14 +90,14 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: str, lang="pt"):
         - out_from_cycle: A dictionary mapping nodes outside the cycle to tuples (node_in_cycle, weight)
     """
 
-    if lang == "en":
-        assert (
-            label not in D
-        ), f"\ncontract_cycle: The label '{label}' already exists as a vertex in G."
-    elif lang == "pt":
-        assert (
-            label not in D
-        ), f"\ncontract_cycle: O rótulo '{label}' já existe como vértice em G."
+    # if lang == "en":
+    #     assert (
+    #         label not in D
+    #     ), f"\ncontract_cycle: The label '{label}' already exists as a vertex in G."
+    # elif lang == "pt":
+    #     assert (
+    #         label not in D
+    #     ), f"\ncontract_cycle: O rótulo '{label}' já existe como vértice em G."
 
     cycle_nodes: set[str] = set(C.nodes())
 
@@ -176,11 +145,9 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: str, lang="pt"):
 
     # Remove all nodes in the cycle from G
     D.remove_nodes_from(cycle_nodes)
-
     return in_to_cycle, out_from_cycle
 
-
-# Remove todas as arestas que entram no vértice raiz r0 em G
+#Remove todas as arestas que entram no vértice raiz r0 em G
 def remove_edges_to_r0(
     D: nx.DiGraph, r0: str, log=None, boilerplate: bool = True, lang="pt"
 ):
@@ -199,37 +166,9 @@ def remove_edges_to_r0(
         - D: The updated directed graph (networkx.DiGraph) with edges to r0 removed
     """
 
-    # Verify that r0 exists in G
-    if lang == "en":
-        assert (
-            r0 in D
-        ), f"\nremove_edges_to_r0: The root vertex '{r0}' does not exist in the graph."
-    elif lang == "pt":
-        assert (
-            r0 in D
-        ), f"\nremove_edges_to_r0: O vértice raiz '{r0}' não existe no grafo."
-
     # Remove all edges entering r0
     in_edges = list(D.in_edges(r0))
-    if not in_edges:
-        if boilerplate and log:
-            if lang == "en":
-                log(f"\nremove_edges_to_r0: No edges entering '{r0}' to remove.")
-            elif lang == "pt":
-                log(
-                    f"\nremove_edges_to_r0: Nenhuma aresta entrando em '{r0}' para remover."
-                )
-    else:
-        D.remove_edges_from(in_edges)
-        if boilerplate and log:
-            if lang == "en":
-                log(
-                    f"\nremove_edges_to_r0: Removed {len(in_edges)} edges entering '{r0}'."
-                )
-            elif lang == "pt":
-                log(
-                    f"\nremove_edges_to_r0: Removidas {len(in_edges)} arestas entrando em '{r0}'."
-                )
+    D.remove_edges_from(in_edges)
     return D
 
 
@@ -320,7 +259,7 @@ def find_optimum_arborescence_chuliu(
 
     for v in D_copy.nodes:
         if v != r0:
-            normalize_incoming_edge_weights(D_copy, v, lang=lang)
+            reduce_weights(D_copy, v, lang=lang)
 
         if boilerplate and log:
             if lang == "en":
@@ -343,45 +282,45 @@ def find_optimum_arborescence_chuliu(
                         f"\nfind_optimum_arborescence_chuliu:{indent}Após ajuste de pesos",
                     )
 
-    # Build F_star
-    F_star = get_Fstar(D_copy, r0, lang=lang)
+    # Build A_zero
+    A_zero = get_Azero(D_copy, r0, lang=lang)
 
     if boilerplate and log:
         if lang == "en":
-            log(f"\nfind_optimum_arborescence_chuliu:{indent}Building F_star")
+            log(f"\nfind_optimum_arborescence_chuliu:{indent}Building A_zero")
         elif lang == "pt":
-            log(f"\nfind_optimum_arborescence_chuliu:{indent}Construindo F_star")
+            log(f"\nfind_optimum_arborescence_chuliu:{indent}Construindo A_zero")
         if draw_fn:
             if lang == "en":
-                draw_fn(F_star, f"\nfind_optimum_arborescence_chuliu:{indent}F_star")
+                draw_fn(A_zero, f"\nfind_optimum_arborescence_chuliu:{indent}A_zero")
             elif lang == "pt":
-                draw_fn(F_star, f"\nfind_optimum_arborescence_chuliu:{indent}F_star")
+                draw_fn(A_zero, f"\nfind_optimum_arborescence_chuliu:{indent}A_zero")
 
-    if nx.is_arborescence(F_star):
-        for u, v in F_star.edges:
-            F_star[u][v]["w"] = D[u][v]["w"]
-        return F_star
+    if nx.is_arborescence(A_zero):
+        for u, v in A_zero.edges:
+            A_zero[u][v]["w"] = D[u][v]["w"]
+        return A_zero
 
     # Otherwise, contract a cycle and recurse
     if boilerplate and log:
         if lang == "en":
             log(
-                f"\nfind_optimum_arborescence_chuliu:{indent}F_star is not an arborescence. Continuing..."
+                f"\nfind_optimum_arborescence_chuliu:{indent}A_zero is not an arborescence. Continuing..."
             )
         elif lang == "pt":
             log(
-                f"\nfind_optimum_arborescence_chuliu:{indent}F_star não é uma arborescência. Continuando..."
+                f"\nfind_optimum_arborescence_chuliu:{indent}A_zero não é uma arborescência. Continuando..."
             )
 
-    C_opt: Optional[nx.DiGraph] = find_cycle(F_star)
+    C_opt: Optional[nx.DiGraph] = find_cycle(A_zero)
     if lang == "en":
         assert (
             C_opt is not None
-        ), "\nfind_optimum_arborescence_chuliu: No cycle found in F_star."
+        ), "\nfind_optimum_arborescence_chuliu: No cycle found in A_zero."
     elif lang == "pt":
         assert (
             C_opt is not None
-        ), "\nfind_optimum_arborescence_chuliu: Nenhum ciclo encontrado em F_star."
+        ), "\nfind_optimum_arborescence_chuliu: Nenhum ciclo encontrado em A_zero."
     C = cast(nx.DiGraph, C_opt)
 
     contracted_label = f"\n n*{level}"
