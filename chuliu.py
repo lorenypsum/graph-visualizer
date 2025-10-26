@@ -163,7 +163,7 @@ def remove_edges_to_r0(
     return D
 
 # Remove a aresta interna que entra no vértice de entrada do ciclo
-def remove_internal_edge_to_cycle_entry(C: nx.DiGraph, v):
+def remove_edge_cycle(C: nx.DiGraph, v):
     """
     Remove the internal edge entering the entry vertex `v` from cycle C,
     since `v` now receives an external edge from the graph.
@@ -355,7 +355,7 @@ def find_optimum_arborescence_chuliu(
         ), f"\nfind_optimum_arborescence_chuliu: Nenhum vértice do ciclo encontrado que recebeu a aresta de entrada de '{u}'."
 
     # Remove the internal edge entering vertex `v` from cycle C
-    remove_internal_edge_to_cycle_entry(C, v)
+    remove_edge_cycle(C, v)
 
     # Add the external edge entering the cycle and restore remaining cycle edges
     F_prime.add_edge(u, v)
