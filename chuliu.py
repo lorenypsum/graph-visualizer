@@ -222,7 +222,7 @@ def chuliu_edmonds(
             + "' não está presente no grafo."
         )
 
-    D_copy = cast(nx.DiGraph, D.copy())
+    D_copy = D.copy()
 
     if boilerplate and log:
         if lang == "en":
@@ -300,16 +300,7 @@ def chuliu_edmonds(
                 f"\nchuliu_edmonds:{indent}A_zero não é uma arborescência. Continuando..."
             )
 
-    C_opt: Optional[nx.DiGraph] = find_cycle(A_zero)
-    if lang == "en":
-        assert (
-            C_opt is not None
-        ), "\nchuliu_edmonds: No cycle found in A_zero."
-    elif lang == "pt":
-        assert (
-            C_opt is not None
-        ), "\nchuliu_edmonds: Nenhum ciclo encontrado em A_zero."
-    C = cast(nx.DiGraph, C_opt)
+    C = find_cycle(A_zero)
 
     contracted_label = f"\n n*{level}"
     if metrics is not None:
@@ -331,6 +322,7 @@ def chuliu_edmonds(
     # Identify the vertex in the cycle that received the only incoming edge
     in_edges_list = list(F_prime.in_edges(contracted_label, data=True))
     in_edge = in_edges_list[0] if in_edges_list else None
+
     if lang == "en":
         assert (
             in_edge is not None
