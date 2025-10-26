@@ -222,7 +222,7 @@ def chuliu_edmonds(
             + "' não está presente no grafo."
         )
 
-    D_copy = D.copy()
+    D_copy = cast(nx.DiGraph, D.copy())
 
     if boilerplate and log:
         if lang == "en":
@@ -319,9 +319,7 @@ def chuliu_edmonds(
         metrics=metrics,
     )
 
-    # Identify the vertex in the cycle that received the only incoming edge
-    in_edges_list = list(F_prime.in_edges(contracted_label, data=True))
-    in_edge = in_edges_list[0] if in_edges_list else None
+    in_edge = next(iter(F_prime.in_edges(contracted_label, data=True)))
 
     if lang == "en":
         assert (
@@ -331,7 +329,8 @@ def chuliu_edmonds(
         assert (
             in_edge is not None
         ), f"\nchuliu_edmonds: Nenhuma aresta encontrada entrando no vértice '{contracted_label}'."
-    # At this point in_edge is guaranteed not None by asserts above
+    
+    # At this point in_edge is guaranteed not None
     u, _, _ = cast(tuple, in_edge)
     v, _ = in_to_cycle[u]
 
