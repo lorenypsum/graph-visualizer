@@ -176,13 +176,12 @@ def remove_edge_cycle(C: nx.DiGraph, v):
         - The modified cycle (with one less edge)
     """
 
-    predecessor = next((u for u, _ in C.in_edges(v)), None)
-
+    predecessor = next((u for u, _ in C.in_edges(v)))
     C.remove_edge(predecessor, v)
 
 
 # Encontra a arborescência ótima em G com raiz r0 usando o algoritmo de Chu-Liu/Edmonds
-def find_optimum_arborescence_chuliu(
+def chuliu_edmonds(
     D: nx.DiGraph,
     r0: str,
     level=0,
@@ -319,7 +318,7 @@ def find_optimum_arborescence_chuliu(
     in_to_cycle, out_from_cycle = contract_cycle(D_copy, C, contracted_label, lang=lang)
 
     # Recursive call
-    F_prime = find_optimum_arborescence_chuliu(
+    F_prime = chuliu_edmonds(
         D_copy,
         r0,
         level + 1,

@@ -14,7 +14,7 @@ from andrasfrank import (
     phase2_find_minimum_arborescence_v2,
     check_dual_optimality_condition,
 )
-from chuliu import find_optimum_arborescence_chuliu, remove_edges_to_r0
+from chuliu import chuliu_edmonds, remove_edges_to_r0
 
 # Deafult parameters
 NUM_TESTS = 50
@@ -273,7 +273,7 @@ def volume_tester(
 
             # Chu-Liu/Edmonds Algorithm (timed)
             t1 = time.perf_counter()
-            arbo_chuliu = find_optimum_arborescence_chuliu(
+            arbo_chuliu = chuliu_edmonds(
                 D1_filtered,
                 root,
                 draw_fn=draw_fn,
