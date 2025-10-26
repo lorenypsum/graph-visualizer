@@ -90,15 +90,6 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: str, lang="pt"):
         - out_from_cycle: A dictionary mapping nodes outside the cycle to tuples (node_in_cycle, weight)
     """
 
-    # if lang == "en":
-    #     assert (
-    #         label not in D
-    #     ), f"\ncontract_cycle: The label '{label}' already exists as a vertex in G."
-    # elif lang == "pt":
-    #     assert (
-    #         label not in D
-    #     ), f"\ncontract_cycle: O rótulo '{label}' já existe como vértice em G."
-
     cycle_nodes: set[str] = set(C.nodes())
 
     # Stores the vertex u outside the cycle and the vertex v inside the cycle that receives the minimum weight edge
@@ -170,7 +161,6 @@ def remove_edges_to_r0(
     in_edges = list(D.in_edges(r0))
     D.remove_edges_from(in_edges)
     return D
-
 
 # Remove a aresta interna que entra no vértice de entrada do ciclo
 def remove_internal_edge_to_cycle_entry(C: nx.DiGraph, v):
