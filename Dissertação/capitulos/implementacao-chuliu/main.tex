@@ -997,12 +997,11 @@ Esta função detecta a presença de um ciclo dirigido em \(A_0\) e devolve um s
 Recebe como entrada um digrafo \texttt{A\_zero} (objeto \texttt{nx.DiGraph}). A implementação utiliza um bloco \texttt{try} (linha 2) para capturar exceções caso não haja ciclo; esta escolha de tratamento por exceção é necessária porque a API do NetworkX adota o padrão EAFP (\emph{Easier to Ask for Forgiveness than Permission}), onde \texttt{nx.find\_cycle} não devolve um valor especial (como \texttt{None}) quando o grafo é acíclico, mas sim lança a exceção \texttt{NetworkXNoCycle} para sinalizar a ausência de ciclos.
 
 Em seguida a função inicializa um conjunto vazio \texttt{nodes\_in\_cycle} (linha 3) e emprega a função \texttt{nx.find\_cycle} do NetworkX (linha 4), que realiza uma busca em profundidade para detectar ciclos. A função \texttt{nx.find\_cycle} ou lança uma exceção devolve um iterador sobre todos os arcos que compõem esse ciclo. O laço na linha 4 itera sobre esses arcos devolvidos, desempacotando cada uma na forma \texttt{(u, v, \_)} (ignorando o terceiro elemento com \texttt{\_}, que contém metadados de orientação), e para cada arco \((u,v)\) adiciona ambos os vértices ao conjunto \texttt{nodes\_in\_cycle} (linha 5); a escolha de usar conjunto em vez de lista garante que cada vértice seja adicionado apenas uma vez mesmo que o ciclo tenha múltiplos arcos incidentes, e a operação de adição tem complexidade \(O(1)\) amortizada.
-
 Após coletar todos os vértices do ciclo, constrói e devolve uma cópia do subgrafo induzido por eles (linha 7); a cópia é necessária porque o método \texttt{subgraph} devolve apenas uma visão dinâmica sobre o grafo original.
 
 Se nenhum ciclo existir, a exceção \texttt{nx.NetworkXNoCycle} é capturada no bloco \texttt{except} (linha 8) e a função devolve \texttt{None} (linha 9);
 
-No final, um subgrafo contendo os vértices e arcos do ciclo detectado é devolvido, ou \texttt{None} se não houver ciclo. O grafo original \texttt{A\_zero} não é modificado. A complexidade é \(O(m)\), onde \(m\) é o número de arcos, pois a DFS visita cada arco no máximo uma vez.
+No final, um subgrafo contendo os vértices e arcos do ciclo detectado é devolvido. O grafo original \texttt{A\_zero} não é modificado. A complexidade é \(O(m)\), onde \(m\) é o número de arcos, pois a DFS visita cada arco no máximo uma vez.
 
 \begin{tcolorbox}[
 		enhanced, breakable,
@@ -1016,13 +1015,11 @@ No final, um subgrafo contendo os vértices e arcos do ciclo detectado é devolv
 	\tcblower
 	\begin{lstlisting}[mathescape=true, language=Python]
 def find_cycle(A_zero: nx.DiGraph):
-    try:
-        nodes_in_cycle = set()
-        for u, v, _ in nx.find_cycle(A_zero, orientation="original"):
-            nodes_in_cycle.update([u, v])
-        return A_zero.subgraph(nodes_in_cycle).copy()
-    except nx.NetworkXNoCycle:
-        return None  
+    
+	nodes_in_cycle = set()
+	for u, v, _ in nx.find_cycle(A_zero, orientation="original"):
+		nodes_in_cycle.update([u, v])
+	return A_zero.subgraph(nodes_in_cycle).copy()
 \end{lstlisting}
 \end{tcolorbox}
 
