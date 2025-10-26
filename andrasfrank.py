@@ -1,7 +1,6 @@
 import networkx as nx
 import heapq
 
-
 # TODO: Verificar se precisa mesmo dessa função
 def build_D_zero(D):
     """
