@@ -522,8 +522,6 @@ Após isso reinserimos os pesos originais do arcos. A figura a seguir ilustra es
 	\caption{Reexpansão da \(r\)-arborescência ótima \(T'\) em \(D'\) para obter a \(r\)-arborescência \(T\) em \(D\). Os arcos selecionados em verde fazem parte de \(T\).}
 \end{figure}
 
-\textcolor{red}{\textbf{TODO: TEMOS QUE OLHAR ISSO AQUI DEPOIS}}
-
 
 É importante observar que, ao depender da forma com a qual extraímos a arborescência ótima de \(D'\) a partir do nosso diagrafo original, podemos obter múltiplas arborescências ótimas em \(D\), o exemplo a seguir ilustra essa situação:
 
@@ -613,8 +611,6 @@ Após a contração do ciclo \(C\), ambas as arborescências \(T_1\) e \(T_2\) m
 	\end{tikzpicture}
 	\caption{Arborescência \(T'\) no dígrafo contraído \(D'\). O arco \((r, x_C)\) pode corresponder ou ao arco \((r, v_1)\) ou ao \((r, v_3)\) em \(D\) e o arco \((x_C, u)\) corresponde ao arco normalizado \((v_2, u)\) em \(D\).}
 \end{figure}
-
-TODO -> REVISAR ESSA LEGENDA
 
 No processo de reexpansão, existem duas \(r\)-arborescências ótimas distintas em \(D\), ilustradas a seguir:
 
@@ -888,8 +884,6 @@ Os métodos da API NetworkX utilizados na implementação dividem-se em três ca
 	\item \texttt{D.remove\_edges\_from(edges)}: remove múltiplas arcos em lote. 
 	\item \texttt{D.remove\_nodes\_from(nodes)}: remove vértices e todas as suas arcos incidentes. 
 \end{itemize}
-
-% \textcolor{red}{\textbf{TODO: REVISAR ISSO AQUI TAMBÉM DEPOIS}}
 
 % \paragraph*{Detecção de ciclos}
 % \begin{itemize}\setlength{\itemsep}{2pt}
