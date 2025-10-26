@@ -10,19 +10,20 @@
         \node[circle,draw,fill=blue!20,minimum size=8mm] (v5) at (3,2) {$v_5$};
 
         % Arestas de F* (todas com peso 0)
-        \draw[->,very thick,blue!70] (r) to[bend left=15] node[midway,above left,black,font=\footnotesize] {0} (v1);
-        \draw[->,very thick,red,line width=1.2pt] (r) to[bend right=20] node[midway,left,black,font=\footnotesize] {0} (v2);
+        \draw[->,very thick,blue!70] (r) to[bend right=15] node[midway,above left,black,font=\footnotesize] {0} (v1);
+        \draw[->,very thick,red,line width=1.2pt] (r) to[bend right=20] node[midway,right,black,font=\footnotesize] {0} (v2);
         \draw[->,very thick,red,line width=1.2pt] (v2) to node[midway,below,black,font=\footnotesize] {0} (v3);
         \draw[->,very thick,red,line width=1.2pt] (v3) to node[midway,below right,black,font=\footnotesize] {0} (v4);
-        \draw[->,very thick,red,line width=1.2pt] (v4) to[bend right=20] node[midway,right,black,font=\footnotesize] {0} (v2);
-        \draw[->,very thick,blue!70] (r) to[bend right=15] node[midway,above right,black,font=\footnotesize] {0} (v5);
+        \draw[->,very thick,red,line width=1.2pt] (v4) to[bend right=20] node[midway,above,black,font=\footnotesize] {0} (v2);
+        \draw[->,very thick,blue!70] (r) to[bend left=15] node[midway, above,black,font=\footnotesize] {0} (v5);
 
         % Destaque do ciclo detectado
-        \draw[dashed,red,thick,rounded corners=10pt] (-0.5,-0.3) rectangle (3.5,1.1);
-        \node[above,red,font=\small] at (1.5,1.2) {ciclo detectado pela DFS};
+        % \draw[dashed,red,thick,rounded corners=10pt] (-0.5,-0.3) rectangle (3.5,1.1);
+        \draw[dashed,red,thick,rounded corners=10pt] (-0.7,-0.5) rectangle (3.7,1.25);
+        \node[above,red,font=\small] at (1.5,1.2) {ciclo detectado};
 
         % Ordem de visita DFS (pequenos números)
-        \node[circle,fill=white,font=\tiny,inner sep=1pt] at (0.3,2.3) {1};
+        \node[circle,fill=white,font=\tiny,inner sep=1pt] at (-0.3,2.3) {1};
         \node[circle,fill=white,font=\tiny,inner sep=1pt] at (0.3,0.8) {2};
         \node[circle,fill=white,font=\tiny,inner sep=1pt] at (1.8,0.3) {3};
         \node[circle,fill=white,font=\tiny,inner sep=1pt] at (3.3,0.8) {4};
@@ -46,7 +47,7 @@
         % Apenas as arestas do ciclo
         \draw[->,very thick,red,line width=1.2pt] (cv2) to node[midway,below,black,font=\footnotesize] {0} (cv3);
         \draw[->,very thick,red,line width=1.2pt] (cv3) to node[midway,below right,black,font=\footnotesize] {0} (cv4);
-        \draw[->,very thick,red,line width=1.2pt] (cv4) to[bend right=20] node[midway,right,black,font=\footnotesize] {0} (cv2);
+        \draw[->,very thick,red,line width=1.2pt] (cv4) to[bend right=20] node[midway,above,black,font=\footnotesize] {0} (cv2);
 
         % Indicação do conjunto de vértices
         \node[below,font=\footnotesize,align=center] at (1.5,-0.8) {\texttt{nodes\_in\_cycle} = \{$v_2$, $v_3$, $v_4$\}};

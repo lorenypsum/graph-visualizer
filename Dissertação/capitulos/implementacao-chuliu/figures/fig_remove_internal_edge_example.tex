@@ -16,7 +16,7 @@
         \node[cycle_vertex] (v4) at (2,-1) {$v_4$};
 
         % External edge entering the cycle
-        \draw[highlight] (u) -- node[above, font=\scriptsize] {nova} (v2);
+        \draw[highlight] (u) -- node[above, xshift=-6pt, font=\scriptsize] {nova} (v2);
 
         % Cycle edges
         \draw[edge] (v2) -- (v3);
@@ -35,7 +35,7 @@
         \node[cycle_vertex] (v4b) at (2,-1) {$v_4$};
 
         % External edge entering (now the only one)
-        \draw[edge] (u2) -- node[above, font=\scriptsize] {única} (v2b);
+        \draw[edge] (u2) -- node[above, xshift=-6pt, font=\scriptsize] {única} (v2b);
 
         % Remaining cycle edges (path)
         \draw[edge] (v2b) -- (v3b);

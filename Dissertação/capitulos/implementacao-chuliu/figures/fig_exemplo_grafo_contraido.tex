@@ -1,4 +1,4 @@
-\begin{tikzpicture}[>=Stealth, node distance=2cm, scale=1, every node/.style={scale=1}]
+\begin{tikzpicture}[>=Stealth, node distance=2cm, scale=1.5, every node/.style={scale=1}]
     \node[circle,draw,fill=blue!40,minimum size=8mm] (n6) at (0,4) {6};
     \node[circle,draw,fill=blue!40,minimum size=8mm] (n8) at (1.5,2.8) {8};
     \node[circle,draw,fill=blue!40,minimum size=8mm] (n7) at (4,3.5) {7};
@@ -10,15 +10,15 @@
 
     % Edges with weights
     \draw[->,thick,gray!70,bend left=8] (n0) to node[above] {2} (n1);
-    \draw[->,thick,gray!70,bend left=8] (n3) to node[above] {0} (n4);
+    \draw[->,thick,gray!70,bend left=8] (n3) to node[below] {0} (n4);
     \draw[->,thick,gray!70,bend left=8] (n4) to node[above] {0} (n5);
-    \draw[->,thick,gray!70,bend left=8] (n4) to node[below] {9} (n1);
+    \draw[->,thick,gray!70,bend left=10] (n4) to node[above, xshift=-4pt] {9} (n1);
     \draw[->,thick,gray!70,bend left=8] (n5) to node[left] {0} (n6);
-    \draw[->,thick,gray!70,bend left=8] (n6) to node[above] {0} (n4);
+    \draw[->,thick,gray!70,bend right=8] (n6) to node[below left, xshift=4pt] {0} (n4);
     \draw[->,thick,gray!70,bend left=8] (n6) to node[above] {0} (n7);
-    \draw[->,thick,gray!70,bend left=8] (n6) to node[right] {0} (n8);
+    \draw[->,thick,gray!70,bend left=15] (n6) to node[right, xshift=4pt] {0} (n8);
     \draw[->,thick,gray!70,bend left=8] (n7) to node[below] {2} (n8);
-    \draw[->,thick,gray!70,bend left=8] (n8) to node[above] {4} (n6);
+    \draw[->,thick,gray!70,bend left=15] (n8) to node[below right, yshift=-4pt] {4} (n6);
     \draw[->,thick,gray!70,bend left=8] (n1) to node[below] {0} (n3);
-    \draw[->,thick,gray!70,bend left=8] (n1) to node[above] {9} (n4);
+    \draw[->,thick,gray!70,bend left=10] (n1) to node[below] {9} (n4);
 \end{tikzpicture}
