@@ -81,7 +81,7 @@ então, para cada vértice \(v \neq r\), existe exatamente um arco de \(T\) que 
 
 	\caption{A figura ilustra a escolha gulosa quando esta produz uma $r$-arborescência.
 		Os arcos em \textcolor{blue}{azul} são os escolhidos; os cinza são os demais arcos
-		de digrafo.}
+		do digrafo.}
 \end{figure}
 
 Suponha que \(T\) é uma \(r\)-arborescência. Não é difícil verificar que \(T\) tem custo mínimo.
@@ -269,8 +269,8 @@ A figura a seguir ilustra a redução de custos no digrafo da Figura~\ref{fig:an
 	\caption{Os arcos azuis são os da escolha gulosa.}
 \end{figure}
 
-Podemos agora retomar o caso no qual o subdigrafo gerador $H$ de $D$, cujo
-arcos são aqueles cujo custo $\lambda$-reduzido é zero, não possui uma $r$-arborescência.
+Podemos agora retomar o caso no qual o subdigrafo gerador $H$ de $D$, cujos
+arcos são aqueles em que o custo $\lambda$-reduzido é zero, não possui uma $r$-arborescência.
 Vamos mostrar que $H$ possui um ciclo.
 
 Seja $v \neq r$ um vértice de $V$ que \emph{não} é alcançável a partir de $r$ em $H$.
@@ -380,7 +380,7 @@ Considere o digrafo \(D\) a seguir, com o ciclo \(C = (v_1, v_2, v_3, v_1)\).
 	\caption{O digrafo \(D\) com o ciclo \(C = (v_1, v_2, v_3, v_1)\). Os arcos azuis representam os arcos do ciclo, os tracejados representam os demais arcos do digrafo.}
 \end{figure}
 
-Após a normalização dos custos, os arcos internos do ciclo passam a ter custo reduzido zero e os demais arcos são ajustados conforme a definição de custo \(\lambda\)-reduzido.:
+Após a normalização dos custos, os arcos internos do ciclo passam a ter custo reduzido zero e os demais arcos são ajustados conforme a definição de custo \(\lambda\)-reduzido:
 
 \begin{figure}[H]
 	\centering
@@ -486,7 +486,7 @@ Seguindo nosso exemplo anterior, ilustramos a reexpansão da \(r\)-arborescênci
 	\caption{Reexpansão da \(r\)-arborescência ótima \(T'\) em \(D'\) para obter a \(r\)-arborescência \(T\) em \(D\)}
 \end{figure}
 
-Após isso reinserimos os pesos originais do arcos. A figura a seguir ilustra esse processo:
+Após isso reinserimos os pesos originais dos arcos. A figura a seguir ilustra esse processo:
 
 \begin{figure}[H]
 	\centering
@@ -681,7 +681,7 @@ A seguir, apresentamos a proposição que estabelece a correspondência entre as
 			c_\lambda(u,v) & \text{se } a' = (x_C, v) \text{ corresponde a } (u,v) \text{ com } u \in C.
 		\end{cases}
 	\]
-	Então existe uma correspondência bijetiva entre as \(r\)-arborescências de \(D'\) com custos \(c'\) e as \(r\)-arborescências de \(D\) com custos \(c_\lambda\) que contêm exatamente um arco entrando em \(C\). Note que, em geral, pode haver múltiplas arborescências ótimas de \(D\) que são mapeadas para uma mesma arborescência ótima de \(D'\), ou seja, a correspondência entre arborescências ótimas pode não ser bijetiva.
+	Então existe uma correspondência bijetiva entre as \(r\)-arborescências de \(D'\) com custos \(c'\) e as \(r\)-arborescências de \(D\) com custos \(c_\lambda\) que contêm exatamente um arco entrando em \(C\). Note que, em geral, podem haver múltiplas arborescências ótimas de \(D\) que são mapeadas para uma mesma arborescência ótima de \(D'\), ou seja, a correspondência entre arborescências ótimas pode não ser bijetiva.
 \end{proposicao}
 
 \begin{proof}[Prova.]
@@ -1122,7 +1122,7 @@ Esta função remove todos os arcos que entram no vértice raiz \(r_0\), garanti
 
 A escolha de implementar esta operação como uma função auxiliar separada (em vez de incluí-la apenas inline na função principal) segue princípios de design de software: (1) \emph{modularidade}, encapsulando uma responsabilidade específica e bem definida (remover entradas na raiz) em uma unidade testável independente; (2) \emph{reutilização}, permitindo que outras partes do código ou implementações alternativas possam chamar esta operação quando necessário sem duplicar lógica; (3) \emph{clareza semântica}, dando um nome descritivo (\texttt{remove\_edges\_to\_r0}) que documenta a intenção da operação no ponto de chamada, tornando a função principal mais legível ao abstrair detalhes de implementação; e (4) \emph{facilidade de teste}, possibilitando escrever testes unitários focados exclusivamente nesta operação de pré-processamento, verificando casos extremos (como grafos onde a raiz já não tem predecessores ou onde todos os arcos entram na raiz) sem precisar testar toda a complexidade do algoritmo recursivo.
 
-Em detalhes, ela recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}) e o rótulo \texttt{r0} da raiz. A implementação armazena em uma lista todos os arcos que entram em \texttt{r0} usando o método \texttt{in\_edges} (linha 2). Se a lista não estiver vazia (linha 3), remove todos esses arcos usando o método \texttt{remove\_edges\_from} (linha 4). Este método da biblioteca NetworkX recebe como parâmetro uma lista de tuplas representando arcos na forma \texttt{(u, v)} e remove cada uma delas do grafo. A operação é realizada em lote: NetworkX itera sobre a lista fornecida e, para cada tupla \texttt{(u, v)}, remove o arco correspondente da estrutura interna de adjacência. Se algum arco especificado não existir no grafo, ele é silenciosamente ignorada sem gerar erro. A complexidade de \texttt{remove\_edges\_from} é \(O(k)\), onde \(k\) é o número de arcos na lista de entrada, pois cada remoção individual tem custo \(O(1)\) em média devido ao uso de dicionários aninhados para armazenar arcos.
+Em detalhes, ela recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}) e o rótulo \texttt{r0} da raiz. A implementação armazena em uma lista todos os arcos que entram em \texttt{r0} usando o método \texttt{in\_edges} (linha 2). Se a lista não estiver vazia (linha 3), remove todos esses arcos usando o método \texttt{remove\_edges\_from} (linha 4). Este método da biblioteca NetworkX recebe como parâmetro uma lista de tuplas representando arcos na forma \texttt{(u, v)} e remove cada uma delas do grafo. A operação é realizada em lote: NetworkX itera sobre a lista fornecida e, para cada tupla \texttt{(u, v)}, remove o arco correspondente da estrutura interna de adjacência. Se algum arco especificado não existir no grafo, ele é silenciosamente ignorado sem gerar erro. A complexidade de \texttt{remove\_edges\_from} é \(O(k)\), onde \(k\) é o número de arcos na lista de entrada, pois cada remoção individual tem custo \(O(1)\) em média devido ao uso de dicionários aninhados para armazenar arcos.
 
 Por fim, a função devolve o grafo \texttt{D} atualizado no próprio objeto com todos os arcos de entrada em \texttt{r0} são removidos (linha 5). A complexidade total da função é \(O(\deg^-(r_0))\), pois a operação coleta e remove cada arco de entrada uma única vez.
 
@@ -1148,7 +1148,7 @@ def remove_edges_to_r0(D: nx.DiGraph, r0: str):
 
 \subsection{Remoção de arco interno:}
 
-Esta função é invocada durante a fase de reexpansão do ciclo contraído, após a chamada recursiva devolver com a arborescência ótima \(T'\) do grafo contraído. Quando o supervértice \(x_C\) é expandido de volta para o ciclo original \(C\), um arco externo \((u,v)\) é adicionado conectando um vértice externo \(u\) a um vértice \(v\) dentro do ciclo. Como o ciclo \(C\) originalmente continha exatamente um arco entrando em cada um de seus vértices (formando um ciclo fechado), e agora \(v\) recebe um arco adicional vinda do exterior, esse vértice teria grau de entrada 2, violando a propriedade fundamental de arborescência (cada vértice não-raiz deve ter exatamente uma entrada). Para restaurar essa propriedade, a função remove o arco interno que anteriormente entrava em \(v\), mantendo apenas o novo arco externo. Essa remoção "quebra" o ciclo no ponto de entrada, transformando-o em um caminho que se integra corretamente à estrutura de árvore.
+Esta função é invocada durante a fase de reexpansão do ciclo contraído, após a chamada recursiva devolver com a arborescência ótima \(T'\) do grafo contraído. Quando o supervértice \(x_C\) é expandido de volta para o ciclo original \(C\), um arco externo \((u,v)\) é adicionado conectando um vértice externo \(u\) a um vértice \(v\) dentro do ciclo. Como o ciclo \(C\) originalmente continha exatamente um arco entrando em cada um de seus vértices (formando um ciclo fechado), e agora \(v\) recebe um arco adicional vindo do exterior, esse vértice teria grau de entrada 2, violando a propriedade fundamental de arborescência (cada vértice não-raiz deve ter exatamente uma entrada). Para restaurar essa propriedade, a função remove o arco interno que anteriormente entrava em \(v\), mantendo apenas o novo arco externo. Essa remoção "quebra" o ciclo no ponto de entrada, transformando-o em um caminho que se integra corretamente à estrutura de árvore.
 
 A função recebe como entrada o subgrafo do ciclo \texttt{C} (objeto \texttt{nx.DiGraph}) e o vértice de entrada \texttt{v}. A implementação utiliza uma compreensão de gerador combinada com \texttt{next} para encontrar o predecessor de \texttt{v} dentro do ciclo (linha 2): a expressão \texttt{(u for u, \_ in C.in\_edges(v))} itera sobre os arcos de entrada de \texttt{v}, extraindo apenas o vértice origem \texttt{u} (ignorando metadados com \texttt{\_}), e \texttt{next} devolve o primeiro (e teoricamente único) predecessor. Em seguida, remove o arco \texttt{(predecessor, v)} do ciclo usando o método \texttt{remove\_edge} (linha 3).
 
@@ -1162,7 +1162,7 @@ A função modifica diretamente o subgrafo \texttt{C} e não devolve valor. A co
 		boxed title style={sharp corners, boxrule=0.6pt},
 		sharp corners, boxrule=0.6pt
 	]
-	\emph{Remove o arco interno que entra no vértice de entrada \texttt{v} do ciclo \texttt{C} durante a reexpansão, pois \texttt{v} passa a receber um arco externo, e manter ambas violaria a propriedade de arborescência.}
+	\emph{Remove o arco interno que entra no vértice de entrada \texttt{v} do ciclo \texttt{C} durante a reexpansão, pois \texttt{v} passa a receber um arco externo, e manter ambos violaria a propriedade de arborescência.}
 	\tcblower
 	\begin{lstlisting}[mathescape=true, language=Python]
 def remove_internal_edge_to_cycle_entry(C: nx.DiGraph, v):
@@ -1176,7 +1176,7 @@ A Figura~\ref{fig:remove-internal-edge-example} ilustra o objetivo da função:
 \begin{figure}[H]
 	\centering
 	\input{capitulos/implementacao-chuliu/figures/fig_remove_internal_edge_example.tex}
-	\caption{Remoção de arco interno durante reexpansão. À esquerda, ciclo $C=\{v_2, v_3, v_4\}$ após adicionar arco externo $(u, v_2)$ vindoura da arborescência $T'$: o vértice $v_2$ tem grau de entrada 2 (arco externo vermelho de $u$ e arco interno do ciclo vindo de $v_4$), violando a propriedade de arborescência. À direita, após remover o arco interno $(v_4, v_2)$: o vértice $v_2$ passa a ter grau de entrada 1, o ciclo é "quebrado" no ponto de entrada, transformando-se em um caminho que se integra corretamente à estrutura de árvore. O arco removido é mostrado tracejado em cinza.}
+	\caption{Remoção de arco interno durante reexpansão. À esquerda, ciclo $C=\{v_2, v_3, v_4\}$ após adicionar arco externo $(u, v_2)$ vindouro da arborescência $T'$: o vértice $v_2$ tem grau de entrada 2 (arco externo vermelho de $u$ e arco interno do ciclo vindo de $v_4$), violando a propriedade de arborescência. À direita, após remover o arco interno $(v_4, v_2)$: o vértice $v_2$ passa a ter grau de entrada 1, o ciclo é "quebrado" no ponto de entrada, transformando-se em um caminho que se integra corretamente à estrutura de árvore. O arco removido é mostrado tracejado em cinza.}
 	\label{fig:remove-internal-edge-example}
 \end{figure}
 
@@ -1195,7 +1195,7 @@ A implementação segue a estrutura do algoritmo:
 
 \paragraph*{Reexpansão do ciclo contraído (linhas 17--30):} Identifica o arco externo que entra no supervértice em \(F'\) (linha 17) e extrai o vértice externo \texttt{u} (linha 18). Consulta \texttt{v = in\_to\_cycle[u]} para determinar o vértice do ciclo que recebe a conexão (linha 19). Remove o arco interno que entrava em \(v\) chamando \texttt{remove\_internal\_edge\_to\_cycle\_entry(C, v)} (linha 20), quebrando o ciclo no ponto de entrada. Adiciona o arco externo \texttt{(u, v)} a \(F'\) (linha 21) e reintegra os demais arcos do ciclo (linhas 22--23). Processa os arcos de saída (linhas 24--26): para cada \texttt{(contracted\_label, w)} em \(F'\), adiciona \texttt{(v\_out, w)} usando \texttt{out\_from\_cycle[w]}. Remove o supervértice (linha 27), restaura os pesos originais (linhas 28--29) e devolve \texttt{F\_prime} (linha 30).
 
-A função devolve um digrafo contendo exatamente \(|V|-1\) arcos onde cada vértice \(v \neq r_0\) tem grau de entrada 1, todos os vértices são alcançáveis a partir de \(r_0\), e o custo total é mínimo. O grafo original \texttt{D} não é modificado devido à cópia (linha 2). A complexidade é \(O(mn)\) no pior caso, onde cada nível de recursão (até \(O(n)\) níveis) processa \(O(m)\) arcos durante normalização, detecção de ciclos e contração/expansão.
+A função devolve um digrafo contendo exatamente \(|V|-1\) arcos onde cada vértice \(v \neq r_0\) tem grau de entrada 1, todos os vértices são alcançáveis a partir de \(r_0\), e o custo total é mínimo. O grafo original \texttt{D} não é modificado devido à cópia (linha 2). A complexidade é \(O(mn)\) no pior caso, onde cada nível de recursão (até \(O(n)\) níveis) processa \(O(m)\) arcos durante a normalização, detecção de ciclos e contração/expansão.
 
 O código completo da função principal é apresentado a seguir:
 
@@ -1252,13 +1252,13 @@ A seguir, demonstramos a execução completa do algoritmo de Chu--Liu/Edmonds em
 \begin{figure}[H]
 	\centering
 	\input{capitulos/implementacao-chuliu/figures/fig_exemplo_grafo_inicial.tex}
-	\caption{Grafo direcionado ponderado inicial com raiz no vértice 0. O grafo contém 9 vértices e múltiplos arcos com pesos variados. O primeiro passo do algoritmo seria remover arcos que entram na raiz, porém não há nenhuma neste caso, logo não existe necessidade de alterar o grafo.}
+	\caption{Grafo direcionado ponderado inicial com raiz no vértice 0. O grafo contém 9 vértices e múltiplos arcos com pesos variados. O primeiro passo do algoritmo seria remover arcos que entram na raiz, porém não há nenhum neste caso, logo não existe necessidade de alterar o grafo.}
 	\label{fig:exemplo-grafo-inicial}
 \end{figure}
 
-O primeiro passo do nosso algoritmo seria remover os arcos que entram na raiz (vértice $0$), porém não há nenhuma nesse caso, logo não existe a necessidade de alterar o grafo.
+O primeiro passo do nosso algoritmo seria remover os arcos que entram na raiz (vértice $0$), porém não há nenhum nesse caso, logo não existe a necessidade de alterar o grafo.
 
-O próximo passo é normalizar os pesos dos arcos de entrada para cada vértice. Nessa etapa, para cada vértice $v$ (exceto a raiz), o algoritmo encontra o arco de menor peso que entra em $v$ e subtrai esse menor peso de todos os arcos que entram em $v$ (isso serve para zerar o peso do arco mínima de entrada em cada vértice).
+O próximo passo é normalizar os pesos dos arcos de entrada para cada vértice. Nessa etapa, para cada vértice $v$ (exceto a raiz), o algoritmo encontra o arco de menor peso que entra em $v$ e subtrai esse menor peso de todos os arcos que entram em $v$ (isso serve para zerar o peso do arco mínimo de entrada em cada vértice).
 
 \begin{figure}[H]
 	\centering
