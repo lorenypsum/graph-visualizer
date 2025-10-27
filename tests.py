@@ -6,6 +6,7 @@ import traceback
 import tracemalloc
 
 import networkx as nx
+from typing import Optional, Callable
 
 from andrasfrank import (
     andras_frank_algorithm,
@@ -30,10 +31,12 @@ LANG = "pt"  # Change to "en" for English logs
 # Instance family configuration
 FAMILY = "random"  # options: random | dense | sparse | layered
 
+
 def log_console_and_file(msg, log_txt_path=LOG_TXT_PATH):
     print(msg)
     with open(log_txt_path, "a") as f:
         f.write(msg + "\n")
+
 
 def build_rooted_digraph(
     n=10, m=None, root="r0", peso_min=1, peso_max=10, family: str = "random"
@@ -114,6 +117,7 @@ def build_rooted_digraph(
                 D.add_edge(u, v, w=random.randint(peso_min, peso_max))
     return D
 
+
 def contains_arborescence(D, r0):
     """
     Check if G contains an arborescence with root r0.
@@ -121,11 +125,13 @@ def contains_arborescence(D, r0):
     tree = nx.dfs_tree(D, source=r0)
     return tree.number_of_nodes() == D.number_of_nodes(), tree
 
+
 def get_total_digraph_cost(D_arbo):
     """
     Calculate the total cost of a directed graph.
     """
     return sum(data["w"] for _, _, data in D_arbo.edges(data=True))
+
 
 def volume_tester(
     num_tests=NUM_TESTS,
@@ -136,9 +142,9 @@ def volume_tester(
     peso_max=PESO_MAX,
     log_csv_path=LOG_CSV_PATH,
     log_txt_path=LOG_TXT_PATH,
-    draw_fn=False,
-    log=False,
-    boilerplate=False,
+    draw_fn: Optional[Callable] = None,
+    log: Optional[Callable[[str], None]] = None,
+    boilerplate: bool = False,
     lang=LANG,
     family: str = FAMILY,
 ):
@@ -470,6 +476,7 @@ def volume_tester(
         log_console_and_file(f"\n Testes com falha: {failure_count}")
         log_console_and_file(f"\n Custo ChuLiu > Frank: {chuliu_greater_than_frank}")
         log_console_and_file(f"\n Custo Frank > ChuLiu: {frank_greater_than_chuliu}")
+
 
 volume_tester(
     num_tests=NUM_TESTS,
