@@ -15,12 +15,13 @@ def reduce_weights(D: nx.DiGraph, node: str, lang="pt"):
     Returns:
         - Nothing (the graph G is modified in place)
     """
+    incoming_edges = D.in_edges(node, data=True)
 
     # Calculate the minimum weight among the incoming edges
-    yv = min((data.get("w", 0) for _, _, data in D.in_edges(node, data=True)))
+    yv = min((data.get("w", 0) for _, _, data in incoming_edges))
 
     # Subtract Yv from each incoming edge
-    for u, _, _ in D.in_edges(node, data=True):
+    for u, _, _ in incoming_edges:
         # Ensure the edge has a weight attribute
         if "w" not in D[u][node]:
             D[u][node]["w"] = 0

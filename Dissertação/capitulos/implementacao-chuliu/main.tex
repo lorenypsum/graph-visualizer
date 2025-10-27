@@ -906,7 +906,7 @@ Não devolve nenhum valor, pois a operação é realizada modificando diretament
 		enhanced, breakable,
 		colframe=blue!60!black, colback=blue!2,
 		colbacktitle=blue!15, coltitle=black,
-		title={Normalização por vértice: custos reduzidos},
+		title={Redução de custos por vértice (normalização)},
 		boxed title style={sharp corners, boxrule=0.6pt},
 		sharp corners, boxrule=0.6pt
 	]
@@ -914,8 +914,12 @@ Não devolve nenhum valor, pois a operação é realizada modificando diretament
 	\tcblower
 	\begin{lstlisting}[language=Python]
 def reduce_weights(D: nx.DiGraph, node: str):    
-    predecessors = list(D.in_edges(node, data="w"))
-    yv = min((w for _, _, w in predecessors))
+    
+    yv = min((data.get("w", 0) for _, _, data in 
+	D.in_edges(node, data=True)))
+    for u, _, _ in D.in_edges(node, data=True):
+        if "w" not in D[u][node]:
+            D[u][node]["w"] = 0
         D[u][node]["w"] -= yv   
 \end{lstlisting}
 \end{tcolorbox}
@@ -1124,7 +1128,7 @@ A escolha de implementar esta operação como uma função auxiliar separada (em
 
 Em detalhes, ela recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}) e o rótulo \texttt{r0} da raiz. A implementação armazena em uma lista todos os arcos que entram em \texttt{r0} usando o método \texttt{in\_edges} (linha 2). Se a lista não estiver vazia (linha 3), remove todos esses arcos usando o método \texttt{remove\_edges\_from} (linha 4). Este método da biblioteca NetworkX recebe como parâmetro uma lista de tuplas representando arcos na forma \texttt{(u, v)} e remove cada uma delas do grafo. A operação é realizada em lote: NetworkX itera sobre a lista fornecida e, para cada tupla \texttt{(u, v)}, remove o arco correspondente da estrutura interna de adjacência. Se algum arco especificado não existir no grafo, ele é silenciosamente ignorado sem gerar erro. A complexidade de \texttt{remove\_edges\_from} é \(O(k)\), onde \(k\) é o número de arcos na lista de entrada, pois cada remoção individual tem custo \(O(1)\) em média devido ao uso de dicionários aninhados para armazenar arcos.
 
-Por fim, a função devolve o grafo \texttt{D} atualizado no próprio objeto com todos os arcos de entrada em \texttt{r0} são removidos (linha 5). A complexidade total da função é \(O(\deg^-(r_0))\), pois a operação coleta e remove cada arco de entrada uma única vez.
+Por fim, a função devolve o grafo \texttt{D} atualizado no próprio objeto com todos os arcos de entrada em \texttt{r0} removidos (linha 5). A complexidade total da função é \(O(\deg^-(r_0))\), pois a operação coleta e remove cada arco de entrada uma única vez.
 
 \begin{tcolorbox}[
 		enhanced, breakable,
