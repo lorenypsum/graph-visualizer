@@ -1,7 +1,7 @@
 \chapter{Algoritmo de Chu–Liu--Edmonds}
 
 Neste capítulo, apresentaremos o algoritmo de Chu--Liu--Edmonds, que determina
-uma arborescência de custo mínimo em um dígrafo ponderado.
+uma arborescência de custo mínimo em um digrafo ponderado.
 O algoritmo baseia-se em duas operações fundamentais:
 (i) a redução gulosa dos custos dos arcos e (ii) a contração de ciclos,
 de modo a resolver recursivamente uma instância menor do problema e, em seguida,
@@ -10,10 +10,10 @@ O propósito deste capítulo é fornecer uma descrição precisa tanto do algori
 quanto da implementação desenvolvida neste trabalho.
 
 \section{O algoritmo}
-O algoritmo de Chu--Liu--Edmonds recebe uma tripla \((D,c,r)\), em que \(D=(V,A)\) é um dígrafo, \(c\colon A\to\mathbb{R}\) é uma função custo e \(r\in V\) é a raiz, sob a hipótese de que \(D\) admite ao menos uma \(r\)-arborescência. O algoritmo devolve uma \(r\)-arborescência \(c\)-mínima de \(D\).
+O algoritmo de Chu--Liu--Edmonds recebe uma tripla \((D,c,r)\), em que \(D=(V,A)\) é um digrafo, \(c\colon A\to\mathbb{R}\) é uma função custo e \(r\in V\) é a raiz, sob a hipótese de que \(D\) admite ao menos uma \(r\)-arborescência. O algoritmo devolve uma \(r\)-arborescência \(c\)-mínima de \(D\).
 
 Para evitar repetir essa hipótese, introduzimos a seguinte definição.
-Uma tripla \((D,c, r)\) é um \textbf{\(r\)-dígrafo ponderado} se $(D, c)$
+Uma tripla \((D,c, r)\) é um \textbf{\(r\)-digrafo ponderado} se $(D, c)$
 é um digrafo ponderado, $r$ é um vértice de $D$, $\delta^-(r) = \varnothing$
 e $D$ possui uma $r$-arborescência. Note que a hipótese $\delta^-(r)$ é uma trivialidade,
 pois uma $r$-arborescência não contém nenhum arco que entra em $r$ e, portanto,
@@ -334,7 +334,7 @@ A seguir, detalhamos essa operação de contração de ciclos.
 
 \subsection*{Contração de ciclos}
 
-Vamos agora formalizar a operação de contração de ciclos. Seja \((D, c, r)\) um \(r\)-dígrafo ponderado e seja \(C\) um ciclo dirigido de \(D\) tal que \(r \notin C\). A \textbf{contração de \(C\)} consiste em formar um novo dígrafo \(D' = (V', A')\) substituindo todos os vértices de \(C\) por um único \textbf{supervértice} \(x_C\) tal que \(x_C \notin V\). Formalmente, o conjunto de vértices de \(D'\) é dado por
+Vamos agora formalizar a operação de contração de ciclos. Seja \((D, c, r)\) um \(r\)-digrafo ponderado e seja \(C\) um ciclo dirigido de \(D\) tal que \(r \notin C\). A \textbf{contração de \(C\)} consiste em formar um novo digrafo \(D' = (V', A')\) substituindo todos os vértices de \(C\) por um único \textbf{supervértice} \(x_C\) tal que \(x_C \notin V\). Formalmente, o conjunto de vértices de \(D'\) é dado por
 \[
 	V' \;:=\; (V \setminus C) \cup \{x_C\}.
 \]
@@ -345,7 +345,7 @@ Ajustamos os custos dos arcos que entram e saem do supervértice \(x_C\) em \(D'
 
 Agora vamos ilustrar um exemplo de como essa contração é feita e os custos são ajustados.
 
-Considere o dígrafo \(D\) a seguir, com o ciclo \(C = (v_1, v_2, v_3, v_1)\).
+Considere o digrafo \(D\) a seguir, com o ciclo \(C = (v_1, v_2, v_3, v_1)\).
 
 \begin{figure}[H]
 	\centering
@@ -377,7 +377,7 @@ Considere o dígrafo \(D\) a seguir, com o ciclo \(C = (v_1, v_2, v_3, v_1)\).
 		\draw[arcs] (v3) -- node[midway, below] {\scriptsize 2} (w);
 		\draw[arcs] (v3) -- node[midway, below] {\scriptsize 4} (u);
 	\end{tikzpicture}
-	\caption{O dígrafo \(D\) com o ciclo \(C = (v_1, v_2, v_3, v_1)\). Os arcos azuis representam os arcos do ciclo, os tracejados representam os demais arcos do digrafo.}
+	\caption{O digrafo \(D\) com o ciclo \(C = (v_1, v_2, v_3, v_1)\). Os arcos azuis representam os arcos do ciclo, os tracejados representam os demais arcos do digrafo.}
 \end{figure}
 
 Após a normalização dos custos, os arcos internos do ciclo passam a ter custo reduzido zero e os demais arcos são ajustados conforme a definição de custo \(\lambda\)-reduzido.:
@@ -414,10 +414,10 @@ Após a normalização dos custos, os arcos internos do ciclo passam a ter custo
 		\draw[arc] (v3) -- node[midway, below] {\scriptsize 0} (w);
 		\draw[arc] (v3) -- node[midway, below] {\scriptsize 3} (u);
 	\end{tikzpicture}
-	\caption{Dígrafo com custos \(\lambda\)-reduzidos. Os arcos internos do ciclo \(C\) têm custo zero (em azul). Os arcos da raiz para o ciclo têm custos 1, 0 e 3 (tracejados).}
+	\caption{digrafo com custos \(\lambda\)-reduzidos. Os arcos internos do ciclo \(C\) têm custo zero (em azul). Os arcos da raiz para o ciclo têm custos 1, 0 e 3 (tracejados).}
 \end{figure}
 
-Após a contração do ciclo \(C\), obtemos o dígrafo \(D'\) com o supervértice \(x_C\).
+Após a contração do ciclo \(C\), obtemos o digrafo \(D'\) com o supervértice \(x_C\).
 
 \begin{figure}[H]
 	\centering
@@ -434,20 +434,20 @@ Após a contração do ciclo \(C\), obtemos o dígrafo \(D'\) com o supervértic
 		\node[super] (xC) [right=3.5cm of r] {\small $x_C$};
 		\node[v] (u) [above right=1.2cm and 2.0cm of xC] {\small $u$};
 		\node[v] (w) [below right=1.2cm and 2.0cm of xC] {\small $w$};
-		% arcos do dígrafo contraído que entram em xC (mantêm arcos paralelos, escolhemos o de menor custo)
+		% arcos do digrafo contraído que entram em xC (mantêm arcos paralelos, escolhemos o de menor custo)
 		\draw[cheap] (r) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (xC);
 		% arcos que saem de xC
 		\draw[cheap] (xC) to[bend left=8] node[midway, above] {\scriptsize 0} (u);
 		\draw[cheap] (xC) to[bend right=8] node[midway, below] {\scriptsize 0} (w);
 	\end{tikzpicture}
-	\caption{Dígrafo \(D'\) após a contração do ciclo \(C\). O supervértice \(x_C\) substitui todos os vértices do ciclo. Originalmente, havia três arcos paralelos de \(r\) para o ciclo: \((r, v_1)\), \((r, v_2)\) e \((r, v_3)\) com custos reduzidos 1, 0 e 3; mantemos apenas o de menor custo 0. Os arcos que saíam do ciclo agora saem de \(x_C\): \((x_C, u)\) com custo 0 e \((x_C, w)\) com custo 0. Note que havia dois arcos de vértices do ciclo para \(u\); mantemos apenas o de menor custo.}
+	\caption{digrafo \(D'\) após a contração do ciclo \(C\). O supervértice \(x_C\) substitui todos os vértices do ciclo. Originalmente, havia três arcos paralelos de \(r\) para o ciclo: \((r, v_1)\), \((r, v_2)\) e \((r, v_3)\) com custos reduzidos 1, 0 e 3; mantemos apenas o de menor custo 0. Os arcos que saíam do ciclo agora saem de \(x_C\): \((x_C, u)\) com custo 0 e \((x_C, w)\) com custo 0. Note que havia dois arcos de vértices do ciclo para \(u\); mantemos apenas o de menor custo.}
 \end{figure}
 
 Por definição não admitimos gerar arcos paralelos entre um mesmo par de vértices, mantemos apenas o arco de menor custo, conforme ilustrado do vértice \(r\) para o supervértice \(x_C\) e de \(x_C\) para \(u\) e isso não afeta a otimalidade, já que na reexpansão qualquer escolha entre arcos paralelos conduz à mesma solução ótima.
 
 \subsection*{Reexpansão de arborescências}
 
-Após resolver o problema no dígrafo contraído \(D'\), obtemos uma \(r\)-arborescência ótima \(T'\) em \(D'\). Para reexpandir \(T'\) em uma \(r\)-arborescência \(T\) em \(D\), substituímos o supervértice \(x_C\) pelo ciclo \(C\) e adicionamos os arcos do ciclo que formam a arborescência dentro de \(C\). Especificamente, se o arco \((u, x_C)\) em \(T'\) corresponde a um arco \((u, v_i)\) em \(D\) (onde \(v_i \in C\)), então incluímos esse arco em \(T\). Em seguida, adicionamos os arcos do ciclo \(C\) que conectam os vértices de \(C\) de forma a manter a estrutura de arborescência. Note que, devemos escolher todos os arcos do ciclo \(C\) exceto aquele que entra em \(v_i\), garantindo que cada vértice de \(C\) tenha grau de entrada igual a 1, exceto \(v_i\).
+Após resolver o problema no digrafo contraído \(D'\), obtemos uma \(r\)-arborescência ótima \(T'\) em \(D'\). Para reexpandir \(T'\) em uma \(r\)-arborescência \(T\) em \(D\), substituímos o supervértice \(x_C\) pelo ciclo \(C\) e adicionamos os arcos do ciclo que formam a arborescência dentro de \(C\). Especificamente, se o arco \((u, x_C)\) em \(T'\) corresponde a um arco \((u, v_i)\) em \(D\) (onde \(v_i \in C\)), então incluímos esse arco em \(T\). Em seguida, adicionamos os arcos do ciclo \(C\) que conectam os vértices de \(C\) de forma a manter a estrutura de arborescência. Note que, devemos escolher todos os arcos do ciclo \(C\) exceto aquele que entra em \(v_i\), garantindo que cada vértice de \(C\) tenha grau de entrada igual a 1, exceto \(v_i\).
 
 Seguindo nosso exemplo anterior, ilustramos a reexpansão da \(r\)-arborescência, primeiramente adicionando novamente os vértices que pertenciam ao ciclo \(C\) e, em seguida, incluindo os arcos apropriados para formar a \(r\)-arborescência \(T\) em \(D\):
 % Seguindo o exemplo anterior, a figura abaixo ilustra a reexpansão de \(T'\) em \(D'\) para obter a \(r\)-arborescência \(T\) em \(D\):
@@ -553,7 +553,7 @@ Considere o digrafo a seguir com custos originais:
 		% arco saindo do ciclo
 		\draw[expensive] (v2) -- node[midway, above] {\scriptsize 4} (u);
 	\end{tikzpicture}
-	\caption{Dígrafo \(D\) com custos originais. O ciclo \(C = (v_1, v_2, v_3, v_1)\) tem arcos com custos 5, 5 e 2. Existem dois arcos da raíz para o ciclo, ambos com custo 5: \((r, v_1)\) e \((r, v_3)\).}
+	\caption{digrafo \(D\) com custos originais. O ciclo \(C = (v_1, v_2, v_3, v_1)\) tem arcos com custos 5, 5 e 2. Existem dois arcos da raíz para o ciclo, ambos com custo 5: \((r, v_1)\) e \((r, v_3)\).}
 \end{figure}
 
 Após a normalização dos custos (subtraindo \(\lambda(v_1) = 5\), \(\lambda(v_2) = 2\), \(\lambda(v_3) = 5\) e \(\lambda(u) = 4\)), obtemos:
@@ -584,10 +584,10 @@ Após a normalização dos custos (subtraindo \(\lambda(v_1) = 5\), \(\lambda(v_
 		% arco saindo do ciclo
 		\draw[expensive] (v2) -- node[midway, above] {\scriptsize 0} (u);
 	\end{tikzpicture}
-	\caption{Dígrafo \(D\) com custos \(\lambda\)-reduzidos. Todos os arcos do ciclo custo mínimo têm agora custo zero.}
+	\caption{digrafo \(D\) com custos \(\lambda\)-reduzidos. Todos os arcos do ciclo custo mínimo têm agora custo zero.}
 \end{figure}
 
-Após a contração do ciclo \(C\), ambas as arborescências \(T_1\) e \(T_2\) mapeiam para a mesma arborescência \(T'\) no dígrafo contraído \(D'\):
+Após a contração do ciclo \(C\), ambas as arborescências \(T_1\) e \(T_2\) mapeiam para a mesma arborescência \(T'\) no digrafo contraído \(D'\):
 
 \begin{figure}[H]
 	\centering
@@ -609,7 +609,7 @@ Após a contração do ciclo \(C\), ambas as arborescências \(T_1\) e \(T_2\) m
 		\draw[selected] (r) to node[midway, above] {\scriptsize 0} (xC);
 		\draw[selected] (xC) to node[midway, above] {\scriptsize 0} (u);
 	\end{tikzpicture}
-	\caption{Arborescência \(T'\) no dígrafo contraído \(D'\). O arco \((r, x_C)\) pode corresponder ou ao arco \((r, v_1)\) ou ao \((r, v_3)\) em \(D\) e o arco \((x_C, u)\) corresponde ao arco normalizado \((v_2, u)\) em \(D\).}
+	\caption{Arborescência \(T'\) no digrafo contraído \(D'\). O arco \((r, x_C)\) pode corresponder ou ao arco \((r, v_1)\) ou ao \((r, v_3)\) em \(D\) e o arco \((x_C, u)\) corresponde ao arco normalizado \((v_2, u)\) em \(D\).}
 \end{figure}
 
 No processo de reexpansão, existem duas \(r\)-arborescências ótimas distintas em \(D\), ilustradas a seguir:
@@ -667,12 +667,12 @@ No processo de reexpansão, existem duas \(r\)-arborescências ótimas distintas
 	\caption{Duas \(r\)-arborescências ótimas distintas em \(D\) com custos \(c_\lambda\)-reduzidos. \(T_1\) usa o arco \((r, v_1)\) e os arcos do ciclo \((v_1, v_2)\) e \((v_2, v_3)\). \(T_2\) usa o arco \((r, v_3)\) e os arcos do ciclo \((v_3, v_1)\) e \((v_1, v_2)\). Ambas incluem o arco \((v_2, u)\) e têm custo total zero.}
 \end{figure}
 
-Assim, vemos que a correspondência entre as \(r\)-arborescências de \(D\) e \(D'\) não é bijetiva, pois duas arborescências distintas em \(D\) podem corresponder à mesma arborescência em \(D'\). Isso ocorre porque ambos os arcos \((r, v_1)\) e \((r, v_3)\) têm o mesmo custo \(\lambda\)-reduzido (zero) e ambos entram no ciclo \(C\); após a contração, ambos são representados pelo único arco \((r, x_C)\) no dígrafo contraído.
+Assim, vemos que a correspondência entre as \(r\)-arborescências de \(D\) e \(D'\) não é bijetiva, pois duas arborescências distintas em \(D\) podem corresponder à mesma arborescência em \(D'\). Isso ocorre porque ambos os arcos \((r, v_1)\) e \((r, v_3)\) têm o mesmo custo \(\lambda\)-reduzido (zero) e ambos entram no ciclo \(C\); após a contração, ambos são representados pelo único arco \((r, x_C)\) no digrafo contraído.
 
 A seguir, apresentamos a proposição que estabelece a correspondência entre as \(r\)-arborescências de \(D\) e \(D'\) após a contração do ciclo \(C\).
 
 \begin{proposicao}
-	Seja \(C\) um ciclo dirigido em \(D\) com \(r \notin C\), e seja \(D'\) o dígrafo obtido pela contração de \(C\). Para cada vértice \(v \in C\), seja \(a_v\) o único arco de \(C\) que entra em \(v\), e suponha que \(c_\lambda(a_v) = 0\) para todo \(v \in C\), onde \(\lambda(v) = \min\{c(a) : a \in \delta^-(v)\}\). Defina os custos \(c' : A' \to \mathbb{R}\) por
+	Seja \(C\) um ciclo dirigido em \(D\) com \(r \notin C\), e seja \(D'\) o digrafo obtido pela contração de \(C\). Para cada vértice \(v \in C\), seja \(a_v\) o único arco de \(C\) que entra em \(v\), e suponha que \(c_\lambda(a_v) = 0\) para todo \(v \in C\), onde \(\lambda(v) = \min\{c(a) : a \in \delta^-(v)\}\). Defina os custos \(c' : A' \to \mathbb{R}\) por
 	\[
 		c'(a') \;:=\;
 		\begin{cases}
@@ -685,7 +685,7 @@ A seguir, apresentamos a proposição que estabelece a correspondência entre as
 \end{proposicao}
 
 \begin{proof}[Prova.]
-	Seja \(T'\) uma \(r\)-arborescência de \(D'\). Como \(x_C\) é um vértice de \(D'\) e \(x_C \neq r\), existe exatamente um arco de \(T'\) que entra em \(x_C\). Seja \((u, x_C)\) esse arco. No dígrafo original \(D\), o arco \((u, x_C)\) corresponde a um arco \((u, w)\) para algum \(w \in C\).
+	Seja \(T'\) uma \(r\)-arborescência de \(D'\). Como \(x_C\) é um vértice de \(D'\) e \(x_C \neq r\), existe exatamente um arco de \(T'\) que entra em \(x_C\). Seja \((u, x_C)\) esse arco. No digrafo original \(D\), o arco \((u, x_C)\) corresponde a um arco \((u, w)\) para algum \(w \in C\).
 
 	Definimos \(T \subseteq A\) da seguinte forma: para cada arco \(a' \in T'\) que não envolve \(x_C\), incluímos o arco correspondente \(a \in A\) em \(T\); para o arco \((u, x_C) \in T'\), incluímos \((u,w) \in A\) em \(T\); e incluímos todos os arcos de \(C\), com exceção do arco \(a_w\) que entra em \(w\).
 
@@ -705,7 +705,7 @@ A seguir, apresentamos a proposição que estabelece a correspondência entre as
 
 Essa proposição justifica a estratégia recursiva do algoritmo: resolver o problema no grafo contraído \(D'\) com custos ajustados \(c'\) e, em seguida, expandir a solução para o grafo original \(D\).
 
-A seguir, apresentamos a implementação completa do algoritmo de Chu–Liu e Edmonds para encontrar uma \(r\)-arborescência de custo mínimo em um \(r\)-dígrafo ponderado \((D, c, r)\).
+A seguir, apresentamos a implementação completa do algoritmo de Chu–Liu e Edmonds para encontrar uma \(r\)-arborescência de custo mínimo em um \(r\)-digrafo ponderado \((D, c, r)\).
 
 \section{Descrição do algoritmo}
 A seguir apresentamos uma descrição formal do algoritmo de Chu–Liu/Edmonds. Detalhes de implementação serão discutidos na próxima seção. 
@@ -850,10 +850,10 @@ O uso de memória é \(O(m+n)\), incluindo mapeamentos de contração/expansão 
 \section{Implementação em Python}
 
 
-Esta seção descreve a implementação do algoritmo de Chu--Liu--Edmonds em Python, estruturada para refletir com precisão as etapas formais discutidas anteriormente. Cada operação fundamental — normalização dos custos, construção do subgrafo gerador, contração de ciclos e reexpansão — é traduzida em procedimentos sobre dígrafos orientados, utilizando a biblioteca \texttt{networkx}.
+Esta seção descreve a implementação do algoritmo de Chu--Liu--Edmonds em Python, estruturada para refletir com precisão as etapas formais discutidas anteriormente. Cada operação fundamental — normalização dos custos, construção do subgrafo gerador, contração de ciclos e reexpansão — é traduzida em procedimentos sobre digrafos orientados, utilizando a biblioteca \texttt{networkx}.
 
 
-A entrada consiste em um dígrafo orientado \(D = (V, A)\), com custos dos arcos registrados no atributo \texttt{"w"}, e uma raiz \(r \in V\). As hipóteses adotadas são: (i) o grafo é conexo a partir de \(r\), isto é, todo vértice \(v \neq r\) é alcançável a partir da raiz; (ii) para todo subconjunto \(X \subseteq V \setminus \{r\}\), existe ao menos um arco entrando em \(X\) (condições de Edmonds, cf. \cite{schrijver2003comb}); e (iii) todos os custos são não negativos.
+A entrada consiste em um digrafo orientado \(D = (V, A)\), com custos dos arcos registrados no atributo \texttt{"w"}, e uma raiz \(r \in V\). As hipóteses adotadas são: (i) o grafo é conexo a partir de \(r\), isto é, todo vértice \(v \neq r\) é alcançável a partir da raiz; (ii) para todo subconjunto \(X \subseteq V \setminus \{r\}\), existe ao menos um arco entrando em \(X\) (condições de Edmonds, cf. \cite{schrijver2003comb}); e (iii) todos os custos são não negativos.
 
 
 A saída é um subgrafo \(T\) de \(D\) com \(|A_T| = |V| - 1\) arcos, tal que cada vértice \(v \neq r\) possui grau de entrada igual a 1, todos os vértices são alcançáveis a partir de \(r\), e o custo total \(\sum_{a \in A_T} c(a)\) é mínimo.
