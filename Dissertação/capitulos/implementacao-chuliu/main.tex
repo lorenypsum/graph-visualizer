@@ -708,7 +708,7 @@ Essa proposição justifica a estratégia recursiva do algoritmo: resolver o pro
 A seguir, apresentamos a implementação completa do algoritmo de Chu–Liu e Edmonds para encontrar uma \(r\)-arborescência de custo mínimo em um \(r\)-digrafo ponderado \((D, c, r)\).
 
 \section{Descrição do algoritmo}
-A seguir apresentamos uma descrição formal do algoritmo de Chu–Liu/Edmonds. Detalhes de implementação serão discutidos na próxima seção. 
+A seguir apresentamos uma descrição formal do algoritmo de Chu–Liu/Edmonds. Detalhes de implementação serão discutidos na próxima seção.
 
 % Denotamos por \(A'\) o conjunto de arcos escolhidos na construção da r-arborescência.
 
@@ -873,16 +873,16 @@ Os métodos da API NetworkX utilizados na implementação dividem-se em três ca
 \paragraph*{Consulta de estrutura}
 \begin{itemize}\setlength{\itemsep}{2pt}
 	\item \texttt{D.nodes()}: devolve visão iterável sobre \(V\), permitindo percorrer todos os vértices.
-	\item \texttt{D.in\_edges(v, data="w")}: devolve arcos entrantes em \(v\) com pesos, produzindo tuplas \((u, v, w)\). 
-	\item \texttt{D.out\_edges(u, data="w")}: devolve arcos saíntes de \(u\) com pesos, análogo a \texttt{in\_edges}. 
-	\item \texttt{D[u][v]["w"]}: acessa diretamente o peso do arco \((u,v)\) para leitura ou modificação. 
+	\item \texttt{D.in\_edges(v, data="w")}: devolve arcos entrantes em \(v\) com pesos, produzindo tuplas \((u, v, w)\).
+	\item \texttt{D.out\_edges(u, data="w")}: devolve arcos saíntes de \(u\) com pesos, análogo a \texttt{in\_edges}.
+	\item \texttt{D[u][v]["w"]}: acessa diretamente o peso do arco \((u,v)\) para leitura ou modificação.
 \end{itemize}
 
 \paragraph*{Modificação de estrutura}
 \begin{itemize}\setlength{\itemsep}{2pt}
-	\item \texttt{D.add\_edge(u, v, w=peso)}: adiciona arco \((u,v)\) com peso especificado, criando vértices automaticamente se não existirem. 
-	\item \texttt{D.remove\_edges\_from(edges)}: remove múltiplos arcos em lote. 
-	\item \texttt{D.remove\_nodes\_from(nodes)}: remove vértices e todos os seus arcos incidentes. 
+	\item \texttt{D.add\_edge(u, v, w=peso)}: adiciona arco \((u,v)\) com peso especificado, criando vértices automaticamente se não existirem.
+	\item \texttt{D.remove\_edges\_from(edges)}: remove múltiplos arcos em lote.
+	\item \texttt{D.remove\_nodes\_from(nodes)}: remove vértices e todos os seus arcos incidentes.
 \end{itemize}
 
 % \paragraph*{Detecção de ciclos}
@@ -932,7 +932,11 @@ A Figura~\ref{fig:normalize-example} ilustra o funcionamento da normalização:
 	\label{fig:normalize-example}
 \end{figure}
 
-Observe que as diferenças relativas são preservadas: o arco mais caro permanece 4 unidades acima da mais barata, e a intermediária mantém sua posição relativa. Como cada r-arborescência contém exatamente um arco entrando em cada vértice não-raiz, a soma \(\sum_{w\neq r} y(w)\) é constante para qualquer solução, garantindo que a ordem de otimalidade seja preservada.
+Observe que as diferenças relativas são preservadas: o arco mais caro permanece 4 unidades acima da mais barata, e a intermediária mantém sua posição relativa.
+
+Vale destacar que, quando o vértice recebe apenas um arco de entrada, trivialmente o custo desse arco é reduzido a zero.
+
+Assim, cada r-arborescência contém exatamente um arco entrando em cada vértice não-raiz, a soma \(\sum_{w\neq r} y(w)\) é constante para qualquer solução, garantindo que a ordem de otimalidade seja preservada.
 
 \subsection{Construção de \texorpdfstring{\(A_0\)}{A_0}:}
 Esta função constrói o subdigrafo \(A_0\) selecionando, para cada vértice \(v\neq r_0\), um único arco de custo reduzido zero que entra em \(v\).
