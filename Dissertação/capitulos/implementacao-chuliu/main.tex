@@ -894,13 +894,13 @@ Os métodos da API NetworkX utilizados na implementação dividem-se em três ca
 
 % Abaixo, detalhamos as funções auxiliares que implementam os passos do algoritmo e ao final apresentamos a função principal que orquestra o fluxo recursivo.
 
-\subsection{Normalização por vértice}
+\subsection{Redução de custos por vértice (normalização):}
 
-Esta função implementa a normalização de custos reduzidos: calcula \(y(v)=\min\{w(u,v)\}\) e substitui cada peso \(w(u,v)\) por \(w(u,v)-y(v)\), garantindo que ao menos um arco de entrada tenha custo zero. Como cada r-arborescência possui exatamente um arco entrando em cada vértice não-raiz, a soma total dos valores \(y(v)\) subtraídos é constante para qualquer solução, preservando assim a ordem de otimalidade entre diferentes arborescências.
+Esta função implementa redução de custos por vértice - essa operação é chamada de normalização: calcula \(y(v)=\min\{w(u,v)\}\) e substitui cada peso \(w(u,v)\) por \(w(u,v)-y(v)\), garantindo que ao menos um arco de entrada tenha custo zero. Como cada r-arborescência possui exatamente um arco entrando em cada vértice não-raiz, a soma total dos valores \(y(v)\) subtraídos é constante para qualquer solução, preservando assim a ordem de otimalidade entre diferentes arborescências.
 
-Recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}) e o rótulo \texttt{node} do vértice a ser normalizado. A implementação coleta todos os arcos de entrada de \texttt{node} com seus pesos usando o método \texttt{D.in\_edges(node, data="w")}, que devolve uma lista de tuplas \((u, node, w)\) (linha 2). Em seguida, verifica se a lista está vazia e se estiver devolve imediatamente sem fazer alterações (linhas 3--4). Caso contrário, calcula o peso mínimo \texttt{yv} através de uma compreensão de gerador que extrai o terceiro elemento de cada tupla (linha 5) e, para cada predecessor \texttt{u}, subtrai \texttt{yv} do peso armazenado em \texttt{D[u][node]["w"]} (linha 6).
+Recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}) e o  vértice \texttt{node} a ser normalizado. A implementação armazena em uma variável \texttt{incoming\_edges} todos os arcos de entrada de \texttt{node} com seus pesos usando o método \texttt{D.in\_edges(node, data="w")}, que devolve uma lista de tuplas \((u, node, w)\) (linha 2) (fazemos isso para evitar repetição de código e deixar o código mais claro). Em seguida, calcula-se o peso mínimo \texttt{yv} através de uma compreensão de gerador que extrai o terceiro elemento de cada tupla (linha 3) e, para cada vértice \texttt{u}, se houver o atributo "w" subtrai \texttt{yv} do peso armazenado em \texttt{D[u][node]["w"]} (linha 7), caso contrário inicializa o peso como zero antes de subtrair (linha 6).
 
-Não devolve nenhum valor, pois a operação é realizada modificando diretamente a estrutura: o grafo \texttt{D} passado como parâmetro é modificado diretamente, e ao menos um arco de entrada de \texttt{node} terá custo reduzido zero após a execução. A complexidade é \(O(\deg^-(v))\), pois cada operação percorre os arcos de entrada uma única vez.
+A função não devolve nenhum valor, pois a operação é realizada modificando diretamente a estrutura: o digrafo \texttt{D} passado como parâmetro é modificado diretamente, e ao menos um arco de entrada de \texttt{node} terá custo reduzido zero após a execução. A complexidade é \(O(\deg^-(v))\), pois cada operação percorre os arcos de entrada uma única vez.
 
 \begin{tcolorbox}[
 		enhanced, breakable,
@@ -914,10 +914,9 @@ Não devolve nenhum valor, pois a operação é realizada modificando diretament
 	\tcblower
 	\begin{lstlisting}[language=Python]
 def reduce_weights(D: nx.DiGraph, node: str):    
-    
-    yv = min((data.get("w", 0) for _, _, data in 
-	D.in_edges(node, data=True)))
-    for u, _, _ in D.in_edges(node, data=True):
+    incoming_edges = D.in_edges(node, data=True)
+    yv = min((data.get("w", 0) for _, _, data in incoming_edges))
+    for u, _, _ in incoming_edges:
         if "w" not in D[u][node]:
             D[u][node]["w"] = 0
         D[u][node]["w"] -= yv   
