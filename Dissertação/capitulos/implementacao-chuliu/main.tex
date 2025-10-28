@@ -1259,6 +1259,32 @@ def chuliu(D: nx.DiGraph,r0: str,level=0,):
 \end{lstlisting}
 \end{tcolorbox}
 
+Os passos do algoritmo implementados nesta função correspondem diretamente à descrição formal do algoritmo de Chu–Liu/Edmonds:
+
+\begin{tcolorbox}[
+		enhanced, breakable,
+		colframe=purple!60!black, colback=purple!5,
+		colbacktitle=purple!15, coltitle=black,
+		title={Passos 4 e 5 do Algoritmo de Chu–Liu/Edmonds},
+		boxed title style={sharp corners, boxrule=0.6pt},
+		sharp corners, boxrule=0.6pt
+	]
+	\textbf{Passo 4 — Resolução recursiva:}
+	\begin{itemize}
+		\item Para resolver o digrafo contraído $D'$ aplica-se uma chamada recursiva:
+		      \texttt{F\_prime = chuliu(D\_copy, r0, level+1)} (linha 16 na implementação).
+		\item Essa chamada executa novamente a normalização, construção de $A_0$, detecção/contração de ciclos e prossegue até que o caso base (arborescência em $D'$) seja atingido.
+	\end{itemize}
+
+	\vspace{2mm}
+	\textbf{Passo 5 — Reexpansão:}
+	\begin{itemize}
+		\item Após obter \texttt{F\_prime} em $D'$, identifica-se o arco \texttt{(u, contracted\_label)} que entra no supervértice; no digrafo original esse arco corresponde a \texttt{(u,v)} com \texttt{v = in\_to\_cycle[u]}.
+		\item Remove-se o arco interno que entrava em \texttt{v} (quebrando o ciclo) — função \texttt{remove\_internal\_edge\_to\_cycle\_entry(C, v)} —, adiciona-se o arco externo \texttt{(u,v)} e reintegram-se os demais arcos de $C$; saídas do ciclo são tratadas via \texttt{out\_from\_cycle} (implementado nas linhas 17--30).
+		\item O resultado é uma arborescência em $D$ com pesos originais restaurados.
+	\end{itemize}
+\end{tcolorbox}
+
 A seguir, ilustramos o funcionamento do algoritmo de Chu–Liu/Edmonds em um digrafo de teste. Mostramos o digrafo original, os principais passos do algoritmo e a arborescência final encontrada.
 
 \subsubsection{Exemplo de execução do algoritmo}
