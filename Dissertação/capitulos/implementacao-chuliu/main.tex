@@ -1397,7 +1397,7 @@ A implementação em Python segue fielmente os cinco passos da descrição teór
 
 		Denote o digrafo contraído por \(D'=(V',A')\).
 		                                  &
-		\textbf{Linhas 11--15:}
+		\textbf{Linhas 11--13:}
 
 		\texttt{C = find\_cycle(A\_zero)}
 
@@ -1416,7 +1416,7 @@ A implementação em Python segue fielmente os cinco passos da descrição teór
 
 		Resolva recursivamente em \(D'\), obtendo arborescência ótima \(F'\).
 		                                  &
-		\textbf{Linha 16:}
+		\textbf{Linha 14:}
 
 		\texttt{F\_prime = chuliu(}
 
@@ -1431,7 +1431,7 @@ A implementação em Python segue fielmente os cinco passos da descrição teór
 
 		Expanda \(x_C\) para o ciclo original \(C\). Se \((u,x_C)\in F'\), adicione \((u,v)\) onde \(v\) é o vértice do ciclo mapeado por \(u\), remova o arco interno entrando em \(v\), e reintegre demais arcos de \(C\). Restaure custos originais.
 		                                  &
-		\textbf{Linhas 17--30:}
+		\textbf{Linhas 15--28:}
 
 		\texttt{v = in\_to\_cycle[u]}
 
@@ -1451,11 +1451,10 @@ A implementação em Python segue fielmente os cinco passos da descrição teór
 	\label{tab:teoria-implementacao}
 \end{table}
 
-Esta correspondência demonstra que a implementação não é uma aproximação ou interpretação livre da teoria, mas uma tentativa de traduzir fielmente a descrição teórica. As funções auxiliares (\texttt{reduce\_weights}, \texttt{get\_Azero}, \texttt{find\_cycle}, \texttt{contract\_cycle}, \texttt{remove\_internal\_edge\_to\_cycle\_entry}) encapsulam exatamente as operações descritas na formulação teórica, preservando as propriedades de correção e complexidade do algoritmo original.
+Esta correspondência demonstra que a implementação não é uma aproximação ou interpretação livre da teoria, mas uma tentativa de traduzir fielmente a descrição teórica. As funções auxiliares (\texttt{reduce\_weights}, \texttt{get\_Azero}, \texttt{find\_cycle}, \texttt{contract\_cycle}, \texttt{remove\_edge\_cycle}) encapsulam exatamente as operações descritas na formulação teórica, preservando as propriedades de correção e complexidade do algoritmo original.
 
 \subsection{Transição para a abordagem primal-dual}
 
-Embora o algoritmo de Chu–Liu/Edmonds seja elegante e eficiente, sua mecânica operacional — normalizar custos, selecionar mínimos, contrair ciclos — pode parecer um conjunto de heurísticas bem-sucedidas sem uma justificativa teórica unificadora aparente. Por que escolher a melhor entrada para cada vértice garante otimalidade global após o tratamento de ciclos? A resposta reside na \emph{dualidade em programação linear}.
+Embora o algoritmo de Chu–Liu/Edmonds seja elegante e eficiente, sua mecânica operacional — normalizar custos, selecionar mínimos, contrair ciclos — pode ser melhorada em termos de intuição e generalização.
 
-
-No capítulo seguinte, revisitaremos o mesmo problema sob uma ótica primal–dual em duas fases, proposta por András Frank. Essa perspectiva organiza a normalização via potenciais\footnote{No contexto primal–dual, “potenciais” são valores escalares \(y(v)\) atribuídos aos vértices para definir custos reduzidos \(c'(u,v)=c(u,v)-y(v)\). Ajustar \(y\) desloca uniformemente os custos dos arcos que entram em \(v\), sem mudar a otimalidade global: preserva a ordem relativa entre entradas e torna “apertadas” (custo reduzido zero) as candidatas corretas, habilitando contrações e uma prova de corretude via cortes apertados.} \(y(\cdot)\), explica os custos reduzidos e introduz a noção de cortes apertados (família laminar) como guias das contrações. Veremos como a mesma mecânica operacional (normalizar \(\to\) contrair \(\to\) expandir) emerge de condições duais que também sugerem otimizações e generalizações.
+No capítulo seguinte, revisitaremos o mesmo problema sob uma ótica gulosa–dual em duas fases, proposta por András Frank. Essa perspectiva organiza a normalização via potenciais\footnote{No contexto primal–dual, “potenciais” são valores escalares \(y(v)\) atribuídos aos vértices para definir custos reduzidos \(c'(u,v)=c(u,v)-y(v)\). Ajustar \(y\) desloca uniformemente os custos dos arcos que entram em \(v\), sem mudar a otimalidade global: preserva a ordem relativa entre entradas e torna “apertadas” (custo reduzido zero) as candidatas corretas, habilitando contrações e uma prova de corretude via cortes apertados.} \(y(\cdot)\), explica os custos reduzidos e introduz a noção de cortes apertados (família laminar) como guias das contrações. Veremos como a mesma mecânica operacional (normalizar \(\to\) contrair \(\to\) expandir) emerge de condições duais que também sugerem otimizações e generalizações.
