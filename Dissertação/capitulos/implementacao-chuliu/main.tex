@@ -328,7 +328,7 @@ Consequentemente, $S \cdot u$ é um ciclo de $H$.
 		caminho $S \cdot u$ é um ciclo.}
 \end{figure}
 
-A solução consiste em \emph{normalizar os custos por vértice}: para cada \(v\neq r\), subtraímos de todo arco que entra em \(v\) o menor custo entre os arcos que chegam a \(v\). Após esse ajuste (custos reduzidos), cada \(v\neq r\) passa a ter ao menos um arco de custo reduzido zero. Se os arcos de custo zero forem acíclicos, já temos a r-arborescência ótima. Se formarem um ciclo \(C\), \emph{contraímos} \(C\) em um \textbf{supervértice} \(x_C\), ajustamos os custos dos arcos externos e resolvemos recursivamente no grafo menor.
+A solução consiste em \emph{normalizar os custos por vértice}: para cada \(v\neq r\), subtraímos de todo arco que entra em \(v\) o menor custo entre os arcos que chegam a \(v\). Após esse ajuste (custos reduzidos), cada \(v\neq r\) passa a ter ao menos um arco de custo reduzido zero. Se os arcos de custo zero forem acíclicos, já temos a r-arborescência ótima. Se formarem um ciclo \(C\), \emph{contraímos} \(C\) em um \textbf{supervértice} \(x_C\), ajustamos os custos dos arcos externos e resolvemos recursivamente no digrafo menor.
 
 A seguir, detalhamos essa operação de contração de ciclos.
 
@@ -703,7 +703,7 @@ A seguir, apresentamos a proposição que estabelece a correspondência entre as
 	o que estabelece a correspondência entre custos.
 \end{proof}
 
-Essa proposição justifica a estratégia recursiva do algoritmo: resolver o problema no grafo contraído \(D'\) com custos ajustados \(c'\) e, em seguida, expandir a solução para o grafo original \(D\).
+Essa proposição justifica a estratégia recursiva do algoritmo: resolver o problema no digrafo contraído \(D'\) com custos ajustados \(c'\) e, em seguida, expandir a solução para o digrafo original \(D\).
 
 A seguir, apresentamos a implementação completa do algoritmo de Chu–Liu e Edmonds para encontrar uma \(r\)-arborescência de custo mínimo em um \(r\)-digrafo ponderado \((D, c, r)\).
 
@@ -714,15 +714,15 @@ A seguir apresentamos uma descrição formal do algoritmo de Chu–Liu/Edmonds. 
 
 % Construa \(A'\) escolhendo, para cada \(v\neq r\), um arco de menor custo que entra em \(v\). Se \((V,A')\) é acíclico, então \(A'\) já é uma r-arborescência ótima, pois realizamos o menor custo de entrada em cada vértice e nenhuma troca pode reduzir o custo mantendo as restrições \cite[Sec.~4.9]{kleinberg2006}.
 
-% Se \(A'\) contiver um ciclo dirigido \(C\) (que não inclui \(r\)), normalizamos os custos de entrada, contraímos \(C\) em um supervértice \(x_C\) ajustando arcos que entram em \(C\) por \(c'(u,x_C)=c(u,w)-c(a_w)\), e resolvemos recursivamente no grafo contraído.
+% Se \(A'\) contiver um ciclo dirigido \(C\) (que não inclui \(r\)), normalizamos os custos de entrada, contraímos \(C\) em um supervértice \(x_C\) ajustando arcos que entram em \(C\) por \(c'(u,x_C)=c(u,w)-c(a_w)\), e resolvemos recursivamente no digrafo contraído.
 
-% As arborescências obtidas no grafo contraído estão em correspondência bijetiva com as arborescências do grafo original que possuem exatamente um arco entrando no ciclo \(C\). Como, após a normalização, todos os arcos internos de \(C\) passam a ter custo reduzido igual a zero, a expansão do supervértice recupera uma arborescência válida no grafo original sem alterar o custo total da solução.
+% As arborescências obtidas no digrafo contraído estão em correspondência bijetiva com as arborescências do digrafo original que possuem exatamente um arco entrando no ciclo \(C\). Como, após a normalização, todos os arcos internos de \(C\) passam a ter custo reduzido igual a zero, a expansão do supervértice recupera uma arborescência válida no digrafo original sem alterar o custo total da solução.
 
 
 % \begin{figure}[H]\centering
 % 	\begin{tikzpicture}[>=Stealth, node distance=1.2cm]
 % 		% (a) Contraído
-% 		\node at (-3.8,2.1) {(a) Grafo contraído};
+% 		\node at (-3.8,2.1) {(a) digrafo contraído};
 % 		\node[circle,draw,minimum size=6mm] (r1) at (-6.2,1.6) {$r$};
 % 		\node[circle,draw,minimum size=8mm,fill=gray!10] (xC1) at (-4.2,0.4) {$x_C$};
 % 		\node[circle,draw,minimum size=6mm] (p1) at (-6.4,-0.8) {$p$};
@@ -754,7 +754,7 @@ A seguir apresentamos uma descrição formal do algoritmo de Chu–Liu/Edmonds. 
 % 		\draw[->] (q2) -- (aC);
 % 		\draw[->,very thick] (u2b) -- node[above,xshift=15pt] {entra em $w$} (bC);
 % 	\end{tikzpicture}
-% 	\caption{Bijeção entre arborescências no grafo contraído e no original: toda arborescência em $D'$ escolhe exatamente um arco que entra em $x_C$; ao expandir $C$, esse arco corresponde a um $(u,w)$ que entra em algum $w\in C$ e os arcos internos (de custo reduzido zero) são mantidos, preservando o custo total.}
+% 	\caption{Bijeção entre arborescências no digrafo contraído e no original: toda arborescência em $D'$ escolhe exatamente um arco que entra em $x_C$; ao expandir $C$, esse arco corresponde a um $(u,w)$ que entra em algum $w\in C$ e os arcos internos (de custo reduzido zero) são mantidos, preservando o custo total.}
 % 	\label{fig:chu-liu-bijection}
 % \end{figure}
 
@@ -795,7 +795,7 @@ A seguir apresentamos uma descrição formal do algoritmo de Chu–Liu/Edmonds. 
 % 		\draw[red,very thick] (4.35,0.55) -- (4.45,0.45);
 % 		\draw[red,very thick] (4.35,0.45) -- (4.45,0.55);
 % 	\end{tikzpicture}
-% 	\caption{Reexpansão de $C$: no grafo contraído seleciona-se um arco que entra em $x_C$; ao expandir, $x_C$ é substituído por $C$ e o arco selecionado entra em algum $w\in C$; remove-se exatamente um arco interno de $C$ para eliminar o ciclo, preservando conectividade e custo total (arcos internos têm custo reduzido zero).}
+% 	\caption{Reexpansão de $C$: no digrafo contraído seleciona-se um arco que entra em $x_C$; ao expandir, $x_C$ é substituído por $C$ e o arco selecionado entra em algum $w\in C$; remove-se exatamente um arco interno de $C$ para eliminar o ciclo, preservando conectividade e custo total (arcos internos têm custo reduzido zero).}
 % 	\label{fig:chu-liu-reexpansion}
 % \end{figure}
 
@@ -813,7 +813,7 @@ A seguir apresentamos uma descrição formal do algoritmo de Chu–Liu/Edmonds. 
 		      \end{align*}
 		      descartando laços em \(x_C\) e permitindo paralelos. Denote o digrafo contraído por $D'=(V',A')$.
 		\item \textbf{Recursão:} compute uma r-arborescência ótima \(T'\) de \(D'\) com custos \(c'\).
-		\item \textbf{Expansão:} seja \((u,x_C)\in T'\) o único arco que entra em \(x_C\). No grafo original, ele corresponde a \((u,w)\) com \(w\in C\). Forme
+		\item \textbf{Expansão:} seja \((u,x_C)\in T'\) o único arco que entra em \(x_C\). No digrafo original, ele corresponde a \((u,w)\) com \(w\in C\). Forme
 		      \[
 			      T := \bigl(T'\setminus\{\text{arcos incidentes a } x_C\}\bigr)\ \cup\ \{(u,w)\}\ \cup\ \bigl((A_0\cap A(C))\setminus\{a_w\}\bigr).
 		      \]
@@ -835,7 +835,7 @@ A corretude do algoritmo de Chu–Liu/Edmonds baseia-se em três pilares princip
 
 	      Contraia \(C\) em \(x_C\) e ajuste apenas arcos que \emph{entram} em \(C\): \(c'(u,x_C):=c(u,w)-y(w)=c(u,w)-c(a_w)\).
 
-	      Resolva o problema no grafo contraído \(D'\), obtendo uma r-arborescência ótima \(T'\) sob \(c'\). Na expansão, substitua o arco \((u,x_C)\in T'\) pelo correspondente \((u,w)\) (com \(w\in C\)) e remova \(a_w\) de \(C\).
+	      Resolva o problema no digrafo contraído \(D'\), obtendo uma r-arborescência ótima \(T'\) sob \(c'\). Na expansão, substitua o arco \((u,x_C)\in T'\) pelo correspondente \((u,w)\) (com \(w\in C\)) e remova \(a_w\) de \(C\).
 
 	      Considerando que os arcos de \(C\) têm custo reduzido zero e \(c'(u,x_C)=c(u,w)-y(w)\), a soma dos custos reduzidos é preservada na ida e na volta; logo, \(T'\) ótimo em \(D'\) mapeia para \(T\) ótimo em \(D\) para \(c'\). Pela equivalência entre \(c\) e \(c'\), \(T\) também é ótimo para \(c\). Repetindo o argumento a cada contração, obtemos a corretude por indução \cite[Sec.~4.9]{kleinberg2006,schrijver2003comb}.
 \end{enumerate}
@@ -853,7 +853,7 @@ O uso de memória é \(O(m+n)\), incluindo mapeamentos de contração/expansão 
 Esta seção descreve a implementação do algoritmo de Chu--Liu--Edmonds em Python, estruturada para refletir com precisão as etapas formais discutidas anteriormente. Cada operação fundamental — normalização dos custos, construção do subgrafo gerador, contração de ciclos e reexpansão — é traduzida em procedimentos sobre digrafos orientados, utilizando a biblioteca \texttt{networkx}.
 
 
-A entrada consiste em um digrafo orientado \(D = (V, A)\), com custos dos arcos registrados no atributo \texttt{"w"}, e uma raiz \(r \in V\). As hipóteses adotadas são: (i) o grafo é conexo a partir de \(r\), isto é, todo vértice \(v \neq r\) é alcançável a partir da raiz; (ii) para todo subconjunto \(X \subseteq V \setminus \{r\}\), existe ao menos um arco entrando em \(X\) (condições de Edmonds, cf. \cite{schrijver2003comb}); e (iii) todos os custos são não negativos.
+A entrada consiste em um digrafo orientado \(D = (V, A)\), com custos dos arcos registrados no atributo \texttt{"w"}, e uma raiz \(r \in V\). As hipóteses adotadas são: (i) o digrafo é conexo a partir de \(r\), isto é, todo vértice \(v \neq r\) é alcançável a partir da raiz; (ii) para todo subconjunto \(X \subseteq V \setminus \{r\}\), existe ao menos um arco entrando em \(X\) (condições de Edmonds, cf. \cite{schrijver2003comb}); e (iii) todos os custos são não negativos.
 
 
 A saída é um subgrafo \(T\) de \(D\) com \(|A_T| = |V| - 1\) arcos, tal que cada vértice \(v \neq r\) possui grau de entrada igual a 1, todos os vértices são alcançáveis a partir de \(r\), e o custo total \(\sum_{a \in A_T} c(a)\) é mínimo.
@@ -896,7 +896,7 @@ Os métodos da API NetworkX utilizados na implementação dividem-se em três ca
 
 \subsection{Redução de custos por vértice (normalização):}
 
-Esta função implementa redução de custos por vértice - essa operação é chamada de normalização: calcula \(y(v)=\min\{w(u,v)\}\) e substitui cada peso \(w(u,v)\) por \(w(u,v)-y(v)\), garantindo que ao menos um arco de entrada tenha custo zero. Como cada r-arborescência possui exatamente um arco entrando em cada vértice não-raiz, a soma total dos valores \(y(v)\) subtraídos é constante para qualquer solução, preservando assim a ordem de otimalidade entre diferentes arborescências.
+Esta função implementa redução de custos por vértice - essa operação é chamada de normalização e calcula \(y(v)=\min\{w(u,v)\}\) e substitui cada peso \(w(u,v)\) por \(w(u,v)-y(v)\), garantindo que ao menos um arco de entrada tenha custo zero. Como cada r-arborescência possui exatamente um arco entrando em cada vértice não-raiz, a soma total dos valores \(y(v)\) subtraídos é constante para qualquer solução, preservando assim a ordem de otimalidade entre diferentes arborescências.
 
 Recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}) e o  vértice \texttt{node} a ser normalizado. A implementação armazena em uma variável \texttt{incoming\_edges} todos os arcos de entrada de \texttt{node} com seus pesos usando o método \texttt{D.in\_edges(node, data="w")}, que devolve uma lista de tuplas \((u, node, w)\) (linha 2) (fazemos isso para evitar repetição de código e deixar o código mais claro). Em seguida, calcula-se o peso mínimo \texttt{yv} através de uma compreensão de gerador que extrai o terceiro elemento de cada tupla (linha 3) e, para cada vértice \texttt{u}, se houver o atributo "w" subtrai \texttt{yv} do peso armazenado em \texttt{D[u][node]["w"]} (linha 7), caso contrário inicializa o peso como zero antes de subtrair (linha 6).
 
@@ -910,7 +910,7 @@ A função não devolve nenhum valor, pois a operação é realizada modificando
 		boxed title style={sharp corners, boxrule=0.6pt},
 		sharp corners, boxrule=0.6pt
 	]
-	\emph{Normaliza os pesos dos arcos que entram em \texttt{node}, subtraindo de cada uma o menor peso de entrada. Modifica o grafo D no próprio objeto.}
+	\emph{Normaliza os pesos dos arcos que entram em \texttt{node}, subtraindo de cada uma o menor peso de entrada. Modifica o digrafo D no próprio objeto.}
 	\tcblower
 	\begin{lstlisting}[language=Python]
 def reduce_weights(D: nx.DiGraph, node: str):    
@@ -941,13 +941,13 @@ Considerando que cada r-arborescência contém exatamente um arco entrando em ca
 \subsection{Construção de \texorpdfstring{\(A_0\)}{A_0}:}
 Esta função constrói o subdigrafo \(A_0\) selecionando, para cada vértice \(v\neq r_0\), um único arco de custo reduzido zero que entra em \(v\).
 
-Recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}) e o rótulo \texttt{r0} da raiz. A implementação cria um novo digrafo vazio \texttt{A\_zero} (linha 2) em vez de modificar \texttt{D} diretamente; essa escolha de criar uma estrutura separada é fundamental porque \(A_0\) é um subgrafo conceitual usado para detecção de ciclos, e preservar \texttt{D} inalterado permite que as operações subsequentes (como contração) trabalhem com o grafo original completo, evitando perda de informação sobre arcos não selecionados que podem ser necessários após reexpansões.
+Recebe como entrada um digrafo \texttt{D} e a raiz \texttt{r0}. A implementação cria um novo digrafo vazio \texttt{A\_zero} (linha 2) em vez de modificar \texttt{D} diretamente; essa escolha de criar uma estrutura separada é fundamental porque \(A_0\) é um subgrafo conceitual usado para detecção de ciclos, e preservar \texttt{D} inalterado permite que as operações subsequentes (como contração) trabalhem com o digrafo original completo, evitando perda de informação sobre arcos não selecionados que podem ser necessários após reexpansões.
 
 Em seguida, para cada vértice \texttt{v} diferente de \texttt{r0} (linhas 3--4), utilizando o método \texttt{D.nodes()}, coleta todos os arcos de entrada de \texttt{v} com seus pesos em uma lista e armazena na variável \texttt{in\_edges} (linha 5); a materialização em lista é necessária porque a subsequente iteração sobre os arcos para encontrar aqueles de peso zero poderia causar problemas se trabalhássemos diretamente com a visão devolvida por \texttt{in\_edges}, especialmente em cenários de modificação concorrente. Se não houver arcos de entrada, prossegue para o próximo vértice (linhas 6--7) usando \texttt{continue}, pois um vértice isolado ou inacessível não contribui para \(A_0\) e sua ausência será detectada posteriormente como violação das hipóteses de conectividade.
 
 Caso contrário, utiliza uma compreensão de gerador combinada com \texttt{next} para encontrar o primeiro predecessor \texttt{u} cujo arco \texttt{(u, v)} tem peso zero (linha 8); a escolha de \texttt{next} com gerador em vez de uma busca exaustiva é eficiente porque interrompe a iteração assim que encontra o primeiro arco de custo zero, evitando processamento desnecessário dos arcos restantes (embora teoricamente todos os arcos de custo zero sejam equivalentes, na prática apenas um é necessário para \(A_0\)). A função \texttt{next} devolve \texttt{None} se nenhum arco de peso zero existir, o que teoricamente não deveria ocorrer após a normalização correta (que garante ao menos um arco de custo zero por vértice), mas o tratamento defensivo evita erros em casos degenerados. Se tal arco existir, adiciona-o a \texttt{A\_zero} com peso zero usando o método \texttt{add\_edge} (linhas 9--10); a especificação explícita de \texttt{w=0} garante que \(A_0\) contenha apenas arcos de custo reduzido zero, propriedade fundamental para a corretude do algoritmo.
 
-Devolve o digrafo \texttt{A\_zero} contendo exatamente um arco entrando em cada \(v\neq r_0\), todos com custo reduzido zero. O grafo original \texttt{D} não é modificado, preservando o estado para operações futuras. A complexidade é \(O(m)\), onde \(m\) é o número de arcos, pois cada arco é considerado no máximo uma vez durante a iteração sobre todos os vértices: para cada um dos \(n-1\) vértices não-raiz, examina-se seus arcos de entrada (totalizando no máximo \(m\) arcos ao longo de todas as iterações), e para cada vértice a busca por arco de peso zero é interrompida no primeiro match, resultando em tempo linear no tamanho do grafo.
+Devolve o digrafo \texttt{A\_zero} contendo exatamente um arco entrando em cada \(v\neq r_0\), todos com custo reduzido zero. O digrafo original \texttt{D} não é modificado, preservando o estado para operações futuras. A complexidade é \(O(m)\), onde \(m\) é o número de arcos, pois cada arco é considerado no máximo uma vez durante a iteração sobre todos os vértices: para cada um dos \(n-1\) vértices não-raiz, examina-se seus arcos de entrada (totalizando no máximo \(m\) arcos ao longo de todas as iterações), e para cada vértice a busca por arco de peso zero é interrompida no primeiro match, resultando em tempo linear no tamanho do digrafo.
 
 \begin{tcolorbox}[
 		enhanced, breakable,
@@ -964,10 +964,9 @@ def get_Azero(D: nx.DiGraph, r0: str):
     A_zero = nx.DiGraph()
     for v in D.nodes():
         if v != r0:
-            in_edges = list(D.in_edges(v, data="w"))
-            u = next((u for u, _, w in in_edges if w == 0), None)
-            if u:
-                A_zero.add_edge(u, v, w=0)
+            in_edges = D.in_edges(v, data=True)
+            u = next((u for u, _, data in in_edges if data.get("w") == 0))
+            A_zero.add_edge(u, v, w=0)
     return A_zero
 \end{lstlisting}
 \end{tcolorbox}
@@ -1001,15 +1000,15 @@ As funções de normalização por vértice e construção de \(A_0\) juntas imp
 \subsection{Detecção de ciclo:}
 Esta função detecta a presença de um ciclo dirigido em \(A_0\) e devolve um subgrafo que o contém; se \(A_0\) for acíclico, devolve \texttt{None}.
 
-Recebe como entrada um digrafo \texttt{A\_zero} (objeto \texttt{nx.DiGraph}). A implementação utiliza um bloco \texttt{try} (linha 2) para capturar exceções caso não haja ciclo; esta escolha de tratamento por exceção é necessária porque a API do NetworkX adota o padrão EAFP (\emph{Easier to Ask for Forgiveness than Permission}), onde \texttt{nx.find\_cycle} não devolve um valor especial (como \texttt{None}) quando o grafo é acíclico, mas sim lança a exceção \texttt{NetworkXNoCycle} para sinalizar a ausência de ciclos.
+Recebe como entrada um digrafo \texttt{A\_zero} (objeto \texttt{nx.DiGraph}). A implementação utiliza um bloco \texttt{try} (linha 2) para capturar exceções caso não haja ciclo; esta escolha de tratamento por exceção é necessária porque a API do NetworkX adota o padrão EAFP (\emph{Easier to Ask for Forgiveness than Permission}), onde \texttt{nx.find\_cycle} não devolve um valor especial (como \texttt{None}) quando o digrafo é acíclico, mas sim lança a exceção \texttt{NetworkXNoCycle} para sinalizar a ausência de ciclos.
 
 Em seguida a função inicializa um conjunto vazio \texttt{nodes\_in\_cycle} (linha 3) e emprega a função \texttt{nx.find\_cycle} do NetworkX (linha 4), que realiza uma busca em profundidade para detectar ciclos. A função \texttt{nx.find\_cycle} ou lança uma exceção devolve um iterador sobre todos os arcos que compõem esse ciclo. O laço na linha 4 itera sobre esses arcos devolvidos, desempacotando cada uma na forma \texttt{(u, v, \_)} (ignorando o terceiro elemento com \texttt{\_}, que contém metadados de orientação), e para cada arco \((u,v)\) adiciona ambos os vértices ao conjunto \texttt{nodes\_in\_cycle} (linha 5); a escolha de usar conjunto em vez de lista garante que cada vértice seja adicionado apenas uma vez mesmo que o ciclo tenha múltiplos arcos incidentes, e a operação de adição tem complexidade \(O(1)\) amortizada.
 
-Após coletar todos os vértices do ciclo, constrói e devolve uma cópia do subgrafo induzido por eles (linha 7); a cópia é necessária porque o método \texttt{subgraph} devolve apenas uma visão dinâmica sobre o grafo original.
+Após coletar todos os vértices do ciclo, constrói e devolve uma cópia do subgrafo induzido por eles (linha 7); a cópia é necessária porque o método \texttt{subgraph} devolve apenas uma visão dinâmica sobre o digrafo original.
 
 Se nenhum ciclo existir, a exceção \texttt{nx.NetworkXNoCycle} é capturada no bloco \texttt{except} (linha 8) e a função devolve \texttt{None} (linha 9);
 
-No final, um subgrafo contendo os vértices e arcos do ciclo detectado é devolvido, ou \texttt{None} se não houver ciclo. O grafo original \texttt{A\_zero} não é modificado. A complexidade é \(O(m)\), onde \(m\) é o número de arcos, pois a DFS visita cada arco no máximo uma vez.
+No final, um subgrafo contendo os vértices e arcos do ciclo detectado é devolvido, ou \texttt{None} se não houver ciclo. O digrafo original \texttt{A\_zero} não é modificado. A complexidade é \(O(m)\), onde \(m\) é o número de arcos, pois a DFS visita cada arco no máximo uma vez.
 
 \begin{tcolorbox}[
 		enhanced, breakable,
@@ -1038,11 +1037,11 @@ A Figura~\ref{fig:find-cycle-example} ilustra o processo de detecção de ciclo:
 \begin{figure}[H]
 	\centering
 	\input{capitulos/implementacao-chuliu/figures/fig_find_cycle_example.tex}
-	\caption{Exemplo de detecção de ciclo em \(A_0\). À esquerda, o subgrafo \(A_0\) contém um ciclo formado pelos vértices \(\{v_2, v_3, v_4\}\) (destacados em amarelo). A DFS percorre o grafo e detecta o ciclo ao encontrar o arco \((v_4, v_2)\), onde \(v_2\) já está na pilha de recursão. À direita, a função devolve uma cópia do subgrafo induzido pelos vértices do ciclo, contendo apenas os três vértices e os três arcos que formam o ciclo.}
+	\caption{Exemplo de detecção de ciclo em \(A_0\). À esquerda, o subgrafo \(A_0\) contém um ciclo formado pelos vértices \(\{v_2, v_3, v_4\}\) (destacados em amarelo). A DFS percorre o digrafo e detecta o ciclo ao encontrar o arco \((v_4, v_2)\), onde \(v_2\) já está na pilha de recursão. À direita, a função devolve uma cópia do subgrafo induzido pelos vértices do ciclo, contendo apenas os três vértices e os três arcos que formam o ciclo.}
 	\label{fig:find-cycle-example}
 \end{figure}
 
-Ao detectar um ciclo, a função permite que o algoritmo de Chu–Liu/Edmonds prossiga para a etapa de contração, onde o ciclo será reduzido a um supervértice, facilitando a resolução do problema no grafo modificado.
+Ao detectar um ciclo, a função permite que o algoritmo de Chu–Liu/Edmonds prossiga para a etapa de contração, onde o ciclo será reduzido a um supervértice, facilitando a resolução do problema no digrafo modificado.
 
 \subsection{Contração de ciclo:}
 Esta função contrai um ciclo dirigido \(C\) em um supervértice \(x_C\), redirecionando arcos incidentes e ajustando custos segundo a regra de custos reduzidos. Devolve dicionários auxiliares para reexpansão.
@@ -1051,9 +1050,9 @@ Recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}), o ciclo 
 
 Para cada vértice \texttt{u} no digrafo \texttt{D} (linha 4), se \texttt{u} não pertence ao ciclo (linha 5), identifica o arco de menor peso que sai de \texttt{u} e entra em \texttt{C} (linhas 6--9) usando uma compreensão de gerador: a expressão \texttt{((v, w) for \_, v, w in D.out\_edges(u, data="w") if v in cycle\_nodes)} itera sobre todos os arcos que saem de \texttt{u}, desempacota cada arco na forma \texttt{(\_, v, w)} (ignorando a origem com \texttt{\_}, capturando o destino \texttt{v} e o peso \texttt{w}), filtra apenas aquelas cujo destino \texttt{v} pertence ao ciclo, e produz tuplas \texttt{(v, w)}; a função \texttt{min} (linha 6) então seleciona a tupla de menor peso usando \texttt{key=lambda x: x[1]} (linha 7) para comparar pelo segundo elemento (o peso), e devolve \texttt{None} se não houver arcos (linha 8). A escolha de selecionar apenas o arco de \emph{menor peso} reflete a propriedade fundamental do algoritmo: qualquer solução ótima que conecta um vértice externo ao ciclo contraído usará necessariamente o arco de custo mínimo, pois todas as outras seriam subótimas. Se tal arco existir, armazena em \texttt{in\_to\_cycle} (linhas 9--10).
 
-Em seguida, a implementação itera sobre \texttt{in\_to\_cycle} usando o método \texttt{items()}, desempacotando cada entrada na forma \texttt{(u, (v, w))}, onde \texttt{u} é o vértice externo e \texttt{(v, w)} é a tupla com o vértice do ciclo e o peso (linhas 11--12). Para cada par, cria um arco de \texttt{u} para \texttt{label} com peso \texttt{w}, efetivamente redirecionando os arcos de entrada para o supervértice. A separação entre coleta (linhas 4--10) e criação (linhas 11--12) é necessária porque modificar o grafo durante a iteração sobre seus vértices causaria comportamento indefinido; ao coletar primeiro todos os dados em estruturas auxiliares, garantimos que as modificações posteriores sejam seguras.
+Em seguida, a implementação itera sobre \texttt{in\_to\_cycle} usando o método \texttt{items()}, desempacotando cada entrada na forma \texttt{(u, (v, w))}, onde \texttt{u} é o vértice externo e \texttt{(v, w)} é a tupla com o vértice do ciclo e o peso (linhas 11--12). Para cada par, cria um arco de \texttt{u} para \texttt{label} com peso \texttt{w}, efetivamente redirecionando os arcos de entrada para o supervértice. A separação entre coleta (linhas 4--10) e criação (linhas 11--12) é necessária porque modificar o digrafo durante a iteração sobre seus vértices causaria comportamento indefinido; ao coletar primeiro todos os dados em estruturas auxiliares, garantimos que as modificações posteriores sejam seguras.
 
-De forma análoga, constrói o dicionário \texttt{out\_from\_cycle} (linha 13) para mapear arcos que saem do ciclo. Para cada vértice \texttt{v} em \texttt{D} (linha 14), se \texttt{v} não pertence ao ciclo (linha 15), identifica o arco de menor peso que sai de \texttt{C} e entra em \texttt{v} (linhas 16--17) usando uma compreensão de gerador análoga: a expressão \texttt{((u, w) for u, \_, w in D.in\_edges(v, data="w") if u in cycle\_nodes)} itera sobre todos os arcos que entram em \texttt{v}, desempacota cada arco na forma \texttt{(u, \_, w)} (capturando a origem \texttt{u}, ignorando o destino com \texttt{\_}, e capturando o peso \texttt{w}), filtra apenas aqueles cuja origem \texttt{u} pertence ao ciclo, e produz tuplas \texttt{(u, w)}; a função \texttt{min} seleciona o arco de menor peso pela mesma razão de otimalidade. Se existir, armazena em \texttt{out\_from\_cycle} (linhas 18--19). Depois, itera sobre \texttt{out\_from\_cycle} e cria arcos de \texttt{label} para cada vértice \texttt{v} com os respectivos pesos (linhas 20--21). Por fim, remove todos os vértices de \texttt{C} do grafo (linha 22); essa remoção é realizada por último para garantir que todas as operações de consulta (linhas 4--21) tenham acesso aos dados originais antes da modificação estrutural.
+De forma análoga, constrói o dicionário \texttt{out\_from\_cycle} (linha 13) para mapear arcos que saem do ciclo. Para cada vértice \texttt{v} em \texttt{D} (linha 14), se \texttt{v} não pertence ao ciclo (linha 15), identifica o arco de menor peso que sai de \texttt{C} e entra em \texttt{v} (linhas 16--17) usando uma compreensão de gerador análoga: a expressão \texttt{((u, w) for u, \_, w in D.in\_edges(v, data="w") if u in cycle\_nodes)} itera sobre todos os arcos que entram em \texttt{v}, desempacota cada arco na forma \texttt{(u, \_, w)} (capturando a origem \texttt{u}, ignorando o destino com \texttt{\_}, e capturando o peso \texttt{w}), filtra apenas aqueles cuja origem \texttt{u} pertence ao ciclo, e produz tuplas \texttt{(u, w)}; a função \texttt{min} seleciona o arco de menor peso pela mesma razão de otimalidade. Se existir, armazena em \texttt{out\_from\_cycle} (linhas 18--19). Depois, itera sobre \texttt{out\_from\_cycle} e cria arcos de \texttt{label} para cada vértice \texttt{v} com os respectivos pesos (linhas 20--21). Por fim, remove todos os vértices de \texttt{C} do digrafo (linha 22); essa remoção é realizada por último para garantir que todas as operações de consulta (linhas 4--21) tenham acesso aos dados originais antes da modificação estrutural.
 
 Devolve dois dicionários: \texttt{in\_to\_cycle} mapeia vértices externos aos pontos de entrada no ciclo original, e \texttt{out\_from\_cycle} mapeia vértices externos aos pontos de saída. Esses dicionários são essenciais para a fase de reexpansão, onde será necessário determinar exatamente qual arco interno do ciclo deve ser removido para restaurar a propriedade de arborescência. O digrafo \texttt{D} é modificado sem criar uma cópia: os vértices de \texttt{C} são removidos e substituídos por \texttt{label}. A escolha de modificação no próprio objeto (em vez de criar uma cópia) reduz significativamente o uso de memória e o tempo de execução, especialmente em grafos grandes ou com múltiplos níveis de recursão, embora exija atenção cuidadosa ao gerenciamento de referências. A complexidade é \(O(m)\), onde \(m\) é o número de arcos, pois cada arco incidente ao ciclo é processado uma vez: os laços nas linhas 4--10 e 14--19 examinam cada arco no máximo uma vez, e as operações de adição (linhas 11--12, 20--21) e remoção (linha 22) têm custo proporcional ao número de arcos afetados.
 
@@ -1100,7 +1099,7 @@ A Figura~\ref{fig:contract-cycle-example} ilustra o processo de contração de c
 \begin{figure}[H]
 	\centering
 	\input{capitulos/implementacao-chuliu/figures/fig_contract_cycle_example.tex}
-	\caption{Exemplo de contração de ciclo. À esquerda, grafo original \(D\) com ciclo \(C=\{v_2, v_3, v_4\}\) (em amarelo). Vértices externos \(r\), \(v_1\) e \(v_5\) têm arcos conectando ao ciclo: \(r\) envia arco para \(v_2\) (peso 2) e \(v_4\) (peso 5); \(v_4\) envia arco para \(v_5\) (peso 1). À direita, após a contração: o ciclo é substituído pelo supervértice \(x_C\) (vermelho). Os arcos de entrada são redirecionados: \((r, x_C)\) recebe peso 2 (menor entre 2 e 5). O arco de saída \((x_C, v_5)\) mantém peso 1. Os dicionários \texttt{in\_to\_cycle} e \texttt{out\_from\_cycle} armazenam os mapeamentos originais para posterior reexpansão.}
+	\caption{Exemplo de contração de ciclo. À esquerda, digrafo original \(D\) com ciclo \(C=\{v_2, v_3, v_4\}\) (em amarelo). Vértices externos \(r\), \(v_1\) e \(v_5\) têm arcos conectando ao ciclo: \(r\) envia arco para \(v_2\) (peso 2) e \(v_4\) (peso 5); \(v_4\) envia arco para \(v_5\) (peso 1). À direita, após a contração: o ciclo é substituído pelo supervértice \(x_C\) (vermelho). Os arcos de entrada são redirecionados: \((r, x_C)\) recebe peso 2 (menor entre 2 e 5). O arco de saída \((x_C, v_5)\) mantém peso 1. Os dicionários \texttt{in\_to\_cycle} e \texttt{out\_from\_cycle} armazenam os mapeamentos originais para posterior reexpansão.}
 	\label{fig:contract-cycle-example}
 \end{figure}
 
@@ -1125,13 +1124,13 @@ A função de deteção de ciclo e a de contração juntas implementam os passos
 \end{tcolorbox}
 
 \subsection{Remoção de arcos que entram na raiz:}
-Esta função remove todos os arcos que entram no vértice raiz \(r_0\), garantindo que a raiz não tenha predecessores. A remoção é necessária porque, por definição, uma r-arborescência é uma arborescência enraizada em \(r_0\) onde todo vértice \(v \neq r_0\) deve ser alcançável a partir de \(r_0\), mas a própria raiz não pode ter predecessores (grau de entrada zero). Se o grafo original contiver arcos entrando em \(r_0\), esses arcos violariam a definição de arborescência enraizada e poderiam criar ciclos envolvendo a raiz, o que tornaria impossível obter uma estrutura válida. Além disso, a presença de arcos entrando na raiz interfere na normalização: ao tentar normalizar custos de entrada para \(r_0\), criaríamos custos reduzidos artificiais que não fazem sentido no contexto do problema, já que nenhuma solução válida pode incluir tais arcos. Portanto, esta função atua como um passo de pré-processamento essencial que prepara o grafo para os passos subsequentes do algoritmo.
+Esta função remove todos os arcos que entram no vértice raiz \(r_0\), garantindo que a raiz não tenha predecessores. A remoção é necessária porque, por definição, uma r-arborescência é uma arborescência enraizada em \(r_0\) onde todo vértice \(v \neq r_0\) deve ser alcançável a partir de \(r_0\), mas a própria raiz não pode ter predecessores (grau de entrada zero). Se o digrafo original contiver arcos entrando em \(r_0\), esses arcos violariam a definição de arborescência enraizada e poderiam criar ciclos envolvendo a raiz, o que tornaria impossível obter uma estrutura válida. Além disso, a presença de arcos entrando na raiz interfere na normalização: ao tentar normalizar custos de entrada para \(r_0\), criaríamos custos reduzidos artificiais que não fazem sentido no contexto do problema, já que nenhuma solução válida pode incluir tais arcos. Portanto, esta função atua como um passo de pré-processamento essencial que prepara o digrafo para os passos subsequentes do algoritmo.
 
 A escolha de implementar esta operação como uma função auxiliar separada (em vez de incluí-la apenas inline na função principal) segue princípios de design de software: (1) \emph{modularidade}, encapsulando uma responsabilidade específica e bem definida (remover entradas na raiz) em uma unidade testável independente; (2) \emph{reutilização}, permitindo que outras partes do código ou implementações alternativas possam chamar esta operação quando necessário sem duplicar lógica; (3) \emph{clareza semântica}, dando um nome descritivo (\texttt{remove\_edges\_to\_r0}) que documenta a intenção da operação no ponto de chamada, tornando a função principal mais legível ao abstrair detalhes de implementação; e (4) \emph{facilidade de teste}, possibilitando escrever testes unitários focados exclusivamente nesta operação de pré-processamento, verificando casos extremos (como grafos onde a raiz já não tem predecessores ou onde todos os arcos entram na raiz) sem precisar testar toda a complexidade do algoritmo recursivo.
 
-Em detalhes, ela recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}) e o rótulo \texttt{r0} da raiz. A implementação armazena em uma lista todos os arcos que entram em \texttt{r0} usando o método \texttt{in\_edges} (linha 2). Se a lista não estiver vazia (linha 3), remove todos esses arcos usando o método \texttt{remove\_edges\_from} (linha 4). Este método da biblioteca NetworkX recebe como parâmetro uma lista de tuplas representando arcos na forma \texttt{(u, v)} e remove cada uma delas do grafo. A operação é realizada em lote: NetworkX itera sobre a lista fornecida e, para cada tupla \texttt{(u, v)}, remove o arco correspondente da estrutura interna de adjacência. Se algum arco especificado não existir no grafo, ele é silenciosamente ignorado sem gerar erro. A complexidade de \texttt{remove\_edges\_from} é \(O(k)\), onde \(k\) é o número de arcos na lista de entrada, pois cada remoção individual tem custo \(O(1)\) em média devido ao uso de dicionários aninhados para armazenar arcos.
+Em detalhes, ela recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}) e o rótulo \texttt{r0} da raiz. A implementação armazena em uma lista todos os arcos que entram em \texttt{r0} usando o método \texttt{in\_edges} (linha 2). Se a lista não estiver vazia (linha 3), remove todos esses arcos usando o método \texttt{remove\_edges\_from} (linha 4). Este método da biblioteca NetworkX recebe como parâmetro uma lista de tuplas representando arcos na forma \texttt{(u, v)} e remove cada uma delas do digrafo. A operação é realizada em lote: NetworkX itera sobre a lista fornecida e, para cada tupla \texttt{(u, v)}, remove o arco correspondente da estrutura interna de adjacência. Se algum arco especificado não existir no digrafo, ele é silenciosamente ignorado sem gerar erro. A complexidade de \texttt{remove\_edges\_from} é \(O(k)\), onde \(k\) é o número de arcos na lista de entrada, pois cada remoção individual tem custo \(O(1)\) em média devido ao uso de dicionários aninhados para armazenar arcos.
 
-Por fim, a função devolve o grafo \texttt{D} atualizado no próprio objeto com todos os arcos de entrada em \texttt{r0} removidos (linha 5). A complexidade total da função é \(O(\deg^-(r_0))\), pois a operação coleta e remove cada arco de entrada uma única vez.
+Por fim, a função devolve o digrafo \texttt{D} atualizado no próprio objeto com todos os arcos de entrada em \texttt{r0} removidos (linha 5). A complexidade total da função é \(O(\deg^-(r_0))\), pois a operação coleta e remove cada arco de entrada uma única vez.
 
 \begin{tcolorbox}[
 		enhanced, breakable,
@@ -1141,7 +1140,7 @@ Por fim, a função devolve o grafo \texttt{D} atualizado no próprio objeto com
 		boxed title style={sharp corners, boxrule=0.6pt},
 		sharp corners, boxrule=0.6pt
 	]
-	\emph{Remove todos os arcos que entram na raiz \texttt{r0}, modificando \texttt{D} ao invés de criar uma cópia e devolve o grafo atualizado.}
+	\emph{Remove todos os arcos que entram na raiz \texttt{r0}, modificando \texttt{D} ao invés de criar uma cópia e devolve o digrafo atualizado.}
 	\tcblower
 	\begin{lstlisting}[mathescape=true, language=Python]
 def remove_edges_to_r0(D: nx.DiGraph, r0: str):
@@ -1155,7 +1154,7 @@ def remove_edges_to_r0(D: nx.DiGraph, r0: str):
 
 \subsection{Remoção de arco interno:}
 
-Esta função é invocada durante a fase de reexpansão do ciclo contraído, após a chamada recursiva devolver com a arborescência ótima \(T'\) do grafo contraído. Quando o supervértice \(x_C\) é expandido de volta para o ciclo original \(C\), um arco externo \((u,v)\) é adicionado conectando um vértice externo \(u\) a um vértice \(v\) dentro do ciclo. Como o ciclo \(C\) originalmente continha exatamente um arco entrando em cada um de seus vértices (formando um ciclo fechado), e agora \(v\) recebe um arco adicional vindo do exterior, esse vértice teria grau de entrada 2, violando a propriedade fundamental de arborescência (cada vértice não-raiz deve ter exatamente uma entrada). Para restaurar essa propriedade, a função remove o arco interno que anteriormente entrava em \(v\), mantendo apenas o novo arco externo. Essa remoção "quebra" o ciclo no ponto de entrada, transformando-o em um caminho que se integra corretamente à estrutura de árvore.
+Esta função é invocada durante a fase de reexpansão do ciclo contraído, após a chamada recursiva devolver com a arborescência ótima \(T'\) do digrafo contraído. Quando o supervértice \(x_C\) é expandido de volta para o ciclo original \(C\), um arco externo \((u,v)\) é adicionado conectando um vértice externo \(u\) a um vértice \(v\) dentro do ciclo. Como o ciclo \(C\) originalmente continha exatamente um arco entrando em cada um de seus vértices (formando um ciclo fechado), e agora \(v\) recebe um arco adicional vindo do exterior, esse vértice teria grau de entrada 2, violando a propriedade fundamental de arborescência (cada vértice não-raiz deve ter exatamente uma entrada). Para restaurar essa propriedade, a função remove o arco interno que anteriormente entrava em \(v\), mantendo apenas o novo arco externo. Essa remoção "quebra" o ciclo no ponto de entrada, transformando-o em um caminho que se integra corretamente à estrutura de árvore.
 
 A função recebe como entrada o subgrafo do ciclo \texttt{C} (objeto \texttt{nx.DiGraph}) e o vértice de entrada \texttt{v}. A implementação utiliza uma compreensão de gerador combinada com \texttt{next} para encontrar o predecessor de \texttt{v} dentro do ciclo (linha 2): a expressão \texttt{(u for u, \_ in C.in\_edges(v))} itera sobre os arcos de entrada de \texttt{v}, extraindo apenas o vértice origem \texttt{u} (ignorando metadados com \texttt{\_}), e \texttt{next} devolve o primeiro (e teoricamente único) predecessor. Em seguida, remove o arco \texttt{(predecessor, v)} do ciclo usando o método \texttt{remove\_edge} (linha 3).
 
@@ -1192,7 +1191,7 @@ Esta função implementa o algoritmo de Chu–Liu/Edmonds de forma recursiva, or
 
 A implementação segue a estrutura do algoritmo:
 
-\paragraph*{Preservação do grafo original (linha 2):} Cria uma cópia \texttt{D\_copy = D.copy()} para preservar os pesos originais. Como as operações de normalização e contração modificam os pesos dos arcos diretamente, a cópia é necessária para restaurar os custos corretos na arborescência final. Complexidade: \(O(m+n)\).
+\paragraph*{Preservação do digrafo original (linha 2):} Cria uma cópia \texttt{D\_copy = D.copy()} para preservar os pesos originais. Como as operações de normalização e contração modificam os pesos dos arcos diretamente, a cópia é necessária para restaurar os custos corretos na arborescência final. Complexidade: \(O(m+n)\).
 
 \paragraph*{Normalização e construção de \(A_0\) (linhas 3--6):} Itera sobre todos os vértices não-raiz (linhas 3--5), chamando \texttt{reduce\_weights(D\_copy, v)} para cada um. Após normalizar todos os vértices, constrói \(A_0\) (linha 6) chamando \texttt{get\_Azero(D\_copy, r0)}, que seleciona um arco de custo reduzido zero entrando em cada vértice não-raiz.
 
@@ -1202,7 +1201,7 @@ A implementação segue a estrutura do algoritmo:
 
 \paragraph*{Reexpansão do ciclo contraído (linhas 17--30):} Identifica o arco externo que entra no supervértice em \(F'\) (linha 17) e extrai o vértice externo \texttt{u} (linha 18). Consulta \texttt{v = in\_to\_cycle[u]} para determinar o vértice do ciclo que recebe a conexão (linha 19). Remove o arco interno que entrava em \(v\) chamando \texttt{remove\_internal\_edge\_to\_cycle\_entry(C, v)} (linha 20), quebrando o ciclo no ponto de entrada. Adiciona o arco externo \texttt{(u, v)} a \(F'\) (linha 21) e reintegra os demais arcos do ciclo (linhas 22--23). Processa os arcos de saída (linhas 24--26): para cada \texttt{(contracted\_label, w)} em \(F'\), adiciona \texttt{(v\_out, w)} usando \texttt{out\_from\_cycle[w]}. Remove o supervértice (linha 27), restaura os pesos originais (linhas 28--29) e devolve \texttt{F\_prime} (linha 30).
 
-A função devolve um digrafo contendo exatamente \(|V|-1\) arcos onde cada vértice \(v \neq r_0\) tem grau de entrada 1, todos os vértices são alcançáveis a partir de \(r_0\), e o custo total é mínimo. O grafo original \texttt{D} não é modificado devido à cópia (linha 2). A complexidade é \(O(mn)\) no pior caso, onde cada nível de recursão (até \(O(n)\) níveis) processa \(O(m)\) arcos durante a normalização, detecção de ciclos e contração/expansão.
+A função devolve um digrafo contendo exatamente \(|V|-1\) arcos onde cada vértice \(v \neq r_0\) tem grau de entrada 1, todos os vértices são alcançáveis a partir de \(r_0\), e o custo total é mínimo. O digrafo original \texttt{D} não é modificado devido à cópia (linha 2). A complexidade é \(O(mn)\) no pior caso, onde cada nível de recursão (até \(O(n)\) níveis) processa \(O(m)\) arcos durante a normalização, detecção de ciclos e contração/expansão.
 
 O código completo da função principal é apresentado a seguir:
 
@@ -1214,7 +1213,7 @@ O código completo da função principal é apresentado a seguir:
 		boxed title style={sharp corners, boxrule=0.6pt},
 		sharp corners, boxrule=0.6pt
 	]
-	\emph{Implementa o algoritmo de Chu–Liu/Edmonds de forma recursiva para encontrar a r-arborescência de custo mínimo em um digrafo ponderado \texttt{D} com raiz \texttt{r0}. Normaliza custos, constrói $A_0$, detecta ciclos e, se houver, contrai em supervértice, resolve recursivamente no grafo reduzido e reexpande, restaurando a arborescência ótima no grafo original. Devolve um \texttt{nx.DiGraph} contendo exatamente $|V|-1$ arcos com grau de entrada 1 para cada vértice exceto a raiz.}
+	\emph{Implementa o algoritmo de Chu–Liu/Edmonds de forma recursiva para encontrar a r-arborescência de custo mínimo em um digrafo ponderado \texttt{D} com raiz \texttt{r0}. Normaliza custos, constrói $A_0$, detecta ciclos e, se houver, contrai em supervértice, resolve recursivamente no digrafo reduzido e reexpande, restaurando a arborescência ótima no digrafo original. Devolve um \texttt{nx.DiGraph} contendo exatamente $|V|-1$ arcos com grau de entrada 1 para cada vértice exceto a raiz.}
 	\tcblower
 	\begin{lstlisting}[mathescape=true, language=Python]
 def chuliu(D: nx.DiGraph,r0: str,level=0,):
@@ -1250,20 +1249,20 @@ def chuliu(D: nx.DiGraph,r0: str,level=0,):
 \end{lstlisting}
 \end{tcolorbox}
 
-A seguir, ilustramos o funcionamento do algoritmo de Chu–Liu/Edmonds em um grafo de teste. Mostramos o grafo original, os principais passos do algoritmo e a arborescência final encontrada.
+A seguir, ilustramos o funcionamento do algoritmo de Chu–Liu/Edmonds em um digrafo de teste. Mostramos o digrafo original, os principais passos do algoritmo e a arborescência final encontrada.
 
 \subsubsection{Exemplo de execução do algoritmo}
 
-A seguir, demonstramos a execução completa do algoritmo de Chu--Liu/Edmonds em um grafo exemplo, ilustrando cada fase do processo: normalização, construção de $A_0$, detecção de ciclos, contração, resolução recursiva e reexpansão.
+A seguir, demonstramos a execução completa do algoritmo de Chu--Liu/Edmonds em um digrafo exemplo, ilustrando cada fase do processo: normalização, construção de $A_0$, detecção de ciclos, contração, resolução recursiva e reexpansão.
 
 \begin{figure}[H]
 	\centering
 	\input{capitulos/implementacao-chuliu/figures/fig_exemplo_grafo_inicial.tex}
-	\caption{Grafo direcionado ponderado inicial com raiz no vértice 0. O grafo contém 9 vértices e múltiplos arcos com pesos variados. O primeiro passo do algoritmo seria remover arcos que entram na raiz, porém não há nenhum neste caso, logo não existe necessidade de alterar o grafo.}
-	\label{fig:exemplo-grafo-inicial}
+	\caption{digrafo direcionado ponderado inicial com raiz no vértice 0. O digrafo contém 9 vértices e múltiplos arcos com pesos variados. O primeiro passo do algoritmo seria remover arcos que entram na raiz, porém não há nenhum neste caso, logo não existe necessidade de alterar o digrafo.}
+	\label{fig:exemplo-digrafo-inicial}
 \end{figure}
 
-O primeiro passo do nosso algoritmo seria remover os arcos que entram na raiz (vértice $0$), porém não há nenhum nesse caso, logo não existe a necessidade de alterar o grafo.
+O primeiro passo do nosso algoritmo seria remover os arcos que entram na raiz (vértice $0$), porém não há nenhum nesse caso, logo não existe a necessidade de alterar o digrafo.
 
 O próximo passo é normalizar os pesos dos arcos de entrada para cada vértice. Nessa etapa, para cada vértice $v$ (exceto a raiz), o algoritmo encontra o arco de menor peso que entra em $v$ e subtrai esse menor peso de todos os arcos que entram em $v$ (isso serve para zerar o peso do arco mínimo de entrada em cada vértice).
 
@@ -1279,25 +1278,25 @@ Com os pesos normalizados, o próximo passo é construir $A_0$: para isso, selec
 \begin{figure}[H]
 	\centering
 	\input{capitulos/implementacao-chuliu/figures/fig_exemplo_grafo_contraido.tex}
-	\caption{Grafo contraído após detecção do ciclo $C = \{1, 2\}$ em $A_0$. O ciclo foi contraído no supervértice $n*0$ (destacado em vermelho). Os arcos que entravam ou saíam do ciclo foram redirecionados para o supervértice, com custos ajustados segundo as fórmulas $c'(u,x_C) := c(u,w) - y(w)$ para arcos de entrada e $c'(x_C,v) := c(w,v)$ para arcos de saída.}
-	\label{fig:exemplo-grafo-contraido}
+	\caption{digrafo contraído após detecção do ciclo $C = \{1, 2\}$ em $A_0$. O ciclo foi contraído no supervértice $n*0$ (destacado em vermelho). Os arcos que entravam ou saíam do ciclo foram redirecionados para o supervértice, com custos ajustados segundo as fórmulas $c'(u,x_C) := c(u,w) - y(w)$ para arcos de entrada e $c'(x_C,v) := c(w,v)$ para arcos de saída.}
+	\label{fig:exemplo-digrafo-contraido}
 \end{figure}
 
-Agora, repetimos o processo recursivamente no grafo contraído até obter uma arborescência válida.
+Agora, repetimos o processo recursivamente no digrafo contraído até obter uma arborescência válida.
 
 \begin{figure}[H]
 	\centering
 	\input{capitulos/implementacao-chuliu/figures/fig_exemplo_arborescencia_contraida.tex}
-	\caption{Arborescência ótima $F'$ obtida no grafo contraído. todos os arcos selecionados têm custo reduzido 0 (destacados em vermelho), e o grafo forma uma arborescência válida enraizada em 0: cada vértice (exceto a raiz) tem exatamente um arco de entrada, não há ciclos, e todos os vértices são alcançáveis a partir da raiz. Como $F'$ é acíclico, alcançamos o caso base da recursão.}
+	\caption{Arborescência ótima $F'$ obtida no digrafo contraído. todos os arcos selecionados têm custo reduzido 0 (destacados em vermelho), e o digrafo forma uma arborescência válida enraizada em 0: cada vértice (exceto a raiz) tem exatamente um arco de entrada, não há ciclos, e todos os vértices são alcançáveis a partir da raiz. Como $F'$ é acíclico, alcançamos o caso base da recursão.}
 	\label{fig:exemplo-arborescencia-contraida}
 \end{figure}
 
-Após validarmos que $A_0$ não possui mais ciclos e forma uma arborescência, iniciamos o processo de reexpansão do ciclo contraído para obter a arborescência final no grafo original. Adicionamos o arco de entrada ao ciclo $(0, 1)$, os arcos internos do ciclo modificado $(1, 2)$, e os arcos de saída $(1, 3)$, chegando a uma arborescência válida.
+Após validarmos que $A_0$ não possui mais ciclos e forma uma arborescência, iniciamos o processo de reexpansão do ciclo contraído para obter a arborescência final no digrafo original. Adicionamos o arco de entrada ao ciclo $(0, 1)$, os arcos internos do ciclo modificado $(1, 2)$, e os arcos de saída $(1, 3)$, chegando a uma arborescência válida.
 
 \begin{figure}[H]
 	\centering
 	\input{capitulos/implementacao-chuliu/figures/fig_exemplo_arborescencia_final.tex}
-	\caption{Arborescência ótima final no grafo original com pesos restaurados. O supervértice $n*0$ foi expandido de volta para os vértices 1 e 2, com o arco externo $(0, 1)$ escolhido pela solução recursiva conectando ao ciclo. O arco interno $(2, 1)$ do ciclo original foi removido para manter a propriedade de arborescência ($\deg^{-}(v)=1$). O resultado é uma 0-arborescência de custo mínimo com exatamente 8 arcos, onde cada vértice não-raiz tem grau de entrada 1 e todos são alcançáveis a partir da raiz 0.}
+	\caption{Arborescência ótima final no digrafo original com pesos restaurados. O supervértice $n*0$ foi expandido de volta para os vértices 1 e 2, com o arco externo $(0, 1)$ escolhido pela solução recursiva conectando ao ciclo. O arco interno $(2, 1)$ do ciclo original foi removido para manter a propriedade de arborescência ($\deg^{-}(v)=1$). O resultado é uma 0-arborescência de custo mínimo com exatamente 8 arcos, onde cada vértice não-raiz tem grau de entrada 1 e todos são alcançáveis a partir da raiz 0.}
 	\label{fig:exemplo-arborescencia-final}
 \end{figure}
 
@@ -1386,7 +1385,7 @@ A implementação em Python segue fielmente os cinco passos da descrição teór
 		\quad \texttt{D\_copy, r0, level+1)}
 
 		\vspace{2mm}
-		Chamada recursiva resolve o problema no grafo contraído.
+		Chamada recursiva resolve o problema no digrafo contraído.
 		\\
 		\midrule
 		\rowcolor{red!5}
