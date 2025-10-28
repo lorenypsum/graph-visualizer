@@ -980,8 +980,6 @@ A Figura~\ref{fig:get-Azero-example} ilustra a construção de \(A_0\):
 	\label{fig:get-Azero-example}
 \end{figure}
 
-A detecção de ciclos é crucial, pois a presença de um ciclo em \(A_0\) indica que a escolha de arcos de custo reduzido zero não formou uma arborescência válida. Esses ciclos precisam ser tratados nas etapas subsequentes do algoritmo.
-
 As funções de normalização por vértice e construção de \(A_0\) juntas implementam o passo 1 da descrição do algoritmo de Chu–Liu/Edmonds:
 
 \begin{tcolorbox}[
@@ -998,7 +996,10 @@ As funções de normalização por vértice e construção de \(A_0\) juntas imp
 
 
 \subsection{Detecção de ciclo:}
-Esta função detecta a presença de um ciclo dirigido em \(A_0\) e devolve um subdigrafo que o contém; se \(A_0\) for acíclico, devolve \texttt{None}.
+
+A detecção de ciclos é crucial, pois a presença de um ciclo em \(A_0\) indica que a escolha de arcos de custo reduzido zero não formou uma arborescência válida. 
+
+Logo, a função apresentada a seguir detecta a presença de um ciclo dirigido em \(A_0\) e devolve um subdigrafo que o contém; se \(A_0\) for acíclico, devolve \texttt{None}.
 
 Recebe como entrada um digrafo \texttt{A\_zero} (objeto \texttt{nx.DiGraph}). A implementação utiliza um bloco \texttt{try} (linha 2) para capturar exceções caso não haja ciclo; esta escolha de tratamento por exceção é necessária porque a API do NetworkX adota o padrão EAFP (\emph{Easier to Ask for Forgiveness than Permission}), onde \texttt{nx.find\_cycle} não devolve um valor especial (como \texttt{None}) quando o digrafo é acíclico, mas sim lança a exceção \texttt{NetworkXNoCycle} para sinalizar a ausência de ciclos.
 
