@@ -1259,7 +1259,7 @@ def chuliu(D: nx.DiGraph,r0: str,level=0,):
 \end{lstlisting}
 \end{tcolorbox}
 
-Os passos do algoritmo implementados nesta função correspondem diretamente à descrição formal do algoritmo de Chu–Liu/Edmonds:
+Os passos do algoritmo implementados nesta função em conjunto com a função de remover arco interno do ciclo na reexpansão correspondem diretamente à descrição formal do algoritmo de Chu–Liu/Edmonds da seguinte forma:
 
 \begin{tcolorbox}[
 		enhanced, breakable,
@@ -1287,7 +1287,7 @@ Os passos do algoritmo implementados nesta função correspondem diretamente à 
 
 A seguir, ilustramos o funcionamento do algoritmo de Chu–Liu/Edmonds em um digrafo de teste. Mostramos o digrafo original, os principais passos do algoritmo e a arborescência final encontrada.
 
-\subsubsection{Exemplo de execução do algoritmo}
+\subsection*{Exemplo de execução do algoritmo}
 
 A seguir, demonstramos a execução completa do algoritmo de Chu--Liu/Edmonds em um digrafo exemplo, ilustrando cada fase do processo: normalização, construção de $A_0$, detecção de ciclos, contração, resolução recursiva e reexpansão.
 
