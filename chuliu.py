@@ -1,6 +1,30 @@
 import networkx as nx
 from typing import Optional, cast
 
+#Remove todas as arestas que entram no vértice raiz r0 em G
+def remove_edges_to_r0(
+    D: nx.DiGraph, r0: str, log=None, boilerplate: bool = True, lang="pt"
+):
+    """
+    Remove all edges entering the root vertex r0 in graph G.
+    Returns the updated graph.
+
+    Parameters:
+        - D: A directed graph (networkx.DiGraph)
+        - r0: The root node
+        - log: Optional logging function to log information
+        - boilerplate: If True, enables logging
+        - lang: Language for logging messages ("en" for English, "pt" for Portuguese
+
+    Returns:
+        - D: The updated directed graph (networkx.DiGraph) with edges to r0 removed
+    """
+
+    # Remove all edges entering r0
+    in_edges = list(D.in_edges(r0))
+    D.remove_edges_from(in_edges)
+    return D
+
 # Normalização dos pesos das arestas que entram em um vértice
 def reduce_weights(D: nx.DiGraph, node: str, lang="pt"):
     """
@@ -138,30 +162,6 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: str, lang="pt"):
     # Remove all nodes in the cycle from G
     D.remove_nodes_from(cycle_nodes)
     return in_to_cycle, out_from_cycle
-
-#Remove todas as arestas que entram no vértice raiz r0 em G
-def remove_edges_to_r0(
-    D: nx.DiGraph, r0: str, log=None, boilerplate: bool = True, lang="pt"
-):
-    """
-    Remove all edges entering the root vertex r0 in graph G.
-    Returns the updated graph.
-
-    Parameters:
-        - D: A directed graph (networkx.DiGraph)
-        - r0: The root node
-        - log: Optional logging function to log information
-        - boilerplate: If True, enables logging
-        - lang: Language for logging messages ("en" for English, "pt" for Portuguese
-
-    Returns:
-        - D: The updated directed graph (networkx.DiGraph) with edges to r0 removed
-    """
-
-    # Remove all edges entering r0
-    in_edges = list(D.in_edges(r0))
-    D.remove_edges_from(in_edges)
-    return D
 
 # Remove a aresta interna que entra no vértice de entrada do ciclo
 def remove_edge_cycle(C: nx.DiGraph, v):

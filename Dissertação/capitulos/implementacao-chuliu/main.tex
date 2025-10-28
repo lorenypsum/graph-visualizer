@@ -894,9 +894,40 @@ Os métodos da API NetworkX utilizados na implementação dividem-se em três ca
 
 % Abaixo, detalhamos as funções auxiliares que implementam os passos do algoritmo e ao final apresentamos a função principal que orquestra o fluxo recursivo.
 
+\subsection{Remoção de arcos que entram na raiz:}
+Escrevemos essa função como uma etapa de pré-processamento para garantir que a raiz \(r_0\) não possua arcos de entrada antes de iniciar o algoritmo principal.
+
+A remoção é necessária porque, por definição, uma r-arborescência é uma arborescência enraizada em \(r_0\) onde todo vértice \(v \neq r_0\) deve ser alcançável a partir de \(r_0\), mas a própria raiz não pode ter predecessores (grau de entrada zero). Se o digrafo original contiver arcos entrando em \(r_0\), esses arcos violariam a definição de arborescência enraizada e poderiam criar ciclos envolvendo a raiz, o que tornaria impossível obter uma estrutura válida. Além disso, a presença de arcos entrando na raiz interfere na normalização: ao tentar normalizar custos de entrada para \(r_0\), criaríamos custos reduzidos artificiais que não fazem sentido no contexto do problema, já que nenhuma solução válida pode incluir tais arcos.
+
+A escolha de implementar esta operação e as demais funções auxiliares fora do escopo da execução principal segue princípios de design de software: (1) \emph{modularidade}, encapsulando uma responsabilidade específica e bem definida (remover entradas na raiz) em uma unidade testável independente; (2) \emph{reutilização}, permitindo que outras partes do código ou implementações alternativas possam chamar esta operação quando necessário sem duplicar lógica; (3) \emph{clareza semântica}, dando um nome descritivo (\texttt{remove\_edges\_to\_r0}) que documenta a intenção da operação no ponto de chamada, tornando a função principal mais legível ao abstrair detalhes de implementação; e (4) \emph{facilidade de teste}, possibilitando escrever testes unitários focados exclusivamente nesta operação de pré-processamento, verificando casos extremos (como grafos onde a raiz já não tem predecessores ou onde todos os arcos entram na raiz) sem precisar testar toda a complexidade do algoritmo recursivo.
+
+Em detalhes, ela recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}) e o raiz \texttt{r0}. A implementação armazena em uma lista todos os arcos que entram em \texttt{r0} usando o método \texttt{in\_edges} (linha 2). Aqui precisamos armazenar os arcos em uma lista porque o método \texttt{in\_edges} devolve um iterador, que quando sofre remoção direta sofre um erro devido à modificação da estrutura durante a iteração.
+
+Em seguida, na linha 3, remove todos os arcos usando o método \texttt{remove\_edges\_from} da biblioteca NetworkX, o qual recebe como parâmetro uma lista de tuplas representando arcos na forma \texttt{(u, v)} e remove cada uma delas do digrafo. O método da NetworkX itera sobre a lista fornecida e, para cada tupla \texttt{(u, v)}, remove o arco correspondente da estrutura interna de adjacência. A complexidade de \texttt{remove\_edges\_from} é \(O(k)\), onde \(k\) é o número de arcos na lista de entrada, pois cada remoção individual tem custo \(O(1)\) em média devido ao uso de dicionários aninhados para armazenar arcos.
+
+Por fim, a função devolve o digrafo \texttt{D} atualizado no próprio objeto com todos os arcos de entrada em \texttt{r0} removidos (linha 4). A complexidade total da função é \(O(\deg^-(r_0))\), pois a operação coleta e remove cada arco de entrada uma única vez.
+
+\begin{tcolorbox}[
+		enhanced, breakable,
+		colframe=blue!60!black, colback=blue!2,
+		colbacktitle=blue!15, coltitle=black,
+		title={Remoção de arcos que entram na raiz},
+		boxed title style={sharp corners, boxrule=0.6pt},
+		sharp corners, boxrule=0.6pt
+	]
+	\emph{Remove todos os arcos que entram na raiz \texttt{r0}, modificando \texttt{D} ao invés de criar uma cópia e devolve o digrafo atualizado.}
+	\tcblower
+	\begin{lstlisting}[mathescape=true, language=Python]
+def remove_edges_to_r0(D: nx.DiGraph, r0: str):
+    in_edges = list(D.in_edges(r0))
+    D.remove_edges_from(in_edges)
+    return D
+\end{lstlisting}
+\end{tcolorbox}
+
 \subsection{Redução de custos por vértice (normalização):}
 
-Esta função implementa redução de custos por vértice - essa operação é chamada de normalização e calcula \(y(v)=\min\{w(u,v)\}\) e substitui cada peso \(w(u,v)\) por \(w(u,v)-y(v)\), garantindo que ao menos um arco de entrada tenha custo zero. Como cada r-arborescência possui exatamente um arco entrando em cada vértice não-raiz, a soma total dos valores \(y(v)\) subtraídos é constante para qualquer solução, preservando assim a ordem de otimalidade entre diferentes arborescências.
+Criamos uma função auxiliar para realizar a redução de custos por vértice - essa operação é chamada de normalização e calcula \(y(v)=\min\{w(u,v)\}\) e substitui cada peso \(w(u,v)\) por \(w(u,v)-y(v)\), garantindo que ao menos um arco de entrada tenha custo zero. Como cada r-arborescência possui exatamente um arco entrando em cada vértice não-raiz, a soma total dos valores \(y(v)\) subtraídos é constante para qualquer solução, preservando assim a ordem de otimalidade entre diferentes arborescências.
 
 Recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}) e o  vértice \texttt{node} a ser normalizado. A implementação armazena em uma variável \texttt{incoming\_edges} todos os arcos de entrada de \texttt{node} com seus pesos usando o método \texttt{D.in\_edges(node, data="w")}, que devolve uma lista de tuplas \((u, node, w)\) (linha 2) (fazemos isso para evitar repetição de código e deixar o código mais claro). Em seguida, calcula-se o peso mínimo \texttt{yv} através de uma compreensão de gerador que extrai o terceiro elemento de cada tupla (linha 3) e, para cada vértice \texttt{u}, se houver o atributo "w" subtrai \texttt{yv} do peso armazenado em \texttt{D[u][node]["w"]} (linha 7), caso contrário inicializa o peso como zero antes de subtrair (linha 6).
 
@@ -993,10 +1024,7 @@ As funções de normalização por vértice e construção de \(A_0\) juntas imp
 	\textbf{Passo 1:} Para cada \(v\neq r\), escolha \(a_v\in\mathop{\mathrm{arg\,min}}_{(u,v)\in A} c(u,v)\). Defina \(y(v):=c(a_v)\) e \(A_0:=\{a_v : v\neq r\}\).
 \end{tcolorbox}
 
-
-
 \subsection{Detecção de ciclo:}
-
 A detecção de ciclos é crucial, pois a presença de um ciclo em \(A_0\) indica que a escolha de arcos de custo reduzido zero não formou uma arborescência válida.
 
 Logo, a função apresentada a seguir detecta a presença de um ciclo dirigido em \(A_0\) e devolve um subdigrafo que o contém; Não verificamos se o digrafo é acíclico, pois a função principal não deve sequer fazer essa verificação: se não houver ciclo, é porque uma arborecência já foi encontrada.
@@ -1134,40 +1162,11 @@ A função de deteção de ciclo e a de contração juntas implementam os passos
 	descartando laços em \(x_C\) e permitindo paralelos. Denote o digrafo contraído por \(D'=(V',A')\).
 \end{tcolorbox}
 
-\subsection{Remoção de arcos que entram na raiz:}
-Esta função remove todos os arcos que entram no vértice raiz \(r_0\), garantindo que a raiz não tenha predecessores. A remoção é necessária porque, por definição, uma r-arborescência é uma arborescência enraizada em \(r_0\) onde todo vértice \(v \neq r_0\) deve ser alcançável a partir de \(r_0\), mas a própria raiz não pode ter predecessores (grau de entrada zero). Se o digrafo original contiver arcos entrando em \(r_0\), esses arcos violariam a definição de arborescência enraizada e poderiam criar ciclos envolvendo a raiz, o que tornaria impossível obter uma estrutura válida. Além disso, a presença de arcos entrando na raiz interfere na normalização: ao tentar normalizar custos de entrada para \(r_0\), criaríamos custos reduzidos artificiais que não fazem sentido no contexto do problema, já que nenhuma solução válida pode incluir tais arcos. Portanto, esta função atua como um passo de pré-processamento essencial que prepara o digrafo para os passos subsequentes do algoritmo.
-
-A escolha de implementar esta operação como uma função auxiliar separada (em vez de incluí-la apenas inline na função principal) segue princípios de design de software: (1) \emph{modularidade}, encapsulando uma responsabilidade específica e bem definida (remover entradas na raiz) em uma unidade testável independente; (2) \emph{reutilização}, permitindo que outras partes do código ou implementações alternativas possam chamar esta operação quando necessário sem duplicar lógica; (3) \emph{clareza semântica}, dando um nome descritivo (\texttt{remove\_edges\_to\_r0}) que documenta a intenção da operação no ponto de chamada, tornando a função principal mais legível ao abstrair detalhes de implementação; e (4) \emph{facilidade de teste}, possibilitando escrever testes unitários focados exclusivamente nesta operação de pré-processamento, verificando casos extremos (como grafos onde a raiz já não tem predecessores ou onde todos os arcos entram na raiz) sem precisar testar toda a complexidade do algoritmo recursivo.
-
-Em detalhes, ela recebe como entrada um digrafo \texttt{D} (objeto \texttt{nx.DiGraph}) e o rótulo \texttt{r0} da raiz. A implementação armazena em uma lista todos os arcos que entram em \texttt{r0} usando o método \texttt{in\_edges} (linha 2). Se a lista não estiver vazia (linha 3), remove todos esses arcos usando o método \texttt{remove\_edges\_from} (linha 4). Este método da biblioteca NetworkX recebe como parâmetro uma lista de tuplas representando arcos na forma \texttt{(u, v)} e remove cada uma delas do digrafo. A operação é realizada em lote: NetworkX itera sobre a lista fornecida e, para cada tupla \texttt{(u, v)}, remove o arco correspondente da estrutura interna de adjacência. Se algum arco especificado não existir no digrafo, ele é silenciosamente ignorado sem gerar erro. A complexidade de \texttt{remove\_edges\_from} é \(O(k)\), onde \(k\) é o número de arcos na lista de entrada, pois cada remoção individual tem custo \(O(1)\) em média devido ao uso de dicionários aninhados para armazenar arcos.
-
-Por fim, a função devolve o digrafo \texttt{D} atualizado no próprio objeto com todos os arcos de entrada em \texttt{r0} removidos (linha 5). A complexidade total da função é \(O(\deg^-(r_0))\), pois a operação coleta e remove cada arco de entrada uma única vez.
-
-\begin{tcolorbox}[
-		enhanced, breakable,
-		colframe=blue!60!black, colback=blue!2,
-		colbacktitle=blue!15, coltitle=black,
-		title={Remoção de arcos que entram na raiz},
-		boxed title style={sharp corners, boxrule=0.6pt},
-		sharp corners, boxrule=0.6pt
-	]
-	\emph{Remove todos os arcos que entram na raiz \texttt{r0}, modificando \texttt{D} ao invés de criar uma cópia e devolve o digrafo atualizado.}
-	\tcblower
-	\begin{lstlisting}[mathescape=true, language=Python]
-def remove_edges_to_r0(D: nx.DiGraph, r0: str):
-    in_edges = list(D.in_edges(r0))
-    if in_edges:
-        D.remove_edges_from(in_edges)
-    return D
-\end{lstlisting}
-\end{tcolorbox}
-
-
 \subsection{Remoção de arco interno:}
 
 Esta função é invocada durante a fase de reexpansão do ciclo contraído, após a chamada recursiva devolver com a arborescência ótima \(T'\) do digrafo contraído. Quando o supervértice \(x_C\) é expandido de volta para o ciclo original \(C\), um arco externo \((u,v)\) é adicionado conectando um vértice externo \(u\) a um vértice \(v\) dentro do ciclo. Como o ciclo \(C\) originalmente continha exatamente um arco entrando em cada um de seus vértices (formando um ciclo fechado), e agora \(v\) recebe um arco adicional vindo do exterior, esse vértice teria grau de entrada 2, violando a propriedade fundamental de arborescência (cada vértice não-raiz deve ter exatamente uma entrada). Para restaurar essa propriedade, a função remove o arco interno que anteriormente entrava em \(v\), mantendo apenas o novo arco externo. Essa remoção "quebra" o ciclo no ponto de entrada, transformando-o em um caminho que se integra corretamente à estrutura de árvore.
 
-A função recebe como entrada o subdigrafo do ciclo \texttt{C} (objeto \texttt{nx.DiGraph}) e o vértice de entrada \texttt{v}. A implementação utiliza uma compreensão de gerador combinada com \texttt{next} para encontrar o predecessor de \texttt{v} dentro do ciclo (linha 2): a expressão \texttt{(u for u, \_ in C.in\_edges(v))} itera sobre os arcos de entrada de \texttt{v}, extraindo apenas o vértice origem \texttt{u} (ignorando metadados com \texttt{\_}), e \texttt{next} devolve o primeiro (e teoricamente único) predecessor. Em seguida, remove o arco \texttt{(predecessor, v)} do ciclo usando o método \texttt{remove\_edge} (linha 3).
+A função recebe como entrada o ciclo \texttt{C} e o vértice de entrada \texttt{v}. A implementação utiliza uma compreensão de gerador combinada com \texttt{next} para encontrar o predecessor de \texttt{v} dentro do ciclo (linha 2): a expressão \texttt{(u for u, \_ in C.in\_edges(v))} itera sobre os arcos de entrada de \texttt{v}, extraindo apenas o vértice origem \texttt{u} (ignorando metadados com \texttt{\_}), e \texttt{next} devolve o primeiro (e teoricamente único) predecessor. Em seguida, remove o arco \texttt{(predecessor, v)} do ciclo usando o método \texttt{remove\_edge} (linha 3).
 
 A função modifica diretamente o subdigrafo \texttt{C} e não devolve valor. A complexidade é \(O(\deg^-(v))\), dominada pela operação de busca dos arcos de entrada, embora em ciclos simples isso seja tipicamente \(O(1)\) pois cada vértice tem exatamente um predecessor.
 
@@ -1182,9 +1181,9 @@ A função modifica diretamente o subdigrafo \texttt{C} e não devolve valor. A 
 	\emph{Remove o arco interno que entra no vértice de entrada \texttt{v} do ciclo \texttt{C} durante a reexpansão, pois \texttt{v} passa a receber um arco externo, e manter ambos violaria a propriedade de arborescência.}
 	\tcblower
 	\begin{lstlisting}[mathescape=true, language=Python]
-def remove_internal_edge_to_cycle_entry(C: nx.DiGraph, v):
-    predecessor = next((u for u, _ in C.in_edges(v)), None)
-    C.remove_edge(predecessor, v) 
+def remove_edge_cycle(C: nx.DiGraph, v):
+    predecessor = next((u for u, _ in C.in_edges(v)))
+    C.remove_edge(predecessor, v)
 \end{lstlisting}
 \end{tcolorbox}
 
