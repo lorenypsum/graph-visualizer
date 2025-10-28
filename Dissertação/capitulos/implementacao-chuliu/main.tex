@@ -850,17 +850,17 @@ O uso de memória é \(O(m+n)\), incluindo mapeamentos de contração/expansão 
 \section{Implementação em Python}
 
 
-Esta seção descreve a implementação do algoritmo de Chu--Liu--Edmonds em Python, estruturada para refletir com precisão as etapas formais discutidas anteriormente. Cada operação fundamental — normalização dos custos, construção do subgrafo gerador, contração de ciclos e reexpansão — é traduzida em procedimentos sobre digrafos orientados, utilizando a biblioteca \texttt{networkx}.
+Esta seção descreve a implementação do algoritmo de Chu--Liu--Edmonds em Python, estruturada para refletir com precisão as etapas formais discutidas anteriormente. Cada operação fundamental — normalização dos custos, construção do subdigrafo gerador, contração de ciclos e reexpansão — é traduzida em procedimentos sobre digrafos orientados, utilizando a biblioteca \texttt{networkx}.
 
 
 A entrada consiste em um digrafo orientado \(D = (V, A)\), com custos dos arcos registrados no atributo \texttt{"w"}, e uma raiz \(r \in V\). As hipóteses adotadas são: (i) o digrafo é conexo a partir de \(r\), isto é, todo vértice \(v \neq r\) é alcançável a partir da raiz; (ii) para todo subconjunto \(X \subseteq V \setminus \{r\}\), existe ao menos um arco entrando em \(X\) (condições de Edmonds, cf. \cite{schrijver2003comb}); e (iii) todos os custos são não negativos.
 
 
-A saída é um subgrafo \(T\) de \(D\) com \(|A_T| = |V| - 1\) arcos, tal que cada vértice \(v \neq r\) possui grau de entrada igual a 1, todos os vértices são alcançáveis a partir de \(r\), e o custo total \(\sum_{a \in A_T} c(a)\) é mínimo.
+A saída é um subdigrafo \(T\) de \(D\) com \(|A_T| = |V| - 1\) arcos, tal que cada vértice \(v \neq r\) possui grau de entrada igual a 1, todos os vértices são alcançáveis a partir de \(r\), e o custo total \(\sum_{a \in A_T} c(a)\) é mínimo.
 
 Por limitações da representação com \texttt{networkx.DiGraph}, a implementação elimina arcos paralelos durante a contração de ciclos.
 
-A estrutura do código é modular: funções auxiliares tratam cada etapa do algoritmo — normalização dos custos, detecção e contração de ciclos, construção do subgrafo gerador e reexpansão da solução. Todas operam sobre objetos \texttt{nx.DiGraph} e são coordenadas por uma função principal que gerencia o fluxo recursivo. As subseções seguintes detalham cada função auxiliar, abordando lógica, parâmetros, saídas e complexidade.
+A estrutura do código é modular: funções auxiliares tratam cada etapa do algoritmo — normalização dos custos, detecção e contração de ciclos, construção do subdigrafo gerador e reexpansão da solução. Todas operam sobre objetos \texttt{nx.DiGraph} e são coordenadas por uma função principal que gerencia o fluxo recursivo. As subseções seguintes detalham cada função auxiliar, abordando lógica, parâmetros, saídas e complexidade.
 
 \subsection{Representação de digrafos e detecção de ciclos}
 
@@ -941,7 +941,7 @@ Considerando que cada r-arborescência contém exatamente um arco entrando em ca
 \subsection{Construção de \texorpdfstring{\(A_0\)}{A_0}:}
 Esta função constrói o subdigrafo \(A_0\) selecionando, para cada vértice \(v\neq r_0\), um único arco de custo reduzido zero que entra em \(v\).
 
-Recebe como entrada um digrafo \texttt{D} e a raiz \texttt{r0}. A implementação cria um novo digrafo vazio \texttt{A\_zero} (linha 2) em vez de modificar \texttt{D} diretamente; essa escolha de criar uma estrutura separada é fundamental porque \(A_0\) é um subgrafo conceitual usado para detecção de ciclos, e preservar \texttt{D} inalterado permite que as operações subsequentes (como contração) trabalhem com o digrafo original completo, evitando perda de informação sobre arcos não selecionados que podem ser necessários após reexpansões.
+Recebe como entrada um digrafo \texttt{D} e a raiz \texttt{r0}. A implementação cria um novo digrafo vazio \texttt{A\_zero} (linha 2) em vez de modificar \texttt{D} diretamente; essa escolha de criar uma estrutura separada é fundamental porque \(A_0\) é um subdigrafo usado para detecção de ciclos, e preservar \texttt{D} inalterado permite que as operações subsequentes (como contração) trabalhem com o digrafo original completo, evitando perda de informação sobre arcos não selecionados que podem ser necessários após reexpansões.
 
 Em seguida, para cada vértice \texttt{v} diferente de \texttt{r0} (linhas 3--4), utilizando o método \texttt{D.nodes()}, coleta todos os arcos de entrada de \texttt{v} com seus pesos em uma lista e armazena na variável \texttt{in\_edges} (linha 5); a materialização em lista é necessária porque a subsequente iteração sobre os arcos para encontrar aqueles de peso zero poderia causar problemas se trabalhássemos diretamente com a visão devolvida por \texttt{in\_edges}, especialmente em cenários de modificação concorrente. Se não houver arcos de entrada, prossegue para o próximo vértice (linhas 6--7) usando \texttt{continue}, pois um vértice isolado ou inacessível não contribui para \(A_0\) e sua ausência será detectada posteriormente como violação das hipóteses de conectividade.
 
@@ -976,7 +976,7 @@ A Figura~\ref{fig:get-Azero-example} ilustra a construção de \(A_0\):
 \begin{figure}[H]
 	\centering
 	\input{capitulos/implementacao-chuliu/figures/fig_get_azero_example.tex}
-	\caption{Exemplo de construção de \(A_0\) a partir de um digrafo normalizado. À esquerda, o digrafo \(D\) após normalização, onde cada vértice não-raiz possui ao menos um arco de entrada com custo zero (em vermelho). À direita, o subgrafo \(A_0\) resultante contém apenas os arcos de custo zero selecionados, um por vértice. Note que \(A_0\) pode conter ciclos (como \(\{v_1, v_2\}\)) que serão tratados nas etapas subsequentes.}
+	\caption{Exemplo de construção de \(A_0\) a partir de um digrafo normalizado. À esquerda, o digrafo \(D\) após normalização, onde cada vértice não-raiz possui ao menos um arco de entrada com custo zero (em vermelho). À direita, o subdigrafo \(A_0\) resultante contém apenas os arcos de custo zero selecionados, um por vértice. Note que \(A_0\) pode conter ciclos (como \(\{v_1, v_2\}\)) que serão tratados nas etapas subsequentes.}
 	\label{fig:get-Azero-example}
 \end{figure}
 
@@ -998,17 +998,17 @@ As funções de normalização por vértice e construção de \(A_0\) juntas imp
 
 
 \subsection{Detecção de ciclo:}
-Esta função detecta a presença de um ciclo dirigido em \(A_0\) e devolve um subgrafo que o contém; se \(A_0\) for acíclico, devolve \texttt{None}.
+Esta função detecta a presença de um ciclo dirigido em \(A_0\) e devolve um subdigrafo que o contém; se \(A_0\) for acíclico, devolve \texttt{None}.
 
 Recebe como entrada um digrafo \texttt{A\_zero} (objeto \texttt{nx.DiGraph}). A implementação utiliza um bloco \texttt{try} (linha 2) para capturar exceções caso não haja ciclo; esta escolha de tratamento por exceção é necessária porque a API do NetworkX adota o padrão EAFP (\emph{Easier to Ask for Forgiveness than Permission}), onde \texttt{nx.find\_cycle} não devolve um valor especial (como \texttt{None}) quando o digrafo é acíclico, mas sim lança a exceção \texttt{NetworkXNoCycle} para sinalizar a ausência de ciclos.
 
 Em seguida a função inicializa um conjunto vazio \texttt{nodes\_in\_cycle} (linha 3) e emprega a função \texttt{nx.find\_cycle} do NetworkX (linha 4), que realiza uma busca em profundidade para detectar ciclos. A função \texttt{nx.find\_cycle} ou lança uma exceção devolve um iterador sobre todos os arcos que compõem esse ciclo. O laço na linha 4 itera sobre esses arcos devolvidos, desempacotando cada uma na forma \texttt{(u, v, \_)} (ignorando o terceiro elemento com \texttt{\_}, que contém metadados de orientação), e para cada arco \((u,v)\) adiciona ambos os vértices ao conjunto \texttt{nodes\_in\_cycle} (linha 5); a escolha de usar conjunto em vez de lista garante que cada vértice seja adicionado apenas uma vez mesmo que o ciclo tenha múltiplos arcos incidentes, e a operação de adição tem complexidade \(O(1)\) amortizada.
 
-Após coletar todos os vértices do ciclo, constrói e devolve uma cópia do subgrafo induzido por eles (linha 7); a cópia é necessária porque o método \texttt{subgraph} devolve apenas uma visão dinâmica sobre o digrafo original.
+Após coletar todos os vértices do ciclo, constrói e devolve uma cópia do subdigrafo induzido por eles (linha 7); a cópia é necessária porque o método \texttt{subgraph} devolve apenas uma visão dinâmica sobre o digrafo original.
 
 Se nenhum ciclo existir, a exceção \texttt{nx.NetworkXNoCycle} é capturada no bloco \texttt{except} (linha 8) e a função devolve \texttt{None} (linha 9);
 
-No final, um subgrafo contendo os vértices e arcos do ciclo detectado é devolvido, ou \texttt{None} se não houver ciclo. O digrafo original \texttt{A\_zero} não é modificado. A complexidade é \(O(m)\), onde \(m\) é o número de arcos, pois a DFS visita cada arco no máximo uma vez.
+No final, um subdigrafo contendo os vértices e arcos do ciclo detectado é devolvido, ou \texttt{None} se não houver ciclo. O digrafo original \texttt{A\_zero} não é modificado. A complexidade é \(O(m)\), onde \(m\) é o número de arcos, pois a DFS visita cada arco no máximo uma vez.
 
 \begin{tcolorbox}[
 		enhanced, breakable,
@@ -1018,7 +1018,7 @@ No final, um subgrafo contendo os vértices e arcos do ciclo detectado é devolv
 		boxed title style={sharp corners, boxrule=0.6pt},
 		sharp corners, boxrule=0.6pt
 	]
-	\emph{Detecta um ciclo dirigido em $A_0$ e devolve um subgrafo contendo seus vértices e arcos, ou \texttt{None} se for acíclico.}
+	\emph{Detecta um ciclo dirigido em $A_0$ e devolve um subdigrafo contendo seus vértices e arcos, ou \texttt{None} se for acíclico.}
 	\tcblower
 	\begin{lstlisting}[mathescape=true, language=Python]
 def find_cycle(A_zero: nx.DiGraph):
@@ -1037,7 +1037,7 @@ A Figura~\ref{fig:find-cycle-example} ilustra o processo de detecção de ciclo:
 \begin{figure}[H]
 	\centering
 	\input{capitulos/implementacao-chuliu/figures/fig_find_cycle_example.tex}
-	\caption{Exemplo de detecção de ciclo em \(A_0\). À esquerda, o subgrafo \(A_0\) contém um ciclo formado pelos vértices \(\{v_2, v_3, v_4\}\) (destacados em amarelo). A DFS percorre o digrafo e detecta o ciclo ao encontrar o arco \((v_4, v_2)\), onde \(v_2\) já está na pilha de recursão. À direita, a função devolve uma cópia do subgrafo induzido pelos vértices do ciclo, contendo apenas os três vértices e os três arcos que formam o ciclo.}
+	\caption{Exemplo de detecção de ciclo em \(A_0\). À esquerda, o subdigrafo \(A_0\) contém um ciclo formado pelos vértices \(\{v_2, v_3, v_4\}\) (destacados em amarelo). A DFS percorre o digrafo e detecta o ciclo ao encontrar o arco \((v_4, v_2)\), onde \(v_2\) já está na pilha de recursão. À direita, a função devolve uma cópia do subdigrafo induzido pelos vértices do ciclo, contendo apenas os três vértices e os três arcos que formam o ciclo.}
 	\label{fig:find-cycle-example}
 \end{figure}
 
@@ -1156,9 +1156,9 @@ def remove_edges_to_r0(D: nx.DiGraph, r0: str):
 
 Esta função é invocada durante a fase de reexpansão do ciclo contraído, após a chamada recursiva devolver com a arborescência ótima \(T'\) do digrafo contraído. Quando o supervértice \(x_C\) é expandido de volta para o ciclo original \(C\), um arco externo \((u,v)\) é adicionado conectando um vértice externo \(u\) a um vértice \(v\) dentro do ciclo. Como o ciclo \(C\) originalmente continha exatamente um arco entrando em cada um de seus vértices (formando um ciclo fechado), e agora \(v\) recebe um arco adicional vindo do exterior, esse vértice teria grau de entrada 2, violando a propriedade fundamental de arborescência (cada vértice não-raiz deve ter exatamente uma entrada). Para restaurar essa propriedade, a função remove o arco interno que anteriormente entrava em \(v\), mantendo apenas o novo arco externo. Essa remoção "quebra" o ciclo no ponto de entrada, transformando-o em um caminho que se integra corretamente à estrutura de árvore.
 
-A função recebe como entrada o subgrafo do ciclo \texttt{C} (objeto \texttt{nx.DiGraph}) e o vértice de entrada \texttt{v}. A implementação utiliza uma compreensão de gerador combinada com \texttt{next} para encontrar o predecessor de \texttt{v} dentro do ciclo (linha 2): a expressão \texttt{(u for u, \_ in C.in\_edges(v))} itera sobre os arcos de entrada de \texttt{v}, extraindo apenas o vértice origem \texttt{u} (ignorando metadados com \texttt{\_}), e \texttt{next} devolve o primeiro (e teoricamente único) predecessor. Em seguida, remove o arco \texttt{(predecessor, v)} do ciclo usando o método \texttt{remove\_edge} (linha 3).
+A função recebe como entrada o subdigrafo do ciclo \texttt{C} (objeto \texttt{nx.DiGraph}) e o vértice de entrada \texttt{v}. A implementação utiliza uma compreensão de gerador combinada com \texttt{next} para encontrar o predecessor de \texttt{v} dentro do ciclo (linha 2): a expressão \texttt{(u for u, \_ in C.in\_edges(v))} itera sobre os arcos de entrada de \texttt{v}, extraindo apenas o vértice origem \texttt{u} (ignorando metadados com \texttt{\_}), e \texttt{next} devolve o primeiro (e teoricamente único) predecessor. Em seguida, remove o arco \texttt{(predecessor, v)} do ciclo usando o método \texttt{remove\_edge} (linha 3).
 
-A função modifica diretamente o subgrafo \texttt{C} e não devolve valor. A complexidade é \(O(\deg^-(v))\), dominada pela operação de busca dos arcos de entrada, embora em ciclos simples isso seja tipicamente \(O(1)\) pois cada vértice tem exatamente um predecessor.
+A função modifica diretamente o subdigrafo \texttt{C} e não devolve valor. A complexidade é \(O(\deg^-(v))\), dominada pela operação de busca dos arcos de entrada, embora em ciclos simples isso seja tipicamente \(O(1)\) pois cada vértice tem exatamente um predecessor.
 
 \begin{tcolorbox}[
 		enhanced, breakable,
