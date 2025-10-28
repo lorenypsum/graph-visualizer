@@ -1226,9 +1226,9 @@ O código completo da função principal é apresentado a seguir:
 	\emph{Implementa o algoritmo de Chu–Liu/Edmonds de forma recursiva para encontrar a r-arborescência de custo mínimo em um digrafo ponderado \texttt{D} com raiz \texttt{r0}. Normaliza custos, constrói $A_0$, detecta ciclos e, se houver, contrai em supervértice, resolve recursivamente no digrafo reduzido e reexpande, restaurando a arborescência ótima no digrafo original. Devolve um \texttt{nx.DiGraph} contendo exatamente $|V|-1$ arcos com grau de entrada 1 para cada vértice exceto a raiz.}
 	\tcblower
 	\begin{lstlisting}[mathescape=true, language=Python]
-def chuliu(D: nx.DiGraph,r0: str,level=0,):
-    D_copy = D.copy()
-    for v in D_copy.nodes:
+def chuliu_edmonds(D: nx.DiGraph, r0: str,level=0):
+	D_copy = cast(nx.DiGraph, D.copy())
+	for v in D_copy.nodes:
         if v != r0:
             reduce_weights(D_copy, v)
     A_zero = get_Azero(D_copy, r0)
@@ -1236,26 +1236,24 @@ def chuliu(D: nx.DiGraph,r0: str,level=0,):
         for u, v in A_zero.edges:
             A_zero[u][v]["w"] = D[u][v]["w"]
         return A_zero
-    else:
-        C: nx.DiGraph = find_cycle(A_zero)   
-        contracted_label = f"\n n*{level}"
-        in_to_cycle, out_from_cycle = contract_cycle(
-        D_copy, C, contracted_label)
-        F_prime = chuliu(D_copy,r0,level + 1)
-        in_edge = next(iter(F_prime.in_edges(contracted_label, data="w")), None)
-        u, _, _ = in_edge
-        v, _ = in_to_cycle[u]
-        remove_internal_edge_to_cycle_entry(C, v)
-        F_prime.add_edge(u, v)
-        for u_c, v_c in C.edges:
-            F_prime.add_edge(u_c, v_c)
-        for _, z, _ in F_prime.out_edges(contracted_label, data=True):
-            u_cycle, _ = out_from_cycle[z]
-            F_prime.add_edge(u_cycle, z)
-        F_prime.remove_node(contracted_label)
-        for u, v in F_prime.edges:
-            F_prime[u][v]["w"] = D[u][v]["w"]
-        return F_prime 
+    C = find_cycle(A_zero)
+    cl = f"\n n*{level}" # contracted label
+    in_to_cycle, out_from_cycle = contract_cycle(D_copy, C, cl)
+    F_prime = chuliu_edmonds(D_copy, r0,level + 1)
+    in_edge = next(iter(F_prime.in_edges(cl, data=True)))
+    u, _, _ = cast(tuple, in_edge)
+    v, _ = in_to_cycle[u]
+    remove_edge_cycle(C, v)
+    F_prime.add_edge(u, v)
+    for u_c, v_c in C.edges:
+        F_prime.add_edge(u_c, v_c)
+    for _, z, _ in F_prime.out_edges(cl, data=True):
+        u_cycle, _ = out_from_cycle[z]
+        F_prime.add_edge(u_cycle, z)
+    F_prime.remove_node(cl)
+    for u2, v2 in F_prime.edges:
+        F_prime[u2][v2]["w"] = D[u2][v2]["w"]
+    return F_prime 
 \end{lstlisting}
 \end{tcolorbox}
 

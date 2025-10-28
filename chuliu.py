@@ -303,10 +303,10 @@ def chuliu_edmonds(
 
     C = find_cycle(A_zero)
 
-    contracted_label = f"\n n*{level}"
+    cl = f"\n n*{level}" # contracted label
     if metrics is not None:
         metrics["contractions"] += 1
-    in_to_cycle, out_from_cycle = contract_cycle(D_copy, C, contracted_label, lang=lang)
+    in_to_cycle, out_from_cycle = contract_cycle(D_copy, C, cl, lang=lang)
 
     # Recursive call
     F_prime = chuliu_edmonds(
@@ -320,16 +320,16 @@ def chuliu_edmonds(
         metrics=metrics,
     )
 
-    in_edge = next(iter(F_prime.in_edges(contracted_label, data=True)))
+    in_edge = next(iter(F_prime.in_edges(cl, data=True)))
 
     if lang == "en":
         assert (
             in_edge is not None
-        ), f"\nchuliu_edmonds: No incoming edge found for vertex '{contracted_label}'."
+        ), f"\nchuliu_edmonds: No incoming edge found for vertex '{cl}'."
     elif lang == "pt":
         assert (
             in_edge is not None
-        ), f"\nchuliu_edmonds: Nenhuma aresta encontrada entrando no vértice '{contracted_label}'."
+        ), f"\nchuliu_edmonds: Nenhuma aresta encontrada entrando no vértice '{cl}'."
     
     # At this point in_edge is guaranteed not None
     u, _, _ = cast(tuple, in_edge)
@@ -372,7 +372,7 @@ def chuliu_edmonds(
                 )
 
     # Add the external edges leaving the cycle
-    for _, z, _ in F_prime.out_edges(contracted_label, data=True):
+    for _, z, _ in F_prime.out_edges(cl, data=True):
         if lang == "en":
             assert (
                 z in out_from_cycle
@@ -396,22 +396,22 @@ def chuliu_edmonds(
     # Remove the contracted node
     if lang == "en":
         assert (
-            contracted_label in F_prime
-        ), f"\nchuliu_edmonds: Vertex '{contracted_label}' not found in the graph."
+            cl in F_prime
+        ), f"\nchuliu_edmonds: Vertex '{cl}' not found in the graph."
     elif lang == "pt":
         assert (
-            contracted_label in F_prime
-        ), f"\nchuliu_edmonds: Vértice '{contracted_label}' não encontrado no grafo."
-    F_prime.remove_node(contracted_label)
+            cl in F_prime
+        ), f"\nchuliu_edmonds: Vértice '{cl}' não encontrado no grafo."
+    F_prime.remove_node(cl)
 
     if boilerplate and log:
         if lang == "en":
             log(
-                f"\nchuliu_edmonds:{indent}Contracted vertex '{contracted_label}' removed."
+                f"\nchuliu_edmonds:{indent}Contracted vertex '{cl}' removed."
             )
         elif lang == "pt":
             log(
-                f"\nchuliu_edmonds:{indent}Vértice contraído '{contracted_label}' removido."
+                f"\nchuliu_edmonds:{indent}Vértice contraído '{cl}' removido."
             )
 
     # Update the edge weights with the original weights from G
