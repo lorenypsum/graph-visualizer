@@ -1063,26 +1063,50 @@ Devolve dois dicionários: \texttt{in\_to\_cycle} mapeia vértices externos aos 
 	\begin{lstlisting}[mathescape=true, language=Python]
 def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: str):
     cycle_nodes: set[str] = set(C.nodes())
+
+    # Stores the vertex u outside the cycle and the vertex v inside the cycle that receives the minimum weight edge
     in_to_cycle: dict[str, tuple[str, float]] = {}
+
     for u in D.nodes:
         if u not in cycle_nodes:
+            # Find the minimum weight edge that u has to any vertex in C
             min_weight_edge_to_cycle = min(
-                ((v, w) for _, v, w in D.out_edges(u, data="w") if v in cycle_nodes),
+                (
+                    (v, data.get("w", float("inf")))
+                    for _, v, data in D.out_edges(u, data=True)
+                    if v in cycle_nodes
+                ),
                 key=lambda x: x[1],
-                default=None,)
+                default=None,
+            )
             if min_weight_edge_to_cycle:
                 in_to_cycle[u] = min_weight_edge_to_cycle
+
     for u, (v, w) in in_to_cycle.items():
         D.add_edge(u, label, w=w)
+
+    # Stores the vertex v outside the cycle that receives the minimum weight edge from a vertex u inside the cycle
     out_from_cycle: dict[str, tuple[str, float]] = {}
+
     for v in D.nodes:
         if v not in cycle_nodes:
+            # Find the minimum weight edge that v receives from any vertex in C
             min_weight_edge_from_cycle = min(
-                ((u, w) for u, _, w in D.in_edges(v, data="w") if u in cycle_nodes),key=lambda x: x[1], default=None,)
+                (
+                    (u2, data.get("w", float("inf")))
+                    for u2, _, data in D.in_edges(v, data=True)
+                    if u2 in cycle_nodes
+                ),
+                key=lambda x: x[1],
+                default=None,
+            )
             if min_weight_edge_from_cycle:
                 out_from_cycle[v] = min_weight_edge_from_cycle
+
     for v, (u, w) in out_from_cycle.items():
         D.add_edge(label, v, w=w)
+
+    # Remove all nodes in the cycle from G
     D.remove_nodes_from(cycle_nodes)
     return in_to_cycle, out_from_cycle  
 \end{lstlisting}
