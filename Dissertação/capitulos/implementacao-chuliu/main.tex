@@ -1197,7 +1197,7 @@ A Figura~\ref{fig:remove-internal-edge-example} ilustra o objetivo da função:
 \end{figure}
 
 \subsection{Procedimento principal (recursivo):}
-Esta função implementa o algoritmo de Chu–Liu/Edmonds de forma recursiva, orquestrando todas as funções auxiliares descritas anteriormente. Recebe como entrada um digrafo ponderado \texttt{D} (objeto \texttt{nx.DiGraph}), o vértice raiz \texttt{r0}, e um parâmetro \texttt{level} (padrão 0) usado para rotular supervértices em níveis recursivos distintos.
+Agora apresentaremos a função principal que orquestra todas as funções auxiliares descritas anteriormente no fluxo completo do algoritmo descrito por Chuliu-Edmonds. A função recebe como entrada um digrafo ponderado \texttt{D}, o vértice raiz \texttt{r0}, e um parâmetro \texttt{level} (padrão 0) usado para rotular supervértices de acordo os distintos níveis recursivos.
 
 A implementação segue a estrutura do algoritmo:
 
