@@ -1,4 +1,4 @@
-\chapter{Algoritmo Guloso–Dual de András Frank} 
+\chapter{Algoritmo Guloso–Dual de András Frank}
 
 Assim como o algoritmo de Chu–Liu/Edmonds, o método de András Frank resolve o problema da r-arborescência de custo mínimo em digrafos ponderados. A diferença está na abordagem: Frank utiliza uma estrutura gulosa–dual.
 
@@ -29,72 +29,10 @@ O algoritmo de Frank é dividido em duas fases, conforme a descrição abaixo:
 
 Vamos ilustrar o funcionamento das fase 1 e 2 com um exemplo.
 
-Considere o digrafo abaixo, onde os custos dos arcos são indicados e a raiz é $r$:
-
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=2.5cm,thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
-		\node[main node] (r) {r};
-		\node[main node] (a) [right of=r] {a};
-		\node[main node] (b) [below right of=a] {b};
-		\node[main node] (c) [below left of=r] {c};
-
-		% Arcos com custos
-		\path[every node/.style={font=\sffamily}]
-		(r) edge node [above] {2} (a)
-		(r) edge node [left] {3} (c)
-		(a) edge node [right] {1} (b)
-		(c) edge node [below] {4} (b)
-		(b) edge[bend left] node [right] {2} (a)
-		(a) edge[bend left] node [left] {2} (c);
-	\end{tikzpicture}
-	\caption{Digrafo original com custos dos arcos e raiz $r$.}
-	\label{fig:frank-exemplo-potenciais}
-\end{figure}
+Consideremos então o mesmo digrafo que apresentamos como exemplo na sessão de chuliu/edmonds, e vamos mostrar o comportamento do algortimo de andras frank sobre ele.
 
 
 
-Suponha que elevamos o potencial $y(v)$ de um vértice $v$ até que o arco $(u,v)$ tenha custo reduzido zero: $c'(u,v) = c(u,v) - y(v) = 0$. Se todos os arcos que entram em um conjunto de vértices $C$ ficarem com custo zero, e $C$ formar um ciclo, contraímos $C$ em um supervértice $x_C$ e continuamos o processo no grafo menor.
-
-\section{Formulação primal–dual e cortes laminares}
-
-Assim como no capítulo anterior, o problema pode ser formulado como um programa linear primal (seleção de arcos) e seu dual (elevação de potenciais por cortes). A família de cortes ativos pode ser tomada laminar, guiando as contrações e reexpansões.
-
-\begin{tcolorbox}[
-		enhanced, breakable,
-		colframe=purple!60!black, colback=purple!5,
-		colbacktitle=purple!15, coltitle=black,
-		title={Formulação primal–dual do problema de arborescência mínima},
-		boxed title style={sharp corners, boxrule=0.6pt},
-		sharp corners, boxrule=0.6pt
-	]
-	\textbf{Primal:} Minimizar o custo total dos arcos escolhidos, garantindo conectividade e grau de entrada 1 para cada vértice não-raiz.
-
-	\textbf{Dual:} Elevar potenciais $y(X)$ para cortes $X$ de modo que os custos reduzidos $c'(u,v) = c(u,v) - \sum_{X:\,v\in X,\,u\notin X} y(X)$ permaneçam não negativos.
-\end{tcolorbox}
-
-\section{Descrição detalhada do algoritmo}
-
-O algoritmo segue os seguintes passos, espelhando a estrutura do capítulo do Chu–Liu/Edmonds:
-
-\begin{tcolorbox}[
-		enhanced, breakable,
-		colframe=green!60!black, colback=green!5,
-		colbacktitle=green!20, coltitle=black,
-		title={Passos do algoritmo de András Frank},
-		boxed title style={sharp corners, boxrule=0.6pt},
-		sharp corners, boxrule=0.6pt
-	]
-	\textbf{Passo 1:} Para cada vértice $v \neq r$, eleve o potencial $y(v)$ até que exista ao menos um arco de custo reduzido zero entrando em $v$.
-
-	\textbf{Passo 2:} Sempre que um ciclo de arcos de custo zero surgir, contraia o ciclo em um supervértice, ajustando os custos conforme a regra dual.
-
-	\textbf{Passo 3:} Repita os passos anteriores até que, no grafo corrente, todo vértice não-raiz tenha ao menos uma entrada de custo zero.
-
-	\textbf{Passo 4:} Selecione exatamente uma entrada de custo zero para cada vértice não-raiz. Se as escolhas formarem um ciclo, contraia e repita no grafo menor.
-
-	\textbf{Passo 5:} Ao final, reexpanda cada contração removendo uma aresta interna para restaurar a estrutura de arborescência.
-\end{tcolorbox}
 
 \section{Implementação em Python}
 

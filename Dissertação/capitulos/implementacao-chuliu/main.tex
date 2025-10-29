@@ -31,7 +31,7 @@ então, para cada vértice \(v \neq r\), existe exatamente um arco de \(T\) que 
 	\begin{tikzpicture}[>=Stealth]
 		% estilos
 		\tikzset{
-			vtx/.style={circle, draw, thick, inner sep=1.2pt, minimum size=6mm},
+			vtx/.style={circle, draw,fill=blue!8, thick, inner sep=1.2pt, minimum size=6mm},
 			chosen/.style={->, very thick, draw=blue},
 			other/.style={->, semithick, draw=black!35},
 			costB/.style={font=\scriptsize, fill=white, inner sep=1pt, text=blue},
@@ -291,7 +291,7 @@ Consequentemente, $S \cdot u$ é um ciclo de $H$.
 	\begin{tikzpicture}[>=Stealth]
 		% estilos
 		\tikzset{
-			vtx/.style={circle, draw, thick, inner sep=1pt, minimum size=6mm},
+			vtx/.style={circle, draw, fill=blue!8, thick, inner sep=1pt, minimum size=6mm},
 			Pdash/.style={->, thick, densely dashed},   % parte tracejada de P
 			cycleedge/.style={->, ultra thick}          % arco que fecha o ciclo
 		}
@@ -425,7 +425,7 @@ Após a contração do ciclo \(C\), obtemos o digrafo \(D'\) com o supervértice
 		% estilos
 		\tikzset{
 			v/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
-			super/.style={circle, draw, very thick, fill=gray!10, minimum size=9mm, inner sep=0pt},
+			super/.style={circle, draw, very thick, fill=orange!10, minimum size=9mm, inner sep=0pt},
 			cheap/.style={->, very thick, draw=blue!70},
 			expensive/.style={->, dashed, draw=gray!60}
 		}
@@ -595,7 +595,7 @@ Após a contração do ciclo \(C\), ambas as arborescências \(T_1\) e \(T_2\) m
 		% estilos
 		\tikzset{
 			v/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
-			super/.style={circle, draw, fill=orange!15, minimum size=9mm, inner sep=0pt},
+			super/.style={circle, draw, very thick, fill=orange!10, minimum size=9mm, inner sep=0pt},
 			selected/.style={->, ultra thick, draw=blue!70}
 		}
 
