@@ -1,839 +1,125 @@
-\chapter{Procedimento em Duas Fases de András Frank}
+\chapter{Algoritmo Primal–Dual de András Frank}
 
-\section{Contexto histórico e motivação}
+\section{Motivação e contexto histórico}
 
-Os primeiros algoritmos para arborescência de custo mínimo foram propostos por Chu–Liu (1965) e Edmonds (1967). Eles introduziram a ideia de contrair ciclos e de caracterizar quando um conjunto de arcos forma uma arborescência. Mais tarde, essa mesma lógica passou a ser lida no arcabouço \emph{primal–dual}.
-
-
-Em 1981, András Frank apresentou um algoritmo em duas fases que resolve o problema de arborescência mínima usando técnicas primal–duais \cite{frank1981}. Enquanto Chu–Liu/Edmonds opera de forma mais combinatória e direta, Frank explicita a estrutura de otimização subjacente, revelando \emph{por que} as operações funcionam e conectando-as a certificados de otimalidade. A seguir descrevemos esse método.
-
-\section{Descrição do Algoritmo}
-
-O algoritmo de Frank consiste em duas fases principais:
-\begin{itemize}\setlength{\itemsep}{2pt}
-	\item \textbf{Fase I (dual/potenciais):}
-
-	      Elevamos os potenciais por vértice \(\tilde y\): para cada vértice \(v\), \(\tilde y(v)\) é um número que funciona como um “desconto” aplicado igualmente a todas as arestas que \emph{entram} em \(v\), definindo o custo reduzido \(c'(u,v)=c(u,v)-\tilde y(v)\). Aumentamos \(\tilde y\) até que, para todo \(v\neq r\), haja ao menos uma entrada \emph{apertada} (com \(c'(u,v)=0\)).
+Assim como o algoritmo de Chu–Liu/Edmonds, o método de András Frank resolve o problema da r-arborescência de custo mínimo em digrafos ponderados. A diferença está na abordagem: Frank utiliza uma estrutura gulosa–dual.
 
 
-	      Sempre que surgir um ciclo feito só de arcos apertados, são contraídos e continua-se no grafo menor. Para-se quando, no grafo corrente, todo \(v\neq r\) tiver alguma entrada apertada.
 
+O algoritmo de Frank é dividido em duas fases, conforme a descrição abaixo:
 
-	      Saída: o subgrafo \(D_0\) das arestas apertadas, com ao menos uma entrada por vértice distinto de \(r\); invariantes: \(c'\ge 0\) e laminaridade da família ativa.
-	\item \textbf{Fase II (extração primal):}
+\begin{tcolorbox}[
+		enhanced, breakable,
+		colframe=blue!60!black, colback=blue!2,
+		colbacktitle=blue!15, coltitle=black,
+		title={Algoritmo de András Frank},
+		boxed title style={sharp corners, boxrule=0.6pt},
+		sharp corners, boxrule=0.6pt
+	]
+	\textbf{Fase I — Elevação de potenciais (dual):}
+	\begin{itemize}
+		\item Para cada vértice $v \neq r$, eleva-se o potencial $y(v)$ até que exista ao menos um arco de custo reduzido zero entrando em $v$.
+		\item Sempre que um ciclo de arcos de custo zero surgir, contrai-se esse ciclo em um supervértice, ajustando os custos conforme a regra dual.
+		\item O resultado é um subgrafo $D_0$ onde cada vértice não-raiz tem ao menos uma entrada de custo zero.
+	\end{itemize}
+	\vspace{2mm}
+	\textbf{Fase II — Extração primal:}
+	\begin{itemize}
+		\item Seleciona-se exatamente uma entrada de custo zero para cada vértice $v \neq r$.
+		\item Se as escolhas formarem um ciclo, contrai-se e repete o processo no grafo menor; ao final, reexpande cada contração removendo uma aresta interna para restaurar a estrutura de arborescência.
+		\item O resultado é uma r-arborescência ótima, composta apenas por arcos apertados.
+	\end{itemize}
+\end{tcolorbox}
 
-	      Em \(D_0\), selecione exatamente uma entrada para cada \(v\neq r\).
+Para ilustrar o funcionamento do algoritmo, considere o digrafo abaixo, onde os custos dos arcos são indicados e a raiz é $r$:
 
-	      Se as escolhas formarem um ciclo, contraia-o e continue a seleção na instância contraída, \emph{sem} alterar potenciais; ao final, reexpanda cada contração removendo exatamente uma aresta interna (a que entra no vértice que recebe o arco externo).
-
-	      O resultado é uma r-arborescência; como todas as arestas escolhidas são apertadas (\(c'=0\)), a otimalidade segue por complementaridade primal–dual \cite{frank1981,frank2014,schrijver2003comb}.
-\end{itemize}
-
-
-O algoritmo termina quando uma r-arborescência viável é encontrada. A correção e otimalidade do método são garantidas pelas propriedades primal–duais e pela manutenção de cortes apertados durante as contrações.
-A seguir, explicamos por que essa abordagem é chamada de primal–dual e como as duas fases se relacionam com as formulações primal e dual do problema.
-
-\subsection{A intuição Primal–dual}
-
-Informalmente, o primal decide quais arcos entram para minimizar o custo total. Já o dual escolhe “descontos” (potenciais) a aplicar nos arcos, sem permitir que nenhum fique com preço negativo; para cada arco, a soma dos descontos permitidos não pode ultrapassar o seu preço original. Toda escolha viável desses descontos já estabelece um limite inferior para o menor custo possível.
-
-Esses problemas podem ser modelados de forma natural como \emph{programas lineares} (PLs). Portanto, vamos apresentar brevemente alguns conceitos de álgebra linear antes de descrever as formulações primal e dual.
-
-\subsubsection{Nota breve de conceitos e notações em álgebra linear}
-
-
-Para quem não está acostumado com a notação, eis um guia rápido:
-\begin{itemize}\setlength{\itemsep}{1pt}
-	\item Vetores (por exemplo, \(x, c, y, b\)) são listas de números: \(x=(x_1,\dots,x_n)\). Escrever \(x\ge 0\) significa “cada componente \(x_i\) é não-negativa”.
-	\item Produto interno: \(c^\top x=\sum_i c_i x_i\) (já explicado na nota de rodapé) — é “soma de preços vezes quantidades”.
-	\item Matriz–vetor: \(Ax\) é outro vetor; sua \(j\)-ésima entrada é \((Ax)_j=\sum_i A_{j i}\,x_i\). Ler \(Ax\ge b\) é: “para cada restrição \(j\), a soma à esquerda é pelo menos \(b_j\)”.
-	\item Transposta: \(A^\top\) troca linhas por colunas. Assim, \((A^\top y)_i=\sum_j A_{j i}\,y_j\). Ler \(A^\top y\le c\) é: “para cada variável \(i\), os descontos somados não passam de \(c_i\)”.
-	\item Produto componente a componente (Hadamard): \(x\odot z=(x_1 z_1,\dots,x_n z_n)\). A condição \(x\odot z=0\) significa: “em cada posição, ou \(x_i=0\) ou \(z_i=0\)”. É assim que lemos as condições de complementaridade mais adiante.
-\end{itemize}
-
-
-Agora, a formulação primal–dual do problema de arborescência mínima.
-
-
-Uma formulação padrão usa variáveis \(x_a\) para cada arco \(a\in A\) indicando sua seleção (na versão inteira \(x_a\in\{0,1\}\); na relaxação contínua permitimos valores fracionários \(0\le x_a\le 1\), obtendo um programa linear (PL)):
-
-\[
-	\begin{aligned}
-		\min\          & \sum_{a\in A} c(a)\,x_a                                                                  \\[4pt]
-		\text{s.a. }\  & \sum_{a\in\delta^-(X)} x_a \ge 1 &  & \forall\,\emptyset\neq X\subseteq V\setminus\{r\}, \\[4pt]
-		               & x_a \ge 0                        &  & \forall\,a\in A.
-	\end{aligned}
-\]
-
-O problema dual associa uma variável \(y(X)\ge 0\) a cada corte \(\emptyset\neq X\subseteq V\setminus\{r\}\) e toma a forma:
-
-\[
-	\begin{aligned}
-		\max\          & \sum_{\emptyset\neq X\subseteq V\setminus\{r\}} y(X)                           \\[4pt]
-		\text{s.a. }\  & \sum_{X:\ v\in X,\ u\notin X} y(X) \le c(u,v)        &  & \forall\ (u,v)\in A, \\[4pt]
-		               & y(X)\ge 0                                            &  & \forall\,X.
-	\end{aligned}
-\]
-
-As expressões acima conduzem diretamente às noções de \emph{custos reduzidos}
-
-\[
-	c'(u,v)=c(u,v)-\sum_{X:\,v\in X,u\notin X}y(X)
-\]
-
-e justificam a estratégia primal–dual (elevar potenciais/contrações de ciclos) explorada por Frank.
-
-
-Em fórmulas, no primal, minimizamos \(c^\top x\)\footnote{Produto interno (soma ponderada) entre os vetores \(c\) e \(x\): \(c^\top x=\sum_i c_i x_i\). No nosso contexto, \(c_i\) é o custo de um arco e \(x_i\in\{0,1\}\) indica se o arco é escolhido; logo \(c^\top x\) é o custo total da solução.} com \(x\) dentro do conjunto viável:
-\[
-	P\;=\;\{x\in\mathbb{R}^n:\; Ax\ge b,\ x\ge 0\},
-\]
-onde \(A\) reúne as restrições, \(b\) é a “demanda” de cada restrição e \(c\) são os custos. No dual, escolhemos multiplicadores \(y\ge 0\) que respeitam
-\[
-	A^\top y\;\le\; c.
-\]
-Assim, para cada variável (ou arco), a soma dos “descontos” aplicáveis não pode passar do seu preço original. No caso de grafos, para um arco \((u,v)\), isso vira
-\[
-	\sum_{X:\, v\in X,\ u\notin X} y(X)\ \le\ c(u,v),
-\]
-ou seja: some os \(y(X)\) de todos os cortes \(X\) que contêm \(v\) e não contêm \(u\); esse total é o “desconto máximo” permitido para \((u,v)\). Isso garante que os custos reduzidos \(c' = c - A^\top y\) fiquem sempre não negativos.
-Com isso, vale sempre (dualidade fraca): para todo \(x\) viável e \(y\) viável,
-\[
-	c^\top x\;\ge\; y^\top b.
-\]
-Aqui, \(y^\top b=\sum_j y_j b_j\) é a “soma de preços (\(y\)) vezes demandas (\(b\))”, que serve como limitante inferior para o melhor custo primal.
-Quando ambos são ótimos, os valores empatam (dualidade forte): \(c^\top x^{\*}=y^{\*\top} b\).
-
-
-Agora, a correspondência com o algoritmo: define-se o “custo reduzido” como o preço após descontos:
-\[
-	c_{\text{red}}\;=\;c - A^\top y.
-\]
-As condições de complementaridade dizem que o primal e o dual “se encontram no limite”:
-\[
-	x\odot(c - A^\top y)=0\quad\text{e}\quad y\odot(Ax-b)=0,
-\]
-onde \(\odot\) é produto por componente.
-
-
-De forma resumida:
-
-(i) só escolhemos (\(x_i>0\)) arcos cujo custo reduzido ficou exatamente zero — arcos “apertados”;
-
-(ii) só atribuímos peso dual (\(y_j>0\)) às restrições que ficam exatamente justas (valem com igualdade). É por isso que elevar potenciais até criar arestas de custo reduzido zero guia a construção da solução.
-
-\subsection{Laminaridade, potenciais e contrações}
-
-
-Com variáveis duais \(y(X)\) associadas a cortes, podemos, por um argumento de \emph{uncrossing}\footnote{“Uncrossing” (descruzamento) troca dois conjuntos que se cruzam, \(X\) e \(Y\), por \(X\cap Y\) e \(X\cup Y\). Isso preserva a viabilidade das desigualdades por cortes e não diminui o valor dual. Repetindo, chega-se a uma família sem cruzamentos (\emph{laminar}). Ver \cite{schrijver2003comb,frank2014}.}, assumir sem perda de generalidade que a família ativa
-
-\(\mathcal{L}=\{X\colon y(X)>0\}\)
-
-
-é \emph{laminar}: quaisquer dois conjuntos são aninhados (um contém o outro) ou disjuntos, nunca “se cortam” parcialmente.
-
-
-Essa laminaridade organiza os “preços por corte” em uma hierarquia e permite acumulá-los “por vértice”: \(\tilde y(v)=\sum_{X\in\mathcal{L}:\,v\in X} y(X)\). Com isso, os custos reduzidos podem ser escritos de forma direta
-\[
-	c'(u,v)\;=\; c(u,v)\; -\! \sum_{X\in\mathcal{L}:\, v\in X,\ u\notin X} y(X),
-\]
-e a própria hierarquia dos \(X\) guia as contrações: blocos (conjuntos) \emph{apertados} correspondem a componentes que podemos contrair e depois reexpandir. Em resumo: descruzar \(\Rightarrow\) família laminar \(\Rightarrow\) estrutura simples para calcular \(c'\) e conduzir contrações/expansões com eficiência \cite{frank2014,schrijver2003comb}.
-
-\begin{figure}[ht]
+\begin{figure}[H]
 	\centering
-	\begin{tikzpicture}[>=Stealth, node distance=1.6cm]
-		% vértices do grafo
-		\node[circle, draw, fill=white, inner sep=2pt] (r) at (-3.0, 1.0) {$r$};
-		\node[circle, draw, inner sep=2pt] (u) at (-1.2,-0.1) {$u$};
-		\node[circle, draw, inner sep=2pt] (v) at ( 1.2,-0.1) {$v$};
-		\node[circle, draw, inner sep=2pt] (w) at ( 3.0, 0.9) {$w$};
-		\node[circle, draw, inner sep=2pt] (x) at ( 2.6,-1.2) {$x$};
-
-		% arestas direcionadas (custos ilustrativos)
-		\draw[->] (r) -- (u);
-		\draw[->] (r) -- (v);
-		\draw[->] (u) -- node[above] {$c(u,v)$} (v);
-		\draw[->] (w) -- (v);
-		\draw[->] (x) -- (w);
-
-		% família laminar: Y \subset X (regiões aninhadas)
-		\node[draw=blue!60, fill=blue!10, rounded corners, thick, fit=(v)(w)(x), inner sep=6pt, label={[blue!60]above right:$X$}] (Xblk) {};
-		\node[draw=blue!80, fill=blue!20, rounded corners, thick, fit=(v), inner sep=10pt, label={[blue!80]below:$Y\subset X$}] (Yblk) {};
-
-		% potenciais por vértice (acúmulo sobre cortes laminares que o contêm)
-		\node[font=\scriptsize, align=left, anchor=west] at ($(v)+(0.5,-0.1)$)
-		{$\tilde y(v)=\sum\limits_{Z\in\mathcal{L}:\ v\in Z} y(Z)$};
-
-		% custo reduzido na aresta (u,v)
-		\node[font=\scriptsize, fill=yellow!20, draw=yellow!50!black, rounded corners,
-			align=left, inner sep=3pt] at ($(u)!0.5!(v)+(0,2.1)$)
-		{$c'(u,v)=c(u,v)-\sum\limits_{\substack{X\in\mathcal{L}:\\ v\in X,\ u\notin X}} y(X)$};
-
-		% bloco apertado a contrair (exemplo): região envolvendo {v,w}
-		\node[draw=red!70, dashed, very thick, rounded corners, fit=(v)(w), inner sep=8pt,
-		label={[red!70]below right:{bloco apertado}}] (TightBlk) {};
-		\draw[red!70, -{Latex}] (TightBlk.east) to[bend left=10]
-		($(TightBlk.east)+(1.0,0)$) node[right, circle, draw, inner sep=1.5pt, font=\scriptsize] {$x_C$};
-		\node[font=\scriptsize, red!70, anchor=west] at ($(TightBlk.east)+(1.15,0.25)$) {contrair};
-	\end{tikzpicture}
-	\caption{Família laminar de cortes ($Y\subset X$), potenciais por vértice ($\tilde y$), custo reduzido em uma aresta e a ideia de contrair um bloco \emph{apertado}.}
-	\label{fig:laminar-potenciais-reduzidos}
+	% Exemplo de digrafo com potenciais e custos
+	%\input{capitulos/implementacao-andrasfrank/figures/fig_frank_exemplo_potenciais.tex}
+	\caption{Exemplo de digrafo para ilustrar potenciais, custos reduzidos e contração de ciclo.}
+	\label{fig:frank-exemplo-potenciais}
 \end{figure}
 
+Suponha que elevamos o potencial $y(v)$ de um vértice $v$ até que o arco $(u,v)$ tenha custo reduzido zero: $c'(u,v) = c(u,v) - y(v) = 0$. Se todos os arcos que entram em um conjunto de vértices $C$ ficarem com custo zero, e $C$ formar um ciclo, contraímos $C$ em um supervértice $x_C$ e continuamos o processo no grafo menor.
 
+\section{Formulação primal–dual e cortes laminares}
 
-Assim, devemos nos preocupar com as operações de elevar potenciais, manter custos reduzidos não negativos, identificar cortes apertados e conduzir contrações/expansões. A seguir, detalhamos esses pontos e apresentamos o algoritmo completo.
+Assim como no capítulo anterior, o problema pode ser formulado como um programa linear primal (seleção de arcos) e seu dual (elevação de potenciais por cortes). A família de cortes ativos pode ser tomada laminar, guiando as contrações e reexpansões.
 
-\subsection{Potenciais por vértice}
+\begin{tcolorbox}[
+		enhanced, breakable,
+		colframe=purple!60!black, colback=purple!5,
+		colbacktitle=purple!15, coltitle=black,
+		title={Formulação primal–dual do problema de arborescência mínima},
+		boxed title style={sharp corners, boxrule=0.6pt},
+		sharp corners, boxrule=0.6pt
+	]
+	\textbf{Primal:} Minimizar o custo total dos arcos escolhidos, garantindo conectividade e grau de entrada 1 para cada vértice não-raiz.
 
-Na prática, manteremos um único número por vértice, o \emph{potencial} \(\tilde y(v)\), que funciona como um “desconto” aplicado a todas as arestas que entram em \(v\):
-\[
-	c'(u,v) = c(u,v) - \tilde y(v).
-\]
-Se \(\tilde y\) vier do dual por cortes, ele é a soma dos \(y(X)\) dos conjuntos laminares \(X\) que contêm \(v\). Ao aumentar \(\tilde y(v)\), todos os arcos que entram em \(v\) ficam igualmente mais baratos na mesma medida; a ordem entre as entradas de \(v\) não muda. Por isso, resolver com \(c\) ou com \(c'\) é equivalente. Na Fase I, elevamos \(\tilde y\) até que todo \(v\neq r\) tenha ao menos uma entrada com \(c'(u,v)=0\).
+	\textbf{Dual:} Elevar potenciais $y(X)$ para cortes $X$ de modo que os custos reduzidos $c'(u,v) = c(u,v) - \sum_{X:\,v\in X,\,u\notin X} y(X)$ permaneçam não negativos.
+\end{tcolorbox}
 
-\subsection{Cortes apertados e laminaridade}
+\section{Descrição detalhada do algoritmo}
 
-Escreva \(\delta^-(X)=\{(u,v)\in A: u\notin X,\ v\in X\}\). Dizemos que um arco \((u,v)\) é \emph{apertado} quando \(c'(u,v)=0\) (folga zero) e que um corte \(X\) é \emph{apertado} quando a restrição está \emph{justa}: \(\sum_{a\in \delta^-(X)} x_a=1\) no primal e \(y(X)>0\) no dual. Pelo descruzamento (\emph{uncrossing}; ver nota acima), existe solução dual ótima cuja família ativa \(\mathcal{L}=\{X: y(X)>0\}\) é \emph{laminar} (os conjuntos não se cruzam). Essa estrutura guia contrações eficientes \cite{frank2014,schrijver2003comb}.
+O algoritmo segue os seguintes passos, espelhando a estrutura do capítulo do Chu–Liu/Edmonds:
 
-extbf{Como usamos no algoritmo.} Fase I: elevamos potenciais até que todo \(v\neq r\) tenha uma entrada apertada; sempre que surgir um ciclo só de apertados, contraímos e continuamos no grafo menor, mantendo \(c'\ge 0\). Fase II: extraímos a arborescência usando apenas arcos apertados, contraindo/expandindo ciclos quando necessário.
+\begin{tcolorbox}[
+		enhanced, breakable,
+		colframe=green!60!black, colback=green!5,
+		colbacktitle=green!20, coltitle=black,
+		title={Passos do algoritmo de András Frank},
+		boxed title style={sharp corners, boxrule=0.6pt},
+		sharp corners, boxrule=0.6pt
+	]
+	\textbf{Passo 1:} Para cada vértice $v \neq r$, eleve o potencial $y(v)$ até que exista ao menos um arco de custo reduzido zero entrando em $v$.
 
+	\textbf{Passo 2:} Sempre que um ciclo de arcos de custo zero surgir, contraia o ciclo em um supervértice, ajustando os custos conforme a regra dual.
 
-Em resumo, primeiro criamos “entradas de custo efetivo zero” elevando potenciais; se aparecerem ciclos só de zeros, contraímos. Depois, escolhemos apenas arcos de custo reduzido zero para formar a arborescência. Como todas as escolhas finais são \emph{apertadas} em relação a \(y\), a otimalidade decorre por complementaridade.
+	\textbf{Passo 3:} Repita os passos anteriores até que, no grafo corrente, todo vértice não-raiz tenha ao menos uma entrada de custo zero.
 
+	\textbf{Passo 4:} Selecione exatamente uma entrada de custo zero para cada vértice não-raiz. Se as escolhas formarem um ciclo, contraia e repita no grafo menor.
 
-As Fases I e II estão formalizadas nos Alg.\ \ref{th:frank-fase-I} e \ref{th:frank-fase} \cite{frank2014}.
-
-% (Resumo do procedimento suprimido aqui para evitar repetição; ver Alg.\ \ref{th:frank-fase-I} e Alg.\ \ref{th:frank-fase}.)
-
-
-\begin{algobox}{Frank: fase I}{frank-fase-I}
-	Entrada: digrafo \(D=(V,A)\), custos \(c:A\to\mathbb{R}\), raiz \(r\).
-
-	\textbf{Fase I — normalização primal–dual (potenciais e cortes).}
-	\begin{enumerate}\setlength{\itemsep}{1pt}
-		\item Inicialize potenciais \(y(v)\gets 0\) para todo \(v\in V\). Defina custos reduzidos \(c'(u,v)\gets c(u,v)-y(v)\) e mantenha o subgrafo \(D_0\) apenas com arcos \((u,v)\) tais que \(c'(u,v)=0\) (arcos \emph{apertados}).
-		\item Enquanto existir \(v\neq r\) sem arco de custo zero \emph{entrando} em \(v\) em \(D_0\):
-		      \begin{enumerate}\setlength{\itemsep}{1pt}
-			      \item Seja \(X\gets \mathrm{Anc}_{D_0}(v)\cup\{v\}\) (os ancestrais de \(v\) por arcos de \(D_0\), mais \(v\)).
-			      \item Calcule \(\Delta\gets\min\{\,c'(u,x):\ u\notin X,\ x\in X\,\}=\min c'(\delta^-(X))\) e \emph{eleve} os potenciais dos vértices de \(X\): para todo \(x\in X\), faça \(y(x)\gets y(x)+\Delta\). Isso torna \(c'(u,x)\gets c'(u,x)-\Delta\) para arcos que entram em \(X\) e preserva \(c'\) para os demais.
-			      \item Adicione a \(D_0\) todos os arcos que zerarem (novos \(c'(u,x)=0\) com \(u\notin X, x\in X\)). Se \(D_0\) passar a conter um ciclo dirigido \(C\) apenas de arcos de custo reduzido zero, contraia \(C\) em um supervértice \(x_C\); redirecione arestas incidentes preservando a regra de custos reduzidos e registre mapeamentos para a reexpansão.
-		      \end{enumerate}
-		\item Termine a Fase I quando, após eventuais contrações, todo \(v\neq r\) tiver ao menos uma entrada com \(c'(u,v)=0\) no grafo corrente.
-	\end{enumerate}
-\end{algobox}
-
-
-A Fase I termina quando, após eventuais contrações, todo \(v\neq r\) tiver ao menos uma entrada com \(c'(u,v)=0\) no grafo corrente. Nesse ponto, o subgrafo \(D_0\) de arestas de custo reduzido zero pode conter ciclos, mas cada vértice (exceto a raiz) tem ao menos uma entrada. A Fase II extrai uma r-arborescência desse subgrafo, tratando ciclos por contração e, no retorno, expandindo-os adequadamente.
-
-\begin{algobox}{Frank: fase II}{frank-fase}
-	\textbf{Fase II — extração sobre o subgrafo de zeros.}
-	\begin{enumerate}\setlength{\itemsep}{1pt}
-		\item No grafo (possivelmente contraído), selecione para cada \(v\neq r\) exatamente um arco \((u,v)\) com \(c'(u,v)=0\). Evite ciclos; se um ciclo surgir, contraia\-o e prossiga no grafo menor.
-		\item Ao concluir a seleção (no grafo reduzido), expanda as contrações em ordem inversa. Em cada expansão de um componente \(X_C\):
-		      \begin{enumerate}\setlength{\itemsep}{1pt}
-			      \item mantenha o arco externo (de custo reduzido zero) que \emph{entra} em \(X_C\) como a única entrada do vértice de entrada correspondente;
-			      \item remova exatamente uma aresta interna do ciclo de \(X_C\) para restaurar grau de entrada igual a 1 e garantir aciclicidade.
-		      \end{enumerate}
-		\item O resultado é uma r-arborescência \(T\) composta apenas por arcos \emph{apertados}. Pela complementaridade primal–dual com os potenciais \(y\), \(T\) é ótima para os custos originais \(c\) \cite{frank2014,schrijver2003comb}.
-	\end{enumerate}
-\end{algobox}
-
-\section{Corretude}
-
-Provamos por primal–dual com contrações. Recorde as formulações primal/dual por cortes e os \emph{custos reduzidos} \(c'(u,v)=c(u,v)-\sum_{X:\,v\in X,\ u\notin X} y(X)\). Mantemos os seguintes invariantes ao longo da Fase I:
-\begin{itemize}\setlength{\itemsep}{2pt}
-	\item (I1 — dual) \(y\) é viável: \(c'(u,v)\ge 0\) para todo arco.
-	\item (I2 — zeros) \(D_0\) contém exatamente os arcos \emph{apertados} (\(c'=0\)).
-	\item (I3 — laminaridade) A família ativa \(\mathcal{L}=\{X: y(X)>0\}\) pode ser tomada laminar por \emph{uncrossing}.
-\end{itemize}
-
-\subsection{Lema 1: elevação de potenciais}
-
-
-Seja \(X\subseteq V\setminus\{r\}\) e \(\Delta=\min c'(\delta^-(X))\). Atualizar \(y(X)\gets y(X)+\Delta\) (ou, na versão por vértices, \(\tilde y(x)\gets \tilde y(x)+\Delta\) para todo \(x\in X\)) mantém \(c'\ge 0\) e torna \emph{apertado} ao menos um arco que entra em \(X\).\newline
-
-\subsubsection{Prova:} Para \((u,x)\in \delta^-(X)\), \(c'\) é reduzido em \(\Delta\); pela definição de \(\Delta\), nenhum fica negativo e os de menor folga zeram. Os demais arcos não mudam. \qed
-
-\subsection{Lema 2: contração de ciclo a zero:}
-
-Se \(D_0\) contém um ciclo dirigido \(C\) de arcos com \(c'=0\), então contrair \(C\) em um supervértice preserva viabilidade primal e dual e há uma bijeção de soluções ótimas entre a instância contraída e a original; ao reexpandir, basta manter o arco (de custo reduzido zero) que entra no componente e remover uma única aresta interna de \(C\).
-
-\subsubsection{Prova:} Todo arco interno de \(C\) tem \(c'=0\). Ao contrair, redirecionamos apenas arcos que entram/saem de \(C\), preservando \(c'\ge 0\). Dado um \(r\)-arborescência ótima \(T'\) no grafo contraído, reexpandir \(C\) e remover um arco interno restaura grau de entrada 1 e aciclicidade. Reciprocamente, contrair qualquer \(T\) ótimo produz \(T'\) viável no digrafo menor. A soma dos custos reduzidos é preservada porque os internos de \(C\) valem 0 e entradas em \(C\) descontam exatamente o potencial aplicado, mantendo equivalência de custos \cite[Sec.~4.9]{schrijver2003comb}. \qed
-
-\subsection{Lema 3: cortes ativos entram exatamente uma vez}
-
-Seja \(T\) uma r-arborescência e \(X\subseteq V\setminus\{r\}\). Se contraímos \(X\) a um vértice, o grau de entrada desse vértice na imagem de \(T\) é 1; logo \(\sum_{a\in \delta^-(X)} x_a=1\). Em particular, para todo \(X\in\mathcal{L}\) com \(y(X)>0\), a restrição primal do corte é \emph{justa}.\newline
-Prova. Em uma r-arborescência, todo vértice distinto de \(r\) tem grau de entrada 1. Após contrair \(X\), o vértice contraído também não é \(r\) e deve ter grau de entrada 1. Isso conta exatamente um arco de \(\delta^-(X)\). \qed
-
-\subsection{Teorema: o algoritmo devolve uma r-arborescência ótima para \(c\)}
-
-\subsubsection{Prova:}
-Ao término da Fase I (após contrações de Lema 2), todo \(v\neq r\) possui ao menos uma entrada com \(c'(u,v)=0\). A Fase II seleciona apenas arcos \emph{apertados} e trata ciclos por contração/expansão, produzindo uma r-arborescência \(T\). Logo, para todo \((u,v)\in T\), a desigualdade dual do arco é \emph{justa} (\(c'(u,v)=0\)). Pelo Lema 3, para todo \(X\in\mathcal{L}\) com \(y(X)>0\), a restrição primal do corte é \emph{justa} (entra exatamente um arco de \(T\)). Assim, valem as condições de \emph{complementaridade}:
-\begin{align*}
-	 & x_{(u,v)}>0\ \Rightarrow\ c'(u,v)=0,\qquad
-	y(X)>0\ \Rightarrow\ \sum_{a\in \delta^-(X)} x_a=1.
-\end{align*}
-Pela identidade \(c(u,v)=c'(u,v)+\sum_{X:\,v\in X,\ u\notin X} y(X)\), somando em \(a\in T\) e usando as igualdades acima:
-\[
-	\sum_{a\in T} c(a)\ =\ \underbrace{\sum_{a\in T} c'(a)}_{=\ 0}\ +\ \sum_{X} y(X)\,\underbrace{\sum_{a\in T\cap \delta^-(X)} 1}_{=\ 1\ \text{ para } X\in\mathcal{L}}\ =\ \sum_{X} y(X).
-\]
-Como \(y\) é dual viável (I1), \(\sum_X y(X)\) é um limitante inferior (dualidade fraca). Obtemos igualdade primal–dual, logo \(T\) é ótimo para \(c'\) e, pela equivalência entre \(c\) e \(c'\), também para \(c\) \cite{frank2014,schrijver2003comb}. \qed
-
-\subsection{Complexidade}
-
-\begin{itemize}\setlength{\itemsep}{2pt}
-	\item \textbf{Por nível:} manter o subgrafo de zeros \(D_0\), calcular o próximo \(\Delta=\min c'(\delta^-(X))\) e detectar/contrair ciclos custa \(O(m)\) por varredura nas arestas.
-	\item \textbf{Níveis:} no máximo \(O(n)\), pois cada contração reduz o número de vértices.
-	\item \textbf{Total/memória:} tempo \(O(mn)\) e memória \(O(m+n)\).
-\end{itemize}
-
-\textbf{Com otimizações (atingindo \(O(m\log n)\)).}
-\begin{itemize}\setlength{\itemsep}{2pt}
-	\item \textbf{Mínimo por vértice:} para cada \(v\), manter em uma \emph{heap} o menor custo reduzido de entrada; atualizar chaves quando \(y(v)\) aumenta (atualizações amortizadas).
-	\item \textbf{Ciclos em \(D_0\):} detectar incrementalmente à medida que surgem novas arestas com custo zero (DFS/union-find).
-	\item \textbf{Contrações:} realizar redirecionamentos em bloco via representantes, sem tocar cada aresta individualmente.
-\end{itemize}
-O fator \(\log n\) decorre da seleção eficiente de mínimos; o número de contrações segue \(O(n)\) \cite{frank2014,schrijver2003comb}.
-
-Nós realizamos duas implementações: uma didática, focada na clareza do algoritmo, e outra otimizada, visando desempenho. Ambas estão disponíveis no repositório do projeto (\url{https://github.com/lorenypsum/GraphVisualizer}).
+	\textbf{Passo 5:} Ao final, reexpanda cada contração removendo uma aresta interna para restaurar a estrutura de arborescência.
+\end{tcolorbox}
 
 \section{Implementação em Python}
 
+Assim como no capítulo anterior, a implementação é modular e didática, com funções auxiliares para cada etapa do algoritmo. Utilizamos a biblioteca NetworkX para manipulação de digrafos e mantemos a clareza e paralelismo com a teoria.
 
-Implementamos duas versões do algoritmo de Frank: uma primeira versão didática, e uma versão otimizada, que emprega heaps como estrutura auxiliar. Manter ambas permitiu validar o método por meio da comparação sistemática dos resultados.
+\begin{tcolorbox}[
+		enhanced, breakable,
+		colframe=blue!60!black, colback=blue!2,
+		colbacktitle=blue!15, coltitle=black,
+		title={Funções auxiliares da implementação},
+		boxed title style={sharp corners, boxrule=0.6pt},
+		sharp corners, boxrule=0.6pt
+	]
+	\textbf{get\_arcs\_entering\_X(D, X):} retorna as arestas que entram em $X$.
 
+	\textbf{get\_minimum\_weight\_cut(arcs):} retorna o peso mínimo entre as arestas que entram em $X$.
 
-Utilizamos a biblioteca NetworkX para a manipulação de grafos e funções auxiliares para modularizar o código, o que facilita a leitura e a manutenção. A seguir, apresentamos essas funções e os detalhes de implementação de ambas as versões.
+	\textbf{update\_weights\_in\_X(D, arcs, min\_weight, A\_zero, D\_zero):} atualiza os pesos das arestas que entram em $X$, subtraindo o valor mínimo e registrando as que atingem peso zero.
 
-\subsection{Arestas que entram em X}
+	\textbf{has\_arborescence(D, r0):} verifica se o digrafo possui uma arborescência com raiz $r_0$.
+\end{tcolorbox}
 
-A função \texttt{get\_arcs\_entering\_X} recebe um digrafo \(D\) e um conjunto de vértices \(X\), retornando uma lista de arestas que entram em \(X\). Cada aresta é representada como uma tupla \texttt{(u, v, data)}, onde \(u\) é o vértice de origem, \(v\) é o vértice de destino e \texttt{data} contém os atributos da aresta, incluindo o peso.
+\section{Exemplo de execução do algoritmo}
 
-\begin{pybox}{Arestas que entram em X e mínimo}
-	def get_arcs_entering_X(D, X):
-	"""
-	Obter as arestas que entram em um conjunto X em um digrafo D.
-	A função retorna uma lista de tuplas que representam as arestas que entram em X com seus respectivos pesos.
+Considere o digrafo da Figura~\ref{fig:frank-exemplo-potenciais}. A Fase I eleva os potenciais até que cada vértice não-raiz tenha ao menos uma entrada de custo zero. Se um ciclo de arcos de custo zero surgir, ele é contraído. A Fase II seleciona uma entrada de custo zero para cada vértice, tratando ciclos por contração e reexpansão, até obter a r-arborescência ótima.
 
-	Parâmetros:
-	- D: digrafo (DiGraph)
-	- X: conjunto de vértices
+\begin{figure}[H]
+	\centering
+	% Exemplo de execução do algoritmo de Frank
+	%\input{capitulos/implementacao-andrasfrank/figures/fig_frank_exemplo_execucao.tex}
+	\caption{Execução do algoritmo de András Frank: elevação de potenciais, contração de ciclo e extração da arborescência ótima.}
+	\label{fig:frank-exemplo-execucao}
+\end{figure}
 
-	Retorno:
-	- arcs: lista de tuplas (u, v, data) em que u ∉ X e v ∈ X
-	"""
+\section{Complexidade e comparação com Chu–Liu/Edmonds}
 
-	arcs = []
+O algoritmo de Frank tem complexidade $O(mn)$, podendo ser otimizado para $O(m \log n)$ com uso de heaps. A estrutura modular permite comparação direta com o algoritmo de Chu–Liu/Edmonds, tanto em termos de desempenho quanto de clareza conceitual.
 
-	for u, v, data in D.edges(data=True):
-	if u not in X and v in X:
-	arcs.append((u, v, data))
-	return arcs
-\end{pybox}
+\section{Notas finais}
 
-\subsection{Peso mínimo de um corte:}
-a função \texttt{get\_minimum\_weight\_cut} recebe uma lista de arestas e retorna o peso mínimo entre elas; isso é útil para determinar o valor $\Delta$ na elevação de potenciais.
-
-\begin{pybox}{Peso mínimo de um corte}
-	def get_minimum_weight_cut(arcs):
-	"""
-	Obter o peso mínimo em uma lista de arestas.
-	A função retorna o menor peso encontrado.
-
-	Parâmetros:
-	- arcs: lista de tuplas (u, v, data)
-
-	Retorno:
-	- min_weight: menor peso encontrado entre as arestas
-	"""
-
-	return min(data["w"] for _, _, data in arcs)
-\end{pybox}
-
-\subsection{Atualizar pesos em X:}
-a função \texttt{update\_weights\_in\_X} atualiza os pesos das arestas que entram em um conjunto \(X\) em um digrafo \(D\). Ela subtrai um valor mínimo dos pesos dessas arestas e registra aquelas que atingem peso zero em uma lista e em um novo digrafo. Essa função tem efeito colateral, pois modifica o digrafo original.
-
-\begin{pybox}{Atualizar pesos em X}
-	def update_weights_in_X(D, arcs, min_weight, A_zero, D_zero):
-	"""
-	Update the weights of the arcs in a directed graph D for the nodes in set X.
-	ATTENTION: The function produces collateral effect in the provided directed graph by updating its arcs weights.
-
-	Parameters:
-	- D: directed graph (DiGraph)
-	- arcs: list of tuples (u, v, data) where u not in X and v in X
-	- min_weight: minimum weight to be subtracted from the arcs weights
-	- A_zero: list to store the arcs that reach weight zero
-	- D_zero: directed graph (DiGraph) to store the arcs that reach weight zero
-
-	Returns:
-	- None
-	"""
-
-	for u, v, _ in arcs:
-	D[u][v]["w"] -= min_weight
-	if D[u][v]["w"] == 0:
-	A_zero.append((u, v))
-	D_zero.add_edge(u, v)
-
-\end{pybox}
-
-\subsection{Identificar arborescência:}
-a função \texttt{has\_arborescence} verifica se um digrafo \(D\) possui uma arborescência com raiz \(r0\). Ela retorna True se uma arborescência existir, caso contrário, retorna False. Isso é feito verificando se o digrafo é uma árvore de busca em profundidade (DFS) com raiz \(r0\).
-
-\begin{pybox}{Identificar Arborescência}
-	def has_arborescence(D, r0):
-	"""
-	Check if a directed graph D has an arborescence with root r0.
-	The function returns True if an arborescence exists, otherwise False.
-
-	Parameters:
-	- D: directed graph (DiGraph)
-	- r0: root node
-
-	Returns:
-	- bool: True if an arborescence exists, otherwise False
-	"""
-
-	# Verify if the graph is a DFS tree with root r0
-	tree = nx.dfs_tree(D, r0)
-
-	return tree.number_of_nodes() == D.number_of_nodes()
-\end{pybox}
-
-\subsection{Fase 1 do algoritmo de Frank:}
-a função \texttt{phase1\_find\_minimum\_arborescence} mantém três estruturas: (i) \texttt{D\_zero}, o subgrafo das arestas com peso 0; (ii) \texttt{A\_zero}, a lista dessas 0-arestas; e (iii) \texttt{Dual\_list}, com pares \((X,\Delta)\) que registram os incrementos aplicados.
-
-
-O laço faz o seguinte, de forma direta:
-\begin{itemize}
-	\item \emph{Construção do condensado:} constrói o condensado \(C=\mathrm{Cond}(D_0)\) via \texttt{nx.condensation(D\_zero)} e coleta as \emph{fontes} de \(C\) (componentes com grau de entrada zero)\footnote{No grafo condensado \(C\) (um DAG cujos nós são as componentes fortemente conexas de \(D_0\)), uma ``fonte'' é um nó com grau de entrada zero. Isso corresponde a um bloco de \(D_0\) que não recebe arcos de custo reduzido zero vindos de fora do próprio bloco. Na Fase I, elevamos potenciais apenas para fontes distintas da que contém \(r_0\) para garantir ao menos uma entrada apertada.};
-	\item \emph{Fontes:} se restar apenas uma fonte (a que contém \(r0\)), termina;
-	\item \emph{Processamento das fontes:} para cada fonte \(u\) com \(X=\text{members}(u)\) e \(r0\notin X\):
-	      \begin{itemize}
-		      \item \texttt{arcs = get\_arcs\_entering\_X(D\_copy, X)};
-		      \item \(\Delta =\) \texttt{get\_minimum\_weight\_cut(arcs)} (menor peso dentre as entradas de \(X\));
-		      \item \texttt{update\_weights\_in\_X(D\_copy, arcs, \(\Delta\), A\_zero, D\_zero)} para subtrair \(\Delta\) das entradas e adicionar a \texttt{D\_zero}/\texttt{A\_zero} as que zerarem;
-		      \item se \(\Delta>0\), registra \((X,\Delta)\) em \texttt{Dual\_list}.
-	      \end{itemize}
-\end{itemize}
-
-Na prática, \texttt{update\_weights\_in\_X} é o passo que “cria” novas 0-arestas: ele reduz os pesos das entradas de \(X\) e insere em \texttt{D\_zero}/\texttt{A\_zero} aquelas que atingirem 0. O processo se repete até que toda componente diferente da raiz tenha ao menos uma entrada de peso 0, preparando o terreno para a Fase II.
-
-
-Parâmetros opcionais \texttt{draw\_fn} e \texttt{log} controlam visualização e mensagens.
-
-\begin{pybox}{Fase 1 - algoritmo de Frank}
-	def phase1_find_minimum_arborescence(
-	D_original, r0, draw_fn=None, log=None, boilerplate: bool = True, lang="pt"
-	):
-	"""
-	Find the minimum arborescence in a directed graph D with root r0.
-	The function returns the minimum arborescence as a list of arcs.
-
-	Parameters:
-	- D_original: directed graph (DiGraph)
-	- r0: root node
-
-	Returns:
-	- A_zero: list of arcs (u, v) that form the minimum arborescence
-	- Dual_list: list of tuples (X, z(X)) representing the dual variables
-	"""
-
-	D_copy = D_original.copy()
-	A_zero = []
-	Dual_list = []  # List to store the dual variables (X, z(X))
-	D_zero = build_D_zero(D_copy)
-
-	iteration = 0
-
-	if boilerplate and draw_fn:
-	if lang == "en":
-	draw_fn(D_zero, title="Initial D_zero")
-	elif lang == "pt":
-	draw_fn(D_zero, title="D_zero Inicial")
-
-	while True:
-	iteration += 1
-	if boilerplate and log:
-	if lang == "en":
-	log(f"\nIteration {iteration} ----------------------------")
-	elif lang == "pt":
-	log(f"\nIteração {iteration} ----------------------------")
-
-	# Calculate the strongly connected components of the graph D_zero.
-	C = nx.condensation(D_zero)
-	if boilerplate and draw_fn:
-	if lang == "en":
-	draw_fn(
-	C,
-	title=f"Strongly connected components in D_zero - Iteration {iteration}",
-	)
-	elif lang == "pt":
-	draw_fn(
-	C,
-	title=f"Componentes fortemente conexos em D_zero - Iteração {iteration}",
-	)
-
-	# The sources are where there are no incoming arcs, R0 is always a source.
-	sources = [x for x in C.nodes() if C.in_degree(x) == 0]
-
-	if boilerplate and log:
-	if lang == "en":
-	log(f"\nSources: {sources}")
-	elif lang == "pt":
-	log(f"\nFontes: {sources}")
-
-	if len(sources) == 1:
-	# If there is only one source, it means it is R0 and there are no more arcs to be processed.
-	if boilerplate and log:
-	if lang == "en":
-	log(f"\nOnly one source found, algorithm finished.")
-	elif lang == "pt":
-	log(f"\nApenas uma fonte encontrada, algoritmo finalizado.")
-	break
-
-	for u in sources:
-	X = C.nodes[u]["members"]
-	if r0 in X:
-	continue
-	arcs = get_arcs_entering_X(D_copy, X)
-	min_weight = get_minimum_weight_cut(arcs)
-
-	if boilerplate and log:
-	if lang == "en":
-	log(f"\nSet X: {X}")
-	log(f"\nArcs entering X: {arcs}")
-	log(f"\nMinimum weight found: {min_weight}")
-	elif lang == "pt":
-	log(f"\nConjunto X: {X}")
-	log(f"\nArestas que entram em X: {arcs}")
-	log(f"\nPeso mínimo encontrado: {min_weight}")
-
-	update_weights_in_X(D_copy, arcs, min_weight, A_zero, D_zero)
-
-	if boilerplate and log:
-	if lang == "en":
-	log(f"\nUpdated weights in arcs entering X")
-	elif lang == "pt":
-	log(f"\nPesos atualizados nos arcos que entram em X")
-
-	# If min_weight is zero, ignore
-	if min_weight == 0:
-	continue
-	else:
-	# Otherwise, add to the dual list the set X and its min_weight
-	Dual_list.append((X, min_weight))
-
-	return A_zero, Dual_list
-\end{pybox}
-
-\subsection{Transição para a extração: Fase 2}
-
-Ao término da Fase 1, o algoritmo de Frank produziu um subgrafo \(D_0\) contendo apenas arcos de custo reduzido zero, com a garantia de que cada vértice \(v\neq r\) possui ao menos uma entrada nesse subgrafo. Este é o resultado concreto dos ajustes de potenciais: transformamos o problema original em um grafo ``zerado'' onde sabemos que existe uma arborescência ótima.
-
-
-A Fase 2 explora essa estrutura preparada: em vez de continuar ajustando custos ou potenciais, simplesmente extraímos uma arborescência usando exclusivamente os arcos apertados de \(D_0\). A separação entre as fases é clara: a Fase 1 prepara o terreno dual, e a Fase 2 colhe o resultado primal. Esta divisão não apenas simplifica a análise de corretude (todos os arcos escolhidos são apertados, satisfazendo complementaridade), mas também permite otimizações específicas em cada etapa.
-
-\subsection{Fase 2 - algoritmo de Frank}
-a função \texttt{phase2\_find\_minimum\_arborescence} recebe \texttt{D\_original}, \texttt{r0} e \texttt{A\_zero} e devolve \texttt{Arb} (um \texttt{DiGraph}) contendo a arborescência construída apenas com 0-arestas. O fluxo é:
-\begin{itemize}\setlength{\itemsep}{1pt}
-	\item \emph{Inicialização:} \texttt{Arb = nx.DiGraph(); Arb.add\_node(r0); n = len(D\_original.nodes())}.
-	\item \emph{Laço externo:} \texttt{for \_ in range(n-1)} força a inclusão de exatamente \(n-1\) arestas.
-	\item \emph{Laço interno (varredura de candidatos):} percorre \texttt{A\_zero} na ordem dada; para cada \((u,v)\), se \texttt{u in Arb.nodes()} e \texttt{v not in Arb.nodes()}, então
-	      \begin{itemize}\setlength{\itemsep}{1pt}
-		      \item lê atributos originais com \texttt{edge\_data = D\_original.get\_edge\_data(u,v)};
-		      \item insere \texttt{Arb.add\_edge(u, v, **edge\_data)};
-		      \item faz \texttt{break} para reiniciar a varredura desde o início de \texttt{A\_zero} na próxima iteração (crescimento em camadas a partir do conjunto já alcançado).
-	      \end{itemize}
-	\item \emph{Invariantes práticos:} o teste \texttt{v not in Arb.nodes()} evita ciclos e mantém grau de entrada \(\le 1\) por vértice; \texttt{u in Arb.nodes()} garante que sempre expandimos a partir de vértices já alcançados por \(r0\).
-	\item \emph{Hipóteses sobre a entrada:} \texttt{A\_zero} deve conter ao menos uma entrada para cada \(v\neq r0\); a ordem em \texttt{A\_zero} funciona como critério de desempate e pode alterar qual arborescência ótima é retornada, sem afetar o custo.
-	\item \emph{Custo:} no pior caso, \(O(n\cdot |A\_zero|)\), pois a cada inclusão recomeçamos a varredura de \texttt{A\_zero}.
-\end{itemize}
-
-
-Parâmetros opcionais \texttt{draw\_fn} e \texttt{log} controlam visualização e mensagens.
-
-
-\begin{pybox}{Fase 2: algoritmo de Frank - versão 1 (sem heap)}
-	def phase2_find_minimum_arborescence(
-	D_original, r0, A_zero, draw_fn=None, log=None, boilerplate: bool = True, lang="pt"
-	):
-	"""
-	Encontra a arborescência mínima em um grafo dirigido D com raiz r0.
-	A função retorna a arborescência mínima como um DiGraph.
-
-	Parâmetros:
-	- D_original: grafo dirigido (DiGraph)
-	- r0: vértice raiz
-	- A_zero: lista de arcos (u, v) que formam a arborescência mínima
-
-	Retorno:
-	- Arb: grafo dirigido (DiGraph) que representa a arborescência mínima
-	"""
-	Arb = nx.DiGraph()
-
-	# Add the root node
-	Arb.add_node(r0)
-	n = len(D_original.nodes())
-
-	# While there are arcs to be considered
-	for _ in range(n - 1):
-	for u, v in A_zero:
-	if u in Arb.nodes() and v not in Arb.nodes():
-	edge_data = D_original.get_edge_data(u, v)
-	Arb.add_edge(u, v, **edge_data)
-	# Restart the loop after adding an edge
-	break
-	if boilerplate and draw_fn:
-	if lang == "en":
-	draw_fn(Arb, title=f"Partial arborescence - Iteration {_+1}")
-	elif lang == "pt":
-	draw_fn(Arb, title=f"Arborescência parcial - Iteração {_+1}")
-	return Arb
-\end{pybox}
-
-\subsection{Fase 2 - algoritmo de Frank: versão 2 (com heap)}
-extbf{Implementação com fila de prioridade.} Nesta variação, mantemos uma \emph{fronteira} de arcos candidatos em uma heap (\texttt{heapq}) e sempre extraímos o próximo arco com menor prioridade. O código constrói um grafo auxiliar apenas com as 0-arestas e usa um conjunto de visitados para garantir que cada vértice entre exatamente uma vez.
-\begin{itemize}\setlength{\itemsep}{1pt}
-	\item \emph{Pré-processamento (grafo auxiliar):} criar \texttt{Arb = nx.DiGraph()} e inserir todas as 0-arestas com um peso de prioridade indexado: \texttt{for i, (u,v) in enumerate(A\_zero): Arb.add\_edge(u, v, w=i)}. Aqui, \texttt{w} atua como \emph{chave de desempate} estável baseada na ordem de \texttt{A\_zero}.
-	\item \emph{Estados:} \texttt{V = \{r0\}} (vértices alcançados), \texttt{q = []} (heap de tuplas \texttt{(w, u, v)}), \texttt{A = nx.DiGraph()} (arborescência resultante).
-	\item \emph{Semeadura da fronteira:} para cada \texttt{(u, v, data)} em \texttt{Arb.out\_edges(r0, data=True)}, empilhar \texttt{heapq.heappush(q, (data["w"], u, v))}.
-	\item \emph{Laço principal:} enquanto \texttt{q} não estiver vazia,
-	      \begin{itemize}\setlength{\itemsep}{1pt}
-		      \item extrair \texttt{\_, u, v = heapq.heappop(q)};
-		      \item se \texttt{v in V}, continuar (descartar arcos que levariam a um vértice já escolhido);
-		      \item adicionar a aresta real com atributos originais: \texttt{edge\_data = D\_original.get\_edge\_data(u, v); A.add\_edge(u, v, **edge\_data)};
-		      \item marcar \texttt{V.add(v)};
-		      \item para cada \texttt{(v, w, data)} em \texttt{Arb.out\_edges(v, data=True)}, se \texttt{w not in V}, empilhar \texttt{heapq.heappush(q, (data["w"], v, w))}.
-	      \end{itemize}
-	\item \emph{Propriedades:} cada vértice entra uma única vez em \texttt{V} (grau de entrada \(\le 1\) por vértice), só usamos arcos de \texttt{A\_zero} e evitamos ciclos por construção. O processo termina com \(|V| = |V(\texttt{D\_original})|\) se \texttt{A\_zero} cobre uma entrada para todo \(v\neq r0\).
-	\item \emph{Desempate/prioridade:} a chave \texttt{w=i} preserva a ordem de \texttt{A\_zero}. Se desejar priorizar por custos originais, substitua \texttt{data["w"]} por \(c(u,v)\) (ou por uma tupla \texttt{(c(u,v), i)} para estabilidade).
-	\item \emph{Complexidade:} \(O(|\texttt{A\_zero}| \log |\texttt{A\_zero}|)\) para operações de heap, mais \(O(|\texttt{A\_zero}|)\) para construir \texttt{Arb}.
-\end{itemize}
-
-\begin{pybox}{Fase 2: algoritmo de Frank - versão 2 (com heap)}
-	def phase2_find_minimum_arborescence_v2(
-	D_original, r0, A_zero, draw_fn=None, log=None, boilerplate: bool = True, lang="pt"
-	):
-	"""
-	Encontra a arborescência mínima em um grafo dirigido D com raiz r0.
-	A função retorna a arborescência mínima como um DiGraph.
-
-	Parâmetros:
-	- D_original: grafo dirigido (DiGraph)
-	- r0: vértice raiz
-	- A_zero: lista de arcos (u, v) que formam a arborescência mínima
-
-	Retorno:
-	- Arb: grafo dirigido (DiGraph) que representa a arborescência mínima
-	"""
-	Arb = nx.DiGraph()
-	for i, (u, v) in enumerate(A_zero):
-	Arb.add_edge(u, v, w=i)
-
-	# Set of visited vertices, starting with the root
-	V = {r0}
-
-	# Priority queue to store the edges
-	q = []
-	for u, v, data in Arb.out_edges(r0, data=True):
-
-	# Add edges to the priority queue with their weights
-	heapq.heappush(q, (data["w"], u, v))
-
-	A = nx.DiGraph()  # Arborescência resultante
-
-	if boilerplate and draw_fn:
-	if lang == "en":
-	draw_fn(Arb, title=f"Initial arborescence with weights - Phase 2")
-	elif lang == "pt":
-	draw_fn(Arb, title=f"Arborescência inicial com pesos - Fase 2")
-
-	# While the queue is not empty
-	while q:
-	_, u, v = heapq.heappop(q)
-
-	if v in V:  # If the vertex has already been visited, continue
-	continue
-
-	# Add the edge to the arborescence
-	A.add_edge(u, v, w=D_original[u][v]["w"])
-
-	# Mark the vertex as visited
-	V.add(v)
-
-	# Add the outgoing edges of the visited vertex to the priority queue
-	for x, y, data in Arb.out_edges(v, data=True):
-	heapq.heappush(q, (data["w"], x, y))
-
-	if boilerplate and draw_fn:
-	if lang == "en":
-	draw_fn(A, title=f"Final arborescence - Phase 2")
-	elif lang == "pt":
-	draw_fn(A, title=f"Arborescência final - Fase 2")
-	# Return the resulting arborescence
-	return A
-\end{pybox}
-
-\subsection{Checar condição de otimalidade dual:}
-a função \texttt{check\_dual\_optimality\_condition} verifica a condição dual: se \(z(X)>0\), então exatamente uma aresta de \texttt{Arb} entra em \(X\). Ela recebe \texttt{Arb} (uma arborescência), \texttt{Dual\_list} (lista de tuplas \((X,z(X))\)), e retorna True se a condição for satisfeita, False caso contrário. O fluxo é:
-\begin{itemize}\setlength{\itemsep}{1pt}
-	\item para cada \((X,z)\) em \texttt{Dual\_list}:
-	      \begin{itemize}\setlength{\itemsep}{1pt}
-		      \item para cada \((u,v)\) em \texttt{Arb.edges()}:
-		            \begin{itemize}\setlength{\itemsep}{1pt}
-			            \item se \(u\notin X\) e \(v\in X\), incrementar contador \texttt{count};
-			            \item se \texttt{count > 1}, a condição falha: logar mensagem (se \texttt{boilerplate} e \texttt{log} estiverem ativos) e retornar False.
-		            \end{itemize}
-	      \end{itemize}
-	\item se o laço terminar sem falhas, retornar True.
-	\item complexidade \(O(|\texttt{Dual\_list}| \cdot |\texttt{Arb.edges()}|)\) no pior caso.
-\end{itemize}
-
-\begin{pybox}{Checar condição de otimalidade dual}
-	def check_dual_optimality_condition(
-	Arb, Dual_list, log=None, boilerplate: bool = True, lang="pt"
-	):
-	"""
-	Verifica a condição dual: z(X) > 0 implica que exatamente uma aresta de Arb entra em X.
-
-	Parameters:
-	- Arb: arborescência (DiGraph)
-	- Dual_list: lista de tuplas (X, z(X)) representando as variáveis duais
-	- r0: nó raiz
-
-	Retorno:
-	- bool: True se a condição dual é satisfeita, False caso contrário
-	"""
-	for X, z in Dual_list:
-	for u, v in Arb.edges():
-	count = 0
-	if u not in X and v in X:
-	count += 1
-	if count > 1:
-	if boilerplate and log:
-	if lang == "en":
-	log(
-	f"\nDual condition failed for X={X} with z(X)={z}. Incoming arcs: {count}"
-	)
-	elif lang == "pt":
-	log(
-	f"\nFalha na condição dual para X={X} com z(X)={z}. Arcos entrando: {count}"
-	)
-	return False
-	return True
-
-\end{pybox}
-
-\subsection{Rotina principal:}
-a função \texttt{andras\_frank\_algorithm} orquestra a execução das fases 1 e 2, além da verificação da condição dual. Ela recebe o digrafo \(D\), a raiz \(r0\) (fixa), e parâmetros opcionais \texttt{draw\_fn}, \texttt{log}, \texttt{boilerplate} e \texttt{lang} para controle de visualização, mensagens e idioma. O fluxo é:
-
-\begin{itemize}\setlength{\itemsep}{1pt}
-	\item \texttt{A\_zero, Dual\_list = phase1\_find\_minimum\_arborescence()} executa a Fase I;
-	\item se \texttt{not has\_arborescence(D, r0)}, loga mensagem e retorna \texttt{None, None};
-	\item \texttt{arborescence\_frank = phase2\_find\_minimum\_arborescence()} executa a Fase II (versão 1);
-	\item \texttt{arborescence\_frank\_v2 = phase2\_find\_minimum\_arborescence\_v2()} executa a Fase II (versão 2);
-	\item \texttt{dual\_frank = check\_dual\_optimality\_condition()} verifica a condição dual para a versão 1;
-	\item \texttt{dual\_frank\_v2 = check\_dual\_optimality\_condition()} verifica a condição dual para a versão 2;
-	\item loga mensagens de sucesso/falha conforme \texttt{dual\_frank} e \texttt{dual\_frank\_v2};
-	\item retorna \texttt{arborescence\_frank, arborescence\_frank\_v2, dual\_frank, dual\_frank\_v2}.
-\end{itemize}
-
-\begin{pybox}{Rotina Principal: chamada das funções}
-	def andras_frank_algorithm(
-	D, draw_fn=None, log=None, boilerplate: bool = True, lang="pt"
-	):
-	if boilerplate and log:
-	if lang == "en":
-	log(f"\nExecuting András Frank algorithm...")
-	elif lang == "pt":
-	log(f"\nExecutando algoritmo de András Frank...")
-
-	A_zero, Dual_list = phase1_find_minimum_arborescence(
-	D, "r0", draw_fn=draw_fn, log=log, boilerplate=boilerplate, lang=lang
-	)
-
-	if boilerplate and log:
-	log(f"\nA_zero: \n{A_zero}")
-	log(f"\nDual_list: \n{Dual_list}")
-
-	if not has_arborescence(D, "r0"):
-	if boilerplate and log:
-	if lang == "en":
-	log(f"\nThe graph does not contain an arborescence with root r0.")
-	elif lang == "pt":
-	log(f"\nO grafo não contém uma arborescência com raiz r0.")
-	return None, None
-
-	arborescence_frank = phase2_find_minimum_arborescence(
-	D, "r0", A_zero, draw_fn=draw_fn, log=log, boilerplate=boilerplate, lang=lang
-	)
-	arborescence_frank_v2 = phase2_find_minimum_arborescence_v2(
-	D, "r0", A_zero, draw_fn=draw_fn, log=log, boilerplate=boilerplate, lang=lang
-	)
-
-	dual_frank = check_dual_optimality_condition(
-	arborescence_frank, Dual_list, log=log, boilerplate=boilerplate, lang=lang
-	)
-
-	dual_frank_v2 = check_dual_optimality_condition(
-	arborescence_frank_v2, Dual_list, log=log, boilerplate=boilerplate, lang=lang
-	)
-
-	if dual_frank and dual_frank_v2:
-	if boilerplate and log:
-	if lang == "en":
-	log(f"\n✅ Dual condition satisfied for András Frank.")
-	elif lang == "pt":
-	log(f"\n✅ Condição dual satisfeita para András Frank.")
-	else:
-	if boilerplate and log:
-	if lang == "en":
-	log(f"\n❌ Dual condition failed for András Frank.")
-	elif lang == "pt":
-	log(f"\n❌ Condição dual falhou para András Frank.")
-
-	if draw_fn:
-	if boilerplate and draw_fn:
-	if lang == "en":
-	draw_fn(
-	arborescence_frank,
-	title="András Frank Arborescence - Method 1",
-	)
-	draw_fn(
-	arborescence_frank_v2,
-	title="András Frank Arborescence - Method 2",
-	)
-	elif lang == "pt":
-	draw_fn(
-	arborescence_frank,
-	title="Arborescência de András Frank - Método 1",
-	)
-
-	draw_fn(
-	arborescence_frank_v2,
-	title="Arborescência de András Frank - Método 2",
-	)
-
-	return arborescence_frank, arborescence_frank_v2, dual_frank, dual_frank_v2
-\end{pybox}
-
-\subsection{Notas finais}
-\begin{itemize}\setlength{\itemsep}{2pt}
-	\item A implementação assume que \(D\) é conexo e contém uma raiz \(r0\) de onde todos os outros vértices são alcançáveis.
-	\item A ordem em \texttt{A\_zero} pode influenciar qual arborescência ótima é retornada, mas não o custo.
-	\item A verificação da condição dual é uma etapa de validação adicional, não necessária para a construção da arborescência.
-	\item Parâmetros opcionais permitem controle sobre visualização e mensagens, facilitando depuração e entendimento do processo.
-\end{itemize}
-
-\subsection{Das implementações à comparação sistemática}
-
-De fato, o algoritmo de Frank é uma abordagem elegante e eficiente para encontrar arborescências de custo mínimo em digrafos, combinando técnicas de programação linear, teoria dos grafos e estruturas de dados. A implementação acima captura os principais passos do algoritmo, permitindo a exploração prática dessa técnica.
-
-
-Mas ter duas implementações funcionais — Chu–Liu/Edmonds e Frank — levanta questões naturais: \emph{como elas se relacionam conceitualmente?} Ambas resolvem o mesmo problema, mas suas organizações internas diferem. Chu–Liu/Edmonds opera de forma mais direta e combinatória, enquanto Frank explicita a estrutura dual subjacente. Essas diferenças conceituais se traduzem em diferenças práticas de desempenho, estruturas de dados ou facilidade de compreensão?
-
-
-Antes de responder empiricamente (via testes), vale consolidar uma visão comparativa \emph{teórica} dessas abordagens. A próxima seção examina lado a lado as semelhanças e diferenças entre Chu–Liu/Edmonds e Frank, preparando o terreno para a análise experimental que virá em seguida.
+Assim como no capítulo anterior, a implementação e análise do algoritmo de András Frank reforçam a importância da abordagem primal–dual e da estrutura laminar de cortes. A comparação sistemática entre os métodos será apresentada na próxima seção, destacando semelhanças, diferenças e aplicações práticas.
