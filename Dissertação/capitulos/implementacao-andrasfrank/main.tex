@@ -1,10 +1,6 @@
-\chapter{Algoritmo Primal–Dual de András Frank}
-
-\section{Motivação e contexto histórico}
+\chapter{Algoritmo Guloso–Dual de András Frank} 
 
 Assim como o algoritmo de Chu–Liu/Edmonds, o método de András Frank resolve o problema da r-arborescência de custo mínimo em digrafos ponderados. A diferença está na abordagem: Frank utiliza uma estrutura gulosa–dual.
-
-
 
 O algoritmo de Frank é dividido em duas fases, conforme a descrição abaixo:
 
@@ -31,15 +27,32 @@ O algoritmo de Frank é dividido em duas fases, conforme a descrição abaixo:
 	\end{itemize}
 \end{tcolorbox}
 
-Para ilustrar o funcionamento do algoritmo, considere o digrafo abaixo, onde os custos dos arcos são indicados e a raiz é $r$:
+Vamos ilustrar o funcionamento das fase 1 e 2 com um exemplo.
+
+Considere o digrafo abaixo, onde os custos dos arcos são indicados e a raiz é $r$:
 
 \begin{figure}[H]
 	\centering
-	% Exemplo de digrafo com potenciais e custos
-	%\input{capitulos/implementacao-andrasfrank/figures/fig_frank_exemplo_potenciais.tex}
-	\caption{Exemplo de digrafo para ilustrar potenciais, custos reduzidos e contração de ciclo.}
+	\begin{tikzpicture}[->,>=stealth,shorten >=1pt,auto,node distance=2.5cm,thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
+		\node[main node] (r) {r};
+		\node[main node] (a) [right of=r] {a};
+		\node[main node] (b) [below right of=a] {b};
+		\node[main node] (c) [below left of=r] {c};
+
+		% Arcos com custos
+		\path[every node/.style={font=\sffamily}]
+		(r) edge node [above] {2} (a)
+		(r) edge node [left] {3} (c)
+		(a) edge node [right] {1} (b)
+		(c) edge node [below] {4} (b)
+		(b) edge[bend left] node [right] {2} (a)
+		(a) edge[bend left] node [left] {2} (c);
+	\end{tikzpicture}
+	\caption{Digrafo original com custos dos arcos e raiz $r$.}
 	\label{fig:frank-exemplo-potenciais}
 \end{figure}
+
+
 
 Suponha que elevamos o potencial $y(v)$ de um vértice $v$ até que o arco $(u,v)$ tenha custo reduzido zero: $c'(u,v) = c(u,v) - y(v) = 0$. Se todos os arcos que entram em um conjunto de vértices $C$ ficarem com custo zero, e $C$ formar um ciclo, contraímos $C$ em um supervértice $x_C$ e continuamos o processo no grafo menor.
 
