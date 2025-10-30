@@ -3,31 +3,30 @@
 Neste capítulo, apresentaremos o algoritmo de András Frank, que também determina
 uma arborescência de custo mínimo em um digrafo ponderado.
 O algoritmo baseia-se em uma abordagem primal--dual:
-(i) a elevação gulosa de potenciais duais e (ii) a construção de uma solução primal
+a elevação gulosa de potenciais duais\footnote{\textbf{Potencial dual} é uma variável associada a cada vértice, que representa um "desconto" aplicado ao custo dos arcos que entram nesse vértice e servem para ajustar os custos de modo que certas restrições fiquem "apertadas", - satisfeitas com igualdade, ou seja, o valor da variável atinge exatamente o limite imposto pela restrição.} e (ii) a construção de uma solução gulosa
 a partir dos arcos de custo reduzido zero.
 Diferentemente do algoritmo de Chu--Liu--Edmonds, que opera diretamente sobre os custos,
-o método de Frank manipula potenciais duais associados aos vértices, 
+o método de Frank manipula potenciais duais associados aos vértices,
 gerando arcos \emph{apertados} (de custo reduzido zero) que formam a arborescência ótima.
 O propósito deste capítulo é fornecer uma descrição precisa tanto do algoritmo
 quanto da implementação desenvolvida neste trabalho.
 
 \section{O algoritmo}
-O algoritmo de András Frank recebe uma tripla \((D,c,r)\), em que \(D=(V,A)\) é um digrafo, 
-\(c\colon A\to\mathbb{R}\) é uma função custo e \(r\in V\) é a raiz, 
-sob a hipótese de que \(D\) admite ao menos uma \(r\)-arborescência. 
-O algoritmo devolve uma \(r\)-arborescência \(c\)-mínima de \(D\).
+O algoritmo de András Frank também recebe uma tripla \((D,c,r)\), em que \(D=(V,A)\) é um digrafo,
+\(c\colon A\to\mathbb{R}\) é uma função custo e \(r\in V\) é a raiz,
+sob a hipótese de que \(D\) admite ao menos uma \(r\)-arborescência e devolve uma \(r\)-arborescência \(c\)-mínima de \(D\).
 
-Assim como no capítulo anterior, adotamos a terminologia de \textbf{\(r\)-digrafo ponderado} 
-para uma tripla \((D,c,r)\) em que $(D, c)$ é um digrafo ponderado, 
+Assim como no capítulo anterior, adotamos a terminologia de \textbf{\(r\)-digrafo ponderado}
+para uma tripla \((D,c,r)\) em que $(D, c)$ é um digrafo ponderado,
 $r$ é um vértice de $D$, $\delta^-(r) = \varnothing$
 e $D$ possui uma $r$-arborescência.
 
 Vamos desenvolver as ideias do algoritmo utilizando o mesmo dígrafo que apresentamos
 no capítulo anterior.
 
-\subsection*{Abordagem Primal--Dual}
+\subsection*{Abordagem Gulosa--Dual}
 
-Considere novamente o dígrafo \(D\) da figura a seguir, com custos nos arcos.
+Considere novamente o dígrafo \(D\) figura 26 a seguir, com custos nos arcos note que é o mesmo digrafo da figura 1 que utilizamos para ilustrar o algoritmo de Chu--Liu--Edmonds. E portanto, suponha que T é uma arborescência de custo mínimo, com seus arcos destacados em azul.
 
 \begin{figure}[h]
 	\centering
@@ -74,31 +73,26 @@ Considere novamente o dígrafo \(D\) da figura a seguir, com custos nos arcos.
 		\draw[chosen] (b) -- node[costB, below] {2} (e);   % b->e
 	\end{tikzpicture}
 
-	\caption{O dígrafo \(D\) com custos nos arcos. Os arcos em \textcolor{blue}{azul} 
-	formam a \(r\)-arborescência de custo mínimo \(T\) (custo total = 7).}
+	\caption{O dígrafo \(D\) com custos nos arcos. Os arcos em \textcolor{blue}{azul}
+		formam a \(r\)-arborescência de custo mínimo \(T\) (custo total = 7).}
 \end{figure}
 
 O algoritmo de Frank utiliza \textbf{potenciais} \(y: V \to \mathbb{R}\) associados aos vértices
-para definir custos reduzidos nos arcos. Para cada arco \(a = (u,v) \in A\), o 
+para definir custos reduzidos nos arcos. Para cada arco \(a = (u,v) \in A\), o
 \textbf{custo \(y\)-reduzido} é dado por
 \[
 	c_y(a) := c(a) - y(v).
 \]
-Note que, diferentemente da redução do capítulo anterior (onde subtraíamos o mínimo custo
-de entrada em cada vértice), aqui o potencial \(y(v)\) é uma variável dual que será
-ajustada pelo algoritmo.
+Note que, diferentemente do procedimento de redução do capítulo anterior (onde subtraíamos o mínimo custo
+de entrada em cada vértice), aqui o potencial \(y(v)\) é uma variável que será
+ajustada pelo algoritmo através da seguinte noção.
 
 Um arco \(a\) é dito \textbf{apertado} (ou \textbf{tight}) se \(c_y(a) = 0\), isto é,
-se \(c(a) = y(\head(a))\). A ideia central do algoritmo de Frank é:
-\begin{enumerate}
-	\item Elevar os potenciais \(y(v)\) para cada \(v \neq r\) até que cada vértice
-	      tenha ao menos um arco apertado entrando nele.
-	\item Construir a arborescência ótima usando apenas arcos apertados.
-\end{enumerate}
+se \(c(a) = y(\head(a))\). A ideia central do algoritmo de Frank é (i) elevar os potenciais \(y(v)\) para cada \(v \neq r\) até que cada vértice tenha ao menos um arco apertado entrando nele; (ii) construir uma arborescência ótima usando apenas arcos apertados.
 
 \subsection*{Elevação de Potenciais}
 
-Inicialmente, definimos \(y(v) = 0\) para todo \(v \in V\). 
+Inicialmente, definimos \(y(v) = 0\) para todo \(v \in V\).
 Para cada vértice \(v \neq r\), calculamos
 \[
 	\Delta(v) := \min\{\, c(a) : a \in \delta^{-}(v) \,\} - y(v).
@@ -150,20 +144,20 @@ Vamos ilustrar esse processo no dígrafo \(D\).
 
 Calculamos \(\Delta(v)\) para cada vértice \(v \neq r\):
 \begin{align*}
-	\Delta(a) &= \min\{1, 4\} - 0 = 1, \\
-	\Delta(b) &= \min\{2, 5\} - 0 = 2, \\
-	\Delta(c) &= \min\{3, 1\} - 0 = 1, \\
-	\Delta(d) &= \min\{3, 1\} - 0 = 1, \\
-	\Delta(e) &= \min\{2, 5\} - 0 = 2.
+	\Delta(a) & = \min\{1, 4\} - 0 = 1, \\
+	\Delta(b) & = \min\{2, 5\} - 0 = 2, \\
+	\Delta(c) & = \min\{3, 1\} - 0 = 1, \\
+	\Delta(d) & = \min\{3, 1\} - 0 = 1, \\
+	\Delta(e) & = \min\{2, 5\} - 0 = 2.
 \end{align*}
 
 Elevamos cada potencial:
 \begin{align*}
-	y(a) &\leftarrow y(a) + \Delta(a) = 0 + 1 = 1, \\
-	y(b) &\leftarrow y(b) + \Delta(b) = 0 + 2 = 2, \\
-	y(c) &\leftarrow y(c) + \Delta(c) = 0 + 1 = 1, \\
-	y(d) &\leftarrow y(d) + \Delta(d) = 0 + 1 = 1, \\
-	y(e) &\leftarrow y(e) + \Delta(e) = 0 + 2 = 2.
+	y(a) & \leftarrow y(a) + \Delta(a) = 0 + 1 = 1, \\
+	y(b) & \leftarrow y(b) + \Delta(b) = 0 + 2 = 2, \\
+	y(c) & \leftarrow y(c) + \Delta(c) = 0 + 1 = 1, \\
+	y(d) & \leftarrow y(d) + \Delta(d) = 0 + 1 = 1, \\
+	y(e) & \leftarrow y(e) + \Delta(e) = 0 + 2 = 2.
 \end{align*}
 
 Após a elevação, os custos reduzidos \(c_y(a) = c(a) - y(\head(a))\) são:
@@ -209,8 +203,8 @@ Após a elevação, os custos reduzidos \(c_y(a) = c(a) - y(\head(a))\) são:
 		\node[below=2mm of d, font=\small] {$y(d) = 1$};
 		\node[below=2mm of e, font=\small] {$y(e) = 2$};
 	\end{tikzpicture}
-	\caption{Dígrafo após elevação de potenciais. Arcos em \textcolor{blue}{azul} são 
-	apertados (\(c_y = 0\)); arcos em cinza têm custo reduzido positivo.}
+	\caption{Dígrafo após elevação de potenciais. Arcos em \textcolor{blue}{azul} são
+		apertados (\(c_y = 0\)); arcos em cinza têm custo reduzido positivo.}
 \end{figure}
 
 Observe que cada vértice \(v \neq r\) possui agora ao menos um arco apertado entrando nele.
@@ -231,28 +225,28 @@ Para verificar a otimalidade, note que uma propriedade fundamental dos potenciai
 
 \begin{proposicao}
 	Para toda função \(y: V \to \mathbb{R}\) com \(y(r) = 0\),
-	uma \(r\)-arborescência \(T\) é \(c\)-mínima em \(D\) se, e somente se, 
-	todos os arcos de \(T\) são apertados (i.e., \(c_y(a) = 0\) para todo \(a \in T\)) 
+	uma \(r\)-arborescência \(T\) é \(c\)-mínima em \(D\) se, e somente se,
+	todos os arcos de \(T\) são apertados (i.e., \(c_y(a) = 0\) para todo \(a \in T\))
 	e \(c_y(a) \geq 0\) para todo \(a \in A\).
 \end{proposicao}
 
 \begin{proof}[Prova.]
-	Seja \(F\) uma \(r\)-arborescência qualquer. Para cada \(v \in V \setminus \{r\}\), 
+	Seja \(F\) uma \(r\)-arborescência qualquer. Para cada \(v \in V \setminus \{r\}\),
 	seja \(a_v\) o único arco de \(F\) que entra em \(v\). Então
 	\begin{align*}
 		c(F)
-		 & = \sum_{v \in V \setminus \{r\}} c(a_v)                                     \\
-		 & = \sum_{v \in V \setminus \{r\}} \bigl(c_y(a_v) + y(v)\bigr)                \\
+		 & = \sum_{v \in V \setminus \{r\}} c(a_v)                                          \\
+		 & = \sum_{v \in V \setminus \{r\}} \bigl(c_y(a_v) + y(v)\bigr)                     \\
 		 & = \sum_{v \in V \setminus \{r\}} c_y(a_v) + \sum_{v \in V \setminus \{r\}} y(v).
 	\end{align*}
-	Como a soma \(\sum_{v \in V \setminus \{r\}} y(v)\) é constante para todas as 
+	Como a soma \(\sum_{v \in V \setminus \{r\}} y(v)\) é constante para todas as
 	\(r\)-arborescências, minimizar \(c(F)\) equivale a minimizar \(\sum_{v} c_y(a_v)\).
 	Se todos os arcos de \(T\) são apertados e \(c_y(a) \geq 0\) para todo \(a\),
 	então \(\sum_{v} c_y(a_v^T) = 0 \leq \sum_{v} c_y(a_v^F)\) para qualquer \(F\),
 	provando que \(T\) é ótima.
 \end{proof}
 
-No nosso exemplo, todos os arcos de \(T\) são apertados e \(c_y(a) \geq 0\) para todo 
+No nosso exemplo, todos os arcos de \(T\) são apertados e \(c_y(a) \geq 0\) para todo
 arco \(a \in A\), portanto \(T\) é a \(r\)-arborescência de custo mínimo.
 
 \subsection*{Tratamento de Ciclos}
@@ -294,7 +288,7 @@ Vamos ilustrar esse processo com um exemplo modificado. Suponha que adicionamos 
 		\draw[arc] (b) -- node[costG, above] {1} (d);
 		\draw[arc] (b) -- node[costG, below] {2} (e);
 		\draw[arc] (c) .. controls (7.6,2.6) and (7.6,-2.6) .. node[costG, xshift=8pt, pos=0.52] {5} (e);
-		
+
 		% NOVO arco (c, a)
 		\draw[arc, draw=red!60] (c) to[bend left=20] node[costG, left, text=red!60] {1} (a);
 	\end{tikzpicture}
@@ -340,11 +334,11 @@ apertado: \(c_y(c,a) = 1 - 1 = 0\).
 		\draw[loose] (r) .. controls (0.8,2.4) and (5.2,3.0) .. node[costG, yshift=4pt, pos=0.53] {2} (c);
 		\draw[loose] (b) to[bend left=12] node[costG, above] {3} (a);
 		\draw[loose] (a) to[bend left=14] node[costG, below] {3} (b);
-		\draw[loose] (a) -- node[costG, right] {2} (d);
-		\draw[loose] (c) .. controls (7.6,2.6) and (7.6,-2.6) .. node[costG, xshift=8pt, pos=0.52] {3} (e);
+		\draw[loose] (a) -- node[costG, right] {2} (d);   % 3 - 1 = 2
+		\draw[loose] (c) .. controls (7.6,2.6) and (7.6,-2.6) .. node[costG, xshift=8pt, pos=0.52] {3} (e);  % 5 - 2 = 3
 	\end{tikzpicture}
-	\caption{Arcos apertados após elevação. O ciclo \(C = (a, c, a)\) é destacado em 
-	\textcolor{red!70}{vermelho}.}
+	\caption{Arcos apertados após elevação. O ciclo \(C = (a, c, a)\) é destacado em
+		\textcolor{red!70}{vermelho}.}
 \end{figure}
 
 Nesse caso, contraímos o ciclo \(C = (a, c)\) em um supervértice \(x_C\), ajustamos
@@ -358,15 +352,15 @@ O algoritmo de András Frank pode ser resumido da seguinte forma:
 
 \begin{enumerate}
 	\item \textbf{Inicialização:} Defina \(y(v) = 0\) para todo \(v \in V\).
-	\item \textbf{Elevação de potenciais:} Para cada \(v \neq r\), calcule 
-	      \(\Delta(v) = \min\{c(a) : a \in \delta^-(v)\} - y(v)\) e atualize 
+	\item \textbf{Elevação de potenciais:} Para cada \(v \neq r\), calcule
+	      \(\Delta(v) = \min\{c(a) : a \in \delta^-(v)\} - y(v)\) e atualize
 	      \(y(v) \leftarrow y(v) + \Delta(v)\).
-	\item \textbf{Identificação de arcos apertados:} Forme o conjunto 
+	\item \textbf{Identificação de arcos apertados:} Forme o conjunto
 	      \(H = \{a \in A : c_y(a) = 0\}\).
 	\item \textbf{Verificação:} Se \(H\) contém uma \(r\)-arborescência, devolva-a.
 	\item \textbf{Contração de ciclos:} Caso contrário, identifique um ciclo \(C\) em \(H\),
-	      contraia \(C\) em um supervértice, ajuste os potenciais e custos, e resolva 
+	      contraia \(C\) em um supervértice, ajuste os potenciais e custos, e resolva
 	      recursivamente.
-	\item \textbf{Reexpansão:} Após obter a solução no dígrafo contraído, reexpanda 
+	\item \textbf{Reexpansão:} Após obter a solução no dígrafo contraído, reexpanda
 	      removendo um arco do ciclo para formar a \(r\)-arborescência ótima no dígrafo original.
 \end{enumerate}
