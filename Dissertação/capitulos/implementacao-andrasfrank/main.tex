@@ -1,76 +1,372 @@
-\chapter{Algoritmo Guloso–Dual de András Frank}
+\chapter{Algoritmo de András Frank}
 
-Assim como o algoritmo de Chu–Liu/Edmonds, o método de András Frank resolve o problema da r-arborescência de custo mínimo em digrafos ponderados. A diferença está na abordagem: Frank utiliza uma estrutura gulosa–dual.
+Neste capítulo, apresentaremos o algoritmo de András Frank, que também determina
+uma arborescência de custo mínimo em um digrafo ponderado.
+O algoritmo baseia-se em uma abordagem primal--dual:
+(i) a elevação gulosa de potenciais duais e (ii) a construção de uma solução primal
+a partir dos arcos de custo reduzido zero.
+Diferentemente do algoritmo de Chu--Liu--Edmonds, que opera diretamente sobre os custos,
+o método de Frank manipula potenciais duais associados aos vértices, 
+gerando arcos \emph{apertados} (de custo reduzido zero) que formam a arborescência ótima.
+O propósito deste capítulo é fornecer uma descrição precisa tanto do algoritmo
+quanto da implementação desenvolvida neste trabalho.
 
-O algoritmo de Frank é dividido em duas fases, conforme a descrição abaixo:
+\section{O algoritmo}
+O algoritmo de András Frank recebe uma tripla \((D,c,r)\), em que \(D=(V,A)\) é um digrafo, 
+\(c\colon A\to\mathbb{R}\) é uma função custo e \(r\in V\) é a raiz, 
+sob a hipótese de que \(D\) admite ao menos uma \(r\)-arborescência. 
+O algoritmo devolve uma \(r\)-arborescência \(c\)-mínima de \(D\).
 
-\begin{tcolorbox}[
-		enhanced, breakable,
-		colframe=blue!60!black, colback=blue!2,
-		colbacktitle=blue!15, coltitle=black,
-		title={Algoritmo de András Frank},
-		boxed title style={sharp corners, boxrule=0.6pt},
-		sharp corners, boxrule=0.6pt
-	]
-	\textbf{Fase I — Elevação de potenciais (dual):}
-	\begin{itemize}
-		\item Para cada vértice $v \neq r$, eleva-se o potencial $y(v)$ até que exista ao menos um arco de custo reduzido zero entrando em $v$.
-		\item Sempre que um ciclo de arcos de custo zero surgir, contrai-se esse ciclo em um supervértice, ajustando os custos conforme a regra dual.
-		\item O resultado é um subgrafo $D_0$ onde cada vértice não-raiz tem ao menos uma entrada de custo zero.
-	\end{itemize}
-	\vspace{2mm}
-	\textbf{Fase II — Extração primal:}
-	\begin{itemize}
-		\item Seleciona-se exatamente uma entrada de custo zero para cada vértice $v \neq r$.
-		\item Se as escolhas formarem um ciclo, contrai-se e repete o processo no grafo menor; ao final, reexpande cada contração removendo uma aresta interna para restaurar a estrutura de arborescência.
-		\item O resultado é uma r-arborescência ótima, composta apenas por arcos apertados.
-	\end{itemize}
-\end{tcolorbox}
+Assim como no capítulo anterior, adotamos a terminologia de \textbf{\(r\)-digrafo ponderado} 
+para uma tripla \((D,c,r)\) em que $(D, c)$ é um digrafo ponderado, 
+$r$ é um vértice de $D$, $\delta^-(r) = \varnothing$
+e $D$ possui uma $r$-arborescência.
 
-Vamos ilustrar o funcionamento das fase 1 e 2 com um exemplo.
+Vamos desenvolver as ideias do algoritmo utilizando o mesmo dígrafo que apresentamos
+no capítulo anterior.
 
-Consideremos então o mesmo digrafo que apresentamos como exemplo na sessão de chuliu/edmonds, e vamos mostrar o comportamento do algortimo de andras frank sobre ele.
+\subsection*{Abordagem Primal--Dual}
 
+Considere novamente o dígrafo \(D\) da figura a seguir, com custos nos arcos.
 
+\begin{figure}[h]
+	\centering
+	\begin{tikzpicture}[>=Stealth]
+		% estilos
+		\tikzset{
+			vtx/.style={circle, draw,fill=blue!8, thick, inner sep=1.2pt, minimum size=6mm},
+			chosen/.style={->, very thick, draw=blue},
+			other/.style={->, semithick, draw=black!35},
+			costB/.style={font=\scriptsize, fill=white, inner sep=1pt, text=blue},
+			costG/.style={font=\scriptsize, fill=white, inner sep=1pt, text=black!55}
+		}
 
+		% layout (mais espaçado)
+		\node[vtx] (r) at (0,0) {$r$};
+		\node[vtx] (a) at (3,1.6) {$a$};
+		\node[vtx] (b) at (3,-1.6) {$b$};
+		\node[vtx] (c) at (6,2.2) {$c$};
+		\node[vtx] (d) at (6,0.0) {$d$};
+		\node[vtx] (e) at (6,-2.2) {$e$};
 
-\section{Implementação em Python}
+		% --- arcos NÃO escolhidos (cinza), agora com curvaturas mais limpas ---
+		\draw[other] (b) to[bend left=12] node[costG, above] {4} (a);   % b->a
+		\draw[other] (a) to[bend left=14] node[costG, below] {5} (b);   % a->b
 
-Assim como no capítulo anterior, a implementação é modular e didática, com funções auxiliares para cada etapa do algoritmo. Utilizamos a biblioteca NetworkX para manipulação de digrafos e mantemos a clareza e paralelismo com a teoria.
+		% r->c: externo por cima, suave (pontos de controle explícitos)
+		\draw[other]
+		(r) .. controls (0.8,2.4) and (5.2,3.0) ..
+		node[costG, yshift=4pt, pos=0.53] {3} (c);
 
-\begin{tcolorbox}[
-		enhanced, breakable,
-		colframe=blue!60!black, colback=blue!2,
-		colbacktitle=blue!15, coltitle=black,
-		title={Funções auxiliares da implementação},
-		boxed title style={sharp corners, boxrule=0.6pt},
-		sharp corners, boxrule=0.6pt
-	]
-	\textbf{get\_arcs\_entering\_X(D, X):} retorna as arestas que entram em $X$.
+		% a->d (referência)
+		\draw[other] (a) -- node[costG, right] {3} (d);
 
-	\textbf{get\_minimum\_weight\_cut(arcs):} retorna o peso mínimo entre as arestas que entram em $X$.
+		% c->e: leve curvatura pela direita (sem "barriga")
+		\draw[other]
+		(c) .. controls (7.6,2.6) and (7.6,-2.6) ..
+		node[costG, xshift=8pt, pos=0.52] {5} (e);
 
-	\textbf{update\_weights\_in\_X(D, arcs, min\_weight, A\_zero, D\_zero):} atualiza os pesos das arestas que entram em $X$, subtraindo o valor mínimo e registrando as que atingem peso zero.
+		% --- arcos ESCOLHIDOS (AZUL) — formam a r-arborescência T ---
+		\draw[chosen] (r) -- node[costB, above] {1} (a);   % r->a
+		\draw[chosen] (r) -- node[costB, below] {2} (b);   % r->b
+		\draw[chosen] (a) -- node[costB, above] {1} (c);   % a->c
+		\draw[chosen] (b) -- node[costB, above] {1} (d);   % b->d
+		\draw[chosen] (b) -- node[costB, below] {2} (e);   % b->e
+	\end{tikzpicture}
 
-	\textbf{has\_arborescence(D, r0):} verifica se o digrafo possui uma arborescência com raiz $r_0$.
-\end{tcolorbox}
+	\caption{O dígrafo \(D\) com custos nos arcos. Os arcos em \textcolor{blue}{azul} 
+	formam a \(r\)-arborescência de custo mínimo \(T\) (custo total = 7).}
+\end{figure}
 
-\section{Exemplo de execução do algoritmo}
+O algoritmo de Frank utiliza \textbf{potenciais} \(y: V \to \mathbb{R}\) associados aos vértices
+para definir custos reduzidos nos arcos. Para cada arco \(a = (u,v) \in A\), o 
+\textbf{custo \(y\)-reduzido} é dado por
+\[
+	c_y(a) := c(a) - y(v).
+\]
+Note que, diferentemente da redução do capítulo anterior (onde subtraíamos o mínimo custo
+de entrada em cada vértice), aqui o potencial \(y(v)\) é uma variável dual que será
+ajustada pelo algoritmo.
 
-Considere o digrafo da Figura~\ref{fig:frank-exemplo-potenciais}. A Fase I eleva os potenciais até que cada vértice não-raiz tenha ao menos uma entrada de custo zero. Se um ciclo de arcos de custo zero surgir, ele é contraído. A Fase II seleciona uma entrada de custo zero para cada vértice, tratando ciclos por contração e reexpansão, até obter a r-arborescência ótima.
+Um arco \(a\) é dito \textbf{apertado} (ou \textbf{tight}) se \(c_y(a) = 0\), isto é,
+se \(c(a) = y(\head(a))\). A ideia central do algoritmo de Frank é:
+\begin{enumerate}
+	\item Elevar os potenciais \(y(v)\) para cada \(v \neq r\) até que cada vértice
+	      tenha ao menos um arco apertado entrando nele.
+	\item Construir a arborescência ótima usando apenas arcos apertados.
+\end{enumerate}
+
+\subsection*{Elevação de Potenciais}
+
+Inicialmente, definimos \(y(v) = 0\) para todo \(v \in V\). 
+Para cada vértice \(v \neq r\), calculamos
+\[
+	\Delta(v) := \min\{\, c(a) : a \in \delta^{-}(v) \,\} - y(v).
+\]
+O valor \(\Delta(v)\) representa quanto precisamos elevar \(y(v)\) para que exista
+ao menos um arco de custo reduzido zero entrando em \(v\).
+
+Vamos ilustrar esse processo no dígrafo \(D\).
 
 \begin{figure}[H]
 	\centering
-	% Exemplo de execução do algoritmo de Frank
-	%\input{capitulos/implementacao-andrasfrank/figures/fig_frank_exemplo_execucao.tex}
-	\caption{Execução do algoritmo de András Frank: elevação de potenciais, contração de ciclo e extração da arborescência ótima.}
-	\label{fig:frank-exemplo-execucao}
+	\begin{tikzpicture}[>=Stealth]
+		% estilos
+		\tikzset{
+			vtx/.style={circle, draw,fill=blue!8, thick, inner sep=1.2pt, minimum size=6mm},
+			arc/.style={->, semithick, draw=black!35},
+			costG/.style={font=\scriptsize, fill=white, inner sep=1pt, text=black!55}
+		}
+
+		% layout
+		\node[vtx] (r) at (0,0) {$r$};
+		\node[vtx] (a) at (3,1.6) {$a$};
+		\node[vtx] (b) at (3,-1.6) {$b$};
+		\node[vtx] (c) at (6,2.2) {$c$};
+		\node[vtx] (d) at (6,0.0) {$d$};
+		\node[vtx] (e) at (6,-2.2) {$e$};
+
+		% arcos com custos originais
+		\draw[arc] (r) -- node[costG, above] {1} (a);
+		\draw[arc] (r) -- node[costG, below] {2} (b);
+		\draw[arc] (r) .. controls (0.8,2.4) and (5.2,3.0) .. node[costG, yshift=4pt, pos=0.53] {3} (c);
+		\draw[arc] (b) to[bend left=12] node[costG, above] {4} (a);
+		\draw[arc] (a) to[bend left=14] node[costG, below] {5} (b);
+		\draw[arc] (a) -- node[costG, above] {1} (c);
+		\draw[arc] (a) -- node[costG, right] {3} (d);
+		\draw[arc] (b) -- node[costG, above] {1} (d);
+		\draw[arc] (b) -- node[costG, below] {2} (e);
+		\draw[arc] (c) .. controls (7.6,2.6) and (7.6,-2.6) .. node[costG, xshift=8pt, pos=0.52] {5} (e);
+
+		% potenciais iniciais
+		\node[above=2mm of a, font=\small] {$y(a) = 0$};
+		\node[below=2mm of b, font=\small] {$y(b) = 0$};
+		\node[above=2mm of c, font=\small] {$y(c) = 0$};
+		\node[below=2mm of d, font=\small] {$y(d) = 0$};
+		\node[below=2mm of e, font=\small] {$y(e) = 0$};
+	\end{tikzpicture}
+	\caption{Dígrafo \(D\) com potenciais iniciais \(y(v) = 0\) para todo \(v \in V\).}
 \end{figure}
 
-\section{Complexidade e comparação com Chu–Liu/Edmonds}
+Calculamos \(\Delta(v)\) para cada vértice \(v \neq r\):
+\begin{align*}
+	\Delta(a) &= \min\{1, 4\} - 0 = 1, \\
+	\Delta(b) &= \min\{2, 5\} - 0 = 2, \\
+	\Delta(c) &= \min\{3, 1\} - 0 = 1, \\
+	\Delta(d) &= \min\{3, 1\} - 0 = 1, \\
+	\Delta(e) &= \min\{2, 5\} - 0 = 2.
+\end{align*}
 
-O algoritmo de Frank tem complexidade $O(mn)$, podendo ser otimizado para $O(m \log n)$ com uso de heaps. A estrutura modular permite comparação direta com o algoritmo de Chu–Liu/Edmonds, tanto em termos de desempenho quanto de clareza conceitual.
+Elevamos cada potencial:
+\begin{align*}
+	y(a) &\leftarrow y(a) + \Delta(a) = 0 + 1 = 1, \\
+	y(b) &\leftarrow y(b) + \Delta(b) = 0 + 2 = 2, \\
+	y(c) &\leftarrow y(c) + \Delta(c) = 0 + 1 = 1, \\
+	y(d) &\leftarrow y(d) + \Delta(d) = 0 + 1 = 1, \\
+	y(e) &\leftarrow y(e) + \Delta(e) = 0 + 2 = 2.
+\end{align*}
 
-\section{Notas finais}
+Após a elevação, os custos reduzidos \(c_y(a) = c(a) - y(\head(a))\) são:
 
-Assim como no capítulo anterior, a implementação e análise do algoritmo de András Frank reforçam a importância da abordagem primal–dual e da estrutura laminar de cortes. A comparação sistemática entre os métodos será apresentada na próxima seção, destacando semelhanças, diferenças e aplicações práticas.
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[>=Stealth]
+		% estilos
+		\tikzset{
+			vtx/.style={circle, draw,fill=blue!8, thick, inner sep=1.2pt, minimum size=6mm},
+			tight/.style={->, very thick, draw=blue},
+			loose/.style={->, semithick, draw=black!35},
+			costB/.style={font=\scriptsize, fill=white, inner sep=1pt, text=blue},
+			costG/.style={font=\scriptsize, fill=white, inner sep=1pt, text=black!55}
+		}
+
+		% layout
+		\node[vtx] (r) at (0,0) {$r$};
+		\node[vtx] (a) at (3,1.6) {$a$};
+		\node[vtx] (b) at (3,-1.6) {$b$};
+		\node[vtx] (c) at (6,2.2) {$c$};
+		\node[vtx] (d) at (6,0.0) {$d$};
+		\node[vtx] (e) at (6,-2.2) {$e$};
+
+		% arcos apertados (custo reduzido = 0)
+		\draw[tight] (r) -- node[costB, above] {0} (a);   % 1 - 1 = 0
+		\draw[tight] (r) -- node[costB, below] {0} (b);   % 2 - 2 = 0
+		\draw[tight] (a) -- node[costB, above] {0} (c);   % 1 - 1 = 0
+		\draw[tight] (b) -- node[costB, above] {0} (d);   % 1 - 1 = 0
+		\draw[tight] (b) -- node[costB, below] {0} (e);   % 2 - 2 = 0
+
+		% arcos não apertados
+		\draw[loose] (r) .. controls (0.8,2.4) and (5.2,3.0) .. node[costG, yshift=4pt, pos=0.53] {2} (c);  % 3 - 1 = 2
+		\draw[loose] (b) to[bend left=12] node[costG, above] {3} (a);   % 4 - 1 = 3
+		\draw[loose] (a) to[bend left=14] node[costG, below] {3} (b);   % 5 - 2 = 3
+		\draw[loose] (a) -- node[costG, right] {2} (d);   % 3 - 1 = 2
+		\draw[loose] (c) .. controls (7.6,2.6) and (7.6,-2.6) .. node[costG, xshift=8pt, pos=0.52] {3} (e);  % 5 - 2 = 3
+
+		% potenciais finais
+		\node[above=2mm of a, font=\small] {$y(a) = 1$};
+		\node[below=2mm of b, font=\small] {$y(b) = 2$};
+		\node[above=2mm of c, font=\small] {$y(c) = 1$};
+		\node[below=2mm of d, font=\small] {$y(d) = 1$};
+		\node[below=2mm of e, font=\small] {$y(e) = 2$};
+	\end{tikzpicture}
+	\caption{Dígrafo após elevação de potenciais. Arcos em \textcolor{blue}{azul} são 
+	apertados (\(c_y = 0\)); arcos em cinza têm custo reduzido positivo.}
+\end{figure}
+
+Observe que cada vértice \(v \neq r\) possui agora ao menos um arco apertado entrando nele.
+Mais ainda: neste exemplo, os arcos apertados formam uma \(r\)-arborescência!
+
+\subsection*{Construção da Arborescência}
+
+Se os arcos apertados formam uma \(r\)-arborescência, então encontramos a solução ótima.
+Caso contrário, os arcos apertados contêm ciclos, e precisamos tratá-los adequadamente.
+
+No nosso exemplo, os arcos apertados são:
+\[
+	H = \{\, (r,a), (r,b), (a,c), (b,d), (b,e) \,\}.
+\]
+Esses arcos formam a \(r\)-arborescência \(T\) de custo mínimo.
+
+Para verificar a otimalidade, note que uma propriedade fundamental dos potenciais duais é:
+
+\begin{proposicao}
+	Para toda função \(y: V \to \mathbb{R}\) com \(y(r) = 0\),
+	uma \(r\)-arborescência \(T\) é \(c\)-mínima em \(D\) se, e somente se, 
+	todos os arcos de \(T\) são apertados (i.e., \(c_y(a) = 0\) para todo \(a \in T\)) 
+	e \(c_y(a) \geq 0\) para todo \(a \in A\).
+\end{proposicao}
+
+\begin{proof}[Prova.]
+	Seja \(F\) uma \(r\)-arborescência qualquer. Para cada \(v \in V \setminus \{r\}\), 
+	seja \(a_v\) o único arco de \(F\) que entra em \(v\). Então
+	\begin{align*}
+		c(F)
+		 & = \sum_{v \in V \setminus \{r\}} c(a_v)                                     \\
+		 & = \sum_{v \in V \setminus \{r\}} \bigl(c_y(a_v) + y(v)\bigr)                \\
+		 & = \sum_{v \in V \setminus \{r\}} c_y(a_v) + \sum_{v \in V \setminus \{r\}} y(v).
+	\end{align*}
+	Como a soma \(\sum_{v \in V \setminus \{r\}} y(v)\) é constante para todas as 
+	\(r\)-arborescências, minimizar \(c(F)\) equivale a minimizar \(\sum_{v} c_y(a_v)\).
+	Se todos os arcos de \(T\) são apertados e \(c_y(a) \geq 0\) para todo \(a\),
+	então \(\sum_{v} c_y(a_v^T) = 0 \leq \sum_{v} c_y(a_v^F)\) para qualquer \(F\),
+	provando que \(T\) é ótima.
+\end{proof}
+
+No nosso exemplo, todos os arcos de \(T\) são apertados e \(c_y(a) \geq 0\) para todo 
+arco \(a \in A\), portanto \(T\) é a \(r\)-arborescência de custo mínimo.
+
+\subsection*{Tratamento de Ciclos}
+
+Em geral, após a elevação de potenciais, os arcos apertados podem conter ciclos.
+Nesse caso, o algoritmo de Frank procede de forma similar ao de Chu--Liu--Edmonds:
+contrai cada ciclo apertado em um supervértice, resolve o problema recursivamente
+no dígrafo contraído, e depois reexpande a solução.
+
+Vamos ilustrar esse processo com um exemplo modificado. Suponha que adicionamos o arco
+\((c, a)\) com custo 1 ao dígrafo original:
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[>=Stealth]
+		% estilos
+		\tikzset{
+			vtx/.style={circle, draw,fill=blue!8, thick, inner sep=1.2pt, minimum size=6mm},
+			arc/.style={->, semithick, draw=black!35},
+			costG/.style={font=\scriptsize, fill=white, inner sep=1pt, text=black!55}
+		}
+
+		% layout
+		\node[vtx] (r) at (0,0) {$r$};
+		\node[vtx] (a) at (3,1.6) {$a$};
+		\node[vtx] (b) at (3,-1.6) {$b$};
+		\node[vtx] (c) at (6,2.2) {$c$};
+		\node[vtx] (d) at (6,0.0) {$d$};
+		\node[vtx] (e) at (6,-2.2) {$e$};
+
+		% arcos originais
+		\draw[arc] (r) -- node[costG, above] {1} (a);
+		\draw[arc] (r) -- node[costG, below] {2} (b);
+		\draw[arc] (r) .. controls (0.8,2.4) and (5.2,3.0) .. node[costG, yshift=4pt, pos=0.53] {3} (c);
+		\draw[arc] (b) to[bend left=12] node[costG, above] {4} (a);
+		\draw[arc] (a) to[bend left=14] node[costG, below] {5} (b);
+		\draw[arc] (a) -- node[costG, above] {1} (c);
+		\draw[arc] (a) -- node[costG, right] {3} (d);
+		\draw[arc] (b) -- node[costG, above] {1} (d);
+		\draw[arc] (b) -- node[costG, below] {2} (e);
+		\draw[arc] (c) .. controls (7.6,2.6) and (7.6,-2.6) .. node[costG, xshift=8pt, pos=0.52] {5} (e);
+		
+		% NOVO arco (c, a)
+		\draw[arc, draw=red!60] (c) to[bend left=20] node[costG, left, text=red!60] {1} (a);
+	\end{tikzpicture}
+	\caption{Dígrafo modificado com o arco \((c,a)\) de custo 1 (em vermelho).}
+\end{figure}
+
+Após a elevação de potenciais com \(y(a) = 1, y(c) = 1\), o arco \((c,a)\) torna-se
+apertado: \(c_y(c,a) = 1 - 1 = 0\).
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[>=Stealth]
+		% estilos
+		\tikzset{
+			vtx/.style={circle, draw,fill=blue!8, thick, inner sep=1.2pt, minimum size=6mm},
+			tight/.style={->, very thick, draw=blue},
+			cycle/.style={->, ultra thick, draw=red!70},
+			loose/.style={->, semithick, draw=black!35},
+			costB/.style={font=\scriptsize, fill=white, inner sep=1pt, text=blue},
+			costR/.style={font=\scriptsize, fill=white, inner sep=1pt, text=red!70},
+			costG/.style={font=\scriptsize, fill=white, inner sep=1pt, text=black!55}
+		}
+
+		% layout
+		\node[vtx] (r) at (0,0) {$r$};
+		\node[vtx] (a) at (3,1.6) {$a$};
+		\node[vtx] (b) at (3,-1.6) {$b$};
+		\node[vtx] (c) at (6,2.2) {$c$};
+		\node[vtx] (d) at (6,0.0) {$d$};
+		\node[vtx] (e) at (6,-2.2) {$e$};
+
+		% arcos apertados que formam ciclo
+		\draw[cycle] (a) -- node[costR, above] {0} (c);
+		\draw[cycle] (c) to[bend left=20] node[costR, left] {0} (a);
+
+		% outros arcos apertados
+		\draw[tight] (r) -- node[costB, above] {0} (a);
+		\draw[tight] (r) -- node[costB, below] {0} (b);
+		\draw[tight] (b) -- node[costB, above] {0} (d);
+		\draw[tight] (b) -- node[costB, below] {0} (e);
+
+		% arcos não apertados
+		\draw[loose] (r) .. controls (0.8,2.4) and (5.2,3.0) .. node[costG, yshift=4pt, pos=0.53] {2} (c);
+		\draw[loose] (b) to[bend left=12] node[costG, above] {3} (a);
+		\draw[loose] (a) to[bend left=14] node[costG, below] {3} (b);
+		\draw[loose] (a) -- node[costG, right] {2} (d);
+		\draw[loose] (c) .. controls (7.6,2.6) and (7.6,-2.6) .. node[costG, xshift=8pt, pos=0.52] {3} (e);
+	\end{tikzpicture}
+	\caption{Arcos apertados após elevação. O ciclo \(C = (a, c, a)\) é destacado em 
+	\textcolor{red!70}{vermelho}.}
+\end{figure}
+
+Nesse caso, contraímos o ciclo \(C = (a, c)\) em um supervértice \(x_C\), ajustamos
+os custos dos arcos incidentes, e resolvemos o problema no dígrafo contraído.
+A reexpansão é feita removendo um arco do ciclo para manter a estrutura de arborescência,
+de forma análoga ao algoritmo de Chu--Liu--Edmonds.
+
+\subsection*{Resumo do Algoritmo}
+
+O algoritmo de András Frank pode ser resumido da seguinte forma:
+
+\begin{enumerate}
+	\item \textbf{Inicialização:} Defina \(y(v) = 0\) para todo \(v \in V\).
+	\item \textbf{Elevação de potenciais:} Para cada \(v \neq r\), calcule 
+	      \(\Delta(v) = \min\{c(a) : a \in \delta^-(v)\} - y(v)\) e atualize 
+	      \(y(v) \leftarrow y(v) + \Delta(v)\).
+	\item \textbf{Identificação de arcos apertados:} Forme o conjunto 
+	      \(H = \{a \in A : c_y(a) = 0\}\).
+	\item \textbf{Verificação:} Se \(H\) contém uma \(r\)-arborescência, devolva-a.
+	\item \textbf{Contração de ciclos:} Caso contrário, identifique um ciclo \(C\) em \(H\),
+	      contraia \(C\) em um supervértice, ajuste os potenciais e custos, e resolva 
+	      recursivamente.
+	\item \textbf{Reexpansão:} Após obter a solução no dígrafo contraído, reexpanda 
+	      removendo um arco do ciclo para formar a \(r\)-arborescência ótima no dígrafo original.
+\end{enumerate}
