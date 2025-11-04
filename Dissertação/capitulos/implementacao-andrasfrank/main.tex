@@ -1571,236 +1571,203 @@ A implementação em Python do algoritmo de András Frank segue fielmente a desc
 
 \begin{table}[H]
 	\centering
-	\footnotesize
-	\renewcommand{\arraystretch}{1.4}
-	\begin{tabular}{>{\raggedright\arraybackslash}p{0.46\textwidth}|>{\raggedright\arraybackslash}p{0.46\textwidth}}
+	\scriptsize
+	\renewcommand{\arraystretch}{1.3}
+	\begin{tabular}{>{\raggedright\arraybackslash}p{0.44\textwidth}|>{\raggedright\arraybackslash}p{0.48\textwidth}}
 		\toprule
-		\textbf{\large Descrição Teórica} & \textbf{\large Implementação Python} \\
+		\textbf{\normalsize Descrição Teórica} & \textbf{\normalsize Implementação Python} \\
 		\midrule
 		\rowcolor{blue!5}
-		\textbf{Passo 1:} Inicialização de potenciais e \(A_0\)
+		\textbf{Passo 1:} Inicialização
 
 		Defina \(y(v) := 0\) para todo \(v \in V\).
 
 		Inicialize \(A_0 := \emptyset\).
 
-		Construa dígrafo vazio \(D_0\) que conterá apenas arcos apertados (\(c_y = 0\)).
-		                                  &
+		Construa dígrafo vazio \(D_0\) (arcos apertados).
+		                                       &
 		\textbf{Função \texttt{phase1} — Linhas 2--5:}
 
 		\texttt{D\_copy = D\_original.copy()}
 
 		\texttt{A\_zero = []}
 
-		\texttt{Dual\_list = []}
-
 		\texttt{D\_zero = build\_D\_zero(D\_copy)}
 
-		\vspace{2mm}
-		Potenciais implícitos \(y(v) = 0\) pois custos reduzidos iniciais \(c_y(u,v) = c(u,v) - y(v) = c(u,v)\).
+		\vspace{1mm}
+		Potenciais \(y(v) = 0\) implícitos, custos \(c_y = c\).
 		\\
 		\midrule
 		\rowcolor{green!5}
-		\textbf{Passo 2:} Elevação de potenciais (iterativo)
+		\textbf{Passo 2:} Elevação de potenciais
 
-		Enquanto existir \(X \subseteq V \setminus \{r\}\) sem arco apertado entrando:
+		Enquanto \(\exists X \subseteq V \setminus \{r\}\) sem arco apertado:
 
-		\quad (a) Calcule \(\Delta(X) := \min\{c_y(u,v) : u \notin X, v \in X\}\)
+		\quad Calcule \(\Delta(X) := \min\{c_y(u,v) : u \notin X, v \in X\}\)
 
-		\quad (b) Para cada \(v \in X\), atualize \(y(v) := y(v) + \Delta(X)\)
+		\quad Atualize \(y(v) := y(v) + \Delta(X)\), \(\forall v \in X\)
 
-		\quad (c) Adicione arcos que atingirem \(c_y = 0\) ao conjunto \(A_0\)
-		                                  &
+		\quad Adicione arcos com \(c_y = 0\) a \(A_0\)
+		                                       &
 		\textbf{Loop principal — Linhas 7--22:}
 
 		\texttt{C = nx.condensation(D\_zero)}
 
 		\texttt{sources = [x for x in C.nodes()]}
 
-		\quad \texttt{if C.in\_degree(x) == 0]}
+		\texttt{\quad if C.in\_degree(x) == 0]}
 
-		Para cada fonte \texttt{u} (exceto raiz):
+		Para fonte \texttt{u} (exceto raiz):
 
-		\quad \texttt{X = C.nodes[u]["members"]}
+		\texttt{\quad X = C.nodes[u]["members"]}
 
-		\quad \texttt{arcs = get\_arcs\_entering\_X(D, X)}
+		\texttt{\quad arcs = get\_arcs\_entering\_X(D, X)}
 
-		\quad \texttt{min\_w = get\_minimum\_weight\_cut(arcs)}
+		\texttt{\quad min\_w = get\_minimum\_weight\_cut(arcs)}
 
-		\quad \texttt{update\_weights\_in\_X(D, arcs, min\_w,}
+		\texttt{\quad update\_weights\_in\_X(D, arcs, min\_w,}
 
-		\quad\quad \texttt{A\_zero, D\_zero)}
-
-		\vspace{2mm}
-		Identifica componentes fortemente conexas sem arcos apertados, calcula \(\Delta(X)\) e atualiza pesos.
+		\texttt{\quad\quad A\_zero, D\_zero)}
 		\\
 		\midrule
 		\rowcolor{orange!5}
-		\textbf{Passo 2(a):} Identificação de arcos cruzando fronteira
+		\textbf{Passo 2(a):} Identificar arcos entrando
 
-		Para conjunto \(X\), determine
-
-		\(\{(u,v) \in A : u \notin X, v \in X\}\)
-
-		isto é, arcos que entram em \(X\) vindos de fora.
-		                                  &
+		Determine \(\{(u,v) \in A : u \notin X, v \in X\}\)
+		                                       &
 		\textbf{Função \texttt{get\_arcs\_entering\_X}:}
 
 		\texttt{return [(u, v, data)}
 
-		\quad \texttt{for u, v, data in D.edges(data=True)}
+		\texttt{\quad for u, v, data in D.edges(data=True)}
 
-		\quad \texttt{if u not in X and v in X]}
-
-		\vspace{2mm}
-		Compreensão de lista filtra arcos cruzando fronteira de \(X\).
+		\texttt{\quad if u not in X and v in X]}
 		\\
 		\midrule
 		\rowcolor{purple!5}
-		\textbf{Passo 2(b):} Cálculo do valor \(\Delta(X)\)
-
-		Determine o custo mínimo entre todos os arcos entrando em \(X\):
+		\textbf{Passo 2(b):} Calcular \(\Delta(X)\)
 
 		\(\Delta(X) := \min\{c_y(u,v) : u \notin X, v \in X\}\)
-		                                  &
+		                                       &
 		\textbf{Função \texttt{get\_minimum\_weight\_cut}:}
 
 		\texttt{return min(data["w"]}
 
-		\quad \texttt{for \_, \_, data in arcs)}
-
-		\vspace{2mm}
-		Função \texttt{min} com gerador extrai peso mínimo da lista de arcos.
+		\texttt{\quad for \_, \_, data in arcs)}
 		\\
 		\midrule
 		\rowcolor{yellow!5}
-		\textbf{Passo 2(c):} Atualização de pesos e construção de \(A_0\)
+		\textbf{Passo 2(c):} Atualizar pesos
 
-		Para cada arco \((u,v)\) entrando em \(X\):
+		Para \((u,v)\) entrando em \(X\):
 
-		\quad Atualize \(c_y(u,v) := c_y(u,v) - \Delta(X)\)
+		\quad \(c_y(u,v) := c_y(u,v) - \Delta(X)\)
 
-		\quad Se \(c_y(u,v) = 0\), adicione \((u,v)\) a \(A_0\)
-		                                  &
+		\quad Se \(c_y(u,v) = 0\), adicione a \(A_0\)
+		                                       &
 		\textbf{Função \texttt{update\_weights\_in\_X}:}
 
 		\texttt{for u, v, \_ in arcs:}
 
-		\quad \texttt{D[u][v]["w"] -= min\_weight}
+		\texttt{\quad D[u][v]["w"] -= min\_weight}
 
-		\quad \texttt{if D[u][v]["w"] == 0:}
+		\texttt{\quad if D[u][v]["w"] == 0:}
 
-		\quad\quad \texttt{A\_zero.append((u, v))}
+		\texttt{\quad\quad A\_zero.append((u, v))}
 
-		\quad\quad \texttt{D\_zero.add\_edge(u, v)}
-
-		\vspace{2mm}
-		Subtrai \(\Delta(X)\) dos pesos e registra arcos apertados.
+		\texttt{\quad\quad D\_zero.add\_edge(u, v)}
 		\\
 		\midrule
 		\rowcolor{cyan!5}
-		\textbf{Passo 3:} Verificação de término
+		\textbf{Passo 3:} Verificar término
 
-		Se \(D_0 = (V, A_0)\) contém r-arborescência (todos vértices alcançáveis via arcos apertados), encerre Fase~1.
-		                                  &
-		\textbf{Condição de parada — Linhas 11--12:}
+		Se \(D_0\) contém r-arborescência, encerre.
+		                                       &
+		\textbf{Condição — Linhas 11--12:}
 
-		\texttt{if len(sources) == 1:}
+		\texttt{if len(sources) == 1: break}
 
-		\quad \texttt{break}
-
-		\vspace{2mm}
-		Uma única fonte significa que \(D_0\) forma r-arborescência acíclica.
+		\vspace{1mm}
+		Uma fonte \(\Rightarrow\) r-arborescência acíclica.
 		\\
 		\midrule
 		\rowcolor{red!5}
-		\textbf{Passo 4:} Construção da arborescência (Fase~2)
+		\textbf{Passo 4:} Construir arborescência
 
-		Caso acíclico: Construa r-arborescência \(F\) a partir de \(A_0\), selecionando arcos que conectam vértices já incluídos a novos vértices.
+		Construa \(F\) a partir de \(A_0\), conectando vértices incrementalmente.
+		                                       &
+		\textbf{Função \texttt{phase2} (incremental):}
 
-		Devolva \(F\) com pesos originais restaurados.
-		                                  &
-		\textbf{Função \texttt{phase2} — Versão incremental:}
-
-		\texttt{Arb = nx.DiGraph()}
-
-		\texttt{Arb.add\_node(r0)}
+		\texttt{Arb = nx.DiGraph(); Arb.add\_node(r0)}
 
 		\texttt{for \_ in range(n - 1):}
 
-		\quad \texttt{for u, v in A\_zero:}
+		\texttt{\quad for u, v in A\_zero:}
 
-		\quad\quad \texttt{if u in Arb and v not in Arb:}
+		\texttt{\quad\quad if u in Arb and v not in Arb:}
 
-		\quad\quad\quad \texttt{Arb.add\_edge(u, v, **edge\_data)}
+		\texttt{\quad\quad\quad Arb.add\_edge(u, v, **data)}
 
-		\quad\quad\quad \texttt{break}
+		\texttt{\quad\quad\quad break}
 
-		\vspace{2mm}
-		Complexidade: \(O(nm)\). Adiciona um vértice por iteração.
+		\vspace{1mm}
+		Complexidade: \(O(nm)\).
 		\\
 		\midrule
 		\rowcolor{red!5}
-		\textbf{Passo 4:} Construção otimizada (Fase~2 versão BFS)
+		\textbf{Passo 4:} Versão otimizada
 
-		Mesma ideia, mas usando fila de prioridade para exploração ordenada, evitando buscas lineares repetidas.
-		                                  &
-		\textbf{Função \texttt{phase2\_v2} — Versão BFS:}
+		Mesma ideia, com fila de prioridade.
+		                                       &
+		\textbf{Função \texttt{phase2\_v2} (BFS):}
 
 		\texttt{Arb = nx.DiGraph()}
 
 		\texttt{for i, (u, v) in enumerate(A\_zero):}
 
-		\quad \texttt{Arb.add\_edge(u, v, w=i)}
+		\texttt{\quad Arb.add\_edge(u, v, w=i)}
 
-		\texttt{q = []} \quad \emph{(fila de prioridade)}
+		\texttt{q = [] \# fila de prioridade}
 
 		\texttt{while q:}
 
-		\quad \texttt{\_, u, v = heapq.heappop(q)}
+		\texttt{\quad \_, u, v = heapq.heappop(q)}
 
-		\quad \texttt{if v not in V: continue}
+		\texttt{\quad if v in V: continue}
 
-		\quad \texttt{A.add\_edge(u, v, w=D[u][v]["w"])}
+		\texttt{\quad A.add\_edge(u, v, w=D[u][v]["w"])}
 
-		\quad \texttt{[adiciona vizinhos à fila]}
-
-		\vspace{2mm}
-		Complexidade: \(O(m \log m)\). Mais eficiente para grafos densos.
+		\vspace{1mm}
+		Complexidade: \(O(m \log m)\).
 		\\
 		\midrule
 		\rowcolor{pink!5}
-		\textbf{Verificação de otimalidade dual}
+		\textbf{Otimalidade dual}
 
-		Para cada conjunto \(X\) elevado (com \(\Delta(X) > 0\)), verifique que exatamente um arco de \(F\) cruza \(\delta^-(X)\).
-
-		Condição de folga complementar: garante otimalidade via dualidade forte.
-		                                  &
-		\textbf{Função \texttt{check\_dual\_optimality\_condition}:}
+		Para cada \(X\) elevado (\(\Delta(X) > 0\)), exatamente um arco de \(F\) cruza \(\delta^-(X)\).
+		                                       &
+		\textbf{Função \texttt{check\_dual\_optimality}:}
 
 		\texttt{for X, z in Dual\_list:}
 
-		\quad \texttt{count = 0}
+		\texttt{\quad count = 0}
 
-		\quad \texttt{for u, v in Arb.edges():}
+		\texttt{\quad for u, v in Arb.edges():}
 
-		\quad\quad \texttt{if u not in X and v in X:}
+		\texttt{\quad\quad if u not in X and v in X:}
 
-		\quad\quad\quad \texttt{count += 1}
+		\texttt{\quad\quad\quad count += 1}
 
-		\quad\quad\quad \texttt{if count > 1: return False}
+		\texttt{\quad\quad\quad if count > 1: return False}
 
 		\texttt{return True}
-
-		\vspace{2mm}
-		Verifica que cada corte dual possui exatamente um arco da arborescência.
 		\\
 		\bottomrule
 	\end{tabular}
-	\caption{Correspondência entre a descrição teórica do algoritmo de András Frank e sua implementação em Python. Cada linha da coluna direita mostra a tradução direta dos conceitos primal-duais da coluna esquerda em operações concretas sobre grafos. As cores distinguem as diferentes fases: inicialização (azul), elevação de potenciais (verde/laranja/roxo/amarelo), verificação (ciano), construção da arborescência (vermelho) e validação dual (rosa).}
+	\caption{Correspondência entre a descrição teórica do algoritmo de András Frank e sua implementação em Python. Cores: inicialização (azul), elevação de potenciais (verde/laranja/roxo/amarelo), verificação (ciano), construção (vermelho) e validação dual (rosa).}
 	\label{tab:frank-teoria-implementacao}
 \end{table}
 
-Esta correspondência demonstra que a implementação traduz fielmente a abordagem primal-dual em código executável. As funções auxiliares (\texttt{get\_arcs\_entering\_X}, \texttt{get\_minimum\_weight\_cut}, \texttt{update\_weights\_in\_X}, \texttt{phase1}, \texttt{phase2}, \texttt{phase2\_v2}, 
+Esta correspondência demonstra que a implementação traduz fielmente a abordagem primal-dual em código executável. As funções auxiliares (\texttt{get\_arcs\_entering\_X}, \texttt{get\_minimum\_weight\_cut}, \texttt{update\_weights\_in\_X}, \texttt{phase1}, \texttt{phase2}, \texttt{phase2\_v2},
 \texttt{check\_dual\_}-
 \texttt{optimality\_condition} encapsulam exatamente as operações descritas na teoria, preservando as propriedades de correção e as garantias de otimalidade do algoritmo original. A utilização de componentes fortemente conexas (\texttt{nx.condensation}) para identificar conjuntos sem arcos apertados entrando é uma implementação eficiente da verificação teórica, evitando enumeração explícita de todos os subconjuntos de vértices.
