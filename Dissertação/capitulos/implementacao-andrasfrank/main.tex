@@ -767,9 +767,7 @@ A função devolve o dígrafo \texttt{Arb} representando a r-arborescência de c
 	\emph{Constrói incrementalmente a r-arborescência a partir de $A_0$, adicionando iterativamente arcos que conectam vértices já incluídos a novos vértices.}
 	\tcblower
 	\begin{lstlisting}[language=Python]
-def phase2_find_minimum_arborescence(D_original, r0, A_zero, 
-                                     draw_fn=None, log=None, 
-                                     boilerplate: bool = True, lang="pt"):
+def phase2_find_minimum_arborescence(D_original, r0, A_zero):
     Arb = nx.DiGraph()
     Arb.add_node(r0)
     n = len(D_original.nodes())
@@ -780,7 +778,6 @@ def phase2_find_minimum_arborescence(D_original, r0, A_zero,
                 edge_data = D_original.get_edge_data(u, v)
                 Arb.add_edge(u, v, **edge_data)
                 break
-    
     return Arb
 \end{lstlisting}
 \end{tcolorbox}
