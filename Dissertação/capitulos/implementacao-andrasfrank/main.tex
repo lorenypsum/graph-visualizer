@@ -1054,9 +1054,9 @@ As funções auxiliares implementadas nesta seção correspondem diretamente aos
 			      \item \texttt{get\_minimum\_weight\_cut(arcs)}: Calcula \(\min\{\text{data}["w"] : (u,v,\text{data}) \in \text{arcs}\}\), que é exatamente \(\Delta(X) = \min\{c_y(u,v) : u \notin X, v \in X\}\). Como os pesos no dígrafo já representam custos reduzidos (são atualizados a cada iteração), essa função devolve precisamente o valor teórico de \(\Delta(X)\).
 
 			      \item \texttt{update\_weights\_in\_X(D, arcs, min\_weight, A\_zero, D\_zero)}: Implementa a atualização dos potenciais. Para cada arco \((u,v)\) entrando em \(X\), subtrai \texttt{min\_weight} de \texttt{D[u][v]["w"]}, efetivamente calculando o novo custo reduzido:
-			            \[c_y'(u,v) = c_y(u,v) - \Delta(X) = \] 	
-						\[c(u,v) - y(v) - \Delta(X) = \] 
-						\[c(u,v) - \bigl(y(v) + \Delta(X)\bigr) = c(u,v) - y'(v), \]
+			            \[c_y'(u,v) = c_y(u,v) - \Delta(X) = \]
+			            \[c(u,v) - y(v) - \Delta(X) = \]
+			            \[c(u,v) - \bigl(y(v) + \Delta(X)\bigr) = c(u,v) - y'(v), \]
 			            onde \(y'(v) = y(v) + \Delta(X)\) é o novo potencial. Arcos cujo custo reduzido atinge zero (\texttt{D[u][v]["w"] == 0}) são adicionados a \(A_0\) e \(D_0\), tornando-se \textbf{apertados}.
 		      \end{enumerate}
 	\end{itemize}
@@ -1096,7 +1096,7 @@ A função devolve o dígrafo \texttt{Arb} representando a r-arborescência de c
 	\emph{Constrói incrementalmente a r-arborescência a partir de $A_0$, adicionando iterativamente arcos que conectam vértices já incluídos a novos vértices.}
 	\tcblower
 	\begin{lstlisting}[language=Python]
-def phase2_find_minimum_arborescence(D_original, r0, A_zero):
+def phase2(D_original, r0, A_zero):
     Arb = nx.DiGraph()
     Arb.add_node(r0)
     n = len(D_original.nodes())
@@ -1107,6 +1107,48 @@ def phase2_find_minimum_arborescence(D_original, r0, A_zero):
                 Arb.add_edge(u, v, **edge_data)
                 break
     return Arb
+\end{lstlisting}
+\end{tcolorbox}
+
+Apresentamos também uma versão alternativa da Fase~2 que utiliza busca em largura (BFS) para construir a r-arborescência de forma mais eficiente. Diferentemente da versão anterior que itera \(n-1\) vezes sobre todos os arcos, esta implementação usa uma fila de prioridade para explorar os arcos em ordem, evitando buscas lineares repetidas.
+
+Recebe como entrada um dígrafo \texttt{D\_original}, a raiz \texttt{r0}, e a lista \texttt{A\_zero} de arcos apertados. A implementação começa criando um dígrafo auxiliar \texttt{Arb} (linha 2) onde cada arco de \texttt{A\_zero} recebe um peso igual ao seu índice na lista (linhas 3-4), estabelecendo uma ordem de exploração. Inicializa-se o conjunto \texttt{V} de vértices visitados contendo apenas a raiz (linha 5) e uma fila de prioridade vazia \texttt{q} (linha 6).
+
+Todos os arcos que saem da raiz em \texttt{Arb} são adicionados à fila de prioridade (linhas 7-8), usando o peso (índice) como critério de ordenação. Cria-se então o dígrafo \texttt{A} que conterá a arborescência resultante (linha 9).
+
+O loop principal (linhas 10-17) extrai arcos da fila de prioridade em ordem crescente de índice. Para cada arco \((u,v)\) extraído (linha 11), verifica-se se o vértice destino \(v\) já foi visitado (linha 12); em caso positivo, o arco é ignorado via \texttt{continue} (linha 13). Caso contrário, adiciona-se o arco \((u,v)\) à arborescência \texttt{A} com o peso original de \texttt{D\_original} (linha 14), marca-se \(v\) como visitado (linha 15), e todos os arcos que saem de \(v\) em \texttt{Arb} são adicionados à fila de prioridade para exploração futura (linhas 16-17).
+
+A função devolve o dígrafo \texttt{A} representando a r-arborescência de custo mínimo. A complexidade é \(O(m \log m)\), onde \(m = |A_0|\), devido às operações de inserção e remoção na fila de prioridade. Esta versão é mais eficiente que a anterior quando \(|A_0|\) é grande, pois evita percorrer todos os arcos em cada iteração.
+
+\begin{tcolorbox}[
+		enhanced, breakable,
+		colframe=blue!60!black, colback=blue!2,
+		colbacktitle=blue!15, coltitle=black,
+		title={Fase 2 (versão BFS): Construção da arborescência com fila de prioridade},
+		boxed title style={sharp corners, boxrule=0.6pt},
+		sharp corners, boxrule=0.6pt
+	]
+	\emph{Constrói a r-arborescência usando busca em largura guiada por fila de prioridade, explorando arcos de $A_0$ em ordem e evitando buscas lineares repetidas. Complexidade $O(m \log m)$.}
+	\tcblower
+	\begin{lstlisting}[language=Python]
+def phase2_v2(D_original, r0, A_zero):
+    Arb = nx.DiGraph()
+    for i, (u, v) in enumerate(A_zero):
+        Arb.add_edge(u, v, w=i)
+    V = {r0}
+    q = []
+    for u, v, data in Arb.out_edges(r0, data=True):
+        heapq.heappush(q, (data["w"], u, v))
+    A = nx.DiGraph()
+    while q:
+        _, u, v = heapq.heappop(q)
+        if v in V:
+            continue
+        A.add_edge(u, v, w=D_original[u][v]["w"])
+        V.add(v)
+        for x, y, data in Arb.out_edges(v, data=True):
+            heapq.heappush(q, (data["w"], x, y))
+    return A
 \end{lstlisting}
 \end{tcolorbox}
 
