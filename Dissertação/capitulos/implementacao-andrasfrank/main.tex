@@ -1071,7 +1071,6 @@ As funções auxiliares implementadas nesta seção correspondem diretamente aos
 \end{tcolorbox}
 
 \subsection{Fase 2: Construção da arborescência}
-
 Esta é a função principal da Fase~2, responsável por construir a r-arborescência de custo mínimo a partir do conjunto \(A_0\) de arcos apertados. A construção é incremental: inicia-se com a raiz e adiciona-se iterativamente arcos de \(A_0\) que conectam vértices já incluídos a novos vértices, garantindo que cada vértice não-raiz receba exatamente um arco de entrada.
 
 Recebe como entrada um dígrafo \texttt{D\_original}, a raiz \texttt{r0}, e a lista \texttt{A\_zero} de arcos apertados. A implementação cria um novo dígrafo vazio \texttt{Arb} (linha 2) e adiciona a raiz (linha 3).
