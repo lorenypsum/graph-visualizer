@@ -1320,4 +1320,25 @@ def check_dual_optimality_condition(Arb, Dual_list):
 
 Finalmente, apresentamos a função principal que implementa o algoritmo de András Frank para encontrar uma r-arborescência de custo mínimo em um dígrafo com pesos. A função integra as fases de construção dos potenciais duais, obtenção dos arcos apertados, construção da arborescência e verificação de otimalidade dual. 
 
-
+\begin{tcolorbox}[
+		enhanced, breakable,
+		colframe=blue!60!black, colback=blue!2,
+		colbacktitle=blue!15, coltitle=black,
+		title={Verificação de otimalidade dual},
+		boxed title style={sharp corners, boxrule=0.6pt},
+		sharp corners, boxrule=0.6pt
+	]
+	\emph{Implementa o algoritmo completo de András Frank, integrando as fases de construção dos potenciais duais, obtenção dos arcos apertados, construção da arborescência e verificação de otimalidade dual.}
+	\tcblower
+	\begin{lstlisting}[language=Python]
+def andras_frank_algorithm(D):
+    A_zero, Dual_list = phase1(D,"r0")
+    arborescence_frank = phase2(D, "r0", A_zero)
+    arborescence_frank_v2 = phase2_v2(D, "r0", A_zero)
+    dual_frank = check_dual_optimality_condition(
+        arborescence_frank, Dual_list)
+    dual_frank_v2 = check_dual_optimality_condition(
+        arborescence_frank_v2, Dual_list)
+    return arborescence_frank, arborescence_frank_v2, dual_frank, dual_frank_v2
+\end{lstlisting}
+\end{tcolorbox}
