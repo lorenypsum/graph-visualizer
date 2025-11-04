@@ -551,7 +551,7 @@ def get_arcs_entering_X(D, X):
 \end{lstlisting}
 \end{tcolorbox}
 
-A figura a seguir ilustra o funcionamento da função \texttt{get\_arcs\_entering\_X}. Os vértices em laranja pertencem ao conjunto \(X\), e a função identifica apenas os arcos em vermelho, que saem de vértices fora de \(X\) e entram em vértices dentro de \(X\). Arcos internos a \(X\), externos a \(X\), ou saindo de \(X\) não são retornados.
+A figura a seguir ilustra o funcionamento da função \texttt{get\_arcs\_entering\_X} em um digrafo que vamos denotar por \(D\_32\). Os vértices em laranja pertencem ao conjunto \(X\), e a função identifica apenas os arcos em vermelho, que saem de vértices fora de \(X\) e entram em vértices dentro de \(X\). Arcos internos a \(X\), externos a \(X\), ou saindo de \(X\) não são retornados.
 
 \begin{figure}[H]
 	\centering
@@ -604,7 +604,7 @@ A figura a seguir ilustra o funcionamento da função \texttt{get\_arcs\_enterin
 
 Esta função calcula o peso mínimo entre todos os arcos fornecidos, correspondendo ao valor \(\Delta(X)\) necessário para elevar os potenciais dos vértices em \(X\).
 
-Recebe como entrada uma lista \texttt{arcs} de tuplas \((u, v, \text{data})\). A implementação usa a função \texttt{min} com uma compreensão de gerador (linha 2) que extrai o atributo \texttt{"w"} de cada tupla \texttt{data}.
+Recebe como entrada uma lista \texttt{arcos} de tuplas \((u, v, \text{data})\). A implementação usa a função \texttt{min} com uma compreensão de gerador (linha 2) que extrai o atributo \texttt{"w"} de cada tupla em \texttt{data}.
 
 A função devolve o peso mínimo encontrado entre todos os arcos da lista. A complexidade é \(O(k)\), onde \(k\) é o número de arcos na lista, pois examina cada arco uma vez para encontrar o mínimo.
 
@@ -623,6 +623,60 @@ def get_minimum_weight_cut(arcs):
     return min(data["w"] for _, _, data in arcs)
 \end{lstlisting}
 \end{tcolorbox}
+
+A seguir temos uma ilustração do funcionamento da função \texttt{get\_minimum\_weight\_cut} em \(D\_32\). Considerando os arcos em vermelho que entram em \(X\) (identificados pela função anterior), esta função calcula o peso mínimo entre eles. O arco em verde possui o menor peso (2), correspondendo ao valor \(\Delta(X) = 2\) que será devolvido pela função.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[>=Stealth]
+		% estilos
+		\tikzset{
+			vtx/.style={circle, draw, fill=blue!8, thick, inner sep=1.2pt, minimum size=7mm},
+			vtxX/.style={circle, draw=orange!80!black, fill=orange!15, thick, inner sep=1.2pt, minimum size=7mm},
+			arc/.style={->, >=Stealth, thick, draw=black!40},
+			arcEntering/.style={->, >=Stealth, very thick, draw=red!70!black},
+			arcMin/.style={->, >=Stealth, ultra thick, draw=green!60!black},
+			cost/.style={font=\scriptsize, fill=white, inner sep=1pt},
+			costMin/.style={font=\scriptsize\bfseries, fill=green!10, inner sep=2pt, draw=green!60!black, rounded corners=1pt}
+		}
+
+		% Vértices fora de X
+		\node[vtx] (u1) at (0, 2) {$u_1$};
+		\node[vtx] (u2) at (0, 0) {$u_2$};
+		\node[vtx] (u3) at (0, -2) {$u_3$};
+
+		% Vértices dentro de X (destacados)
+		\node[vtxX] (v1) at (4, 2.5) {$v_1$};
+		\node[vtxX] (v2) at (4, 0.5) {$v_2$};
+		\node[vtxX] (v3) at (4, -1.5) {$v_3$};
+
+		% Arcos entrando em X (em vermelho, mas o mínimo em verde)
+		\draw[arcEntering] (u1) -- node[cost, above] {3} (v1);
+		\draw[arcMin] (u2) -- node[costMin, above] {2} (v2);
+		\draw[arcEntering] (u3) -- node[cost, above] {4} (v3);
+		\draw[arcEntering] (u1) to[bend right=15] node[cost, below, pos=0.3] {5} (v2);
+
+		% Arcos internos a X (não retornados)
+		\draw[arc] (v1) to[bend right=20] node[cost, right, pos=0.6] {1} (v2);
+		\draw[arc] (v2) to[bend right=20] node[cost, left, pos=0.4] {2} (v3);
+
+		% Arcos externos a X (não retornados)
+		\draw[arc] (u1) to[bend right=20] node[cost, left, pos=0.6] {1} (u2);
+		\draw[arc] (u2) to[bend right=20] node[cost, left, pos=0.6] {3} (u3);
+
+		% Arcos saindo de X (não retornados)
+		\draw[arc] (v1) to[bend left=30] node[cost, above, pos=0.7] {2} (u1);
+
+		% Região X destacada
+		\draw[orange!60!black, thick, dashed, rounded corners=8pt]
+		(3.2, 3.2) rectangle (4.8, -2.2);
+		\node[orange!80!black, font=\bfseries] at (5.5, 3.2) {$X$};
+
+		% Anotação do resultado
+		\node[font=\bfseries, green!60!black] at (2, -3) {$\Delta(X) = \min\{3, 2, 4, 5\} = 2$};
+	\end{tikzpicture}
+	\caption{Ilustração da função \texttt{get\_minimum\_weight\_cut}. Considerando os arcos \textcolor{red!70!black}{em vermelho} que entram em \(X\) (identificados pela função anterior), esta função calcula o peso mínimo entre eles. O arco \textcolor{green!60!black}{em verde} possui o menor peso (2), correspondendo ao valor \(\Delta(X) = 2\).}
+\end{figure}
 
 \subsection{Atualização de pesos em \texorpdfstring{\(X\)}{X}}
 
