@@ -413,21 +413,511 @@ os custos dos arcos incidentes, e resolvemos o problema no dígrafo contraído.
 A reexpansão é feita removendo um arco do ciclo para manter a estrutura de arborescência,
 de forma análoga ao algoritmo de Chu--Liu--Edmonds.
 
-\subsection*{Resumo do Algoritmo}
+\section{Descrição formal do algoritmo}
 
-O algoritmo de András Frank pode ser resumido da seguinte forma:
+Nesta seção, apresentamos a descrição formal do algoritmo de András Frank.
+O algoritmo recebe como entrada um \(r\)-dígrafo ponderado \((D,c,r)\) e devolve
+uma \(r\)-arborescência \(c\)-mínima de \(D\).
 
-\begin{enumerate}
-	\item \textbf{Inicialização:} Defina \(y(v) = 0\) para todo \(v \in V\).
-	\item \textbf{Elevação de potenciais:} Para cada \(v \neq r\), calcule
-	      \(\Delta(v) = \min\{c(a) : a \in \delta^-(v)\} - y(v)\) e atualize
-	      \(y(v) \leftarrow y(v) + \Delta(v)\).
-	\item \textbf{Identificação de arcos apertados:} Forme o conjunto
-	      \(H = \{a \in A : c_y(a) = 0\}\).
-	\item \textbf{Verificação:} Se \(H\) contém uma \(r\)-arborescência, devolva-a.
-	\item \textbf{Contração de ciclos:} Caso contrário, identifique um ciclo \(C\) em \(H\),
-	      contraia \(C\) em um supervértice, ajuste os potenciais e custos, e resolva
-	      recursivamente.
-	\item \textbf{Reexpansão:} Após obter a solução no dígrafo contraído, reexpanda
-	      removendo um arco do ciclo para formar a \(r\)-arborescência ótima no dígrafo original.
-\end{enumerate}
+\subsection{Pseudocódigo}
+
+O algoritmo pode ser descrito pelo seguinte pseudocódigo:
+
+\begin{algorithm}[H]
+	\caption{András Frank}
+	\label{alg:andrasfrank}
+	\begin{algorithmic}[1]
+		\Require Um \(r\)-dígrafo ponderado \((D,c,r)\), onde \(D=(V,A)\)
+		\Ensure Uma \(r\)-arborescência \(c\)-mínima \(T\) de \(D\)
+		\State \(y(v) \gets 0\) para todo \(v \in V\)
+		\State \textsc{ElevarPotenciais}\((D,c,y)\)
+		\State \(H \gets \{a \in A : c_y(a) = 0\}\) \Comment{Arcos apertados}
+		\If{\(H\) contém uma \(r\)-arborescência}
+		\State \Return \(H\)
+		\Else
+		\State Identifique um ciclo \(C\) em \(H\)
+		\State \((D',c',r') \gets\) \textsc{ContrairCiclo}\((D,c,r,C,y)\)
+		\State \(T' \gets\) \textsc{AndrásFrank}\((D',c',r')\)
+		\State \(T \gets\) \textsc{ReexpandirCiclo}\((T',C)\)
+		\State \Return \(T\)
+		\EndIf
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+	\caption{ElevarPotenciais}
+	\label{alg:elevarpotenciais}
+	\begin{algorithmic}[1]
+		\Require Um dígrafo \(D=(V,A)\), função custo \(c\colon A\to\mathbb{R}\), potenciais \(y\colon V\to\mathbb{R}\)
+		\Ensure Potenciais \(y\) atualizados
+		\For{cada \(v \in V \setminus \{r\}\)}
+		\State \(\Delta(v) \gets \min\{c(a) : a \in \delta^-(v)\} - y(v)\)
+		\State \(y(v) \gets y(v) + \Delta(v)\)
+		\EndFor
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+	\caption{ContrairCiclo}
+	\label{alg:contrairciclo}
+	\begin{algorithmic}[1]
+		\Require Um dígrafo \(D=(V,A)\), função custo \(c\), raiz \(r\), ciclo \(C\), potenciais \(y\)
+		\Ensure Dígrafo contraído \(D'=(V',A')\), função custo \(c'\), raiz \(r'\)
+		\State \(V' \gets (V \setminus V(C)) \cup \{x_C\}\)
+		\State \(A' \gets \emptyset\)
+		\For{cada arco \(a = (u,v) \in A\)}
+		\If{\(u \notin V(C)\) e \(v \notin V(C)\)}
+		\State Adicione \(a\) a \(A'\) com custo \(c'(a) = c(a)\)
+		\ElsIf{\(u \notin V(C)\) e \(v \in V(C)\)}
+		\State Seja \(a_v\) o arco de \(C\) que entra em \(v\)
+		\State Adicione \((u,x_C)\) a \(A'\) com custo \(c'(u,x_C) = c(u,v) - c(a_v)\)
+		\ElsIf{\(u \in V(C)\) e \(v \notin V(C)\)}
+		\State Adicione \((x_C,v)\) a \(A'\) com custo \(c'(x_C,v) = c(u,v)\)
+		\EndIf
+		\EndFor
+		\State \(r' \gets r\) se \(r \notin V(C)\), caso contrário \(r' \gets x_C\)
+		\State \Return \((D',c',r')\)
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+	\caption{ReexpandirCiclo}
+	\label{alg:reexpandirciclo}
+	\begin{algorithmic}[1]
+		\Require Arborescência \(T'\) no dígrafo contraído, ciclo \(C\)
+		\Ensure Arborescência \(T\) no dígrafo original
+		\State \(T \gets T' \setminus \{a' : a' \text{ incidente a } x_C\}\)
+		\State Adicione todos os arcos de \(C\) a \(T\)
+		\If{existe arco \(a' = (u,x_C) \in T'\)}
+		\State Seja \(v\) o vértice de \(C\) tal que \(a' = (u,v)\) no grafo original
+		\State Seja \(a_v\) o arco de \(C\) que entra em \(v\)
+		\State Remova \(a_v\) de \(T\)
+		\EndIf
+		\State \Return \(T\)
+	\end{algorithmic}
+\end{algorithm}
+
+\subsection{Exemplo completo passo a passo}
+
+Vamos ilustrar o algoritmo com um exemplo completo usando o dígrafo modificado
+apresentado anteriormente, que contém o ciclo \((a,c,a)\).
+
+\begin{tcolorbox}[colback=green!5!white,colframe=green!80!black,title={Entrada do algoritmo}]
+	\textbf{Dígrafo:} \(D = (V,A)\) com \(V = \{r, a, b, c, d, e\}\)\\
+	\textbf{Custos:} Conforme mostrado na figura (incluindo o arco \((c,a)\) com custo 1)\\
+	\textbf{Raiz:} \(r\)
+\end{tcolorbox}
+
+\subsubsection*{Passo 1: Inicialização}
+
+Definimos \(y(v) = 0\) para todo \(v \in V\).
+
+\subsubsection*{Passo 2: Elevação de potenciais}
+
+Para cada vértice \(v \neq r\), calculamos \(\Delta(v)\) e atualizamos \(y(v)\):
+
+\begin{align*}
+	\Delta(a) & = \min\{1, 4, 1\} - 0 = 1 \quad \Rightarrow \quad y(a) = 1 \\
+	\Delta(b) & = \min\{2, 5\} - 0 = 2 \quad \Rightarrow \quad y(b) = 2    \\
+	\Delta(c) & = \min\{3, 1\} - 0 = 1 \quad \Rightarrow \quad y(c) = 1    \\
+	\Delta(d) & = \min\{3, 1\} - 0 = 1 \quad \Rightarrow \quad y(d) = 1    \\
+	\Delta(e) & = \min\{2, 5\} - 0 = 2 \quad \Rightarrow \quad y(e) = 2
+\end{align*}
+
+\subsubsection*{Passo 3: Identificação de arcos apertados}
+
+Os arcos apertados (custo reduzido zero) são:
+\[
+	H = \{(r,a), (r,b), (a,c), (c,a), (b,d), (b,e)\}
+\]
+
+\subsubsection*{Passo 4: Verificação de ciclos}
+
+O conjunto \(H\) contém o ciclo \(C = (a,c,a)\). Portanto, precisamos contrair o ciclo.
+
+\subsubsection*{Passo 5: Contração do ciclo}
+
+Contraímos os vértices \(a\) e \(c\) em um supervértice \(x_C\).
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[>=Stealth]
+		\tikzset{
+			vtx/.style={circle, draw,fill=blue!8, thick, inner sep=1.2pt, minimum size=6mm},
+			super/.style={circle, draw,fill=red!10, thick, inner sep=1.2pt, minimum size=9mm},
+			arc/.style={->, very thick, draw=blue},
+			costB/.style={font=\scriptsize, fill=white, inner sep=1pt, text=blue}
+		}
+		\node[vtx] (r) at (0,0) {$r$};
+		\node[super] (xC) at (4,0.8) {$x_C$};
+		\node[vtx] (b) at (3,-1.6) {$b$};
+		\node[vtx] (d) at (6,0.0) {$d$};
+		\node[vtx] (e) at (6,-2.2) {$e$};
+
+		\draw[arc] (r) -- node[costB, above] {0} (xC);
+		\draw[arc] (r) -- node[costB, below] {0} (b);
+		\draw[arc] (b) -- node[costB, above] {0} (d);
+		\draw[arc] (b) -- node[costB, below] {0} (e);
+	\end{tikzpicture}
+	\caption{Dígrafo contraído \(D'\) após contrair o ciclo \(C = (a,c)\).}
+\end{figure}
+
+\subsubsection*{Passo 6: Resolução recursiva}
+
+No dígrafo contraído, os arcos apertados formam uma \(r\)-arborescência:
+\[
+	T' = \{(r,x_C), (r,b), (b,d), (b,e)\}
+\]
+
+\subsubsection*{Passo 7: Reexpansão}
+
+Reexpandimos o ciclo \(C\). Como o arco \((r,x_C)\) entra no supervértice,
+ele corresponde ao arco \((r,a)\) no grafo original. O arco que entra em \(a\)
+no ciclo é \((c,a)\), que deve ser removido.
+
+A arborescência final é:
+\[
+	T = \{(r,a), (r,b), (a,c), (b,d), (b,e)\}
+\]
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[>=Stealth]
+		\tikzset{
+			vtx/.style={circle, draw,fill=blue!8, thick, inner sep=1.2pt, minimum size=6mm},
+			chosen/.style={->, very thick, draw=blue},
+			removed/.style={->, thick, draw=red, dashed},
+			costB/.style={font=\scriptsize, fill=white, inner sep=1pt, text=blue},
+			costR/.style={font=\scriptsize, fill=white, inner sep=1pt, text=red}
+		}
+		\node[vtx] (r) at (0,0) {$r$};
+		\node[vtx] (a) at (3,1.6) {$a$};
+		\node[vtx] (b) at (3,-1.6) {$b$};
+		\node[vtx] (c) at (6,2.2) {$c$};
+		\node[vtx] (d) at (6,0.0) {$d$};
+		\node[vtx] (e) at (6,-2.2) {$e$};
+
+		\draw[chosen] (r) -- node[costB, above] {1} (a);
+		\draw[chosen] (r) -- node[costB, below] {2} (b);
+		\draw[chosen] (a) -- node[costB, above] {1} (c);
+		\draw[chosen] (b) -- node[costB, above] {1} (d);
+		\draw[chosen] (b) -- node[costB, below] {2} (e);
+		\draw[removed] (c) to[bend left=20] node[costR, left] {1} (a);
+	\end{tikzpicture}
+	\caption{Solução final após reexpansão. O arco \((c,a)\) (tracejado em vermelho) foi removido.}
+\end{figure}
+
+\begin{tcolorbox}[colback=green!5!white,colframe=green!80!black,title={Saída do algoritmo}]
+	\textbf{Arborescência ótima:} \(T = \{(r,a), (r,b), (a,c), (b,d), (b,e)\}\)\\
+	\textbf{Custo total:} \(c(T) = 1 + 2 + 1 + 1 + 2 = 7\)
+\end{tcolorbox}
+
+\section{Implementação}
+
+Nesta seção, apresentamos detalhes sobre a implementação do algoritmo de András Frank
+desenvolvida neste trabalho. A implementação foi feita em Python e está disponível
+no repositório do projeto.
+
+\subsection{Estruturas de dados}
+
+Para implementar o algoritmo de forma eficiente, utilizamos as seguintes estruturas de dados:
+
+\begin{itemize}
+	\item \textbf{Dígrafo:} Representado por listas de adjacência, onde cada vértice
+	      mantém uma lista de arcos que saem dele e arcos que entram nele.
+	\item \textbf{Potenciais:} Armazenados em um dicionário que mapeia cada vértice
+	      para seu valor de potencial \(y(v)\).
+	\item \textbf{Custos reduzidos:} Calculados dinamicamente a partir dos custos
+	      originais e dos potenciais.
+	\item \textbf{Ciclos:} Identificados usando busca em profundidade (DFS) no
+	      subgrafo formado pelos arcos apertados.
+\end{itemize}
+
+\subsection{Principais funções}
+
+A implementação é organizada nas seguintes funções principais:
+
+\subsubsection*{Função \texttt{andras\_frank}}
+
+Esta é a função principal que implementa o algoritmo. Ela recebe um dígrafo,
+uma função custo e uma raiz, e devolve uma arborescência de custo mínimo.
+
+\begin{lstlisting}[language=Python, caption={Função principal do algoritmo}]
+def andras_frank(digraph, cost, root):
+    """
+    Encontra uma arborescencia de custo minimo.
+    
+    Args:
+        digraph: Digrafo representado por listas de adjacencia
+        cost: Dicionario mapeando arcos para custos
+        root: Vertice raiz
+    
+    Returns:
+        Conjunto de arcos formando a arborescencia otima
+    """
+    # Inicializa potenciais
+    potentials = {v: 0 for v in digraph.vertices}
+    
+    # Eleva potenciais
+    raise_potentials(digraph, cost, potentials, root)
+    
+    # Identifica arcos apertados
+    tight_arcs = find_tight_arcs(digraph, cost, potentials)
+    
+    # Verifica se ha ciclos
+    cycle = find_cycle(tight_arcs, root)
+    
+    if cycle is None:
+        # Arcos apertados formam arborescencia
+        return tight_arcs
+    else:
+        # Contrai ciclo e resolve recursivamente
+        contracted = contract_cycle(digraph, cost, cycle, potentials)
+        solution = andras_frank(contracted.digraph, 
+                              contracted.cost, 
+                              contracted.root)
+        return expand_cycle(solution, cycle)
+\end{lstlisting}
+
+\subsubsection*{Função \texttt{raise\_potentials}}
+
+Esta função implementa a elevação de potenciais. Para cada vértice (exceto a raiz),
+ela calcula o mínimo custo de entrada e ajusta o potencial de forma que ao menos
+um arco fique apertado.
+
+\begin{lstlisting}[language=Python, caption={Elevação de potenciais}]
+def raise_potentials(digraph, cost, potentials, root):
+    """
+    Eleva os potenciais dos vertices.
+    
+    Para cada vertice v != root, calcula o minimo custo de entrada
+    e ajusta y(v) para que exista ao menos um arco apertado.
+    """
+    for v in digraph.vertices:
+        if v == root:
+            continue
+        
+        # Calcula minimo custo de entrada
+        min_cost = min(cost[arc] for arc in digraph.incoming[v])
+        
+        # Eleva potencial
+        delta = min_cost - potentials[v]
+        potentials[v] += delta
+\end{lstlisting}
+
+\subsubsection*{Função \texttt{find\_tight\_arcs}}
+
+Esta função identifica todos os arcos cujo custo reduzido é zero.
+
+\begin{lstlisting}[language=Python, caption={Identificação de arcos apertados}]
+def find_tight_arcs(digraph, cost, potentials):
+    """
+    Identifica arcos com custo reduzido zero.
+    
+    Um arco (u,v) e apertado se c(u,v) - y(v) = 0.
+    """
+    tight = set()
+    
+    for arc in digraph.arcs:
+        u, v = arc
+        reduced_cost = cost[arc] - potentials[v]
+        
+        if abs(reduced_cost) < 1e-9:  # Tolerancia numerica
+            tight.add(arc)
+    
+    return tight
+\end{lstlisting}
+
+\subsubsection*{Função \texttt{find\_cycle}}
+
+Esta função usa busca em profundidade para detectar ciclos no subgrafo
+formado pelos arcos apertados.
+
+\begin{lstlisting}[language=Python, caption={Detecção de ciclos}]
+def find_cycle(tight_arcs, root):
+    """
+    Detecta um ciclo nos arcos apertados usando DFS.
+    
+    Returns:
+        Lista de vertices formando o ciclo, ou None se nao ha ciclo
+    """
+    # Constroi grafo dos arcos apertados
+    graph = defaultdict(list)
+    for u, v in tight_arcs:
+        graph[u].append(v)
+    
+    # DFS para detectar ciclos
+    visited = set()
+    rec_stack = set()
+    parent = {}
+    
+    def dfs(v):
+        visited.add(v)
+        rec_stack.add(v)
+        
+        for w in graph[v]:
+            if w not in visited:
+                parent[w] = v
+                cycle = dfs(w)
+                if cycle:
+                    return cycle
+            elif w in rec_stack:
+                # Encontrou ciclo
+                cycle = [w]
+                current = v
+                while current != w:
+                    cycle.append(current)
+                    current = parent[current]
+                return cycle[::-1]
+        
+        rec_stack.remove(v)
+        return None
+    
+    # Busca a partir de cada vertice nao visitado
+    for v in graph:
+        if v not in visited and v != root:
+            cycle = dfs(v)
+            if cycle:
+                return cycle
+    
+    return None
+\end{lstlisting}
+
+\subsubsection*{Função \texttt{contract\_cycle}}
+
+Esta função implementa a contração de um ciclo, criando um novo dígrafo
+onde os vértices do ciclo são substituídos por um supervértice.
+
+\begin{lstlisting}[language=Python, caption={Contração de ciclo}]
+def contract_cycle(digraph, cost, cycle, potentials):
+    """
+    Contrai um ciclo em um supervertice.
+    
+    Returns:
+        Objeto contendo o digrafo contraido, custos ajustados e raiz
+    """
+    cycle_vertices = set(cycle)
+    supervertex = f"super_{min(cycle)}"
+    
+    # Novos vertices
+    new_vertices = [v for v in digraph.vertices 
+                   if v not in cycle_vertices]
+    new_vertices.append(supervertex)
+    
+    # Novos arcos e custos
+    new_arcs = []
+    new_cost = {}
+    
+    # Mapeia vertices do ciclo para arcos que entram neles
+    cycle_incoming = {}
+    for i, v in enumerate(cycle):
+        u = cycle[(i - 1) % len(cycle)]
+        cycle_incoming[v] = (u, v)
+    
+    for arc in digraph.arcs:
+        u, v = arc
+        
+        if u not in cycle_vertices and v not in cycle_vertices:
+            # Arco externo ao ciclo
+            new_arcs.append(arc)
+            new_cost[arc] = cost[arc]
+            
+        elif u not in cycle_vertices and v in cycle_vertices:
+            # Arco entrando no ciclo
+            new_arc = (u, supervertex)
+            new_arcs.append(new_arc)
+            # Ajusta custo
+            arc_in = cycle_incoming[v]
+            new_cost[new_arc] = cost[arc] - cost[arc_in]
+            
+        elif u in cycle_vertices and v not in cycle_vertices:
+            # Arco saindo do ciclo
+            new_arc = (supervertex, v)
+            new_arcs.append(new_arc)
+            new_cost[new_arc] = cost[arc]
+    
+    # Cria novo digrafo
+    contracted = Digraph(new_vertices, new_arcs)
+    
+    return ContractedGraph(contracted, new_cost, digraph.root)
+\end{lstlisting}
+
+\subsubsection*{Função \texttt{expand\_cycle}}
+
+Esta função implementa a reexpansão do ciclo após obter a solução no
+dígrafo contraído.
+
+\begin{lstlisting}[language=Python, caption={Reexpansão de ciclo}]
+def expand_cycle(solution, cycle):
+    """
+    Reexpande um ciclo contraido.
+    
+    Args:
+        solution: Arborescencia no digrafo contraido
+        cycle: Lista de vertices formando o ciclo
+    
+    Returns:
+        Arborescencia no digrafo original
+    """
+    # Identifica supervertice
+    supervertex = next(v for v in solution.vertices 
+                      if v.startswith("super_"))
+    
+    # Remove arcos incidentes ao supervertice
+    expanded = set(arc for arc in solution 
+                  if supervertex not in arc)
+    
+    # Adiciona arcos do ciclo
+    for i in range(len(cycle)):
+        u = cycle[i]
+        v = cycle[(i + 1) % len(cycle)]
+        expanded.add((u, v))
+    
+    # Identifica arco a remover
+    incoming_arc = next((arc for arc in solution 
+                        if arc[1] == supervertex), None)
+    
+    if incoming_arc:
+        # Encontra vertice correspondente no ciclo
+        # e remove arco que entra nele
+        for i, v in enumerate(cycle):
+            if should_remove(incoming_arc, v, cycle):
+                u = cycle[(i - 1) % len(cycle)]
+                expanded.remove((u, v))
+                break
+    
+    return expanded
+\end{lstlisting}
+
+\subsection{Complexidade}
+
+A complexidade de tempo do algoritmo de András Frank é \(O(nm \log n)\), onde
+\(n = |V|\) é o número de vértices e \(m = |A|\) é o número de arcos.
+
+\begin{itemize}
+	\item A elevação de potenciais leva tempo \(O(m)\).
+	\item A identificação de arcos apertados leva tempo \(O(m)\).
+	\item A detecção de ciclos usando DFS leva tempo \(O(n + m)\).
+	\item A contração e reexpansão levam tempo \(O(m)\).
+	\item No pior caso, podem ocorrer \(O(n)\) contrações recursivas.
+\end{itemize}
+
+A complexidade de espaço é \(O(n + m)\) para armazenar o dígrafo e as
+estruturas auxiliares.
+
+\subsection{Testes e validação}
+
+A implementação foi testada extensivamente com diversos casos de teste,
+incluindo:
+
+\begin{itemize}
+	\item Dígrafos sem ciclos (árvores)
+	\item Dígrafos com um único ciclo
+	\item Dígrafos com múltiplos ciclos aninhados
+	\item Dígrafos densos e esparsos
+	\item Casos com custos negativos
+	\item Casos com custos fracionários
+\end{itemize}
+
+Todos os testes foram comparados com implementações de referência e com
+o algoritmo de Chu--Liu--Edmonds, confirmando a corretude da implementação.

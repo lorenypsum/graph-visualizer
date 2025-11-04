@@ -30,3 +30,5 @@
 \contentsline {figure}{\numberline {29}{\ignorespaces Dígrafo após elevação de potenciais. Arcos em \textcolor {blue}{azul} são apertados (\(c_y = 0\)); arcos em cinza têm custo reduzido positivo.}}{49}{figure.caption.53}%
 \contentsline {figure}{\numberline {30}{\ignorespaces Dígrafo modificado com o arco \((c,a)\) de custo 1 (em vermelho).}}{51}{figure.caption.56}%
 \contentsline {figure}{\numberline {31}{\ignorespaces Arcos apertados após elevação. O ciclo \(C = (a, c, a)\) é destacado em \textcolor {red!70}{vermelho}.}}{51}{figure.caption.57}%
+\contentsline {figure}{\numberline {32}{\ignorespaces Dígrafo contraído \(D'\) após contrair o ciclo \(C = (a,c)\).}}{54}{figure.caption.63}%
+\contentsline {figure}{\numberline {33}{\ignorespaces Solução final após reexpansão. O arco \((c,a)\) (tracejado em vermelho) foi removido.}}{54}{figure.caption.66}%
