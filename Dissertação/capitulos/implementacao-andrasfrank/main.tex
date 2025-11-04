@@ -771,7 +771,6 @@ def phase2_find_minimum_arborescence(D_original, r0, A_zero):
     Arb = nx.DiGraph()
     Arb.add_node(r0)
     n = len(D_original.nodes())
-    
     for _ in range(n - 1):
         for u, v in A_zero:
             if u in Arb.nodes() and v not in Arb.nodes():
