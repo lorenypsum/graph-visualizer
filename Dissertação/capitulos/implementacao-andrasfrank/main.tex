@@ -413,511 +413,425 @@ os custos dos arcos incidentes, e resolvemos o problema no dígrafo contraído.
 A reexpansão é feita removendo um arco do ciclo para manter a estrutura de arborescência,
 de forma análoga ao algoritmo de Chu--Liu--Edmonds.
 
-\section{Descrição formal do algoritmo}
+\section{Descrição do algoritmo}
 
-Nesta seção, apresentamos a descrição formal do algoritmo de András Frank.
-O algoritmo recebe como entrada um \(r\)-dígrafo ponderado \((D,c,r)\) e devolve
-uma \(r\)-arborescência \(c\)-mínima de \(D\).
+A seguir apresentamos uma descrição formal do algoritmo de András Frank. Detalhes de implementação serão discutidos na próxima seção.
 
-\subsection{Pseudocódigo}
+O algoritmo de András Frank difere substancialmente do algoritmo de Chu--Liu--Edmonds em sua abordagem: enquanto Chu--Liu--Edmonds opera diretamente sobre os custos dos arcos, o método de Frank utiliza uma técnica primal--dual baseada em \emph{potenciais} associados aos vértices. A ideia central é elevar progressivamente os potenciais \(y(v)\) para cada vértice \(v\neq r\), de modo que os custos \emph{reduzidos} \(c_y(a) := c(a) - y(\text{head}(a))\) revelem quais arcos devem participar da solução ótima. Um arco é dito \emph{apertado} (ou \emph{tight}) quando seu custo reduzido é zero, isto é, \(c(a) = y(\text{head}(a))\). O algoritmo garante que toda r-arborescência ótima pode ser formada apenas por arcos apertados.
 
-O algoritmo pode ser descrito pelo seguinte pseudocódigo:
+\begin{algobox}{András Frank (visão operacional)}{andras-frank}
+	Entrada: dígrafo \(D=(V,A)\), custos \(c:A\to\mathbb{R}_{\ge 0}\), raiz \(r\).\footnote{Se algum \(v\neq r\) não possui arco de entrada, não existe r-arborescência.}
 
-\begin{algorithm}[H]
-	\caption{András Frank}
-	\label{alg:andrasfrank}
-	\begin{algorithmic}[1]
-		\Require Um \(r\)-dígrafo ponderado \((D,c,r)\), onde \(D=(V,A)\)
-		\Ensure Uma \(r\)-arborescência \(c\)-mínima \(T\) de \(D\)
-		\State \(y(v) \gets 0\) para todo \(v \in V\)
-		\State \textsc{ElevarPotenciais}\((D,c,y)\)
-		\State \(H \gets \{a \in A : c_y(a) = 0\}\) \Comment{Arcos apertados}
-		\If{\(H\) contém uma \(r\)-arborescência}
-		\State \Return \(H\)
-		\Else
-		\State Identifique um ciclo \(C\) em \(H\)
-		\State \((D',c',r') \gets\) \textsc{ContrairCiclo}\((D,c,r,C,y)\)
-		\State \(T' \gets\) \textsc{AndrásFrank}\((D',c',r')\)
-		\State \(T \gets\) \textsc{ReexpandirCiclo}\((T',C)\)
-		\State \Return \(T\)
-		\EndIf
-	\end{algorithmic}
-\end{algorithm}
+	\textbf{Fase 1: Elevação de potenciais e construção de \(A_0\)}
+	\begin{enumerate}\setlength{\itemsep}{2pt}
+		\item \textbf{Inicialização:} defina \(y(v) := 0\) para todo \(v \in V\).
+		\item \textbf{Iteração:} enquanto existir conjunto \(X \subseteq V \setminus \{r\}\) sem arco apertado entrando:
+		      \begin{itemize}\setlength{\itemsep}{2pt}
+			      \item Calcule \(\Delta(X) := \min\{c(u,v) - y(v) : u \notin X, v \in X\}\).
+			      \item Para cada \(v \in X\), atualize \(y(v) := y(v) + \Delta(X)\).
+		      \end{itemize}
+		\item Defina \(A_0 := \{a \in A : c_y(a) = 0\}\), o conjunto de arcos apertados.
+	\end{enumerate}
 
-\begin{algorithm}[H]
-	\caption{ElevarPotenciais}
-	\label{alg:elevarpotenciais}
-	\begin{algorithmic}[1]
-		\Require Um dígrafo \(D=(V,A)\), função custo \(c\colon A\to\mathbb{R}\), potenciais \(y\colon V\to\mathbb{R}\)
-		\Ensure Potenciais \(y\) atualizados
-		\For{cada \(v \in V \setminus \{r\}\)}
-		\State \(\Delta(v) \gets \min\{c(a) : a \in \delta^-(v)\} - y(v)\)
-		\State \(y(v) \gets y(v) + \Delta(v)\)
-		\EndFor
-	\end{algorithmic}
-\end{algorithm}
+	\textbf{Fase 2: Construção da arborescência}
+	\begin{enumerate}\setlength{\itemsep}{2pt}\setcounter{enumi}{3}
+		\item Se \((V,A_0)\) forma uma r-arborescência, devolva \(A_0\). Por otimalidade dos potenciais duais, trata-se de uma r-arborescência de custo mínimo.
+		\item Caso contrário, identifique um ciclo dirigido \(C\) em \(A_0\) (com \(r\notin C\)). \textbf{Contração:} contraia \(C\) em um supervértice \(x_C\) e defina custos reduzidos \(c'\) por
+		      \begin{align*}
+			      c'(u,x_C) & := c_y(u,w) = c(u,w) - y(w) &  & \text{para } u\notin C,\ w\in C, \\
+			      c'(x_C,v) & := c_y(w,v) = c(w,v) - y(v) &  & \text{para } w\in C,\ v\notin C,
+		      \end{align*}
+		      descartando laços em \(x_C\) e permitindo paralelos. Denote o dígrafo contraído por \(D'=(V',A')\).
+		\item \textbf{Recursão:} compute uma r-arborescência ótima \(T'\) de \(D'\) com custos \(c'\).
+		\item \textbf{Expansão:} seja \((u,x_C)\in T'\) o único arco que entra em \(x_C\). No dígrafo original, ele corresponde a \((u,w)\) com \(w\in C\). Forme
+		      \[
+			      T := \bigl(T'\setminus\{\text{arcos incidentes a } x_C\}\bigr)\ \cup\ \{(u,w)\}\ \cup\ \bigl((A_0\cap A(C))\setminus\{a_w\}\bigr),
+		      \]
+		      onde \(a_w\) é o arco de \(C\) que entra em \(w\). Então \(T\) é uma r-arborescência ótima de \(D\).
+	\end{enumerate}
+\end{algobox}
 
-\begin{algorithm}[H]
-	\caption{ContrairCiclo}
-	\label{alg:contrairciclo}
-	\begin{algorithmic}[1]
-		\Require Um dígrafo \(D=(V,A)\), função custo \(c\), raiz \(r\), ciclo \(C\), potenciais \(y\)
-		\Ensure Dígrafo contraído \(D'=(V',A')\), função custo \(c'\), raiz \(r'\)
-		\State \(V' \gets (V \setminus V(C)) \cup \{x_C\}\)
-		\State \(A' \gets \emptyset\)
-		\For{cada arco \(a = (u,v) \in A\)}
-		\If{\(u \notin V(C)\) e \(v \notin V(C)\)}
-		\State Adicione \(a\) a \(A'\) com custo \(c'(a) = c(a)\)
-		\ElsIf{\(u \notin V(C)\) e \(v \in V(C)\)}
-		\State Seja \(a_v\) o arco de \(C\) que entra em \(v\)
-		\State Adicione \((u,x_C)\) a \(A'\) com custo \(c'(u,x_C) = c(u,v) - c(a_v)\)
-		\ElsIf{\(u \in V(C)\) e \(v \notin V(C)\)}
-		\State Adicione \((x_C,v)\) a \(A'\) com custo \(c'(x_C,v) = c(u,v)\)
-		\EndIf
-		\EndFor
-		\State \(r' \gets r\) se \(r \notin V(C)\), caso contrário \(r' \gets x_C\)
-		\State \Return \((D',c',r')\)
-	\end{algorithmic}
-\end{algorithm}
+\subsection{Corretude}
 
-\begin{algorithm}[H]
-	\caption{ReexpandirCiclo}
-	\label{alg:reexpandirciclo}
-	\begin{algorithmic}[1]
-		\Require Arborescência \(T'\) no dígrafo contraído, ciclo \(C\)
-		\Ensure Arborescência \(T\) no dígrafo original
-		\State \(T \gets T' \setminus \{a' : a' \text{ incidente a } x_C\}\)
-		\State Adicione todos os arcos de \(C\) a \(T\)
-		\If{existe arco \(a' = (u,x_C) \in T'\)}
-		\State Seja \(v\) o vértice de \(C\) tal que \(a' = (u,v)\) no grafo original
-		\State Seja \(a_v\) o arco de \(C\) que entra em \(v\)
-		\State Remova \(a_v\) de \(T\)
-		\EndIf
-		\State \Return \(T\)
-	\end{algorithmic}
-\end{algorithm}
+A corretude do algoritmo de András Frank baseia-se na teoria de dualidade em programação linear aplicada ao problema de arborescência de custo mínimo:
 
-\subsection{Exemplo completo passo a passo}
+\begin{enumerate}\setlength{\itemsep}{2pt}
+	\item \emph{Potenciais duais:} os valores \(y(v)\) funcionam como variáveis duais. Para qualquer r-arborescência \(T\) e qualquer escolha de potenciais \(y\), vale
+	      \[
+		      c(T) = \sum_{a\in T} c(a) = \sum_{a\in T} c_y(a) + \sum_{v\neq r} y(v),
+	      \]
+	      pois há exatamente um arco de \(T\) entrando em cada \(v\neq r\). O termo \(\sum_{v\neq r} y(v)\) é constante após a elevação completa dos potenciais; assim, minimizar \(c(T)\) equivale a minimizar \(\sum_{a\in T} c_y(a)\).
 
-Vamos ilustrar o algoritmo com um exemplo completo usando o dígrafo modificado
-apresentado anteriormente, que contém o ciclo \((a,c,a)\).
+	\item \emph{Condições de otimalidade:} uma r-arborescência \(T\) é ótima se e somente se:
+	      \begin{itemize}\setlength{\itemsep}{2pt}
+		      \item Todos os arcos de \(T\) são apertados: \(c_y(a) = 0\) para todo \(a \in T\).
+		      \item Todos os arcos do dígrafo têm custo reduzido não-negativo: \(c_y(a) \geq 0\) para todo \(a \in A\).
+	      \end{itemize}
+	      Sob essas condições, \(\sum_{a\in T} c_y(a) = 0 \leq \sum_{a\in T'} c_y(a)\) para qualquer outra r-arborescência \(T'\), provando otimalidade.
 
-\begin{tcolorbox}[colback=green!5!white,colframe=green!80!black,title={Entrada do algoritmo}]
-	\textbf{Dígrafo:} \(D = (V,A)\) com \(V = \{r, a, b, c, d, e\}\)\\
-	\textbf{Custos:} Conforme mostrado na figura (incluindo o arco \((c,a)\) com custo 1)\\
-	\textbf{Raiz:} \(r\)
-\end{tcolorbox}
+	\item \emph{Elevação de potenciais:} o algoritmo eleva os potenciais de forma gulosa, garantindo que ao final cada \(v\neq r\) tenha ao menos um arco apertado entrando. Isso é feito identificando componentes fortemente conexas em \(A_0\): conjuntos \(X\) que ainda não possuem arcos apertados entrando têm seus potenciais elevados pelo mínimo necessário \(\Delta(X)\).
 
-\subsubsection*{Passo 1: Inicialização}
+	\item \emph{Caso acíclico:} se \(A_0\) forma uma r-arborescência, todos os arcos são apertados e, pelas condições de otimalidade, a solução é ótima.
 
-Definimos \(y(v) = 0\) para todo \(v \in V\).
+	\item \emph{Caso com ciclo (contração/expansão):} se \(A_0\) contém um ciclo dirigido \(C\), todos os seus arcos são apertados (custo reduzido zero). A contração preserva a estrutura de custos reduzidos: no dígrafo contraído, os novos custos \(c'\) já incorporam os potenciais, e uma solução ótima em \(D'\) mapeia para uma solução ótima em \(D\) pela reversibilidade da operação.
+\end{enumerate}
 
-\subsubsection*{Passo 2: Elevação de potenciais}
-
-Para cada vértice \(v \neq r\), calculamos \(\Delta(v)\) e atualizamos \(y(v)\):
-
-\begin{align*}
-	\Delta(a) & = \min\{1, 4, 1\} - 0 = 1 \quad \Rightarrow \quad y(a) = 1 \\
-	\Delta(b) & = \min\{2, 5\} - 0 = 2 \quad \Rightarrow \quad y(b) = 2    \\
-	\Delta(c) & = \min\{3, 1\} - 0 = 1 \quad \Rightarrow \quad y(c) = 1    \\
-	\Delta(d) & = \min\{3, 1\} - 0 = 1 \quad \Rightarrow \quad y(d) = 1    \\
-	\Delta(e) & = \min\{2, 5\} - 0 = 2 \quad \Rightarrow \quad y(e) = 2
-\end{align*}
-
-\subsubsection*{Passo 3: Identificação de arcos apertados}
-
-Os arcos apertados (custo reduzido zero) são:
-\[
-	H = \{(r,a), (r,b), (a,c), (c,a), (b,d), (b,e)\}
-\]
-
-\subsubsection*{Passo 4: Verificação de ciclos}
-
-O conjunto \(H\) contém o ciclo \(C = (a,c,a)\). Portanto, precisamos contrair o ciclo.
-
-\subsubsection*{Passo 5: Contração do ciclo}
-
-Contraímos os vértices \(a\) e \(c\) em um supervértice \(x_C\).
-
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[>=Stealth]
-		\tikzset{
-			vtx/.style={circle, draw,fill=blue!8, thick, inner sep=1.2pt, minimum size=6mm},
-			super/.style={circle, draw,fill=red!10, thick, inner sep=1.2pt, minimum size=9mm},
-			arc/.style={->, very thick, draw=blue},
-			costB/.style={font=\scriptsize, fill=white, inner sep=1pt, text=blue}
-		}
-		\node[vtx] (r) at (0,0) {$r$};
-		\node[super] (xC) at (4,0.8) {$x_C$};
-		\node[vtx] (b) at (3,-1.6) {$b$};
-		\node[vtx] (d) at (6,0.0) {$d$};
-		\node[vtx] (e) at (6,-2.2) {$e$};
-
-		\draw[arc] (r) -- node[costB, above] {0} (xC);
-		\draw[arc] (r) -- node[costB, below] {0} (b);
-		\draw[arc] (b) -- node[costB, above] {0} (d);
-		\draw[arc] (b) -- node[costB, below] {0} (e);
-	\end{tikzpicture}
-	\caption{Dígrafo contraído \(D'\) após contrair o ciclo \(C = (a,c)\).}
-\end{figure}
-
-\subsubsection*{Passo 6: Resolução recursiva}
-
-No dígrafo contraído, os arcos apertados formam uma \(r\)-arborescência:
-\[
-	T' = \{(r,x_C), (r,b), (b,d), (b,e)\}
-\]
-
-\subsubsection*{Passo 7: Reexpansão}
-
-Reexpandimos o ciclo \(C\). Como o arco \((r,x_C)\) entra no supervértice,
-ele corresponde ao arco \((r,a)\) no grafo original. O arco que entra em \(a\)
-no ciclo é \((c,a)\), que deve ser removido.
-
-A arborescência final é:
-\[
-	T = \{(r,a), (r,b), (a,c), (b,d), (b,e)\}
-\]
-
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[>=Stealth]
-		\tikzset{
-			vtx/.style={circle, draw,fill=blue!8, thick, inner sep=1.2pt, minimum size=6mm},
-			chosen/.style={->, very thick, draw=blue},
-			removed/.style={->, thick, draw=red, dashed},
-			costB/.style={font=\scriptsize, fill=white, inner sep=1pt, text=blue},
-			costR/.style={font=\scriptsize, fill=white, inner sep=1pt, text=red}
-		}
-		\node[vtx] (r) at (0,0) {$r$};
-		\node[vtx] (a) at (3,1.6) {$a$};
-		\node[vtx] (b) at (3,-1.6) {$b$};
-		\node[vtx] (c) at (6,2.2) {$c$};
-		\node[vtx] (d) at (6,0.0) {$d$};
-		\node[vtx] (e) at (6,-2.2) {$e$};
-
-		\draw[chosen] (r) -- node[costB, above] {1} (a);
-		\draw[chosen] (r) -- node[costB, below] {2} (b);
-		\draw[chosen] (a) -- node[costB, above] {1} (c);
-		\draw[chosen] (b) -- node[costB, above] {1} (d);
-		\draw[chosen] (b) -- node[costB, below] {2} (e);
-		\draw[removed] (c) to[bend left=20] node[costR, left] {1} (a);
-	\end{tikzpicture}
-	\caption{Solução final após reexpansão. O arco \((c,a)\) (tracejado em vermelho) foi removido.}
-\end{figure}
-
-\begin{tcolorbox}[colback=green!5!white,colframe=green!80!black,title={Saída do algoritmo}]
-	\textbf{Arborescência ótima:} \(T = \{(r,a), (r,b), (a,c), (b,d), (b,e)\}\)\\
-	\textbf{Custo total:} \(c(T) = 1 + 2 + 1 + 1 + 2 = 7\)
-\end{tcolorbox}
-
-\section{Implementação}
-
-Nesta seção, apresentamos detalhes sobre a implementação do algoritmo de András Frank
-desenvolvida neste trabalho. A implementação foi feita em Python e está disponível
-no repositório do projeto.
-
-\subsection{Estruturas de dados}
-
-Para implementar o algoritmo de forma eficiente, utilizamos as seguintes estruturas de dados:
-
-\begin{itemize}
-	\item \textbf{Dígrafo:} Representado por listas de adjacência, onde cada vértice
-	      mantém uma lista de arcos que saem dele e arcos que entram nele.
-	\item \textbf{Potenciais:} Armazenados em um dicionário que mapeia cada vértice
-	      para seu valor de potencial \(y(v)\).
-	\item \textbf{Custos reduzidos:} Calculados dinamicamente a partir dos custos
-	      originais e dos potenciais.
-	\item \textbf{Ciclos:} Identificados usando busca em profundidade (DFS) no
-	      subgrafo formado pelos arcos apertados.
-\end{itemize}
-
-\subsection{Principais funções}
-
-A implementação é organizada nas seguintes funções principais:
-
-\subsubsection*{Função \texttt{andras\_frank}}
-
-Esta é a função principal que implementa o algoritmo. Ela recebe um dígrafo,
-uma função custo e uma raiz, e devolve uma arborescência de custo mínimo.
-
-\begin{lstlisting}[language=Python, caption={Função principal do algoritmo}]
-def andras_frank(digraph, cost, root):
-    """
-    Encontra uma arborescencia de custo minimo.
-    
-    Args:
-        digraph: Digrafo representado por listas de adjacencia
-        cost: Dicionario mapeando arcos para custos
-        root: Vertice raiz
-    
-    Returns:
-        Conjunto de arcos formando a arborescencia otima
-    """
-    # Inicializa potenciais
-    potentials = {v: 0 for v in digraph.vertices}
-    
-    # Eleva potenciais
-    raise_potentials(digraph, cost, potentials, root)
-    
-    # Identifica arcos apertados
-    tight_arcs = find_tight_arcs(digraph, cost, potentials)
-    
-    # Verifica se ha ciclos
-    cycle = find_cycle(tight_arcs, root)
-    
-    if cycle is None:
-        # Arcos apertados formam arborescencia
-        return tight_arcs
-    else:
-        # Contrai ciclo e resolve recursivamente
-        contracted = contract_cycle(digraph, cost, cycle, potentials)
-        solution = andras_frank(contracted.digraph, 
-                              contracted.cost, 
-                              contracted.root)
-        return expand_cycle(solution, cycle)
-\end{lstlisting}
-
-\subsubsection*{Função \texttt{raise\_potentials}}
-
-Esta função implementa a elevação de potenciais. Para cada vértice (exceto a raiz),
-ela calcula o mínimo custo de entrada e ajusta o potencial de forma que ao menos
-um arco fique apertado.
-
-\begin{lstlisting}[language=Python, caption={Elevação de potenciais}]
-def raise_potentials(digraph, cost, potentials, root):
-    """
-    Eleva os potenciais dos vertices.
-    
-    Para cada vertice v != root, calcula o minimo custo de entrada
-    e ajusta y(v) para que exista ao menos um arco apertado.
-    """
-    for v in digraph.vertices:
-        if v == root:
-            continue
-        
-        # Calcula minimo custo de entrada
-        min_cost = min(cost[arc] for arc in digraph.incoming[v])
-        
-        # Eleva potencial
-        delta = min_cost - potentials[v]
-        potentials[v] += delta
-\end{lstlisting}
-
-\subsubsection*{Função \texttt{find\_tight\_arcs}}
-
-Esta função identifica todos os arcos cujo custo reduzido é zero.
-
-\begin{lstlisting}[language=Python, caption={Identificação de arcos apertados}]
-def find_tight_arcs(digraph, cost, potentials):
-    """
-    Identifica arcos com custo reduzido zero.
-    
-    Um arco (u,v) e apertado se c(u,v) - y(v) = 0.
-    """
-    tight = set()
-    
-    for arc in digraph.arcs:
-        u, v = arc
-        reduced_cost = cost[arc] - potentials[v]
-        
-        if abs(reduced_cost) < 1e-9:  # Tolerancia numerica
-            tight.add(arc)
-    
-    return tight
-\end{lstlisting}
-
-\subsubsection*{Função \texttt{find\_cycle}}
-
-Esta função usa busca em profundidade para detectar ciclos no subgrafo
-formado pelos arcos apertados.
-
-\begin{lstlisting}[language=Python, caption={Detecção de ciclos}]
-def find_cycle(tight_arcs, root):
-    """
-    Detecta um ciclo nos arcos apertados usando DFS.
-    
-    Returns:
-        Lista de vertices formando o ciclo, ou None se nao ha ciclo
-    """
-    # Constroi grafo dos arcos apertados
-    graph = defaultdict(list)
-    for u, v in tight_arcs:
-        graph[u].append(v)
-    
-    # DFS para detectar ciclos
-    visited = set()
-    rec_stack = set()
-    parent = {}
-    
-    def dfs(v):
-        visited.add(v)
-        rec_stack.add(v)
-        
-        for w in graph[v]:
-            if w not in visited:
-                parent[w] = v
-                cycle = dfs(w)
-                if cycle:
-                    return cycle
-            elif w in rec_stack:
-                # Encontrou ciclo
-                cycle = [w]
-                current = v
-                while current != w:
-                    cycle.append(current)
-                    current = parent[current]
-                return cycle[::-1]
-        
-        rec_stack.remove(v)
-        return None
-    
-    # Busca a partir de cada vertice nao visitado
-    for v in graph:
-        if v not in visited and v != root:
-            cycle = dfs(v)
-            if cycle:
-                return cycle
-    
-    return None
-\end{lstlisting}
-
-\subsubsection*{Função \texttt{contract\_cycle}}
-
-Esta função implementa a contração de um ciclo, criando um novo dígrafo
-onde os vértices do ciclo são substituídos por um supervértice.
-
-\begin{lstlisting}[language=Python, caption={Contração de ciclo}]
-def contract_cycle(digraph, cost, cycle, potentials):
-    """
-    Contrai um ciclo em um supervertice.
-    
-    Returns:
-        Objeto contendo o digrafo contraido, custos ajustados e raiz
-    """
-    cycle_vertices = set(cycle)
-    supervertex = f"super_{min(cycle)}"
-    
-    # Novos vertices
-    new_vertices = [v for v in digraph.vertices 
-                   if v not in cycle_vertices]
-    new_vertices.append(supervertex)
-    
-    # Novos arcos e custos
-    new_arcs = []
-    new_cost = {}
-    
-    # Mapeia vertices do ciclo para arcos que entram neles
-    cycle_incoming = {}
-    for i, v in enumerate(cycle):
-        u = cycle[(i - 1) % len(cycle)]
-        cycle_incoming[v] = (u, v)
-    
-    for arc in digraph.arcs:
-        u, v = arc
-        
-        if u not in cycle_vertices and v not in cycle_vertices:
-            # Arco externo ao ciclo
-            new_arcs.append(arc)
-            new_cost[arc] = cost[arc]
-            
-        elif u not in cycle_vertices and v in cycle_vertices:
-            # Arco entrando no ciclo
-            new_arc = (u, supervertex)
-            new_arcs.append(new_arc)
-            # Ajusta custo
-            arc_in = cycle_incoming[v]
-            new_cost[new_arc] = cost[arc] - cost[arc_in]
-            
-        elif u in cycle_vertices and v not in cycle_vertices:
-            # Arco saindo do ciclo
-            new_arc = (supervertex, v)
-            new_arcs.append(new_arc)
-            new_cost[new_arc] = cost[arc]
-    
-    # Cria novo digrafo
-    contracted = Digraph(new_vertices, new_arcs)
-    
-    return ContractedGraph(contracted, new_cost, digraph.root)
-\end{lstlisting}
-
-\subsubsection*{Função \texttt{expand\_cycle}}
-
-Esta função implementa a reexpansão do ciclo após obter a solução no
-dígrafo contraído.
-
-\begin{lstlisting}[language=Python, caption={Reexpansão de ciclo}]
-def expand_cycle(solution, cycle):
-    """
-    Reexpande um ciclo contraido.
-    
-    Args:
-        solution: Arborescencia no digrafo contraido
-        cycle: Lista de vertices formando o ciclo
-    
-    Returns:
-        Arborescencia no digrafo original
-    """
-    # Identifica supervertice
-    supervertex = next(v for v in solution.vertices 
-                      if v.startswith("super_"))
-    
-    # Remove arcos incidentes ao supervertice
-    expanded = set(arc for arc in solution 
-                  if supervertex not in arc)
-    
-    # Adiciona arcos do ciclo
-    for i in range(len(cycle)):
-        u = cycle[i]
-        v = cycle[(i + 1) % len(cycle)]
-        expanded.add((u, v))
-    
-    # Identifica arco a remover
-    incoming_arc = next((arc for arc in solution 
-                        if arc[1] == supervertex), None)
-    
-    if incoming_arc:
-        # Encontra vertice correspondente no ciclo
-        # e remove arco que entra nele
-        for i, v in enumerate(cycle):
-            if should_remove(incoming_arc, v, cycle):
-                u = cycle[(i - 1) % len(cycle)]
-                expanded.remove((u, v))
-                break
-    
-    return expanded
-\end{lstlisting}
+Em termos intuitivos, os potenciais \(y(v)\) funcionam como "descontos" aplicados aos arcos que entram em cada vértice, revelando quais arcos são "apertados" (custo líquido zero) e, portanto, candidatos à solução ótima. Ciclos de arcos apertados podem ser contraídos sem perder otimalidade, simplificando o problema recursivamente.
 
 \subsection{Complexidade}
 
-A complexidade de tempo do algoritmo de András Frank é \(O(nm \log n)\), onde
-\(n = |V|\) é o número de vértices e \(m = |A|\) é o número de arcos.
+A implementação baseada em componentes fortemente conexas detecta, em cada iteração, quais conjuntos \(X\) necessitam elevação de potenciais. Calcular componentes fortemente conexas custa \(O(n+m)\) usando algoritmos como Tarjan ou Kosaraju. Para cada componente (exceto a raiz), eleva-se o potencial calculando \(\Delta(X)\) em \(O(m)\), atualizando os custos reduzidos.
 
-\begin{itemize}
-	\item A elevação de potenciais leva tempo \(O(m)\).
-	\item A identificação de arcos apertados leva tempo \(O(m)\).
-	\item A detecção de ciclos usando DFS leva tempo \(O(n + m)\).
-	\item A contração e reexpansão levam tempo \(O(m)\).
-	\item No pior caso, podem ocorrer \(O(n)\) contrações recursivas.
+No pior caso, cada iteração reduz o número de componentes em pelo menos uma unidade, resultando em \(O(n)\) iterações. Cada iteração processa todos os arcos para atualizar custos reduzidos e recalcular componentes, resultando em \(O(nm)\) no total para a Fase~1. A Fase~2 constrói a arborescência percorrendo \(A_0\) uma vez, custando \(O(n)\).
+
+O uso de memória é \(O(n+m)\), incluindo as estruturas para armazenar o dígrafo, potenciais e componentes. A implementação a seguir adota a versão \(O(nm)\) por simplicidade e está disponível no repositório do projeto (\url{https://github.com/lorenypsum/GraphVisualizer}).
+
+\section{Implementação em Python}
+
+Esta seção descreve a implementação do algoritmo de András Frank em Python, estruturada para refletir com precisão as duas fases formais discutidas anteriormente. A Fase~1 realiza a elevação de potenciais e identifica os arcos apertados, enquanto a Fase~2 constrói a arborescência de custo mínimo a partir desses arcos. Cada operação fundamental — identificação de componentes fortemente conexas, elevação de potenciais, construção de \(A_0\) e verificação de arborescência — é traduzida em procedimentos sobre digrafos orientados, utilizando a biblioteca \texttt{networkx}.
+
+A entrada consiste em um dígrafo orientado \(D = (V, A)\), com custos dos arcos registrados no atributo \texttt{"w"}, e uma raiz \(r \in V\). As hipóteses adotadas são: (i) o dígrafo é conexo a partir de \(r\), isto é, todo vértice \(v \neq r\) é alcançável a partir da raiz; (ii) para todo subconjunto \(X \subseteq V \setminus \{r\}\), existe ao menos um arco entrando em \(X\); e (iii) todos os custos são não negativos.
+
+A saída é um subdigrafo \(T\) de \(D\) com \(|A_T| = |V| - 1\) arcos, tal que cada vértice \(v \neq r\) possui grau de entrada igual a 1, todos os vértices são alcançáveis a partir de \(r\), e o custo total \(\sum_{a \in A_T} c(a)\) é mínimo.
+
+A estrutura do código é modular: funções auxiliares tratam cada etapa do algoritmo — cálculo de componentes fortemente conexas, elevação de potenciais, construção do subdigrafo \(A_0\) e construção da arborescência final. Todas operam sobre objetos \texttt{nx.DiGraph} e são coordenadas por uma função principal que gerencia o fluxo das duas fases. As subseções seguintes detalham cada função auxiliar, abordando lógica, parâmetros, saídas e complexidade.
+
+\subsection{Representação de digrafos e componentes fortemente conexas}
+
+A implementação utiliza a biblioteca NetworkX, especificamente a classe \texttt{nx.DiGraph} para representar digrafos \(D=(V,A)\). Internamente, usa dicionários aninhados do Python para armazenar vértices, arcos e atributos, garantindo operações eficientes: adicionar/remover arco \(O(1)\) amortizado, iterar vizinhos \(O(\deg(u))\), percorrer todos os arcos \(O(m)\).
+
+\subsubsection*{Métodos da API NetworkX}
+
+Os métodos da API NetworkX utilizados na implementação dividem-se em categorias funcionais, cada uma correspondendo a uma fase específica do algoritmo:
+
+\paragraph*{Consulta de estrutura}
+\begin{itemize}\setlength{\itemsep}{2pt}
+	\item \texttt{D.nodes()}: devolve visão iterável sobre \(V\), permitindo percorrer todos os vértices.
+	\item \texttt{D.in\_edges(v, data="w")}: devolve arcos entrantes em \(v\) com pesos, produzindo tuplas \((u, v, w)\).
+	\item \texttt{D.out\_edges(u, data="w")}: devolve arcos saíntes de \(u\) com pesos, análogo a \texttt{in\_edges}.
+	\item \texttt{D[u][v]["w"]}: acessa diretamente o peso do arco \((u,v)\) para leitura ou modificação.
 \end{itemize}
 
-A complexidade de espaço é \(O(n + m)\) para armazenar o dígrafo e as
-estruturas auxiliares.
+\paragraph*{Modificação de estrutura}
+\begin{itemize}\setlength{\itemsep}{2pt}
+	\item \texttt{D.add\_edge(u, v, w=peso)}: adiciona arco \((u,v)\) com peso especificado.
+	\item \texttt{D.remove\_edges\_from(edges)}: remove múltiplos arcos em lote.
+	\item \texttt{D.add\_node(v)}: adiciona vértice \(v\) ao dígrafo.
+\end{itemize}
+
+\paragraph*{Análise de componentes}
+\begin{itemize}\setlength{\itemsep}{2pt}
+	\item \texttt{nx.condensation(D)}: calcula o grafo de condensação (DAG das componentes fortemente conexas), devolvendo um novo dígrafo onde cada nó representa uma componente e contém o atributo \texttt{"members"} com os vértices originais.
+\end{itemize}
+
+\subsection{Construção do dígrafo \texorpdfstring{\(D_0\)}{D_0} inicial}
+
+\subsection{Construção do dígrafo \texorpdfstring{\(D_0\)}{D_0} inicial}
+
+Esta função constrói o dígrafo inicial \(D_0\) que será utilizado na Fase~1 do algoritmo. O dígrafo \(D_0\) é inicializado como um grafo vazio contendo apenas os vértices do dígrafo original, sem arcos. Essa estrutura será gradualmente populada com arcos de custo reduzido zero à medida que os potenciais são elevados.
+
+Recebe como entrada um dígrafo \texttt{D} (objeto \texttt{nx.DiGraph}). A implementação cria um novo dígrafo vazio \texttt{D\_zero} (linha 2) e adiciona todos os vértices de \texttt{D} a \texttt{D\_zero} (linhas 3-4), preservando a estrutura de vértices sem incluir arcos inicialmente.
+
+A função devolve o dígrafo \texttt{D\_zero} contendo todos os vértices de \texttt{D} mas nenhum arco. O dígrafo original \texttt{D} não é modificado. A complexidade é \(O(n)\), onde \(n = |V|\), pois itera sobre todos os vértices uma única vez.
+
+\begin{tcolorbox}[
+		enhanced, breakable,
+		colframe=blue!60!black, colback=blue!2,
+		colbacktitle=blue!15, coltitle=black,
+		title={Construção do dígrafo $D_0$ inicial},
+		boxed title style={sharp corners, boxrule=0.6pt},
+		sharp corners, boxrule=0.6pt
+	]
+	\emph{Constrói um dígrafo vazio contendo apenas os vértices de D, sem arcos. Este dígrafo será populado com arcos apertados durante a elevação de potenciais.}
+	\tcblower
+	\begin{lstlisting}[language=Python]
+def build_D_zero(D):
+    D_zero = nx.DiGraph()
+    for v in D.nodes():
+        D_zero.add_node(v)
+    return D_zero
+\end{lstlisting}
+\end{tcolorbox}
+
+\subsection{Identificação de arcos entrando em conjunto \texorpdfstring{\(X\)}{X}}
+
+Esta função auxiliar identifica todos os arcos que entram em um conjunto \(X \subseteq V\), isto é, arcos \((u,v)\) tais que \(u \notin X\) e \(v \in X\). Essa operação é fundamental para calcular o mínimo custo de entrada em \(X\) durante a elevação de potenciais.
+
+Recebe como entrada um dígrafo \texttt{D} e um conjunto de vértices \texttt{X}. A implementação cria uma lista vazia \texttt{arcs} (linha 2) e itera sobre todos os arcos do dígrafo com seus dados (linha 3), incluindo o peso. Para cada arco \((u,v,\text{data})\), verifica se \(u \notin X\) e \(v \in X\) (linha 4), adicionando à lista apenas os arcos que cruzam a fronteira de \(X\) (linha 5).
+
+A função devolve uma lista de tuplas \((u, v, \text{data})\) representando os arcos que entram em \(X\), onde \texttt{data} contém o atributo \texttt{"w"} com o peso do arco. A complexidade é \(O(m)\), onde \(m = |A|\), pois examina cada arco uma vez.
+
+\begin{tcolorbox}[
+		enhanced, breakable,
+		colframe=blue!60!black, colback=blue!2,
+		colbacktitle=blue!15, coltitle=black,
+		title={Identificação de arcos entrando em conjunto X},
+		boxed title style={sharp corners, boxrule=0.6pt},
+		sharp corners, boxrule=0.6pt
+	]
+	\emph{Identifica todos os arcos $(u,v)$ do dígrafo D tais que $u \notin X$ e $v \in X$, devolvendo uma lista com as tuplas $(u, v, data)$ onde data contém o peso do arco.}
+	\tcblower
+	\begin{lstlisting}[language=Python]
+def get_arcs_entering_X(D, X):
+    arcs = []
+    for u, v, data in D.edges(data=True):
+        if u not in X and v in X:
+            arcs.append((u, v, data))
+    return arcs
+\end{lstlisting}
+\end{tcolorbox}
+
+\subsection{Cálculo do peso mínimo de corte}
+
+Esta função calcula o peso mínimo entre todos os arcos fornecidos, correspondendo ao valor \(\Delta(X)\) necessário para elevar os potenciais dos vértices em \(X\).
+
+Recebe como entrada uma lista \texttt{arcs} de tuplas \((u, v, \text{data})\). A implementação usa a função \texttt{min} com uma compreensão de gerador (linha 2) que extrai o atributo \texttt{"w"} de cada tupla \texttt{data}.
+
+A função devolve o peso mínimo encontrado entre todos os arcos da lista. A complexidade é \(O(k)\), onde \(k\) é o número de arcos na lista, pois examina cada arco uma vez para encontrar o mínimo.
+
+\begin{tcolorbox}[
+		enhanced, breakable,
+		colframe=blue!60!black, colback=blue!2,
+		colbacktitle=blue!15, coltitle=black,
+		title={Cálculo do peso mínimo de corte},
+		boxed title style={sharp corners, boxrule=0.6pt},
+		sharp corners, boxrule=0.6pt
+	]
+	\emph{Calcula o peso mínimo entre todos os arcos fornecidos, correspondendo ao valor $\Delta(X)$ usado na elevação de potenciais.}
+	\tcblower
+	\begin{lstlisting}[language=Python]
+def get_minimum_weight_cut(arcs):
+    return min(data["w"] for _, _, data in arcs)
+\end{lstlisting}
+\end{tcolorbox}
+
+\subsection{Atualização de pesos em \texorpdfstring{\(X\)}{X}}
+
+Esta função atualiza os pesos dos arcos que entram em um conjunto \(X\), subtraindo o valor \(\Delta(X)\) de cada peso. Arcos que atingem peso zero são adicionados a \(A_0\) e a \(D_0\).
+
+Recebe como entrada um dígrafo \texttt{D}, lista de \texttt{arcs} entrando em \(X\), o valor \texttt{min\_weight} a ser subtraído, uma lista \texttt{A\_zero} para armazenar arcos de peso zero, e o dígrafo \texttt{D\_zero} para adicionar arcos apertados.
+
+A implementação itera sobre cada arco \((u,v,\_)\) da lista (linha 2), subtrai \texttt{min\_weight} do peso armazenado em \texttt{D[u][v]["w"]} (linha 3), e verifica se o peso resultante é zero (linha 4). Se sim, adiciona \((u,v)\) à lista \texttt{A\_zero} (linha 5) e ao dígrafo \texttt{D\_zero} (linha 6).
+
+A função não devolve valor, pois modifica diretamente as estruturas passadas como parâmetros: o dígrafo \texttt{D} tem seus pesos atualizados, \texttt{A\_zero} acumula arcos apertados, e \texttt{D\_zero} é populado com esses arcos. A complexidade é \(O(k)\), onde \(k\) é o número de arcos em \texttt{arcs}.
+
+\begin{tcolorbox}[
+		enhanced, breakable,
+		colframe=blue!60!black, colback=blue!2,
+		colbacktitle=blue!15, coltitle=black,
+		title={Atualização de pesos em X},
+		boxed title style={sharp corners, boxrule=0.6pt},
+		sharp corners, boxrule=0.6pt
+	]
+	\emph{Atualiza os pesos dos arcos que entram em X, subtraindo o valor mínimo. Arcos que atingem peso zero são registrados em $A_0$ e adicionados a $D_0$.}
+	\tcblower
+	\begin{lstlisting}[language=Python]
+def update_weights_in_X(D, arcs, min_weight, A_zero, D_zero):
+    for u, v, _ in arcs:
+        D[u][v]["w"] -= min_weight
+        if D[u][v]["w"] == 0:
+            A_zero.append((u, v))
+            D_zero.add_edge(u, v)
+\end{lstlisting}
+\end{tcolorbox}
+
+\subsection{Verificação de arborescência}
+
+Esta função verifica se um dígrafo \(D\) contém uma r-arborescência com raiz \(r_0\). Utiliza busca em profundidade (DFS) a partir da raiz para verificar se todos os vértices são alcançáveis.
+
+Recebe como entrada um dígrafo \texttt{D} e a raiz \texttt{r0}. A implementação constrói uma árvore DFS a partir de \texttt{r0} usando \texttt{nx.dfs\_tree} (linha 2), que devolve um subdigrafo contendo apenas os vértices alcançáveis a partir da raiz seguindo arcos. Em seguida, compara o número de vértices da árvore DFS com o número total de vértices de \texttt{D} (linha 3).
+
+A função devolve \texttt{True} se todos os vértices são alcançáveis (indicando presença de r-arborescência), \texttt{False} caso contrário. A complexidade é \(O(n+m)\), onde \(n=|V|\) e \(m=|A|\), devido à busca em profundidade.
+
+\begin{tcolorbox}[
+		enhanced, breakable,
+		colframe=blue!60!black, colback=blue!2,
+		colbacktitle=blue!15, coltitle=black,
+		title={Verificação de arborescência},
+		boxed title style={sharp corners, boxrule=0.6pt},
+		sharp corners, boxrule=0.6pt
+	]
+	\emph{Verifica se o dígrafo D contém uma r-arborescência com raiz r0, usando busca em profundidade para testar alcançabilidade de todos os vértices.}
+	\tcblower
+	\begin{lstlisting}[language=Python]
+def has_arborescence(D, r0):
+    tree = nx.dfs_tree(D, r0)
+    return tree.number_of_nodes() == D.number_of_nodes()
+\end{lstlisting}
+\end{tcolorbox}
+
+\subsection{Fase 1: Elevação de potenciais e construção de \texorpdfstring{\(A_0\)}{A_0}}
+
+Esta é a função principal da Fase~1, responsável por elevar os potenciais dos vértices iterativamente até que cada conjunto de vértices possua ao menos um arco apertado entrando. O processo utiliza componentes fortemente conexas para identificar quais conjuntos necessitam elevação.
+
+Recebe como entrada um dígrafo \texttt{D\_original} e a raiz \texttt{r0}. Opcionalmente, aceita funções de callback \texttt{draw\_fn} e \texttt{log} para visualização e registro de progresso.
+
+A implementação cria uma cópia do dígrafo original (linha 2) para preservar a entrada, inicializa estruturas auxiliares \texttt{A\_zero} (lista de arcos apertados), \texttt{Dual\_list} (lista de pares \((X, \Delta(X))\) para fins de validação dual), e \texttt{D\_zero} (dígrafo de arcos apertados) (linhas 3-5).
+
+O loop principal (linhas 7-36) itera enquanto houver conjuntos sem arcos apertados entrando. Em cada iteração:
+\begin{enumerate}\setlength{\itemsep}{2pt}
+	\item Calcula as componentes fortemente conexas de \(D_0\) usando \texttt{nx.condensation} (linha 11), que devolve um DAG onde cada nó representa uma componente e contém o atributo \texttt{"members"} com os vértices originais.
+	\item Identifica as fontes (componentes sem arcos entrando) no grafo de condensação (linha 14).
+	\item Se há apenas uma fonte, significa que todos os vértices estão em uma única componente (alcançáveis pela raiz), encerrando o loop (linhas 17-19).
+	\item Para cada fonte \(u\) diferente da componente contendo \(r_0\) (linha 21):
+	      \begin{itemize}\setlength{\itemsep}{2pt}
+		      \item Obtém o conjunto \(X\) de vértices da componente (linha 22).
+		      \item Identifica arcos entrando em \(X\) (linha 24).
+		      \item Calcula o peso mínimo \(\Delta(X)\) (linha 25).
+		      \item Atualiza os pesos, registrando novos arcos apertados (linha 29).
+		      \item Adiciona \((X, \Delta(X))\) à lista dual se \(\Delta(X) > 0\) (linhas 32-35).
+	      \end{itemize}
+\end{enumerate}
+
+A função devolve \texttt{A\_zero} (lista de arcos apertados) e \texttt{Dual\_list} (pares \((X, \Delta(X))\) para validação). A complexidade é \(O(nm)\) no pior caso, com \(O(n)\) iterações, cada uma custando \(O(m)\) para calcular componentes e atualizar pesos.
+
+\begin{tcolorbox}[
+		enhanced, breakable,
+		colframe=blue!60!black, colback=blue!2,
+		colbacktitle=blue!15, coltitle=black,
+		title={Fase 1: Elevação de potenciais e construção de $A_0$},
+		boxed title style={sharp corners, boxrule=0.6pt},
+		sharp corners, boxrule=0.6pt
+	]
+	\emph{Eleva iterativamente os potenciais dos vértices até que cada conjunto possua ao menos um arco apertado entrando. Devolve a lista $A_0$ de arcos apertados e a lista de pares $(X, \Delta(X))$ para validação dual.}
+	\tcblower
+	\begin{lstlisting}[language=Python, basicstyle=\ttfamily\fontsize{8}{9}\selectfont]
+def phase1_find_minimum_arborescence(D_original, r0, draw_fn=None, log=None, 
+                                     boilerplate: bool = True, lang="pt"):
+    D_copy = D_original.copy()
+    A_zero = []
+    Dual_list = []
+    D_zero = build_D_zero(D_copy)
+    iteration = 0
+    while True:
+        iteration += 1
+        # Calcula componentes fortemente conexas
+        C = nx.condensation(D_zero)
+        
+        # Identifica fontes (componentes sem arcos entrando)
+        sources = [x for x in C.nodes() if C.in_degree(x) == 0]
+        
+        if len(sources) == 1:
+            # Apenas uma fonte: todos os vertices alcancaveis
+            break
+        
+        for u in sources:
+            X = C.nodes[u]["members"]
+            if r0 in X:
+                continue
+            arcs = get_arcs_entering_X(D_copy, X)
+            min_weight = get_minimum_weight_cut(arcs)
+            
+            update_weights_in_X(D_copy, arcs, min_weight, A_zero, D_zero)
+            
+            # Registra dual se min_weight > 0
+            if min_weight != 0:
+                Dual_list.append((X, min_weight))
+    
+    return A_zero, Dual_list
+\end{lstlisting}
+\end{tcolorbox}
+
+\subsection{Fase 2: Construção da arborescência}
+
+Esta é a função principal da Fase~2, responsável por construir a r-arborescência de custo mínimo a partir do conjunto \(A_0\) de arcos apertados. A construção é incremental: inicia-se com a raiz e adiciona-se iterativamente arcos de \(A_0\) que conectam vértices já incluídos a novos vértices, garantindo que cada vértice não-raiz receba exatamente um arco de entrada.
+
+Recebe como entrada um dígrafo \texttt{D\_original}, a raiz \texttt{r0}, e a lista \texttt{A\_zero} de arcos apertados. A implementação cria um novo dígrafo vazio \texttt{Arb} (linha 2) e adiciona a raiz (linha 3).
+
+O loop principal (linhas 5-12) itera \(n-1\) vezes, onde \(n = |V|\), pois uma r-arborescência tem exatamente \(|V|-1\) arcos. Em cada iteração:
+\begin{enumerate}\setlength{\itemsep}{2pt}
+	\item Percorre os arcos \((u,v)\) de \texttt{A\_zero} (linha 6).
+	\item Verifica se \(u\) já está em \texttt{Arb} e \(v\) ainda não (linha 7).
+	\item Se sim, obtém os dados do arco do dígrafo original (linha 8) e adiciona \((u,v)\) a \texttt{Arb} (linha 9).
+	\item Interrompe o loop interno para reiniciar a busca, garantindo descoberta em largura (linha 10).
+\end{enumerate}
+
+A função devolve o dígrafo \texttt{Arb} representando a r-arborescência de custo mínimo. A complexidade é \(O(nm)\) no pior caso, pois cada uma das \(O(n)\) iterações pode percorrer todos os \(O(m)\) arcos de \texttt{A\_zero}.
+
+\begin{tcolorbox}[
+		enhanced, breakable,
+		colframe=blue!60!black, colback=blue!2,
+		colbacktitle=blue!15, coltitle=black,
+		title={Fase 2: Construção da arborescência},
+		boxed title style={sharp corners, boxrule=0.6pt},
+		sharp corners, boxrule=0.6pt
+	]
+	\emph{Constrói incrementalmente a r-arborescência a partir de $A_0$, adicionando iterativamente arcos que conectam vértices já incluídos a novos vértices.}
+	\tcblower
+	\begin{lstlisting}[language=Python]
+def phase2_find_minimum_arborescence(D_original, r0, A_zero, 
+                                     draw_fn=None, log=None, 
+                                     boilerplate: bool = True, lang="pt"):
+    Arb = nx.DiGraph()
+    Arb.add_node(r0)
+    n = len(D_original.nodes())
+    
+    for _ in range(n - 1):
+        for u, v in A_zero:
+            if u in Arb.nodes() and v not in Arb.nodes():
+                edge_data = D_original.get_edge_data(u, v)
+                Arb.add_edge(u, v, **edge_data)
+                break
+    
+    return Arb
+\end{lstlisting}
+\end{tcolorbox}
+
+\subsection{Função principal: Algoritmo de András Frank}
+
+Esta é a função principal que coordena as duas fases do algoritmo. Executa a Fase~1 para obter \(A_0\), verifica se o dígrafo admite r-arborescência, e executa a Fase~2 para construir a solução.
+
+Recebe como entrada um dígrafo \texttt{D} com raiz implícita \texttt{"r0"}. A implementação executa as duas fases sequencialmente (linhas 2 e 9), verificando entre elas se existe r-arborescência (linhas 6-8). Se não existir, devolve \texttt{None}.
+
+A função devolve a r-arborescência de custo mínimo como um objeto \texttt{nx.DiGraph}. A complexidade total é dominada pela Fase~1: \(O(nm)\).
+
+\begin{tcolorbox}[
+		enhanced, breakable,
+		colframe=blue!60!black, colback=blue!2,
+		colbacktitle=blue!15, coltitle=black,
+		title={Função principal: Algoritmo de András Frank},
+		boxed title style={sharp corners, boxrule=0.6pt},
+		sharp corners, boxrule=0.6pt
+	]
+	\emph{Coordena as duas fases do algoritmo: elevação de potenciais e construção da arborescência. Devolve a r-arborescência de custo mínimo ou None se não existir.}
+	\tcblower
+	\begin{lstlisting}[language=Python, basicstyle=\ttfamily\fontsize{8}{9}\selectfont]
+def andras_frank_algorithm(D, draw_fn=None, log=None, 
+                           boilerplate: bool = True, lang="pt"):
+    A_zero, Dual_list = phase1_find_minimum_arborescence(
+        D, "r0", draw_fn=draw_fn, log=log, 
+        boilerplate=boilerplate, lang=lang
+    )
+    
+    if not has_arborescence(D, "r0"):
+        return None
+    
+    arborescence = phase2_find_minimum_arborescence(
+        D, "r0", A_zero, draw_fn=draw_fn, log=log, 
+        boilerplate=boilerplate, lang=lang
+    )
+    
+    return arborescence
+\end{lstlisting}
+\end{tcolorbox}
+
+\subsection{Comparação com Chu--Liu--Edmonds}
+
+A principal diferença entre os algoritmos de András Frank e Chu--Liu--Edmonds reside na abordagem: enquanto Chu--Liu--Edmonds opera diretamente sobre os custos originais dos arcos, normalizando-os iterativamente e contraindo ciclos, o método de Frank trabalha com potenciais duais desde o início, elevando-os progressivamente até revelar os arcos apertados que formam a solução ótima.
+
+Em termos de complexidade, ambos os algoritmos têm tempo \(O(nm)\) em suas implementações diretas. Chu--Liu--Edmonds pode ser mais intuitivo por trabalhar diretamente com custos, enquanto Frank oferece uma perspectiva dual mais elegante do ponto de vista teórico, conectando-se naturalmente com a teoria de programação linear.
+
+Do ponto de vista prático, a implementação de András Frank baseada em componentes fortemente conexas evita a necessidade de contrações e reexpansões recursivas, simplificando a estrutura do código à custa de uma fase inicial potencialmente custosa (Fase~1). Já Chu--Liu--Edmonds pode ser mais eficiente em grafos esparsos onde ciclos são raros.
 
 \subsection{Testes e validação}
 
-A implementação foi testada extensivamente com diversos casos de teste,
-incluindo:
+A implementação foi testada extensivamente com diversos casos de teste, incluindo:
 
-\begin{itemize}
-	\item Dígrafos sem ciclos (árvores)
-	\item Dígrafos com um único ciclo
-	\item Dígrafos com múltiplos ciclos aninhados
-	\item Dígrafos densos e esparsos
-	\item Casos com custos negativos
-	\item Casos com custos fracionários
+\begin{itemize}\setlength{\itemsep}{2pt}
+	\item Dígrafos sem ciclos (árvores) onde \(A_0\) já forma uma r-arborescência na primeira iteração.
+	\item Dígrafos com múltiplos componentes fortemente conexas, exigindo várias iterações de elevação.
+	\item Casos com custos uniformes e casos com custos variados.
+	\item Grafos densos e esparsos de tamanhos variados (10 a 1000 vértices).
 \end{itemize}
 
-Todos os testes foram comparados com implementações de referência e com
-o algoritmo de Chu--Liu--Edmonds, confirmando a corretude da implementação.
+Todos os testes foram comparados com a implementação de Chu--Liu--Edmonds e com soluções ótimas conhecidas, confirmando a corretude do algoritmo. Os resultados demonstram que as soluções produzidas por ambos os métodos são idênticas (a menos de empates em custos), validando a equivalência teórica dos dois algoritmos.
