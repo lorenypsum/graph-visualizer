@@ -711,101 +711,101 @@ def update_weights_in_X(D, arcs, min_weight, A_zero, D_zero):
 A seguir ilustramos o funcionamento da função \texttt{update\_weights\_in\_X} em \(D_{32}\). A figura mostra o dígrafo antes e depois da atualização dos pesos. No estado inicial (esquerda), temos \(\Delta(X) = 2\). A função subtrai esse valor de todos os arcos que entram em \(X\). No estado final (direita), os arcos que atingiram peso zero (destacados em azul) são adicionados a \(A_0\) e \(D_0\).
 
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth]
-	% estilos
-	\tikzset{
-		vtx/.style={circle, draw, fill=blue!8, thick, inner sep=1.2pt, minimum size=6.5mm},
-		vtxX/.style={circle, draw=orange!80!black, fill=orange!15, thick, inner sep=1.2pt, minimum size=6.5mm},
-		arc/.style={->, >=Stealth, thick, draw=black!40},
-		arcEntering/.style={->, >=Stealth, very thick, draw=red!70!black},
-		arcTight/.style={->, >=Stealth, ultra thick, draw=blue!70!black},
-		cost/.style={font=\scriptsize, fill=white, inner sep=1pt},
-		costTight/.style={font=\scriptsize\bfseries, fill=blue!10, inner sep=2pt, draw=blue!70!black, rounded corners=1pt}
-	}
+	\centering
+	\begin{tikzpicture}[>=Stealth]
+		% estilos
+		\tikzset{
+			vtx/.style={circle, draw, fill=blue!8, thick, inner sep=1.2pt, minimum size=6.5mm},
+			vtxX/.style={circle, draw=orange!80!black, fill=orange!15, thick, inner sep=1.2pt, minimum size=6.5mm},
+			arc/.style={->, >=Stealth, thick, draw=black!40},
+			arcEntering/.style={->, >=Stealth, very thick, draw=red!70!black},
+			arcTight/.style={->, >=Stealth, ultra thick, draw=blue!70!black},
+			cost/.style={font=\scriptsize, fill=white, inner sep=1pt},
+			costTight/.style={font=\scriptsize\bfseries, fill=blue!10, inner sep=2pt, draw=blue!70!black, rounded corners=1pt}
+		}
 
-	% ===== ANTES (esquerda) =====
-	\begin{scope}
-		\node[font=\bfseries, blue!80!black] at (2, 3.5) {Antes: pesos originais};
+		% ===== ANTES (esquerda) =====
+		\begin{scope}
+			\node[font=\bfseries, blue!80!black] at (2, 3.5) {Antes: pesos originais};
 
-		% Vértices fora de X
-		\node[vtx] (u1) at (0, 2) {$u_1$};
-		\node[vtx] (u2) at (0, 0) {$u_2$};
-		\node[vtx] (u3) at (0, -2) {$u_3$};
+			% Vértices fora de X
+			\node[vtx] (u1) at (0, 2) {$u_1$};
+			\node[vtx] (u2) at (0, 0) {$u_2$};
+			\node[vtx] (u3) at (0, -2) {$u_3$};
 
-		% Vértices dentro de X
-		\node[vtxX] (v1) at (4, 2.5) {$v_1$};
-		\node[vtxX] (v2) at (4, 0.5) {$v_2$};
-		\node[vtxX] (v3) at (4, -1.5) {$v_3$};
+			% Vértices dentro de X
+			\node[vtxX] (v1) at (4, 2.5) {$v_1$};
+			\node[vtxX] (v2) at (4, 0.5) {$v_2$};
+			\node[vtxX] (v3) at (4, -1.5) {$v_3$};
 
-		% Arcos entrando em X
-		\draw[arcEntering] (u1) -- node[cost, above] {3} (v1);
-		\draw[arcEntering] (u2) -- node[cost, above] {2} (v2);
-		\draw[arcEntering] (u3) -- node[cost, above] {4} (v3);
-		\draw[arcEntering] (u1) to[bend right=15] node[cost, below, pos=0.3] {5} (v2);
+			% Arcos entrando em X
+			\draw[arcEntering] (u1) -- node[cost, above] {3} (v1);
+			\draw[arcEntering] (u2) -- node[cost, above] {2} (v2);
+			\draw[arcEntering] (u3) -- node[cost, above] {4} (v3);
+			\draw[arcEntering] (u1) to[bend right=15] node[cost, below, pos=0.3] {5} (v2);
 
-		% Arcos internos a X
-		\draw[arc] (v1) to[bend right=20] node[cost, right, pos=0.6] {1} (v2);
-		\draw[arc] (v2) to[bend right=20] node[cost, left, pos=0.4] {2} (v3);
+			% Arcos internos a X
+			\draw[arc] (v1) to[bend right=20] node[cost, right, pos=0.6] {1} (v2);
+			\draw[arc] (v2) to[bend right=20] node[cost, left, pos=0.4] {2} (v3);
 
-		% Arcos externos a X
-		\draw[arc] (u1) to[bend right=20] node[cost, left, pos=0.6] {1} (u2);
-		\draw[arc] (u2) to[bend right=20] node[cost, left, pos=0.6] {3} (u3);
+			% Arcos externos a X
+			\draw[arc] (u1) to[bend right=20] node[cost, left, pos=0.6] {1} (u2);
+			\draw[arc] (u2) to[bend right=20] node[cost, left, pos=0.6] {3} (u3);
 
-		% Arcos saindo de X
-		\draw[arc] (v1) to[bend left=30] node[cost, above, pos=0.7] {2} (u1);
+			% Arcos saindo de X
+			\draw[arc] (v1) to[bend left=30] node[cost, above, pos=0.7] {2} (u1);
 
-		% Região X
-		\draw[orange!60!black, thick, dashed, rounded corners=8pt]
-		(3.2, 3.2) rectangle (4.8, -2.2);
-		\node[orange!80!black, font=\bfseries\small] at (5.4, 3.0) {$X$};
+			% Região X
+			\draw[orange!60!black, thick, dashed, rounded corners=8pt]
+			(3.2, 3.2) rectangle (4.8, -2.2);
+			\node[orange!80!black, font=\bfseries\small] at (5.4, 3.0) {$X$};
 
-		\node[font=\small, green!60!black] at (2, -3) {$\Delta(X) = 2$};
-	\end{scope}
+			\node[font=\small, green!60!black] at (2, -3) {$\Delta(X) = 2$};
+		\end{scope}
 
-	% Seta indicando transformação
-	\draw[->, ultra thick, blue!60!black] (5.8, 0.5) -- node[above, font=\small] {subtrai $\Delta(X)$} (7.2, 0.5);
+		% Seta indicando transformação
+		\draw[->, ultra thick, blue!60!black] (5.8, 0.5) -- node[above, font=\small] {subtrai $\Delta(X)$} (7.2, 0.5);
 
-	% ===== DEPOIS (direita) =====
-	\begin{scope}[xshift=8cm]
-		\node[font=\bfseries, blue!80!black] at (2, 3.5) {Depois: pesos atualizados};
+		% ===== DEPOIS (direita) =====
+		\begin{scope}[xshift=8cm]
+			\node[font=\bfseries, blue!80!black] at (2, 3.5) {Depois: pesos atualizados};
 
-		% Vértices fora de X
-		\node[vtx] (u1b) at (0, 2) {$u_1$};
-		\node[vtx] (u2b) at (0, 0) {$u_2$};
-		\node[vtx] (u3b) at (0, -2) {$u_3$};
+			% Vértices fora de X
+			\node[vtx] (u1b) at (0, 2) {$u_1$};
+			\node[vtx] (u2b) at (0, 0) {$u_2$};
+			\node[vtx] (u3b) at (0, -2) {$u_3$};
 
-		% Vértices dentro de X
-		\node[vtxX] (v1b) at (4, 2.5) {$v_1$};
-		\node[vtxX] (v2b) at (4, 0.5) {$v_2$};
-		\node[vtxX] (v3b) at (4, -1.5) {$v_3$};
+			% Vértices dentro de X
+			\node[vtxX] (v1b) at (4, 2.5) {$v_1$};
+			\node[vtxX] (v2b) at (4, 0.5) {$v_2$};
+			\node[vtxX] (v3b) at (4, -1.5) {$v_3$};
 
-		% Arcos entrando em X (atualizados)
-		\draw[arcEntering] (u1b) -- node[cost, above] {1} (v1b);
-		\draw[arcTight] (u2b) -- node[costTight, above] {0} (v2b);
-		\draw[arcEntering] (u3b) -- node[cost, above] {2} (v3b);
-		\draw[arcEntering] (u1b) to[bend right=15] node[cost, below, pos=0.3] {3} (v2b);
+			% Arcos entrando em X (atualizados)
+			\draw[arcEntering] (u1b) -- node[cost, above] {1} (v1b);
+			\draw[arcTight] (u2b) -- node[costTight, above] {0} (v2b);
+			\draw[arcEntering] (u3b) -- node[cost, above] {2} (v3b);
+			\draw[arcEntering] (u1b) to[bend right=15] node[cost, below, pos=0.3] {3} (v2b);
 
-		% Arcos internos a X (inalterados)
-		\draw[arc] (v1b) to[bend right=20] node[cost, right, pos=0.6] {1} (v2b);
-		\draw[arc] (v2b) to[bend right=20] node[cost, left, pos=0.4] {2} (v3b);
+			% Arcos internos a X (inalterados)
+			\draw[arc] (v1b) to[bend right=20] node[cost, right, pos=0.6] {1} (v2b);
+			\draw[arc] (v2b) to[bend right=20] node[cost, left, pos=0.4] {2} (v3b);
 
-		% Arcos externos a X (inalterados)
-		\draw[arc] (u1b) to[bend right=20] node[cost, left, pos=0.6] {1} (u2b);
-		\draw[arc] (u2b) to[bend right=20] node[cost, left, pos=0.6] {3} (u3b);
+			% Arcos externos a X (inalterados)
+			\draw[arc] (u1b) to[bend right=20] node[cost, left, pos=0.6] {1} (u2b);
+			\draw[arc] (u2b) to[bend right=20] node[cost, left, pos=0.6] {3} (u3b);
 
-		% Arcos saindo de X (inalterados)
-		\draw[arc] (v1b) to[bend left=30] node[cost, above, pos=0.7] {2} (u1b);
+			% Arcos saindo de X (inalterados)
+			\draw[arc] (v1b) to[bend left=30] node[cost, above, pos=0.7] {2} (u1b);
 
-		% Região X
-		\draw[orange!60!black, thick, dashed, rounded corners=8pt]
-		(3.2, 3.2) rectangle (4.8, -2.2);
-		\node[orange!80!black, font=\bfseries\small] at (5.4, 3.0) {$X$};
+			% Região X
+			\draw[orange!60!black, thick, dashed, rounded corners=8pt]
+			(3.2, 3.2) rectangle (4.8, -2.2);
+			\node[orange!80!black, font=\bfseries\small] at (5.4, 3.0) {$X$};
 
-		\node[font=\small, blue!70!black] at (2, -3) {Arco \textcolor{blue!70!black}{apertado} $\to A_0$};
-	\end{scope}
-\end{tikzpicture}
-\caption{Ilustração da função \texttt{update\_weights\_in\_X} em \(D_{32}\). À esquerda, o dígrafo antes da atualização, com os arcos \textcolor{red!70!black}{em vermelho} entrando em \(X\) e \(\Delta(X) = 2\). À direita, após subtrair \(\Delta(X)\) de cada arco entrando em \(X\): o peso $(u_1, v_1)$ reduz de 3 para 1, $(u_2, v_2)$ de 2 para \textcolor{blue!70!black}{\textbf{0}} (torna-se apertado), $(u_3, v_3)$ de 4 para 2, e $(u_1, v_2)$ de 5 para 3. O arco apertado é adicionado a \(A_0\) e \(D_0\).}
+			\node[font=\small, blue!70!black] at (2, -3) {Arco \textcolor{blue!70!black}{apertado} $\to A_0$};
+		\end{scope}
+	\end{tikzpicture}
+	\caption{Ilustração da função \texttt{update\_weights\_in\_X} em \(D_{32}\). À esquerda, o dígrafo antes da atualização, com os arcos \textcolor{red!70!black}{em vermelho} entrando em \(X\) e \(\Delta(X) = 2\). À direita, após subtrair \(\Delta(X)\) de cada arco entrando em \(X\): o peso $(u_1, v_1)$ reduz de 3 para 1, $(u_2, v_2)$ de 2 para \textcolor{blue!70!black}{\textbf{0}} (torna-se apertado), $(u_3, v_3)$ de 4 para 2, e $(u_1, v_2)$ de 5 para 3. O arco apertado é adicionado a \(A_0\) e \(D_0\).}
 \end{figure}
 
 \subsection{Verificação de arborescência}
@@ -814,7 +814,7 @@ Esta função verifica se um dígrafo \(D\) contém uma r-arborescência com rai
 
 Recebe como entrada um dígrafo \texttt{D} e a raiz \texttt{r0}. A implementação constrói uma árvore DFS a partir de \texttt{r0} usando \texttt{nx.dfs\_tree} (linha 2), que devolve um subdigrafo contendo apenas os vértices alcançáveis a partir da raiz seguindo arcos. Em seguida, compara o número de vértices da árvore DFS com o número total de vértices de \texttt{D} (linha 3).
 
-A função devolve \texttt{True} se todos os vértices são alcançáveis (indicando presença de r-arborescência), \texttt{False} caso contrário. A complexidade é \(O(n+m)\), onde \(n=|V|\) e \(m=|A|\), devido à busca em profundidade.
+A função devolve \texttt{True} se todos os vértices são alcançáveis (indicando presença de r-arborescência), \texttt{False} caso contrário. A complexidade é \(O(n+m)\), onde \(n=|V|\) e \(m=|A|\), devido à busca em profundidade. Precisamos dessa verificação para garantir que a Fase~1 produza um dígrafo \(D_0\) que contenha uma r-arborescência antes de prosseguir para a Fase~2.
 
 \begin{tcolorbox}[
 		enhanced, breakable,
@@ -835,26 +835,15 @@ def has_arborescence(D, r0):
 
 \subsection{Fase 1: Elevação de potenciais e construção de \texorpdfstring{\(A_0\)}{A_0}}
 
-Esta é a função principal da Fase~1, responsável por elevar os potenciais dos vértices iterativamente até que cada conjunto de vértices possua ao menos um arco apertado entrando. O processo utiliza componentes fortemente conexas para identificar quais conjuntos necessitam elevação.
+A seguir apresentamos a função principal da Fase~1, responsável por elevar os potenciais dos vértices iterativamente até que cada conjunto de vértices possua ao menos um arco apertado entrando. O processo utiliza componentes fortemente conexas para identificar quais conjuntos necessitam elevação.
 
-Recebe como entrada um dígrafo \texttt{D\_original} e a raiz \texttt{r0}. Opcionalmente, aceita funções de callback \texttt{draw\_fn} e \texttt{log} para visualização e registro de progresso.
+Recebe como entrada um dígrafo \texttt{D\_original} e a raiz \texttt{r0}. A implementação cria uma cópia do dígrafo original (linha 2) para preservar a entrada, inicializa estruturas auxiliares \texttt{A\_zero} (lista de arcos apertados), \texttt{Dual\_list} (lista de pares \((X, \Delta(X))\) para fins de validação dual), e \texttt{D\_zero} (dígrafo de arcos apertados) (linhas 3-5).
 
-A implementação cria uma cópia do dígrafo original (linha 2) para preservar a entrada, inicializa estruturas auxiliares \texttt{A\_zero} (lista de arcos apertados), \texttt{Dual\_list} (lista de pares \((X, \Delta(X))\) para fins de validação dual), e \texttt{D\_zero} (dígrafo de arcos apertados) (linhas 3-5).
+O loop principal (linhas 7-36) itera enquanto houver conjuntos sem arcos apertados entrando. Em cada iteração, calcula-se as componentes fortemente conexas de \(D_0\) usando \texttt{nx.condensation} (linha 11), que devolve um grafo acíclico dirigido (DAG) onde cada nó representa uma componente e contém o atributo \texttt{"members"} com os vértices originais. Utilizamos componentes fortemente conexas porque elas identificam naturalmente os conjuntos maximais de vértices que ainda não possuem arcos apertados entrando, evitando a necessidade de rastrear manualmente quais conjuntos já foram processados.
 
-O loop principal (linhas 7-36) itera enquanto houver conjuntos sem arcos apertados entrando. Em cada iteração:
-\begin{enumerate}\setlength{\itemsep}{2pt}
-	\item Calcula as componentes fortemente conexas de \(D_0\) usando \texttt{nx.condensation} (linha 11), que devolve um DAG onde cada nó representa uma componente e contém o atributo \texttt{"members"} com os vértices originais.
-	\item Identifica as fontes (componentes sem arcos entrando) no grafo de condensação (linha 14).
-	\item Se há apenas uma fonte, significa que todos os vértices estão em uma única componente (alcançáveis pela raiz), encerrando o loop (linhas 17-19).
-	\item Para cada fonte \(u\) diferente da componente contendo \(r_0\) (linha 21):
-	      \begin{itemize}\setlength{\itemsep}{2pt}
-		      \item Obtém o conjunto \(X\) de vértices da componente (linha 22).
-		      \item Identifica arcos entrando em \(X\) (linha 24).
-		      \item Calcula o peso mínimo \(\Delta(X)\) (linha 25).
-		      \item Atualiza os pesos, registrando novos arcos apertados (linha 29).
-		      \item Adiciona \((X, \Delta(X))\) à lista dual se \(\Delta(X) > 0\) (linhas 32-35).
-	      \end{itemize}
-\end{enumerate}
+Em seguida, identificam-se as fontes (componentes sem arcos entrando) no grafo de condensação (linha 14). Se há apenas uma fonte, significa que todos os vértices estão em uma única componente alcançável pela raiz através de arcos apertados, garantindo que \(D_0\) contém uma r-arborescência e encerrando o loop (linhas 17-19).
+
+Para cada fonte \(u\) diferente da componente contendo \(r_0\) (linha 21), obtém-se o conjunto \(X\) de vértices da componente (linha 22), identificam-se os arcos entrando em \(X\) usando \texttt{get\_arcs\_entering\_X} (linha 24), calcula-se o peso mínimo \(\Delta(X)\) usando \texttt{get\_minimum\_weight\_cut} (linha 25), e atualiza-se os pesos com \texttt{update\_weights\_in\_X}, registrando novos arcos apertados (linha 29). A elevação simultânea de potenciais para todos os vértices de \(X\) mantém a propriedade de que arcos internos a \(X\) permanecem com o mesmo custo reduzido relativo, preservando a correção do algoritmo. Finalmente, adiciona-se \((X, \Delta(X))\) à lista dual se \(\Delta(X) > 0\) (linhas 32-35), permitindo verificação posterior das condições de otimalidade dual.
 
 A função devolve \texttt{A\_zero} (lista de arcos apertados) e \texttt{Dual\_list} (pares \((X, \Delta(X))\) para validação). A complexidade é \(O(nm)\) no pior caso, com \(O(n)\) iterações, cada uma custando \(O(m)\) para calcular componentes e atualizar pesos.
 

@@ -10,9 +10,9 @@ from typing import Optional, Callable
 
 from andrasfrank import (
     andras_frank_algorithm,
-    phase1_find_minimum_arborescence,
-    phase2_find_minimum_arborescence,
-    phase2_find_minimum_arborescence_v2,
+    phase1,
+    phase2,
+    phase2_v2,
     check_dual_optimality_condition,
 )
 from chuliu import chuliu_edmonds, remove_edges_to_r0
@@ -298,7 +298,7 @@ def volume_tester(
             # Phase I with metrics and peak memory
             tracemalloc.start()
             t1 = time.perf_counter()
-            A_zero, Dual_list = phase1_find_minimum_arborescence(
+            A_zero, Dual_list = phase1(
                 D1_filtered,
                 root,
                 draw_fn=None,
@@ -314,7 +314,7 @@ def volume_tester(
 
             # Phase II v1
             t1 = time.perf_counter()
-            arbo_frank_v1 = phase2_find_minimum_arborescence(
+            arbo_frank_v1 = phase2(
                 D1_filtered,
                 root,
                 A_zero,
@@ -327,7 +327,7 @@ def volume_tester(
 
             # Phase II v2
             t1 = time.perf_counter()
-            arbo_frank_v2 = phase2_find_minimum_arborescence_v2(
+            arbo_frank_v2 = phase2_v2(
                 D1_filtered,
                 root,
                 A_zero,

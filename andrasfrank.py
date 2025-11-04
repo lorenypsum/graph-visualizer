@@ -100,7 +100,7 @@ def has_arborescence(D, r0):
     return tree.number_of_nodes() == D.number_of_nodes()
 
 
-def phase1_find_minimum_arborescence(
+def phase1(
     D_original,
     r0,
     draw_fn=None,
@@ -214,7 +214,7 @@ def phase1_find_minimum_arborescence(
     return A_zero, Dual_list
 
 
-def phase2_find_minimum_arborescence(
+def phase2(
     D_original, r0, A_zero, draw_fn=None, log=None, boilerplate: bool = True, lang="pt"
 ):
     """
@@ -251,7 +251,7 @@ def phase2_find_minimum_arborescence(
     return Arb
 
 
-def phase2_find_minimum_arborescence_v2(
+def phase2_v2(
     D_original, r0, A_zero, draw_fn=None, log=None, boilerplate: bool = True, lang="pt"
 ):
     """
@@ -362,7 +362,7 @@ def andras_frank_algorithm(
         elif lang == "pt":
             log(f"\nExecutando algoritmo de András Frank...")
 
-    A_zero, Dual_list = phase1_find_minimum_arborescence(
+    A_zero, Dual_list = phase1(
         D,
         "r0",
         draw_fn=draw_fn,
@@ -384,10 +384,10 @@ def andras_frank_algorithm(
                 log(f"\nO grafo não contém uma arborescência com raiz r0.")
         return None, None
 
-    arborescence_frank = phase2_find_minimum_arborescence(
+    arborescence_frank = phase2(
         D, "r0", A_zero, draw_fn=draw_fn, log=log, boilerplate=boilerplate, lang=lang
     )
-    arborescence_frank_v2 = phase2_find_minimum_arborescence_v2(
+    arborescence_frank_v2 = phase2_v2(
         D, "r0", A_zero, draw_fn=draw_fn, log=log, boilerplate=boilerplate, lang=lang
     )
 
