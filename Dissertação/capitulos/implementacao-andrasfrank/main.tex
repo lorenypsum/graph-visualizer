@@ -1023,6 +1023,107 @@ A seguir ilustramos a execução da função \texttt{phase1} no dígrafo \(D_{32
 	\caption{Execução da função \texttt{phase1} em \(D_{32}\). À esquerda, o dígrafo original \(D\) com pesos dos arcos. Ao centro, \(D_0\) inicial após linha 5 (\texttt{build\_D\_zero}), contendo apenas vértices sem arcos. À direita, \(D_0\) final após o loop de elevação de potenciais, contendo apenas os arcos \textcolor{blue!70!black}{apertados} (custo reduzido zero) que formam uma r-arborescência. Durante as iterações (linhas 7-22), os potenciais são elevados para cada componente sem arcos apertados entrando, até que todos os vértices sejam alcançáveis a partir de \(r_0\) através de arcos em \(D_0\).}
 \end{figure}
 
+A seguir ilustramos a execução da função \texttt{phase2} em \(D_{32}\), mostrando como a r-arborescência é construída incrementalmente a partir do conjunto \(A_0\) de arcos apertados obtidos da Fase~1. A figura apresenta quatro estados: o conjunto inicial \(A_0\) com 6 arcos apertados, e três estados intermediários da arborescência \texttt{Arb} sendo construída, destacando em verde os arcos adicionados em cada iteração.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[>=Stealth, scale=0.72, every node/.style={scale=0.72}]
+		% Estilos
+		\tikzset{
+			vtx/.style={circle, draw, fill=blue!8, thick, inner sep=1.2pt, minimum size=6.5mm},
+			vtxRoot/.style={circle, draw, fill=red!15, thick, inner sep=1.2pt, minimum size=6.5mm},
+			vtxIn/.style={circle, draw, fill=green!15, thick, inner sep=1.2pt, minimum size=6.5mm},
+			vtxOut/.style={circle, draw, fill=gray!10, thick, inner sep=1.2pt, minimum size=6.5mm},
+			arc/.style={->, thick, blue!70!black},
+			arcNew/.style={->, ultra thick, green!70!black},
+			cost/.style={font=\scriptsize, fill=white, inner sep=1pt}
+		}
+
+		% ===== A_0 (esquerda superior) =====
+		\begin{scope}
+			\node[font=\bfseries, blue!80!black] at (2, 4.5) {$A_0$ (arcos apertados)};
+
+			\node[vtxRoot] (r0) at (2, 3.2) {$r_0$};
+			\node[vtx] (u1) at (0, 1.7) {$u_1$};
+			\node[vtx] (u2) at (2, 1.7) {$u_2$};
+			\node[vtx] (u3) at (4, 1.7) {$u_3$};
+			\node[vtx] (v1) at (0.5, 0) {$v_1$};
+			\node[vtx] (v2) at (2, 0) {$v_2$};
+			\node[vtx] (v3) at (3.5, 0) {$v_3$};
+
+			\draw[arc] (r0) -- node[cost, left, pos=0.3] {0} (u1);
+			\draw[arc] (r0) -- node[cost, right, pos=0.3] {0} (u3);
+			\draw[arc] (u1) to[bend left=12] node[cost, above, pos=0.4] {0} (u2);
+			\draw[arc] (u1) -- node[cost, left] {0} (v1);
+			\draw[arc] (u2) -- node[cost, right] {0} (v2);
+			\draw[arc] (v2) -- node[cost, above] {0} (v3);
+
+			\node[font=\small, gray!70!black] at (2, -1) {6 arcos com custo 0};
+		\end{scope}
+
+		% ===== Iteração 1 (direita superior) =====
+		\begin{scope}[xshift=6.5cm]
+			\node[font=\bfseries, blue!80!black] at (2, 4.5) {Iteração 1: $|$Arb$| = 1$};
+
+			\node[vtxRoot] (r01) at (2, 3.2) {$r_0$};
+			\node[vtxIn] (u11) at (0, 1.7) {$u_1$};
+			\node[vtxOut] (u21) at (2, 1.7) {$u_2$};
+			\node[vtxOut] (u31) at (4, 1.7) {$u_3$};
+			\node[vtxOut] (v11) at (0.5, 0) {$v_1$};
+			\node[vtxOut] (v21) at (2, 0) {$v_2$};
+			\node[vtxOut] (v31) at (3.5, 0) {$v_3$};
+
+			\draw[arcNew] (r01) -- node[cost, left, pos=0.3, fill=green!10] {1} (u11);
+
+			\node[font=\small, green!70!black] at (2, -1) {Adiciona $(r_0, u_1)$};
+		\end{scope}
+
+		% ===== Iteração 2 (esquerda inferior) =====
+		\begin{scope}[yshift=-6.2cm]
+			\node[font=\bfseries, blue!80!black] at (2, 4.5) {Iteração 2: $|$Arb$| = 2$};
+
+			\node[vtxRoot] (r02) at (2, 3.2) {$r_0$};
+			\node[vtxIn] (u12) at (0, 1.7) {$u_1$};
+			\node[vtxOut] (u22) at (2, 1.7) {$u_2$};
+			\node[vtxIn] (u32) at (4, 1.7) {$u_3$};
+			\node[vtxOut] (v12) at (0.5, 0) {$v_1$};
+			\node[vtxOut] (v22) at (2, 0) {$v_2$};
+			\node[vtxOut] (v32) at (3.5, 0) {$v_3$};
+
+			\draw[arc] (r02) -- node[cost, left, pos=0.3] {1} (u12);
+			\draw[arcNew] (r02) -- node[cost, right, pos=0.3, fill=green!10] {1} (u32);
+
+			\node[font=\small, green!70!black] at (2, -1) {Adiciona $(r_0, u_3)$};
+		\end{scope}
+
+		% ===== Iteração 4 (direita inferior) =====
+		\begin{scope}[xshift=6.5cm, yshift=-6.2cm]
+			\node[font=\bfseries, blue!80!black] at (2, 4.5) {Iteração 4: $|$Arb$| = 4$};
+
+			\node[vtxRoot] (r04) at (2, 3.2) {$r_0$};
+			\node[vtxIn] (u14) at (0, 1.7) {$u_1$};
+			\node[vtxIn] (u24) at (2, 1.7) {$u_2$};
+			\node[vtxIn] (u34) at (4, 1.7) {$u_3$};
+			\node[vtxIn] (v14) at (0.5, 0) {$v_1$};
+			\node[vtxOut] (v24) at (2, 0) {$v_2$};
+			\node[vtxOut] (v34) at (3.5, 0) {$v_3$};
+
+			\draw[arc] (r04) -- node[cost, left, pos=0.3] {1} (u14);
+			\draw[arc] (r04) -- node[cost, right, pos=0.3] {1} (u34);
+			\draw[arc] (u14) to[bend left=12] node[cost, above, pos=0.4] {1} (u24);
+			\draw[arcNew] (u14) -- node[cost, left, fill=green!10] {3} (v14);
+
+			\node[font=\small, green!70!black] at (2, -1) {Adiciona $(u_1, v_1)$};
+		\end{scope}
+
+		% Setas de progressão
+		\draw[->, ultra thick, gray!50] (4.8, 2) -- node[above, font=\small] {linha 6-10} (5.7, 2);
+		\draw[->, ultra thick, gray!50] (2, -1.5) -- node[left, font=\small] {linha 6-10} (2, -2.4);
+		\draw[->, ultra thick, gray!50] (4.8, -4.2) -- node[above, font=\small] {linha 6-10} (5.7, -4.2);
+	\end{tikzpicture}
+	\caption{Execução da função \texttt{phase2} em \(D_{32}\). Superior esquerdo: conjunto \(A_0\) com 6 arcos apertados (custo reduzido zero) obtidos da Fase~1. Superior direito: Iteração 1 — adiciona arco $(r_0, u_1)$ pois $r_0 \in$ Arb e $u_1 \notin$ Arb. Inferior esquerdo: Iteração 2 — adiciona $(r_0, u_3)$. Inferior direito: Iteração 4 — após adicionar $(u_1, u_2)$ na iteração 3, adiciona $(u_1, v_1)$. Vértices \textcolor{green!70!black}{verdes} foram recém-adicionados, vértices \textcolor{gray!70!black}{cinzas} ainda não pertencem a Arb. O processo continua até que todos os 6 arcos de \(A_0\) sejam incluídos, formando uma r-arborescência com pesos originais de \(D\).}
+\end{figure}
+
 As funções auxiliares implementadas nesta seção correspondem diretamente aos passos da Fase~1 do algoritmo de András Frank da seguinte forma:
 
 \begin{tcolorbox}[
