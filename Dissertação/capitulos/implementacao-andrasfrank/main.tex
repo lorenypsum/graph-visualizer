@@ -81,29 +81,26 @@ O algoritmo de Frank utiliza \textbf{potenciais} \(y: V \to \mathbb{R}\) associa
 para definir custos reduzidos nos arcos. Para cada arco \(a = (u,v) \in A\), o
 \textbf{custo \(y\)-reduzido} é dado por
 \[
-	c_y(a) := c(a) - y(v).
+	c_y(u,v) := c(u,v) - y(v),
 \]
-Note que, diferentemente do procedimento de redução do capítulo anterior (onde subtraíamos o mínimo custo
-de entrada em cada vértice), aqui o potencial \(y(v)\) é uma variável que será
-ajustada pelo algoritmo através da seguinte noção.
+onde \(v\) é o vértice de destino do arco. Note que, diferentemente do procedimento de redução do capítulo anterior (onde subtraíamos o mínimo custo de entrada em cada vértice), aqui o potencial \(y(v)\) é uma variável que será ajustada pelo algoritmo através da seguinte noção.
 
-Um arco \(a\) é dito \textbf{apertado} (ou \textbf{tight}) se \(c_y(a) = 0\), isto é,
-se \(c(a) = y(\head(a))\)\footnote{A notação $\head(a)$ indica o vértice de destino do arco $a = (u,v)$, ou seja, $\head(a) = v$. Portanto, $y(\head(a))$ é o potencial associado ao vértice para onde o arco aponta.}. A ideia central do algoritmo de Frank consiste em duas etapas: (i)~elevar os potenciais \(y(v)\) para cada \(v \neq r\) até que cada vértice possua ao menos um arco apertado entrando nele; (ii)~construir uma arborescência ótima utilizando exclusivamente arcos apertados.
+Um arco \(a = (u,v)\) é dito \textbf{apertado} (ou \textbf{tight}) se \(c_y(u,v) = 0\), isto é, se o custo original coincide com o potencial do vértice de destino: \(c(u,v) = y(v)\). A ideia central do algoritmo de Frank consiste em duas etapas: (i)~elevar os potenciais \(y(v)\) para cada \(v \neq r\) até que cada vértice possua ao menos um arco apertado entrando nele; (ii)~construir uma arborescência ótima utilizando exclusivamente arcos apertados.
 
 \begin{tcolorbox}[
-	enhanced, breakable,
-	colback=blue!5!white, colframe=blue!70!black,
-	colbacktitle=blue!85!black, coltitle=white,
-	fonttitle=\bfseries,
-	title={Arcos apertados: interpretação e cálculo},
-	sharp corners, boxrule=0.8pt
-]
+		enhanced, breakable,
+		colback=blue!5!white, colframe=blue!70!black,
+		colbacktitle=blue!85!black, coltitle=white,
+		fonttitle=\bfseries,
+		title={Arcos apertados: interpretação e cálculo},
+		sharp corners, boxrule=0.8pt
+	]
 	Um arco \((u,v)\) é \textbf{apertado} quando seu custo reduzido é zero, ou seja, quando o custo original \(c(u,v)\) coincide exatamente com o potencial \(y(v)\) do vértice de destino. Formalmente:
 	\[
 		c_y(u,v) = c(u,v) - y(v) = 0 \quad\Longleftrightarrow\quad c(u,v) = y(v).
 	\]
 
-	\textbf{Interpretação intuitiva:} o potencial \(y(v)\) funciona como um ``desconto'' aplicado aos arcos que chegam em \(v\). Quando esse desconto é suficiente para anular o custo reduzido, o arco torna-se apertado e candidato a participar da solução ótima.
+	Em outras palavras, o potencial \(y(v)\) funciona como um ``desconto'' aplicado aos arcos que chegam em \(v\). Quando esse desconto é suficiente para anular o custo reduzido, o arco torna-se apertado e candidato a participar da solução ótima.
 
 	\medskip
 	\textbf{Exemplos numéricos (referência: figura~26):}
@@ -230,7 +227,7 @@ Elevamos cada potencial:
 	y(e) & \leftarrow y(e) + \Delta(e) = 0 + 2 = 2.
 \end{align*}
 
-Após a elevação, os custos reduzidos \(c_y(a) = c(a) - y(\head(a))\) são:
+Após a elevação, os custos reduzidos são dados por \(c_y(u,v) = c(u,v) - y(v)\) para cada arco \((u,v)\):
 
 \begin{figure}[H]
 	\centering
@@ -418,11 +415,11 @@ de forma análoga ao algoritmo de Chu--Liu--Edmonds.
 
 \section{Descrição do algoritmo}
 
-A seguir apresentamos uma descrição formal do algoritmo de András Frank. Detalhes de implementação serão discutidos na próxima seção.
+O algoritmo de András Frank difere substancialmente do algoritmo de Chu--Liu--Edmonds em sua abordagem: enquanto Chu--Liu--Edmonds opera diretamente sobre os custos dos arcos, o método de Frank utiliza uma técnica gulosa--dual baseada em \emph{potenciais} associados aos vértices. A ideia central é elevar progressivamente os potenciais \(y(v)\) para cada vértice \(v\neq r\), de modo que os custos \emph{reduzidos} \(c_y(u,v) := c(u,v) - y(v)\) revelem quais arcos devem participar da solução ótima. Um arco \((u,v)\) é dito \emph{apertado} quando seu custo reduzido é zero, isto é, quando \(c(u,v) = y(v)\). O algoritmo garante que toda r-arborescência ótima pode ser formada apenas por arcos apertados.
 
-O algoritmo de András Frank difere substancialmente do algoritmo de Chu--Liu--Edmonds em sua abordagem: enquanto Chu--Liu--Edmonds opera diretamente sobre os custos dos arcos, o método de Frank utiliza uma técnica primal--dual baseada em \emph{potenciais} associados aos vértices. A ideia central é elevar progressivamente os potenciais \(y(v)\) para cada vértice \(v\neq r\), de modo que os custos \emph{reduzidos} \(c_y(a) := c(a) - y(\text{head}(a))\) revelem quais arcos devem participar da solução ótima. Um arco é dito \emph{apertado} (ou \emph{tight}) quando seu custo reduzido é zero, isto é, \(c(a) = y(\text{head}(a))\). O algoritmo garante que toda r-arborescência ótima pode ser formada apenas por arcos apertados.
+A seguir apresentamos uma descrição formal do algoritmo de András Frank e detalhes de implementação serão discutidos na próxima seção.
 
-\begin{algobox}{András Frank (visão operacional)}{andras-frank}
+\begin{algobox}{András Frank}{andras-frank}
 	Entrada: dígrafo \(D=(V,A)\), custos \(c:A\to\mathbb{R}_{\ge 0}\), raiz \(r\).\footnote{Se algum \(v\neq r\) não possui arco de entrada, não existe r-arborescência.}
 
 	\textbf{Fase 1: Elevação de potenciais e construção de \(A_0\)}
@@ -483,7 +480,7 @@ Em termos intuitivos, os potenciais \(y(v)\) funcionam como "descontos" aplicado
 
 \subsection{Complexidade}
 
-A implementação baseada em componentes fortemente conexas detecta, em cada iteração, quais conjuntos \(X\) necessitam elevação de potenciais. Calcular componentes fortemente conexas custa \(O(n+m)\) usando algoritmos como Tarjan ou Kosaraju. Para cada componente (exceto a raiz), eleva-se o potencial calculando \(\Delta(X)\) em \(O(m)\), atualizando os custos reduzidos.
+A implementação, baseada em componentes fortemente conexas, detecta em cada iteração, quais conjuntos \(X\) necessitam elevação de potenciais. Calcular componentes fortemente conexas custa \(O(n+m)\) usando algoritmos como Tarjan ou Kosaraju. Para cada componente (exceto a raiz), eleva-se o potencial calculando \(\Delta(X)\) em \(O(m)\), atualizando os custos reduzidos.
 
 No pior caso, cada iteração reduz o número de componentes em pelo menos uma unidade, resultando em \(O(n)\) iterações. Cada iteração processa todos os arcos para atualizar custos reduzidos e recalcular componentes, resultando em \(O(nm)\) no total para a Fase~1. A Fase~2 constrói a arborescência percorrendo \(A_0\) uma vez, custando \(O(n)\).
 
@@ -491,41 +488,13 @@ O uso de memória é \(O(n+m)\), incluindo as estruturas para armazenar o dígra
 
 \section{Implementação em Python}
 
-Esta seção descreve a implementação do algoritmo de András Frank em Python, estruturada para refletir com precisão as duas fases formais discutidas anteriormente. A Fase~1 realiza a elevação de potenciais e identifica os arcos apertados, enquanto a Fase~2 constrói a arborescência de custo mínimo a partir desses arcos. Cada operação fundamental — identificação de componentes fortemente conexas, elevação de potenciais, construção de \(A_0\) e verificação de arborescência — é traduzida em procedimentos sobre digrafos orientados, utilizando a biblioteca \texttt{networkx}.
+Esta seção descreve a implementação do algoritmo de András Frank em Python, estruturada para refletir com precisão as duas fases formais discutidas anteriormente. A Fase~1 realiza a elevação de potenciais e identifica os arcos apertados, enquanto a Fase~2 constrói a arborescência de custo mínimo a partir desses arcos. Utilizamos a biblioteca NetworkX para manipulação de digrafos, aproveitando suas funcionalidades para representar grafos, calcular componentes fortemente conexas e gerenciar atributos de arcos.
 
 A entrada consiste em um dígrafo orientado \(D = (V, A)\), com custos dos arcos registrados no atributo \texttt{"w"}, e uma raiz \(r \in V\). As hipóteses adotadas são: (i) o dígrafo é conexo a partir de \(r\), isto é, todo vértice \(v \neq r\) é alcançável a partir da raiz; (ii) para todo subconjunto \(X \subseteq V \setminus \{r\}\), existe ao menos um arco entrando em \(X\); e (iii) todos os custos são não negativos.
 
 A saída é um subdigrafo \(T\) de \(D\) com \(|A_T| = |V| - 1\) arcos, tal que cada vértice \(v \neq r\) possui grau de entrada igual a 1, todos os vértices são alcançáveis a partir de \(r\), e o custo total \(\sum_{a \in A_T} c(a)\) é mínimo.
 
 A estrutura do código é modular: funções auxiliares tratam cada etapa do algoritmo — cálculo de componentes fortemente conexas, elevação de potenciais, construção do subdigrafo \(A_0\) e construção da arborescência final. Todas operam sobre objetos \texttt{nx.DiGraph} e são coordenadas por uma função principal que gerencia o fluxo das duas fases. As subseções seguintes detalham cada função auxiliar, abordando lógica, parâmetros, saídas e complexidade.
-
-\subsection{Representação de digrafos e componentes fortemente conexas}
-
-A implementação utiliza a biblioteca NetworkX, especificamente a classe \texttt{nx.DiGraph} para representar digrafos \(D=(V,A)\). Internamente, usa dicionários aninhados do Python para armazenar vértices, arcos e atributos, garantindo operações eficientes: adicionar/remover arco \(O(1)\) amortizado, iterar vizinhos \(O(\deg(u))\), percorrer todos os arcos \(O(m)\).
-
-\subsubsection*{Métodos da API NetworkX}
-
-Os métodos da API NetworkX utilizados na implementação dividem-se em categorias funcionais, cada uma correspondendo a uma fase específica do algoritmo:
-
-\paragraph*{Consulta de estrutura}
-\begin{itemize}\setlength{\itemsep}{2pt}
-	\item \texttt{D.nodes()}: devolve visão iterável sobre \(V\), permitindo percorrer todos os vértices.
-	\item \texttt{D.in\_edges(v, data="w")}: devolve arcos entrantes em \(v\) com pesos, produzindo tuplas \((u, v, w)\).
-	\item \texttt{D.out\_edges(u, data="w")}: devolve arcos saíntes de \(u\) com pesos, análogo a \texttt{in\_edges}.
-	\item \texttt{D[u][v]["w"]}: acessa diretamente o peso do arco \((u,v)\) para leitura ou modificação.
-\end{itemize}
-
-\paragraph*{Modificação de estrutura}
-\begin{itemize}\setlength{\itemsep}{2pt}
-	\item \texttt{D.add\_edge(u, v, w=peso)}: adiciona arco \((u,v)\) com peso especificado.
-	\item \texttt{D.remove\_edges\_from(edges)}: remove múltiplos arcos em lote.
-	\item \texttt{D.add\_node(v)}: adiciona vértice \(v\) ao dígrafo.
-\end{itemize}
-
-\paragraph*{Análise de componentes}
-\begin{itemize}\setlength{\itemsep}{2pt}
-	\item \texttt{nx.condensation(D)}: calcula o grafo de condensação (DAG das componentes fortemente conexas), devolvendo um novo dígrafo onde cada nó representa uma componente e contém o atributo \texttt{"members"} com os vértices originais.
-\end{itemize}
 
 \subsection{Construção do dígrafo \texorpdfstring{\(D_0\)}{D_0} inicial}
 

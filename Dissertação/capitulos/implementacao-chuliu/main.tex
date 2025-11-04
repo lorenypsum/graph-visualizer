@@ -710,7 +710,7 @@ A seguir, apresentamos a implementação completa do algoritmo de Chu–Liu e Ed
 \section{Descrição do algoritmo}
 A seguir apresentamos uma descrição formal do algoritmo de Chu–Liu/Edmonds. Detalhes de implementação serão discutidos na próxima seção.
 
-\begin{algobox}{Chu–Liu/Edmonds (visão operacional)}{chu-liu-edmonds}
+\begin{algobox}{Chu–Liu/Edmonds}{chu-liu-edmonds}
 	Entrada: digrafo \(D=(V,A)\), custos \(c:A\to\mathbb{R}_{\ge 0}\), raiz \(r\).\footnote{Se algum \(v\neq r\) não possui arco de entrada, não existe r-arborescência.}
 	\begin{enumerate}\setlength{\itemsep}{2pt}
 		\item Para cada \(v\neq r\), escolha \(a_v\in\operatorname*{argmin}_{(u,v)\in A} c(u,v)\). Defina \(y(v):=c(a_v)\) e \(A_0:=\{a_v: v\neq r\}.\)
