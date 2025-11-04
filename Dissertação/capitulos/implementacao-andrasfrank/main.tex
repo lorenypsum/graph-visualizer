@@ -1283,61 +1283,41 @@ As duas versões da Fase~2 implementadas acima correspondem diretamente ao Passo
 	\end{itemize}
 \end{tcolorbox}
 
-\subsection{Função principal: Algoritmo de András Frank}
+\subsection{Verificação de otimalidade dual}
 
-Esta é a função principal que coordena as duas fases do algoritmo. Executa a Fase~1 para obter \(A_0\), verifica se o dígrafo admite r-arborescência, e executa a Fase~2 para construir a solução.
+Esta função verifica se a condição de otimalidade dual é satisfeita para a r-arborescência construída. Segundo a teoria de programação linear dual aplicada ao problema de arborescência de custo mínimo, uma solução é ótima se e somente se cada conjunto \(X \subseteq V \setminus \{r\}\) que teve seu potencial elevado durante a Fase~1 possui exatamente um arco entrando na arborescência final.
 
-Recebe como entrada um dígrafo \texttt{D} com raiz implícita \texttt{"r0"}. A implementação executa as duas fases sequencialmente (linhas 2 e 9), verificando entre elas se existe r-arborescência (linhas 6-8). Se não existir, devolve \texttt{None}.
+Recebe como entrada a arborescência \texttt{Arb} e a lista \texttt{Dual\_list} contendo pares \((X, \Delta(X))\) onde \(X\) é um conjunto de vértices cujos potenciais foram elevados e \(\Delta(X) > 0\) é o valor da elevação. A implementação itera sobre cada par \((X, z)\) na lista dual (linha 2), e para cada conjunto \(X\), percorre todos os arcos \((u,v)\) da arborescência (linha 3). Inicializa um contador \texttt{count} em zero (linha 4) e verifica se o arco cruza a fronteira de \(X\), isto é, se \(u \notin X\) e \(v \in X\) (linha 5). Quando essa condição é satisfeita, incrementa o contador (linha 6) e imediatamente verifica se já há mais de um arco entrando em \(X\) (linha 7). Caso positivo, a condição de otimalidade dual é violada e a função devolve \texttt{False} (linha 8).
 
-A função devolve a r-arborescência de custo mínimo como um objeto \texttt{nx.DiGraph}. A complexidade total é dominada pela Fase~1: \(O(nm)\).
+A função devolve \texttt{True} se todos os conjuntos em \texttt{Dual\_list} possuem exatamente um arco entrando na arborescência, confirmando que a solução satisfaz as condições de folga complementar da programação linear dual. A complexidade é \(O(km)\), onde \(k = |\texttt{Dual\_list}|\) e \(m = |A|\), pois para cada conjunto dual verifica-se todos os arcos da arborescência.
+
+Esta verificação é fundamental para garantir a correção do algoritmo: a Fase~1 constrói uma solução dual viável (potenciais \(y(v)\)), a Fase~2 constrói uma solução primal viável (arborescência), e esta função confirma que ambas satisfazem as condições de folga complementar, implicando otimalidade pelo teorema da dualidade forte.
 
 \begin{tcolorbox}[
 		enhanced, breakable,
 		colframe=blue!60!black, colback=blue!2,
 		colbacktitle=blue!15, coltitle=black,
-		title={Função principal: Algoritmo de András Frank},
+		title={Verificação de otimalidade dual},
 		boxed title style={sharp corners, boxrule=0.6pt},
 		sharp corners, boxrule=0.6pt
 	]
-	\emph{Coordena as duas fases do algoritmo: elevação de potenciais e construção da arborescência. Devolve a r-arborescência de custo mínimo ou None se não existir.}
+	\emph{Verifica se a condição de otimalidade dual é satisfeita, confirmando que cada conjunto dual possui exatamente um arco entrando na arborescência.}
 	\tcblower
-	\begin{lstlisting}[language=Python, basicstyle=\ttfamily\fontsize{8}{9}\selectfont]
-def andras_frank_algorithm(D, draw_fn=None, log=None, 
-                           boilerplate: bool = True, lang="pt"):
-    A_zero, Dual_list = phase1_find_minimum_arborescence(
-        D, "r0", draw_fn=draw_fn, log=log, 
-        boilerplate=boilerplate, lang=lang
-    )
-    
-    if not has_arborescence(D, "r0"):
-        return None
-    
-    arborescence = phase2_find_minimum_arborescence(
-        D, "r0", A_zero, draw_fn=draw_fn, log=log, 
-        boilerplate=boilerplate, lang=lang
-    )
-    
-    return arborescence
+	\begin{lstlisting}[language=Python]
+def check_dual_optimality_condition(Arb, Dual_list):
+    for X, z in Dual_list:
+        count = 0
+        for u, v in Arb.edges():
+            if u not in X and v in X:
+                count += 1
+                if count > 1:
+                    return False
+    return True
 \end{lstlisting}
 \end{tcolorbox}
 
-\subsection{Comparação com Chu--Liu--Edmonds}
+\subsection{O algoritmo completo de András Frank}
 
-A principal diferença entre os algoritmos de András Frank e Chu--Liu--Edmonds reside na abordagem: enquanto Chu--Liu--Edmonds opera diretamente sobre os custos originais dos arcos, normalizando-os iterativamente e contraindo ciclos, o método de Frank trabalha com potenciais duais desde o início, elevando-os progressivamente até revelar os arcos apertados que formam a solução ótima.
+Finalmente, apresentamos a função principal que implementa o algoritmo de András Frank para encontrar uma r-arborescência de custo mínimo em um dígrafo com pesos. A função integra as fases de construção dos potenciais duais, obtenção dos arcos apertados, construção da arborescência e verificação de otimalidade dual. 
 
-Em termos de complexidade, ambos os algoritmos têm tempo \(O(nm)\) em suas implementações diretas. Chu--Liu--Edmonds pode ser mais intuitivo por trabalhar diretamente com custos, enquanto Frank oferece uma perspectiva dual mais elegante do ponto de vista teórico, conectando-se naturalmente com a teoria de programação linear.
 
-Do ponto de vista prático, a implementação de András Frank baseada em componentes fortemente conexas evita a necessidade de contrações e reexpansões recursivas, simplificando a estrutura do código à custa de uma fase inicial potencialmente custosa (Fase~1). Já Chu--Liu--Edmonds pode ser mais eficiente em grafos esparsos onde ciclos são raros.
-
-\subsection{Testes e validação}
-
-A implementação foi testada extensivamente com diversos casos de teste, incluindo:
-
-\begin{itemize}\setlength{\itemsep}{2pt}
-	\item Dígrafos sem ciclos (árvores) onde \(A_0\) já forma uma r-arborescência na primeira iteração.
-	\item Dígrafos com múltiplos componentes fortemente conexas, exigindo várias iterações de elevação.
-	\item Casos com custos uniformes e casos com custos variados.
-	\item Grafos densos e esparsos de tamanhos variados (10 a 1000 vértices).
-\end{itemize}
-
-Todos os testes foram comparados com a implementação de Chu--Liu--Edmonds e com soluções ótimas conhecidas, confirmando a corretude do algoritmo. Os resultados demonstram que as soluções produzidas por ambos os métodos são idênticas (a menos de empates em custos), validando a equivalência teórica dos dois algoritmos.
