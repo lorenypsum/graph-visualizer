@@ -715,8 +715,7 @@ A função devolve \texttt{A\_zero} (lista de arcos apertados) e \texttt{Dual\_l
 	\emph{Eleva iterativamente os potenciais dos vértices até que cada conjunto possua ao menos um arco apertado entrando. Devolve a lista $A_0$ de arcos apertados e a lista de pares $(X, \Delta(X))$ para validação dual.}
 	\tcblower
 	\begin{lstlisting}[language=Python, basicstyle=\ttfamily\fontsize{8}{9}\selectfont]
-def phase1_find_minimum_arborescence(D_original, r0, draw_fn=None, log=None, 
-                                     boilerplate: bool = True, lang="pt"):
+def phase1_find_minimum_arborescence(D_original, r0):
     D_copy = D_original.copy()
     A_zero = []
     Dual_list = []
@@ -724,29 +723,19 @@ def phase1_find_minimum_arborescence(D_original, r0, draw_fn=None, log=None,
     iteration = 0
     while True:
         iteration += 1
-        # Calcula componentes fortemente conexas
         C = nx.condensation(D_zero)
-        
-        # Identifica fontes (componentes sem arcos entrando)
         sources = [x for x in C.nodes() if C.in_degree(x) == 0]
-        
         if len(sources) == 1:
-            # Apenas uma fonte: todos os vertices alcancaveis
             break
-        
         for u in sources:
             X = C.nodes[u]["members"]
             if r0 in X:
                 continue
             arcs = get_arcs_entering_X(D_copy, X)
             min_weight = get_minimum_weight_cut(arcs)
-            
             update_weights_in_X(D_copy, arcs, min_weight, A_zero, D_zero)
-            
-            # Registra dual se min_weight > 0
             if min_weight != 0:
-                Dual_list.append((X, min_weight))
-    
+                Dual_list.append((X, min_weight)) 
     return A_zero, Dual_list
 \end{lstlisting}
 \end{tcolorbox}

@@ -201,10 +201,7 @@ def phase1_find_minimum_arborescence(
                     log(f"\nPesos atualizados nos arcos que entram em X")
 
             # If min_weight is zero, ignore
-            if min_weight == 0:
-                continue
-            else:
-                # Otherwise, add to the dual list the set X and its min_weight
+            if min_weight != 0:
                 Dual_list.append((X, min_weight))
 
     # Collect metrics if requested
