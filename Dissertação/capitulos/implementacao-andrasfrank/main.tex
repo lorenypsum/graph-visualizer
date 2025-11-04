@@ -609,9 +609,52 @@ A figura a seguir ilustra o funcionamento da função \texttt{get\_arcs\_enterin
 	\caption{Ilustração da função \texttt{get\_arcs\_entering\_X} em \(D_{32}\). A raiz \(r_0\) (em vermelho claro) conecta-se aos vértices \(u_1, u_2, u_3\). Os vértices em \textcolor{orange!80!black}{laranja} pertencem ao conjunto \(X = \{v_1, v_2, v_3\}\). A função identifica apenas os arcos \textcolor{red!70!black}{em vermelho}: aqueles que saem de vértices fora de \(X\) e entram em vértices dentro de \(X\). Arcos da raiz, arcos internos a \(X\), externos a \(X\), ou saindo de \(X\) não são retornados.}
 \end{figure}
 
-Vamos entender a correspondência entre a descrição teórica da fase 1 e a implementação prática dessa função.
+As funções auxiliares implementadas nesta seção correspondem diretamente aos passos da Fase~1 do algoritmo de András Frank da seguinte forma:
 
+\begin{tcolorbox}[
+		enhanced, breakable,
+		colframe=purple!60!black, colback=purple!5,
+		colbacktitle=purple!15, coltitle=black,
+		title={Correspondência entre Teoria e Implementação — Fase 1},
+		boxed title style={sharp corners, boxrule=0.6pt},
+		sharp corners, boxrule=0.6pt
+	]
+	\textbf{Passo 1 — Inicialização:}
+	\begin{itemize}
+		\item \textbf{Descrição teórica:} Defina \(y(v) := 0\) para todo \(v \in V\).
+		\item \textbf{Implementação:} A função \texttt{build\_D\_zero(D)} inicializa o dígrafo \(D_0\) vazio, que será populado apenas com arcos apertados. Implicitamente, os potenciais iniciam em zero, pois os pesos no dígrafo \(D\) representam os custos reduzidos \(c_y(u,v) = c(u,v) - y(v)\). Com \(y(v) = 0\), temos \(c_y = c\) no início.
+	\end{itemize}
 
+	\vspace{2mm}
+	\textbf{Passo 2 — Iteração de elevação de potenciais:}
+	\begin{itemize}
+		\item \textbf{Descrição teórica:} Enquanto existir conjunto \(X \subseteq V \setminus \{r\}\) sem arco apertado entrando:
+		      \begin{itemize}
+			      \item Calcule \(\Delta(X) := \min\{c(u,v) - y(v) : u \notin X, v \in X\}\).
+			      \item Para cada \(v \in X\), atualize \(y(v) := y(v) + \Delta(X)\).
+		      \end{itemize}
+		\item \textbf{Implementação:} Esse processo de iteração é realizado pela composição sequencial de três funções auxiliares:
+		      \begin{enumerate}
+			      \item \texttt{get\_arcs\_entering\_X(D, X)}: Identifica o conjunto \(\{(u,v) : u \notin X, v \in X\}\), isto é, todos os arcos que cruzam a fronteira de \(X\). Essa função corresponde diretamente à definição do conjunto sobre o qual o mínimo é calculado na fórmula \(\Delta(X)\).
+
+			      \item \texttt{get\_minimum\_weight\_cut(arcs)}: Calcula \(\min\{\text{data}["w"] : (u,v,\text{data}) \in \text{arcs}\}\), que é exatamente \(\Delta(X) = \min\{c_y(u,v) : u \notin X, v \in X\}\). Como os pesos no dígrafo já representam custos reduzidos (são atualizados a cada iteração), essa função devolve precisamente o valor teórico de \(\Delta(X)\).
+
+			      \item \texttt{update\_weights\_in\_X(D, arcs, min\_weight, A\_zero, D\_zero)}: Implementa a atualização dos potenciais. Para cada arco \((u,v)\) entrando em \(X\), subtrai \texttt{min\_weight} de \texttt{D[u][v]["w"]}, efetivamente calculando o novo custo reduzido:
+			            \[c_y'(u,v) = c_y(u,v) - \Delta(X) = \] 	
+						\[c(u,v) - y(v) - \Delta(X) = \] 
+						\[c(u,v) - \bigl(y(v) + \Delta(X)\bigr) = c(u,v) - y'(v), \]
+			            onde \(y'(v) = y(v) + \Delta(X)\) é o novo potencial. Arcos cujo custo reduzido atinge zero (\texttt{D[u][v]["w"] == 0}) são adicionados a \(A_0\) e \(D_0\), tornando-se \textbf{apertados}.
+		      \end{enumerate}
+	\end{itemize}
+
+	\vspace{2mm}
+	\textbf{Passo 3 — Construção de \(A_0\):}
+	\begin{itemize}
+		\item \textbf{Descrição teórica:} Defina \(A_0 := \{a \in A : c_y(a) = 0\}\), o conjunto de arcos apertados.
+		\item \textbf{Implementação:} A construção de \(A_0\) ocorre de forma incremental durante as iterações do Passo~2. Cada chamada a \texttt{update\_weights\_in\_X} verifica quais arcos atingiram custo reduzido zero e os adiciona tanto à lista \texttt{A\_zero} quanto ao dígrafo \texttt{D\_zero}. Esse processo continua até que a função principal da Fase~1 (que será apresentada adiante) determine que cada componente fortemente conexa em \(D_0\) (exceto a raiz) possui ao menos um arco apertado entrando, garantindo que \(A_0\) é suficiente para formar a base de uma \(r\)-arborescência.
+		\item O resultado final é o conjunto completo \(A_0 = \{a \in A : c_y(a) = 0\}\), usado na Fase~2 para construir a arborescência ótima através de uma seleção gulosa de arcos apertados.
+	\end{itemize}
+\end{tcolorbox}
 
 \subsection{Cálculo do peso mínimo de corte}
 
