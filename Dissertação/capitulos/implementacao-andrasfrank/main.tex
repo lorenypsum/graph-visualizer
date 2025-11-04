@@ -551,6 +551,55 @@ def get_arcs_entering_X(D, X):
 \end{lstlisting}
 \end{tcolorbox}
 
+A figura a seguir ilustra o funcionamento da função \texttt{get\_arcs\_entering\_X}. Os vértices em laranja pertencem ao conjunto \(X\), e a função identifica apenas os arcos em vermelho, que saem de vértices fora de \(X\) e entram em vértices dentro de \(X\). Arcos internos a \(X\), externos a \(X\), ou saindo de \(X\) não são retornados.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[>=Stealth]
+		% estilos
+		\tikzset{
+			vtx/.style={circle, draw, fill=blue!8, thick, inner sep=1.2pt, minimum size=7mm},
+			vtxX/.style={circle, draw=orange!80!black, fill=orange!15, thick, inner sep=1.2pt, minimum size=7mm},
+			arc/.style={->, >=Stealth, thick, draw=black!40},
+			arcEntering/.style={->, >=Stealth, very thick, draw=red!70!black},
+			cost/.style={font=\scriptsize, fill=white, inner sep=1pt}
+		}
+
+		% Vértices fora de X
+		\node[vtx] (u1) at (0, 2) {$u_1$};
+		\node[vtx] (u2) at (0, 0) {$u_2$};
+		\node[vtx] (u3) at (0, -2) {$u_3$};
+
+		% Vértices dentro de X (destacados)
+		\node[vtxX] (v1) at (4, 2.5) {$v_1$};
+		\node[vtxX] (v2) at (4, 0.5) {$v_2$};
+		\node[vtxX] (v3) at (4, -1.5) {$v_3$};
+
+		% Arcos entrando em X (destacados em vermelho)
+		\draw[arcEntering] (u1) -- node[cost, above] {3} (v1);
+		\draw[arcEntering] (u2) -- node[cost, above] {2} (v2);
+		\draw[arcEntering] (u3) -- node[cost, above] {4} (v3);
+		\draw[arcEntering] (u1) to[bend right=15] node[cost, below, pos=0.3] {5} (v2);
+
+		% Arcos internos a X (não retornados)
+		\draw[arc] (v1) to[bend right=20] node[cost, right, pos=0.6] {1} (v2);
+		\draw[arc] (v2) to[bend right=20] node[cost, left, pos=0.4] {2} (v3);
+
+		% Arcos externos a X (não retornados)
+		\draw[arc] (u1) to[bend right=20] node[cost, left, pos=0.6] {1} (u2);
+		\draw[arc] (u2) to[bend right=20] node[cost, left, pos=0.6] {3} (u3);
+
+		% Arcos saindo de X (não retornados)
+		\draw[arc] (v1) to[bend left=30] node[cost, above, pos=0.7] {2} (u1);
+
+		% Região X destacada
+		\draw[orange!60!black, thick, dashed, rounded corners=8pt]
+		(3.2, 3.2) rectangle (4.8, -2.2);
+		\node[orange!80!black, font=\bfseries] at (5.5, 3.2) {$X$};
+	\end{tikzpicture}
+	\caption{Ilustração da função \texttt{get\_arcs\_entering\_X}. Os vértices em \textcolor{orange!80!black}{laranja} pertencem ao conjunto \(X\). A função identifica apenas os arcos \textcolor{red!70!black}{em vermelho}: aqueles que saem de vértices fora de \(X\) e entram em vértices dentro de \(X\). Arcos internos a \(X\), externos a \(X\), ou saindo de \(X\) não são retornados.}
+\end{figure}
+
 \subsection{Cálculo do peso mínimo de corte}
 
 Esta função calcula o peso mínimo entre todos os arcos fornecidos, correspondendo ao valor \(\Delta(X)\) necessário para elevar os potenciais dos vértices em \(X\).
