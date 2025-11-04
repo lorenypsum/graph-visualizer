@@ -498,7 +498,7 @@ A estrutura do código é modular: funções auxiliares tratam cada etapa do alg
 
 \subsection{Construção do dígrafo \texorpdfstring{\(D_0\)}{D_0} inicial}
 
-Esta função constrói o dígrafo inicial \(D_0\) que será utilizado na Fase~1 do algoritmo. O dígrafo \(D_0\) é inicializado como um grafo vazio contendo apenas os vértices do dígrafo original, sem arcos. Essa estrutura será gradualmente populada com arcos de custo reduzido zero à medida que os potenciais são elevados.
+Começamos escrevendo uma função que constrói o dígrafo inicial \(D_0\) que será utilizado na Fase~1 do algoritmo. O dígrafo \(D_0\) é inicializado como um grafo vazio contendo apenas os vértices do dígrafo original, sem arcos. Essa estrutura será gradualmente populada com arcos de custo reduzido zero à medida que os potenciais são elevados.
 
 Recebe como entrada um dígrafo \texttt{D} (objeto \texttt{nx.DiGraph}). A implementação cria um novo dígrafo vazio \texttt{D\_zero} (linha 2) e adiciona todos os vértices de \texttt{D} a \texttt{D\_zero} (linhas 3-4), preservando a estrutura de vértices sem incluir arcos inicialmente.
 
