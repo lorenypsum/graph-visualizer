@@ -1152,6 +1152,36 @@ def phase2_v2(D_original, r0, A_zero):
 \end{lstlisting}
 \end{tcolorbox}
 
+As duas versões da Fase~2 implementadas acima correspondem diretamente ao Passo~4 da descrição teórica do algoritmo de András Frank:
+
+\begin{tcolorbox}[
+		enhanced, breakable,
+		colframe=purple!60!black, colback=purple!5,
+		colbacktitle=purple!15, coltitle=black,
+		title={Correspondência entre Teoria e Implementação — Fase 2},
+		boxed title style={sharp corners, boxrule=0.6pt},
+		sharp corners, boxrule=0.6pt
+	]
+	\textbf{Passo 4 — Construção da arborescência (caso acíclico):}
+	\begin{itemize}
+		\item \textbf{Descrição teórica:} Se \((V,A_0)\) forma uma r-arborescência, devolva \(A_0\). Por otimalidade dos potenciais duais, trata-se de uma r-arborescência de custo mínimo.
+		\item \textbf{Implementação:} Ambas as versões de \texttt{phase2} constroem uma r-arborescência a partir do conjunto \(A_0\) de arcos apertados obtido na Fase~1. A corretude baseia-se no fato de que todos os arcos em \(A_0\) têm custo reduzido zero, e a Fase~1 garante que existe uma r-arborescência formada exclusivamente por arcos apertados.
+		      \begin{itemize}
+			      \item \textbf{Versão 1 (\texttt{phase2}):} Construção incremental por exploração exaustiva. Em cada uma das \(n-1\) iterações, percorre todos os arcos de \(A_0\) procurando um arco \((u,v)\) tal que \(u\) já pertence à arborescência parcial e \(v\) ainda não. Essa abordagem simples corresponde diretamente à ideia teórica de construir a arborescência adicionando um vértice por vez, conectando-o à estrutura existente através de um arco apertado. Complexidade: \(O(nm)\).
+
+			      \item \textbf{Versão 2 (\texttt{phase2\_v2}):} Construção por busca em largura guiada por fila de prioridade. Cria um dígrafo auxiliar onde arcos são indexados, usa a fila de prioridade para explorar arcos sistematicamente a partir da raiz, evitando buscas lineares repetidas. Essa versão otimizada mantém a mesma correção teórica — construir uma r-arborescência usando apenas arcos de \(A_0\) — mas melhora a eficiência prática. Complexidade: \(O(m \log m)\).
+		      \end{itemize}
+	\end{itemize}
+
+	\vspace{2mm}
+	\textbf{Nota sobre Passos 5-7 (contração/recursão/expansão):}
+	\begin{itemize}
+		\item A descrição teórica do algoritmo de András Frank inclui os Passos~5-7 para tratar o caso onde \(A_0\) contém ciclos dirigidos, exigindo contração, resolução recursiva e reexpansão, de forma análoga ao algoritmo de Chu--Liu--Edmonds.
+		\item Na implementação apresentada, optamos por uma abordagem não-recursiva baseada em componentes fortemente conexas. A Fase~1 já garante que \(A_0\) formará uma r-arborescência ao término das iterações de elevação de potenciais, eliminando a necessidade de tratar ciclos explicitamente na Fase~2. Essa simplificação é possível porque a elevação de potenciais progressivamente "quebra" todos os ciclos ao criar novos arcos apertados que conectam diferentes componentes, até que reste apenas uma única componente fortemente conexa contendo todos os vértices.
+		\item Portanto, quando a Fase~2 é executada, o conjunto \(A_0\) já está livre de ciclos e forma uma r-arborescência, correspondendo diretamente ao caso tratado pelo Passo~4 da descrição teórica. A verificação prévia \texttt{has\_arborescence(D, r0)} (realizada pela função principal) confirma essa propriedade antes de invocar a Fase~2.
+	\end{itemize}
+\end{tcolorbox}
+
 \subsection{Função principal: Algoritmo de András Frank}
 
 Esta é a função principal que coordena as duas fases do algoritmo. Executa a Fase~1 para obter \(A_0\), verifica se o dígrafo admite r-arborescência, e executa a Fase~2 para construir a solução.
