@@ -17,16 +17,17 @@ O algoritmo de András Frank também recebe uma tripla \((D,c,r)\), em que \(D=(
 sob a hipótese de que \(D\) admite ao menos uma \(r\)-arborescência e devolve uma \(r\)-arborescência \(c\)-mínima de \(D\).
 
 Assim como no capítulo anterior, adotamos a terminologia de \textbf{\(r\)-digrafo ponderado}
-para uma tripla \((D,c,r)\) em que $(D, c)$ é um digrafo ponderado,
-$r$ é um vértice de $D$, $\delta^-(r) = \varnothing$
-e $D$ possui uma $r$-arborescência.
-
+para uma tripla \((D,c,r)\) em que $(D, c)$ é um digrafo ponderado 
+% ,
+% $r$ é um vértice de $D$, $\delta^-(r) = \varnothing$
+% e $D$ possui uma $r$-arborescência.
+% SAMY: REMOVI PARA EVITAR REPETIÇÃO DESNECESSÁRIA
 Vamos desenvolver as ideias do algoritmo utilizando o mesmo dígrafo que apresentamos
 no capítulo anterior.
 
 \subsection*{Abordagem Gulosa--Dual}
 
-Considere novamente o dígrafo \(D\) figura 26 a seguir, com custos nos arcos note que é o mesmo digrafo da figura 1 que utilizamos para ilustrar o algoritmo de Chu--Liu--Edmonds. E portanto, suponha que T é uma arborescência de custo mínimo, com seus arcos destacados em azul.
+Considere o dígrafo \(D\) mostrado na Figura 26, o mesmo grafo apresentado na Figura 1, usado anteriormente para ilustrar o algoritmo de Chu--Liu--Edmonds. Suponha que \(T\) seja uma \(r\)-arborescência de custo mínimo; os arcos de \(T\) estão destacados em azul na figura.
 
 \begin{figure}[h]
 	\centering
