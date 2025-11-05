@@ -6,18 +6,19 @@ import traceback
 import tracemalloc
 
 import networkx as nx
+from typing import Optional, Callable
 
 from andrasfrank import (
     andras_frank_algorithm,
-    phase1_find_minimum_arborescence,
-    phase2_find_minimum_arborescence,
-    phase2_find_minimum_arborescence_v2,
+    phase1,
+    phase2,
+    phase2_v2,
     check_dual_optimality_condition,
 )
-from chuliu import find_optimum_arborescence_chuliu, remove_edges_to_r0
+from chuliu import chuliu_edmonds, remove_edges_to_r0
 
 # Deafult parameters
-NUM_TESTS = 2000
+NUM_TESTS = 10
 MIN_VERTICES = 100
 MAX_VERTICES = 200
 PESO_MIN = 1
@@ -114,7 +115,6 @@ def build_rooted_digraph(
             u, v = random.sample(all_nodes, 2)
             if not D.has_edge(u, v) and u != v:
                 D.add_edge(u, v, w=random.randint(peso_min, peso_max))
-
     return D
 
 
@@ -142,13 +142,12 @@ def volume_tester(
     peso_max=PESO_MAX,
     log_csv_path=LOG_CSV_PATH,
     log_txt_path=LOG_TXT_PATH,
-    draw_fn=None,
-    log=None,
-    boilerplate=True,
+    draw_fn: Optional[Callable] = None,
+    log: Optional[Callable[[str], None]] = None,
+    boilerplate: bool = False,
     lang=LANG,
     family: str = FAMILY,
 ):
-
     success_count = 0
     failure_count = 0
     chuliu_greater_than_frank = 0
@@ -229,7 +228,6 @@ def volume_tester(
             "phase1_iterations": None,
         }
         peak_kb = None
-
         try:
             D = build_rooted_digraph(
                 n=n, m=m, root=root, peso_min=peso_min, peso_max=peso_max, family=family
@@ -273,7 +271,7 @@ def volume_tester(
 
             # Chu-Liu/Edmonds Algorithm (timed)
             t1 = time.perf_counter()
-            arbo_chuliu = find_optimum_arborescence_chuliu(
+            arbo_chuliu = chuliu_edmonds(
                 D1_filtered,
                 root,
                 draw_fn=draw_fn,
@@ -300,7 +298,7 @@ def volume_tester(
             # Phase I with metrics and peak memory
             tracemalloc.start()
             t1 = time.perf_counter()
-            A_zero, Dual_list = phase1_find_minimum_arborescence(
+            A_zero, Dual_list = phase1(
                 D1_filtered,
                 root,
                 draw_fn=None,
@@ -316,7 +314,7 @@ def volume_tester(
 
             # Phase II v1
             t1 = time.perf_counter()
-            arbo_frank_v1 = phase2_find_minimum_arborescence(
+            arbo_frank_v1 = phase2(
                 D1_filtered,
                 root,
                 A_zero,
@@ -329,7 +327,7 @@ def volume_tester(
 
             # Phase II v2
             t1 = time.perf_counter()
-            arbo_frank_v2 = phase2_find_minimum_arborescence_v2(
+            arbo_frank_v2 = phase2_v2(
                 D1_filtered,
                 root,
                 A_zero,

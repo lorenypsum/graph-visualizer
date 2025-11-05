@@ -1,0 +1,21 @@
+% Figure: single incoming edge before and after normalization
+% File: capitulos/implementacao-chuliu/figures/fig_normalize_single_incoming.tex
+\begin{tikzpicture}[>=Stealth, node distance=1.6cm, every node/.style={font=\small}]
+	% (a) Before normalization
+	\begin{scope}[xshift=-3.5cm]
+		\node at (0,1.2) {(a) Antes};
+		\node[circle,draw,minimum size=7mm] (u) at (-1.2,0) {$u$};
+		\node[circle,draw,minimum size=7mm] (v) at (1.2,0) {$v$};
+		\draw[->, thick] (u) -- node[above]{\(5\)} (v);
+	\end{scope}
+
+	% (b) After normalization
+	\begin{scope}[xshift=3.5cm]
+		\node at (0,1.2) {(b) Após normalização};
+		\node[circle,draw,minimum size=7mm] (u2) at (-1.2,0) {$u$};
+		\node[circle,draw,minimum size=7mm] (v2) at (1.2,0) {$v$};
+		\draw[->, thick] (u2) -- node[above]{\(0\)} (v2);
+		% mark that the only incoming edge became zero
+		\node[align=center, font=\footnotesize] at (0,-0.9) {vértice $v$ com um único\ arco de entrada \(\Rightarrow\) custo reduzido 0};
+	\end{scope}
+\end{tikzpicture}

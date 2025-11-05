@@ -1,0 +1,19 @@
+% Figure: normalize single edge example (duplicate for root-relative input)
+\begin{tikzpicture}[>=Stealth, node distance=2.0cm, every node/.style={inner sep=1pt}]
+	\begin{scope}[xshift=-4.5cm]
+		\node[circle,draw,minimum size=7mm] (u) at (0,0) {$u$};
+		\node[circle,draw,minimum size=7mm] (v) at (2.4,0) {$v$};
+		\draw[->, very thick] (u) -- node[midway, above] {\scriptsize 4} (v);
+		\node[anchor=south] at (1.2,0.6) {\footnotesize antes};
+	\end{scope}
+
+	\begin{scope}[xshift=4.5cm]
+		\node[circle,draw,minimum size=7mm] (u2) at (0,0) {$u$};
+		\node[circle,draw,minimum size=7mm] (v2) at (2.4,0) {$v$};
+		\draw[->, very thick, blue] (u2) -- node[midway, above, text=blue] {\scriptsize 0} (v2);
+		\node[anchor=south] at (1.2,0.6) {\footnotesize depois};
+		\node[anchor=north] at (1.2,-0.5) {\footnotesize $y(v)=4$};
+	\end{scope}
+
+	\draw[->, dashed] (1.8, -1.2) -- (2.6, -1.2) node[midway, below] {\footnotesize normalizar};
+\end{tikzpicture}
