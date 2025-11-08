@@ -2,14 +2,16 @@
 
 Neste capítulo, apresentaremos o algoritmo de András Frank, que também determina
 uma arborescência de custo mínimo em um digrafo ponderado.
-O algoritmo baseia-se em uma abordagem primal--dual:
-a elevação gulosa de potenciais duais\footnote{\textbf{Potencial dual} é uma variável associada a cada vértice, que representa um "desconto" aplicado ao custo dos arcos que entram nesse vértice e servem para ajustar os custos de modo que certas restrições fiquem "justas", - satisfeitas com igualdade, ou seja, o valor da variável atinge exatamente o limite imposto pela restrição.} e (ii) a construção de uma solução gulosa
-a partir dos arcos de custo reduzido zero.
-Diferentemente do algoritmo de Chu--Liu--Edmonds, que opera diretamente sobre os custos,
-o método de Frank manipula potenciais duais associados aos vértices,
-gerando arcos \emph{justos} (de custo reduzido zero) que formam a arborescência ótima.
-O propósito deste capítulo é fornecer uma descrição precisa tanto do algoritmo
-quanto da implementação desenvolvida neste trabalho.
+O algoritmo baseia-se em duas operações fundamentais:
+(i) a redução gulosa dos custos dos arcos através da identificação de subconjuntos minimais
+e (ii) a contração de ciclos, de modo a resolver recursivamente uma instância menor do
+problema e, em seguida, estender a solução para o problema original.
+A operação de redução é essencialmente a mesma do algoritmo de Chu--Liu--Edmonds
+--- subtrair o menor custo de arco entrando em cada conjunto --- mas enquanto
+Chu--Liu--Edmonds opera vértice a vértice, o algoritmo de Frank identifica
+\emph{subconjuntos minimais} através de componentes fortemente conexas,
+processando todos simultaneamente a cada iteração.
+O propósito deste capítulo é fornecer tanto uma descrição teórica do algoritmo quanto detalhes da implementação desenvolvida neste trabalho.
 
 \section{O algoritmo}
 O algoritmo de András Frank também recebe uma tripla \((D,c,r)\), em que \(D=(V,A)\) é um digrafo,
@@ -24,7 +26,38 @@ e $D$ possui uma $r$-arborescência.
 Vamos desenvolver as ideias do algoritmo utilizando o mesmo dígrafo que apresentamos
 no capítulo anterior.
 
-\subsection*{Abordagem Gulosa--Dual}
+\subsection*{Ideia Central do Algoritmo}
+
+O algoritmo de András Frank, assim como o de Chu--Liu--Edmonds, baseia-se em uma escolha gulosa:
+para cada vértice (ou conjunto de vértices), escolher o arco de menor custo que entra nele
+e ajustar os custos subtraindo esse valor mínimo. A diferença fundamental está na organização:
+
+\begin{itemize}
+	\item \textbf{Chu--Liu--Edmonds:} processa vértice a vértice, subtraindo o menor custo
+	      de arco entrando em cada vértice individualmente.
+	\item \textbf{András Frank:} identifica \emph{subconjuntos minimais} através de componentes
+	      fortemente conexas e processa todos simultaneamente, subtraindo o menor custo
+	      de arco entrando em cada subconjunto.
+\end{itemize}
+
+\textbf{Funcionamento iterativo:}
+
+No início do algoritmo, nenhum arco tem custo reduzido zero. Cada vértice não-raiz forma
+seu próprio subconjunto minimal. Para cada vértice \(v \neq r\), encontramos o menor custo
+\(\delta(\{v\})\) entre todos os arcos que entram em \(v\), e subtraímos esse valor de
+todos esses arcos. Isso cria ao menos um arco de custo zero entrando em cada vértice.
+
+Se esses arcos de custo zero formam uma \(r\)-arborescência (sem ciclos), o algoritmo termina.
+Caso contrário, os arcos de custo zero contêm ciclos. Nesse caso, calculamos as componentes
+fortemente conexas do grafo formado pelos arcos de custo zero. Cada componente que não contém
+a raiz e não possui arcos de custo zero entrando nela é um novo subconjunto minimal.
+Repetimos o processo: para cada subconjunto minimal \(X\), calculamos \(\delta(X)\)
+(o menor custo entre arcos entrando em \(X\)) e subtraímos esse valor.
+
+O algoritmo continua até que os arcos de custo zero formem uma \(r\)-arborescência.
+Quando há ciclos, usamos contração exatamente como no Chu--Liu--Edmonds.
+
+\subsection*{Exemplo Introdutório}
 
 Considere novamente o dígrafo \(D\) figura 26 a seguir, com custos nos arcos note que é o mesmo digrafo da figura 1 que utilizamos para ilustrar o algoritmo de Chu--Liu--Edmonds. E portanto, suponha que T é uma arborescência de custo mínimo, com seus arcos destacados em azul.
 
@@ -77,97 +110,119 @@ Considere novamente o dígrafo \(D\) figura 26 a seguir, com custos nos arcos no
 		formam a \(r\)-arborescência de custo mínimo \(T\) (custo total = 7).}
 \end{figure}
 
-O algoritmo de Frank utiliza \textbf{potenciais} \(y: V \to \mathbb{R}\) associados aos vértices
-para definir custos reduzidos nos arcos. Para cada arco \(a = (u,v) \in A\), o
-\textbf{custo \(y\)-reduzido} é dado por
-\[
-	c_y(u,v) := c(u,v) - y(v),
-\]
-onde \(v\) é o vértice de destino do arco. Note que, diferentemente do procedimento de redução do capítulo anterior (onde subtraíamos o mínimo custo de entrada em cada vértice), aqui o potencial \(y(v)\) é uma variável que será ajustada pelo algoritmo através da seguinte noção.
+\subsection*{Custos Reduzidos e Arcos Justos}
 
-Um arco \(a = (u,v)\) é dito \textbf{justo} (ou \textbf{tight}) se \(c_y(u,v) = 0\), isto é, se o custo original coincide com o potencial do vértice de destino: \(c(u,v) = y(v)\). A ideia central do algoritmo de Frank consiste em duas etapas: (i)~elevar os potenciais \(y(v)\) para cada \(v \neq r\) até que cada vértice possua ao menos um arco justo entrando nele; (ii)~construir uma arborescência ótima utilizando exclusivamente arcos justos.
+Durante a execução do algoritmo, os custos dos arcos são progressivamente reduzidos.
+Inicialmente, o \textbf{custo reduzido} de cada arco coincide com seu custo original.
+A cada iteração, subtraímos valores dos custos dos arcos que entram em determinados conjuntos.
+
+Quando o custo reduzido de um arco atinge zero, dizemos que o arco é \textbf{justo}.
+Formalmente, um arco \((u,v)\) é justo quando seu custo reduzido atual é zero: \(c(u,v) = 0\).
+O algoritmo garante que a arborescência final será formada exclusivamente por arcos justos.
+
+\textbf{Interpretação dual:} A operação de subtrair \(\delta(X)\) dos arcos entrando em
+\(X\) pode ser interpretada através de \emph{potenciais duais} \(y(v)\) associados aos vértices.
+Quando subtraímos \(\delta(X)\) do custo de cada arco \((u,v)\) com \(v \in X\),
+isso equivale a aumentar \(y(v)\) em \(\delta(X)\) e trabalhar com custos reduzidos
+\(c_y(u,v) = c_{\text{original}}(u,v) - y(v)\). Entretanto, a implementação opera
+diretamente sobre os custos dos arcos, sem armazenar explicitamente os potenciais \(y(v)\).
+A equivalência entre as duas visões é útil para provar a corretude do algoritmo.
 
 \begin{tcolorbox}[
 		enhanced, breakable,
 		colback=blue!5!white, colframe=blue!70!black,
 		colbacktitle=blue!85!black, coltitle=white,
 		fonttitle=\bfseries,
-		title={Arcos justos: interpretação e cálculo},
+		title={Arcos justos e subconjuntos minimais},
 		sharp corners, boxrule=0.8pt
 	]
-	Um arco \((u,v)\) é \textbf{justo} quando seu custo reduzido é zero, ou seja, quando o custo original \(c(u,v)\) coincide exatamente com o potencial \(y(v)\) do vértice de destino. Formalmente:
+	\textbf{Arco justo:} Um arco é \textbf{justo} quando seu custo reduzido atual é zero.
+
+	\medskip
+	\textbf{Subconjunto minimal:} Um conjunto \(X \subseteq V \setminus \{r\}\) é \textbf{minimal}
+	se não possui arcos justos entrando nele e é uma componente fortemente conexa no grafo
+	formado apenas pelos arcos justos.
+
+	\medskip
+	No início, como não há arcos justos, cada vértice não-raiz forma seu próprio subconjunto minimal.
+	À medida que arcos justos são criados, se formarem ciclos, as componentes fortemente conexas
+	definem os novos subconjuntos minimais.
+
+	\medskip
+	\textbf{Operação de redução:} Para um subconjunto minimal \(X\), calculamos
 	\[
-		c_y(u,v) = c(u,v) - y(v) = 0 \quad\Longleftrightarrow\quad c(u,v) = y(v).
+		\delta(X) := \min\{c(u,v) : u \notin X, v \in X\}
 	\]
-
-	Em outras palavras, o potencial \(y(v)\) funciona como um ``desconto'' aplicado aos arcos que chegam em \(v\). Quando esse desconto é suficiente para anular o custo reduzido, o arco torna-se justo e candidato a participar da solução ótima.
-
-	\medskip
-	\textbf{Exemplos numéricos (referência: figura~26):}
-	\begin{itemize}\setlength{\itemsep}{3pt}
-		\item Arco \((r,a)\): \(c(r,a) = 1\), \(y(a) = 1 \implies c_y(r,a) = 1-1 = 0\). \quad\textcolor{blue!70!black}{\textbf{Justo.}}
-		\item Arco \((b,a)\): \(c(b,a) = 4\), \(y(a) = 1 \implies c_y(b,a) = 4-1 = 3\). \quad\textcolor{red!70!black}{\textbf{Não justo.}}
-		\item Arco \((a,c)\): \(c(a,c) = 1\), \(y(c) = 1 \implies c_y(a,c) = 1-1 = 0\). \quad\textcolor{blue!70!black}{\textbf{Justo.}}
-	\end{itemize}
-
-	\textbf{Propriedade fundamental:} o potencial \(y(v)\) afeta \emph{exclusivamente} os arcos que entram em \(v\). Por exemplo, \(y(c)\) influencia apenas arcos da forma \((\cdot, c)\), como \((r,c)\) e \((a,c)\), não afetando arcos que saem de \(c\).
-
-	\medskip
-	O algoritmo eleva progressivamente os potenciais até que cada vértice \(v \neq r\) possua ao menos um arco justo de entrada. No exemplo da figura~26, os arcos justos após a elevação correspondem precisamente aos arcos da arborescência ótima.
+	e subtraímos \(\delta(X)\) de todos os arcos entrando em \(X\). Isso cria ao menos um novo arco justo.
 \end{tcolorbox}
 
-% Figura 27: Exemplo visual com múltiplos arcos e vértice raiz
+% Figura 27: Exemplo visual ilustrando subconjuntos e arcos justos
 \begin{figure}[H]
 	\centering
 	\begin{tikzpicture}[>=Stealth]
 		% estilos
 		\tikzset{
 			vtx/.style={circle, draw, fill=blue!8, thick, inner sep=1.2pt, minimum size=8mm},
-			arc/.style={->, very thick, draw=blue},
-			arcTight/.style={->, very thick, draw=red!70!black},
-			cost/.style={font=\scriptsize, fill=white, inner sep=1pt, text=blue},
-			pot/.style={font=\small, text=red!70!black},
-			label/.style={font=\small, text=black!80}
+			vtxX/.style={circle, draw=orange!80!black, fill=orange!15, thick, inner sep=1.2pt, minimum size=8mm},
+			arcJust/.style={->, very thick, draw=blue!70!black},
+			arcNormal/.style={->, semithick, draw=black!40},
+			arcMin/.style={->, ultra thick, draw=green!60!black},
+			cost/.style={font=\scriptsize, fill=white, inner sep=1pt},
+			costMin/.style={font=\scriptsize\bfseries, fill=green!10, inner sep=2pt, draw=green!60!black, rounded corners=1pt}
 		}
 
 		% vértices
 		\node[vtx] (r) at (0,0) {$r$};
-		\node[vtx] (u) at (3,1.5) {$u$};
-		\node[vtx] (v) at (3,-1.5) {$v$};
+		\node[vtxX] (u) at (3,1.5) {$u$};
+		\node[vtxX] (v) at (3,-1.5) {$v$};
 
 		% arcos
-		\draw[arcTight] (r) -- node[cost, above left] {$c(r,u)=2$} (u);
-		\draw[arc] (r) -- node[cost, below left] {$c(r,v)=4$} (v);
-		\draw[arcTight] (u) -- node[cost, right] {$c(u,v)=3$} (v);
+		\draw[arcMin] (r) -- node[costMin, above left] {$\delta(X)=2$} (u);
+		\draw[arcNormal] (r) -- node[cost, below left] {4} (v);
+		\draw[arcNormal] (u) -- node[cost, right] {3} (v);
 
-		% potenciais
-		\node[pot] at (3,2.5) {$y(u)=2$};
-		\node[pot] at (3,-2.5) {$y(v)=3$};
+		% destaque do conjunto X
+		\draw[orange!60!black, thick, dashed, rounded corners=8pt]
+		(2.2, 2.3) rectangle (3.8, -2.3);
+		\node[orange!80!black, font=\bfseries] at (4.8, 0) {$X$};
 
-		% destaques
-		\draw[red!70, thick, dashed] (u) circle [radius=0.7];
-		\draw[red!70, thick, dashed] (v) circle [radius=0.7];
-
-		% custos reduzidos
-		\node[label] at (-0.0,1.5) {$c_y(r,u)=2-2=0$};
-		\node[label] at (-0.0,-1.5) {$c_y(r,v)=4-3=1$};
-		\node[label] at (5.0,-0.5) {$c_y(u,v)=3-3=0$};
+		% anotação
+		\node[font=\small, text=black!80, align=center] at (1.5, -3) {
+			Subconjunto minimal $X = \{u, v\}$\\
+			sem arcos justos entrando.\\
+			Menor custo: $\delta(X) = 2$.
+		};
 	\end{tikzpicture}
-	\caption{O vértice $r$ é a raiz. Os potenciais são $y(u)=2$ e $y(v)=3$. O arco $(r,u)$ tem custo reduzido $0$ (justo), $(r,v)$ tem custo reduzido $1$ (não justo), $(u,v)$ tem custo reduzido $0$ (justo). Os potenciais só afetam os arcos que chegam em cada vértice.}
-	\label{fig:potencial-destino}
+	\caption{Exemplo de subconjunto minimal \(X = \{u, v\}\) que não contém a raiz e não possui arcos justos entrando. O arco de menor custo entrando em \(X\) tem custo \(\delta(X) = 2\). Após subtrair esse valor de todos os arcos em \(\delta^-(X)\), o arco \((r,u)\) torna-se justo.}
+	\label{fig:conjunto-minimal}
 \end{figure}
 
-\subsection*{Elevação de Potenciais}
+\subsection*{Iteração por Subconjuntos Minimais}
 
-Inicialmente, definimos \(y(v) = 0\) para todo \(v \in V\).
-Para cada vértice \(v \neq r\), calculamos
+O algoritmo opera iterativamente. A cada iteração:
+
+\begin{enumerate}[label=\arabic*., leftmargin=*]
+	\item Calculamos as componentes fortemente conexas no grafo formado pelos arcos justos atuais.
+	\item Cada componente que não contém a raiz e não possui arcos justos entrando é um subconjunto minimal \(X\).
+	\item Para cada subconjunto minimal \(X\), calculamos \(\delta(X) := \min\{c(u,v) : u \notin X, v \in X\}\).
+	\item Subtraímos \(\delta(X)\) de todos os arcos entrando em \(X\).
+	\item Os arcos que atingem custo zero são adicionados ao conjunto de arcos justos.
+\end{enumerate}
+
+\medskip
+\textbf{Primeira iteração:} Inicialmente não há arcos justos, então cada vértice não-raiz
+\(v\) é sua própria componente minimal. Calculamos
 \[
-	\Delta(v) := \min\{\, c(a) : a \in \delta^{-}(v) \,\} - y(v).
+	\delta(\{v\}) := \min\{\, c(u,v) : u \in V \,\}
 \]
-O valor \(\Delta(v)\) representa quanto precisamos elevar \(y(v)\) para que exista
-ao menos um arco de custo reduzido zero entrando em \(v\).
+e subtraímos esse valor de todos os arcos entrando em \(v\). Isso cria ao menos um arco
+justo para cada vértice.
 
-Vamos ilustrar esse processo no dígrafo \(D\).
+\textbf{Iterações subsequentes:} Se os arcos justos formarem ciclos, as componentes fortemente
+conexas agrupam vértices. Cada componente sem arcos justos entrando é um novo subconjunto
+minimal, e repetimos o processo.
+
+Vamos ilustrar com o dígrafo \(D\).
 
 \begin{figure}[H]
 	\centering
@@ -199,35 +254,28 @@ Vamos ilustrar esse processo no dígrafo \(D\).
 		\draw[arc] (b) -- node[costG, below] {2} (e);
 		\draw[arc] (c) .. controls (7.6,2.6) and (7.6,-2.6) .. node[costG, xshift=8pt, pos=0.52] {5} (e);
 
-		% potenciais iniciais
-		\node[above=6mm of a, font=\small] {$y(a) = 0$};
-		\node[below=2mm of b, font=\small] {$y(b) = 0$};
-		\node[above=2mm of c, font=\small] {$y(c) = 0$};
-		\node[below=2mm of d, font=\small] {$y(d) = 0$};
-		\node[below=2mm of e, font=\small] {$y(e) = 0$};
+		% anotação: custos originais
+		\node[font=\small, text=black!70] at (3, -3.5) {Custos originais};
 	\end{tikzpicture}
-	\caption{Dígrafo \(D\) com potenciais iniciais \(y(v) = 0\) para todo \(v \in V\).}
+	\caption{Dígrafo \(D\) com custos originais. Inicialmente, não há arcos justos (\(A_0 = \emptyset\)).}
 \end{figure}
 
-Calculamos \(\Delta(v)\) para cada vértice \(v \neq r\):
+\textbf{Iteração 1:} Como \(A_0 = \emptyset\), cada vértice não-raiz forma seu próprio subconjunto minimal. Calculamos \(\delta(\{v\})\) para cada \(v \neq r\):
 \begin{align*}
-	\Delta(a) & = \min\{1, 4\} - 0 = 1, \\
-	\Delta(b) & = \min\{2, 5\} - 0 = 2, \\
-	\Delta(c) & = \min\{3, 1\} - 0 = 1, \\
-	\Delta(d) & = \min\{3, 1\} - 0 = 1, \\
-	\Delta(e) & = \min\{2, 5\} - 0 = 2.
+	\delta(\{a\}) & = \min\{c(r,a), c(b,a)\} = \min\{1, 4\} = 1, \\
+	\delta(\{b\}) & = \min\{c(r,b), c(a,b)\} = \min\{2, 5\} = 2, \\
+	\delta(\{c\}) & = \min\{c(r,c), c(a,c)\} = \min\{3, 1\} = 1, \\
+	\delta(\{d\}) & = \min\{c(a,d), c(b,d)\} = \min\{3, 1\} = 1, \\
+	\delta(\{e\}) & = \min\{c(b,e), c(c,e)\} = \min\{2, 5\} = 2.
 \end{align*}
 
-Elevamos cada potencial:
-\begin{align*}
-	y(a) & \leftarrow y(a) + \Delta(a) = 0 + 1 = 1, \\
-	y(b) & \leftarrow y(b) + \Delta(b) = 0 + 2 = 2, \\
-	y(c) & \leftarrow y(c) + \Delta(c) = 0 + 1 = 1, \\
-	y(d) & \leftarrow y(d) + \Delta(d) = 0 + 1 = 1, \\
-	y(e) & \leftarrow y(e) + \Delta(e) = 0 + 2 = 2.
-\end{align*}
+Subtraímos cada \(\delta(\{v\})\) de todos os arcos entrando no respectivo vértice \(v\).
+Após essa redução, os arcos que atingem custo zero são:
+\[
+	\{(r,a), (r,b), (a,c), (b,d), (b,e)\}.
+\]
 
-Após a elevação, os custos reduzidos são dados por \(c_y(u,v) = c(u,v) - y(v)\) para cada arco \((u,v)\):
+Esses cinco arcos justos formam a arborescência de custo mínimo.
 
 \begin{figure}[H]
 	\centering
@@ -263,43 +311,39 @@ Após a elevação, os custos reduzidos são dados por \(c_y(u,v) = c(u,v) - y(v
 		\draw[loose] (a) -- node[costG, right] {2} (d);   % 3 - 1 = 2
 		\draw[loose] (c) .. controls (7.6,2.6) and (7.6,-2.6) .. node[costG, xshift=8pt, pos=0.52] {3} (e);  % 5 - 2 = 3
 
-		% potenciais finais
-		\node[above=6mm of a, font=\small] {$y(a) = 1$};
-		\node[below=2mm of b, font=\small] {$y(b) = 2$};
-		\node[above=2mm of c, font=\small] {$y(c) = 1$};
-		\node[below=2mm of d, font=\small] {$y(d) = 1$};
-		\node[below=2mm of e, font=\small] {$y(e) = 2$};
+		% anotação
+		\node[font=\small, text=black!70] at (3, -3.5) {Custos reduzidos após Iteração 1};
 	\end{tikzpicture}
-	\caption{Dígrafo após elevação de potenciais. Arcos em \textcolor{blue}{azul} são
-		justos (\(c_y = 0\)); arcos em cinza têm custo reduzido positivo.}
+	\caption{Dígrafo após a primeira iteração. Arcos em \textcolor{blue}{azul} são justos (custo reduzido zero); arcos em cinza têm custo reduzido positivo. Neste exemplo, os cinco arcos justos formam uma \(r\)-arborescência.}
 \end{figure}
 
 Observe que cada vértice \(v \neq r\) possui agora ao menos um arco justo entrando nele.
-Mais ainda: neste exemplo, os arcos justos formam uma \(r\)-arborescência! Precisamos justificar por que a arborescência formada pelos arcos justos é ótima.
+Mais ainda: neste exemplo, os arcos justos \(\{(r,a), (r,b), (a,c), (b,d), (b,e)\}\) formam uma \(r\)-arborescência! Como não há ciclos, o algoritmo termina e retorna essa arborescência como solução ótima.
 
 \subsection*{Construção da Arborescência}
 
-Se os arcos justos formam uma \(r\)-arborescência, então encontramos a solução ótima.
-Caso contrário, os arcos justos contêm ciclos, e precisamos tratá-los adequadamente.
+Se os arcos justos formam uma \(r\)-arborescência (sem ciclos), então encontramos
+a solução ótima. Caso contrário, os arcos justos contêm ciclos, e procedemos como
+no algoritmo de Chu--Liu--Edmonds: identificamos as componentes fortemente conexas,
+contraímos cada componente em um supervértice, e resolvemos recursivamente o problema
+no dígrafo contraído.
 
-No nosso exemplo, os arcos justos são:
-\[
-	H = \{\, (r,a), (r,b), (a,c), (b,d), (b,e) \,\}.
-\]
-Esses arcos formam a \(r\)-arborescência \(T\) de custo mínimo.
+No nosso exemplo, os cinco arcos justos \(\{(r,a), (r,b), (a,c), (b,d), (b,e)\}\)
+formam uma \(r\)-arborescência. Como não há ciclos, o algoritmo termina e retorna
+essa arborescência como solução ótima.
 
-Para verificar a otimalidade, note que uma propriedade fundamental dos potenciais duais é:
+\textbf{Por que essa arborescência é ótima?} A seguinte propriedade garante a otimalidade:
 
 \begin{proposicao}
-	Para toda função \(y: V \to \mathbb{R}\) com \(y(r) = 0\),
-	uma \(r\)-arborescência \(T\) é \(c\)-mínima em \(D\) se, e somente se,
-	todos os arcos de \(T\) são justos (i.e., \(c_y(a) = 0\) para todo \(a \in T\))
-	e \(c_y(a) \geq 0\) para todo \(a \in A\).
+	Uma \(r\)-arborescência \(T\) é de custo mínimo se, e somente se, todos os arcos
+	de \(T\) são justos (custo reduzido zero) e todos os demais arcos têm custo reduzido
+	não negativo.
 \end{proposicao}
 
 \begin{proof}[Prova.]
 	Seja \(F\) uma \(r\)-arborescência qualquer. Para cada \(v \in V \setminus \{r\}\),
-	seja \(a_v\) o único arco de \(F\) que entra em \(v\). Então
+	seja \(a_v\) o único arco de \(F\) que entra em \(v\). Se interpretarmos as reduções
+	de custo através de potenciais duais \(y(v)\), temos
 	\begin{align*}
 		c(F)
 		 & = \sum_{v \in V \setminus \{r\}} c(a_v)                                          \\
@@ -415,34 +459,50 @@ de forma análoga ao algoritmo de Chu--Liu--Edmonds.
 
 \section{Descrição do algoritmo}
 
-O algoritmo de András Frank difere substancialmente do algoritmo de Chu--Liu--Edmonds em sua abordagem: enquanto Chu--Liu--Edmonds opera diretamente sobre os custos dos arcos, o método de Frank utiliza uma técnica gulosa--dual baseada em \emph{potenciais} associados aos vértices. A ideia central é elevar progressivamente os potenciais \(y(v)\) para cada vértice \(v\neq r\), de modo que os custos \emph{reduzidos} \(c_y(u,v) := c(u,v) - y(v)\) revelem quais arcos devem participar da solução ótima. Um arco \((u,v)\) é dito \emph{justo} quando seu custo reduzido é zero, isto é, quando \(c(u,v) = y(v)\). O algoritmo garante que toda r-arborescência ótima pode ser formada apenas por arcos justos.
+Apresentamos agora uma descrição formal do algoritmo de András Frank.
 
-A seguir apresentamos uma descrição formal do algoritmo de András Frank e detalhes de implementação serão discutidos na próxima seção.
+O algoritmo opera em duas fases. A Fase~1 reduz progressivamente os custos dos arcos,
+criando arcos justos (de custo zero) através da identificação de subconjuntos minimais.
+A Fase~2 constrói a arborescência a partir dos arcos justos, usando contração e expansão
+quando necessário.
+
+A diferença fundamental em relação ao Chu--Liu--Edmonds está na Fase~1:
+\begin{itemize}
+	\item \textbf{Chu--Liu:} Para cada vértice \(v\), subtrai o menor custo entrando em \(v\).
+	      Processa vértice a vértice, uma vez.
+	\item \textbf{Frank:} A cada iteração, identifica componentes fortemente conexas no grafo
+	      de arcos justos. Para cada componente sem arcos justos entrando (subconjunto minimal \(X\)),
+	      subtrai \(\delta(X)\) de todos os arcos entrando em \(X\). Repete até todos os vértices
+	      terem arcos justos entrando.
+\end{itemize}
+
+A Fase~2 é idêntica em ambos os algoritmos: se há ciclos nos arcos justos, contrai,
+resolve recursivamente, e expande.
 
 \begin{algobox}{András Frank}{andras-frank}
 	Entrada: dígrafo \(D=(V,A)\), custos \(c:A\to\mathbb{R}_{\ge 0}\), raiz \(r\).\footnote{Se algum \(v\neq r\) não possui arco de entrada, não existe r-arborescência.}
 
-	\textbf{Fase 1: Elevação de potenciais e construção de \(A_0\)}
+	\textbf{Fase 1: Redução de custos e construção de \(A_0\)}
 	\begin{enumerate}\setlength{\itemsep}{2pt}
-		\item \textbf{Inicialização:} defina \(y(v) := 0\) para todo \(v \in V\).
-		\item \textbf{Iteração:} enquanto existir conjunto \(X \subseteq V \setminus \{r\}\) sem arco justo entrando:
+		\item \textbf{Inicialização:} defina \(A_0 := \emptyset\) (conjunto de arcos justos).
+		\item \textbf{Iteração:} enquanto existir subconjunto minimal \(X \subseteq V \setminus \{r\}\):
 		      \begin{itemize}\setlength{\itemsep}{2pt}
-			      \item Calcule \(\Delta(X) := \min\{c(u,v) - y(v) : u \notin X, v \in X\}\).
-			      \item Para cada \(v \in X\), atualize \(y(v) := y(v) + \Delta(X)\).
+			      \item Calcule as componentes fortemente conexas de \((V, A_0)\).
+			      \item Para cada componente \(X\) que não contém \(r\) e não possui arcos de \(A_0\) entrando:
+			            \begin{itemize}
+				            \item Calcule \(\delta(X) := \min\{c(u,v) : u \notin X, v \in X\}\).
+				            \item Para todo arco \((u,v)\) com \(u \notin X\) e \(v \in X\), atualize \(c(u,v) := c(u,v) - \delta(X)\).
+				            \item Adicione a \(A_0\) todos os arcos \((u,v)\) com \(u \notin X, v \in X\) que atingiram custo zero.
+			            \end{itemize}
 		      \end{itemize}
-		\item Defina \(A_0 := \{a \in A : c_y(a) = 0\}\), o conjunto de arcos justos.
+		      Ao final, todo vértice \(v \neq r\) possui ao menos um arco justo entrando.
 	\end{enumerate}
 
 	\textbf{Fase 2: Construção da arborescência}
-	\begin{enumerate}\setlength{\itemsep}{2pt}\setcounter{enumi}{3}
-		\item Se \((V,A_0)\) forma uma r-arborescência, devolva \(A_0\). Por otimalidade dos potenciais duais, trata-se de uma r-arborescência de custo mínimo.
-		\item Caso contrário, identifique um ciclo dirigido \(C\) em \(A_0\) (com \(r\notin C\)). \textbf{Contração:} contraia \(C\) em um supervértice \(x_C\) e defina custos reduzidos \(c'\) por
-		      \begin{align*}
-			      c'(u,x_C) & := c_y(u,w) = c(u,w) - y(w) &  & \text{para } u\notin C,\ w\in C, \\
-			      c'(x_C,v) & := c_y(w,v) = c(w,v) - y(v) &  & \text{para } w\in C,\ v\notin C,
-		      \end{align*}
-		      descartando laços em \(x_C\) e permitindo paralelos. Denote o dígrafo contraído por \(D'=(V',A')\).
-		\item \textbf{Recursão:} compute uma r-arborescência ótima \(T'\) de \(D'\) com custos \(c'\).
+	\begin{enumerate}\setlength{\itemsep}{2pt}\setcounter{enumi}{2}
+		\item Se \((V,A_0)\) forma uma r-arborescência, devolva \(A_0\). Por construção, todos os arcos têm custo reduzido zero e os demais arcos têm custo não negativo, garantindo otimalidade.
+		\item Caso contrário, identifique um ciclo dirigido \(C\) em \(A_0\) (com \(r\notin C\)). \textbf{Contração:} contraia \(C\) em um supervértice \(x_C\) e ajuste os custos dos arcos incidentes, descartando laços em \(x_C\) e permitindo paralelos. Denote o dígrafo contraído por \(D'=(V',A')\).
+		\item \textbf{Recursão:} compute uma r-arborescência ótima \(T'\) de \(D'\) com os custos ajustados.
 		\item \textbf{Expansão:} seja \((u,x_C)\in T'\) o único arco que entra em \(x_C\). No dígrafo original, ele corresponde a \((u,w)\) com \(w\in C\). Forme
 		      \[
 			      T := \bigl(T'\setminus\{\text{arcos incidentes a } x_C\}\bigr)\ \cup\ \{(u,w)\}\ \cup\ \bigl((A_0\cap A(C))\setminus\{a_w\}\bigr),
@@ -453,30 +513,36 @@ A seguir apresentamos uma descrição formal do algoritmo de András Frank e det
 
 \subsection{Corretude}
 
-A corretude do algoritmo de András Frank baseia-se na teoria de dualidade em programação linear aplicada ao problema de arborescência de custo mínimo:
+A corretude do algoritmo baseia-se em três ideias principais:
 
 \begin{enumerate}\setlength{\itemsep}{2pt}
-	\item \emph{Potenciais duais:} os valores \(y(v)\) funcionam como variáveis duais. Para qualquer r-arborescência \(T\) e qualquer escolha de potenciais \(y\), vale
-	      \[
-		      c(T) = \sum_{a\in T} c(a) = \sum_{a\in T} c_y(a) + \sum_{v\neq r} y(v),
-	      \]
-	      pois há exatamente um arco de \(T\) entrando em cada \(v\neq r\). O termo \(\sum_{v\neq r} y(v)\) é constante após a elevação completa dos potenciais; assim, minimizar \(c(T)\) equivale a minimizar \(\sum_{a\in T} c_y(a)\).
+	\item \emph{Equivalência com potenciais duais:} A operação de subtrair \(\delta(X)\)
+	      dos arcos entrando em \(X\) equivale a aumentar um potencial dual \(y(v)\) em \(\delta(X)\)
+	      para cada \(v \in X\). Trabalhar com custos reduzidos \(c(u,v)\) é equivalente
+	      a trabalhar com \(c_{\text{original}}(u,v) - y(v)\).
 
-	\item \emph{Condições de otimalidade:} uma r-arborescência \(T\) é ótima se e somente se:
+	\item \emph{Condições de otimalidade:} Uma \(r\)-arborescência \(T\) é ótima se, e somente se:
 	      \begin{itemize}\setlength{\itemsep}{2pt}
-		      \item Todos os arcos de \(T\) são justos: \(c_y(a) = 0\) para todo \(a \in T\).
-		      \item Todos os arcos do dígrafo têm custo reduzido não-negativo: \(c_y(a) \geq 0\) para todo \(a \in A\).
+		      \item Todos os arcos de \(T\) são justos (custo reduzido zero).
+		      \item Todos os arcos do dígrafo têm custo reduzido não negativo.
 	      \end{itemize}
-	      Sob essas condições, \(\sum_{a\in T} c_y(a) = 0 \leq \sum_{a\in T'} c_y(a)\) para qualquer outra r-arborescência \(T'\), provando otimalidade.
+	      Isso porque, para qualquer \(r\)-arborescência \(F\),
+	      \[
+		      c(F) = \sum_{v \neq r} c_y(a_v) + \sum_{v \neq r} y(v),
+	      \]
+	      onde \(a_v\) é o arco de \(F\) entrando em \(v\). Como \(\sum_{v \neq r} y(v)\)
+	      é constante, minimizar \(c(F)\) equivale a minimizar \(\sum_{v \neq r} c_y(a_v)\).
 
-	\item \emph{Elevação de potenciais:} o algoritmo eleva os potenciais de forma gulosa, garantindo que ao final cada \(v\neq r\) tenha ao menos um arco justo entrando. Isso é feito identificando componentes fortemente conexas em \(A\_0\): conjuntos \(X\) que ainda não possuem arcos justos entrando têm seus potenciais elevados pelo mínimo necessário \(\Delta(X)\).
-
-	\item \emph{Caso acíclico:} se \(A_0\) forma uma r-arborescência, todos os arcos são justos e, pelas condições de otimalidade, a solução é ótima.
-
-	\item \emph{Caso com ciclo (contração/expansão):} se \(A\_0\) contém um ciclo dirigido \(C\), todos os seus arcos são justos (custo reduzido zero). A contração preserva a estrutura de custos reduzidos: no dígrafo contraído, os novos custos \(c'\) já incorporam os potenciais, e uma solução ótima em \(D'\) mapeia para uma solução ótima em \(D\) pela reversibilidade da operação.
+	\item \emph{Identificação de subconjuntos minimais:} O algoritmo usa componentes fortemente
+	      conexas para identificar quais conjuntos ainda precisam de arcos justos entrando.
+	      Inicialmente cada vértice é sua própria componente. Após criar arcos justos,
+	      se formarem ciclos, as componentes agrupam vértices e o processo continua
+	      sobre esses conjuntos maiores.
 \end{enumerate}
 
-Em termos intuitivos, os potenciais \(y(v)\) funcionam como "descontos" aplicados aos arcos que entram em cada vértice, revelando quais arcos são "justos" (custo líquido zero) e, portanto, candidatos à solução ótima. Ciclos de arcos justos podem ser contraídos sem perder otimalidade, simplificando o problema recursivamente.
+\textbf{Conclusão:} A operação é a mesma do Chu--Liu--Edmonds (subtrair o menor custo
+entrando em cada conjunto), mas organizada diferentemente: Chu--Liu opera vértice a vértice;
+Frank opera sobre componentes fortemente conexas.
 
 \subsection{Complexidade}
 
