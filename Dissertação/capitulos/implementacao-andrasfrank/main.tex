@@ -276,9 +276,7 @@ No exemplo da Figura~\ref{fig:frank-iter1-result}, os arcos justos não formam u
 	\label{fig:frank-scc-minimal}
 \end{figure}
 
-
-
-
+O algoritmo então procede escolhendo um subconjunto minimal (neste caso, \(\{c,d\}\)) e repetindo o processo de redução de custos para esse conjunto. Calculamos \(\delta(\{c,d\})\) como o menor custo entre os arcos que entram em \(c\) ou \(d\) vindos de fora do conjunto \(\{c,d\}\). No exemplo, os arcos que entram em \(\{c,d\}\) são \((r,c)\) com custo 6, \((a,c)\) com custo 4 e \((a,d)\) com custo 3. Portanto, \(\delta(\{c,d\}) = \min\{6, 4, 3\} = 3\). Subtraímos esse valor dos arcos que entram em \(c\) e \(d\), tornando \((a,d)\) um arco justo.
 
 
 
