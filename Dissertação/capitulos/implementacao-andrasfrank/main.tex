@@ -75,6 +75,8 @@ O algoritmo de Frank opera em duas fases principais: (1) redução de custos e (
 A redução de custos é feita em subconjuntos minimais, que são subconjuntos \(X \subseteq V\)
 tais que não há arcos justos entrando em \(X\) (arcos com custo reduzido zero).
 
+Um conjunto \(X \subseteq V \setminus \{r\}\) é dito \textbf{minimal} se: (i) não há arcos justos entrando em \(X\), e (ii) para qualquer subconjunto próprio \(Y \subset X\), existe ao menos um arco justo entrando em \(Y\).
+
 No início do algoritmo, nenhum arco tem custo reduzido zero. Cada vértice não-raiz forma
 seu próprio subconjunto minimal. No dígrafo da Figura~\ref{fig:frank-exemplo-inicial},
 os subconjuntos minimais iniciais são \(\{a\}\), \(\{b\}\), \(\{c\}\), \(\{d\}\) e \(\{e\}\).
@@ -210,9 +212,12 @@ da Figura~\ref{fig:frank-exemplo-inicial}, onde aplicamos a redução apenas par
 	\label{fig:frank-iter1-result}
 \end{figure}
 
+
 Se esses arcos de custo zero formam uma \(r\)-arborescência, o algoritmo termina. Caso contrário, identificamos novamente os subconjuntos minimais sem arcos de custo zero entrando neles.
 
-No exemplo da Figura~\ref{fig:frank-iter1-result}, os arcos justos não formam uma \(r\)-arborescência, pois nem todos os vértices são alcançáveis a partir de \(r\) pelos arcos justos e o conjunto \(\{c,d\}\) forma um ciclo com dois arcos justos entre \(c\) e \(d\). Como não existem arcos justos entrando em \(\{c,d\}\), esse conjunto é um subconjunto minimal. Além disso, nesse caso forma-se uma componente fortemente conexa entre \(c\) e \(d\). Uma componente fortemente conexa (SCC) é um subconjunto maximal de vértices em que cada vértice é alcançável a partir de qualquer outro vértice do mesmo subconjunto.
+No exemplo da Figura~\ref{fig:frank-iter1-result}, os arcos justos não formam uma \(r\)-arborescência, pois nem todos os vértices são alcançáveis a partir de \(r\) pelos arcos justos, mais especificamente, após a primeira iteração de reduções, os arcos justos (custo zero) são: \((r,a)\), \((r,b)\), \((b,e)\), \((c,d)\) e \((d,c)\). Todos os vértices não-raiz possuem arcos justos entrando, exceto que o conjunto \(\{c,d\}\) forma um ciclo justo. Como não existem arcos justos entrando em \(\{c,d\}\) vindos de fora do conjunto, ele é um \textbf{subconjunto minimal}.
+
+O algoritmo utiliza \emph{componentes fortemente conexas} (SCCs) formadas pelos arcos justos para identificar eficientemente os conjuntos minimais. No exemplo, após a primeira iteração, formam-se as componentes \(\{r,a\}\), \(\{b\}\), \(\{e\}\) e \(\{c,d\}\), ilustradas na Figura~\ref{fig:frank-scc-minimal}. A componente \(\{c,d\}\) é não-trivial, pois contém um ciclo justo entre \(c\) e \(d\).
 
 \begin{figure}[H]
 	\centering
@@ -462,11 +467,7 @@ Após a contração, os arcos justos formam uma \(r\)-arborescência no dígrafo
 \subsection{Identificação de conjuntos minimais através de componentes fortemente conexas}
 \label{sec:identificacao-minimais}
 
-Voltemos ao exemplo da Figura~\ref{fig:frank-iter1-result}. Após a primeira iteração de reduções, os arcos justos (custo zero) são: \((r,a)\), \((r,b)\), \((b,e)\), \((c,d)\) e \((d,c)\). Todos os vértices não-raiz possuem arcos justos entrando, exceto que o conjunto \(\{c,d\}\) forma um ciclo justo. Como não existem arcos justos entrando em \(\{c,d\}\) vindos de fora do conjunto, ele é um \textbf{subconjunto minimal}.
 
-Um conjunto \(X \subseteq V \setminus \{r\}\) é dito \textbf{minimal} se: (i) não há arcos justos entrando em \(X\), e (ii) para qualquer subconjunto próprio \(Y \subset X\), existe ao menos um arco justo entrando em \(Y\). A segunda condição é essencial: no nosso exemplo, não poderíamos escolher apenas \(\{c\}\) ou apenas \(\{d\}\) isoladamente, pois esses subconjuntos já possuem arcos justos entrando --- os arcos do ciclo interno.
-
-O algoritmo utiliza \emph{componentes fortemente conexas} (SCCs) formadas pelos arcos justos para identificar eficientemente os conjuntos minimais. No exemplo, após a primeira iteração, formam-se as componentes \(\{r,a\}\), \(\{b\}\), \(\{e\}\) e \(\{c,d\}\), ilustradas na Figura~\ref{fig:frank-scc-minimal}. A componente \(\{c,d\}\) é não-trivial, pois contém um ciclo justo entre \(c\) e \(d\).
 
 Quando construímos o \emph{grafo de condensação} dessas SCCs (onde cada nó representa uma SCC e existe um arco entre duas SCCs se há um arco justo no grafo original indo de um vértice da primeira para um vértice da segunda), uma \textbf{fonte} é uma SCC sem arcos justos entrando. No exemplo, \(\{c,d\}\) é uma fonte no grafo de condensação e corresponde exatamente ao conjunto minimal que buscamos.
 
