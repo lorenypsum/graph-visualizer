@@ -84,8 +84,8 @@ entrando em \(v\), e subtraímos esse valor de todos esses arcos.
 
 Por exemplo, consideremos o vértice \(a\). Os arcos entrando em \(a\) são \((r,a)\) com custo 2
 e \((b,a)\) com custo 5. Calculamos \(\delta(\{a\}) = \min\{2, 5\} = 2\) e subtraímos este valor
-de ambos os arcos. Assim, \((r,a)\) passa a ter custo \(2-2=0\) (tornando-se um \emph{arco justo})
-e \((b,a)\) passa a ter custo \(5-2=3\). A Figura~\ref{fig:frank-reducao-exemplo-a} ilustra
+de ambos os arcos. Assim, \((r,a)\) passa a ter custo \(0\) 
+e \((b,a)\) passa a ter custo \(3\). A Figura~\ref{fig:frank-reducao-exemplo-a} ilustra
 essa operação de redução aplicada ao vértice \(a\).
 
 \begin{figure}[H]
@@ -216,7 +216,7 @@ da Figura~\ref{fig:frank-exemplo-inicial}, onde aplicamos a redução apenas par
 
 Se esses arcos de custo zero formam uma \(r\)-arborescência, o algoritmo termina. Caso contrário, identificamos novamente os subconjuntos minimais sem arcos de custo zero entrando neles.
 
-No exemplo da Figura~\ref{fig:frank-iter1-result}, os arcos justos não formam uma \(r\)-arborescência, pois nem todos os vértices são alcançáveis a partir de \(r\) pelos arcos justos e o conjunto \(\{c,d\}\) forma um ciclo com dois arcos justos entre \(c\) e \(d\). Como não existem arcos justos entrando em \(\{c,d\}\), esse conjunto é um subconjunto minimal. Além disso, nesse caso forma-se uma componente fortemente conexa entre \(c\) e \(d\). Uma componente fortemente conexa (SCC) é um subconjunto maximal de vértices em que cada vértice é alcançável a partir de qualquer outro vértice do mesmo subconjunto.
+No exemplo da Figura~\ref{fig:frank-iter1-result}, os arcos justos não formam uma \(r\)-arborescência, pois nem todos os vértices são alcançáveis a partir de \(r\) pelos arcos justos e o conjunto \(\{c,d\}\) forma um ciclo com dois arcos justos entre \(c\) e \(d\). Temos então as fontes \(\{r,a\}\), \(\{b\}\), \(\{e\}\) e o conjunto \(\{c,d\}\). Como não existem arcos justos entrando em \(\{c,d\}\), esse conjunto é um subconjunto minimal. 
 
 \begin{figure}[H]
 	\centering
