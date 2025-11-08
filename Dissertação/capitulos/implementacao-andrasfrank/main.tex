@@ -32,7 +32,7 @@ Assim, para cada conjunto minimal \(X\), calculamos
 esses arcos, criando ao menos um novo arco justo. Esse processo é repetido até que exista exatamente uma
 \emph{fonte} no digrafo atualizado também chamado de digrafo de condensação.
 
-A terminologia de fonte refere-se a um vértice ou conjunto de vértices no digrafo de condensação que não tenha arcos justos entrando.
+Aqui \emph{fonte} refere-se a um vértice no digrafo de condensação que não tenha arcos justos entrando.
 
 Vamos desenvolver essas ideias utilizando um exemplo: considere o dígrafo \(D\) da Figura~\ref{fig:frank-exemplo-inicial} com seis vértices
 \(\{r, a, b, c, d, e\}\) e custos nos arcos para ilustrar
@@ -78,6 +78,7 @@ o comportamento completo do algoritmo.
 \end{figure}
 
 Vamos agora executar o algoritmo de Frank sobre este dígrafo.
+
 Inicialmente, nenhum arco tem custo reduzido zero, cada vértice não-raiz \(v \neq r\) forma
 seu próprio subconjunto minimal \(\{v\}\). No dígrafo da Figura~\ref{fig:frank-exemplo-inicial},
 os subconjuntos minimais iniciais são portanto \(\{a\}\), \(\{b\}\), \(\{c\}\), \(\{d\}\) e \(\{e\}\).
@@ -283,7 +284,7 @@ No exemplo da Figura~\ref{fig:frank-iter1-result}, os arcos justos não formam u
 	\label{fig:frank-scc-minimal}
 \end{figure}
 
-O algoritmo então procede escolhendo um subconjunto minimal (neste caso, \(\{c,d\}\)) e repetindo o processo de redução de custos para esse conjunto. Calculamos \(\delta(\{c,d\})\) como o menor custo entre os arcos que entram em \(c\) ou \(d\) vindos de fora do conjunto \(\{c,d\}\). No exemplo, os arcos que entram em \(\{c,d\}\) são \((r,c)\) com custo 6, \((a,c)\) com custo 4 e \((a,d)\) com custo 3. Portanto, \(\delta(\{c,d\}) = \min\{6, 4, 3\} = 3\). Subtraímos esse valor dos arcos que entram em \(c\) e \(d\), tornando \((a,d)\) um arco justo.
+O algoritmo então procede escolhendo um próximo subconjunto minimal (neste caso, \(\{c,d\}\)) e repetindo o processo de redução de custos para esse conjunto. Calculamos \(\delta(\{c,d\})\) como o menor custo entre os arcos que entram em \(c\) ou \(d\) vindos de fora do conjunto \(\{c,d\}\). No exemplo, os arcos que entram em \(\{c,d\}\) são \((r,c)\) com custo 6, \((a,c)\) com custo 4 e \((a,d)\) com custo 3. Portanto, \(\delta(\{c,d\}) = \min\{6, 4, 3\} = 3\). Subtraímos esse valor dos arcos que entram em \(c\) e \(d\), tornando \((a,d)\) um arco justo.
 
 \begin{figure}[H]
 	\centering
@@ -375,7 +376,7 @@ O algoritmo então procede escolhendo um subconjunto minimal (neste caso, \(\{c,
 	\label{fig:frank-reducao-cd}
 \end{figure}
 
-Agora, não existem mais subconjuntos minimais sem arcos justos entrando neles, porém os arcos justos não formam uma \(r\)-arborescência, pois existe um ciclo justo entre \(c\) e \(d\). Nesse ponto, o algoritmo procede para a fase de contração, onde o ciclo justo formado pelos arcos \((c,d)\) e \((d,c)\) é contraído em um único vértice. Podemos estender essa ideia de contração de ciclos para abranger a contração de qualquer componente fortemente conexa (SCC) formada por arcos justos. No exemplo, a SCC \(\{c,d\}\) é contraída em um novo vértice \(x_C\). Todos os arcos que entravam em \(c\) ou \(d\) agora entram em \(x_C\), e todos os arcos que saíam de \(c\) ou \(d\) agora saem de \(x_C\). Os custos dos arcos são mantidos conforme estavam antes da contração.
+Agora, não existem mais subconjuntos minimais sem arcos justos entrando neles, porém os arcos justos não formam uma \(r\)-arborescência, pois existe um ciclo justo entre \(c\) e \(d\). Nesse ponto, o algoritmo procede para a fase de contração, onde o ciclo justo formado pelos arcos \((c,d)\) e \((d,c)\) é contraído em um único vértice. Podemos estender essa ideia de contração de ciclos para abranger a contração de qualquer componente fortemente conexa (CFC) formada por arcos justos. No exemplo, a CFC \(\{c,d\}\) é contraída em um novo vértice \(x_C\). Todos os arcos que entravam em \(c\) ou \(d\) agora entram em \(x_C\), e todos os arcos que saíam de \(c\) ou \(d\) agora saem de \(x_C\). Os custos dos arcos são mantidos conforme estavam antes da contração.
 
 A Figura~\ref{fig:frank-contracao-ciclo} ilustra essa contração.
 
