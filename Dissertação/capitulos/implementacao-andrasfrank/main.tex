@@ -376,7 +376,15 @@ O algoritmo então procede escolhendo um próximo subconjunto minimal (neste cas
 	\label{fig:frank-reducao-cd}
 \end{figure}
 
-Agora, não existem mais subconjuntos minimais sem arcos justos entrando neles, porém os arcos justos não formam uma \(r\)-arborescência, pois existe um ciclo justo entre \(c\) e \(d\). Nesse ponto, o algoritmo procede para a fase de contração, onde o ciclo justo formado pelos arcos \((c,d)\) e \((d,c)\) é contraído em um único vértice. Podemos estender essa ideia de contração de ciclos para abranger a contração de qualquer componente fortemente conexa (CFC) formada por arcos justos. No exemplo, a CFC \(\{c,d\}\) é contraída em um novo vértice \(x_C\). Todos os arcos que entravam em \(c\) ou \(d\) agora entram em \(x_C\), e todos os arcos que saíam de \(c\) ou \(d\) agora saem de \(x_C\). Os custos dos arcos são mantidos conforme estavam antes da contração.
+Agora, não existem mais subconjuntos minimais sem arcos justos entrando neles, porém os arcos justos não formam uma \(r\)-arborescência, pois existe um ciclo justo entre \(c\) e \(d\). 
+
+Nesse ponto, o algoritmo procede para a fase de contração, onde o ciclo justo formado pelos arcos \((c,d)\) e \((d,c)\) é contraído em um único vértice. Podemos estender essa ideia de contração de ciclos para abranger a contração de qualquer componente fortemente conexa (CFC) formada por arcos justos. 
+
+O algoritmo pode utilizar CFCs para identificar eficientemente os conjuntos minimais. Quando construímos o grafo de condensação das CFCs, cada vértice do grafo de condensação representa uma CFC do grafo original formado pelos arcos justos. Vale destacar que um arco no grafo de condensação conecta duas CFCs se existe um arco justo no grafo original indo de um vértice da primeira CFC para um vértice da segunda e o grafo de condensação é sempre acíclico (DAG).
+
+Uma \textbf{fonte} no grafo de condensação corresponde exatamente aos conjuntos minimais que buscamos.
+
+No exemplo, a CFC \(\{c,d\}\) é uma fonte que é contraída em um novo vértice \(x_C\). Todos os arcos que entravam em \(c\) ou \(d\) agora entram em \(x_C\), e todos os arcos que saíam de \(c\) ou \(d\) agora saem de \(x_C\). Os custos dos arcos são mantidos conforme estavam antes da contração.
 
 A Figura~\ref{fig:frank-contracao-ciclo} ilustra essa contração.
 
@@ -471,18 +479,7 @@ Assim termina a fase 1 do algoritmo de Frank. A fase 2 envolve a expansão do su
 \subsection{Identificação de conjuntos minimais}
 \label{sec:identificacao-minimais}
 
-O algoritmo utiliza componentes fortemente conexas (SCCs) formadas pelos arcos justos para identificar eficientemente os conjuntos minimais. Quando construímos o grafo de condensação das SCCs:
-\begin{itemize}\setlength{\itemsep}{2pt}
-	\item Cada nó do grafo de condensação representa uma SCC do grafo original formado pelos arcos justos.
-	\item Um arco no grafo de condensação conecta duas SCCs se existe um arco justo no grafo original indo de um vértice da primeira SCC para um vértice da segunda.
-	\item O grafo de condensação é sempre acíclico (DAG).
-\end{itemize}
 
-Uma \textbf{fonte} no grafo de condensação é uma SCC sem arcos justos entrando. Essas fontes correspondem exatamente aos conjuntos minimais que buscamos:
-\begin{itemize}\setlength{\itemsep}{2pt}
-	\item \textbf{Sem arcos justos entrando:} Por definição de fonte, não há arcos no grafo de condensação entrando naquela SCC, o que significa que não há arcos justos do grafo original entrando em nenhum vértice da SCC.
-	\item \textbf{Maximalidade da componente:} Como trabalhamos com SCCs, qualquer vértice dentro da componente é alcançável a partir de qualquer outro usando arcos justos. Isso garante que não há subconjunto próprio sem arcos justos entrando (pois dentro da componente, todos os vértices são conectados por arcos justos).
-\end{itemize}
 
 \paragraph{Múltiplas escolhas possíveis.} Em uma iteração do algoritmo, pode haver múltiplas fontes no grafo de condensação (excluindo a componente que contém a raiz). Qualquer uma dessas fontes pode ser escolhida como conjunto minimal para elevação de potenciais naquela iteração. A escolha específica não afeta a corretude do algoritmo, apenas a ordem em que os arcos se tornam justos.
 
@@ -552,18 +549,7 @@ Em cada caso, após a elevação, a componente escolhida deixa de ser uma fonte 
 
 No exemplo da Figura~\ref{fig:frank-iter1-result}, após a primeira iteração de redução, temos os vértices \(\{a\}\), \(\{b\}\), \(\{e\}\) que são componentes triviais (cada um forma sua própria SCC) e todos possuem arcos justos entrando. Porém, o conjunto \(\{c,d\}\) forma uma SCC não-trivial (um ciclo) sem arcos justos entrando, constituindo uma fonte no grafo de condensação e, portanto, um conjunto minimal. Não poderíamos escolher apenas \(\{c\}\) ou apenas \(\{d\}\) isoladamente, pois esses subconjuntos já possuem arcos justos entrando (os arcos do ciclo interno).
 
-\subsection{Por que a escolha do conjunto minimal é importante}
-\label{sec:escolha-minimal}
 
-Escolher um conjunto que não seja minimal pode violar a otimalidade da solução. Para entender isso, considere a interpretação dual do algoritmo: cada vez que elevamos o potencial de um conjunto \(X\) por \(\Delta(X)\), estamos aumentando a variável dual correspondente. As condições de folga complementar da programação linear dual exigem que:
-\begin{itemize}\setlength{\itemsep}{2pt}
-	\item Se um arco \((u,v)\) está na arborescência ótima, então seu custo reduzido deve ser zero.
-	\item Se um conjunto \(X\) teve seu potencial elevado (\(\Delta(X) > 0\)), então exatamente um arco da arborescência deve cruzar a fronteira de \(X\).
-\end{itemize}
-
-Se escolhêssemos um conjunto não-minimal \(X\) (isto é, um conjunto que contém um subconjunto próprio \(Y \subset X\) que também não tem arcos justos entrando), poderíamos elevar os potenciais de forma redundante, criando folga nas restrições duais. Isso pode levar a uma solução que satisfaz as restrições mas não atinge o valor ótimo.
-
-Ao garantir que sempre escolhemos conjuntos minimais, mantemos a propriedade de que a sequência de elevações de potenciais constrói progressivamente uma solução dual ótima, que por sua vez guia a construção de uma arborescência primal ótima através dos arcos justos.
 
 \subsection{Arcos justos podem conter ``sujeira''}
 
