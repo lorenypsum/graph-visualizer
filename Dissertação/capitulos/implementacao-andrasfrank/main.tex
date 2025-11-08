@@ -3,11 +3,11 @@
 Neste capítulo, apresentaremos o algoritmo de András Frank, que também determina
 uma arborescência de custo mínimo em um digrafo ponderado.
 O algoritmo baseia-se em uma abordagem primal--dual:
-a elevação gulosa de potenciais duais\footnote{\textbf{Potencial dual} é uma variável associada a cada vértice, que representa um "desconto" aplicado ao custo dos arcos que entram nesse vértice e servem para ajustar os custos de modo que certas restrições fiquem "apertadas", - satisfeitas com igualdade, ou seja, o valor da variável atinge exatamente o limite imposto pela restrição.} e (ii) a construção de uma solução gulosa
+a elevação gulosa de potenciais duais\footnote{\textbf{Potencial dual} é uma variável associada a cada vértice, que representa um "desconto" aplicado ao custo dos arcos que entram nesse vértice e servem para ajustar os custos de modo que certas restrições fiquem "justas", - satisfeitas com igualdade, ou seja, o valor da variável atinge exatamente o limite imposto pela restrição.} e (ii) a construção de uma solução gulosa
 a partir dos arcos de custo reduzido zero.
 Diferentemente do algoritmo de Chu--Liu--Edmonds, que opera diretamente sobre os custos,
 o método de Frank manipula potenciais duais associados aos vértices,
-gerando arcos \emph{apertados} (de custo reduzido zero) que formam a arborescência ótima.
+gerando arcos \emph{justos} (de custo reduzido zero) que formam a arborescência ótima.
 O propósito deste capítulo é fornecer uma descrição precisa tanto do algoritmo
 quanto da implementação desenvolvida neste trabalho.
 
@@ -85,35 +85,35 @@ para definir custos reduzidos nos arcos. Para cada arco \(a = (u,v) \in A\), o
 \]
 onde \(v\) é o vértice de destino do arco. Note que, diferentemente do procedimento de redução do capítulo anterior (onde subtraíamos o mínimo custo de entrada em cada vértice), aqui o potencial \(y(v)\) é uma variável que será ajustada pelo algoritmo através da seguinte noção.
 
-Um arco \(a = (u,v)\) é dito \textbf{apertado} (ou \textbf{tight}) se \(c_y(u,v) = 0\), isto é, se o custo original coincide com o potencial do vértice de destino: \(c(u,v) = y(v)\). A ideia central do algoritmo de Frank consiste em duas etapas: (i)~elevar os potenciais \(y(v)\) para cada \(v \neq r\) até que cada vértice possua ao menos um arco apertado entrando nele; (ii)~construir uma arborescência ótima utilizando exclusivamente arcos apertados.
+Um arco \(a = (u,v)\) é dito \textbf{justo} (ou \textbf{tight}) se \(c_y(u,v) = 0\), isto é, se o custo original coincide com o potencial do vértice de destino: \(c(u,v) = y(v)\). A ideia central do algoritmo de Frank consiste em duas etapas: (i)~elevar os potenciais \(y(v)\) para cada \(v \neq r\) até que cada vértice possua ao menos um arco justo entrando nele; (ii)~construir uma arborescência ótima utilizando exclusivamente arcos justos.
 
 \begin{tcolorbox}[
 		enhanced, breakable,
 		colback=blue!5!white, colframe=blue!70!black,
 		colbacktitle=blue!85!black, coltitle=white,
 		fonttitle=\bfseries,
-		title={Arcos apertados: interpretação e cálculo},
+		title={Arcos justos: interpretação e cálculo},
 		sharp corners, boxrule=0.8pt
 	]
-	Um arco \((u,v)\) é \textbf{apertado} quando seu custo reduzido é zero, ou seja, quando o custo original \(c(u,v)\) coincide exatamente com o potencial \(y(v)\) do vértice de destino. Formalmente:
+	Um arco \((u,v)\) é \textbf{justo} quando seu custo reduzido é zero, ou seja, quando o custo original \(c(u,v)\) coincide exatamente com o potencial \(y(v)\) do vértice de destino. Formalmente:
 	\[
 		c_y(u,v) = c(u,v) - y(v) = 0 \quad\Longleftrightarrow\quad c(u,v) = y(v).
 	\]
 
-	Em outras palavras, o potencial \(y(v)\) funciona como um ``desconto'' aplicado aos arcos que chegam em \(v\). Quando esse desconto é suficiente para anular o custo reduzido, o arco torna-se apertado e candidato a participar da solução ótima.
+	Em outras palavras, o potencial \(y(v)\) funciona como um ``desconto'' aplicado aos arcos que chegam em \(v\). Quando esse desconto é suficiente para anular o custo reduzido, o arco torna-se justo e candidato a participar da solução ótima.
 
 	\medskip
 	\textbf{Exemplos numéricos (referência: figura~26):}
 	\begin{itemize}\setlength{\itemsep}{3pt}
-		\item Arco \((r,a)\): \(c(r,a) = 1\), \(y(a) = 1 \implies c_y(r,a) = 1-1 = 0\). \quad\textcolor{blue!70!black}{\textbf{Apertado.}}
-		\item Arco \((b,a)\): \(c(b,a) = 4\), \(y(a) = 1 \implies c_y(b,a) = 4-1 = 3\). \quad\textcolor{red!70!black}{\textbf{Não apertado.}}
-		\item Arco \((a,c)\): \(c(a,c) = 1\), \(y(c) = 1 \implies c_y(a,c) = 1-1 = 0\). \quad\textcolor{blue!70!black}{\textbf{Apertado.}}
+		\item Arco \((r,a)\): \(c(r,a) = 1\), \(y(a) = 1 \implies c_y(r,a) = 1-1 = 0\). \quad\textcolor{blue!70!black}{\textbf{Justo.}}
+		\item Arco \((b,a)\): \(c(b,a) = 4\), \(y(a) = 1 \implies c_y(b,a) = 4-1 = 3\). \quad\textcolor{red!70!black}{\textbf{Não justo.}}
+		\item Arco \((a,c)\): \(c(a,c) = 1\), \(y(c) = 1 \implies c_y(a,c) = 1-1 = 0\). \quad\textcolor{blue!70!black}{\textbf{Justo.}}
 	\end{itemize}
 
 	\textbf{Propriedade fundamental:} o potencial \(y(v)\) afeta \emph{exclusivamente} os arcos que entram em \(v\). Por exemplo, \(y(c)\) influencia apenas arcos da forma \((\cdot, c)\), como \((r,c)\) e \((a,c)\), não afetando arcos que saem de \(c\).
 
 	\medskip
-	O algoritmo eleva progressivamente os potenciais até que cada vértice \(v \neq r\) possua ao menos um arco apertado de entrada. No exemplo da figura~26, os arcos apertados após a elevação correspondem precisamente aos arcos da arborescência ótima.
+	O algoritmo eleva progressivamente os potenciais até que cada vértice \(v \neq r\) possua ao menos um arco justo de entrada. No exemplo da figura~26, os arcos justos após a elevação correspondem precisamente aos arcos da arborescência ótima.
 \end{tcolorbox}
 
 % Figura 27: Exemplo visual com múltiplos arcos e vértice raiz
@@ -153,7 +153,7 @@ Um arco \(a = (u,v)\) é dito \textbf{apertado} (ou \textbf{tight}) se \(c_y(u,v
 		\node[label] at (-0.0,-1.5) {$c_y(r,v)=4-3=1$};
 		\node[label] at (5.0,-0.5) {$c_y(u,v)=3-3=0$};
 	\end{tikzpicture}
-	\caption{O vértice $r$ é a raiz. Os potenciais são $y(u)=2$ e $y(v)=3$. O arco $(r,u)$ tem custo reduzido $0$ (apertado), $(r,v)$ tem custo reduzido $1$ (não apertado), $(u,v)$ tem custo reduzido $0$ (apertado). Os potenciais só afetam os arcos que chegam em cada vértice.}
+	\caption{O vértice $r$ é a raiz. Os potenciais são $y(u)=2$ e $y(v)=3$. O arco $(r,u)$ tem custo reduzido $0$ (justo), $(r,v)$ tem custo reduzido $1$ (não justo), $(u,v)$ tem custo reduzido $0$ (justo). Os potenciais só afetam os arcos que chegam em cada vértice.}
 	\label{fig:potencial-destino}
 \end{figure}
 
@@ -249,14 +249,14 @@ Após a elevação, os custos reduzidos são dados por \(c_y(u,v) = c(u,v) - y(v
 		\node[vtx] (d) at (6,0.0) {$d$};
 		\node[vtx] (e) at (6,-2.2) {$e$};
 
-		% arcos apertados (custo reduzido = 0)
+		% arcos justos (custo reduzido = 0)
 		\draw[tight] (r) -- node[costB, above] {0} (a);   % 1 - 1 = 0
 		\draw[tight] (r) -- node[costB, below] {0} (b);   % 2 - 2 = 0
 		\draw[tight] (a) -- node[costB, above] {0} (c);   % 1 - 1 = 0
 		\draw[tight] (b) -- node[costB, above] {0} (d);   % 1 - 1 = 0
 		\draw[tight] (b) -- node[costB, below] {0} (e);   % 2 - 2 = 0
 
-		% arcos não apertados
+		% arcos não justos
 		\draw[loose] (r) .. controls (0.8,2.4) and (5.2,3.0) .. node[costG, yshift=4pt, pos=0.53] {2} (c);  % 3 - 1 = 2
 		\draw[loose] (b) to[bend left=12] node[costG, above] {3} (a);   % 4 - 1 = 3
 		\draw[loose] (a) to[bend left=14] node[costG, below] {3} (b);   % 5 - 2 = 3
@@ -271,18 +271,18 @@ Após a elevação, os custos reduzidos são dados por \(c_y(u,v) = c(u,v) - y(v
 		\node[below=2mm of e, font=\small] {$y(e) = 2$};
 	\end{tikzpicture}
 	\caption{Dígrafo após elevação de potenciais. Arcos em \textcolor{blue}{azul} são
-		apertados (\(c_y = 0\)); arcos em cinza têm custo reduzido positivo.}
+		justos (\(c_y = 0\)); arcos em cinza têm custo reduzido positivo.}
 \end{figure}
 
-Observe que cada vértice \(v \neq r\) possui agora ao menos um arco apertado entrando nele.
-Mais ainda: neste exemplo, os arcos apertados formam uma \(r\)-arborescência! Precisamos justificar por que a arborescência formada pelos arcos apertados é ótima.
+Observe que cada vértice \(v \neq r\) possui agora ao menos um arco justo entrando nele.
+Mais ainda: neste exemplo, os arcos justos formam uma \(r\)-arborescência! Precisamos justificar por que a arborescência formada pelos arcos justos é ótima.
 
 \subsection*{Construção da Arborescência}
 
-Se os arcos apertados formam uma \(r\)-arborescência, então encontramos a solução ótima.
-Caso contrário, os arcos apertados contêm ciclos, e precisamos tratá-los adequadamente.
+Se os arcos justos formam uma \(r\)-arborescência, então encontramos a solução ótima.
+Caso contrário, os arcos justos contêm ciclos, e precisamos tratá-los adequadamente.
 
-No nosso exemplo, os arcos apertados são:
+No nosso exemplo, os arcos justos são:
 \[
 	H = \{\, (r,a), (r,b), (a,c), (b,d), (b,e) \,\}.
 \]
@@ -293,7 +293,7 @@ Para verificar a otimalidade, note que uma propriedade fundamental dos potenciai
 \begin{proposicao}
 	Para toda função \(y: V \to \mathbb{R}\) com \(y(r) = 0\),
 	uma \(r\)-arborescência \(T\) é \(c\)-mínima em \(D\) se, e somente se,
-	todos os arcos de \(T\) são apertados (i.e., \(c_y(a) = 0\) para todo \(a \in T\))
+	todos os arcos de \(T\) são justos (i.e., \(c_y(a) = 0\) para todo \(a \in T\))
 	e \(c_y(a) \geq 0\) para todo \(a \in A\).
 \end{proposicao}
 
@@ -308,19 +308,19 @@ Para verificar a otimalidade, note que uma propriedade fundamental dos potenciai
 	\end{align*}
 	Como a soma \(\sum_{v \in V \setminus \{r\}} y(v)\) é constante para todas as
 	\(r\)-arborescências, minimizar \(c(F)\) equivale a minimizar \(\sum_{v} c_y(a_v)\).
-	Se todos os arcos de \(T\) são apertados e \(c_y(a) \geq 0\) para todo \(a\),
+	Se todos os arcos de \(T\) são justos e \(c_y(a) \geq 0\) para todo \(a\),
 	então \(\sum_{v} c_y(a_v^T) = 0 \leq \sum_{v} c_y(a_v^F)\) para qualquer \(F\),
 	provando que \(T\) é ótima.
 \end{proof}
 
-No nosso exemplo, todos os arcos de \(T\) são apertados e \(c_y(a) \geq 0\) para todo
-arco \(a \in A\), portanto \(T\) é a \(r\)-arborescência de custo mínimo. Evidentemente, nem sempre será o caso que os arcos apertados formam uma arborescência e precisaremos tratar ciclos.
+No nosso exemplo, todos os arcos de \(T\) são justos e \(c_y(a) \geq 0\) para todo
+arco \(a \in A\), portanto \(T\) é a \(r\)-arborescência de custo mínimo. Evidentemente, nem sempre será o caso que os arcos justos formam uma arborescência e precisaremos tratar ciclos.
 
 \subsection*{Tratamento de Ciclos}
 
-Em geral, após a elevação de potenciais, os arcos apertados podem conter ciclos.
+Em geral, após a elevação de potenciais, os arcos justos podem conter ciclos.
 Nesse caso, o algoritmo de Frank procede de forma similar ao de Chu--Liu--Edmonds:
-contrai cada ciclo apertado em um supervértice, resolve o problema recursivamente
+contrai cada ciclo justo em um supervértice, resolve o problema recursivamente
 no dígrafo contraído, e depois reexpande a solução.
 
 Vamos ilustrar esse processo com um exemplo modificado. Suponha que adicionamos o arco
@@ -363,7 +363,7 @@ Vamos ilustrar esse processo com um exemplo modificado. Suponha que adicionamos 
 \end{figure}
 
 Após a elevação de potenciais com \(y(a) = 1, y(c) = 1\), o arco \((c,a)\) torna-se
-apertado: \(c_y(c,a) = 1 - 1 = 0\).
+justo: \(c_y(c,a) = 1 - 1 = 0\).
 
 \begin{figure}[H]
 	\centering
@@ -387,24 +387,24 @@ apertado: \(c_y(c,a) = 1 - 1 = 0\).
 		\node[vtx] (d) at (6,0.0) {$d$};
 		\node[vtx] (e) at (6,-2.2) {$e$};
 
-		% arcos apertados que formam ciclo
+		% arcos justos que formam ciclo
 		\draw[cycle] (a) -- node[costR, above] {0} (c);
 		\draw[cycle] (c) to[bend left=20] node[costR, left] {0} (a);
 
-		% outros arcos apertados
+		% outros arcos justos
 		\draw[tight] (r) -- node[costB, above] {0} (a);
 		\draw[tight] (r) -- node[costB, below] {0} (b);
 		\draw[tight] (b) -- node[costB, above] {0} (d);
 		\draw[tight] (b) -- node[costB, below] {0} (e);
 
-		% arcos não apertados
+		% arcos não justos
 		\draw[loose] (r) .. controls (0.8,2.4) and (5.2,3.0) .. node[costG, yshift=4pt, pos=0.53] {2} (c);
 		\draw[loose] (b) to[bend left=12] node[costG, above] {3} (a);
 		\draw[loose] (a) to[bend left=14] node[costG, below] {3} (b);
 		\draw[loose] (a) -- node[costG, right] {2} (d);   % 3 - 1 = 2
 		\draw[loose] (c) .. controls (7.6,2.6) and (7.6,-2.6) .. node[costG, xshift=8pt, pos=0.52] {3} (e);  % 5 - 2 = 3
 	\end{tikzpicture}
-	\caption{Arcos apertados após elevação. O ciclo \(C = (a, c, a)\) é destacado em
+	\caption{Arcos justos após elevação. O ciclo \(C = (a, c, a)\) é destacado em
 		\textcolor{red!70}{vermelho}.}
 \end{figure}
 
@@ -415,7 +415,7 @@ de forma análoga ao algoritmo de Chu--Liu--Edmonds.
 
 \section{Descrição do algoritmo}
 
-O algoritmo de András Frank difere substancialmente do algoritmo de Chu--Liu--Edmonds em sua abordagem: enquanto Chu--Liu--Edmonds opera diretamente sobre os custos dos arcos, o método de Frank utiliza uma técnica gulosa--dual baseada em \emph{potenciais} associados aos vértices. A ideia central é elevar progressivamente os potenciais \(y(v)\) para cada vértice \(v\neq r\), de modo que os custos \emph{reduzidos} \(c_y(u,v) := c(u,v) - y(v)\) revelem quais arcos devem participar da solução ótima. Um arco \((u,v)\) é dito \emph{apertado} quando seu custo reduzido é zero, isto é, quando \(c(u,v) = y(v)\). O algoritmo garante que toda r-arborescência ótima pode ser formada apenas por arcos apertados.
+O algoritmo de András Frank difere substancialmente do algoritmo de Chu--Liu--Edmonds em sua abordagem: enquanto Chu--Liu--Edmonds opera diretamente sobre os custos dos arcos, o método de Frank utiliza uma técnica gulosa--dual baseada em \emph{potenciais} associados aos vértices. A ideia central é elevar progressivamente os potenciais \(y(v)\) para cada vértice \(v\neq r\), de modo que os custos \emph{reduzidos} \(c_y(u,v) := c(u,v) - y(v)\) revelem quais arcos devem participar da solução ótima. Um arco \((u,v)\) é dito \emph{justo} quando seu custo reduzido é zero, isto é, quando \(c(u,v) = y(v)\). O algoritmo garante que toda r-arborescência ótima pode ser formada apenas por arcos justos.
 
 A seguir apresentamos uma descrição formal do algoritmo de András Frank e detalhes de implementação serão discutidos na próxima seção.
 
@@ -425,12 +425,12 @@ A seguir apresentamos uma descrição formal do algoritmo de András Frank e det
 	\textbf{Fase 1: Elevação de potenciais e construção de \(A_0\)}
 	\begin{enumerate}\setlength{\itemsep}{2pt}
 		\item \textbf{Inicialização:} defina \(y(v) := 0\) para todo \(v \in V\).
-		\item \textbf{Iteração:} enquanto existir conjunto \(X \subseteq V \setminus \{r\}\) sem arco apertado entrando:
+		\item \textbf{Iteração:} enquanto existir conjunto \(X \subseteq V \setminus \{r\}\) sem arco justo entrando:
 		      \begin{itemize}\setlength{\itemsep}{2pt}
 			      \item Calcule \(\Delta(X) := \min\{c(u,v) - y(v) : u \notin X, v \in X\}\).
 			      \item Para cada \(v \in X\), atualize \(y(v) := y(v) + \Delta(X)\).
 		      \end{itemize}
-		\item Defina \(A_0 := \{a \in A : c_y(a) = 0\}\), o conjunto de arcos apertados.
+		\item Defina \(A_0 := \{a \in A : c_y(a) = 0\}\), o conjunto de arcos justos.
 	\end{enumerate}
 
 	\textbf{Fase 2: Construção da arborescência}
@@ -464,19 +464,19 @@ A corretude do algoritmo de András Frank baseia-se na teoria de dualidade em pr
 
 	\item \emph{Condições de otimalidade:} uma r-arborescência \(T\) é ótima se e somente se:
 	      \begin{itemize}\setlength{\itemsep}{2pt}
-		      \item Todos os arcos de \(T\) são apertados: \(c_y(a) = 0\) para todo \(a \in T\).
+		      \item Todos os arcos de \(T\) são justos: \(c_y(a) = 0\) para todo \(a \in T\).
 		      \item Todos os arcos do dígrafo têm custo reduzido não-negativo: \(c_y(a) \geq 0\) para todo \(a \in A\).
 	      \end{itemize}
 	      Sob essas condições, \(\sum_{a\in T} c_y(a) = 0 \leq \sum_{a\in T'} c_y(a)\) para qualquer outra r-arborescência \(T'\), provando otimalidade.
 
-	\item \emph{Elevação de potenciais:} o algoritmo eleva os potenciais de forma gulosa, garantindo que ao final cada \(v\neq r\) tenha ao menos um arco apertado entrando. Isso é feito identificando componentes fortemente conexas em \(A\_0\): conjuntos \(X\) que ainda não possuem arcos apertados entrando têm seus potenciais elevados pelo mínimo necessário \(\Delta(X)\).
+	\item \emph{Elevação de potenciais:} o algoritmo eleva os potenciais de forma gulosa, garantindo que ao final cada \(v\neq r\) tenha ao menos um arco justo entrando. Isso é feito identificando componentes fortemente conexas em \(A\_0\): conjuntos \(X\) que ainda não possuem arcos justos entrando têm seus potenciais elevados pelo mínimo necessário \(\Delta(X)\).
 
-	\item \emph{Caso acíclico:} se \(A_0\) forma uma r-arborescência, todos os arcos são apertados e, pelas condições de otimalidade, a solução é ótima.
+	\item \emph{Caso acíclico:} se \(A_0\) forma uma r-arborescência, todos os arcos são justos e, pelas condições de otimalidade, a solução é ótima.
 
-	\item \emph{Caso com ciclo (contração/expansão):} se \(A\_0\) contém um ciclo dirigido \(C\), todos os seus arcos são apertados (custo reduzido zero). A contração preserva a estrutura de custos reduzidos: no dígrafo contraído, os novos custos \(c'\) já incorporam os potenciais, e uma solução ótima em \(D'\) mapeia para uma solução ótima em \(D\) pela reversibilidade da operação.
+	\item \emph{Caso com ciclo (contração/expansão):} se \(A\_0\) contém um ciclo dirigido \(C\), todos os seus arcos são justos (custo reduzido zero). A contração preserva a estrutura de custos reduzidos: no dígrafo contraído, os novos custos \(c'\) já incorporam os potenciais, e uma solução ótima em \(D'\) mapeia para uma solução ótima em \(D\) pela reversibilidade da operação.
 \end{enumerate}
 
-Em termos intuitivos, os potenciais \(y(v)\) funcionam como "descontos" aplicados aos arcos que entram em cada vértice, revelando quais arcos são "apertados" (custo líquido zero) e, portanto, candidatos à solução ótima. Ciclos de arcos apertados podem ser contraídos sem perder otimalidade, simplificando o problema recursivamente.
+Em termos intuitivos, os potenciais \(y(v)\) funcionam como "descontos" aplicados aos arcos que entram em cada vértice, revelando quais arcos são "justos" (custo líquido zero) e, portanto, candidatos à solução ótima. Ciclos de arcos justos podem ser contraídos sem perder otimalidade, simplificando o problema recursivamente.
 
 \subsection{Complexidade}
 
@@ -488,7 +488,7 @@ O uso de memória é \(O(n+m)\), incluindo as estruturas para armazenar o dígra
 
 \section{Implementação em Python}
 
-Esta seção descreve a implementação do algoritmo de András Frank em Python, estruturada para refletir com precisão as duas fases formais discutidas anteriormente. A Fase~1 realiza a elevação de potenciais e identifica os arcos apertados, enquanto a Fase~2 constrói a arborescência de custo mínimo a partir desses arcos. Utilizamos a biblioteca NetworkX para manipulação de digrafos, aproveitando suas funcionalidades para representar grafos, calcular componentes fortemente conexas e gerenciar atributos de arcos.
+Esta seção descreve a implementação do algoritmo de András Frank em Python, estruturada para refletir com precisão as duas fases formais discutidas anteriormente. A Fase~1 realiza a elevação de potenciais e identifica os arcos justos, enquanto a Fase~2 constrói a arborescência de custo mínimo a partir desses arcos. Utilizamos a biblioteca NetworkX para manipulação de digrafos, aproveitando suas funcionalidades para representar grafos, calcular componentes fortemente conexas e gerenciar atributos de arcos.
 
 A entrada consiste em um dígrafo orientado \(D = (V, A)\), com custos dos arcos registrados no atributo \texttt{"w"}, e uma raiz \(r \in V\). As hipóteses adotadas são: (i) o dígrafo é conexo a partir de \(r\), isto é, todo vértice \(v \neq r\) é alcançável a partir da raiz; (ii) para todo subconjunto \(X \subseteq V \setminus \{r\}\), existe ao menos um arco entrando em \(X\); e (iii) todos os custos são não negativos.
 
@@ -512,7 +512,7 @@ A função devolve o dígrafo \texttt{D\_zero} contendo todos os vértices de \t
 		boxed title style={sharp corners, boxrule=0.6pt},
 		sharp corners, boxrule=0.6pt
 	]
-	\emph{Constrói um dígrafo vazio contendo apenas os vértices de D, sem arcos. Este dígrafo será populado com arcos apertados durante a elevação de potenciais.}
+	\emph{Constrói um dígrafo vazio contendo apenas os vértices de D, sem arcos. Este dígrafo será populado com arcos justos durante a elevação de potenciais.}
 	\tcblower
 	\begin{lstlisting}[language=Python]
 def build_D_zero(D):
@@ -700,11 +700,11 @@ A seguir temos uma ilustração do funcionamento da função \texttt{get\_minimu
 
 Esta função auxiliar atualiza os pesos dos arcos que entram em um conjunto \(X\), subtraindo o valor \(\Delta(X)\) de cada peso. Arcos que atingem peso zero são adicionados a \(A_0\) e a \(D_0\).
 
-Recebe como entrada um dígrafo \texttt{D}, lista de \texttt{arcs} entrando em \(X\), o valor \texttt{min\_weight} a ser subtraído, uma lista \texttt{A\_zero} para armazenar arcos de peso zero, e o dígrafo \texttt{D\_zero} para adicionar os arcos apertados.
+Recebe como entrada um dígrafo \texttt{D}, lista de \texttt{arcs} entrando em \(X\), o valor \texttt{min\_weight} a ser subtraído, uma lista \texttt{A\_zero} para armazenar arcos de peso zero, e o dígrafo \texttt{D\_zero} para adicionar os arcos justos.
 
 A implementação itera sobre cada arco \((u,v,\_)\) da lista (linha 2), subtrai \texttt{min\_weight} do peso armazenado em \texttt{D[u][v]["w"]} (linha 3), e verifica se o peso resultante é zero (linha 4). Caso sim, adiciona-se \((u,v)\) à lista \texttt{A\_zero} (linha 5) e ao dígrafo \texttt{D\_zero} (linha 6).
 
-A função não devolve valor, pois modifica diretamente as estruturas passadas como parâmetros: o dígrafo \texttt{D} tem seus pesos atualizados, \texttt{A\_zero} acumula arcos apertados, e \texttt{D\_zero} é populado com esses arcos. A complexidade é \(O(k)\), onde \(k\) é o número de arcos em \texttt{arcs}.
+A função não devolve valor, pois modifica diretamente as estruturas passadas como parâmetros: o dígrafo \texttt{D} tem seus pesos atualizados, \texttt{A\_zero} acumula arcos justos, e \texttt{D\_zero} é populado com esses arcos. A complexidade é \(O(k)\), onde \(k\) é o número de arcos em \texttt{arcs}.
 
 \begin{tcolorbox}[
 		enhanced, breakable,
@@ -837,10 +837,10 @@ A seguir ilustramos o funcionamento da função \texttt{update\_weights\_in\_X} 
 			(-0.3, 0.3) rectangle (4.3, -1.3);
 			\node[orange!80!black, font=\bfseries\small] at (4.8, 0.1) {$X$};
 
-			\node[font=\small, blue!70!black] at (2, -2.2) {Arco \textcolor{blue!70!black}{apertado} $\to A_0$};
+			\node[font=\small, blue!70!black] at (2, -2.2) {Arco \textcolor{blue!70!black}{justo} $\to A_0$};
 		\end{scope}
 	\end{tikzpicture}
-	\caption{Ilustração da função \texttt{update\_weights\_in\_X} em \(D_{32}\). À esquerda, o dígrafo antes da atualização, com os arcos \textcolor{red!70!black}{em vermelho} entrando em \(X\) e \(\Delta(X) = 2\). À direita, após subtrair \(\Delta(X)\) de cada arco entrando em \(X\): o peso $(u_1, v_1)$ reduz de 3 para 1, $(u_2, v_2)$ de 2 para \textcolor{blue!70!black}{\textbf{0}} (torna-se apertado), $(u_3, v_3)$ de 4 para 2, e $(u_1, v_2)$ de 5 para 3. O arco apertado é adicionado a \(A_0\) e \(D_0\). Note que os arcos da raiz e arcos internos/externos a \(X\) permanecem inalterados.}
+	\caption{Ilustração da função \texttt{update\_weights\_in\_X} em \(D_{32}\). À esquerda, o dígrafo antes da atualização, com os arcos \textcolor{red!70!black}{em vermelho} entrando em \(X\) e \(\Delta(X) = 2\). À direita, após subtrair \(\Delta(X)\) de cada arco entrando em \(X\): o peso $(u_1, v_1)$ reduz de 3 para 1, $(u_2, v_2)$ de 2 para \textcolor{blue!70!black}{\textbf{0}} (torna-se justo), $(u_3, v_3)$ de 4 para 2, e $(u_1, v_2)$ de 5 para 3. O arco justo é adicionado a \(A_0\) e \(D_0\). Note que os arcos da raiz e arcos internos/externos a \(X\) permanecem inalterados.}
 \end{figure}
 
 \subsection{Verificação de arborescência}
@@ -870,17 +870,17 @@ def has_arborescence(D, r0):
 
 \subsection{Fase 1: Elevação de potenciais e construção de \texorpdfstring{\(A_0\)}{A_0}}
 
-A seguir apresentamos a função principal da Fase~1, responsável por elevar os potenciais dos vértices iterativamente até que cada conjunto de vértices possua ao menos um arco apertado entrando. O processo utiliza componentes fortemente conexas para identificar quais conjuntos necessitam elevação.
+A seguir apresentamos a função principal da Fase~1, responsável por elevar os potenciais dos vértices iterativamente até que cada conjunto de vértices possua ao menos um arco justo entrando. O processo utiliza componentes fortemente conexas para identificar quais conjuntos necessitam elevação.
 
-Recebe como entrada um dígrafo \texttt{D\_original} e a raiz \texttt{r0}. A implementação cria uma cópia do dígrafo original (linha 2) para preservar a entrada, inicializa estruturas auxiliares \texttt{A\_zero} (lista de arcos apertados), \texttt{Dual\_list} (lista de pares \((X, \Delta(X))\) para fins de validação dual), e \texttt{D\_zero} (dígrafo de arcos apertados) (linhas 3-5). Um contador de iterações é inicializado na linha 6.
+Recebe como entrada um dígrafo \texttt{D\_original} e a raiz \texttt{r0}. A implementação cria uma cópia do dígrafo original (linha 2) para preservar a entrada, inicializa estruturas auxiliares \texttt{A\_zero} (lista de arcos justos), \texttt{Dual\_list} (lista de pares \((X, \Delta(X))\) para fins de validação dual), e \texttt{D\_zero} (dígrafo de arcos justos) (linhas 3-5). Um contador de iterações é inicializado na linha 6.
 
-O loop principal (linhas 7-22) itera enquanto houver conjuntos sem arcos apertados entrando. Em cada iteração, incrementa-se o contador (linha 8), calcula-se as componentes fortemente conexas de \(D_0\) usando \texttt{nx.condensation} (linha 9), que devolve um grafo acíclico dirigido (DAG, do inglês \emph{directed acyclic graph}) onde cada vértice representa uma componente e contém o atributo \texttt{"members"} com os vértices originais. Utilizamos componentes fortemente conexas porque elas identificam naturalmente os conjuntos maximais de vértices que ainda não possuem arcos apertados entrando, evitando a necessidade de rastrear manualmente quais conjuntos já foram processados.
+O loop principal (linhas 7-22) itera enquanto houver conjuntos sem arcos justos entrando. Em cada iteração, incrementa-se o contador (linha 8), calcula-se as componentes fortemente conexas de \(D_0\) usando \texttt{nx.condensation} (linha 9), que devolve um grafo acíclico dirigido (DAG, do inglês \emph{directed acyclic graph}) onde cada vértice representa uma componente e contém o atributo \texttt{"members"} com os vértices originais. Utilizamos componentes fortemente conexas porque elas identificam naturalmente os conjuntos maximais de vértices que ainda não possuem arcos justos entrando, evitando a necessidade de rastrear manualmente quais conjuntos já foram processados.
 
-Em seguida, identificam-se as fontes (componentes sem arcos entrando) no grafo de condensação (linha 10). Se há apenas uma fonte, significa que todos os vértices estão em uma única componente alcançável pela raiz através de arcos apertados, garantindo que \(D_0\) contém uma r-arborescência e encerrando o loop (linhas 11-12).
+Em seguida, identificam-se as fontes (componentes sem arcos entrando) no grafo de condensação (linha 10). Se há apenas uma fonte, significa que todos os vértices estão em uma única componente alcançável pela raiz através de arcos justos, garantindo que \(D_0\) contém uma r-arborescência e encerrando o loop (linhas 11-12).
 
-Para cada fonte \(u\) no grafo de condensação (linha 13), obtém-se o conjunto \(X\) de vértices da componente (linha 14). Se \(r_0 \in X\), a fonte é ignorada (linhas 15-16), pois a componente contendo a raiz não necessita elevação. Caso contrário, identificam-se os arcos entrando em \(X\) usando \texttt{get\_arcs\_entering\_X} (linha 17), calcula-se o peso mínimo \(\Delta(X)\) usando \texttt{get\_minimum\_weight\_cut} (linha 18), e atualiza-se os pesos com \texttt{update\_weights\_in\_X}, registrando novos arcos apertados (linha 19). A elevação simultânea de potenciais para todos os vértices de \(X\) mantém a propriedade de que arcos internos a \(X\) permanecem com o mesmo custo reduzido relativo, preservando a correção do algoritmo. Finalmente, adiciona-se \((X, \Delta(X))\) à lista dual se \(\Delta(X) > 0\) (linhas 20-21), permitindo verificação posterior das condições de otimalidade dual.
+Para cada fonte \(u\) no grafo de condensação (linha 13), obtém-se o conjunto \(X\) de vértices da componente (linha 14). Se \(r_0 \in X\), a fonte é ignorada (linhas 15-16), pois a componente contendo a raiz não necessita elevação. Caso contrário, identificam-se os arcos entrando em \(X\) usando \texttt{get\_arcs\_entering\_X} (linha 17), calcula-se o peso mínimo \(\Delta(X)\) usando \texttt{get\_minimum\_weight\_cut} (linha 18), e atualiza-se os pesos com \texttt{update\_weights\_in\_X}, registrando novos arcos justos (linha 19). A elevação simultânea de potenciais para todos os vértices de \(X\) mantém a propriedade de que arcos internos a \(X\) permanecem com o mesmo custo reduzido relativo, preservando a correção do algoritmo. Finalmente, adiciona-se \((X, \Delta(X))\) à lista dual se \(\Delta(X) > 0\) (linhas 20-21), permitindo verificação posterior das condições de otimalidade dual.
 
-A função devolve \texttt{A\_zero} (lista de arcos apertados) e \texttt{Dual\_list} (pares \((X, \Delta(X))\) para validação). A complexidade é \(O(nm)\) no pior caso, com \(O(n)\) iterações, cada uma custando \(O(m)\) para calcular componentes e atualizar pesos.
+A função devolve \texttt{A\_zero} (lista de arcos justos) e \texttt{Dual\_list} (pares \((X, \Delta(X))\) para validação). A complexidade é \(O(nm)\) no pior caso, com \(O(n)\) iterações, cada uma custando \(O(m)\) para calcular componentes e atualizar pesos.
 
 \begin{tcolorbox}[
 		enhanced, breakable,
@@ -890,7 +890,7 @@ A função devolve \texttt{A\_zero} (lista de arcos apertados) e \texttt{Dual\_l
 		boxed title style={sharp corners, boxrule=0.6pt},
 		sharp corners, boxrule=0.6pt
 	]
-	\emph{Eleva iterativamente os potenciais dos vértices até que cada conjunto possua ao menos um arco apertado entrando. Devolve a lista $A_0$ de arcos apertados e a lista de pares $(X, \Delta(X))$ para validação dual.}
+	\emph{Eleva iterativamente os potenciais dos vértices até que cada conjunto possua ao menos um arco justo entrando. Devolve a lista $A_0$ de arcos justos e a lista de pares $(X, \Delta(X))$ para validação dual.}
 	\tcblower
 	\begin{lstlisting}[language=Python, basicstyle=\ttfamily\fontsize{8}{9}\selectfont]
 def phase1(D_original, r0):
@@ -918,7 +918,7 @@ def phase1(D_original, r0):
 \end{lstlisting}
 \end{tcolorbox}
 
-A seguir ilustramos a execução da função \texttt{phase1} no dígrafo \(D_{32}\) estendido com a raiz \(r_0\). A figura mostra três estados principais: o dígrafo original \(D\) com seus pesos, o dígrafo \(D_0\) inicial (vazio, sem arcos), e o dígrafo \(D_0\) final após as iterações de elevação de potenciais, contendo apenas os arcos apertados (em azul) que formam uma r-arborescência.
+A seguir ilustramos a execução da função \texttt{phase1} no dígrafo \(D_{32}\) estendido com a raiz \(r_0\). A figura mostra três estados principais: o dígrafo original \(D\) com seus pesos, o dígrafo \(D_0\) inicial (vazio, sem arcos), e o dígrafo \(D_0\) final após as iterações de elevação de potenciais, contendo apenas os arcos justos (em azul) que formam uma r-arborescência.
 
 \begin{figure}[H]
 	\centering
@@ -1005,7 +1005,7 @@ A seguir ilustramos a execução da função \texttt{phase1} no dígrafo \(D_{32
 			\node[vtxX] (v2f) at (2, -0.5) {$v_2$};
 			\node[vtxX] (v3f) at (3.5, -0.5) {$v_3$};
 
-			% Arcos apertados (peso 0)
+			% Arcos justos (peso 0)
 			\draw[arcTight] (r0f) -- node[costTight, left, pos=0.4] {0} (u1f);
 			\draw[arcTight] (r0f) -- node[costTight, right, pos=0.4] {0} (u3f);
 			\draw[arcTight] (u1f) to[bend left=15] node[costTight, above] {0} (u2f);
@@ -1013,17 +1013,17 @@ A seguir ilustramos a execução da função \texttt{phase1} no dígrafo \(D_{32
 			\draw[arcTight] (u2f) -- node[costTight, right] {0} (v2f);
 			\draw[arcTight] (v2f) -- node[costTight, above] {0} (v3f);
 
-			\node[font=\small, blue!70!black] at (2, -2) {Arcos apertados em $A_0$};
+			\node[font=\small, blue!70!black] at (2, -2) {Arcos justos em $A_0$};
 		\end{scope}
 
 		% Setas indicando progressão
 		\draw[->, ultra thick, gray!50] (4.5, 1) -- node[above, font=\small] {elevação} (5.5, 1);
 		\draw[->, ultra thick, gray!50] (10.5, 1) -- node[above, font=\small] {iterações} (11.5, 1);
 	\end{tikzpicture}
-	\caption{Execução da função \texttt{phase1} em \(D_{32}\). À esquerda, o dígrafo original \(D\) com pesos dos arcos. Ao centro, \(D_0\) inicial após linha 5 (\texttt{build\_D\_zero}), contendo apenas vértices sem arcos. À direita, \(D_0\) final após o loop de elevação de potenciais, contendo apenas os arcos \textcolor{blue!70!black}{apertados} (custo reduzido zero) que formam uma r-arborescência. Durante as iterações (linhas 7-22), os potenciais são elevados para cada componente sem arcos apertados entrando, até que todos os vértices sejam alcançáveis a partir de \(r_0\) através de arcos em \(D_0\).}
+	\caption{Execução da função \texttt{phase1} em \(D_{32}\). À esquerda, o dígrafo original \(D\) com pesos dos arcos. Ao centro, \(D_0\) inicial após linha 5 (\texttt{build\_D\_zero}), contendo apenas vértices sem arcos. À direita, \(D_0\) final após o loop de elevação de potenciais, contendo apenas os arcos \textcolor{blue!70!black}{justos} (custo reduzido zero) que formam uma r-arborescência. Durante as iterações (linhas 7-22), os potenciais são elevados para cada componente sem arcos justos entrando, até que todos os vértices sejam alcançáveis a partir de \(r_0\) através de arcos em \(D_0\).}
 \end{figure}
 
-A seguir ilustramos a execução da função \texttt{phase2} em \(D_{32}\), mostrando como a r-arborescência é construída incrementalmente a partir do conjunto \(A_0\) de arcos apertados obtidos da Fase~1. A figura apresenta quatro estados: o conjunto inicial \(A_0\) com 6 arcos apertados, e três estados intermediários da arborescência \texttt{Arb} sendo construída, destacando em verde os arcos adicionados em cada iteração.
+A seguir ilustramos a execução da função \texttt{phase2} em \(D_{32}\), mostrando como a r-arborescência é construída incrementalmente a partir do conjunto \(A_0\) de arcos justos obtidos da Fase~1. A figura apresenta quatro estados: o conjunto inicial \(A_0\) com 6 arcos justos, e três estados intermediários da arborescência \texttt{Arb} sendo construída, destacando em verde os arcos adicionados em cada iteração.
 
 \begin{figure}[H]
 	\centering
@@ -1041,7 +1041,7 @@ A seguir ilustramos a execução da função \texttt{phase2} em \(D_{32}\), most
 
 		% ===== A_0 (esquerda superior) =====
 		\begin{scope}
-			\node[font=\bfseries, blue!80!black] at (2, 4.5) {$A_0$ (arcos apertados)};
+			\node[font=\bfseries, blue!80!black] at (2, 4.5) {$A_0$ (arcos justos)};
 
 			\node[vtxRoot] (r0) at (2, 3.2) {$r_0$};
 			\node[vtx] (u1) at (0, 1.7) {$u_1$};
@@ -1121,7 +1121,7 @@ A seguir ilustramos a execução da função \texttt{phase2} em \(D_{32}\), most
 		\draw[->, ultra thick, gray!50] (2, -1.5) -- node[left, font=\small] {linha 6-10} (2, -2.4);
 		\draw[->, ultra thick, gray!50] (4.8, -4.2) -- node[above, font=\small] {linha 6-10} (5.7, -4.2);
 	\end{tikzpicture}
-	\caption{Execução da função \texttt{phase2} em \(D_{32}\). Superior esquerdo: conjunto \(A_0\) com 6 arcos apertados (custo reduzido zero) obtidos da Fase~1. Superior direito: Iteração 1 — adiciona arco $(r_0, u_1)$ pois $r_0 \in$ Arb e $u_1 \notin$ Arb. Inferior esquerdo: Iteração 2 — adiciona $(r_0, u_3)$. Inferior direito: Iteração 4 — após adicionar $(u_1, u_2)$ na iteração 3, adiciona $(u_1, v_1)$. Vértices \textcolor{green!70!black}{verdes} foram recém-adicionados, vértices \textcolor{gray!70!black}{cinzas} ainda não pertencem a Arb. O processo continua até que todos os 6 arcos de \(A_0\) sejam incluídos, formando uma r-arborescência com pesos originais de \(D\).}
+	\caption{Execução da função \texttt{phase2} em \(D_{32}\). Superior esquerdo: conjunto \(A_0\) com 6 arcos justos (custo reduzido zero) obtidos da Fase~1. Superior direito: Iteração 1 — adiciona arco $(r_0, u_1)$ pois $r_0 \in$ Arb e $u_1 \notin$ Arb. Inferior esquerdo: Iteração 2 — adiciona $(r_0, u_3)$. Inferior direito: Iteração 4 — após adicionar $(u_1, u_2)$ na iteração 3, adiciona $(u_1, v_1)$. Vértices \textcolor{green!70!black}{verdes} foram recém-adicionados, vértices \textcolor{gray!70!black}{cinzas} ainda não pertencem a Arb. O processo continua até que todos os 6 arcos de \(A_0\) sejam incluídos, formando uma r-arborescência com pesos originais de \(D\).}
 \end{figure}
 
 As funções auxiliares implementadas nesta seção correspondem diretamente aos passos da Fase~1 do algoritmo de András Frank da seguinte forma:
@@ -1137,13 +1137,13 @@ As funções auxiliares implementadas nesta seção correspondem diretamente aos
 	\textbf{Passo 1 — Inicialização:}
 	\begin{itemize}
 		\item \textbf{Descrição teórica:} Defina \(y(v) := 0\) para todo \(v \in V\).
-		\item \textbf{Implementação:} A função \texttt{build\_D\_zero(D)} inicializa o dígrafo \(D_0\) vazio, que será populado apenas com arcos apertados. Implicitamente, os potenciais iniciam em zero, pois os pesos no dígrafo \(D\) representam os custos reduzidos \(c_y(u,v) = c(u,v) - y(v)\). Com \(y(v) = 0\), temos \(c_y = c\) no início.
+		\item \textbf{Implementação:} A função \texttt{build\_D\_zero(D)} inicializa o dígrafo \(D_0\) vazio, que será populado apenas com arcos justos. Implicitamente, os potenciais iniciam em zero, pois os pesos no dígrafo \(D\) representam os custos reduzidos \(c_y(u,v) = c(u,v) - y(v)\). Com \(y(v) = 0\), temos \(c_y = c\) no início.
 	\end{itemize}
 
 	\vspace{2mm}
 	\textbf{Passo 2 — Iteração de elevação de potenciais:}
 	\begin{itemize}
-		\item \textbf{Descrição teórica:} Enquanto existir conjunto \(X \subseteq V \setminus \{r\}\) sem arco apertado entrando:
+		\item \textbf{Descrição teórica:} Enquanto existir conjunto \(X \subseteq V \setminus \{r\}\) sem arco justo entrando:
 		      \begin{itemize}
 			      \item Calcule \(\Delta(X) := \min\{c(u,v) - y(v) : u \notin X, v \in X\}\).
 			      \item Para cada \(v \in X\), atualize \(y(v) := y(v) + \Delta(X)\).
@@ -1158,23 +1158,23 @@ As funções auxiliares implementadas nesta seção correspondem diretamente aos
 			            \[c_y'(u,v) = c_y(u,v) - \Delta(X) = \]
 			            \[c(u,v) - y(v) - \Delta(X) = \]
 			            \[c(u,v) - \bigl(y(v) + \Delta(X)\bigr) = c(u,v) - y'(v), \]
-			            onde \(y'(v) = y(v) + \Delta(X)\) é o novo potencial. Arcos cujo custo reduzido atinge zero (\texttt{D[u][v]["w"] == 0}) são adicionados a \(A_0\) e \(D_0\), tornando-se \textbf{apertados}.
+			            onde \(y'(v) = y(v) + \Delta(X)\) é o novo potencial. Arcos cujo custo reduzido atinge zero (\texttt{D[u][v]["w"] == 0}) são adicionados a \(A_0\) e \(D_0\), tornando-se \textbf{justos}.
 		      \end{enumerate}
 	\end{itemize}
 
 	\vspace{2mm}
 	\textbf{Passo 3 — Construção de \(A_0\):}
 	\begin{itemize}
-		\item \textbf{Descrição teórica:} Defina \(A_0 := \{a \in A : c_y(a) = 0\}\), o conjunto de arcos apertados.
-		\item \textbf{Implementação:} A construção de \(A_0\) ocorre de forma incremental durante as iterações do Passo~2. Cada chamada a \texttt{update\_weights\_in\_X} verifica quais arcos atingiram custo reduzido zero e os adiciona tanto à lista \texttt{A\_zero} quanto ao dígrafo \texttt{D\_zero}. Esse processo continua até que a função principal da Fase~1 (que será apresentada adiante) determine que cada componente fortemente conexa em \(D_0\) (exceto a raiz) possui ao menos um arco apertado entrando, garantindo que \(A_0\) é suficiente para formar a base de uma \(r\)-arborescência.
-		\item O resultado final é o conjunto completo \(A_0 = \{a \in A : c_y(a) = 0\}\), usado na Fase~2 para construir a arborescência ótima através de uma seleção gulosa de arcos apertados.
+		\item \textbf{Descrição teórica:} Defina \(A_0 := \{a \in A : c_y(a) = 0\}\), o conjunto de arcos justos.
+		\item \textbf{Implementação:} A construção de \(A_0\) ocorre de forma incremental durante as iterações do Passo~2. Cada chamada a \texttt{update\_weights\_in\_X} verifica quais arcos atingiram custo reduzido zero e os adiciona tanto à lista \texttt{A\_zero} quanto ao dígrafo \texttt{D\_zero}. Esse processo continua até que a função principal da Fase~1 (que será apresentada adiante) determine que cada componente fortemente conexa em \(D_0\) (exceto a raiz) possui ao menos um arco justo entrando, garantindo que \(A_0\) é suficiente para formar a base de uma \(r\)-arborescência.
+		\item O resultado final é o conjunto completo \(A_0 = \{a \in A : c_y(a) = 0\}\), usado na Fase~2 para construir a arborescência ótima através de uma seleção gulosa de arcos justos.
 	\end{itemize}
 \end{tcolorbox}
 
 \subsection{Fase 2: Construção da arborescência}
-Esta é a função principal da Fase~2, responsável por construir a r-arborescência de custo mínimo a partir do conjunto \(A_0\) de arcos apertados. A construção é incremental: inicia-se com a raiz e adiciona-se iterativamente arcos de \(A_0\) que conectam vértices já incluídos a novos vértices, garantindo que cada vértice não-raiz receba exatamente um arco de entrada.
+Esta é a função principal da Fase~2, responsável por construir a r-arborescência de custo mínimo a partir do conjunto \(A_0\) de arcos justos. A construção é incremental: inicia-se com a raiz e adiciona-se iterativamente arcos de \(A_0\) que conectam vértices já incluídos a novos vértices, garantindo que cada vértice não-raiz receba exatamente um arco de entrada.
 
-Recebe como entrada um dígrafo \texttt{D\_original}, a raiz \texttt{r0}, e a lista \texttt{A\_zero} de arcos apertados. A implementação cria um novo dígrafo vazio \texttt{Arb} (linha 2) e adiciona a raiz (linha 3).
+Recebe como entrada um dígrafo \texttt{D\_original}, a raiz \texttt{r0}, e a lista \texttt{A\_zero} de arcos justos. A implementação cria um novo dígrafo vazio \texttt{Arb} (linha 2) e adiciona a raiz (linha 3).
 
 O loop principal (linhas 5-12) itera \(n-1\) vezes, onde \(n = |V|\), pois uma r-arborescência tem exatamente \(|V|-1\) arcos. Em cada iteração:
 \begin{enumerate}\setlength{\itemsep}{2pt}
@@ -1213,7 +1213,7 @@ def phase2(D_original, r0, A_zero):
 
 Apresentamos também uma versão alternativa da Fase~2 que utiliza busca em largura (BFS) para construir a r-arborescência de forma mais eficiente. Diferentemente da versão anterior que itera \(n-1\) vezes sobre todos os arcos, esta implementação usa uma fila de prioridade para explorar os arcos em ordem, evitando buscas lineares repetidas.
 
-Recebe como entrada um dígrafo \texttt{D\_original}, a raiz \texttt{r0}, e a lista \texttt{A\_zero} de arcos apertados. A implementação começa criando um dígrafo auxiliar \texttt{Arb} (linha 2) onde cada arco de \texttt{A\_zero} recebe um peso igual ao seu índice na lista (linhas 3-4), estabelecendo uma ordem de exploração. Inicializa-se o conjunto \texttt{V} de vértices visitados contendo apenas a raiz (linha 5) e uma fila de prioridade vazia \texttt{q} (linha 6).
+Recebe como entrada um dígrafo \texttt{D\_original}, a raiz \texttt{r0}, e a lista \texttt{A\_zero} de arcos justos. A implementação começa criando um dígrafo auxiliar \texttt{Arb} (linha 2) onde cada arco de \texttt{A\_zero} recebe um peso igual ao seu índice na lista (linhas 3-4), estabelecendo uma ordem de exploração. Inicializa-se o conjunto \texttt{V} de vértices visitados contendo apenas a raiz (linha 5) e uma fila de prioridade vazia \texttt{q} (linha 6).
 
 Todos os arcos que saem da raiz em \texttt{Arb} são adicionados à fila de prioridade (linhas 7-8), usando o peso (índice) como critério de ordenação. Cria-se então o dígrafo \texttt{A} que conterá a arborescência resultante (linha 9).
 
@@ -1266,9 +1266,9 @@ As duas versões da Fase~2 implementadas acima correspondem diretamente ao Passo
 	\textbf{Passo 4 — Construção da arborescência (caso acíclico):}
 	\begin{itemize}
 		\item \textbf{Descrição teórica:} Se \((V,A_0)\) forma uma r-arborescência, devolva \(A_0\). Por otimalidade dos potenciais duais, trata-se de uma r-arborescência de custo mínimo.
-		\item \textbf{Implementação:} Ambas as versões de \texttt{phase2} constroem uma r-arborescência a partir do conjunto \(A_0\) de arcos apertados obtido na Fase~1. A corretude baseia-se no fato de que todos os arcos em \(A_0\) têm custo reduzido zero, e a Fase~1 garante que existe uma r-arborescência formada exclusivamente por arcos apertados.
+		\item \textbf{Implementação:} Ambas as versões de \texttt{phase2} constroem uma r-arborescência a partir do conjunto \(A_0\) de arcos justos obtido na Fase~1. A corretude baseia-se no fato de que todos os arcos em \(A_0\) têm custo reduzido zero, e a Fase~1 garante que existe uma r-arborescência formada exclusivamente por arcos justos.
 		      \begin{itemize}
-			      \item \textbf{Versão 1 (\texttt{phase2}):} Construção incremental por exploração exaustiva. Em cada uma das \(n-1\) iterações, percorre todos os arcos de \(A_0\) procurando um arco \((u,v)\) tal que \(u\) já pertence à arborescência parcial e \(v\) ainda não. Essa abordagem simples corresponde diretamente à ideia teórica de construir a arborescência adicionando um vértice por vez, conectando-o à estrutura existente através de um arco apertado. Complexidade: \(O(nm)\).
+			      \item \textbf{Versão 1 (\texttt{phase2}):} Construção incremental por exploração exaustiva. Em cada uma das \(n-1\) iterações, percorre todos os arcos de \(A_0\) procurando um arco \((u,v)\) tal que \(u\) já pertence à arborescência parcial e \(v\) ainda não. Essa abordagem simples corresponde diretamente à ideia teórica de construir a arborescência adicionando um vértice por vez, conectando-o à estrutura existente através de um arco justo. Complexidade: \(O(nm)\).
 
 			      \item \textbf{Versão 2 (\texttt{phase2\_v2}):} Construção por busca em largura guiada por fila de prioridade. Cria um dígrafo auxiliar onde arcos são indexados, usa a fila de prioridade para explorar arcos sistematicamente a partir da raiz, evitando buscas lineares repetidas. Essa versão otimizada mantém a mesma correção teórica — construir uma r-arborescência usando apenas arcos de \(A_0\) — mas melhora a eficiência prática. Complexidade: \(O(m \log m)\).
 		      \end{itemize}
@@ -1278,7 +1278,7 @@ As duas versões da Fase~2 implementadas acima correspondem diretamente ao Passo
 	\textbf{Nota sobre Passos 5-7 (contração/recursão/expansão):}
 	\begin{itemize}
 		\item A descrição teórica do algoritmo de András Frank inclui os Passos~5-7 para tratar o caso onde \(A_0\) contém ciclos dirigidos, exigindo contração, resolução recursiva e reexpansão, de forma análoga ao algoritmo de Chu--Liu--Edmonds.
-		\item Na implementação apresentada, optamos por uma abordagem não-recursiva baseada em componentes fortemente conexas. A Fase~1 já garante que \(A_0\) formará uma r-arborescência ao término das iterações de elevação de potenciais, eliminando a necessidade de tratar ciclos explicitamente na Fase~2. Essa simplificação é possível porque a elevação de potenciais progressivamente "quebra" todos os ciclos ao criar novos arcos apertados que conectam diferentes componentes, até que reste apenas uma única componente fortemente conexa contendo todos os vértices.
+		\item Na implementação apresentada, optamos por uma abordagem não-recursiva baseada em componentes fortemente conexas. A Fase~1 já garante que \(A_0\) formará uma r-arborescência ao término das iterações de elevação de potenciais, eliminando a necessidade de tratar ciclos explicitamente na Fase~2. Essa simplificação é possível porque a elevação de potenciais progressivamente "quebra" todos os ciclos ao criar novos arcos justos que conectam diferentes componentes, até que reste apenas uma única componente fortemente conexa contendo todos os vértices.
 		\item Portanto, quando a Fase~2 é executada, o conjunto \(A_0\) já está livre de ciclos e forma uma r-arborescência, correspondendo diretamente ao caso tratado pelo Passo~4 da descrição teórica. A verificação prévia \texttt{has\_arborescence(D, r0)} (realizada pela função principal) confirma essa propriedade antes de invocar a Fase~2.
 	\end{itemize}
 \end{tcolorbox}
@@ -1318,7 +1318,7 @@ def check_dual_optimality_condition(Arb, Dual_list):
 
 \subsection{O algoritmo completo de András Frank}
 
-Finalmente, apresentamos a função principal que implementa o algoritmo de András Frank para encontrar uma r-arborescência de custo mínimo em um dígrafo com pesos. A função integra as fases de construção dos potenciais duais, obtenção dos arcos apertados, construção da arborescência e verificação de otimalidade dual.
+Finalmente, apresentamos a função principal que implementa o algoritmo de András Frank para encontrar uma r-arborescência de custo mínimo em um dígrafo com pesos. A função integra as fases de construção dos potenciais duais, obtenção dos arcos justos, construção da arborescência e verificação de otimalidade dual.
 
 \begin{tcolorbox}[
 		enhanced, breakable,
@@ -1328,7 +1328,7 @@ Finalmente, apresentamos a função principal que implementa o algoritmo de Andr
 		boxed title style={sharp corners, boxrule=0.6pt},
 		sharp corners, boxrule=0.6pt
 	]
-	\emph{Implementa o algoritmo completo de András Frank, integrando as fases de construção dos potenciais duais, obtenção dos arcos apertados, construção da arborescência e verificação de otimalidade dual.}
+	\emph{Implementa o algoritmo completo de András Frank, integrando as fases de construção dos potenciais duais, obtenção dos arcos justos, construção da arborescência e verificação de otimalidade dual.}
 	\tcblower
 	\begin{lstlisting}[language=Python]
 def andras_frank_algorithm(D):
@@ -1400,7 +1400,7 @@ Aqui ilustraremos cada fase do algoritmo de András Frank: inicialização dos p
 	\label{fig:frank-exemplo-inicial}
 \end{figure}
 
-\paragraph*{Fase 1 — Iteração 1:} O algoritmo inicia com todos os potenciais \(y(v) = 0\) e \(D_0\) vazio (sem arcos apertados). Calcula-se as componentes fortemente conexas de \(D_0\): cada vértice forma sua própria componente. As fontes são todos os vértices exceto \(r_0\). Para o conjunto \(X = \{u_1, u_2, u_3\}\), identifica-se os arcos entrando: \((r_0, u_1)\) com peso 1, \((r_0, u_2)\) com peso 2, \((r_0, u_3)\) com peso 1. O mínimo é \(\Delta(X) = 1\). Subtraindo esse valor, os arcos \((r_0, u_1)\) e \((r_0, u_3)\) tornam-se apertados (peso 0) e são adicionados a \(A_0\).
+\paragraph*{Fase 1 — Iteração 1:} O algoritmo inicia com todos os potenciais \(y(v) = 0\) e \(D_0\) vazio (sem arcos justos). Calcula-se as componentes fortemente conexas de \(D_0\): cada vértice forma sua própria componente. As fontes são todos os vértices exceto \(r_0\). Para o conjunto \(X = \{u_1, u_2, u_3\}\), identifica-se os arcos entrando: \((r_0, u_1)\) com peso 1, \((r_0, u_2)\) com peso 2, \((r_0, u_3)\) com peso 1. O mínimo é \(\Delta(X) = 1\). Subtraindo esse valor, os arcos \((r_0, u_1)\) e \((r_0, u_3)\) tornam-se justos (peso 0) e são adicionados a \(A_0\).
 
 \begin{figure}[H]
 	\centering
@@ -1433,7 +1433,7 @@ Aqui ilustraremos cada fase do algoritmo de András Frank: inicialização dos p
 
 		% Depois
 		\begin{scope}[xshift=7cm]
-			\node[font=\bfseries, blue!80!black] at (2, 4.5) {Depois: arcos apertados};
+			\node[font=\bfseries, blue!80!black] at (2, 4.5) {Depois: arcos justos};
 
 			\node[vtxRoot] (r0b) at (2, 3) {$r_0$};
 			\node[vtx] (u1b) at (0, 1.5) {$u_1$};
@@ -1447,11 +1447,11 @@ Aqui ilustraremos cada fase do algoritmo de András Frank: inicialização dos p
 			\node[font=\small, blue!70!black] at (2, 0.5) {2 arcos adicionados a $A_0$};
 		\end{scope}
 	\end{tikzpicture}
-	\caption{Fase~1, Iteração 1: Elevação de potenciais para \(X_1 = \{u_1, u_2, u_3\}\). À esquerda, o conjunto \(X_1\) (em laranja) sem arcos apertados entrando. Calcula-se \(\Delta(X_1) = \min\{1, 2, 1\} = 1\). À direita, após subtrair \(\Delta(X_1)\), os arcos \((r_0, u_1)\) e \((r_0, u_3)\) tornam-se \textcolor{blue!70!black}{apertados} (custo reduzido 0) e são adicionados a \(A_0\).}
+	\caption{Fase~1, Iteração 1: Elevação de potenciais para \(X_1 = \{u_1, u_2, u_3\}\). À esquerda, o conjunto \(X_1\) (em laranja) sem arcos justos entrando. Calcula-se \(\Delta(X_1) = \min\{1, 2, 1\} = 1\). À direita, após subtrair \(\Delta(X_1)\), os arcos \((r_0, u_1)\) e \((r_0, u_3)\) tornam-se \textcolor{blue!70!black}{justos} (custo reduzido 0) e são adicionados a \(A_0\).}
 	\label{fig:frank-exemplo-iter1}
 \end{figure}
 
-\paragraph*{Fase 1 — Iteração 2:} Com \(A_0 = \{(r_0, u_1), (r_0, u_3)\}\), as componentes fortemente conexas são: \(\{r_0, u_1, u_3\}\) e \(\{u_2\}\), \(\{v_1\}\), \(\{v_2\}\), \(\{v_3\}\). A fonte (excluindo a raiz) é \(\{u_2\}\). Para \(X = \{u_2\}\), o único arco entrando é \((r_0, u_2)\) com peso atual 1 (após iteração anterior). Portanto \(\Delta(X) = 1\), e após subtração, \((r_0, u_2)\) torna-se apertado. Também na mesma iteração, para \(X = \{v_1, v_2, v_3\}\), calcula-se \(\Delta(X) = \min\{3, 2, 4, 5\} = 2\), e os arcos são atualizados conforme ilustrado.
+\paragraph*{Fase 1 — Iteração 2:} Com \(A_0 = \{(r_0, u_1), (r_0, u_3)\}\), as componentes fortemente conexas são: \(\{r_0, u_1, u_3\}\) e \(\{u_2\}\), \(\{v_1\}\), \(\{v_2\}\), \(\{v_3\}\). A fonte (excluindo a raiz) é \(\{u_2\}\). Para \(X = \{u_2\}\), o único arco entrando é \((r_0, u_2)\) com peso atual 1 (após iteração anterior). Portanto \(\Delta(X) = 1\), e após subtração, \((r_0, u_2)\) torna-se justo. Também na mesma iteração, para \(X = \{v_1, v_2, v_3\}\), calcula-se \(\Delta(X) = \min\{3, 2, 4, 5\} = 2\), e os arcos são atualizados conforme ilustrado.
 
 \begin{figure}[H]
 	\centering
@@ -1476,24 +1476,24 @@ Aqui ilustraremos cada fase do algoritmo de András Frank: inicialização dos p
 		\node[vtxX] (v2) at (3, 0.5) {$v_2$};
 		\node[vtxX] (v3) at (4.5, 0.5) {$v_3$};
 
-		% Arcos já apertados
+		% Arcos já justos
 		\draw[arcTight] (r0) -- node[costTight, left, pos=0.3] {0} (u1);
 		\draw[arcTight] (r0) -- node[costTight, right, pos=0.3] {0} (u3);
 		\draw[arcTight] (u1) to[bend left=12] node[costTight, above] {0} (u2);
 
-		% Arcos entrando em X (antes de ficarem apertados)
+		% Arcos entrando em X (antes de ficarem justos)
 		\draw[arc] (u1) -- node[cost, left, fill=orange!10] {3→1} (v1);
 		\draw[arc] (u2) -- node[cost, right, fill=orange!10] {2→0} (v2);
 		\draw[arc] (u3) -- node[cost, right] {4→2} (v3);
 		\draw[arc] (u1) to[bend right=15] node[cost, below, pos=0.35] {5→3} (v2);
 
-		\node[font=\small, orange!80!black] at (3, -0.5) {Após subtração: $(u_2, v_2)$ torna-se apertado};
+		\node[font=\small, orange!80!black] at (3, -0.5) {Após subtração: $(u_2, v_2)$ torna-se justo};
 	\end{tikzpicture}
-	\caption{Fase~1, Iteração 2: Para o conjunto \(X = \{v_1, v_2, v_3\}\) (em laranja), calcula-se \(\Delta(X) = \min\{3, 2, 4, 5\} = 2\). Após subtrair esse valor dos arcos entrando em \(X\), o arco \((u_2, v_2)\) atinge custo reduzido 0 e é adicionado a \(A_0\). Note que \((u_1, u_2)\) também se tornou apertado na mesma iteração ao processar \(X = \{u_2\}\).}
+	\caption{Fase~1, Iteração 2: Para o conjunto \(X = \{v_1, v_2, v_3\}\) (em laranja), calcula-se \(\Delta(X) = \min\{3, 2, 4, 5\} = 2\). Após subtrair esse valor dos arcos entrando em \(X\), o arco \((u_2, v_2)\) atinge custo reduzido 0 e é adicionado a \(A_0\). Note que \((u_1, u_2)\) também se tornou justo na mesma iteração ao processar \(X = \{u_2\}\).}
 	\label{fig:frank-exemplo-iter2}
 \end{figure}
 
-\paragraph*{Fase 1 — Estado final:} Após mais iterações elevando potenciais para os conjuntos restantes, o dígrafo \(D_0\) de arcos apertados fica completo, contendo uma r-arborescência. A Figura~\ref{fig:frank-exemplo-A0-final} mostra o conjunto final \(A_0\) com 6 arcos de custo reduzido zero.
+\paragraph*{Fase 1 — Estado final:} Após mais iterações elevando potenciais para os conjuntos restantes, o dígrafo \(D_0\) de arcos justos fica completo, contendo uma r-arborescência. A Figura~\ref{fig:frank-exemplo-A0-final} mostra o conjunto final \(A_0\) com 6 arcos de custo reduzido zero.
 
 \begin{figure}[H]
 	\centering
@@ -1505,7 +1505,7 @@ Aqui ilustraremos cada fase do algoritmo de András Frank: inicialização dos p
 			costTight/.style={font=\scriptsize\bfseries, fill=blue!10, inner sep=2pt, draw=blue!70!black, rounded corners=1pt}
 		}
 
-		\node[font=\bfseries, blue!80!black] at (3, 4.5) {$A_0$ final: arcos apertados após Fase~1};
+		\node[font=\bfseries, blue!80!black] at (3, 4.5) {$A_0$ final: arcos justos após Fase~1};
 
 		\node[vtxRoot] (r0) at (3, 3) {$r_0$};
 		\node[vtx] (u1) at (0.5, 1.5) {$u_1$};
@@ -1524,7 +1524,7 @@ Aqui ilustraremos cada fase do algoritmo de András Frank: inicialização dos p
 
 		\node[font=\small, blue!70!black] at (3, -1.2) {$|A_0| = 6$ arcos com custo reduzido $c_y = 0$};
 	\end{tikzpicture}
-	\caption{Conjunto final \(A_0\) de arcos apertados após conclusão da Fase~1. Todos os 6 arcos \textcolor{blue!70!black}{destacados} possuem custo reduzido zero: \((r_0, u_1)\), \((r_0, u_3)\), \((u_1, u_2)\), \((u_1, v_1)\), \((u_2, v_2)\), \((v_2, v_3)\). O dígrafo formado por esses arcos é acíclico e alcança todos os vértices a partir de \(r_0\), satisfazendo as condições para prosseguir à Fase~2.}
+	\caption{Conjunto final \(A_0\) de arcos justos após conclusão da Fase~1. Todos os 6 arcos \textcolor{blue!70!black}{destacados} possuem custo reduzido zero: \((r_0, u_1)\), \((r_0, u_3)\), \((u_1, u_2)\), \((u_1, v_1)\), \((u_2, v_2)\), \((v_2, v_3)\). O dígrafo formado por esses arcos é acíclico e alcança todos os vértices a partir de \(r_0\), satisfazendo as condições para prosseguir à Fase~2.}
 	\label{fig:frank-exemplo-A0-final}
 \end{figure}
 
@@ -1563,7 +1563,7 @@ Aqui ilustraremos cada fase do algoritmo de András Frank: inicialização dos p
 	\label{fig:frank-exemplo-arborescencia-final}
 \end{figure}
 
-\paragraph*{Verificação de otimalidade dual:} A função \texttt{check\_dual\_optimality\_condition} confirma que para cada par \((X, \Delta(X))\) em \texttt{Dual\_list} (conjuntos cujos potenciais foram elevados com \(\Delta(X) > 0\)), existe exatamente um arco da arborescência final cruzando a fronteira de \(X\). Essa condição, juntamente com os arcos apertados, garante que as condições de folga complementar da programação linear dual são satisfeitas, implicando que a arborescência encontrada é de custo mínimo global.
+\paragraph*{Verificação de otimalidade dual:} A função \texttt{check\_dual\_optimality\_condition} confirma que para cada par \((X, \Delta(X))\) em \texttt{Dual\_list} (conjuntos cujos potenciais foram elevados com \(\Delta(X) > 0\)), existe exatamente um arco da arborescência final cruzando a fronteira de \(X\). Essa condição, juntamente com os arcos justos, garante que as condições de folga complementar da programação linear dual são satisfeitas, implicando que a arborescência encontrada é de custo mínimo global.
 
 \subsection{Correspondência entre teoria e implementação}
 
@@ -1584,7 +1584,7 @@ A implementação em Python do algoritmo de András Frank segue fielmente a desc
 
 		Inicialize \(A_0 := \emptyset\).
 
-		Construa dígrafo vazio \(D_0\) (arcos apertados).
+		Construa dígrafo vazio \(D_0\) (arcos justos).
 		                                       &
 		\textbf{Função \texttt{phase1} — Linhas 2--5:}
 
@@ -1601,7 +1601,7 @@ A implementação em Python do algoritmo de András Frank segue fielmente a desc
 		\rowcolor{green!5}
 		\textbf{Passo 2:} Elevação de potenciais
 
-		Enquanto \(\exists X \subseteq V \setminus \{r\}\) sem arco apertado:
+		Enquanto \(\exists X \subseteq V \setminus \{r\}\) sem arco justo:
 
 		\quad Calcule \(\Delta(X) := \min\{c_y(u,v) : u \notin X, v \in X\}\)
 
@@ -1770,4 +1770,4 @@ A implementação em Python do algoritmo de András Frank segue fielmente a desc
 
 Esta correspondência demonstra que a implementação traduz fielmente a abordagem primal-dual em código executável. As funções auxiliares (\texttt{get\_arcs\_entering\_X}, \texttt{get\_minimum\_weight\_cut}, \texttt{update\_weights\_in\_X}, \texttt{phase1}, \texttt{phase2}, \texttt{phase2\_v2},
 \texttt{check\_dual\_}-
-\texttt{optimality\_condition} encapsulam exatamente as operações descritas na teoria, preservando as propriedades de correção e as garantias de otimalidade do algoritmo original. A utilização de componentes fortemente conexas (\texttt{nx.condensation}) para identificar conjuntos sem arcos apertados entrando é uma implementação eficiente da verificação teórica, evitando enumeração explícita de todos os subconjuntos de vértices.
+\texttt{optimality\_condition} encapsulam exatamente as operações descritas na teoria, preservando as propriedades de correção e as garantias de otimalidade do algoritmo original. A utilização de componentes fortemente conexas (\texttt{nx.condensation}) para identificar conjuntos sem arcos justos entrando é uma implementação eficiente da verificação teórica, evitando enumeração explícita de todos os subconjuntos de vértices.
