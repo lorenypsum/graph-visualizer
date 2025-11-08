@@ -75,12 +75,15 @@ A redução de custos é feita em subconjuntos minimais, que são subconjuntos \
 tais que não há arcos justos entrando em \(X\) (arcos com custo reduzido zero).
 
 No início do algoritmo, nenhum arco tem custo reduzido zero. Cada vértice não-raiz forma
-seu próprio subconjunto minimal. 
-
-
+seu próprio subconjunto minimal. No dígrafo da Figura~\ref{fig:frank-exemplo-inicial},
+os subconjuntos minimais iniciais são \(\{a\}\), \(\{b\}\), \(\{c\}\), \(\{d\}\) e \(\{e\}\).
 Para cada vértice \(v \neq r\), encontramos o menor custo
 \(\delta(\{v\})\) entre todos os arcos que entram em \(v\), e subtraímos esse valor de
-todos esses arcos. Isso cria ao menos um arco de custo zero entrando em cada vértice.
+todos esses arcos. Por exemplo, para o vértice \(a\), temos \(\delta(\{a\}) = \min\{c(r,a), c(b,a)\} = \min\{2, 5\} = 2\),
+e subtraímos 2 de ambos os arcos \((r,a)\) e \((b,a)\), tornando \((r,a)\) um arco justo.
+
+
+Essa operação vai sendo repetida para todos os conjuntos minimais, criando ao menos um arco de custo zero entrando em cada vértice.
 
 Se esses arcos de custo zero formam uma \(r\)-arborescência (sem ciclos), o algoritmo termina.
 Caso contrário, os arcos de custo zero contêm ciclos. Nesse caso, calculamos as componentes
@@ -1452,56 +1455,56 @@ def andras_frank_algorithm(D):
 Aqui ilustraremos cada fase do algoritmo de András Frank: inicialização dos potenciais, iterações de elevação, construção de \(A_0\), e formação da arborescência final. Utilizaremos o dígrafo \(D_{32}\) estendido com a raiz \(r_0\), mostrado na Figura~\ref{fig:frank-exemplo-inicial}.
 
 \begin{figure}[H]
-\centering
-\begin{tikzpicture}[>=Stealth, scale=0.9, every node/.style={scale=0.9}]
-	\tikzset{
-		vtx/.style={circle, draw, fill=blue!8, thick, inner sep=1.2pt, minimum size=6.5mm},
-		vtxRoot/.style={circle, draw, fill=red!15, thick, inner sep=1.2pt, minimum size=6.5mm},
-		arc/.style={->, thick, gray!60},
-		cost/.style={font=\scriptsize, fill=white, inner sep=1pt, rounded corners=1pt}
-	}
+	\centering
+	\begin{tikzpicture}[>=Stealth, scale=0.9, every node/.style={scale=0.9}]
+		\tikzset{
+			vtx/.style={circle, draw, fill=blue!8, thick, inner sep=1.2pt, minimum size=6.5mm},
+			vtxRoot/.style={circle, draw, fill=red!15, thick, inner sep=1.2pt, minimum size=6.5mm},
+			arc/.style={->, thick, gray!60},
+			cost/.style={font=\scriptsize, fill=white, inner sep=1pt, rounded corners=1pt}
+		}
 
-	\node[font=\bfseries, blue!80!black] at (3, 4.5) {Dígrafo inicial $D$ com raiz $r_0$};
+		\node[font=\bfseries, blue!80!black] at (3, 4.5) {Dígrafo inicial $D$ com raiz $r_0$};
 
-	% Raiz
-	\node[vtxRoot] (r0) at (3, 3) {$r_0$};
+		% Raiz
+		\node[vtxRoot] (r0) at (3, 3) {$r_0$};
 
-	% Vértices camada 1
-	\node[vtx] (u1) at (0, 1.5) {$u_1$};
-	\node[vtx] (u2) at (3, 1.5) {$u_2$};
-	\node[vtx] (u3) at (6, 1.5) {$u_3$};
+		% Vértices camada 1
+		\node[vtx] (u1) at (0, 1.5) {$u_1$};
+		\node[vtx] (u2) at (3, 1.5) {$u_2$};
+		\node[vtx] (u3) at (6, 1.5) {$u_3$};
 
-	% Vértices camada 2
-	\node[vtx] (v1) at (1, 0) {$v_1$};
-	\node[vtx] (v2) at (3, 0) {$v_2$};
-	\node[vtx] (v3) at (5, 0) {$v_3$};
+		% Vértices camada 2
+		\node[vtx] (v1) at (1, 0) {$v_1$};
+		\node[vtx] (v2) at (3, 0) {$v_2$};
+		\node[vtx] (v3) at (5, 0) {$v_3$};
 
-	% Arcos da raiz
-	\draw[arc] (r0) -- node[cost, left, pos=0.4] {1} (u1);
-	\draw[arc] (r0) -- node[cost, right] {2} (u2);
-	\draw[arc] (r0) -- node[cost, right, pos=0.4] {1} (u3);
+		% Arcos da raiz
+		\draw[arc] (r0) -- node[cost, left, pos=0.4] {1} (u1);
+		\draw[arc] (r0) -- node[cost, right] {2} (u2);
+		\draw[arc] (r0) -- node[cost, right, pos=0.4] {1} (u3);
 
-	% Arcos camada 1
-	\draw[arc] (u1) to[bend left=15] node[cost, above] {1} (u2);
-	\draw[arc] (u2) to[bend left=15] node[cost, above] {3} (u3);
+		% Arcos camada 1
+		\draw[arc] (u1) to[bend left=15] node[cost, above] {1} (u2);
+		\draw[arc] (u2) to[bend left=15] node[cost, above] {3} (u3);
 
-	% Arcos entrando camada 2
-	\draw[arc] (u1) -- node[cost, left] {3} (v1);
-	\draw[arc] (u2) -- node[cost, right] {2} (v2);
-	\draw[arc] (u3) -- node[cost, right] {4} (v3);
-	\draw[arc] (u1) to[bend right=20] node[cost, below, pos=0.3] {5} (v2);
+		% Arcos entrando camada 2
+		\draw[arc] (u1) -- node[cost, left] {3} (v1);
+		\draw[arc] (u2) -- node[cost, right] {2} (v2);
+		\draw[arc] (u3) -- node[cost, right] {4} (v3);
+		\draw[arc] (u1) to[bend right=20] node[cost, below, pos=0.3] {5} (v2);
 
-	% Arcos internos camada 2
-	\draw[arc] (v1) -- node[cost, above] {1} (v2);
-	\draw[arc] (v2) -- node[cost, above] {2} (v3);
+		% Arcos internos camada 2
+		\draw[arc] (v1) -- node[cost, above] {1} (v2);
+		\draw[arc] (v2) -- node[cost, above] {2} (v3);
 
-	% Arco retorno
-	\draw[arc] (v1) to[bend right=30] node[cost, left, pos=0.3] {2} (u1);
+		% Arco retorno
+		\draw[arc] (v1) to[bend right=30] node[cost, left, pos=0.3] {2} (u1);
 
-	\node[font=\small, gray!70!black] at (3, -1.2) {Pesos originais $c(u,v)$};
-\end{tikzpicture}
-\caption{Dígrafo inicial \(D\) com raiz \(r_0\) e 6 vértices adicionais. O dígrafo contém múltiplos arcos com pesos variados. A Fase~1 do algoritmo iniciará com potenciais \(y(v) = 0\) para todos os vértices, correspondendo aos custos reduzidos iniciais \(c_y(u,v) = c(u,v)\).}
-\label{fig:frank-exemplo-antigo-inicial}
+		\node[font=\small, gray!70!black] at (3, -1.2) {Pesos originais $c(u,v)$};
+	\end{tikzpicture}
+	\caption{Dígrafo inicial \(D\) com raiz \(r_0\) e 6 vértices adicionais. O dígrafo contém múltiplos arcos com pesos variados. A Fase~1 do algoritmo iniciará com potenciais \(y(v) = 0\) para todos os vértices, correspondendo aos custos reduzidos iniciais \(c_y(u,v) = c(u,v)\).}
+	\label{fig:frank-exemplo-antigo-inicial}
 \end{figure}
 
 \paragraph*{Fase 1 — Iteração 1:} O algoritmo inicia com todos os potenciais \(y(v) = 0\) e \(D_0\) vazio (sem arcos justos). Calcula-se as componentes fortemente conexas de \(D_0\): cada vértice forma sua própria componente. As fontes são todos os vértices exceto \(r_0\). Para o conjunto \(X = \{u_1, u_2, u_3\}\), identifica-se os arcos entrando: \((r_0, u_1)\) com peso 1, \((r_0, u_2)\) com peso 2, \((r_0, u_3)\) com peso 1. O mínimo é \(\Delta(X) = 1\). Subtraindo esse valor, os arcos \((r_0, u_1)\) e \((r_0, u_3)\) tornam-se justos (peso 0) e são adicionados a \(A_0\).
