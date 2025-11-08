@@ -190,14 +190,14 @@ da Figura~\ref{fig:frank-exemplo-inicial}, onde aplicamos a redução apenas par
 		\draw[tight] (r) -- node[costB, above left] {0} (a);
 		\draw[tight] (c) to[bend left=15] node[costB, right] {0} (d);
 		\draw[tight] (b) -- node[costB, below] {0} (e);
-		\draw[tight] (r) -- node[costG, below left] {0} (b);  
+		\draw[tight] (r) -- node[costB, below left] {0} (b);  
 		% arcos não justos
 		\draw[loose] (r) .. controls (2,3.5) and (5,3.5) .. node[costG, above] {6} (c);  % 7-1-2 = 4
 		\draw[loose] (a) -- node[costG, right] {3} (d);  % 4-2 = 2
-		\draw[loose] (a) -- node[costB, above] {4} (c);
+		\draw[loose] (a) -- node[costG, above] {4} (c);
 		% 3-2 = 1 (ainda não é justo!)
 		\draw[loose] (b) to[bend right=15] node[costG, left] {3} (a);  % 5-2 = 3
-		\draw[tight] (d) to[bend left=15] node[costG, left] {0} (c);  % 1-1 = 0 (forma ciclo!)
+		\draw[tight] (d) to[bend left=15] node[costB, left] {0} (c);  % 1-1 = 0 (forma ciclo!)
 		\draw[loose] (d) -- node[costG, right] {1} (e);  % 3-1 = 2
 		\draw[loose] (c) .. controls (7.5,2.5) and (7.5,-2.5) .. node[costG, right] {4} (e);  % 6-1-2 = 3
 	\end{tikzpicture}
