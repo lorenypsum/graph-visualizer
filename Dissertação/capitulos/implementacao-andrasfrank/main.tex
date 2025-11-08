@@ -69,36 +69,16 @@ o comportamento completo do algoritmo.
 	\label{fig:frank-exemplo-inicial}
 \end{figure}
 
-Este exemplo foi construído para exibir:
-\begin{itemize}
-	\item \textbf{Primeira iteração:} Redução de custos em vértices isolados.
-	\item \textbf{Formação de ciclo:} Os arcos \((c,d)\) e \((d,c)\) formarão um ciclo justo.
-	\item \textbf{Segunda iteração:} Identificação do ciclo como componente fortemente conexa,
-	      tratamento do conjunto \(\{c,d\}\) como subconjunto minimal.
-	\item \textbf{Contração e expansão:} Necessidade de contrair o ciclo para resolver
-	      o problema recursivamente.
-\end{itemize}
+O algoritmo de Frank opera em duas fases principais: (1) redução de custos e (2) construção da arborescência.
 
-\subsection*{Ideia Central do Algoritmo}
-
-O algoritmo de András Frank, assim como o de Chu--Liu--Edmonds, baseia-se em uma escolha gulosa:
-para cada vértice (ou conjunto de vértices), escolher o arco de menor custo que entra nele
-e ajustar os custos subtraindo esse valor mínimo. A diferença fundamental está na organização:
-
-\begin{itemize}
-	\item \textbf{Chu--Liu--Edmonds:} processa vértice a vértice, subtraindo o menor custo
-	      de arco entrando em cada vértice individualmente.
-	\item \textbf{András Frank:} identifica \emph{subconjuntos minimais} através de componentes
-	      fortemente conexas e processa todos simultaneamente, subtraindo o menor custo
-	      de arco entrando em cada subconjunto.
-\end{itemize}
-
-
-
-\textbf{Funcionamento iterativo:}
+A redução de custos é feita em subconjuntos minimais, que são subconjuntos \(X \subseteq V\)
+tais que não há arcos justos entrando em \(X\) (arcos com custo reduzido zero).
 
 No início do algoritmo, nenhum arco tem custo reduzido zero. Cada vértice não-raiz forma
-seu próprio subconjunto minimal. Para cada vértice \(v \neq r\), encontramos o menor custo
+seu próprio subconjunto minimal. 
+
+
+Para cada vértice \(v \neq r\), encontramos o menor custo
 \(\delta(\{v\})\) entre todos os arcos que entram em \(v\), e subtraímos esse valor de
 todos esses arcos. Isso cria ao menos um arco de custo zero entrando em cada vértice.
 
