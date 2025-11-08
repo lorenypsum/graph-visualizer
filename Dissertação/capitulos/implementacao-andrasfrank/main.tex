@@ -77,8 +77,8 @@ o comportamento completo do algoritmo.
 	\label{fig:frank-exemplo-inicial}
 \end{figure}
 
-Vamos agora executar o algoritmo de Frank sobre este dígrafo.
-
+\subsection*{Fase 1}
+ 
 Inicialmente, nenhum arco tem custo reduzido zero, cada vértice não-raiz \(v \neq r\) forma
 seu próprio subconjunto minimal \(\{v\}\). No dígrafo da Figura~\ref{fig:frank-exemplo-inicial},
 os subconjuntos minimais iniciais são portanto \(\{a\}\), \(\{b\}\), \(\{c\}\), \(\{d\}\) e \(\{e\}\).
@@ -219,7 +219,75 @@ da Figura~\ref{fig:frank-exemplo-inicial}, onde aplicamos a redução apenas par
 
 Se esses arcos de custo zero formam uma \(r\)-arborescência, o algoritmo termina. Caso contrário, identificamos novamente os subconjuntos minimais sem arcos de custo zero entrando neles.
 
-No exemplo da Figura~\ref{fig:frank-iter1-result}, os arcos justos não formam uma \(r\)-arborescência, pois nem todos os vértices são alcançáveis a partir de \(r\) pelos arcos justos e o conjunto \(\{c,d\}\) forma um ciclo com dois arcos justos entre \(c\) e \(d\). Temos então as fontes \(\{r,a\}\), \(\{b\}\), \(\{e\}\) e o conjunto \(\{c,d\}\). Como não existem arcos justos entrando em \(\{c,d\}\), esse conjunto é um subconjunto minimal.
+Antes de prosseguirmos com a iteração seguinte, precisamos salientar que em uma iteração do algoritmo, pode haver múltiplas fontes no grafo de condensação (excluindo a componente que contém a raiz). Qualquer uma dessas fontes pode ser escolhida como conjunto minimal para modificação de custo. A escolha específica não afeta a corretude do algoritmo, apenas a ordem em que os arcos se tornam justos.
+
+Para ilustrar, considere um dígrafo simples com raiz \(r_0\) conectada a três vértices \(a\), \(b\), e \(c\) através de arcos com custos 2, 3, e 2 respectivamente. Após a inicialização, todas as três componentes \(\{a\}\), \(\{b\}\), \(\{c\}\) são fontes (cada uma sem arcos justos entrando). O algoritmo pode escolher qualquer uma delas:
+\begin{itemize}\setlength{\itemsep}{2pt}
+	\item Se escolhermos \(\{a\}\): elevamos seu potencial por \(\Delta(\{a\}) = 2\), tornando \((r_0, a)\) justo.
+	\item Se escolhermos \(\{b\}\): elevamos seu potencial por \(\Delta(\{b\}) = 3\), tornando \((r_0, b)\) justo.
+	\item Se escolhermos \(\{c\}\): elevamos seu potencial por \(\Delta(\{c\}) = 2\), tornando \((r_0, c)\) justo.
+\end{itemize}
+
+Em cada caso, após a elevação, a componente escolhida deixa de ser uma fonte (pois agora possui um arco justo entrando). O algoritmo continua processando as fontes restantes nas iterações subsequentes. A ordem de processamento não afeta o custo total da arborescência final, pois todas as elevações são necessárias e determinadas univocamente pelos custos dos arcos.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[>=Stealth, scale=1.0]
+		\tikzset{
+			vtx/.style={circle, draw, fill=blue!8, thick, inner sep=1.2pt, minimum size=7mm},
+			vtxRoot/.style={circle, draw, fill=red!15, thick, inner sep=1.2pt, minimum size=7mm},
+			vtxSource/.style={circle, draw=orange!70, fill=orange!15, thick, inner sep=1.2pt, minimum size=7mm},
+			arc/.style={->, thick, draw=gray!60},
+			cost/.style={font=\scriptsize, fill=white, inner sep=1pt}
+		}
+
+		% Dígrafo inicial
+		\begin{scope}
+			\node[font=\bfseries, above] at (2, 3.2) {Estado inicial: múltiplas fontes};
+
+			\node[vtxRoot] (r0) at (2, 2) {$r_0$};
+			\node[vtxSource] (a) at (0, 0) {$a$};
+			\node[vtxSource] (b) at (2, 0) {$b$};
+			\node[vtxSource] (c) at (4, 0) {$c$};
+
+			\draw[arc] (r0) -- node[cost, left] {2} (a);
+			\draw[arc] (r0) -- node[cost, right] {3} (b);
+			\draw[arc] (r0) -- node[cost, right] {2} (c);
+
+			\node[orange!70!black, font=\small, align=center] at (2, -1.2) {Três fontes: $\{a\}$, $\{b\}$, $\{c\}$\\Qualquer uma pode ser processada};
+		\end{scope}
+
+		% Seta
+		\draw[->, ultra thick, gray!60] (5.5, 1) -- node[above, font=\small, align=center] {escolhe\\$\{a\}$} (6.5, 1);
+
+		% Após processar {a}
+		\begin{scope}[xshift=7.5cm]
+			\node[font=\bfseries, above] at (2, 3.2) {Após processar $\{a\}$};
+
+			\node[vtxRoot] (r0b) at (2, 2) {$r_0$};
+			\node[vtx] (ab) at (0, 0) {$a$};
+			\node[vtxSource] (bb) at (2, 0) {$b$};
+			\node[vtxSource] (cb) at (4, 0) {$c$};
+
+			\draw[arc, blue!70, ultra thick] (r0b) -- node[cost, left, fill=blue!10] {0} (ab);
+			\draw[arc] (r0b) -- node[cost, right] {3} (bb);
+			\draw[arc] (r0b) -- node[cost, right] {2} (cb);
+
+			\node[blue!70!black, font=\small, align=center] at (2, -1.2) {$(r_0, a)$ justo\\Fontes restantes: $\{b\}$, $\{c\}$};
+		\end{scope}
+	\end{tikzpicture}
+	\caption{Exemplo de múltiplas fontes disponíveis para processamento. À esquerda, o estado
+		inicial possui três componentes \(\{a\}\), \(\{b\}\), \(\{c\}\) (em laranja) que são fontes
+		no grafo de condensação. Qualquer uma pode ser escolhida. À direita, após escolher e
+		processar \(\{a\}\) (elevando seu potencial por \(\Delta(\{a\}) = 2\)), o arco \((r_0, a)\)
+		torna-se justo (em azul). Agora \(\{a\}\) deixa de ser fonte e as fontes restantes são
+		\(\{b\}\) e \(\{c\}\). A ordem de processamento não afeta a arborescência ótima final.}
+	\label{fig:frank-multiplas-fontes}
+\end{figure}
+
+No exemplo da Figura~\ref{fig:frank-iter1-result}, após a primeira iteração de redução, temos os vértices \(\{a\}\), \(\{b\}\), \(\{e\}\) que são componentes triviais (cada um forma sua própria CFC). Porém, o conjunto \(\{c,d\}\) forma uma fonte no grafo de condensação e, portanto, um conjunto minimal. Não poderíamos escolher apenas \(\{c\}\) ou apenas \(\{d\}\) isoladamente, pois esses subconjuntos já possuem arcos justos entrando.
+
+Nesse exemplo da Figura~\ref{fig:frank-iter1-result}, os arcos justos não formam uma \(r\)-arborescência, pois nem todos os vértices são alcançáveis a partir de \(r\) pelos arcos justos e o conjunto \(\{c,d\}\) forma um ciclo com dois arcos justos entre \(c\) e \(d\). Temos então as fontes \(\{r,a\}\), \(\{b\}\), \(\{e\}\) e o conjunto \(\{c,d\}\). Como não existem arcos justos entrando em \(\{c,d\}\), esse conjunto é um subconjunto minimal.
 
 \begin{figure}[H]
 	\centering
@@ -382,7 +450,7 @@ Nesse ponto, o algoritmo procede para a fase de contração, onde o ciclo justo 
 
 O algoritmo pode utilizar CFCs para identificar eficientemente os conjuntos minimais. Quando construímos o grafo de condensação das CFCs, cada vértice do grafo de condensação representa uma CFC do grafo original formado pelos arcos justos. Vale destacar que um arco no grafo de condensação conecta duas CFCs se existe um arco justo no grafo original indo de um vértice da primeira CFC para um vértice da segunda e o grafo de condensação é sempre acíclico (DAG).
 
-Uma \textbf{fonte} no grafo de condensação corresponde exatamente aos conjuntos minimais que buscamos.
+Uma fonte no grafo de condensação corresponde exatamente aos conjuntos minimais que buscamos.
 
 No exemplo, a CFC \(\{c,d\}\) é uma fonte que é contraída em um novo vértice \(x_C\). Todos os arcos que entravam em \(c\) ou \(d\) agora entram em \(x_C\), e todos os arcos que saíam de \(c\) ou \(d\) agora saem de \(x_C\). Os custos dos arcos são mantidos conforme estavam antes da contração.
 
@@ -472,134 +540,23 @@ A Figura~\ref{fig:frank-contracao-ciclo} ilustra essa contração.
 	\label{fig:frank-contracao-ciclo}
 \end{figure}
 
-Após a contração, os arcos justos formam uma \(r\)-arborescência no dígrafo contraído.
+O algoritmo termina quando existe exatamente uma fonte no grafo de condensação das SCCs formadas pelos arcos justos.
 
-Assim termina a fase 1 do algoritmo de Frank. A fase 2 envolve a expansão do supervértice \(x_C\) de volta para o ciclo \(\{c,d\}\) e a reconstrução da \(r\)-arborescência ótima no dígrafo original. Isso é feito selecionando o arco que entra em \(x_C\) na arborescência do dígrafo contraído e substituindo-o pelo arco correspondente que entra em \(c\) ou \(d\) no dígrafo original, além dos arcos justos internos ao ciclo, exceto o arco que entra no vértice escolhido.
+Quando essa condição é satisfeita, o grafo \((V, A_0)\) formado pelos arcos justos contém uma \(r\)-arborescência, pois todo vértice não-raiz é alcançável a partir de \(r\) através de arcos justos (consequência de haver apenas uma fonte).
 
-\subsection{Identificação de conjuntos minimais}
-\label{sec:identificacao-minimais}
+Assim termina a fase 1 do algoritmo de Frank que pode devolver uma lista de arcos justos \(A_0\) e custos reduzidos \(c'(u,v)\) para todos os arcos \((u,v) \in A\) onde uma seleção de \(n-1\) arcos de \(A_0\) formam uma arborescência possivelmente com uma sujeira adicional, no caso do Digrafo do exemplo do acima, \(A_0\) inclui os arcos \((c,d)\) e \((d,c)\) formando um ciclo justo. Outras sujeiras podem ocorrer quando múltiplos arcos justos entram em um mesmo vértice, como no caso de múltiplas fontes sendo processadas em ordens diferentes.
 
+Essa ``sujeira'' é uma característica do algoritmo. Durante a Fase~1, todos os arcos em \(A_0\) são garantidamente parte de \emph{alguma} arborescência ótima (não necessariamente a mesma), mas apenas um subconjunto de \(A_0\) formará a arborescência específica que o algoritmo constrói.
 
+Quando \(A_0\) contém um ciclo, a operação de contração (ilustrada na Figura~\ref{fig:frank-contracao-ciclo}) é necessária para eliminar essa ambiguidade. Ao contrair o ciclo em um supervértice e resolver recursivamente, o algoritmo efetivamente escolhe quais arcos do ciclo fazer parte da solução final. Durante a expansão, apenas \(|C|-1\) arcos do ciclo contraído \(C\) são incluídos na arborescência (onde \(|C|\) é o número de vértices no ciclo), descartando exatamente um arco --- aquele que entra no vértice por onde a arborescência alcança o ciclo.
 
-\paragraph{Múltiplas escolhas possíveis.} Em uma iteração do algoritmo, pode haver múltiplas fontes no grafo de condensação (excluindo a componente que contém a raiz). Qualquer uma dessas fontes pode ser escolhida como conjunto minimal para elevação de potenciais naquela iteração. A escolha específica não afeta a corretude do algoritmo, apenas a ordem em que os arcos se tornam justos.
+A fase 2 envolve a expansão do supervértice \(x_C\) de volta para o ciclo \(\{c,d\}\) e a reconstrução da \(r\)-arborescência ótima no dígrafo original. Isso é feito selecionando o arco que entra em \(x_C\) na arborescência do dígrafo contraído e substituindo-o pelo arco correspondente que entra em \(c\) ou \(d\) no dígrafo original, além dos arcos justos internos ao ciclo, exceto o arco que entra no vértice escolhido.
 
-Para ilustrar, considere um dígrafo simples com raiz \(r_0\) conectada a três vértices \(a\), \(b\), e \(c\) através de arcos com custos 2, 3, e 2 respectivamente. Após a inicialização, todas as três componentes \(\{a\}\), \(\{b\}\), \(\{c\}\) são fontes (cada uma sem arcos justos entrando). O algoritmo pode escolher qualquer uma delas:
-\begin{itemize}\setlength{\itemsep}{2pt}
-	\item Se escolhermos \(\{a\}\): elevamos seu potencial por \(\Delta(\{a\}) = 2\), tornando \((r_0, a)\) justo.
-	\item Se escolhermos \(\{b\}\): elevamos seu potencial por \(\Delta(\{b\}) = 3\), tornando \((r_0, b)\) justo.
-	\item Se escolhermos \(\{c\}\): elevamos seu potencial por \(\Delta(\{c\}) = 2\), tornando \((r_0, c)\) justo.
-\end{itemize}
+\subsection*{Fase 2} 
 
-Em cada caso, após a elevação, a componente escolhida deixa de ser uma fonte (pois agora possui um arco justo entrando). O algoritmo continua processando as fontes restantes nas iterações subsequentes. A ordem de processamento não afeta o custo total da arborescência final, pois todas as elevações são necessárias e determinadas univocamente pelos custos dos arcos.
-
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[>=Stealth, scale=1.0]
-		\tikzset{
-			vtx/.style={circle, draw, fill=blue!8, thick, inner sep=1.2pt, minimum size=7mm},
-			vtxRoot/.style={circle, draw, fill=red!15, thick, inner sep=1.2pt, minimum size=7mm},
-			vtxSource/.style={circle, draw=orange!70, fill=orange!15, thick, inner sep=1.2pt, minimum size=7mm},
-			arc/.style={->, thick, draw=gray!60},
-			cost/.style={font=\scriptsize, fill=white, inner sep=1pt}
-		}
-
-		% Dígrafo inicial
-		\begin{scope}
-			\node[font=\bfseries, above] at (2, 3.2) {Estado inicial: múltiplas fontes};
-
-			\node[vtxRoot] (r0) at (2, 2) {$r_0$};
-			\node[vtxSource] (a) at (0, 0) {$a$};
-			\node[vtxSource] (b) at (2, 0) {$b$};
-			\node[vtxSource] (c) at (4, 0) {$c$};
-
-			\draw[arc] (r0) -- node[cost, left] {2} (a);
-			\draw[arc] (r0) -- node[cost, right] {3} (b);
-			\draw[arc] (r0) -- node[cost, right] {2} (c);
-
-			\node[orange!70!black, font=\small, align=center] at (2, -1.2) {Três fontes: $\{a\}$, $\{b\}$, $\{c\}$\\Qualquer uma pode ser processada};
-		\end{scope}
-
-		% Seta
-		\draw[->, ultra thick, gray!60] (5.5, 1) -- node[above, font=\small, align=center] {escolhe\\$\{a\}$} (6.5, 1);
-
-		% Após processar {a}
-		\begin{scope}[xshift=7.5cm]
-			\node[font=\bfseries, above] at (2, 3.2) {Após processar $\{a\}$};
-
-			\node[vtxRoot] (r0b) at (2, 2) {$r_0$};
-			\node[vtx] (ab) at (0, 0) {$a$};
-			\node[vtxSource] (bb) at (2, 0) {$b$};
-			\node[vtxSource] (cb) at (4, 0) {$c$};
-
-			\draw[arc, blue!70, ultra thick] (r0b) -- node[cost, left, fill=blue!10] {0} (ab);
-			\draw[arc] (r0b) -- node[cost, right] {3} (bb);
-			\draw[arc] (r0b) -- node[cost, right] {2} (cb);
-
-			\node[blue!70!black, font=\small, align=center] at (2, -1.2) {$(r_0, a)$ justo\\Fontes restantes: $\{b\}$, $\{c\}$};
-		\end{scope}
-	\end{tikzpicture}
-	\caption{Exemplo de múltiplas fontes disponíveis para processamento. À esquerda, o estado
-		inicial possui três componentes \(\{a\}\), \(\{b\}\), \(\{c\}\) (em laranja) que são fontes
-		no grafo de condensação. Qualquer uma pode ser escolhida. À direita, após escolher e
-		processar \(\{a\}\) (elevando seu potencial por \(\Delta(\{a\}) = 2\)), o arco \((r_0, a)\)
-		torna-se justo (em azul). Agora \(\{a\}\) deixa de ser fonte e as fontes restantes são
-		\(\{b\}\) e \(\{c\}\). A ordem de processamento não afeta a arborescência ótima final.}
-	\label{fig:frank-multiplas-fontes}
-\end{figure}
-
-No exemplo da Figura~\ref{fig:frank-iter1-result}, após a primeira iteração de redução, temos os vértices \(\{a\}\), \(\{b\}\), \(\{e\}\) que são componentes triviais (cada um forma sua própria SCC) e todos possuem arcos justos entrando. Porém, o conjunto \(\{c,d\}\) forma uma SCC não-trivial (um ciclo) sem arcos justos entrando, constituindo uma fonte no grafo de condensação e, portanto, um conjunto minimal. Não poderíamos escolher apenas \(\{c\}\) ou apenas \(\{d\}\) isoladamente, pois esses subconjuntos já possuem arcos justos entrando (os arcos do ciclo interno).
-
-
-
-\subsection{Arcos justos podem conter ``sujeira''}
-
-Um aspecto sutil mas importante do algoritmo é que o conjunto \(A_0\) de arcos justos obtido na Fase~1 pode conter \textbf{mais arcos do que necessário} para formar uma arborescência. Especificamente:
-\begin{itemize}\setlength{\itemsep}{2pt}
-	\item Uma \(r\)-arborescência em um dígrafo com \(n\) vértices contém exatamente \(n-1\) arcos.
-	\item O conjunto \(A_0\) pode conter ciclos formados por arcos justos.
-	\item Mesmo sem ciclos, \(A_0\) pode conter múltiplos arcos entrando em um mesmo vértice.
-\end{itemize}
-
-Essa ``sujeira'' não é um problema --- é uma característica do algoritmo. Durante a Fase~1, todos os arcos em \(A_0\) são garantidamente parte de \emph{alguma} arborescência ótima (não necessariamente a mesma), mas apenas um subconjunto de \(A_0\) formará a arborescência específica que o algoritmo constrói.
-
-\paragraph{Contração de ciclos.} Quando \(A_0\) contém um ciclo, a operação de contração (ilustrada na Figura~\ref{fig:frank-contracao-ciclo}) é necessária para eliminar essa ambiguidade. Ao contrair o ciclo em um supervértice e resolver recursivamente, o algoritmo efetivamente escolhe quais arcos do ciclo fazer parte da solução final. Durante a expansão, apenas \(|C|-1\) arcos do ciclo contraído \(C\) são incluídos na arborescência (onde \(|C|\) é o número de vértices no ciclo), descartando exatamente um arco --- aquele que entra no vértice por onde a arborescência alcança o ciclo.
-
-\paragraph{Construção incremental.} Mesmo quando \(A_0\) não contém ciclos, a Fase~2 do algoritmo constrói a arborescência \emph{incrementalmente}, adicionando arcos de \(A_0\) um por vez, garantindo que cada vértice não-raiz receba exatamente um arco de entrada. O algoritmo sempre escolhe um arco \((u,v) \in A_0\) tal que \(u\) já está na arborescência parcial e \(v\) ainda não está. Esse processo naturalmente seleciona um subconjunto de \(A_0\) sem ambiguidades, descartando arcos "extras".
+Mesmo quando \(A_0\) não contém ciclos, a Fase~2 do algoritmo constrói a arborescência \emph{incrementalmente}, adicionando arcos de \(A_0\) um por vez, garantindo que cada vértice não-raiz receba exatamente um arco de entrada. O algoritmo sempre escolhe um arco \((u,v) \in A_0\) tal que \(u\) já está na arborescência parcial e \(v\) ainda não está. Esse processo naturalmente seleciona um subconjunto de \(A_0\) sem ambiguidades, descartando arcos "extras".
 
 A presença dessa sujeira demonstra que a Fase~1 do algoritmo de Frank não constrói diretamente a arborescência, mas sim um \emph{certificado de otimalidade} através dos arcos justos e potenciais duais. A Fase~2 então utiliza esse certificado para extrair uma arborescência ótima específica.
-
-\subsection{Evolução das componentes fortemente conexas}
-
-Durante a execução da Fase~1, as componentes fortemente conexas (SCCs) formadas pelos arcos justos evoluem de forma dinâmica e sistemática. Compreender essa evolução é essencial para entender por que o algoritmo termina corretamente.
-
-\paragraph{Estado inicial.} No início do algoritmo, \(A_0 = \emptyset\) (nenhum arco justo), portanto cada vértice forma sua própria SCC trivial. O grafo de condensação tem \(n\) nós (um para cada vértice original), e todas as SCCs exceto a raiz são fontes.
-
-\paragraph{Após cada elevação de potenciais.} Quando escolhemos uma fonte (conjunto minimal) \(X\) e elevamos seus potenciais por \(\Delta(X)\):
-\begin{enumerate}\setlength{\itemsep}{2pt}
-	\item Ao menos um arco entrando em \(X\) torna-se justo (aquele com custo reduzido original igual a \(\Delta(X)\)).
-	\item Esse novo arco justo conecta \(X\) a alguma outra componente pré-existente no grafo de arcos justos.
-	\item As SCCs podem se \textbf{fundir}: se o novo arco justo cria um caminho bidirecional entre duas SCCs anteriormente separadas, elas se tornam uma única SCC maior.
-\end{enumerate}
-
-\paragraph{Progressão monotônica.} A cada iteração, o número de SCCs no grafo de arcos justos diminui (ou permanece igual):
-\begin{itemize}\setlength{\itemsep}{2pt}
-	\item No melhor caso, múltiplas SCCs se fundem em uma única componente maior.
-	\item No pior caso, uma SCC deixa de ser fonte (passa a ter arcos justos entrando) mas não se funde com outras.
-	\item \textbf{Importante:} O número de SCCs nunca aumenta, pois adicionamos arcos mas nunca os removemos.
-\end{itemize}
-
-\paragraph{Condição de término.} O algoritmo termina quando existe exatamente \textbf{uma fonte} no grafo de condensação das SCCs formadas pelos arcos justos. Essa condição significa:
-\begin{itemize}\setlength{\itemsep}{2pt}
-	\item A fonte única é a SCC que contém a raiz \(r\).
-	\item Todas as outras SCCs possuem arcos justos entrando (não são fontes).
-	\item Todo vértice \(v \neq r\) possui ao menos um arco justo entrando nele.
-\end{itemize}
-
-Quando essa condição é satisfeita, o grafo \((V, A_0)\) formado pelos arcos justos contém uma \(r\)-arborescência, pois:
-\begin{enumerate}\setlength{\itemsep}{2pt}
-	\item Todo vértice não-raiz é alcançável a partir de \(r\) através de arcos justos (consequência de haver apenas uma fonte).
-	\item Existe uma seleção de \(n-1\) arcos de \(A_0\) que formam uma arborescência (possivelmente com sujeira adicional em \(A_0\)).
-\end{enumerate}
 
 \paragraph{Exemplo visual.} Na Figura~\ref{fig:frank-scc-minimal}, após a primeira iteração de reduções, o grafo de condensação possui as seguintes SCCs:
 \begin{itemize}\setlength{\itemsep}{2pt}
