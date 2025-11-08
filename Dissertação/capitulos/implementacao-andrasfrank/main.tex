@@ -209,7 +209,7 @@ da Figura~\ref{fig:frank-exemplo-inicial}, onde aplicamos a redução apenas par
 	\label{fig:frank-iter1-result}
 \end{figure}
 
-Se esses arcos de custo zero formam uma \(r\)-arborescência, o algoritmo termina. Caso contrário, identificamos novamente os subconjuntos minimais sem arcos de custo zero entrando neles. 
+Se esses arcos de custo zero formam uma \(r\)-arborescência, o algoritmo termina. Caso contrário, identificamos novamente os subconjuntos minimais sem arcos de custo zero entrando neles.
 
 No exemplo da Figura~\ref{fig:frank-iter1-result}, os arcos justos não formam uma \(r\)-arborescência, pois nem todos os vértices são alcançáveis a partir de \(r\) pelos arcos justos e o conjunto \(\{c,d\}\) forma um ciclo com dois arcos justos entre \(c\) e \(d\). Como não existem arcos justos entrando em \(\{c,d\}\), esse conjunto é um subconjunto minimal. Além disso, nesse caso forma-se uma componente fortemente conexa entre \(c\) e \(d\). Uma componente fortemente conexa (SCC) é um subconjunto maximal de vértices em que cada vértice é alcançável a partir de qualquer outro vértice do mesmo subconjunto.
 
@@ -277,6 +277,184 @@ No exemplo da Figura~\ref{fig:frank-iter1-result}, os arcos justos não formam u
 \end{figure}
 
 O algoritmo então procede escolhendo um subconjunto minimal (neste caso, \(\{c,d\}\)) e repetindo o processo de redução de custos para esse conjunto. Calculamos \(\delta(\{c,d\})\) como o menor custo entre os arcos que entram em \(c\) ou \(d\) vindos de fora do conjunto \(\{c,d\}\). No exemplo, os arcos que entram em \(\{c,d\}\) são \((r,c)\) com custo 6, \((a,c)\) com custo 4 e \((a,d)\) com custo 3. Portanto, \(\delta(\{c,d\}) = \min\{6, 4, 3\} = 3\). Subtraímos esse valor dos arcos que entram em \(c\) e \(d\), tornando \((a,d)\) um arco justo.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[>=Stealth, scale=0.95]
+		\tikzset{
+			vtx/.style={circle, draw,fill=blue!8, thick, inner sep=1.2pt, minimum size=7mm},
+			vtxH/.style={circle, draw=orange!70, fill=orange!15, thick, inner sep=1.2pt, minimum size=7mm},
+			tight/.style={->, very thick, draw=blue!70},
+			loose/.style={->, semithick, draw=black!35},
+			arcH/.style={->, ultra thick, draw=orange!70},
+			costB/.style={font=\small, fill=white, inner sep=1.5pt, text=blue!70},
+			costG/.style={font=\small, fill=white, inner sep=1.5pt, text=black!50},
+			costO/.style={font=\small, fill=white, inner sep=1.5pt, text=orange!70, font=\small\bfseries}
+		}
+
+		% Antes da redução de {c,d}
+		\begin{scope}
+			\node[font=\bfseries, above] at (3, 3.8) {Antes: redução de $\{c,d\}$};
+
+			\node[vtx] (r1) at (0,0) {$r$};
+			\node[vtx] (a1) at (3,2) {$a$};
+			\node[vtx] (b1) at (3,-2) {$b$};
+			\node[vtxH] (c1) at (6,2) {$c$};
+			\node[vtxH] (d1) at (6,0) {$d$};
+			\node[vtx] (e1) at (6,-2) {$e$};
+
+			% Arcos justos já existentes (azul)
+			\draw[tight] (r1) -- node[costB, above left] {0} (a1);
+			\draw[tight] (r1) -- node[costB, below left] {0} (b1);
+			
+			\draw[tight] (b1) -- node[costB, below] {0} (e1);
+			\draw[tight] (c1) to[bend left=15] node[costB, right] {0} (d1);
+			\draw[tight] (d1) to[bend left=15] node[costB, left] {0} (c1);
+
+			% Arcos entrando em {c,d} - destacados em laranja
+			\draw[arcH] (r1) .. controls (1,3.5) and (5,3.5) .. node[costO, above] {6} (c1);
+			\draw[arcH] (a1) -- node[costO, right] {3} (d1);
+			\draw[arcH] (a1) -- node[costO, above] {4} (c1);
+
+			% Outros arcos não justos
+			\draw[loose] (b1) to[bend right=15] node[costG, left] {3} (a1);
+			\draw[loose] (d1) -- node[costG, right] {1} (e1);
+			\draw[loose] (c1) .. controls (7.5,2.5) and (7.5,-2.5) .. node[costG, right] {2} (e1);
+			
+
+			% Destaque do conjunto {c,d}
+			\draw[orange!70, ultra thick, dashed, rounded corners] (5.3,2.6) rectangle (6.7,-0.6);
+			\node[orange!70, font=\small] at (3, -3.2) {$\delta(\{c,d\}) = \min\{6, 3\} = 3$};
+		\end{scope}
+
+		% Depois da redução de {c,d}
+		\begin{scope}[xshift=9.5cm]
+			\node[font=\bfseries, above] at (3, 3.8) {Após redução de $\delta(\{c,d\})$};
+
+			\node[vtx] (r2) at (0,0) {$r$};
+			\node[vtx] (a2) at (3,2) {$a$};
+			\node[vtx] (b2) at (3,-2) {$b$};
+			\node[vtxH] (c2) at (6,2) {$c$};
+			\node[vtxH] (d2) at (6,0) {$d$};
+			\node[vtx] (e2) at (6,-2) {$e$};
+
+			% Arcos justos já existentes (azul)
+			\draw[tight] (r2) -- node[costB, above left] {0} (a2);
+			\draw[tight] (r2) -- node[costB, below left] {0} (b2);
+			\draw[tight] (b2) -- node[costB, below] {0} (e2);
+			\draw[tight] (c2) to[bend left=15] node[costB, right] {0} (d2);
+			\draw[tight] (d2) to[bend left=15] node[costB, left] {0} (c2);
+
+			% Arco (a,d) torna-se justo (novo)
+			\draw[tight] (a2) -- node[costB, right] {0} (d2);
+
+			% Arco (r,c) reduzido mas não justo
+			\draw[arcH] (r2) .. controls (1,3.5) and (5,3.5) .. node[costO, above] {3} (c2);
+			\draw[arcH] (a2) -- node[costO, above] {1} (c2);
+
+			% Outros arcos não justos
+			\draw[loose] (b2) to[bend right=15] node[costG, left] {3} (a2);
+			\draw[loose] (d2) -- node[costG, right] {1} (e2);
+			\draw[loose] (c2) .. controls (7.5,2.5) and (7.5,-2.5) .. node[costG, right] {2} (e2);
+
+			% Destaque do conjunto {c,d}
+			\draw[orange!70, ultra thick, dashed, rounded corners] (5.3,2.6) rectangle (6.7,-0.6);
+			\node[blue!70, font=\small] at (3, -3.2) {$(a,d)$ torna-se \textbf{justo}};
+		\end{scope}
+	\end{tikzpicture}
+	\caption{Redução de custos para o subconjunto minimal \(\{c,d\}\). À esquerda, antes da
+		redução: os arcos entrando em \(\{c,d\}\) vindos de fora são \((r,c)\) com custo 6, \((a,d)\) com custo 3 e \((a,c)\) com custo 4, destacados em laranja. Calculamos \(\delta(\{c,d\}) = 3\)
+		e subtraímos esse valor. À direita, após a redução: \((a,d)\) torna-se justo (custo 0), \((r,c)\) tem custo reduzido para 3 e \((a,c)\) tem custo reduzido para 1. O conjunto \(\{c,d\}\) está destacado em laranja para enfatizar que é tratado como uma unidade.}
+	\label{fig:frank-reducao-cd}
+\end{figure}
+
+Agora, não existem mais subconjuntos minimais sem arcos justos entrando neles, porém os arcos justos não formam uma \(r\)-arborescência, pois existe um ciclo justo entre \(c\) e \(d\). Nesse ponto, o algoritmo procede para a fase de contração, onde o ciclo justo formado pelos arcos \((c,d)\) e \((d,c)\) é contraído em um único vértice. Podemos estender essa ideia de contração de ciclos para abranger a contração de qualquer componente fortemente conexa (SCC) formada por arcos justos. No exemplo, a SCC \(\{c,d\}\) é contraída em um novo vértice \(x_C\). Todos os arcos que entravam em \(c\) ou \(d\) agora entram em \(x_C\), e todos os arcos que saíam de \(c\) ou \(d\) agora saem de \(x_C\). Os custos dos arcos são mantidos conforme estavam antes da contração.
+
+A Figura~\ref{fig:frank-contracao-ciclo} ilustra essa contração.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[>=Stealth, scale=0.95]
+		\tikzset{
+			vtx/.style={circle, draw,fill=blue!8, thick, inner sep=1.2pt, minimum size=7mm},
+			vtxH/.style={circle, draw=red!70, fill=red!10, thick, inner sep=1.2pt, minimum size=7mm},
+			vtxC/.style={circle, draw=red!70, fill=red!10, thick, inner sep=1.2pt, minimum size=9mm},
+			tight/.style={->, very thick, draw=blue!70},
+			cycle/.style={->, ultra thick, draw=red!70},
+			loose/.style={->, semithick, draw=black!35},
+			costB/.style={font=\small, fill=white, inner sep=1.5pt, text=blue!70},
+			costR/.style={font=\small, fill=white, inner sep=1.5pt, text=red!70},
+			costG/.style={font=\small, fill=white, inner sep=1.5pt, text=black!50}
+		}
+
+		% Antes da contração
+		\begin{scope}
+			\node[font=\bfseries, above] at (3, 3.8) {Antes: dígrafo com ciclo justo};
+
+			\node[vtx] (r1) at (0,0) {$r$};
+			\node[vtx] (a1) at (3,2) {$a$};
+			\node[vtx] (b1) at (3,-2) {$b$};
+			\node[vtxH] (c1) at (6,2) {$c$};
+			\node[vtxH] (d1) at (6,0) {$d$};
+			\node[vtx] (e1) at (6,-2) {$e$};
+
+			% Arcos justos normais
+			\draw[tight] (r1) -- node[costB, above left] {0} (a1);
+			\draw[tight] (r1) -- node[costB, below left] {0} (b1);
+			\draw[tight] (a1) -- node[costB, right] {0} (d1);
+			\draw[tight] (b1) -- node[costB, below] {0} (e1);
+
+			% Ciclo justo destacado em vermelho
+			\draw[cycle] (c1) to[bend left=15] node[costR, right] {0} (d1);
+			\draw[cycle] (d1) to[bend left=15] node[costR, left] {0} (c1);
+
+			% Arcos não justos
+			\draw[loose] (r1) .. controls (1,3.5) and (5,3.5) .. node[costG, above] {3} (c1);
+			\draw[loose] (a1) -- node[costG, above] {1} (c1);
+			\draw[loose] (b1) to[bend right=15] node[costG, left] {3} (a1);
+			\draw[loose] (d1) -- node[costG, right] {1} (e1);
+			\draw[loose] (c1) .. controls (7.5,2.5) and (7.5,-2.5) .. node[costG, right] {2} (e1);
+
+			% Destaque do ciclo
+			\draw[red!70, ultra thick, dashed, rounded corners] (5.3,2.6) rectangle (6.7,-0.6);
+			\node[red!70, font=\small\bfseries, below] at (6,-0.9) {Ciclo};
+		\end{scope}
+
+		% Seta de transformação
+		\node[font=\Large\bfseries] at (9.5, 0) {$\Rightarrow$};
+
+		% Depois da contração
+		\begin{scope}[xshift=11cm]
+			\node[font=\bfseries, above] at (3, 3.8) {Após contração: $\{c,d\} \to x_C$};
+
+			\node[vtx] (r2) at (0,0) {$r$};
+			\node[vtx] (a2) at (3,1.5) {$a$};
+			\node[vtx] (b2) at (3,-1.5) {$b$};
+			\node[vtxC] (xc2) at (6,0.75) {$x_C$};
+			\node[vtx] (e2) at (6,-1.5) {$e$};
+
+			% Arcos justos
+			\draw[tight] (r2) -- node[costB, above left] {0} (a2);
+			\draw[tight] (r2) -- node[costB, below left] {0} (b2);
+			\draw[tight] (a2) -- node[costB, right] {0} (xc2);
+			\draw[tight] (b2) -- node[costB, below] {0} (e2);
+
+			% Arcos não justos
+			\draw[loose] (r2) .. controls (1,3) and (5,3) .. node[costG, above] {3} (xc2);
+			\draw[loose] (b2) to[bend right=12] node[costG, left] {3} (a2);
+			\draw[loose] (xc2) -- node[costG, right] {1} (e2);
+
+			% Anotação
+			\node[red!70, font=\small, align=center] at (3,-3.2) {Supervértice $x_C$\\representa $\{c,d\}$};
+		\end{scope}
+	\end{tikzpicture}
+	\caption{Contração do ciclo justo \(\{c,d\}\). À esquerda, o dígrafo após as reduções de 
+		custo mostra o ciclo justo formado pelos arcos \((c,d)\) e \((d,c)\) (em vermelho). 
+		À direita, o dígrafo contraído onde os vértices \(c\) e \(d\) são substituídos pelo 
+		supervértice \(x_C\). Os arcos que entravam ou saíam do ciclo são redirecionados para 
+		\(x_C\). Note que os arcos justos agora formam uma \(r\)-arborescência no dígrafo contraído.}
+	\label{fig:frank-contracao-ciclo}
+\end{figure}
 
 
 
