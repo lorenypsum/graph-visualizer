@@ -25,13 +25,14 @@ e $D$ possui uma $r$-arborescência.
 
 O algoritmo de Frank opera em duas fases principais: (i) redução de custos e (ii) construção da arborescência a partir dos arcos que se tornaram justos (custo reduzido zero).
 
-Na primeira fase, identificamos iterativamente os \emph{subconjuntos minimais} um conjunto \(X \subseteq V \setminus \{r\}\) é dito minimal se não há arcos justos entrando em \(X\) (ou seja, nenhum arco \((u,v)\) com \(u \notin X\) e \(v \in X\) possui custo reduzido zero) e para qualquer subconjunto próprio \(Y \subset X\), existe ao menos um arco justo entrando em \(Y\), essa segunda condição garante a propriedade de minimalidade, pois não podemos encontrar um subconjunto menor que também não tenha arcos justos entrando. 
+Na primeira fase, identificamos iterativamente os \emph{subconjuntos minimais} um conjunto \(X \subseteq V \setminus \{r\}\) é dito minimal se não há arcos justos entrando em \(X\) (ou seja, nenhum arco \((u,v)\) com \(u \notin X\) e \(v \in X\) possui custo reduzido zero) e para qualquer subconjunto próprio \(Y \subset X\), existe ao menos um arco justo entrando em \(Y\), essa segunda condição garante a propriedade de minimalidade, pois não podemos encontrar um subconjunto menor que também não tenha arcos justos entrando.
 
 Assim, para cada conjunto minimal \(X\), calculamos
 \(\delta(X)\), o menor custo entre todos os arcos que entram em \(X\), e subtraímos esse valor de todos
 esses arcos, criando ao menos um novo arco justo. Esse processo é repetido até que exista exatamente uma
-\emph{fonte} no grafo de condensação.
+\emph{fonte} no digrafo atualizado também chamado de digrafo de condensação.
 
+A terminologia de fonte refere-se a um vértice ou conjunto de vértices no digrafo de condensação que não tenha arcos justos entrando.
 
 Vamos desenvolver essas ideias utilizando um exemplo: considere o dígrafo \(D\) da Figura~\ref{fig:frank-exemplo-inicial} com seis vértices
 \(\{r, a, b, c, d, e\}\) e custos nos arcos para ilustrar
@@ -76,7 +77,7 @@ o comportamento completo do algoritmo.
 	\label{fig:frank-exemplo-inicial}
 \end{figure}
 
-Vamos agora executar o algoritmo de Frank sobre este dígrafo. 
+Vamos agora executar o algoritmo de Frank sobre este dígrafo.
 Inicialmente, nenhum arco tem custo reduzido zero, cada vértice não-raiz \(v \neq r\) forma
 seu próprio subconjunto minimal \(\{v\}\). No dígrafo da Figura~\ref{fig:frank-exemplo-inicial},
 os subconjuntos minimais iniciais são portanto \(\{a\}\), \(\{b\}\), \(\{c\}\), \(\{d\}\) e \(\{e\}\).
@@ -85,7 +86,7 @@ entrando em \(v\), e subtraímos esse valor de todos esses arcos.
 
 Por exemplo, consideremos o vértice \(a\). Os arcos entrando em \(a\) são \((r,a)\) com custo 2
 e \((b,a)\) com custo 5. Calculamos \(\delta(\{a\}) = \min\{2, 5\} = 2\) e subtraímos este valor
-de ambos os arcos. Assim, \((r,a)\) passa a ter custo \(0\) 
+de ambos os arcos. Assim, \((r,a)\) passa a ter custo \(0\)
 e \((b,a)\) passa a ter custo \(3\). A Figura~\ref{fig:frank-reducao-exemplo-a} ilustra
 essa operação de redução aplicada ao vértice \(a\).
 
@@ -217,7 +218,7 @@ da Figura~\ref{fig:frank-exemplo-inicial}, onde aplicamos a redução apenas par
 
 Se esses arcos de custo zero formam uma \(r\)-arborescência, o algoritmo termina. Caso contrário, identificamos novamente os subconjuntos minimais sem arcos de custo zero entrando neles.
 
-No exemplo da Figura~\ref{fig:frank-iter1-result}, os arcos justos não formam uma \(r\)-arborescência, pois nem todos os vértices são alcançáveis a partir de \(r\) pelos arcos justos e o conjunto \(\{c,d\}\) forma um ciclo com dois arcos justos entre \(c\) e \(d\). Temos então as fontes \(\{r,a\}\), \(\{b\}\), \(\{e\}\) e o conjunto \(\{c,d\}\). Como não existem arcos justos entrando em \(\{c,d\}\), esse conjunto é um subconjunto minimal. 
+No exemplo da Figura~\ref{fig:frank-iter1-result}, os arcos justos não formam uma \(r\)-arborescência, pois nem todos os vértices são alcançáveis a partir de \(r\) pelos arcos justos e o conjunto \(\{c,d\}\) forma um ciclo com dois arcos justos entre \(c\) e \(d\). Temos então as fontes \(\{r,a\}\), \(\{b\}\), \(\{e\}\) e o conjunto \(\{c,d\}\). Como não existem arcos justos entrando em \(\{c,d\}\), esse conjunto é um subconjunto minimal.
 
 \begin{figure}[H]
 	\centering
@@ -469,9 +470,7 @@ Assim termina a fase 1 do algoritmo de Frank. A fase 2 envolve a expansão do su
 \subsection{Identificação de conjuntos minimais}
 \label{sec:identificacao-minimais}
 
-
-
-\paragraph{Componentes fortemente conexas e fontes.} O algoritmo utiliza componentes fortemente conexas (SCCs) formadas pelos arcos justos para identificar eficientemente os conjuntos minimais. Quando construímos o grafo de condensação das SCCs:
+O algoritmo utiliza componentes fortemente conexas (SCCs) formadas pelos arcos justos para identificar eficientemente os conjuntos minimais. Quando construímos o grafo de condensação das SCCs:
 \begin{itemize}\setlength{\itemsep}{2pt}
 	\item Cada nó do grafo de condensação representa uma SCC do grafo original formado pelos arcos justos.
 	\item Um arco no grafo de condensação conecta duas SCCs se existe um arco justo no grafo original indo de um vértice da primeira SCC para um vértice da segunda.
