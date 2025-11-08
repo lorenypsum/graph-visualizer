@@ -469,11 +469,11 @@ A corretude do algoritmo de András Frank baseia-se na teoria de dualidade em pr
 	      \end{itemize}
 	      Sob essas condições, \(\sum_{a\in T} c_y(a) = 0 \leq \sum_{a\in T'} c_y(a)\) para qualquer outra r-arborescência \(T'\), provando otimalidade.
 
-	\item \emph{Elevação de potenciais:} o algoritmo eleva os potenciais de forma gulosa, garantindo que ao final cada \(v\neq r\) tenha ao menos um arco apertado entrando. Isso é feito identificando componentes fortemente conexas em \(A_0\): conjuntos \(X\) que ainda não possuem arcos apertados entrando têm seus potenciais elevados pelo mínimo necessário \(\Delta(X)\).
+	\item \emph{Elevação de potenciais:} o algoritmo eleva os potenciais de forma gulosa, garantindo que ao final cada \(v\neq r\) tenha ao menos um arco apertado entrando. Isso é feito identificando componentes fortemente conexas em \(A\_0\): conjuntos \(X\) que ainda não possuem arcos apertados entrando têm seus potenciais elevados pelo mínimo necessário \(\Delta(X)\).
 
 	\item \emph{Caso acíclico:} se \(A_0\) forma uma r-arborescência, todos os arcos são apertados e, pelas condições de otimalidade, a solução é ótima.
 
-	\item \emph{Caso com ciclo (contração/expansão):} se \(A_0\) contém um ciclo dirigido \(C\), todos os seus arcos são apertados (custo reduzido zero). A contração preserva a estrutura de custos reduzidos: no dígrafo contraído, os novos custos \(c'\) já incorporam os potenciais, e uma solução ótima em \(D'\) mapeia para uma solução ótima em \(D\) pela reversibilidade da operação.
+	\item \emph{Caso com ciclo (contração/expansão):} se \(A\_0\) contém um ciclo dirigido \(C\), todos os seus arcos são apertados (custo reduzido zero). A contração preserva a estrutura de custos reduzidos: no dígrafo contraído, os novos custos \(c'\) já incorporam os potenciais, e uma solução ótima em \(D'\) mapeia para uma solução ótima em \(D\) pela reversibilidade da operação.
 \end{enumerate}
 
 Em termos intuitivos, os potenciais \(y(v)\) funcionam como "descontos" aplicados aos arcos que entram em cada vértice, revelando quais arcos são "apertados" (custo líquido zero) e, portanto, candidatos à solução ótima. Ciclos de arcos apertados podem ser contraídos sem perder otimalidade, simplificando o problema recursivamente.
