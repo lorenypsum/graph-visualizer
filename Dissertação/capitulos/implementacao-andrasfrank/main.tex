@@ -188,23 +188,24 @@ da Figura~\ref{fig:frank-exemplo-inicial}, onde aplicamos a redução apenas par
 
 		% arcos justos (apenas alguns)
 		\draw[tight] (r) -- node[costB, above left] {0} (a);
-		\draw[loose] (a) -- node[costB, above] {4} (c);
 		\draw[tight] (c) to[bend left=15] node[costB, right] {0} (d);
 		\draw[tight] (b) -- node[costB, below] {0} (e);
-
+		\draw[tight] (r) -- node[costG, below left] {0} (b);  
 		% arcos não justos
-		\draw[tight] (r) -- node[costG, below left] {0} (b);  % 3-2 = 1 (ainda não é justo!)
 		\draw[loose] (r) .. controls (2,3.5) and (5,3.5) .. node[costG, above] {6} (c);  % 7-1-2 = 4
 		\draw[loose] (a) -- node[costG, right] {3} (d);  % 4-2 = 2
+		\draw[loose] (a) -- node[costB, above] {4} (c);
+		% 3-2 = 1 (ainda não é justo!)
 		\draw[loose] (b) to[bend right=15] node[costG, left] {3} (a);  % 5-2 = 3
 		\draw[tight] (d) to[bend left=15] node[costG, left] {0} (c);  % 1-1 = 0 (forma ciclo!)
 		\draw[loose] (d) -- node[costG, right] {1} (e);  % 3-1 = 2
 		\draw[loose] (c) .. controls (7.5,2.5) and (7.5,-2.5) .. node[costG, right] {4} (e);  % 6-1-2 = 3
 	\end{tikzpicture}
-	\caption{Dígrafo após a primeira iteração. Note que \(b\) não possui arco justo entrando
-		(apenas \((r,b)\) com custo 1), e os arcos \((c,d)\) e \((d,c)\) formam um ciclo justo.
-		Os vértices \(a\), \(c\), \(d\) e \(e\) possuem arcos justos entrando, mas \(b\) e o
-		conjunto \(\{c,d\}\) serão identificados como minimais na próxima etapa.}
+	\caption{Dígrafo após a primeira iteração. Os arcos justos (custo 0) são: \((r,a)\), \((r,b)\),
+		\((b,e)\), \((c,d)\) e \((d,c)\). Todos os vértices não-raiz possuem arcos justos
+		entrando: \(a\) tem \((r,a)\), \(b\) tem \((r,b)\), \(e\) tem \((b,e)\), e o conjunto
+		\(\{c,d\}\) tem \((a,c)\) (além do ciclo interno). Os arcos \((c,d)\) e \((d,c)\)
+		formam um ciclo justo.}
 	\label{fig:frank-iter1-result}
 \end{figure}
 
@@ -212,7 +213,9 @@ Se esses arcos de custo zero formam uma \(r\)-arborescência (sem ciclos), o alg
 Caso contrário, os arcos de custo zero contêm ciclos. Nesse caso, calculamos as componentes
 fortemente conexas do grafo formado pelos arcos de custo zero. Cada componente que não contém
 a raiz e não possui arcos de custo zero entrando nela é um novo subconjunto minimal.
-A Figura~\ref{fig:frank-sccs} ilustra esse processo no nosso exemplo.
+
+No nosso exemplo, após a primeira iteração, os arcos justos formam o ciclo \(\{c,d\}\).
+A Figura~\ref{fig:frank-sccs} ilustra a identificação das componentes fortemente conexas.
 
 \begin{figure}[H]
 	\centering
@@ -234,50 +237,36 @@ A Figura~\ref{fig:frank-sccs} ilustra esse processo no nosso exemplo.
 
 		% arcos justos
 		\draw[tight] (r) -- node[costB, above left] {0} (a);
+		\draw[tight] (r) -- node[costB, below left] {0} (b);
 		\draw[tight] (a) -- node[costB, above] {0} (c);
 		\draw[tight] (c) to[bend left=15] node[costB, right] {0} (d);
-		\draw[tight] (b) -- node[costB, below] {0} (e);
 		\draw[tight] (d) to[bend left=15] node[costB, left] {0} (c);
+		\draw[tight] (b) -- node[costB, below] {0} (e);
 
 		% arcos não justos (mais tênues)
-		\draw[loose, opacity=0.3] (r) -- node[costG, below left, opacity=0.5] {1} (b);
-		\draw[loose, opacity=0.3] (r) .. controls (2,3.5) and (5,3.5) .. node[costG, above, opacity=0.5] {4} (c);
+		\draw[loose, opacity=0.3] (r) .. controls (2,3.5) and (5,3.5) .. node[costG, above, opacity=0.5] {0} (c);
 		\draw[loose, opacity=0.3] (a) -- node[costG, right, opacity=0.5] {2} (d);
 		\draw[loose, opacity=0.3] (b) to[bend right=15] node[costG, left, opacity=0.5] {3} (a);
-		\draw[loose, opacity=0.3] (d) -- node[costG, right, opacity=0.5] {2} (e);
-		\draw[loose, opacity=0.3] (c) .. controls (7.5,2.5) and (7.5,-2.5) .. node[costG, right, opacity=0.5] {3} (e);
+		\draw[loose, opacity=0.3] (d) -- node[costG, right, opacity=0.5] {1} (e);
+		\draw[loose, opacity=0.3] (c) .. controls (7.5,2.5) and (7.5,-2.5) .. node[costG, right, opacity=0.5] {2} (e);
 
 		% Destacar as SCCs
-		% SCC da raiz
-		\draw[green!60, ultra thick, dashed, rounded corners] (-0.6,-0.6) rectangle (0.6,0.6);
-		\node[green!70!black, font=\small\bfseries, below] at (0,-0.9) {$\{r\}$};
+		% SCC da raiz + alcançáveis
+		\draw[green!60, ultra thick, dashed, rounded corners] (-0.6,-0.6) rectangle (3.6,2.6);
+		\node[green!70!black, font=\small\bfseries, above] at (1.5,2.9) {$\{r,a,b,e\}$ (raiz)};
 
-		% SCC trivial de a - possui (r,a) justo entrando
-		\draw[blue!60, ultra thick, dashed, rounded corners] (2.4,1.4) rectangle (3.6,2.6);
-		\node[blue!70!black, font=\small\bfseries, above] at (3,2.9) {$\{a\}$};
-
-		% SCC trivial de b - MINIMAL (sem arcos justos entrando)
-		\draw[orange!70, ultra thick, dashed, rounded corners] (2.4,-2.6) rectangle (3.6,-1.4);
-		\node[orange!70, font=\small\bfseries, below] at (3,-2.9) {$\{b\}$ \textbf{minimal}};
-
-		% SCC do ciclo c-d - NÃO é minimal pois (a,c) é justo
-		\draw[blue!60, ultra thick, dashed, rounded corners] (5.3,2.6) rectangle (6.7,-0.6);
-		\node[blue!70!black, font=\small\bfseries, right] at (6.9,1) {$\{c,d\}$};
-		\node[blue!70!black, font=\small\bfseries, right, font=\scriptsize] at (6.9,0.4) {(tem $(a,c)$ justo)};
-
-		% SCC trivial de e - possui (b,e) justo entrando
-		\draw[blue!60, ultra thick, dashed, rounded corners] (5.4,-2.6) rectangle (6.6,-1.4);
-		\node[blue!70!black, font=\small\bfseries, below] at (6,-2.9) {$\{e\}$};
+		% SCC do ciclo c-d - MINIMAL para fins de contração
+		\draw[orange!70, ultra thick, dashed, rounded corners] (5.3,2.6) rectangle (6.7,-0.6);
+		\node[orange!70, font=\small\bfseries, right] at (6.9,1) {$\{c,d\}$};
+		\node[orange!70, font=\small\bfseries, right, font=\scriptsize] at (6.9,0.3) {\textbf{minimal}};
+		\node[orange!70, font=\small, right, font=\scriptsize] at (6.9,-0.3) {(ciclo)};
 	\end{tikzpicture}
 	\caption{Identificação das componentes fortemente conexas (SCCs) no grafo formado pelos arcos justos
-		após a primeira iteração. Apenas \(\{b\}\) (em laranja) é \textbf{minimal} pois não possui arcos
-		justos entrando --- o único arco entrando em \(b\) é \((r,b)\) com custo 1. As demais componentes
-		\(\{r\}\) (contém a raiz), \(\{a\}\) (tem \((r,a)\) justo), \(\{c,d\}\) (tem \((a,c)\) justo)
-		e \(\{e\}\) (tem \((b,e)\) justo) possuem arcos justos entrando e não são minimais.}
+		após a primeira iteração. A componente que contém a raiz inclui \(\{r,a,b,e\}\) (em verde).
+		O conjunto \(\{c,d\}\) (em laranja) forma um ciclo e será tratado como \textbf{minimal}
+		para fins de contração, pois é uma SCC não-trivial que forma um ciclo nos arcos justos.}
 	\label{fig:frank-sccs}
-\end{figure}
-
-Repetimos o processo: para cada subconjunto minimal \(X\), calculamos \(\delta(X)\)
+\end{figure}Repetimos o processo: para cada subconjunto minimal \(X\), calculamos \(\delta(X)\)
 (o menor custo entre arcos entrando em \(X\)) e subtraímos esse valor.
 
 O algoritmo continua até que os arcos de custo zero formem uma \(r\)-arborescência.
@@ -297,14 +286,14 @@ seu próprio subconjunto minimal. Calculamos \(\delta(\{v\})\) para cada \(v \ne
 \begin{align*}
 	\delta(\{a\}) & = \min\{c(r,a), c(b,a)\} = \min\{2, 5\} = 2,            \\
 	\delta(\{b\}) & = \min\{c(r,b)\} = 3,                                   \\
-	\delta(\{c\}) & = \min\{c(r,c), c(a,c)\} = \min\{7, 1\} = 1,            \\
+	\delta(\{c\}) & = \min\{c(r,c), c(a,c)\} = \min\{7, 5\} = 5,            \\
 	\delta(\{d\}) & = \min\{c(a,d), c(c,d)\} = \min\{4, 1\} = 1,            \\
 	\delta(\{e\}) & = \min\{c(b,e), c(d,e), c(c,e)\} = \min\{2, 3, 6\} = 2.
 \end{align*}
 
 Subtraímos cada \(\delta(\{v\})\) dos arcos entrando em \(v\). Os arcos que atingem custo zero são:
 \[
-	A_0 = \{(r,a), (a,c), (c,d), (b,e)\}.
+	A_0 = \{(r,a), (r,b), (a,c), (c,d), (d,c), (b,e)\}.
 \]
 
 \begin{figure}[H]
@@ -327,26 +316,28 @@ Subtraímos cada \(\delta(\{v\})\) dos arcos entrando em \(v\). Os arcos que ati
 
 		% arcos justos
 		\draw[tight] (r) -- node[costB, above left] {0} (a);
+		\draw[tight] (r) -- node[costB, below left] {0} (b);
 		\draw[tight] (a) -- node[costB, above] {0} (c);
 		\draw[tight] (c) to[bend left=15] node[costB, right] {0} (d);
+		\draw[tight] (d) to[bend left=15] node[costB, left] {0} (c);
 		\draw[tight] (b) -- node[costB, below] {0} (e);
 
 		% arcos não justos
-		\draw[loose] (r) -- node[costG, below left] {1} (b);  % 3-2 = 1 (elevou a)
-		\draw[loose] (r) .. controls (2,3.5) and (5,3.5) .. node[costG, above] {4} (c);  % 7-1-2 = 4
+		\draw[loose] (r) .. controls (2,3.5) and (5,3.5) .. node[costG, above] {0} (c);  % 7-5-2 = 0
 		\draw[loose] (a) -- node[costG, right] {2} (d);  % 4-2 = 2
 		\draw[loose] (b) to[bend right=15] node[costG, left] {3} (a);  % 5-2 = 3
-		\draw[loose] (d) to[bend left=15] node[costG, left] {0} (c);  % 1-1 = 0
-		\draw[loose] (d) -- node[costG, right] {2} (e);  % 3-1 = 2
-		\draw[loose] (c) .. controls (7.5,2.5) and (7.5,-2.5) .. node[costG, right] {3} (e);  % 6-1-2 = 3
+		\draw[loose] (d) -- node[costG, right] {1} (e);  % 3-2 = 1
+		\draw[loose] (c) .. controls (7.5,2.5) and (7.5,-2.5) .. node[costG, right] {2} (e);  % 6-2-2 = 2
 	\end{tikzpicture}
-	\caption{Custos reduzidos após Iteração 1. Arcos justos em azul. Note que \(b\) não possui arco justo entrando, e os arcos \((c,d)\) e \((d,c)\) formam um ciclo justo.}
+	\caption{Custos reduzidos após Iteração 1. Arcos justos em azul: \((r,a)\), \((r,b)\), \((a,c)\),
+		\((c,d)\), \((d,c)\) e \((b,e)\). Os arcos \((c,d)\) e \((d,c)\) formam um ciclo justo.
+		Note que todos os vértices não-raiz possuem ao menos um arco justo entrando.}
 	\label{fig:frank-iter1}
 \end{figure}
 
 \textbf{Análise:} Observe que:
 \begin{itemize}
-	\item O vértice \(b\) não possui nenhum arco justo entrando (seu único arco entrando, \((r,b)\), tem custo reduzido 1).
+	\item Todos os vértices não-raiz (\(a\), \(b\), \(c\), \(d\), \(e\)) possuem arcos justos entrando.
 	\item Os arcos \((c,d)\) e \((d,c)\) formam um ciclo de arcos justos.
 	\item Como há um ciclo, não temos uma \(r\)-arborescência ainda.
 \end{itemize}
@@ -355,74 +346,24 @@ Subtraímos cada \(\delta(\{v\})\) dos arcos entrando em \(v\). Os arcos que ati
 
 Calculamos as componentes fortemente conexas no grafo formado por \(A_0\):
 \begin{itemize}
-	\item \(\{r\}\) --- contém a raiz
-	\item \(\{a\}\) --- componente trivial
-	\item \(\{b\}\) --- componente trivial sem arcos justos entrando (\textbf{minimal})
-	\item \(\{c, d\}\) --- componente não-trivial (ciclo) sem arcos justos entrando (\textbf{minimal})
-	\item \(\{e\}\) --- componente trivial
+	\item \(\{r\}\) --- contém a raiz (componente verde)
+	\item \(\{a\}\) --- componente trivial com \((r,a)\) justo entrando
+	\item \(\{b\}\) --- componente trivial com \((r,b)\) justo entrando
+	\item \(\{c, d\}\) --- componente não-trivial (ciclo) com \((a,c)\) justo entrando
+	\item \(\{e\}\) --- componente trivial com \((b,e)\) justo entrando
 \end{itemize}
 
-Os subconjuntos minimais são \(\{b\}\) e \(\{c,d\}\). Calculamos:
-\begin{align*}
-	\delta(\{b\})   & = \min\{c(r,b)\} = 1,                        \\
-	\delta(\{c,d\}) & = \min\{c(r,c), c(a,d)\} = \min\{4, 2\} = 2.
-\end{align*}
+Observamos que \textbf{nenhuma} componente não-raiz é minimal, pois todas possuem arcos justos
+entrando vindos de fora. Entretanto, como os arcos justos formam um ciclo, devemos prosseguir
+com a contração. Na próxima iteração, após modificarmos a identificação de componentes minimais
+(como veremos adiante), o conjunto \(\{c,d\}\) será tratado como minimal para fins de contração.
 
-Subtraímos esses valores dos respectivos arcos entrando:
-
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[>=Stealth, scale=1.1]
-		\tikzset{
-			vtx/.style={circle, draw,fill=blue!8, thick, inner sep=1.2pt, minimum size=7mm},
-			tight/.style={->, very thick, draw=blue!70},
-			cycle/.style={->, ultra thick, draw=red!70},
-			loose/.style={->, semithick, draw=black!35},
-			costB/.style={font=\small, fill=white, inner sep=1.5pt, text=blue!70},
-			costR/.style={font=\small, fill=white, inner sep=1.5pt, text=red!70},
-			costG/.style={font=\small, fill=white, inner sep=1.5pt, text=black!50}
-		}
-
-		\node[vtx] (r) at (0,0) {$r$};
-		\node[vtx] (a) at (3,2) {$a$};
-		\node[vtx] (b) at (3,-2) {$b$};
-		\node[vtx] (c) at (6,2) {$c$};
-		\node[vtx] (d) at (6,0) {$d$};
-		\node[vtx] (e) at (6,-2) {$e$};
-
-		% arcos do ciclo
-		\draw[cycle] (c) to[bend left=15] node[costR, right] {0} (d);
-		\draw[cycle] (d) to[bend left=15] node[costR, left] {0} (c);
-
-		% outros arcos justos
-		\draw[tight] (r) -- node[costB, above left] {0} (a);
-		\draw[tight] (r) -- node[costB, below left] {0} (b);  % novo!
-		\draw[tight] (a) -- node[costB, above] {0} (c);
-		\draw[tight] (a) -- node[costB, right] {0} (d);  % novo!
-		\draw[tight] (b) -- node[costB, below] {0} (e);
-
-		% arcos não justos
-		\draw[loose] (r) .. controls (2,3.5) and (5,3.5) .. node[costG, above] {2} (c);  % 4-2 = 2
-		\draw[loose] (b) to[bend right=15] node[costG, left] {3} (a);
-		\draw[loose] (d) -- node[costG, right] {2} (e);
-		\draw[loose] (c) .. controls (7.5,2.5) and (7.5,-2.5) .. node[costG, right] {3} (e);
-
-		% destaque do ciclo
-		\draw[red!60, thick, dashed, rounded corners] (5.3,2.6) rectangle (6.7,-0.6);
-		\node[red!70, font=\bfseries] at (7.5,1) {Ciclo};
-	\end{tikzpicture}
-	\caption{Custos reduzidos após Iteração 2. Os novos arcos justos são \((r,b)\) e \((a,d)\).
-		O ciclo \(\{c,d\}\) está destacado em vermelho.}
-	\label{fig:frank-iter2}
-\end{figure}
-
-Agora todos os vértices não-raiz possuem ao menos um arco justo entrando. O conjunto
-atual de arcos justos é:
+O conjunto atual de arcos justos após a primeira iteração é:
 \[
-	A_0 = \{(r,a), (r,b), (a,c), (c,d), (d,c), (a,d), (b,e)\}.
+	A_0 = \{(r,a), (r,b), (a,c), (c,d), (d,c), (b,e)\}.
 \]
 
-Entretanto, \(A_0\) contém o ciclo \(C = \{c,d\}\). Não temos uma \(r\)-arborescência ainda.
+Como \(A_0\) contém o ciclo \(C = \{c,d\}\), não temos uma \(r\)-arborescência ainda.
 
 \textbf{Fase 2: Contração e Construção da Arborescência}
 
