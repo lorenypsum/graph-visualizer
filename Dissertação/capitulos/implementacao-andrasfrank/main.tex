@@ -190,7 +190,7 @@ da Figura~\ref{fig:frank-exemplo-inicial}, onde aplicamos a redução apenas par
 		\draw[tight] (r) -- node[costB, above left] {0} (a);
 		\draw[tight] (c) to[bend left=15] node[costB, right] {0} (d);
 		\draw[tight] (b) -- node[costB, below] {0} (e);
-		\draw[tight] (r) -- node[costB, below left] {0} (b);  
+		\draw[tight] (r) -- node[costB, below left] {0} (b);
 		% arcos não justos
 		\draw[loose] (r) .. controls (2,3.5) and (5,3.5) .. node[costG, above] {6} (c);  % 7-1-2 = 4
 		\draw[loose] (a) -- node[costG, right] {3} (d);  % 4-2 = 2
@@ -209,68 +209,15 @@ da Figura~\ref{fig:frank-exemplo-inicial}, onde aplicamos a redução apenas par
 	\label{fig:frank-iter1-result}
 \end{figure}
 
-Se esses arcos de custo zero formam uma \(r\)-arborescência (sem ciclos), o algoritmo termina.
-Caso contrário, os arcos de custo zero contêm ciclos. Nesse caso, calculamos as componentes
-fortemente conexas do grafo formado pelos arcos de custo zero. Cada componente que não contém
-a raiz e não possui arcos de custo zero entrando nela é um novo subconjunto minimal.
+Se esses arcos de custo zero formam uma \(r\)-arborescência, o algoritmo termina. Caso contrário, identificamos novamente os subconjuntos minimais sem arcos de custo zero entrando neles. Podemos entender também esses subconjuntos minimais como as componentes fortemente conexas (SCCs) do dígrafo formado pelos arcos justos.
 
-No nosso exemplo, após a primeira iteração, os arcos justos formam o ciclo \(\{c,d\}\).
-A Figura~\ref{fig:frank-sccs} ilustra a identificação das componentes fortemente conexas.
+No exemplo da Figura~\ref{fig:frank-iter1-result}, os arcos justos não formam uma \(r\)-arborescência, pois o conjunto \(\{c,d\}\) forma uma componente fortemente conexa com dois arcos justos entre \(c\) e \(d\). Portanto, \(\{c,d\}\) é um subconjunto minimal.
 
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[>=Stealth, scale=1.1]
-		\tikzset{
-			vtx/.style={circle, draw,fill=blue!8, thick, inner sep=1.2pt, minimum size=7mm},
-			tight/.style={->, very thick, draw=blue!70},
-			loose/.style={->, semithick, draw=black!35},
-			costB/.style={font=\small, fill=white, inner sep=1.5pt, text=blue!70},
-			costG/.style={font=\small, fill=white, inner sep=1.5pt, text=black!50}
-		}
 
-		\node[vtx] (r) at (0,0) {$r$};
-		\node[vtx] (a) at (3,2) {$a$};
-		\node[vtx] (b) at (3,-2) {$b$};
-		\node[vtx] (c) at (6,2) {$c$};
-		\node[vtx] (d) at (6,0) {$d$};
-		\node[vtx] (e) at (6,-2) {$e$};
 
-		% arcos justos
-		\draw[tight] (r) -- node[costB, above left] {0} (a);
-		\draw[tight] (r) -- node[costB, below left] {0} (b);
-		\draw[tight] (a) -- node[costB, above] {0} (c);
-		\draw[tight] (c) to[bend left=15] node[costB, right] {0} (d);
-		\draw[tight] (d) to[bend left=15] node[costB, left] {0} (c);
-		\draw[tight] (b) -- node[costB, below] {0} (e);
 
-		% arcos não justos (mais tênues)
-		\draw[loose, opacity=0.3] (r) .. controls (2,3.5) and (5,3.5) .. node[costG, above, opacity=0.5] {0} (c);
-		\draw[loose, opacity=0.3] (a) -- node[costG, right, opacity=0.5] {2} (d);
-		\draw[loose, opacity=0.3] (b) to[bend right=15] node[costG, left, opacity=0.5] {3} (a);
-		\draw[loose, opacity=0.3] (d) -- node[costG, right, opacity=0.5] {1} (e);
-		\draw[loose, opacity=0.3] (c) .. controls (7.5,2.5) and (7.5,-2.5) .. node[costG, right, opacity=0.5] {2} (e);
 
-		% Destacar as SCCs
-		% SCC da raiz + alcançáveis
-		\draw[green!60, ultra thick, dashed, rounded corners] (-0.6,-0.6) rectangle (3.6,2.6);
-		\node[green!70!black, font=\small\bfseries, above] at (1.5,2.9) {$\{r,a,b,e\}$ (raiz)};
 
-		% SCC do ciclo c-d - MINIMAL para fins de contração
-		\draw[orange!70, ultra thick, dashed, rounded corners] (5.3,2.6) rectangle (6.7,-0.6);
-		\node[orange!70, font=\small\bfseries, right] at (6.9,1) {$\{c,d\}$};
-		\node[orange!70, font=\small\bfseries, right, font=\scriptsize] at (6.9,0.3) {\textbf{minimal}};
-		\node[orange!70, font=\small, right, font=\scriptsize] at (6.9,-0.3) {(ciclo)};
-	\end{tikzpicture}
-	\caption{Identificação das componentes fortemente conexas (SCCs) no grafo formado pelos arcos justos
-		após a primeira iteração. A componente que contém a raiz inclui \(\{r,a,b,e\}\) (em verde).
-		O conjunto \(\{c,d\}\) (em laranja) forma um ciclo e será tratado como \textbf{minimal}
-		para fins de contração, pois é uma SCC não-trivial que forma um ciclo nos arcos justos.}
-	\label{fig:frank-sccs}
-\end{figure}Repetimos o processo: para cada subconjunto minimal \(X\), calculamos \(\delta(X)\)
-(o menor custo entre arcos entrando em \(X\)) e subtraímos esse valor.
-
-O algoritmo continua até que os arcos de custo zero formem uma \(r\)-arborescência.
-Quando há ciclos, usamos contração exatamente como no Chu--Liu--Edmonds.
 
 \subsection*{Execução do Algoritmo no Exemplo}
 
