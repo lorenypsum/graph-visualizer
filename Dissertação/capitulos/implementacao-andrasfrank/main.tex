@@ -22,7 +22,76 @@ Assim como no capítulo anterior, adotamos a terminologia de \(r\)-digrafo ponde
 $r$ é um vértice de $D$, $\delta^-(r) = \varnothing$
 e $D$ possui uma $r$-arborescência.
 
-Vamos desenvolver as ideias do algoritmo utilizando um exemplo, vamos criar um exemplo que manifeste pelo menos um ciclo formado por arcos justos.
+Vamos desenvolver as ideias do algoritmo utilizando um exemplo que manifeste todas as
+etapas do algoritmo, incluindo a formação de ciclos por arcos justos e a necessidade
+de contração de componentes fortemente conexas.
+
+Considere o dígrafo \(D\) da Figura~\ref{fig:frank-exemplo-inicial} com seis vértices
+\(\{r, a, b, c, d, e\}\) e custos nos arcos cuidadosamente escolhidos para ilustrar
+o comportamento completo do algoritmo.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[>=Stealth, scale=1.1]
+		% estilos
+		\tikzset{
+			vtx/.style={circle, draw,fill=blue!8, thick, inner sep=1.2pt, minimum size=7mm},
+			arc/.style={->, semithick, draw=black!50},
+			costG/.style={font=\small, fill=white, inner sep=1.5pt, text=black!70}
+		}
+
+		% layout
+		\node[vtx] (r) at (0,0) {$r$};
+		\node[vtx] (a) at (3,2) {$a$};
+		\node[vtx] (b) at (3,-2) {$b$};
+		\node[vtx] (c) at (6,2) {$c$};
+		\node[vtx] (d) at (6,0) {$d$};
+		\node[vtx] (e) at (6,-2) {$e$};
+
+		% arcos com custos
+		\draw[arc] (r) -- node[costG, above left] {2} (a);
+		\draw[arc] (r) -- node[costG, below left] {3} (b);
+		\draw[arc] (r) .. controls (2,3.5) and (5,3.5) .. node[costG, above] {7} (c);
+
+		\draw[arc] (a) -- node[costG, above] {1} (c);
+		\draw[arc] (a) -- node[costG, right] {4} (d);
+		\draw[arc] (b) -- node[costG, below] {2} (e);
+		\draw[arc] (b) to[bend right=15] node[costG, left] {5} (a);
+
+		\draw[arc] (c) to[bend left=15] node[costG, right] {1} (d);
+		\draw[arc] (d) to[bend left=15] node[costG, left] {1} (c);
+		\draw[arc] (d) -- node[costG, right] {3} (e);
+
+		\draw[arc] (c) .. controls (7.5,2.5) and (7.5,-2.5) .. node[costG, right] {6} (e);
+	\end{tikzpicture}
+	\caption{Dígrafo \(D\) com custos originais. Este exemplo ilustrará todas as etapas
+		do algoritmo de András Frank, incluindo formação de ciclos e contração.}
+	\label{fig:frank-exemplo-inicial}
+\end{figure}
+
+Este exemplo foi construído para exibir:
+\begin{itemize}
+	\item \textbf{Primeira iteração:} Redução de custos em vértices isolados.
+	\item \textbf{Formação de ciclo:} Os arcos \((c,d)\) e \((d,c)\) formarão um ciclo justo.
+	\item \textbf{Segunda iteração:} Identificação do ciclo como componente fortemente conexa,
+	      tratamento do conjunto \(\{c,d\}\) como subconjunto minimal.
+	\item \textbf{Contração e expansão:} Necessidade de contrair o ciclo para resolver
+	      o problema recursivamente.
+\end{itemize}
+
+\subsection*{Ideia Central do Algoritmo}
+
+O algoritmo de András Frank, assim como o de Chu--Liu--Edmonds, baseia-se em uma escolha gulosa:
+para cada vértice (ou conjunto de vértices), escolher o arco de menor custo que entra nele
+e ajustar os custos subtraindo esse valor mínimo. A diferença fundamental está na organização:
+
+\begin{itemize}
+	\item \textbf{Chu--Liu--Edmonds:} processa vértice a vértice, subtraindo o menor custo
+	      de arco entrando em cada vértice individualmente.
+	\item \textbf{András Frank:} identifica \emph{subconjuntos minimais} através de componentes
+	      fortemente conexas e processa todos simultaneamente, subtraindo o menor custo
+	      de arco entrando em cada subconjunto.
+\end{itemize}
 
 
 
@@ -43,268 +112,271 @@ Repetimos o processo: para cada subconjunto minimal \(X\), calculamos \(\delta(X
 O algoritmo continua até que os arcos de custo zero formem uma \(r\)-arborescência.
 Quando há ciclos, usamos contração exatamente como no Chu--Liu--Edmonds.
 
-\subsection*{Exemplo Introdutório}
+\subsection*{Execução do Algoritmo no Exemplo}
 
-Considere novamente o dígrafo \(D\) figura 26 a seguir, com custos nos arcos note que é o mesmo digrafo da figura 1 que utilizamos para ilustrar o algoritmo de Chu--Liu--Edmonds. E portanto, suponha que T é uma arborescência de custo mínimo, com seus arcos destacados em azul.
+\subsection*{Execução do Algoritmo no Exemplo}
 
-\begin{figure}[h]
-	\centering
-	\begin{tikzpicture}[>=Stealth]
-		% estilos
-		\tikzset{
-			vtx/.style={circle, draw,fill=blue!8, thick, inner sep=1.2pt, minimum size=6mm},
-			chosen/.style={->, very thick, draw=blue},
-			other/.style={->, semithick, draw=black!35},
-			costB/.style={font=\scriptsize, fill=white, inner sep=1pt, text=blue},
-			costG/.style={font=\scriptsize, fill=white, inner sep=1pt, text=black!55}
-		}
+Vamos agora executar o algoritmo passo a passo no dígrafo da Figura~\ref{fig:frank-exemplo-inicial}.
 
-		% layout (mais espaçado)
-		\node[vtx] (r) at (0,0) {$r$};
-		\node[vtx] (a) at (3,1.6) {$a$};
-		\node[vtx] (b) at (3,-1.6) {$b$};
-		\node[vtx] (c) at (6,2.2) {$c$};
-		\node[vtx] (d) at (6,0.0) {$d$};
-		\node[vtx] (e) at (6,-2.2) {$e$};
+\textbf{Fase 1: Redução de custos}
 
-		% --- arcos NÃO escolhidos (cinza), agora com curvaturas mais limpas ---
-		\draw[other] (b) to[bend left=12] node[costG, above] {4} (a);   % b->a
-		\draw[other] (a) to[bend left=14] node[costG, below] {5} (b);   % a->b
+\textbf{Iteração 1 --- Vértices isolados:}
 
-		% r->c: externo por cima, suave (pontos de controle explícitos)
-		\draw[other]
-		(r) .. controls (0.8,2.4) and (5.2,3.0) ..
-		node[costG, yshift=4pt, pos=0.53] {3} (c);
+Inicialmente, não há arcos justos (\(A_0 = \emptyset\)). Cada vértice não-raiz forma
+seu próprio subconjunto minimal. Calculamos \(\delta(\{v\})\) para cada \(v \neq r\):
 
-		% a->d (referência)
-		\draw[other] (a) -- node[costG, right] {3} (d);
-
-		% c->e: leve curvatura pela direita (sem "barriga")
-		\draw[other]
-		(c) .. controls (7.6,2.6) and (7.6,-2.6) ..
-		node[costG, xshift=8pt, pos=0.52] {5} (e);
-
-		% --- arcos ESCOLHIDOS (AZUL) — formam a r-arborescência T ---
-		\draw[chosen] (r) -- node[costB, above] {1} (a);   % r->a
-		\draw[chosen] (r) -- node[costB, below] {2} (b);   % r->b
-		\draw[chosen] (a) -- node[costB, above] {1} (c);   % a->c
-		\draw[chosen] (b) -- node[costB, above] {1} (d);   % b->d
-		\draw[chosen] (b) -- node[costB, below] {2} (e);   % b->e
-	\end{tikzpicture}
-
-	\caption{O dígrafo \(D\) com custos nos arcos. Os arcos em \textcolor{blue}{azul}
-		formam a \(r\)-arborescência de custo mínimo \(T\) (custo total = 7).}
-\end{figure}
-
-\subsection*{Custos Reduzidos e Arcos Justos}
-
-Durante a execução do algoritmo, os custos dos arcos são progressivamente reduzidos.
-Inicialmente, o \textbf{custo reduzido} de cada arco coincide com seu custo original.
-A cada iteração, subtraímos valores dos custos dos arcos que entram em determinados conjuntos.
-
-Quando o custo reduzido de um arco atinge zero, dizemos que o arco é \textbf{justo}.
-Formalmente, um arco \((u,v)\) é justo quando seu custo reduzido atual é zero: \(c(u,v) = 0\).
-O algoritmo garante que a arborescência final será formada exclusivamente por arcos justos.
-
-\textbf{Interpretação dual:} A operação de subtrair \(\delta(X)\) dos arcos entrando em
-\(X\) pode ser interpretada através de \emph{potenciais duais} \(y(v)\) associados aos vértices.
-Quando subtraímos \(\delta(X)\) do custo de cada arco \((u,v)\) com \(v \in X\),
-isso equivale a aumentar \(y(v)\) em \(\delta(X)\) e trabalhar com custos reduzidos
-\(c_y(u,v) = c_{\text{original}}(u,v) - y(v)\). Entretanto, a implementação opera
-diretamente sobre os custos dos arcos, sem armazenar explicitamente os potenciais \(y(v)\).
-A equivalência entre as duas visões é útil para provar a corretude do algoritmo.
-
-\begin{tcolorbox}[
-		enhanced, breakable,
-		colback=blue!5!white, colframe=blue!70!black,
-		colbacktitle=blue!85!black, coltitle=white,
-		fonttitle=\bfseries,
-		title={Arcos justos e subconjuntos minimais},
-		sharp corners, boxrule=0.8pt
-	]
-	\textbf{Arco justo:} Um arco é \textbf{justo} quando seu custo reduzido atual é zero.
-
-	\medskip
-	\textbf{Subconjunto minimal:} Um conjunto \(X \subseteq V \setminus \{r\}\) é \textbf{minimal}
-	se não possui arcos justos entrando nele e é uma componente fortemente conexa no grafo
-	formado apenas pelos arcos justos.
-
-	\medskip
-	No início, como não há arcos justos, cada vértice não-raiz forma seu próprio subconjunto minimal.
-	À medida que arcos justos são criados, se formarem ciclos, as componentes fortemente conexas
-	definem os novos subconjuntos minimais.
-
-	\medskip
-	\textbf{Operação de redução:} Para um subconjunto minimal \(X\), calculamos
-	\[
-		\delta(X) := \min\{c(u,v) : u \notin X, v \in X\}
-	\]
-	e subtraímos \(\delta(X)\) de todos os arcos entrando em \(X\). Isso cria ao menos um novo arco justo.
-\end{tcolorbox}
-
-% Figura 27: Exemplo visual ilustrando subconjuntos e arcos justos
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[>=Stealth]
-		% estilos
-		\tikzset{
-			vtx/.style={circle, draw, fill=blue!8, thick, inner sep=1.2pt, minimum size=8mm},
-			vtxX/.style={circle, draw=orange!80!black, fill=orange!15, thick, inner sep=1.2pt, minimum size=8mm},
-			arcJust/.style={->, very thick, draw=blue!70!black},
-			arcNormal/.style={->, semithick, draw=black!40},
-			arcMin/.style={->, ultra thick, draw=green!60!black},
-			cost/.style={font=\scriptsize, fill=white, inner sep=1pt},
-			costMin/.style={font=\scriptsize\bfseries, fill=green!10, inner sep=2pt, draw=green!60!black, rounded corners=1pt}
-		}
-
-		% vértices
-		\node[vtx] (r) at (0,0) {$r$};
-		\node[vtxX] (u) at (3,1.5) {$u$};
-		\node[vtxX] (v) at (3,-1.5) {$v$};
-
-		% arcos
-		\draw[arcMin] (r) -- node[costMin, above left] {$\delta(X)=2$} (u);
-		\draw[arcNormal] (r) -- node[cost, below left] {4} (v);
-		\draw[arcNormal] (u) -- node[cost, right] {3} (v);
-
-		% destaque do conjunto X
-		\draw[orange!60!black, thick, dashed, rounded corners=8pt]
-		(2.2, 2.3) rectangle (3.8, -2.3);
-		\node[orange!80!black, font=\bfseries] at (4.8, 0) {$X$};
-
-		% anotação
-		\node[font=\small, text=black!80, align=center] at (1.5, -3) {
-			Subconjunto minimal $X = \{u, v\}$\\
-			sem arcos justos entrando.\\
-			Menor custo: $\delta(X) = 2$.
-		};
-	\end{tikzpicture}
-	\caption{Exemplo de subconjunto minimal \(X = \{u, v\}\) que não contém a raiz e não possui arcos justos entrando. O arco de menor custo entrando em \(X\) tem custo \(\delta(X) = 2\). Após subtrair esse valor de todos os arcos em \(\delta^-(X)\), o arco \((r,u)\) torna-se justo.}
-	\label{fig:conjunto-minimal}
-\end{figure}
-
-\subsection*{Iteração por Subconjuntos Minimais}
-
-O algoritmo opera iterativamente. A cada iteração:
-
-\begin{enumerate}[label=\arabic*., leftmargin=*]
-	\item Calculamos as componentes fortemente conexas no grafo formado pelos arcos justos atuais.
-	\item Cada componente que não contém a raiz e não possui arcos justos entrando é um subconjunto minimal \(X\).
-	\item Para cada subconjunto minimal \(X\), calculamos \(\delta(X) := \min\{c(u,v) : u \notin X, v \in X\}\).
-	\item Subtraímos \(\delta(X)\) de todos os arcos entrando em \(X\).
-	\item Os arcos que atingem custo zero são adicionados ao conjunto de arcos justos.
-\end{enumerate}
-
-\medskip
-\textbf{Primeira iteração:} Inicialmente não há arcos justos, então cada vértice não-raiz
-\(v\) é sua própria componente minimal. Calculamos
-\[
-	\delta(\{v\}) := \min\{\, c(u,v) : u \in V \,\}
-\]
-e subtraímos esse valor de todos os arcos entrando em \(v\). Isso cria ao menos um arco
-justo para cada vértice.
-
-\textbf{Iterações subsequentes:} Se os arcos justos formarem ciclos, as componentes fortemente
-conexas agrupam vértices. Cada componente sem arcos justos entrando é um novo subconjunto
-minimal, e repetimos o processo.
-
-Vamos ilustrar com o dígrafo \(D\).
-
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[>=Stealth]
-		% estilos
-		\tikzset{
-			vtx/.style={circle, draw,fill=blue!8, thick, inner sep=1.2pt, minimum size=6mm},
-			arc/.style={->, semithick, draw=black!35},
-			costG/.style={font=\scriptsize, fill=white, inner sep=1pt, text=black!55}
-		}
-
-		% layout
-		\node[vtx] (r) at (0,0) {$r$};
-		\node[vtx] (a) at (3,1.6) {$a$};
-		\node[vtx] (b) at (3,-1.6) {$b$};
-		\node[vtx] (c) at (6,2.2) {$c$};
-		\node[vtx] (d) at (6,0.0) {$d$};
-		\node[vtx] (e) at (6,-2.2) {$e$};
-
-		% arcos com custos originais
-		\draw[arc] (r) -- node[costG, above] {1} (a);
-		\draw[arc] (r) -- node[costG, below] {2} (b);
-		\draw[arc] (r) .. controls (0.8,2.4) and (5.2,3.0) .. node[costG, yshift=4pt, pos=0.53] {3} (c);
-		\draw[arc] (b) to[bend left=12] node[costG, above] {4} (a);
-		\draw[arc] (a) to[bend left=14] node[costG, below] {5} (b);
-		\draw[arc] (a) -- node[costG, above] {1} (c);
-		\draw[arc] (a) -- node[costG, right] {3} (d);
-		\draw[arc] (b) -- node[costG, above] {1} (d);
-		\draw[arc] (b) -- node[costG, below] {2} (e);
-		\draw[arc] (c) .. controls (7.6,2.6) and (7.6,-2.6) .. node[costG, xshift=8pt, pos=0.52] {5} (e);
-
-		% anotação: custos originais
-		\node[font=\small, text=black!70] at (3, -3.5) {Custos originais};
-	\end{tikzpicture}
-	\caption{Dígrafo \(D\) com custos originais. Inicialmente, não há arcos justos (\(A_0 = \emptyset\)).}
-\end{figure}
-
-\textbf{Iteração 1:} Como \(A_0 = \emptyset\), cada vértice não-raiz forma seu próprio subconjunto minimal. Calculamos \(\delta(\{v\})\) para cada \(v \neq r\):
 \begin{align*}
-	\delta(\{a\}) & = \min\{c(r,a), c(b,a)\} = \min\{1, 4\} = 1, \\
-	\delta(\{b\}) & = \min\{c(r,b), c(a,b)\} = \min\{2, 5\} = 2, \\
-	\delta(\{c\}) & = \min\{c(r,c), c(a,c)\} = \min\{3, 1\} = 1, \\
-	\delta(\{d\}) & = \min\{c(a,d), c(b,d)\} = \min\{3, 1\} = 1, \\
-	\delta(\{e\}) & = \min\{c(b,e), c(c,e)\} = \min\{2, 5\} = 2.
+	\delta(\{a\}) & = \min\{c(r,a), c(b,a)\} = \min\{2, 5\} = 2,            \\
+	\delta(\{b\}) & = \min\{c(r,b)\} = 3,                                   \\
+	\delta(\{c\}) & = \min\{c(r,c), c(a,c)\} = \min\{7, 1\} = 1,            \\
+	\delta(\{d\}) & = \min\{c(a,d), c(c,d)\} = \min\{4, 1\} = 1,            \\
+	\delta(\{e\}) & = \min\{c(b,e), c(d,e), c(c,e)\} = \min\{2, 3, 6\} = 2.
 \end{align*}
 
-Subtraímos cada \(\delta(\{v\})\) de todos os arcos entrando no respectivo vértice \(v\).
-Após essa redução, os arcos que atingem custo zero são:
+Subtraímos cada \(\delta(\{v\})\) dos arcos entrando em \(v\). Os arcos que atingem custo zero são:
 \[
-	\{(r,a), (r,b), (a,c), (b,d), (b,e)\}.
+	A_0 = \{(r,a), (a,c), (c,d), (b,e)\}.
 \]
-
-Esses cinco arcos justos formam a arborescência de custo mínimo.
 
 \begin{figure}[H]
 	\centering
-	\begin{tikzpicture}[>=Stealth]
-		% estilos
+	\begin{tikzpicture}[>=Stealth, scale=1.1]
 		\tikzset{
-			vtx/.style={circle, draw,fill=blue!8, thick, inner sep=1.2pt, minimum size=6mm},
-			tight/.style={->, very thick, draw=blue},
+			vtx/.style={circle, draw,fill=blue!8, thick, inner sep=1.2pt, minimum size=7mm},
+			tight/.style={->, very thick, draw=blue!70},
 			loose/.style={->, semithick, draw=black!35},
-			costB/.style={font=\scriptsize, fill=white, inner sep=1pt, text=blue},
-			costG/.style={font=\scriptsize, fill=white, inner sep=1pt, text=black!55}
+			costB/.style={font=\small, fill=white, inner sep=1.5pt, text=blue!70},
+			costG/.style={font=\small, fill=white, inner sep=1.5pt, text=black!50}
 		}
 
-		% layout
 		\node[vtx] (r) at (0,0) {$r$};
-		\node[vtx] (a) at (3,1.6) {$a$};
-		\node[vtx] (b) at (3,-1.6) {$b$};
-		\node[vtx] (c) at (6,2.2) {$c$};
-		\node[vtx] (d) at (6,0.0) {$d$};
-		\node[vtx] (e) at (6,-2.2) {$e$};
+		\node[vtx] (a) at (3,2) {$a$};
+		\node[vtx] (b) at (3,-2) {$b$};
+		\node[vtx] (c) at (6,2) {$c$};
+		\node[vtx] (d) at (6,0) {$d$};
+		\node[vtx] (e) at (6,-2) {$e$};
 
-		% arcos justos (custo reduzido = 0)
-		\draw[tight] (r) -- node[costB, above] {0} (a);   % 1 - 1 = 0
-		\draw[tight] (r) -- node[costB, below] {0} (b);   % 2 - 2 = 0
-		\draw[tight] (a) -- node[costB, above] {0} (c);   % 1 - 1 = 0
-		\draw[tight] (b) -- node[costB, above] {0} (d);   % 1 - 1 = 0
-		\draw[tight] (b) -- node[costB, below] {0} (e);   % 2 - 2 = 0
+		% arcos justos
+		\draw[tight] (r) -- node[costB, above left] {0} (a);
+		\draw[tight] (a) -- node[costB, above] {0} (c);
+		\draw[tight] (c) to[bend left=15] node[costB, right] {0} (d);
+		\draw[tight] (b) -- node[costB, below] {0} (e);
 
 		% arcos não justos
-		\draw[loose] (r) .. controls (0.8,2.4) and (5.2,3.0) .. node[costG, yshift=4pt, pos=0.53] {2} (c);  % 3 - 1 = 2
-		\draw[loose] (b) to[bend left=12] node[costG, above] {3} (a);   % 4 - 1 = 3
-		\draw[loose] (a) to[bend left=14] node[costG, below] {3} (b);   % 5 - 2 = 3
-		\draw[loose] (a) -- node[costG, right] {2} (d);   % 3 - 1 = 2
-		\draw[loose] (c) .. controls (7.6,2.6) and (7.6,-2.6) .. node[costG, xshift=8pt, pos=0.52] {3} (e);  % 5 - 2 = 3
-
-		% anotação
-		\node[font=\small, text=black!70] at (3, -3.5) {Custos reduzidos após Iteração 1};
+		\draw[loose] (r) -- node[costG, below left] {1} (b);  % 3-2 = 1 (elevou a)
+		\draw[loose] (r) .. controls (2,3.5) and (5,3.5) .. node[costG, above] {4} (c);  % 7-1-2 = 4
+		\draw[loose] (a) -- node[costG, right] {2} (d);  % 4-2 = 2
+		\draw[loose] (b) to[bend right=15] node[costG, left] {3} (a);  % 5-2 = 3
+		\draw[loose] (d) to[bend left=15] node[costG, left] {0} (c);  % 1-1 = 0
+		\draw[loose] (d) -- node[costG, right] {2} (e);  % 3-1 = 2
+		\draw[loose] (c) .. controls (7.5,2.5) and (7.5,-2.5) .. node[costG, right] {3} (e);  % 6-1-2 = 3
 	\end{tikzpicture}
-	\caption{Dígrafo após a primeira iteração. Arcos em \textcolor{blue}{azul} são justos (custo reduzido zero); arcos em cinza têm custo reduzido positivo. Neste exemplo, os cinco arcos justos formam uma \(r\)-arborescência.}
+	\caption{Custos reduzidos após Iteração 1. Arcos justos em azul. Note que \(b\) não possui arco justo entrando, e os arcos \((c,d)\) e \((d,c)\) formam um ciclo justo.}
+	\label{fig:frank-iter1}
 \end{figure}
 
-Observe que cada vértice \(v \neq r\) possui agora ao menos um arco justo entrando nele.
-Mais ainda: neste exemplo, os arcos justos \(\{(r,a), (r,b), (a,c), (b,d), (b,e)\}\) formam uma \(r\)-arborescência! Como não há ciclos, o algoritmo termina e retorna essa arborescência como solução ótima.
+\textbf{Análise:} Observe que:
+\begin{itemize}
+	\item O vértice \(b\) não possui nenhum arco justo entrando (seu único arco entrando, \((r,b)\), tem custo reduzido 1).
+	\item Os arcos \((c,d)\) e \((d,c)\) formam um ciclo de arcos justos.
+	\item Como há um ciclo, não temos uma \(r\)-arborescência ainda.
+\end{itemize}
+
+\textbf{Iteração 2 --- Identificação de componentes:}
+
+Calculamos as componentes fortemente conexas no grafo formado por \(A_0\):
+\begin{itemize}
+	\item \(\{r\}\) --- contém a raiz
+	\item \(\{a\}\) --- componente trivial
+	\item \(\{b\}\) --- componente trivial sem arcos justos entrando (\textbf{minimal})
+	\item \(\{c, d\}\) --- componente não-trivial (ciclo) sem arcos justos entrando (\textbf{minimal})
+	\item \(\{e\}\) --- componente trivial
+\end{itemize}
+
+Os subconjuntos minimais são \(\{b\}\) e \(\{c,d\}\). Calculamos:
+\begin{align*}
+	\delta(\{b\})   & = \min\{c(r,b)\} = 1,                        \\
+	\delta(\{c,d\}) & = \min\{c(r,c), c(a,d)\} = \min\{4, 2\} = 2.
+\end{align*}
+
+Subtraímos esses valores dos respectivos arcos entrando:
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[>=Stealth, scale=1.1]
+		\tikzset{
+			vtx/.style={circle, draw,fill=blue!8, thick, inner sep=1.2pt, minimum size=7mm},
+			tight/.style={->, very thick, draw=blue!70},
+			cycle/.style={->, ultra thick, draw=red!70},
+			loose/.style={->, semithick, draw=black!35},
+			costB/.style={font=\small, fill=white, inner sep=1.5pt, text=blue!70},
+			costR/.style={font=\small, fill=white, inner sep=1.5pt, text=red!70},
+			costG/.style={font=\small, fill=white, inner sep=1.5pt, text=black!50}
+		}
+
+		\node[vtx] (r) at (0,0) {$r$};
+		\node[vtx] (a) at (3,2) {$a$};
+		\node[vtx] (b) at (3,-2) {$b$};
+		\node[vtx] (c) at (6,2) {$c$};
+		\node[vtx] (d) at (6,0) {$d$};
+		\node[vtx] (e) at (6,-2) {$e$};
+
+		% arcos do ciclo
+		\draw[cycle] (c) to[bend left=15] node[costR, right] {0} (d);
+		\draw[cycle] (d) to[bend left=15] node[costR, left] {0} (c);
+
+		% outros arcos justos
+		\draw[tight] (r) -- node[costB, above left] {0} (a);
+		\draw[tight] (r) -- node[costB, below left] {0} (b);  % novo!
+		\draw[tight] (a) -- node[costB, above] {0} (c);
+		\draw[tight] (a) -- node[costB, right] {0} (d);  % novo!
+		\draw[tight] (b) -- node[costB, below] {0} (e);
+
+		% arcos não justos
+		\draw[loose] (r) .. controls (2,3.5) and (5,3.5) .. node[costG, above] {2} (c);  % 4-2 = 2
+		\draw[loose] (b) to[bend right=15] node[costG, left] {3} (a);
+		\draw[loose] (d) -- node[costG, right] {2} (e);
+		\draw[loose] (c) .. controls (7.5,2.5) and (7.5,-2.5) .. node[costG, right] {3} (e);
+
+		% destaque do ciclo
+		\draw[red!60, thick, dashed, rounded corners] (5.3,2.6) rectangle (6.7,-0.6);
+		\node[red!70, font=\bfseries] at (7.5,1) {Ciclo};
+	\end{tikzpicture}
+	\caption{Custos reduzidos após Iteração 2. Os novos arcos justos são \((r,b)\) e \((a,d)\).
+		O ciclo \(\{c,d\}\) está destacado em vermelho.}
+	\label{fig:frank-iter2}
+\end{figure}
+
+Agora todos os vértices não-raiz possuem ao menos um arco justo entrando. O conjunto
+atual de arcos justos é:
+\[
+	A_0 = \{(r,a), (r,b), (a,c), (c,d), (d,c), (a,d), (b,e)\}.
+\]
+
+Entretanto, \(A_0\) contém o ciclo \(C = \{c,d\}\). Não temos uma \(r\)-arborescência ainda.
+
+\textbf{Fase 2: Contração e Construção da Arborescência}
+
+Como há um ciclo nos arcos justos, procedemos com a contração. Contraímos o ciclo
+\(C = \{c,d\}\) em um supervértice \(x_C\), obtendo o dígrafo contraído \(D'\):
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[>=Stealth, scale=1.1]
+		\tikzset{
+			vtx/.style={circle, draw,fill=blue!8, thick, inner sep=1.2pt, minimum size=7mm},
+			vtxC/.style={circle, draw=red!70, fill=red!10, thick, inner sep=1.2pt, minimum size=9mm},
+			tight/.style={->, very thick, draw=blue!70},
+			loose/.style={->, semithick, draw=black!35},
+			costB/.style={font=\small, fill=white, inner sep=1.5pt, text=blue!70},
+			costG/.style={font=\small, fill=white, inner sep=1.5pt, text=black!50}
+		}
+
+		\node[vtx] (r) at (0,0) {$r$};
+		\node[vtx] (a) at (3,1.5) {$a$};
+		\node[vtx] (b) at (3,-1.5) {$b$};
+		\node[vtxC] (xc) at (6,0.75) {$x_C$};
+		\node[vtx] (e) at (6,-1.5) {$e$};
+
+		% arcos justos
+		\draw[tight] (r) -- node[costB, above left] {0} (a);
+		\draw[tight] (r) -- node[costB, below left] {0} (b);
+		\draw[tight] (a) -- node[costB, above] {0} (xc);
+		\draw[tight] (b) -- node[costB, below] {0} (e);
+
+		% arcos não justos
+		\draw[loose] (r) .. controls (2,3) and (5,3) .. node[costG, above] {2} (xc);
+		\draw[loose] (b) to[bend right=12] node[costG, left] {3} (a);
+		\draw[loose] (xc) -- node[costG, right] {2} (e);
+	\end{tikzpicture}
+	\caption{Dígrafo contraído \(D'\) após contrair o ciclo \(C = \{c,d\}\) no supervértice \(x_C\).
+		Observe que \(a\) tem dois arcos justos entrando em \(x_C\): um vindo de \(a\) (correspondente a \((a,c)\))
+		e outro de \(r\) (correspondente a \((r,c)\) no original, mas com custo 2).}
+	\label{fig:frank-contraction}
+\end{figure}
+
+No dígrafo contraído \(D'\), os arcos justos formam uma \(r\)-arborescência:
+\[
+	T' = \{(r,a), (r,b), (a,x_C), (b,e)\}.
+\]
+
+\textbf{Expansão:} O arco \((a,x_C) \in T'\) entra no supervértice \(x_C\). No dígrafo original,
+esse arco corresponde a \((a,c)\). Para expandir, removemos um arco do ciclo \(C\) que entra
+em \(c\). O ciclo é \(\{(c,d), (d,c)\}\), e o arco entrando em \(c\) é \((d,c)\). Removemos
+\((d,c)\) e mantemos \((c,d)\). A arborescência final é:
+\[
+	T = \{(r,a), (r,b), (a,c), (c,d), (b,e)\}.
+\]
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[>=Stealth, scale=1.1]
+		\tikzset{
+			vtx/.style={circle, draw,fill=blue!8, thick, inner sep=1.2pt, minimum size=7mm},
+			chosen/.style={->, ultra thick, draw=blue!70},
+			other/.style={->, semithick, draw=black!25},
+			costB/.style={font=\small, fill=white, inner sep=1.5pt, text=blue!70},
+			costG/.style={font=\small, fill=white, inner sep=1.5pt, text=black!40}
+		}
+
+		\node[vtx] (r) at (0,0) {$r$};
+		\node[vtx] (a) at (3,2) {$a$};
+		\node[vtx] (b) at (3,-2) {$b$};
+		\node[vtx] (c) at (6,2) {$c$};
+		\node[vtx] (d) at (6,0) {$d$};
+		\node[vtx] (e) at (6,-2) {$e$};
+
+		% arborescência ótima
+		\draw[chosen] (r) -- node[costB, above left] {2} (a);
+		\draw[chosen] (r) -- node[costB, below left] {3} (b);
+		\draw[chosen] (a) -- node[costB, above] {1} (c);
+		\draw[chosen] (c) to[bend left=15] node[costB, right] {1} (d);
+		\draw[chosen] (b) -- node[costB, below] {2} (e);
+
+		% outros arcos
+		\draw[other] (r) .. controls (2,3.5) and (5,3.5) .. node[costG, above] {7} (c);
+		\draw[other] (a) -- node[costG, right] {4} (d);
+		\draw[other] (b) to[bend right=15] node[costG, left] {5} (a);
+		\draw[other] (d) to[bend left=15] node[costG, left] {1} (c);
+		\draw[other] (d) -- node[costG, right] {3} (e);
+		\draw[other] (c) .. controls (7.5,2.5) and (7.5,-2.5) .. node[costG, right] {6} (e);
+	\end{tikzpicture}
+	\caption{Arborescência ótima final \(T\) com custo total \(2+3+1+1+2 = 9\).
+		Os arcos da arborescência estão destacados em azul grosso.}
+	\label{fig:frank-final}
+\end{figure}
+
+\subsection*{Resumo do Exemplo}
+
+Este exemplo ilustrou todas as principais características do algoritmo de András Frank:
+
+\begin{enumerate}
+	\item \textbf{Iteração inicial:} Cada vértice é processado individualmente, reduzindo custos
+	      para criar arcos justos.
+	\item \textbf{Formação de ciclo:} Os arcos \((c,d)\) e \((d,c)\) formaram um ciclo justo.
+	\item \textbf{Identificação de SCCs:} O ciclo \(\{c,d\}\) foi identificado como uma
+	      componente fortemente conexa que é um subconjunto minimal.
+	\item \textbf{Segunda iteração:} Novos arcos justos foram criados processando o subconjunto
+	      \(\{c,d\}\) como uma unidade.
+	\item \textbf{Contração e expansão:} O ciclo foi contraído, o problema resolvido recursivamente,
+	      e a solução expandida para obter a arborescência ótima.
+\end{enumerate}
+
+\subsection*{Conceitos Fundamentais}
+
+\textbf{Custos reduzidos e arcos justos:} Durante a execução, os custos dos arcos são
+progressivamente reduzidos. Um arco é \textbf{justo} quando seu custo reduzido atinge zero.
+A arborescência final é formada exclusivamente por arcos justos.
+
+\textbf{Subconjuntos minimais:} Um conjunto \(X \subseteq V \setminus \{r\}\) é \textbf{minimal}
+se não possui arcos justos entrando e é uma componente fortemente conexa no grafo de arcos justos.
+Inicialmente, cada vértice é minimal. Após criar arcos justos, ciclos formam componentes
+não-triviais que são tratadas como unidades.
+
+\textbf{Interpretação dual:} Subtrair \(\delta(X)\) dos arcos entrando em \(X\) equivale
+a aumentar potenciais duais \(y(v)\) para \(v \in X\) e trabalhar com custos reduzidos
+\(c_y(u,v) = c_{\text{original}}(u,v) - y(v)\). A implementação opera diretamente sobre
+custos, mas a equivalência é útil para provas de corretude.
 
 \subsection*{Construção da Arborescência}
 
@@ -1400,56 +1472,56 @@ def andras_frank_algorithm(D):
 Aqui ilustraremos cada fase do algoritmo de András Frank: inicialização dos potenciais, iterações de elevação, construção de \(A_0\), e formação da arborescência final. Utilizaremos o dígrafo \(D_{32}\) estendido com a raiz \(r_0\), mostrado na Figura~\ref{fig:frank-exemplo-inicial}.
 
 \begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[>=Stealth, scale=0.9, every node/.style={scale=0.9}]
-		\tikzset{
-			vtx/.style={circle, draw, fill=blue!8, thick, inner sep=1.2pt, minimum size=6.5mm},
-			vtxRoot/.style={circle, draw, fill=red!15, thick, inner sep=1.2pt, minimum size=6.5mm},
-			arc/.style={->, thick, gray!60},
-			cost/.style={font=\scriptsize, fill=white, inner sep=1pt, rounded corners=1pt}
-		}
+\centering
+\begin{tikzpicture}[>=Stealth, scale=0.9, every node/.style={scale=0.9}]
+	\tikzset{
+		vtx/.style={circle, draw, fill=blue!8, thick, inner sep=1.2pt, minimum size=6.5mm},
+		vtxRoot/.style={circle, draw, fill=red!15, thick, inner sep=1.2pt, minimum size=6.5mm},
+		arc/.style={->, thick, gray!60},
+		cost/.style={font=\scriptsize, fill=white, inner sep=1pt, rounded corners=1pt}
+	}
 
-		\node[font=\bfseries, blue!80!black] at (3, 4.5) {Dígrafo inicial $D$ com raiz $r_0$};
+	\node[font=\bfseries, blue!80!black] at (3, 4.5) {Dígrafo inicial $D$ com raiz $r_0$};
 
-		% Raiz
-		\node[vtxRoot] (r0) at (3, 3) {$r_0$};
+	% Raiz
+	\node[vtxRoot] (r0) at (3, 3) {$r_0$};
 
-		% Vértices camada 1
-		\node[vtx] (u1) at (0, 1.5) {$u_1$};
-		\node[vtx] (u2) at (3, 1.5) {$u_2$};
-		\node[vtx] (u3) at (6, 1.5) {$u_3$};
+	% Vértices camada 1
+	\node[vtx] (u1) at (0, 1.5) {$u_1$};
+	\node[vtx] (u2) at (3, 1.5) {$u_2$};
+	\node[vtx] (u3) at (6, 1.5) {$u_3$};
 
-		% Vértices camada 2
-		\node[vtx] (v1) at (1, 0) {$v_1$};
-		\node[vtx] (v2) at (3, 0) {$v_2$};
-		\node[vtx] (v3) at (5, 0) {$v_3$};
+	% Vértices camada 2
+	\node[vtx] (v1) at (1, 0) {$v_1$};
+	\node[vtx] (v2) at (3, 0) {$v_2$};
+	\node[vtx] (v3) at (5, 0) {$v_3$};
 
-		% Arcos da raiz
-		\draw[arc] (r0) -- node[cost, left, pos=0.4] {1} (u1);
-		\draw[arc] (r0) -- node[cost, right] {2} (u2);
-		\draw[arc] (r0) -- node[cost, right, pos=0.4] {1} (u3);
+	% Arcos da raiz
+	\draw[arc] (r0) -- node[cost, left, pos=0.4] {1} (u1);
+	\draw[arc] (r0) -- node[cost, right] {2} (u2);
+	\draw[arc] (r0) -- node[cost, right, pos=0.4] {1} (u3);
 
-		% Arcos camada 1
-		\draw[arc] (u1) to[bend left=15] node[cost, above] {1} (u2);
-		\draw[arc] (u2) to[bend left=15] node[cost, above] {3} (u3);
+	% Arcos camada 1
+	\draw[arc] (u1) to[bend left=15] node[cost, above] {1} (u2);
+	\draw[arc] (u2) to[bend left=15] node[cost, above] {3} (u3);
 
-		% Arcos entrando camada 2
-		\draw[arc] (u1) -- node[cost, left] {3} (v1);
-		\draw[arc] (u2) -- node[cost, right] {2} (v2);
-		\draw[arc] (u3) -- node[cost, right] {4} (v3);
-		\draw[arc] (u1) to[bend right=20] node[cost, below, pos=0.3] {5} (v2);
+	% Arcos entrando camada 2
+	\draw[arc] (u1) -- node[cost, left] {3} (v1);
+	\draw[arc] (u2) -- node[cost, right] {2} (v2);
+	\draw[arc] (u3) -- node[cost, right] {4} (v3);
+	\draw[arc] (u1) to[bend right=20] node[cost, below, pos=0.3] {5} (v2);
 
-		% Arcos internos camada 2
-		\draw[arc] (v1) -- node[cost, above] {1} (v2);
-		\draw[arc] (v2) -- node[cost, above] {2} (v3);
+	% Arcos internos camada 2
+	\draw[arc] (v1) -- node[cost, above] {1} (v2);
+	\draw[arc] (v2) -- node[cost, above] {2} (v3);
 
-		% Arco retorno
-		\draw[arc] (v1) to[bend right=30] node[cost, left, pos=0.3] {2} (u1);
+	% Arco retorno
+	\draw[arc] (v1) to[bend right=30] node[cost, left, pos=0.3] {2} (u1);
 
-		\node[font=\small, gray!70!black] at (3, -1.2) {Pesos originais $c(u,v)$};
-	\end{tikzpicture}
-	\caption{Dígrafo inicial \(D\) com raiz \(r_0\) e 6 vértices adicionais. O dígrafo contém múltiplos arcos com pesos variados. A Fase~1 do algoritmo iniciará com potenciais \(y(v) = 0\) para todos os vértices, correspondendo aos custos reduzidos iniciais \(c_y(u,v) = c(u,v)\).}
-	\label{fig:frank-exemplo-inicial}
+	\node[font=\small, gray!70!black] at (3, -1.2) {Pesos originais $c(u,v)$};
+\end{tikzpicture}
+\caption{Dígrafo inicial \(D\) com raiz \(r_0\) e 6 vértices adicionais. O dígrafo contém múltiplos arcos com pesos variados. A Fase~1 do algoritmo iniciará com potenciais \(y(v) = 0\) para todos os vértices, correspondendo aos custos reduzidos iniciais \(c_y(u,v) = c(u,v)\).}
+\label{fig:frank-exemplo-antigo-inicial}
 \end{figure}
 
 \paragraph*{Fase 1 — Iteração 1:} O algoritmo inicia com todos os potenciais \(y(v) = 0\) e \(D_0\) vazio (sem arcos justos). Calcula-se as componentes fortemente conexas de \(D_0\): cada vértice forma sua própria componente. As fontes são todos os vértices exceto \(r_0\). Para o conjunto \(X = \{u_1, u_2, u_3\}\), identifica-se os arcos entrando: \((r_0, u_1)\) com peso 1, \((r_0, u_2)\) com peso 2, \((r_0, u_3)\) com peso 1. O mínimo é \(\Delta(X) = 1\). Subtraindo esse valor, os arcos \((r_0, u_1)\) e \((r_0, u_3)\) tornam-se justos (peso 0) e são adicionados a \(A_0\).
@@ -1496,14 +1568,14 @@ Aqui ilustraremos cada fase do algoritmo de András Frank: inicialização dos p
 			\draw[arc] (r0b) -- node[cost, right] {1} (u2b);
 			\draw[arcTight] (r0b) -- node[costTight, right, pos=0.4] {0} (u3b);
 
-			\node[font=\small, blue!70!black] at (2, 0.5) {2 arcos adicionados a $A_0$};
+			\node[font=\small, blue!70!black] at (2, 0.5) {2 arcos adicionados a $A\_0$};
 		\end{scope}
 	\end{tikzpicture}
-	\caption{Fase~1, Iteração 1: Elevação de potenciais para \(X_1 = \{u_1, u_2, u_3\}\). À esquerda, o conjunto \(X_1\) (em laranja) sem arcos justos entrando. Calcula-se \(\Delta(X_1) = \min\{1, 2, 1\} = 1\). À direita, após subtrair \(\Delta(X_1)\), os arcos \((r_0, u_1)\) e \((r_0, u_3)\) tornam-se \textcolor{blue!70!black}{justos} (custo reduzido 0) e são adicionados a \(A_0\).}
+	\caption{Fase~1, Iteração 1: Elevação de potenciais para \(X\_1 = \{u\_1, u\_2, u\_3\}\). À esquerda, o conjunto \(X\_1\) (em laranja) sem arcos justos entrando. Calcula-se \(\Delta(X\_1) = \min\{1, 2, 1\} = 1\). À direita, após subtrair \(\Delta(X_1)\), os arcos \((r\_0, u\_1)\) e \((r\_0, u\_3)\) tornam-se \textcolor{blue!70!black}{justos} (custo reduzido 0) e são adicionados a \(A\_0\).}
 	\label{fig:frank-exemplo-iter1}
 \end{figure}
 
-\paragraph*{Fase 1 — Iteração 2:} Com \(A_0 = \{(r_0, u_1), (r_0, u_3)\}\), as componentes fortemente conexas são: \(\{r_0, u_1, u_3\}\) e \(\{u_2\}\), \(\{v_1\}\), \(\{v_2\}\), \(\{v_3\}\). A fonte (excluindo a raiz) é \(\{u_2\}\). Para \(X = \{u_2\}\), o único arco entrando é \((r_0, u_2)\) com peso atual 1 (após iteração anterior). Portanto \(\Delta(X) = 1\), e após subtração, \((r_0, u_2)\) torna-se justo. Também na mesma iteração, para \(X = \{v_1, v_2, v_3\}\), calcula-se \(\Delta(X) = \min\{3, 2, 4, 5\} = 2\), e os arcos são atualizados conforme ilustrado.
+\paragraph*{Fase 1 — Iteração 2:} Com \(A\_0 = \{(r\_0, u\_1), (r\_0, u\_3)\}\), as componentes fortemente conexas são: \(\{r\_0, u\_1, u\_3\}\) e \(\{u\_2\}\), \(\{v\_1\}\), \(\{v\_2\}\), \(\{v\_3\}\). A fonte (excluindo a raiz) é \(\{u\_2\}\). Para \(X = \{u\_2\}\), o único arco entrando é \((r\_0, u\_2)\) com peso atual 1 (após iteração anterior). Portanto \(\Delta(X) = 1\), e após subtração, \((r\_0, u\_2)\) torna-se justo. Também na mesma iteração, para \(X = \{v\_1, v\_2, v\_3\}\), calcula-se \(\Delta(X) = \min\{3, 2, 4, 5\} = 2\), e os arcos são atualizados conforme ilustrado.
 
 \begin{figure}[H]
 	\centering
