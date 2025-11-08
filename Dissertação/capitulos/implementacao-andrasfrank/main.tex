@@ -23,12 +23,17 @@ Assim como no capítulo anterior, adotamos a terminologia de \(r\)-digrafo ponde
 $r$ é um vértice de $D$, $\delta^-(r) = \varnothing$
 e $D$ possui uma $r$-arborescência.
 
-Vamos desenvolver as ideias do algoritmo utilizando um exemplo que manifeste todas as
-etapas do algoritmo, incluindo a formação de ciclos por arcos justos e a necessidade
-de contração de componentes fortemente conexas.
+O algoritmo de Frank opera em duas fases principais: (i) redução de custos e (ii) construção da arborescência a partir dos arcos que se tornaram justos (custo reduzido zero).
 
-Considere o dígrafo \(D\) da Figura~\ref{fig:frank-exemplo-inicial} com seis vértices
-\(\{r, a, b, c, d, e\}\) e custos nos arcos cuidadosamente escolhidos para ilustrar
+Na primeira fase, identificamos iterativamente os \emph{subconjuntos minimais} --- subconjuntos
+\(X \subseteq V \setminus \{r\}\) tais que nenhum arco justo entra em \(X\), mas todo subconjunto próprio
+de \(X\) possui ao menos um arco justo entrando. Para cada conjunto minimal \(X\), calculamos
+\(\delta(X)\), o menor custo entre todos os arcos que entram em \(X\), e subtraímos esse valor de todos
+esses arcos, criando ao menos um novo arco justo. Esse processo é repetido até que exista exatamente uma
+\emph{fonte} no grafo de condensação.
+
+Vamos desenvolver essas ideias utilizando um exemplo: considere o dígrafo \(D\) da Figura~\ref{fig:frank-exemplo-inicial} com seis vértices
+\(\{r, a, b, c, d, e\}\) e custos nos arcos para ilustrar
 o comportamento completo do algoritmo.
 
 \begin{figure}[H]
@@ -70,18 +75,8 @@ o comportamento completo do algoritmo.
 	\label{fig:frank-exemplo-inicial}
 \end{figure}
 
-Vamos agora executar o algoritmo de Frank sobre este dígrafo. O algoritmo opera em duas fases principais:
-\textbf{(1) redução de custos} através da identificação de subconjuntos minimais e
-\textbf{(2) construção da arborescência} a partir dos arcos que se tornaram justos (custo reduzido zero).
-
-Na \textbf{primeira fase}, identificamos iterativamente os \emph{subconjuntos minimais} --- subconjuntos
-\(X \subseteq V \setminus \{r\}\) tais que nenhum arco justo entra em \(X\), mas todo subconjunto próprio
-de \(X\) possui ao menos um arco justo entrando. Para cada conjunto minimal \(X\), calculamos
-\(\delta(X)\), o menor custo entre todos os arcos que entram em \(X\), e subtraímos esse valor de todos
-esses arcos, criando ao menos um novo arco justo. Esse processo é repetido até que exista exatamente uma
-\emph{fonte} no grafo de condensação (uma componente fortemente conexa contendo a raiz sem arcos justos entrando).
-
-Inicialmente, como nenhum arco tem custo reduzido zero, cada vértice não-raiz \(v \neq r\) forma
+Vamos agora executar o algoritmo de Frank sobre este dígrafo. 
+Inicialmente, nenhum arco tem custo reduzido zero, cada vértice não-raiz \(v \neq r\) forma
 seu próprio subconjunto minimal \(\{v\}\). No dígrafo da Figura~\ref{fig:frank-exemplo-inicial},
 os subconjuntos minimais iniciais são portanto \(\{a\}\), \(\{b\}\), \(\{c\}\), \(\{d\}\) e \(\{e\}\).
 Para cada um desses conjuntos unitários, encontramos \(\delta(\{v\})\), o menor custo entre todos os arcos
