@@ -2,24 +2,24 @@ import networkx as nx
 import heapq
 
 # TODO: Verificar se precisa mesmo dessa função
-def build_D_zero(D):
-    """
-    Build a directed graph D_zero and from the input directed graph D,
-    where D_zero contains only the edges with weight zero.
+# def build_D_zero(D):
+#     """
+#     Build a directed graph D_zero and from the input directed graph D,
+#     where D_zero contains only the edges with weight zero.
 
-    Parameters:
-    - D: directed graph (DiGraph)
+#     Parameters:
+#     - D: directed graph (DiGraph)
 
-    Returns:
-    - D_zero: directed graph (DiGraph) containing only edges with weight zero ???
-    """
+#     Returns:
+#     - D_zero: directed graph (DiGraph) containing only edges with weight zero ???
+#     """
 
-    D_zero = nx.DiGraph()
+#     D_zero = nx.DiGraph()
 
-    for v in D.nodes():
-        D_zero.add_node(v)
+#     for v in D.nodes():
+#         D_zero.add_node(v)
 
-    return D_zero
+#     return D_zero
 
 
 def get_arcs_entering_X(D, X):
@@ -125,7 +125,8 @@ def phase1(
     D_copy = D_original.copy()
     A_zero = []
     Dual_list = []  # List to store the dual variables (X, z(X))
-    D_zero = build_D_zero(D_copy)
+    D_zero = nx.DiGraph()
+    D_zero.add_nodes_from(D_copy.nodes())
 
     iteration = 0
 
