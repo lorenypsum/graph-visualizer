@@ -1,13 +1,13 @@
 \chapter{A interação humano--computacional em ação: uma aplicação \textit{web} interativa}
 
 
-Discutimos até aqui fundamentos teóricos dos algoritmos, análises de complexidade, resultados empíricos e princípios pedagógicos que justificam o uso de ferramentas interativas. Estabelecemos \emph{o quê} ensinar (Chu–Liu/Edmonds e Frank), \emph{por quê} usar visualizações (redução de carga cognitiva, dual coding, engajamento ativo) e \emph{como} estruturar o design (heurísticas de IHC, visão geral com detalhe sob demanda, feedback imediato).
+Discutimos até aqui fundamentos teóricos dos algoritmos, análises de complexidade, resultados empíricos e princípios pedagógicos que justificam o uso de ferramentas interativas. Estabelecemos \emph{o quê} ensinar (Chu–Liu/Edmonds e Frank), \emph{por quê} usar visualizações (redução de carga cognitiva, engajamento ativo) e \emph{como} estruturar o design (heurísticas de IHC, visão geral com detalhe sob demanda, feedback imediato).
 
 
-Agora, traduzimos esses princípios em código e interface: a aplicação \textit{web} que desenvolvemos busca materializar cada uma das diretrizes discutidas. Isto é, cada botão, cada visualização e cada mensagem de log foi projetada intencionalmente, guiada pelos princípios de IHC e pelas necessidades pedagógicas identificadas.
+Agora, traduzimos esses princípios em código e interface: a aplicação \textit{web} que desenvolvemos busca materializar cada uma das diretrizes discutidas. Isto é, cada botão, cada visualização e cada mensagem de log foi projetada intencionalmente, guiada pelos princípios de IHC e pelas necessidades pedagógicas identificadas, a fim de maximizar a compreensão e o engajamento dos usuários
 
 
-A aplicação \textit{web} interativa foi desenvolvida para ilustrar os algoritmos de Chu–Liu/Edmonds e Frank, permitindo aos usuários acompanhar passo a passo o funcionamento de ambos os métodos. A ferramenta foi projetada com base em princípios de interação humano-computador, visando maximizar a compreensão e o engajamento dos usuários.
+A aplicação \textit{web} interativa foi desenvolvida para ilustrar os algoritmos de Chu–Liu/Edmonds e Frank, permitindo aos usuários acompanhar passo a passo o funcionamento de ambos os métodos. 
 
 \section{Princípios de interação humano-computador}
 
@@ -30,9 +30,11 @@ Eficiência cognitiva envolve minimizar a carga cognitiva dos usuários, facilit
 
 Feedback imediato é crucial para manter os usuários informados sobre o estado do sistema e as consequências de suas ações. Nossa ferramenta oferece feedback visual e textual em tempo real, mostrando como cada ação afeta o grafo e os custos associados, reforçando a compreensão causal.
 
+Nos momentos de processamento de informação também atualizamos a interface para indicar progresso, evitando que o usuário fique incerto sobre o estado atual.
+
 \subsection{Engajamento ativo}
 
-Engajamento ativo refere-se à participação dos usuários no processo de aprendizagem, incentivando-os a explorar, experimentar e interagir com o sistema. Nossa aplicação promove o engajamento ativo ao permitir que os usuários manipulem o grafo, testem diferentes abordagens e visualizem os resultados de suas ações em tempo real.
+Engajamento ativo refere-se à participação dos usuários no processo de aprendizagem, incentivando-os a explorar, experimentar e interagir com o sistema. Nossa aplicação promove o engajamento ativo ao permitir que os usuários manipulem o grafo, testem diferentes abordagens e visualizem os resultados de suas ações em tempo real, além de acessar descrições passo a passo da execução dos algoritmos.
 
 
 \subsection{Visão geral com detalhe sob demanda}
@@ -84,7 +86,9 @@ A aplicação \textit{web} interativa foi desenvolvida para ilustrar os algoritm
 
 
 \subsection{Visão geral das páginas}
-A aplicação \textit{web} é composta por páginas HTML autônomas carregadas no navegador, cada uma focada em um aspecto: (i) \texttt{home.html} (apresentação / resumo), (ii) \texttt{chuliu.html} (execução passo a passo do algoritmo de Chu--Liu/Edmonds), (iii) \texttt{andrasfrank.html} (estrutura para futura visualização da abordagem primal--dual), (iv) \texttt{draw\_graph.html} (editor livre de grafos), além do componente compartilhado de navegação lateral \texttt{sidebar.html}. Cada página injeta o \texttt{sidebar} dinamicamente e carrega scripts específicos.
+A aplicação \textit{web} é composta por páginas HTML autônomas carregadas no navegador, cada uma focada em um aspecto: (i) \texttt{home.html} (apresentação / resumo), (ii) \texttt{chuliu.html} (execução passo a passo do algoritmo de Chu--Liu/Edmonds), (iii-a) \texttt{andrasfrank_v1.html} (estrutura para futura visualização da abordagem primal--dual em sua primeira implementação), (iii-b) \texttt{andrasfrank_v2.html} (estrutura para futura visualização da abordagem primal--dual em sua primeira implementação), (iv) \texttt{draw\_graph.html} (editor livre de grafos), além do componente compartilhado de navegação lateral \texttt{sidebar.html}. Cada página injeta o \texttt{sidebar} dinamicamente e carrega scripts específicos.
+
+% TODO - Não sei se essa seção precisa da descrição do nome dos arquivos
 
 \subsection{Bibliotecas e dependências}
 
@@ -94,14 +98,14 @@ O desenvolvimento utilizou tecnologias \textit{web} modernas, incluindo HTML5, T
 \begin{itemize}\setlength{\itemsep}{2pt}
 	\item \textbf{Frontend:} HTML5 + Tailwind CSS para composição responsiva e estilos utilitários consistentes.
 	\item \textbf{Execução Python no cliente:} PyScript (carregado via CDN) provê execução de módulos Python (ex.: \texttt{networkx}, \texttt{matplotlib}) sem instalação local, reduzindo barreira de entrada didática.
-	\item \textbf{Bibliotecas centrais:} NetworkX para manipulação de grafos dirigidos; \texttt{matplotlib} para renderização de snapshots; (em páginas avançadas) Cytoscape.js previsto para interação rica (estrutura já importada em \texttt{chuliu.html} / \texttt{andrasfrank.html}).
+	\item \textbf{Bibliotecas centrais:} NetworkX para manipulação de grafos dirigidos; \texttt{matplotlib} para renderização de snapshots; (em páginas avançadas) Cytoscape.js previsto para interação rica (estrutura já importada em \texttt{chuliu.html}, \texttt{andrasfrank_v1.html} e \texttt{andrasfrank_v2.html}).
 	\item \textbf{Empacotamento de estado:} Serialização JSON (formato \texttt{node\_link}) para exportação e reuso analítico.
 	\item \textbf{Isolamento:} Cada página carrega apenas os elementos necessários, evitando \emph{payload} excessivo e minimizando latência de interface (princípio de eficiência cognitiva).
 \end{itemize}
 
 \subsection{Componentes funcionais principais}
 
-A aplicação centraliza-se nas páginas \texttt{chuliu.html} e \texttt{andrasfrank.html}, que permitem executar os algoritmos de Chu--Liu/Edmonds e Frank, respectivamente. A seguir, detalhamos os componentes funcionais principais da interface:
+A aplicação centraliza-se nas páginas \texttt{chuliu.html}, \texttt{andrasfrank_v1.html} e {andrasfrank_v2.html}, que permitem executar os algoritmos de Chu--Liu/Edmonds e Frank (1° e 2° implementação), respectivamente. A seguir, detalhamos os componentes funcionais principais da interface:
 
 \begin{enumerate}\setlength{\itemsep}{2pt}
 	\item \textbf{Editor de Grafo:} inputs para origem, destino e peso + botões de inserção e limpeza (\texttt{add-edge}, \texttt{reset-graph}).
@@ -111,7 +115,7 @@ A aplicação centraliza-se nas páginas \texttt{chuliu.html} e \texttt{andrasfr
 	\item \textbf{Visualização de estados:} área cumulativa (\texttt{graph-area}) onde cada renderização mantém a coerência posicional (layout determinístico) para comparação mental entre passos.
 	\item \textbf{Log textual:} caixa de texto incremental (\texttt{log-output}) correlaciona ações a transformações estruturais (dual coding: texto + imagem).
 	\item \textbf{Exportação:} ação de exportar grafo em JSON para análise posterior ou reimportação.
-	\item \textbf{Incorporação de PDF:} \texttt{tese.html} exibe o \texttt{main.pdf} lado a lado à aplicação, incentivando leitura entrelaçada teoria-execução.
+	\item \textbf{Incorporação de PDF:} \texttt{tese.html} exibe nossa tese lado a lado à aplicação, incentivando leitura entrelaçada teoria-execução. 
 \end{enumerate}
 
 \subsection{Fluxo de interação}
@@ -121,7 +125,7 @@ O fluxo de interação foi projetado para ser linear e intuitivo, guiando o usu�
 \begin{enumerate}\setlength{\itemsep}{2pt}
 	\item Usuário monta ou carrega um grafo de teste.
 	\item Define (ou confirma) o vértice raiz \(r_0\).
-	\item Executa o algoritmo (Chu--Liu/Edmonds): são aplicadas normalizações e seleção de arestas (implementação apresentada em seções anteriores / listagens).
+	\item Executa o algoritmo: são aplicadas normalizações e seleção de arestas (implementação apresentada em seções anteriores / listagens).
 	\item Observa estados sequenciais: cada snapshot reforça invariantes (arestas escolhidas, pesos, estrutura alcançada).
 	\item (Opcional) Exporta o grafo resultante para replicação em notebooks ou comparação com a abordagem dual futura.
 \end{enumerate}
@@ -169,7 +173,8 @@ A estrutura de arquivos da aplicação é organizada da seguinte forma:
 	\item \texttt{main.py}: script Python principal contendo funções de manipulação de grafos e lógica algorítmica.
 	\item \texttt{index.html}: página inicial com resumo e links para outras seções.
 	\item \texttt{chuliu.html}: página dedicada à execução do algoritmo de Chu--Liu/Edmonds.
-	\item \texttt{andrasfrank.html}: página para futura implementação do algoritmo de Frank.
+	\item \texttt{andrasfrank_v1.html}: página dedicada à implementação do algoritmo de Frank (primeira implementação).
+	\item \texttt{andrasfrank_v2.html}: página dedicada à implementação do algoritmo de Frank (segunda implementação).
 	\item \texttt{draw\_graph.html}: editor livre de grafos.
 	\item \texttt{sidebar.html}: componente de navegação lateral compartilhado.
 	\item \texttt{styles.css}: arquivo de estilos customizados (além do Tailwind).
@@ -1009,6 +1014,7 @@ A figura a seguir destaca a tripartição funcional da página: navegação late
 \end{figure}
 \textit{Comentário:} a presença do passo a passo auxilia na compreensão sequencial do algoritmo.
 
+% TODO - REMOVER ESSA PARTE E COLOCAR O ANDRAS FRANK V1 E V2
 \subsection{\texttt{Andrasfrank.html}:} página dedicada ao visualizador do algoritmo de Andras Frank. Inclui um passo a passo guiado para criar um grafo, selecionar o vértice raiz e executar o algoritmo, com feedback visual e textual. Abaixo, apresentamos uma captura de tela da página.
 
 % Screenshot da página Andras Frank
@@ -1242,8 +1248,8 @@ A figura a seguir ilustra a reutilização do padrão de tripartição funcional
 \textit{Comentário:} a consistência reduz custo de alternância ao comparar abordagens; facilita estudos controlados de diferença de entendimento.
 
 
-O ecossistema de páginas cria uma narrativa pedagógica: contextualização (\texttt{home}) \,$\rightarrow$\, experimentação livre (\texttt{draw\_graph}) \,$\rightarrow$\, exploração guiada (\texttt{chuliu}, \texttt{andrasfrank}) \,$\rightarrow$\, consolidação formal (\texttt{tese}). Tal sequência segue princípios de \emph{spiral curriculum} e reduz carga intrínseca inicial.
-
+O ecossistema de páginas cria uma narrativa pedagógica: contextualização (\texttt{home}) \,$\rightarrow$\, experimentação livre (\texttt{draw\_graph}) \,$\rightarrow$\, exploração guiada (\texttt{chuliu}, \texttt{andrasfrank (v1)} e \texttt{andrasfrank (v2)}) \,$\rightarrow$\, consolidação formal (\texttt{tese}). Tal sequência segue princípios de \emph{spiral curriculum} e reduz carga intrínseca inicial.
+% TODO: FALAR COM A LORI SE DE FATO DEVEMOS CITAR O spiral curriculum SEM ANTES INTRODUZIR ELE NA PARTE DA DIDÁTICA.
 
 A figura a seguir sumariza o fluxo e a reutilização arquitetural entre páginas.
 
@@ -1263,7 +1269,7 @@ A figura a seguir sumariza o fluxo e a reutilização arquitetural entre página
 		\draw[->] (sb) -- (ts);
 		\foreach \x in {home,draw,ch,afp,ts} {\draw[->] (sb) -- (\x);}
 	\end{tikzpicture}
-	\caption{A \texttt{barra lateral} injeta navegação consistente; páginas de algoritmo formam trilha exploratória (instância livre \textrightarrow algoritmo 1 \textrightarrow algoritmo 2).}
+	\caption{A \texttt{barra lateral} injeta navegação consistente; páginas de algoritmo formam trilha exploratória (instância livre \textrightarrow algoritmo 1 \textrightarrow algoritmo 2 \textrightarrow algoritmo 3).}
 \end{figure}
 
 
@@ -1277,4 +1283,4 @@ A arquitetura modular e reutilizável das páginas \textit{web} facilita manuten
 \textcolor{red}{Os resultados indicaram que a maioria dos usuários considerou a interface intuitiva e fácil de navegar. O passo a passo foi particularmente elogiado por facilitar a compreensão dos algoritmos, permitindo que os usuários acompanhassem cada etapa do processo. Alguns participantes sugeriram melhorias, como a inclusão de mais exemplos de grafos e a possibilidade de salvar e carregar sessões de trabalho.}
 
 \section{Comentários finais sobre a Interface \textit{web}}
-Este capítulo detalhou a implementação técnica do visualizador interativo de arborescências dirigidas, cobrindo desde a arquitetura \textit{web} até a integração de algoritmos complexos. A escolha de tecnologias modernas como HTML5, CSS3, JavaScript e PyScript permitiu criar uma interface intuitiva e responsiva, facilitando a experimentação e compreensão dos algoritmos de Chu-Liu/Edmonds e Andras Frank. A reutilização de padrões arquiteturais entre páginas promoveu consistência cognitiva, enquanto a estrutura modular facilitou manutenção e extensão futura. A avaliação preliminar indica que a ferramenta atende aos objetivos pedagógicos, embora melhorias possam ser feitas com base no feedback dos usuários. No próximo capítulo, discutiremos as considerações finais e perspectivas futuras para o projeto.
+Este capítulo detalhou a implementação técnica do visualizador interativo de arborescências dirigidas, cobrindo desde a arquitetura \textit{web} até a integração de algoritmos complexos. A escolha de tecnologias modernas como HTML5, CSS3, JavaScript e PyScript permitiu criar uma interface intuitiva e responsiva, facilitando a experimentação e compreensão dos algoritmos de Chu-Liu/Edmonds e Andras Frank. A reutilização de padrões arquiteturais entre páginas promoveu consistência cognitiva, enquanto a estrutura modular facilitou manutenção e extensão futura. A avaliação preliminar indica que a ferramenta atende aos objetivos pedagógicos, embora melhorias possam ser feitas, como descrito anteriormente. No próximo capítulo, discutiremos as considerações finais e perspectivas futuras para o projeto.
