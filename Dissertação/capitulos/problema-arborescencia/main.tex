@@ -14,8 +14,6 @@ Formalmente, o problema consiste em encontrar um conjunto de arcos \(B \subseteq
 
 Este problema pode ser visto como uma generalização do problema da árvore geradora mínima para digrafos, mas apresenta características distintas devido à natureza direcionada dos arcos.
 
-\section{Algoritmos clássicos}
-
 Dois algoritmos fundamentais resolvem eficientemente o problema da arborescência de custo mínimo: o algoritmo de Chu--Liu--Edmonds e o algoritmo de András Frank.
 
 \subsection{Algoritmo de Chu--Liu--Edmonds}
@@ -23,12 +21,9 @@ Dois algoritmos fundamentais resolvem eficientemente o problema da arborescênci
 Proposto independentemente por Chu e Liu \cite{chu1965} e por Edmonds \cite{edmonds1967optimum}, este algoritmo opera iterativamente selecionando para cada vértice \(v \neq r\) um arco de entrada de custo mínimo. Quando ciclos são detectados, o algoritmo contrai o ciclo em um único vértice, ajusta os custos apropriadamente e resolve recursivamente o problema no grafo contraído. Ao final, expande os ciclos contraídos para reconstruir a arborescência ótima no grafo original.
 
 \subsection{Algoritmo de András Frank}
-
 O algoritmo de Frank \cite{frank1981,frank2014} adota uma abordagem diferente, operando em duas fases distintas. A Fase~I identifica \emph{subconjuntos minimais} via componentes fortemente conexas, reduzindo custos até criar arcos de custo reduzido zero. A Fase~II constrói a arborescência a partir desses arcos, garantindo otimalidade.
 
 Esta abordagem processa múltiplos vértices simultaneamente, explorando a estrutura do grafo de forma mais global. A complexidade temporal também é \(O(mn)\), com possibilidade de melhoria para \(O(m \log n)\) usando filas de prioridade na Fase~II.
-
-\section{Equivalência e diferenças estruturais}
 
 Embora ambos os algoritmos produzam soluções ótimas, diferem significativamente em sua organização interna. Chu--Liu--Edmonds opera vértice a vértice com contrações imediatas de ciclos, enquanto Frank identifica subconjuntos minimais processando múltiplos vértices simultaneamente.
 
