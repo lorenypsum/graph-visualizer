@@ -38,7 +38,7 @@
 \contentsline {figure}{\numberline {37}{\ignorespaces Ilustração da função \texttt {update\_weights\_in\_X} em \(D_{32}\). À esquerda, o dígrafo antes da atualização, com os arcos \textcolor {red!70!black}{em vermelho} entrando em \(X\) e \(\Delta (X) = 2\). À direita, após subtrair \(\Delta (X)\) de cada arco entrando em \(X\): o peso $(u_1, v_1)$ reduz de 3 para 1, $(u_2, v_2)$ de 2 para \textcolor {blue!70!black}{\textbf {0}} (torna-se justo), $(u_3, v_3)$ de 4 para 2, e $(u_1, v_2)$ de 5 para 3. O arco justo é adicionado a \(A_0\) e \(D_0\). Note que os arcos da raiz e arcos internos/externos a \(X\) permanecem inalterados.}}{64}{figure.caption.61}%
 \contentsline {figure}{\numberline {38}{\ignorespaces Distribuição de tempos: Fase~I apresenta maior mediana (\(0{,}084\) s) e variabilidade.}}{79}{figure.caption.65}%
 \contentsline {figure}{\numberline {39}{\ignorespaces Escalonamento temporal em função de \(|A|\): crescimento aproximadamente linear.}}{79}{figure.caption.66}%
-\contentsline {figure}{\numberline {40}{\ignorespaces Aceleração (\emph {speedup}) na Fase~II: v2 (\emph {heap}/fila de prioridade) \(4{,}59\times \) mais rápida que v1.}}{80}{figure.caption.67}%
+\contentsline {figure}{\numberline {40}{\ignorespaces Aceleração na Fase~II: v2 (\emph {heap}) \(4{,}59\times \) mais rápida que v1.}}{79}{figure.caption.67}%
 \contentsline {figure}{\numberline {41}{\ignorespaces Contrações e profundidade em Chu--Liu: mediana 1, média \(2{,}29\).}}{80}{figure.caption.68}%
 \contentsline {figure}{\numberline {42}{\ignorespaces Pico de memória na Fase~I: mediana \(539\) kB.}}{80}{figure.caption.69}%
-\contentsline {figure}{\numberline {43}{\ignorespaces Tamanho de \(D_0\) versus \(|V|\): relação linear confirma \(|A_0| = O(|V|)\).}}{81}{figure.caption.70}%
+\contentsline {figure}{\numberline {43}{\ignorespaces Tamanho de \(D_0\) versus \(|V|\): relação linear confirma \(|A_0| = O(|V|)\).}}{80}{figure.caption.70}%
