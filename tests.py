@@ -9,7 +9,6 @@ import networkx as nx
 from typing import Optional, Callable
 
 from andrasfrank import (
-    andras_frank_algorithm,
     phase1,
     phase2,
     phase2_v2,
@@ -18,7 +17,7 @@ from andrasfrank import (
 from chuliu import chuliu_edmonds, remove_edges_to_r0
 
 # Deafult parameters
-NUM_TESTS = 10
+NUM_TESTS = 2000
 MIN_VERTICES = 100
 MAX_VERTICES = 200
 PESO_MIN = 1
@@ -144,7 +143,7 @@ def volume_tester(
     log_txt_path=LOG_TXT_PATH,
     draw_fn: Optional[Callable] = None,
     log: Optional[Callable[[str], None]] = None,
-    boilerplate: bool = False,
+    boilerplate: bool = True,
     lang=LANG,
     family: str = FAMILY,
 ):
@@ -476,7 +475,7 @@ def volume_tester(
         log_console_and_file(f"\n Testes com falha: {failure_count}")
         log_console_and_file(f"\n Custo ChuLiu > Frank: {chuliu_greater_than_frank}")
         log_console_and_file(f"\n Custo Frank > ChuLiu: {frank_greater_than_chuliu}")
-
+        
 
 volume_tester(
     num_tests=NUM_TESTS,
