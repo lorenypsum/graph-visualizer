@@ -1,131 +1,83 @@
 \chapter{Discussão e Resultados: Chu-liu/Edmonds vs. Frank}
 
-Neste capítulo, apresentamos uma análise comparativa entre os algoritmos de Chu--Liu--Edmonds e András Frank para o problema da arborescência de custo mínimo. Ambos os métodos produzem soluções ótimas, mas diferem fundamentalmente em sua organização conceitual e implementação prática.
-
-O algoritmo de Chu--Liu--Edmonds adota uma abordagem combinatória direta, operando através de reduções de custo por vértice seguidas de contração de ciclos com ajustes recursivos. O método de Frank, por sua vez, estrutura-se como um algoritmo primal-dual em duas fases distintas: redução de custos através da identificação de subconjuntos minimais e construção da arborescência a partir dos arcos de custo reduzido zero.
-
-Embora ambos implementem essencialmente a mesma mecânica fundamental de normalização, contração e expansão, a organização dessas operações difere significativamente entre os dois métodos. O propósito deste capítulo é elucidar essas diferenças e apresentar uma avaliação empírica de seus desempenhos relativos.
+Neste capítulo, apresentamos uma análise comparativa entre os algoritmos de Chu--Liu--Edmonds e András Frank para o problema da arborescência de custo mínimo. Ambos produzem soluções ótimas, mas diferem em sua organização: Chu--Liu--Edmonds opera vértice a vértice com contrações imediatas de ciclos, enquanto Frank identifica subconjuntos minimais via componentes fortemente conexas, processando múltiplos vértices simultaneamente em duas fases distintas. O objetivo é elucidar essas diferenças e avaliar empiricamente seus desempenhos.
 
 \section{Análise comparativa dos algoritmos}
 
-O algoritmo de Chu--Liu--Edmonds \cite{chu1965,edmonds1967optimum} constitui o método clássico para determinar uma arborescência de custo mínimo em digrafos com pesos arbitrários. O algoritmo opera recursivamente: para cada vértice \(v \neq r\), seleciona um arco de entrada de custo mínimo, forma o conjunto resultante, detecta ciclos dirigidos e os contrai em supervértices, ajustando os custos dos arcos incidentes. O processo se repete até eliminar todos os ciclos, momento em que a arborescência é extraída e os supervértices são expandidos.
+O algoritmo de Chu--Liu--Edmonds \cite{chu1965,edmonds1967optimum} opera recursivamente selecionando para cada vértice \(v \neq r\) um arco de entrada de custo mínimo, contraindo ciclos detectados e ajustando custos, até eliminar todos os ciclos.
 
-O algoritmo de András Frank \cite{frank1981,frank2014} baseia-se em duas operações fundamentais: (i) a redução gulosa dos custos dos arcos através da identificação de subconjuntos minimais e (ii) a contração de ciclos. A operação de redução é essencialmente a mesma do algoritmo de Chu--Liu--Edmonds --- subtrair o menor custo de arco entrando em cada conjunto --- mas enquanto Chu--Liu--Edmonds opera vértice a vértice, o algoritmo de Frank identifica \emph{subconjuntos minimais} através de componentes fortemente conexas, processando todos simultaneamente a cada iteração. O algoritmo opera em duas fases: (i) redução de custos até criar arcos justos (custo reduzido zero) e (ii) construção da arborescência a partir desses arcos justos.
+O algoritmo de Frank \cite{frank1981,frank2014} também reduz custos subtraindo o mínimo de entrada, mas identifica \emph{subconjuntos minimais} via componentes fortemente conexas, processando múltiplos vértices simultaneamente. Opera em duas fases: (i) redução até criar arcos de custo reduzido zero e (ii) construção da arborescência a partir desses arcos.
 
-\subsection{Diferenças estruturais e conceituais}
+Ambos contraem ciclos detectados e expandem ao final, com número de contrações limitado por \(O(n)\) \cite{schrijver2003comb}.
 
-As principais distinções entre os dois métodos podem ser sistematizadas conforme segue:
-
-\paragraph*{Paradigma algorítmico}
-O algoritmo de Chu--Liu--Edmonds adota uma abordagem \emph{primal-combinatória}: para cada vértice \(v \neq r\), seleciona sua melhor entrada, forma o conjunto \(F^*\), e trata ciclos imediatamente por contração com ajuste de custos, repetindo até eliminar todos os ciclos. O método de Frank explicita uma visão \emph{primal-dual} estruturada em duas fases distintas: (I) identificação iterativa de subconjuntos minimais através de componentes fortemente conexas e redução de custos para criar arcos justos, garantindo ao menos uma entrada de custo reduzido zero por vértice; (II) extração da arborescência utilizando exclusivamente arcos justos, tratando ciclos por contração e expansão \cite{frank1981,frank2014,schrijver2003comb}.
-
-\paragraph*{Tratamento de potenciais}
-No algoritmo de Chu--Liu--Edmonds, a normalização por vértice implementa potenciais \emph{implícitos} através da subtração de custos mínimos de entrada, com atualizações durante o processo de contração. No método de Frank, os potenciais \(\tilde{y}\) constituem entidades \emph{explícitas} obtidas através da identificação de subconjuntos minimais via componentes fortemente conexas. A estrutura laminar dos cortes ativos é fundamental tanto para a prova de correção quanto para a organização da Fase~I.
-
-\paragraph*{Estratégia de construção da solução}
-O algoritmo de Chu--Liu--Edmonds extrai a arborescência ótima ao final do processo recursivo, após todas as contrações e expansões. O método de Frank obtém a solução diretamente do subgrafo \(D_0\) de arcos justos na Fase~II, garantindo que todos os arcos selecionados tenham custo reduzido nulo.
-
-\paragraph*{Gerenciamento de ciclos}
-O algoritmo de Chu--Liu--Edmonds intercala extração e contração: quando \(F^*\) contém um ciclo, este é imediatamente contraído com ajuste de custos, retornando ao mesmo fluxo operacional. O método de Frank trata ciclos de modo análogo: ciclos de arcos de custo reduzido zero surgidos durante o processo são contraídos, resolvendo recursivamente uma instância menor do problema e, em seguida, expandindo a solução para o problema original.
-
-\paragraph*{Fundamentação teórica}
-O método de Frank enfatiza explicitamente a relação primal-dual, com a família laminar de cortes ativos e a condição de complementaridade como elementos centrais da prova de otimalidade. O algoritmo de Chu--Liu--Edmonds adota abordagem mais direta, fundamentando-se na construção combinatória da arborescência através de argumentos de troca e correção.
-
-\paragraph*{Invariantes e prova de corretude}
-A corretude do algoritmo de Chu--Liu--Edmonds baseia-se tradicionalmente em argumentos combinatórios de custo e correção sob operações de contração. O método de Frank fundamenta sua prova na \emph{complementaridade primal-dual}: ao término, todos os arcos selecionados são \emph{justos} (\(c' = 0\)) e cada corte ativo da família laminar é atravessado exatamente uma vez, garantindo a igualdade entre valores primal e dual.
-
-\paragraph*{Processo de seleção}
-No algoritmo de Chu--Liu--Edmonds, a seleção "um arco de entrada por vértice" e a resolução de ciclos ocorrem iterativamente durante todo o processo. No método de Frank, a seleção é realizada sobre o subgrafo \(D_0\) de arcos justos produzido na Fase~I, simplificando a justificativa de otimalidade por manter todas as escolhas sobre arcos de custo reduzido zero.
-
-\paragraph*{Complexidade computacional}
-Ambas as abordagens, em implementações diretas, apresentam complexidade \(O(mn)\). Com estruturas de dados adequadas, variantes conhecidas alcançam \(O(m \log n)\). A formulação dual explícita do método de Frank facilita o raciocínio sobre cortes ativos, laminaridade e otimizações orientadas pela teoria dual.
-
-\subsection{Síntese}
-
-O algoritmo de Chu--Liu--Edmonds implementa o paradigma combinatório clássico: seleção de mínimos, contração de ciclos, ajuste de custos e repetição até convergência. O método de Frank, embora utilize operações similares, organiza-as sob perspectiva primal-dual através da identificação de subconjuntos minimais via componentes fortemente conexas, processando múltiplos conjuntos simultaneamente.
-
-Ambos os métodos são teoricamente equivalentes em termos de otimalidade, diferindo na organização conceitual e nas oportunidades de otimização que cada estrutura oferece.
-
-
-Estabelecidas as distinções teóricas entre os métodos, torna-se necessário investigar como essas diferenças se manifestam na implementação prática. Embora ambas as abordagens garantam otimalidade teórica, suas características de desempenho em instâncias reais podem diferir significativamente.
-
-Para investigar essas questões empiricamente, conduzimos uma análise experimental sistemática comparando as implementações de Chu--Liu--Edmonds e Frank em suas diferentes variantes. Os objetivos desta análise incluem: (i) validação da corretude das implementações, (ii) caracterização do comportamento temporal de cada método, e (iii) verificação empírica de previsões teóricas, como a dominância computacional da Fase~I no método de Frank.
+Logo, os métodos são equivalentes e resolvem o problema de arborescência de custo mínimo, mas adotam estratégias distintas na redução de custos e na construção da solução e nessa sessão experimental buscamos avaliar essas diferenças na prática.
 
 \section{Avaliação experimental}
 
-Para validar a corretude e caracterizar o desempenho dos algoritmos de Chu--Liu--Edmonds e András Frank, conduzimos uma série de experimentos computacionais em instâncias de digrafos direcionados com características variadas. Os experimentos foram estruturados para avaliar três aspectos fundamentais: (i) verificação da corretude das implementações através da comparação de custos ótimos, (ii) análise do comportamento temporal de cada método em função das características dos digrafos, e (iii) validação das condições de complementaridade primal-dual para o método de Frank.
-
-\subsection{Metodologia experimental}
-
-A geração de instâncias seguiu parâmetros controlados para garantir representatividade estatística. Construímos 3583 digrafos enraizados aleatórios com \(|V| \in [100, 200]\) vértices e densidade de arcos \(|A| \in [n, 3n]\), onde \(n = |V|\). Os pesos dos arcos foram definidos como números inteiros uniformemente distribuídos no intervalo \([1, 20]\). A conectividade a partir da raiz \(r_0\) foi assegurada por construção incremental, garantindo que todo vértice \(v \neq r_0\) seja alcançável.
-
-O protocolo experimental implementado no arquivo \texttt{tests.py} compreende as seguintes etapas para cada instância gerada:
-\begin{enumerate}
-    \item Remoção de arcos incidentes em \(r_0\), assegurando compatibilidade com as formulações teóricas;
-    \item Execução do algoritmo de Chu--Liu--Edmonds e registro do custo ótimo e tempo de processamento;
-    \item Execução da Fase~I do método de Frank para obtenção do subgrafo \(D_0\) de arcos de custo reduzido zero;
-    \item Aplicação das duas variantes da Fase~II (implementação direta e otimizada com heap) sobre \(D_0\);
-    \item Verificação da condição de complementaridade primal-dual para ambas as soluções de Frank;
-    \item Registro sistemático de resultados, tempos de execução e métricas estruturais em formato CSV.
-\end{enumerate}
+Conduzimos 2000 experimentos em digrafos enraizados aleatórios com \(|V| \in [100, 200]\) vértices, densidade \(|A| \in [n, 3n]\) arcos e pesos inteiros em \([1, 20]\), garantindo conectividade por construção incremental \cite{schrijver2003comb}. Para cada instância, executamos Chu--Liu--Edmonds e as duas fases de Frank (com variantes v1 e v2 da Fase~II), registrando custos, tempos e métricas estruturais.
 
 \subsection{Resultados}
 
-Nas 3583 instâncias geradas, os três construtores de arborescência retornam sempre o mesmo custo, e as duas verificações da condição de complementaridade (dual) passam em 100\% dos casos. Isso corrobora a corretude das implementações e a equivalência entre \emph{Chu--Liu/Edmonds} e \emph{Frank} no valor ótimo (cf. Seções anteriores e \cite{frank2014,schrijver2003comb}).
+Os 2000 testes confirmaram que todos os métodos retornam sempre o mesmo custo ótimo, com 100\% de sucesso, validando a corretude das implementações e a equivalência teórica entre Chu--Liu/Edmonds e Frank \cite{frank2014,schrijver2003comb}. Além disso, as verificações da condição de otimalidade dual foram bem-sucedidas em todos os casos para ambas as variantes de Frank.
 
-Do ponto de vista de desempenho, a decomposição temporal por etapas evidencia três aspectos principais. Primeiramente, a Fase~I (normalização primal-dual e elevação de potenciais) domina o tempo total para os tamanhos \(|V|\in[100,200]\) e \(|A|\in[n,3n]\): o tempo mediano da Fase~I é 0,084\,s, ao passo que o tempo mediano de \emph{Chu--Liu/Edmonds} é 0,013\,s e as Fases~II constituem uma fração residual (0,004\,s para v1 e 0,001\,s para v2). Em segundo lugar, entre as duas variantes de Fase~II, a versão com heap (v2) é sistematicamente mais rápida que a versão direta (v1). Observamos speedup mediano de 4,59\,$\times$ (com média de 4,65\,$\times$), compatível com a troca de uma varredura sequencial por extrações de menor prioridade em \(O(\log n)\). Finalmente, as estatísticas estruturais do \emph{Chu--Liu/Edmonds} mostram número de contrações e profundidade de recursão pequenos: mediana de 1 contração e profundidade 1, com média de 2,29 em ambas as métricas; isso é consistente com o limite \(O(n)\) para o número de contrações \cite{schrijver2003comb}. O tamanho do subgrafo de arcos justos \(D_0\) cresce aproximadamente linearmente com \(|V|\), como esperado pelo critério de "um arco de entrada justo por vértice". O pico de memória observado na Fase~I apresentou mediana de 539\,kB e média de 568\,kB nas instâncias testadas.
+Quanto ao desempenho temporal, observamos que Chu--Liu/Edmonds apresenta desempenho computacional superior nas instâncias testadas, com tempo mediano significativamente menor que a Fase~I de Frank. A Fase~I, responsável pela identificação de subconjuntos minimais e redução de custos, domina o tempo total de execução do método de Frank, enquanto as Fases~II representam uma fração residual do processamento.
 
-As Figuras~\ref{fig:times-boxplot}--\ref{fig:d0-vs-v} resumem esses achados. O boxplot (Fig.~\ref{fig:times-boxplot}) mostra a distribuição dos tempos de cada etapa; nota-se que a Fase~I concentra a maior variabilidade e mediana mais alta (0,084\,s), enquanto \emph{Chu--Liu/Edmonds} apresenta mediana de 0,013\,s e as Fases~II apresentam medianas de 0,004\,s (v1) e 0,001\,s (v2). A nuvem tempo~vs.~\(|A|\) (Fig.~\ref{fig:time-vs-edges}) indica crescimento aproximadamente linear nas faixas testadas. O histograma de speedup (Fig.~\ref{fig:speedup}) evidencia vantagem consistente da variante com heap na Fase~II, com mediana de 4,59\,$\times$. Por fim, as distribuições de contrações/profundidade (Fig.~\ref{fig:contr-depth}) mostram mediana de 1 e média de 2,29, enquanto a distribuição de pico de memória (Fig.~\ref{fig:peakmem}) apresenta mediana de 539\,kB. O gráfico \(|A(D_0)|\)~vs.~\(|V|\) (Fig.~\ref{fig:d0-vs-v}) sugere proporcionalidade entre o tamanho de \(D_0\) e o número de vértices.
+A comparação entre as duas variantes da Fase~II revela ganho expressivo com o uso de \emph{heap} (fila de prioridade). A versão v2 apresenta aceleração (\emph{speedup}) consistente sobre a versão v1, confirmando empiricamente a vantagem da estrutura de dados com complexidade \(O(\log n)\) versus \(O(n)\) por operação de seleção de mínimo.
+
+As métricas estruturais mostram que o número de contrações em Chu--Liu/Edmonds é pequeno (mediana de 1 e média de 2,29), muito abaixo do limite teórico \(O(n)\) \cite{schrijver2003comb}, o que pode indicar que digrafos aleatórios com distribuição uniforme raramente apresentam estruturas cíclicas complexas. O subgrafo \(D_0\) produzido pela Fase~I cresce linearmente com o número de vértices, confirmando a proporcionalidade \(|A_0| = O(|V|)\) prevista teoricamente.
+
+O consumo de memória na Fase~I mantém-se modesto em todas as instâncias testadas, viabilizando a aplicação dos algoritmos mesmo em ambientes com recursos limitados.
+
+As Figuras~\ref{fig:times-boxplot}--\ref{fig:d0-vs-v} apresentam os resultados experimentais.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=.85\linewidth]{figures/fig_times_boxplot.png}
-    \caption{Distribuição de tempos por etapa (boxplot): \emph{Chu--Liu}, Fase~I, Fase~II v1 (direta) e Fase~II v2 (heap).}
+    \caption{Distribuição de tempos: Fase~I apresenta maior mediana (\(0{,}084\) s) e variabilidade.}
     \label{fig:times-boxplot}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=.85\linewidth]{figures/fig_time_vs_edges_scatter.png}
-    \caption{Escalonamento temporal em função de \(|A|\): comparação entre \emph{Chu--Liu} e Fase~I.}
+    \caption{Escalonamento temporal em função de \(|A|\): crescimento aproximadamente linear.}
     \label{fig:time-vs-edges}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=.75\linewidth]{figures/fig_speedup_hist.png}
-    \caption{Histograma de speedup na Fase~II (\(\text{v1}/\text{v2}\)): valores maiores que 1 indicam v2 (heap) mais rápida.}
+    \caption{Aceleração (\emph{speedup}) na Fase~II: v2 (\emph{heap}/fila de prioridade) \(4{,}59\times\) mais rápida que v1.}
     \label{fig:speedup}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=.48\linewidth]{figures/fig_contractions_depth.png}
-    \caption{Distribuições do número de contrações e da profundidade de recursão em \emph{Chu--Liu}.}
+    \caption{Contrações e profundidade em Chu--Liu: mediana 1, média \(2{,}29\).}
     \label{fig:contr-depth}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=.75\linewidth]{figures/fig_peakmem_hist.png}
-    \caption{Pico de memória observado na Fase~I (kB).}
+    \caption{Pico de memória na Fase~I: mediana \(539\) kB.}
     \label{fig:peakmem}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=.75\linewidth]{figures/fig_d0_edges_vs_vertices.png}
-    \caption{Tamanho de \(D_0\) (número de arestas de custo reduzido zero) em função de \(|V|\).}
+    \caption{Tamanho de \(D_0\) versus \(|V|\): relação linear confirma \(|A_0| = O(|V|)\).}
     \label{fig:d0-vs-v}
 \end{figure}
 
-Em síntese, os resultados empíricos das 3583 instâncias testadas alinham-se às previsões teóricas: custos coincidem e satisfazem complementaridade em todos os casos; o \emph{Chu--Liu/Edmonds} apresenta boa escalabilidade com tempo mediano de 0,013\,s; a Fase~I de Frank domina o tempo de execução com mediana de 0,084\,s; e a variante com heap reduz significativamente o custo da Fase~II, apresentando speedup mediano de 4,59\,$\times$, refletindo o uso de extrações em \(O(\log n)\). Essas observações reforçam o quadro de \cite{frank2014,schrijver2003comb}: a organização primal-dual de Frank torna explícitas as estruturas (cortes ativos, arcos justos) que explicam tanto a corretude quanto caminhos de otimização.
+\subsection{Conclusões}
 
+Os experimentos validam empiricamente as previsões teóricas e revelam características importantes do comportamento prático dos algoritmos. A equivalência de custos em 100\% das instâncias, somada à verificação bem-sucedida das condições de otimalidade dual, confirma a corretude das implementações.
 
-Os testes e as análises apresentados oferecem uma base robusta para a compreensão prática e teórica dos algoritmos de arborescência de custo mínimo, explicitando suas forças e nuances. Compreender os algoritmos teoricamente e validá-los empiricamente, porém, é apenas parte do desafio: como transformar esse conhecimento em aprendizagem efetiva para estudantes e profissionais?
+Chu--Liu/Edmonds demonstra-se mais eficiente para construção direta de arborescências nas instâncias aleatórias testadas, enquanto o método de Frank apresenta overhead na Fase~I devido ao processamento de subconjuntos minimais via componentes fortemente conexas. A versão heap da Fase~II, por sua vez, valida os ganhos assintóticos esperados, demonstrando que melhorias algorítmicas fundamentais se traduzem em benefícios práticos mensuráveis.
 
+O comportamento em digrafos aleatórios é significativamente melhor que os limites teóricos de pior caso, especialmente quanto ao número de contrações. O consumo modesto de memória e a escalabilidade observada viabilizam a aplicação prática de ambos os métodos em contextos com recursos computacionais limitados.
 
-A resposta que propomos envolve tornar essa experiência concreta e interativa. Para isso, desenvolvemos uma aplicação \textit{web} que permite acompanhar, passo a passo, o funcionamento de ambos os algoritmos, evidenciando suas semelhanças e diferenças de forma visual e manipulável.
-
-
-A aprendizagem visual é especialmente útil nesse contexto: observar os algoritmos em ação, ver como normalizações transformam custos, como ciclos são contraídos e expandidos, e como potenciais duais guiam a seleção de arestas ajuda a fixar os conceitos apresentados de maneira que a leitura passiva não consegue. Antes de apresentar a aplicação em si, discutimos os fundamentos didáticos que orientaram seu design, explorando aspectos da didática de conceitos abstratos e princípios de interação humano-computador.
+Compreender os algoritmos teoricamente e validá-los empiricamente é fundamental, mas como transformar esse conhecimento em aprendizagem efetiva? Desenvolvemos uma aplicação \textit{web} que permite acompanhar passo a passo o funcionamento de ambos os algoritmos de forma visual e interativa. O próximo capítulo discute os fundamentos didáticos que orientaram esse design.
