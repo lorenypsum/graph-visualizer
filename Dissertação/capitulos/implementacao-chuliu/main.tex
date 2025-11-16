@@ -190,10 +190,10 @@ Infelizmente, só isso não é suficiente, como mostra a próxima figura.
 
 O ideal, do ponto de vista algorítmico, é dispor de uma forma simples de identificar o subdigrafo \(H\).
 Uma transformação nos custos fornece exatamente isso. Para tanto, introduzimos a noção de
-\textbf{custo \(q\)-reduzido}.
+custo \(q\)-reduzido.
 
 Seja \(q : V \setminus \{r\} \to \mathbb{R}\) (convencionamos \(q(r)=0\)).
-Definimos o \textbf{custo \(q\)-reduzido} \(c_q : A \to \mathbb{R}\) por
+Definimos o custo \(q\)-reduzido \(c_q : A \to \mathbb{R}\) por
 \[
 	c_q(a) := c(a) - q\bigl(\head(a)\bigr), \qquad a \in A.
 \]
@@ -328,13 +328,13 @@ Consequentemente, $S \cdot u$ é um ciclo de $H$.
 		caminho $S \cdot u$ é um ciclo.}
 \end{figure}
 
-A solução consiste em \emph{normalizar os custos por vértice}: para cada \(v\neq r\), subtraímos de todo arco que entra em \(v\) o menor custo entre os arcos que chegam a \(v\). Após esse ajuste (custos reduzidos), cada \(v\neq r\) passa a ter ao menos um arco de custo reduzido zero. Se os arcos de custo zero forem acíclicos, já temos a r-arborescência ótima. Se formarem um ciclo \(C\), \emph{contraímos} \(C\) em um \textbf{supervértice} \(x_C\), ajustamos os custos dos arcos externos e resolvemos recursivamente no digrafo menor.
+A solução consiste em \emph{normalizar os custos por vértice}: para cada \(v\neq r\), subtraímos de todo arco que entra em \(v\) o menor custo entre os arcos que chegam a \(v\). Após esse ajuste (custos reduzidos), cada \(v\neq r\) passa a ter ao menos um arco de custo reduzido zero. Se os arcos de custo zero forem acíclicos, já temos a r-arborescência ótima. Se formarem um ciclo \(C\), \emph{contraímos} \(C\) em um supervértice \(x_C\), ajustamos os custos dos arcos externos e resolvemos recursivamente no digrafo menor.
 
 A seguir, detalhamos essa operação de contração de ciclos.
 
 \subsection*{Contração de ciclos}
 
-Vamos agora formalizar a operação de contração de ciclos. Seja \((D, c, r)\) um \(r\)-digrafo ponderado e seja \(C\) um ciclo dirigido de \(D\) tal que \(r \notin C\). A \textbf{contração de \(C\)} consiste em formar um novo digrafo \(D' = (V', A')\) substituindo todos os vértices de \(C\) por um único \textbf{supervértice} \(x_C\) tal que \(x_C \notin V\). Formalmente, o conjunto de vértices de \(D'\) é dado por
+Vamos agora formalizar a operação de contração de ciclos. Seja \((D, c, r)\) um \(r\)-digrafo ponderado e seja \(C\) um ciclo dirigido de \(D\) tal que \(r \notin C\). A contração de \(C\) consiste em formar um novo digrafo \(D' = (V', A')\) substituindo todos os vértices de \(C\) por um único supervértice \(x_C\) tal que \(x_C \notin V\). Formalmente, o conjunto de vértices de \(D'\) é dado por
 \[
 	V' \;:=\; (V \setminus C) \cup \{x_C\}.
 \]
