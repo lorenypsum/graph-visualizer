@@ -4,7 +4,7 @@ Neste capítulo, apresentamos os conceitos matemáticos fundamentais necessário
 
 \section{Grafos Direcionados}
 
-Um \textbf{grafo dirigido} (ou \textbf{digrafo}) \(D = (V, A)\) é composto por um conjunto \(V\) de \emph{vértices} e um conjunto \(A\) de \emph{arcos} (arestas direcionadas). Cada arco \((u, v) \in A\) conecta o vértice \(u\) (cauda) ao vértice \(v\) (cabeça).
+Um grafo dirigido (ou \emph{digrafo}) \(D = (V, A)\) é composto por um conjunto \(V\) de \emph{vértices} e um conjunto \(A\) de \emph{arcos} (arestas direcionadas). Cada arco \((u, v) \in A\) conecta o vértice \(u\) (cauda) ao vértice \(v\) (cabeça).
 
 \begin{figure}[H]
     \centering
@@ -13,13 +13,13 @@ Um \textbf{grafo dirigido} (ou \textbf{digrafo}) \(D = (V, A)\) é composto por 
     \label{fig:def-digrafo}
 \end{figure}
 
-\subsection{Graus e caminhos}
+\subsection*{Graus e caminhos}
 
-O \textbf{grau de entrada} de um vértice \(v\), denotado \(d^-(v)\), é o número de arcos que chegam a \(v\). O \textbf{grau de saída} \(d^+(v)\) é o número de arcos que saem de \(v\).
+O grau de entrada de um vértice \(v\), denotado \(d^-(v)\), é o número de arcos que chegam a \(v\). O grau de saída \(d^+(v)\) é o número de arcos que saem de \(v\).
 
-Uma \textbf{trilha} (caminho direcionado) é uma sequência de vértices \(P = (v_1, v_2, \ldots, v_{k+1})\) tal que cada par consecutivo \((v_i, v_{i+1})\) é um arco em \(A\).
+Uma trilha (caminho direcionado) é uma sequência de vértices \(P = (v_1, v_2, \ldots, v_{k+1})\) tal que cada par consecutivo \((v_i, v_{i+1})\) é um arco em \(A\).
 
-Um \textbf{circuito} (ciclo direcionado) é uma trilha que começa e termina no mesmo vértice: \(v_1 = v_{k+1}\).
+Um circuito (ciclo direcionado) é uma trilha que começa e termina no mesmo vértice: \(v_1 = v_{k+1}\).
 
 \begin{figure}[H]
     \centering
@@ -28,11 +28,11 @@ Um \textbf{circuito} (ciclo direcionado) é uma trilha que começa e termina no 
     \label{fig:ciclo-direcionado}
 \end{figure}
 
-\subsection{Componentes fortemente conexas}
+\subsection*{Componentes fortemente conexas}
 
-Uma \textbf{componente fortemente conexa} (CFC) é um subdigrafo maximal onde existe um caminho direcionado entre qualquer par de vértices. Dois vértices \(u\) e \(v\) pertencem à mesma CFC se, e somente se, existe caminho de \(u\) para \(v\) e de \(v\) para \(u\).
+Uma componente fortemente conexa (CFC) é um subdigrafo maximal onde existe um caminho direcionado entre qualquer par de vértices. Dois vértices \(u\) e \(v\) pertencem à mesma CFC se, e somente se, existe caminho de \(u\) para \(v\) e de \(v\) para \(u\).
 
-Ao contrair cada CFC a um único vértice, obtemos o \textbf{grafo condensado}, que é sempre um DAG (grafo acíclico dirigido).
+Ao contrair cada CFC a um único vértice, obtemos o grafo condensado, que é sempre um DAG (grafo acíclico dirigido).
 
 \begin{figure}[H]
     \centering
@@ -42,7 +42,7 @@ Ao contrair cada CFC a um único vértice, obtemos o \textbf{grafo condensado}, 
 
 \section{Arborescências}
 
-Uma \textbf{arborescência} enraizada em \(r\) é um digrafo acíclico onde existe exatamente um caminho direcionado de \(r\) para cada vértice \(v \in V \setminus \{r\}\). Equivalentemente, a raiz \(r\) tem grau de entrada zero (\(d^-(r) = 0\)), todo outro vértice tem grau de entrada um (\(d^-(v) = 1\) para \(v \neq r\)) e o número de arcos é \(|A| = |V| - 1\).
+Uma arborescência enraizada em \(r\) é um digrafo acíclico onde existe exatamente um caminho direcionado de \(r\) para cada vértice \(v \in V \setminus \{r\}\). Equivalentemente, a raiz \(r\) tem grau de entrada zero (\(d^-(r) = 0\)), todo outro vértice tem grau de entrada um (\(d^-(v) = 1\) para \(v \neq r\)) e o número de arcos é \(|A| = |V| - 1\).
 
 \begin{figure}[H]
     \centering
@@ -51,9 +51,9 @@ Uma \textbf{arborescência} enraizada em \(r\) é um digrafo acíclico onde exis
     \label{fig:arborescencia}
 \end{figure}
 
-\subsection{Arborescência de custo mínimo}
+\subsection*{Arborescência de custo mínimo}
 
-Dado um digrafo \(D = (V, A)\) com função de custo \(c: A \to \mathbb{R}_{\geq 0}\) e raiz \(r \in V\), uma \textbf{arborescência de custo mínimo} é uma arborescência enraizada em \(r\) que minimiza o custo total:
+Dado um digrafo \(D = (V, A)\) com função de custo \(c: A \to \mathbb{R}_{\geq 0}\) e raiz \(r \in V\), uma arborescência de custo mínimo é uma arborescência enraizada em \(r\) que minimiza o custo total:
 \[
     C(T) = \sum_{a \in A_T} c(a)
 \]
@@ -67,19 +67,17 @@ Dado um digrafo \(D = (V, A)\) com função de custo \(c: A \to \mathbb{R}_{\geq
 
 \section{Condições de Otimalidade}
 
-\subsection{Custos reduzidos}
-
 Para um conjunto \(X \subseteq V \setminus \{r\}\), definimos \(\delta^-(X)\) como o conjunto de arcos que entram em \(X\) vindos de fora:
 \[
     \delta^-(X) = \{(u, v) \in A : u \notin X, v \in X\}
 \]
 
-Dada uma família de pesos \(y(X) \geq 0\) para cada subconjunto não vazio, o \textbf{custo reduzido} de um arco \(a = (u,v)\) é:
+Dada uma família de pesos \(y(X) \geq 0\) para cada subconjunto não vazio, o custo reduzido de um arco \(a = (u,v)\) é:
 \[
     c'(a) = c(a) - \sum_{\substack{X\subseteq V\setminus\{r\},\\ u\notin X,\ v\in X}} y(X)
 \]
 
-\subsection{Teorema de Fulkerson}
+\subsection*{Teorema de Fulkerson}
 
 Uma arborescência \(T\) enraizada em \(r\) tem custo mínimo se, e somente se, existem pesos \(y(X) \geq 0\) tais que:
 \begin{enumerate}
@@ -92,14 +90,38 @@ Este teorema fornece um certificado de otimalidade verificável: os custos reduz
 
 \section{Complexidade Computacional}
 
-\subsection{Notação assintótica}
-
 Expressamos a complexidade de algoritmos usando notação Big-O: \(O(f(n))\) denota limite superior (o tempo cresce no máximo proporcional a \(f(n)\)), \(\Omega(f(n))\) denota limite inferior (o tempo cresce no mínimo proporcional a \(f(n)\)) e \(\Theta(f(n))\) denota limite preciso (o tempo cresce exatamente proporcional a \(f(n)\)).
 
 Para o problema da arborescência de custo mínimo, o algoritmo de Chu--Liu--Edmonds tem complexidade \(O(mn)\) na versão básica e \(O(m \log n)\) com heaps, enquanto o algoritmo de András Frank tem complexidade \(O(mn)\) na versão básica e \(O(m \log n)\) com heaps na Fase II, onde \(n = |V|\) e \(m = |A|\).
 
-\subsection{Algoritmos gulosos}
+\subsection*{Algoritmos gulosos}
 
-Um \textbf{algoritmo guloso} toma decisões locais ótimas em cada etapa, esperando que levem a uma solução globalmente ótima. Suas características incluem escolha local baseada em critério de otimização imediato, decisões definitivas (não reconsidera escolhas anteriores) e eficiência, embora nem sempre garanta otimalidade global.
+Um algoritmo guloso toma decisões locais ótimas em cada etapa, esperando que levem a uma solução globalmente ótima. Suas características incluem escolha local baseada em critério de otimização imediato, decisões definitivas (não reconsidera escolhas anteriores) e eficiência, embora nem sempre garanta otimalidade global.
 
 Os algoritmos de Chu--Liu--Edmonds e Frank são gulosos: selecionam arcos de menor custo (reduzido) e ajustam a estrutura iterativamente até obter a arborescência ótima.
+
+\section{O problema da Arborescência de Custo Mínimo}
+
+O problema da arborescência de custo mínimo é um problema clássico em otimização combinatória e teoria dos grafos. O problema consiste em dado um digrafo enraizado \(D = (V, A)\) com custos \(c: A \to \mathbb{R}\) nos arcos e um vértice raiz \(r \in V\), o objetivo é encontrar uma arborescência de \(r\) que minimize a soma dos custos dos arcos selecionados.
+
+Este problema pode ser visto como uma generalização do problema da árvore geradora mínima para digrafos, mas apresenta características distintas devido à natureza direcionada dos arcos.
+
+Dois algoritmos fundamentais resolvem eficientemente o problema da arborescência de custo mínimo: o algoritmo de Chu--Liu--Edmonds e o algoritmo de András Frank.
+
+\subsection{Algoritmo de Chu--Liu--Edmonds}
+
+Proposto independentemente por Chu e Liu \cite{chu1965} e por Edmonds \cite{edmonds1967optimum}, este algoritmo opera iterativamente selecionando para cada vértice \(v \neq r\) um arco de entrada de custo mínimo. Quando ciclos são detectados, o algoritmo contrai o ciclo em um único vértice, ajusta os custos apropriadamente e resolve recursivamente o problema no grafo contraído. Ao final, expande os ciclos contraídos para reconstruir a arborescência ótima no grafo original.
+
+\subsection{Algoritmo de András Frank}
+O algoritmo de Frank \cite{frank1981,frank2014} adota uma abordagem diferente, operando em duas fases distintas. A Fase~I identifica \emph{subconjuntos minimais} via componentes fortemente conexas, reduzindo custos até criar arcos de custo reduzido zero. A Fase~II constrói a arborescência a partir desses arcos, garantindo otimalidade.
+
+Esta abordagem processa múltiplos vértices simultaneamente, explorando a estrutura do grafo de forma mais global. A complexidade temporal também é \(O(mn)\), com possibilidade de melhoria para \(O(m \log n)\) usando filas de prioridade na Fase~II.
+
+Embora ambos os algoritmos produzam soluções ótimas, diferem significativamente em sua organização interna. Chu--Liu--Edmonds opera vértice a vértice com contrações imediatas de ciclos, enquanto Frank identifica subconjuntos minimais processando múltiplos vértices simultaneamente.
+
+Ambos contraem ciclos detectados e expandem ao final, com número de contrações limitado por \(O(n)\) \cite{schrijver2003comb}. Esta limitação é fundamental para garantir a eficiência computacional dos métodos.
+
+Os capítulos seguintes apresentam implementações detalhadas de ambos os algoritmos, comparando seus desempenhos experimentais e desenvolvendo ferramentas didáticas interativas para facilitar a compreensão de suas operações.
+
+
+
