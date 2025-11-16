@@ -1,10 +1,22 @@
-\backcite {kleinberg2006}{{24}{2}{Item.2}}
-\backcite {kleinberg2006,schrijver2003comb}{{24}{5}{Item.5}}
-\backcite {kleinberg2006,schrijver2003comb}{{24}{5}{Item.5}}
-\backcite {kleinberg2006}{{24}{1}{Item.6}}
-\backcite {kleinberg2006}{{24}{2}{Item.7}}
-\backcite {kleinberg2006,schrijver2003comb}{{25}{3}{Item.8}}
-\backcite {kleinberg2006,schrijver2003comb}{{25}{3}{Item.8}}
-\backcite {schrijver2003comb}{{25}{1.3}{section.1.3}}
-\backcite {kleinberg2006}{{36}{1.3.6}{figure.caption.34}}
-\backcite {kleinberg2006}{{45}{\caption@xref {??}{ on input line 1284}}{table.caption.47}}
+\backcite {kleinberg2006}{{25}{2}{Item.2}}
+\backcite {kleinberg2006,schrijver2003comb}{{25}{5}{Item.5}}
+\backcite {kleinberg2006,schrijver2003comb}{{25}{5}{Item.5}}
+\backcite {kleinberg2006}{{25}{1}{Item.6}}
+\backcite {kleinberg2006}{{25}{2}{Item.7}}
+\backcite {kleinberg2006,schrijver2003comb}{{26}{3}{Item.8}}
+\backcite {kleinberg2006,schrijver2003comb}{{26}{3}{Item.8}}
+\backcite {schrijver2003comb}{{26}{1.3}{section.1.3}}
+\backcite {kleinberg2006}{{37}{1.3.6}{figure.caption.34}}
+\backcite {kleinberg2006}{{46}{\caption@xref {??}{ on input line 1284}}{table.caption.47}}
+\backcite {chu1965,edmonds1967optimum}{{77}{3}{chapter.3}}
+\backcite {chu1965,edmonds1967optimum}{{77}{3}{chapter.3}}
+\backcite {frank1981,frank2014}{{77}{3}{chapter.3}}
+\backcite {frank1981,frank2014}{{77}{3}{chapter.3}}
+\backcite {frank1981,frank2014,schrijver2003comb}{{78}{3}{chapter.3}}
+\backcite {frank1981,frank2014,schrijver2003comb}{{78}{3}{chapter.3}}
+\backcite {frank1981,frank2014,schrijver2003comb}{{78}{3}{chapter.3}}
+\backcite {frank2014,schrijver2003comb}{{80}{3.1.2}{subsection.3.1.2}}
+\backcite {frank2014,schrijver2003comb}{{80}{3.1.2}{subsection.3.1.2}}
+\backcite {schrijver2003comb}{{80}{3.1.2}{subsection.3.1.2}}
+\backcite {frank2014,schrijver2003comb}{{83}{3.1.2}{figure.caption.70}}
+\backcite {frank2014,schrijver2003comb}{{83}{3.1.2}{figure.caption.70}}
