@@ -18,40 +18,39 @@ A interação humano-computador (IHC) estuda como projetar sistemas computaciona
 Sintetizando heurísticas de usabilidade e descoberta \cite{nielsen1994heuristics,shneiderman2016designing} e quadros de interação e aprendizagem \cite{rogers2011interaction,mayer2009multimedia,sweller1988cognitive,naps2003engagement}, destacamos oito princípios orientadores: (i) usabilidade, (ii) eficiência cognitiva, (iii) feedback imediato, (iv) engajamento ativo, (v) visão geral com detalhe sob demanda (mantra \emph{overview→filter→details} de \cite{shneiderman1996eyes}), (vi) consistência semântica, (vii) múltiplos registros de representação e (viii) prevenção/recuperação de erros. A seguir descrevemos cada um e sua materialização na ferramenta.
 
 
-\subsection{Usabilidade}
+% \subsection{Usabilidade}
 
-Usabilidade refere-se à facilidade com que os usuários podem aprender a usar um sistema, realizar tarefas e alcançar seus objetivos. Na nossa aplicação, priorizamos uma interface limpa e intuitiva, com controles claros para navegar pelos passos dos algoritmos, selecionar arestas, visualizar cortes ativos e entender a evolução dos custos reduzidos.
+Começamos pela usabilidade, que refere-se à facilidade com que os usuários podem aprender a usar um sistema, realizar tarefas e alcançar seus objetivos. Na nossa aplicação, priorizamos uma interface limpa e intuitiva, com controles claros para navegar pelos passos dos algoritmos, selecionar arestas, visualizar cortes ativos e entender a evolução dos custos reduzidos.
 
-\subsection{Eficiência cognitiva}
+% \subsection{Eficiência cognitiva}
 
-Eficiência cognitiva envolve minimizar a carga cognitiva dos usuários, facilitando a compreensão e o processamento de informações. Implementamos visualizações que destacam mudanças importantes (como contrações e expansões) e fornecem explicações textuais concisas para cada passo, ajudando os usuários a conectar ações com conceitos teóricos.
+Essa clareza se conecta diretamente à eficiência cognitiva, que envolve minimizar a carga cognitiva dos usuários, facilitando a compreensão e o processamento de informações. Implementamos visualizações que destacam mudanças importantes (como contrações e expansões) e fornecem explicações textuais concisas para cada passo, ajudando os usuários a conectar ações com conceitos teóricos.
 
-\subsection{Feedback Imediato}
+% \subsection{Feedback Imediato}
 
-Feedback imediato é crucial para manter os usuários informados sobre o estado do sistema e as consequências de suas ações. Nossa ferramenta oferece feedback visual e textual em tempo real, mostrando como cada ação afeta o grafo e os custos associados, reforçando a compreensão causal.
-
-Nos momentos de processamento de informação também atualizamos a interface para indicar progresso, evitando que o usuário fique incerto sobre o estado atual.
-
-\subsection{Engajamento ativo}
-
-Engajamento ativo refere-se à participação dos usuários no processo de aprendizagem, incentivando-os a explorar, experimentar e interagir com o sistema. Nossa aplicação promove o engajamento ativo ao permitir que os usuários manipulem o grafo, testem diferentes abordagens e visualizem os resultados de suas ações em tempo real, além de acessar descrições passo a passo da execução dos algoritmos.
+A medida que o usuário interage com o sistema, o feedback imediato garante que os usuários informados sobre o estado do sistema e as consequências de suas ações. Nossa ferramenta oferece feedback visual e textual em tempo real, mostrando como cada ação afeta o grafo e os custos associados, reforçando a compreensão causal.
 
 
-\subsection{Visão geral com detalhe sob demanda}
+% \subsection{Engajamento ativo}
 
-A visão geral com detalhe sob demanda permite que os usuários obtenham uma compreensão ampla do sistema, enquanto ainda têm acesso a informações detalhadas quando necessário. Implementamos essa abordagem ao fornecer uma visualização geral do grafo, com a opção de expandir informações sobre arestas e nós específicos conforme o interesse do usuário.
+Esses elementos favorescem o engajamento ativo, que refere-se à participação dos usuários no processo de aprendizagem, incentivando-os a explorar, experimentar e interagir com o sistema. Nossa aplicação promove o engajamento ativo ao permitir que os usuários manipulem o grafo, testem diferentes abordagens e visualizem os resultados de suas ações em tempo real, além de acessar descrições passo a passo da execução dos algoritmos.
 
-\subsection{Consistência semântica}
 
-A consistência semântica garante que os elementos da interface e suas interações sejam compreensíveis e previsíveis. Nossa ferramenta mantém a consistência semântica ao usar terminologia e representações visuais padronizadas em toda a aplicação, facilitando a compreensão dos usuários.
+% \subsection{Visão geral com detalhe sob demanda}
 
-\subsection{Múltiplos registros de representação}
+Para orientar essa exploração sem sobrecarregar o usuário, aplicamos o princípio de visão geral com detalhe sob demanda que permite que os usuários obtenham uma compreensão ampla do sistema, enquanto ainda têm acesso a informações detalhadas quando necessário. Implementamos essa abordagem ao fornecer uma visualização geral do grafo, com a opção de expandir informações sobre arestas e nós específicos conforme o interesse do usuário.
 
-Múltiplos registros de representação referem-se à capacidade de apresentar informações de diferentes maneiras, atendendo às preferências e estilos de aprendizagem dos usuários. Nossa aplicação oferece várias representações do grafo (visual, textual, interativa), permitindo que os usuários escolham a forma que melhor se adapta às suas necessidades.
+% \subsection{Consistência semântica}
 
-\subsection{Prevenção de erros}
+A navegação entre essas diferentes camadas da interface é apoiada pela consistência semântica, que garante que os elementos da interface e suas interações sejam compreensíveis e previsíveis. Nossa ferramenta mantém a consistência semântica ao usar terminologia e representações visuais padronizadas em toda a aplicação, facilitando a compreensão dos usuários.
 
-A prevenção de erros envolve projetar o sistema de forma a minimizar a probabilidade de erros dos usuários. Implementamos medidas de prevenção de erros, como validação de entrada e feedback em tempo real, para ajudar os usuários a evitar ações indesejadas e compreender melhor as consequências de suas escolhas.
+% \subsection{Múltiplos registros de representação}
+
+Além disso, adotamos o conceito de múltiplos registros de representação, que referem-se à capacidade de apresentar informações de diferentes maneiras, atendendo às preferências e estilos de aprendizagem dos usuários. Na nossa aplicação oferecemos várias representações do grafo (visual, textual, interativa), permitindo que os usuários escolham a forma que melhor se adapta às suas necessidades.
+
+% \subsection{Prevenção de erros}
+
+Por fim, implementamos conceitos de prevenção de erros, que envolve projetar o sistema de forma a minimizar a probabilidade de erros dos usuários. Em nosso sistema garantimos feedback em tempo real, para ajudar os usuários a evitar ações indesejadas e compreender melhor as consequências de suas escolhas.
 
 
 Esses princípios de interação humano-computador foram fundamentais para o desenvolvimento da nossa aplicação \textit{web} interativa, garantindo que ela seja não apenas funcional, mas também acessível e eficaz como ferramenta de aprendizagem. A seguir, detalhamos a implementação técnica da aplicação e como ela se posiciona no ecossistema de ferramentas didáticas para o ensino de grafos.
@@ -85,37 +84,37 @@ Esses princípios de interação humano-computador foram fundamentais para o des
 A aplicação \textit{web} interativa foi desenvolvida para ilustrar os algoritmos de Chu–Liu/Edmonds e Frank, permitindo aos usuários acompanhar passo a passo o funcionamento de ambos os métodos. A ferramenta foi projetada com base em princípios de interação humano-computador, visando maximizar a compreensão e o engajamento dos usuários.
 
 
+% \subsection{Visão geral das páginas}
+% A aplicação \textit{web} é organizada em páginas HTML independentes, cada uma dedicada a uma parte específica da experiência do usuário. A página \texttt{home.html} apresenta um panorama geral da ferramenta; \texttt{chuliu.html} executa passo a passo o algoritmo de Chu–Liu/Edmonds; \texttt{andrasfrank\_v1.html} e \texttt{andrasfrank\_v2.html} oferecem a estrutura inicial para a futura visualização da abordagem primal–dual em suas duas versões; e \texttt{draw_graph.html} funciona como um editor livre para criação manual de grafos. Todas as páginas carregam dinamicamente o componente compartilhado de navegação lateral (\texttt{sidebar.html}) e importam apenas os scripts necessários ao seu funcionamento, garantindo modularidade e reduzindo sobrecarga desnecessária na interface.
+
 \subsection{Visão geral das páginas}
-A aplicação \textit{web} é composta por páginas HTML autônomas carregadas no navegador, cada uma focada em um aspecto: (i) \texttt{home.html} (apresentação / resumo), (ii) \texttt{chuliu.html} (execução passo a passo do algoritmo de Chu--Liu/Edmonds), (iii-a) \texttt{andrasfrank\_v1.html} (estrutura para futura visualização da abordagem primal--dual em sua primeira implementação), (iii-b) \texttt{andrasfrank\_v2.html} (estrutura para futura visualização da abordagem primal--dual em sua primeira implementação), (iv) \texttt{draw\_graph.html} (editor livre de grafos), além do componente compartilhado de navegação lateral \texttt{sidebar.html}. Cada página injeta o \texttt{sidebar} dinamicamente e carrega scripts específicos.
+% A  aplicação \textit{web} é organizada em páginas HTML independentes, cada uma dedicada a uma parte específica da experiência do usuário. A página \texttt{home.html} apresenta um panorama geral da ferramenta; \texttt{chuliu.html} executa passo a passo o algoritmo de Chu-Liu e Edmonds;
+%  \texttt{andrasfrank\_v1.html} e \texttt{andrasfrank\_v2.html} oferecem a estrutura inicial para a futura visualização da abordagem primal–-dual em suas duas versões; e \texttt{draw\_graph.html} funciona como um editor livre para criação manual de grafos. Todas as páginas carregam dinamicamente o componente compartilhado de navegação lateral (\texttt{sidebar.html}) e importam apenas os scripts necessários ao seu funcionamento, garantindo modularidade e reduzindo sobrecarga desnecessária na interface.
+
+% (ii) \texttt{chuliu.html} (execução passo a passo do algoritmo de Chu--Liu/Edmonds), (iii-a) \texttt{andrasfrank\_v1.html} (estrutura para futura visualização da abordagem primal--dual em sua primeira implementação), (iii-b) \texttt{andrasfrank\_v2.html} (estrutura para futura visualização da abordagem primal--dual em sua primeira implementação), (iv) \texttt{draw\_graph.html} (editor livre de grafos), além do componente compartilhado de navegação lateral \texttt{sidebar.html}. Cada página injeta o \texttt{sidebar} dinamicamente e carrega scripts específicos.
 
 
-\subsection{Bibliotecas e dependências}
+% O desenvolvimento adotou tecnologias \textit{web} modernas, combinando HTML5 e Tailwind CSS para composição responsiva, PyScript para execução de código Python diretamente no navegador e bibliotecas científicas amplamente utilizadas em grafos e visualização. NetworkX foi empregado para a manipulação de grafos dirigidos e Matplotlib para gerar snapshots estáticos dos estados intermediários dos algoritmos. Em páginas avançadas, como \texttt{chuliu.html}, \texttt{andrasfrank\_v1.html} e \texttt{andrasfrank\_v2.html}, a infraestrutura também já prevê o uso futuro de Cytoscape.js para interações mais ricas.
+
+% Para permitir exportação e reutilização do estado da aplicação, empregamos serialização JSON no formato \texttt{node\_link}. Além disso, cada página carrega exclusivamente seus componentes e dependências, evitando \emph{payload} excessivo e reduzindo a latência percebida pelo usuário — uma decisão alinhada ao objetivo de manter a eficiência cognitiva durante a navegação e exploração dos algoritmos.
 
 
-O desenvolvimento utilizou tecnologias \textit{web} modernas, incluindo HTML5, Tailwind CSS para estilos responsivos, e PyScript para execução de código Python diretamente no navegador. A biblioteca NetworkX foi empregada para manipulação de grafos, enquanto Matplotlib gerou visualizações estáticas dos estados intermediários. O código foi estruturado para modularidade e clareza, facilitando futuras extensões. Detalhamos abaixo esses aspectos:
+% REMOVER ESSE BLOCO ABAIXO
 
-\begin{itemize}\setlength{\itemsep}{2pt}
-	\item \textbf{Frontend:} HTML5 + Tailwind CSS para composição responsiva e estilos utilitários consistentes.
-	\item \textbf{Execução Python no cliente:} PyScript (carregado via CDN) provê execução de módulos Python (ex.: \texttt{networkx}, \texttt{matplotlib}) sem instalação local, reduzindo barreira de entrada didática.
-	\item \textbf{Bibliotecas centrais:} NetworkX para manipulação de grafos dirigidos; \texttt{matplotlib} para renderização de snapshots; (em páginas avançadas) Cytoscape.js previsto para interação rica (estrutura já importada em \texttt{chuliu.html}, \texttt{andrasfrank\_v1.html} e \texttt{andrasfrank\_v2.html}).
-	\item \textbf{Empacotamento de estado:} Serialização JSON (formato \texttt{node\_link}) para exportação e reuso analítico.
-	\item \textbf{Isolamento:} Cada página carrega apenas os elementos necessários, evitando \emph{payload} excessivo e minimizando latência de interface (princípio de eficiência cognitiva).
-\end{itemize}
+% \subsection{Componentes funcionais principais}
 
-\subsection{Componentes funcionais principais}
+% A aplicação centraliza-se nas páginas \texttt{chuliu.html}, \texttt{andrasfrank\_v1.html} e {andrasfrank\_v2.html}, que permitem executar os algoritmos de Chu--Liu/Edmonds e Frank (1° e 2° implementação), respectivamente. A seguir, detalhamos os componentes funcionais principais da interface:
 
-A aplicação centraliza-se nas páginas \texttt{chuliu.html}, \texttt{andrasfrank\_v1.html} e {andrasfrank\_v2.html}, que permitem executar os algoritmos de Chu--Liu/Edmonds e Frank (1° e 2° implementação), respectivamente. A seguir, detalhamos os componentes funcionais principais da interface:
-
-\begin{enumerate}\setlength{\itemsep}{2pt}
-	\item \textbf{Editor de Grafo:} inputs para origem, destino e peso + botões de inserção e limpeza (\texttt{add-edge}, \texttt{reset-graph}).
-	\item \textbf{Carregamento de exemplo:} botão \texttt{load-test-graph} injeta um grafo de teste estruturado para reduzir \emph{time-to-first-insight}.
-	\item \textbf{Configuração de raiz:} campo para definir / confirmar o vértice raiz (\texttt{root-node}).
-	\item \textbf{Execução algorítmica:} botão \texttt{run-algorithm} dispara o pipeline de filtragem e cálculo da arborescência mínima.
-	\item \textbf{Visualização de estados:} área cumulativa (\texttt{graph-area}) onde cada renderização mantém a coerência posicional (layout determinístico) para comparação mental entre passos.
-	\item \textbf{Log textual:} caixa de texto incremental (\texttt{log-output}) correlaciona ações a transformações estruturais (dual coding: texto + imagem).
-	\item \textbf{Exportação:} ação de exportar grafo em JSON para análise posterior ou reimportação.
-	\item \textbf{Incorporação de PDF:} \texttt{tese.html} exibe nossa tese lado a lado à aplicação, incentivando leitura entrelaçada teoria-execução. 
-\end{enumerate}
+% \begin{enumerate}\setlength{\itemsep}{2pt}
+% 	\item \textbf{Editor de Grafo:} inputs para origem, destino e peso + botões de inserção e limpeza (\texttt{add-edge}, \texttt{reset-graph}).
+% 	\item \textbf{Carregamento de exemplo:} botão \texttt{load-test-graph} injeta um grafo de teste estruturado para reduzir \emph{time-to-first-insight}.
+% 	\item \textbf{Configuração de raiz:} campo para definir / confirmar o vértice raiz (\texttt{root-node}).
+% 	\item \textbf{Execução algorítmica:} botão \texttt{run-algorithm} dispara o pipeline de filtragem e cálculo da arborescência mínima.
+% 	\item \textbf{Visualização de estados:} área cumulativa (\texttt{graph-area}) onde cada renderização mantém a coerência posicional (layout determinístico) para comparação mental entre passos.
+% 	\item \textbf{Log textual:} caixa de texto incremental (\texttt{log-output}) correlaciona ações a transformações estruturais (dual coding: texto + imagem).
+% 	\item \textbf{Exportação:} ação de exportar grafo em JSON para análise posterior ou reimportação.
+% 	\item \textbf{Incorporação de PDF:} \texttt{tese.html} exibe nossa tese lado a lado à aplicação, incentivando leitura entrelaçada teoria-execução. 
+% \end{enumerate}
 
 \subsection{Fluxo de interação}
 
