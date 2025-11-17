@@ -1,8 +1,6 @@
-\chapter{Discussão e Resultados: Chu-liu/Edmonds vs. Frank}
+\chapter{Chu-liu / Edmonds vs. Frank}
 
 Neste capítulo, apresentamos uma análise comparativa entre os algoritmos de Chu--Liu--Edmonds e András Frank para o problema da arborescência de custo mínimo. Ambos produzem soluções ótimas, mas diferem em sua organização: Chu--Liu--Edmonds opera vértice a vértice com contrações imediatas de ciclos, enquanto Frank identifica subconjuntos minimais via componentes fortemente conexas, processando múltiplos vértices simultaneamente em duas fases distintas. O objetivo é elucidar essas diferenças e avaliar empiricamente seus desempenhos.
-
-\section{Análise comparativa dos algoritmos}
 
 O algoritmo de Chu--Liu--Edmonds \cite{chu1965,edmonds1967optimum} opera recursivamente selecionando para cada vértice \(v \neq r\) um arco de entrada de custo mínimo, contraindo ciclos detectados e ajustando custos, até eliminar todos os ciclos.
 
@@ -10,13 +8,12 @@ O algoritmo de Frank \cite{frank1981,frank2014} também reduz custos subtraindo 
 
 Ambos contraem ciclos detectados e expandem ao final, com número de contrações limitado por \(O(n)\) \cite{schrijver2003comb}.
 
+
 Logo, os métodos são equivalentes e resolvem o problema de arborescência de custo mínimo, mas adotam estratégias distintas na redução de custos e na construção da solução e nessa sessão experimental buscamos avaliar essas diferenças na prática.
 
-\section{Avaliação experimental}
+\section{Análise comparativa dos algoritmos}
 
 Conduzimos 2000 experimentos em digrafos enraizados aleatórios com \(|V| \in [100, 200]\) vértices, densidade \(|A| \in [n, 3n]\) arcos e pesos inteiros em \([1, 20]\), garantindo conectividade por construção incremental \cite{schrijver2003comb}. Para cada instância, executamos Chu--Liu--Edmonds e as duas fases de Frank (com variantes v1 e v2 da Fase~II), registrando custos, tempos e métricas estruturais.
-
-\subsection{Resultados}
 
 Os 2000 testes confirmaram que todos os métodos retornam sempre o mesmo custo ótimo, com 100\% de sucesso, validando a corretude das implementações e a equivalência teórica entre Chu--Liu/Edmonds e Frank \cite{frank2014,schrijver2003comb}. Além disso, as verificações da condição de otimalidade dual foram bem-sucedidas em todos os casos para ambas as variantes de Frank.
 
@@ -72,7 +69,7 @@ As Figuras~\ref{fig:times-boxplot}--\ref{fig:d0-vs-v} apresentam os resultados e
     \label{fig:d0-vs-v}
 \end{figure}
 
-\subsection{Conclusões}
+\section{Conclusões}
 
 Os experimentos validam empiricamente as previsões teóricas e revelam características importantes do comportamento prático dos algoritmos. A equivalência de custos em 100\% das instâncias, somada à verificação bem-sucedida das condições de otimalidade dual, confirma a corretude das implementações.
 
