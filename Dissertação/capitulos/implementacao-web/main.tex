@@ -104,14 +104,7 @@ Além disso, o log textual funciona como uma \emph{trilha de auditoria didática
 \subsection{Limitações atuais}
 
 Atualmente, a aplicação apresenta algumas limitações que podem impactar a experiência do usuário e a eficácia da visualização:
-
-\begin{itemize}\setlength{\itemsep}{2pt}
-	\item Ausência de visualização explícita de contração de ciclos (marcação diferenciada por cores/aglomerados ainda não implementada).
-	\item Não há comparação lado a lado (split view) entre algoritmos (Chu--Liu vs. Frank) ainda.
-	\item Layout planar simples pode falhar em instâncias mais densas (sobreposição de rótulos) — futura substituição por \texttt{spring} ou \texttt{dagre}-like adaptativo.
-	\item Falta camada de destaque cromático para custos reduzidos e arcos “apertados” \((c' = 0)\).
-	\item Exportação limita-se ao grafo final; não há pacote de estados intermediários (\emph{replay}).
-\end{itemize}
+Primeiramente, a ausência de visualização explícita de contração de ciclos dificulta a compreensão completa do algoritmo, uma vez que a marcação diferenciada por cores ou aglomerados ainda não foi implementada. Além disso, a falta de comparação lado a lado (split view) entre os algoritmos de Chu–Liu e Frank limita a capacidade dos usuários de entenderem as diferenças e semelhanças entre as abordagens. O layout planar simples pode falhar em instâncias mais densas, resultando em sobreposição de rótulos, o que compromete a clareza visual (uma futura substituição por layouts adaptativos como \texttt{spring} ou \texttt{dagre}-like é recomendada). Outro ponto é a ausência de uma camada de destaque cromático para custos reduzidos e arcos “apertados” \((c' = 0)\), o que poderia facilitar a identificação de elementos críticos no grafo. Por fim, a exportação limita-se ao grafo final e ao grado original, estados intermediários não possuem tal feature implementada, o que restringe a capacidade de revisão e análise detalhada do processo algorítmico.
 
 \subsection{Melhorias futuras}
 
