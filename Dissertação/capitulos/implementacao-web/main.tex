@@ -90,41 +90,14 @@ A aplicação \textit{web} interativa foi desenvolvida para ilustrar os algoritm
 \subsection{Visão geral das páginas}
 A  aplicação \textit{web} é organizada em páginas HTML independentes, cada uma dedicada a uma parte específica da experiência do usuário. A página \texttt{home.html} apresenta um panorama geral da ferramenta; \texttt{chuliu.html} executa passo a passo o algoritmo de Chu-Liu e Edmonds; \texttt{andrasfrank\_v1.html} e \texttt{andrasfrank\_v2.html} oferecem a estrutura inicial para a futura visualização da abordagem primal–-dual em suas duas versões; e \texttt{draw\_graph.html} funciona como um editor livre para criação manual de grafos. Todas as páginas carregam dinamicamente o componente compartilhado de navegação lateral (\texttt{sidebar.html}) e importam apenas os scripts necessários ao seu funcionamento, garantindo modularidade e reduzindo sobrecarga desnecessária na interface.
 
-% (ii) \texttt{chuliu.html} (execução passo a passo do algoritmo de Chu--Liu/Edmonds), (iii-a) \texttt{andrasfrank\_v1.html} (estrutura para futura visualização da abordagem primal--dual em sua primeira implementação), (iii-b) \texttt{andrasfrank\_v2.html} (estrutura para futura visualização da abordagem primal--dual em sua primeira implementação), (iv) \texttt{draw\_graph.html} (editor livre de grafos), além do componente compartilhado de navegação lateral \texttt{sidebar.html}. Cada página injeta o \texttt{sidebar} dinamicamente e carrega scripts específicos.
-
 O desenvolvimento adotou tecnologias \textit{web} modernas, combinando HTML5 e Tailwind CSS para composição responsiva, PyScript para execução de código Python diretamente no navegador e bibliotecas científicas amplamente utilizadas em grafos e visualização. NetworkX foi empregado para a manipulação de grafos dirigidos e Matplotlib para gerar snapshots estáticos dos estados intermediários dos algoritmos. Em páginas avançadas, como \texttt{chuliu.html}, \texttt{andrasfrank\_v1.html} e \texttt{andrasfrank\_v2.html}, a infraestrutura também já prevê o uso futuro de Cytoscape.js para interações mais ricas.
 
 Para permitir exportação e reutilização do estado da aplicação, empregamos serialização JSON no formato \texttt{node\_link}. Além disso, cada página carrega exclusivamente seus componentes e dependências, evitando \emph{payload} excessivo e reduzindo a latência percebida pelo usuário — uma decisão alinhada ao objetivo de manter a eficiência cognitiva durante a navegação e exploração dos algoritmos.
 
 
-% REMOVER ESSE BLOCO ABAIXO
-
-% \subsection{Componentes funcionais principais}
-
-% A aplicação centraliza-se nas páginas \texttt{chuliu.html}, \texttt{andrasfrank\_v1.html} e {andrasfrank\_v2.html}, que permitem executar os algoritmos de Chu--Liu/Edmonds e Frank (1° e 2° implementação), respectivamente. A seguir, detalhamos os componentes funcionais principais da interface:
-
-% \begin{enumerate}\setlength{\itemsep}{2pt}
-% 	\item \textbf{Editor de Grafo:} inputs para origem, destino e peso + botões de inserção e limpeza (\texttt{add-edge}, \texttt{reset-graph}).
-% 	\item \textbf{Carregamento de exemplo:} botão \texttt{load-test-graph} injeta um grafo de teste estruturado para reduzir \emph{time-to-first-insight}.
-% 	\item \textbf{Configuração de raiz:} campo para definir / confirmar o vértice raiz (\texttt{root-node}).
-% 	\item \textbf{Execução algorítmica:} botão \texttt{run-algorithm} dispara o pipeline de filtragem e cálculo da arborescência mínima.
-% 	\item \textbf{Visualização de estados:} área cumulativa (\texttt{graph-area}) onde cada renderização mantém a coerência posicional (layout determinístico) para comparação mental entre passos.
-% 	\item \textbf{Log textual:} caixa de texto incremental (\texttt{log-output}) correlaciona ações a transformações estruturais (dual coding: texto + imagem).
-% 	\item \textbf{Exportação:} ação de exportar grafo em JSON para análise posterior ou reimportação.
-% 	\item \textbf{Incorporação de PDF:} \texttt{tese.html} exibe nossa tese lado a lado à aplicação, incentivando leitura entrelaçada teoria-execução. 
-% \end{enumerate}
-
 \subsection{Fluxo de interação}
 
-O fluxo de interação foi projetado para ser linear e intuitivo, guiando o usuário desde a criação do grafo até a visualização dos resultados do algoritmo. A seguir, descrevemos o fluxo típico:
-
-\begin{enumerate}\setlength{\itemsep}{2pt}
-	\item Usuário monta ou carrega um grafo de teste.
-	\item Define (ou confirma) o vértice raiz \(r_0\).
-	\item Executa o algoritmo: são aplicadas normalizações e seleção de arestas (implementação apresentada em seções anteriores / listagens).
-	\item Observa estados sequenciais: cada snapshot reforça invariantes (arestas escolhidas, pesos, estrutura alcançada).
-	\item (Opcional) Exporta o grafo resultante para replicação em notebooks ou comparação com a abordagem dual futura.
-\end{enumerate}
+O fluxo de interação foi projetado para ser linear e intuitivo, guiando o usuário desde a criação do grafo até a visualização dos resultados do algoritmo. O fluxo típico é o seguinte: primeiro o usuário monta ou carrega um grafo de teste; em seguida, define (ou confirma) o vértice raiz \(r_0\); depois, executa o algoritmo, aplicando normalizações e seleção de arestas conforme implementado; então, observa os estados sequenciais gerados, onde cada snapshot reforça invariantes como arestas escolhidas, pesos e estrutura alcançada; por fim, o usuário pode optar por exportar o grafo resultante para replicação em notebooks ou comparação com a abordagem dual futura.
 
 \subsection{Estado e dados persistentes}
 
