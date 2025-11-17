@@ -13,15 +13,15 @@
 \backcite {schrijver2003comb}{{32}{2.3}{section.2.3}}
 \backcite {kleinberg2006}{{43}{2.3.6}{figure.caption.46}}
 \backcite {kleinberg2006}{{52}{\caption@xref {??}{ on input line 1284}}{table.caption.59}}
-\backcite {chu1965,edmonds1967optimum}{{83}{4.1}{section.4.1}}
-\backcite {chu1965,edmonds1967optimum}{{83}{4.1}{section.4.1}}
-\backcite {frank1981,frank2014}{{83}{4.1}{section.4.1}}
-\backcite {frank1981,frank2014}{{83}{4.1}{section.4.1}}
+\backcite {chu1965,edmonds1967optimum}{{83}{4}{chapter.4}}
+\backcite {chu1965,edmonds1967optimum}{{83}{4}{chapter.4}}
+\backcite {frank1981,frank2014}{{83}{4}{chapter.4}}
+\backcite {frank1981,frank2014}{{83}{4}{chapter.4}}
+\backcite {schrijver2003comb}{{83}{4}{chapter.4}}
 \backcite {schrijver2003comb}{{83}{4.1}{section.4.1}}
-\backcite {schrijver2003comb}{{83}{4.2}{section.4.2}}
-\backcite {frank2014,schrijver2003comb}{{84}{4.2.1}{subsection.4.2.1}}
-\backcite {frank2014,schrijver2003comb}{{84}{4.2.1}{subsection.4.2.1}}
-\backcite {schrijver2003comb}{{84}{4.2.1}{subsection.4.2.1}}
+\backcite {frank2014,schrijver2003comb}{{83}{4.1}{section.4.1}}
+\backcite {frank2014,schrijver2003comb}{{83}{4.1}{section.4.1}}
+\backcite {schrijver2003comb}{{84}{4.1}{section.4.1}}
 \backcite {tall1991advanced}{{88}{5}{chapter.5}}
 \backcite {tall1991advanced}{{88}{5.0.1}{subsection.5.0.1}}
 \backcite {sweller1988cognitive}{{88}{5.0.1}{subsection.5.0.1}}
