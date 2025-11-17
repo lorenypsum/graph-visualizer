@@ -86,7 +86,7 @@ A aplicação \textit{web} interativa foi desenvolvida para ilustrar os algoritm
 
 
 \subsection{Visão geral das páginas}
-A aplicação \textit{web} é composta por páginas HTML autônomas carregadas no navegador, cada uma focada em um aspecto: (i) \texttt{home.html} (apresentação / resumo), (ii) \texttt{chuliu.html} (execução passo a passo do algoritmo de Chu--Liu/Edmonds), (iii-a) \texttt{andrasfrank_v1.html} (estrutura para futura visualização da abordagem primal--dual em sua primeira implementação), (iii-b) \texttt{andrasfrank_v2.html} (estrutura para futura visualização da abordagem primal--dual em sua primeira implementação), (iv) \texttt{draw\_graph.html} (editor livre de grafos), além do componente compartilhado de navegação lateral \texttt{sidebar.html}. Cada página injeta o \texttt{sidebar} dinamicamente e carrega scripts específicos.
+A aplicação \textit{web} é composta por páginas HTML autônomas carregadas no navegador, cada uma focada em um aspecto: (i) \texttt{home.html} (apresentação / resumo), (ii) \texttt{chuliu.html} (execução passo a passo do algoritmo de Chu--Liu/Edmonds), (iii-a) \texttt{andrasfrank\_v1.html} (estrutura para futura visualização da abordagem primal--dual em sua primeira implementação), (iii-b) \texttt{andrasfrank\_v2.html} (estrutura para futura visualização da abordagem primal--dual em sua primeira implementação), (iv) \texttt{draw\_graph.html} (editor livre de grafos), além do componente compartilhado de navegação lateral \texttt{sidebar.html}. Cada página injeta o \texttt{sidebar} dinamicamente e carrega scripts específicos.
 
 
 \subsection{Bibliotecas e dependências}
@@ -97,14 +97,14 @@ O desenvolvimento utilizou tecnologias \textit{web} modernas, incluindo HTML5, T
 \begin{itemize}\setlength{\itemsep}{2pt}
 	\item \textbf{Frontend:} HTML5 + Tailwind CSS para composição responsiva e estilos utilitários consistentes.
 	\item \textbf{Execução Python no cliente:} PyScript (carregado via CDN) provê execução de módulos Python (ex.: \texttt{networkx}, \texttt{matplotlib}) sem instalação local, reduzindo barreira de entrada didática.
-	\item \textbf{Bibliotecas centrais:} NetworkX para manipulação de grafos dirigidos; \texttt{matplotlib} para renderização de snapshots; (em páginas avançadas) Cytoscape.js previsto para interação rica (estrutura já importada em \texttt{chuliu.html}, \texttt{andrasfrank_v1.html} e \texttt{andrasfrank_v2.html}).
+	\item \textbf{Bibliotecas centrais:} NetworkX para manipulação de grafos dirigidos; \texttt{matplotlib} para renderização de snapshots; (em páginas avançadas) Cytoscape.js previsto para interação rica (estrutura já importada em \texttt{chuliu.html}, \texttt{andrasfrank\_v1.html} e \texttt{andrasfrank\_v2.html}).
 	\item \textbf{Empacotamento de estado:} Serialização JSON (formato \texttt{node\_link}) para exportação e reuso analítico.
 	\item \textbf{Isolamento:} Cada página carrega apenas os elementos necessários, evitando \emph{payload} excessivo e minimizando latência de interface (princípio de eficiência cognitiva).
 \end{itemize}
 
 \subsection{Componentes funcionais principais}
 
-A aplicação centraliza-se nas páginas \texttt{chuliu.html}, \texttt{andrasfrank_v1.html} e {andrasfrank_v2.html}, que permitem executar os algoritmos de Chu--Liu/Edmonds e Frank (1° e 2° implementação), respectivamente. A seguir, detalhamos os componentes funcionais principais da interface:
+A aplicação centraliza-se nas páginas \texttt{chuliu.html}, \texttt{andrasfrank\_v1.html} e {andrasfrank\_v2.html}, que permitem executar os algoritmos de Chu--Liu/Edmonds e Frank (1° e 2° implementação), respectivamente. A seguir, detalhamos os componentes funcionais principais da interface:
 
 \begin{enumerate}\setlength{\itemsep}{2pt}
 	\item \textbf{Editor de Grafo:} inputs para origem, destino e peso + botões de inserção e limpeza (\texttt{add-edge}, \texttt{reset-graph}).
@@ -172,8 +172,8 @@ A estrutura de arquivos da aplicação é organizada da seguinte forma:
 	\item \texttt{main.py}: script Python principal contendo funções de manipulação de grafos e lógica algorítmica.
 	\item \texttt{index.html}: página inicial com resumo e links para outras seções.
 	\item \texttt{chuliu.html}: página dedicada à execução do algoritmo de Chu--Liu/Edmonds.
-	\item \texttt{andrasfrank_v1.html}: página dedicada à implementação do algoritmo de Frank (primeira implementação).
-	\item \texttt{andrasfrank_v2.html}: página dedicada à implementação do algoritmo de Frank (segunda implementação).
+	\item \texttt{andrasfrank\_v1.html}: página dedicada à implementação do algoritmo de Frank (primeira implementação).
+	\item \texttt{andrasfrank\_v2.html}: página dedicada à implementação do algoritmo de Frank (segunda implementação).
 	\item \texttt{draw\_graph.html}: editor livre de grafos.
 	\item \texttt{sidebar.html}: componente de navegação lateral compartilhado.
 	\item \texttt{styles.css}: arquivo de estilos customizados (além do Tailwind).
