@@ -144,29 +144,30 @@ A seguir, apresentamos os códigos desenvolvidos para os algoritmos implementado
 
 \subsection*{\texttt{Sidebar.html}:} componente de navegação lateral consistente em todas as páginas. Utiliza Tailwind CSS para estilo e inclui links para as principais seções do site, reforçando um modelo mental estável de navegação. 
 
-% \subsection*{\texttt{Chuliu.html}:} página dedicada ao visualizador do algoritmo de Chu-Liu/Edmonds. Inclui um passo a passo guiado para criar um grafo, selecionar o nó raiz e executar o algoritmo, com feedback visual e textual. Abaixo, apresentamos uma captura de tela da página.
+\subsection*{\texttt{Chuliu.html}:} página dedicada ao visualizador do algoritmo de Chu-Liu/Edmonds. Inclui um passo a passo guiado para criar um grafo, selecionar o nó raiz e executar o algoritmo, com feedback visual e textual. Abaixo, apresentamos uma captura de tela da página.
 
-% % Screenshot da página Chu-Liu/Edmonds
-% \begin{figure}[H]\centering
-% 	\includegraphics[width=0.95\textwidth]{../assets/chuliuhtml.png}
-% 	\caption{Captura de tela de \texttt{chuliu.html}: criação de grafo, seleção de raiz e execução do algoritmo.}
-% 	\label{fig:chuliu_html_screenshot}
-% \end{figure}
+% Screenshot da página Chu-Liu/Edmonds
+\begin{figure}[H]\centering
+	\includegraphics[width=0.95\textwidth]{../assets/chuliuhtml.png}
+	\caption{Captura de tela de \texttt{chuliu.html}: criação de grafo, seleção de raiz e execução do algoritmo.}
+	\label{fig:chuliu_html_screenshot}
+\end{figure}
 
-% A figura a seguir destaca a tripartição funcional da página: navegação lateral, conteúdo interativo central e guia de passos à direita.
-% \begin{figure}[H]\centering
-% 	\begin{tikzpicture}[node distance=1.4cm]
-% 		\node[draw,rounded corners,fill=gray!10,minimum width=1.6cm] (sb4) {Barra Lateral};
-% 		\node[draw,rounded corners,fill=blue!8,right=0.6cm of sb4,minimum width=5.2cm,minimum height=3.4cm] (maincl) {Principal (Botão de Passos + Editor + Logs)};
-% 		\node[draw,rounded corners,fill=green!10,right=1.6cm of maincl,minimum width=2cm,minimum height=3.4cm] (rs) {Passos};
-% 		\draw[->] (maincl.east) -- (rs.west);
-% 	\end{tikzpicture}
-% 	\caption{\texttt{chuliu.html} - tripartição funcional (navegação, conteúdo interativo, guia de passos).}
-% \end{figure}
-% \textit{Comentário:} a presença do passo a passo auxilia na compreensão sequencial do algoritmo.
+A figura a seguir destaca a tripartição funcional da página: navegação lateral, conteúdo interativo central e guia de passos à direita.
+\begin{figure}[H]\centering
+	\begin{tikzpicture}[node distance=1.4cm]
+		\node[draw,rounded corners,fill=gray!10,minimum width=1.6cm] (sb4) {Barra Lateral};
+		\node[draw,rounded corners,fill=blue!8,right=0.6cm of sb4,minimum width=5.2cm,minimum height=3.4cm] (maincl) {Principal (Botão de Passos + Editor + Logs)};
+		\node[draw,rounded corners,fill=green!10,right=1.6cm of maincl,minimum width=2cm,minimum height=3.4cm] (rs) {Passos};
+		\draw[->] (maincl.east) -- (rs.west);
+	\end{tikzpicture}
+	\caption{\texttt{chuliu.html} - tripartição funcional (navegação, conteúdo interativo, guia de passos).}
+\end{figure}
+\textit{Comentário:} a presença do passo a passo auxilia na compreensão sequencial do algoritmo.
 
 % TODO - REMOVER ESSA PARTE E COLOCAR O ANDRAS FRANK V1 E V2
-% \subsection{\texttt{Andrasfrank.html}:} página dedicada ao visualizador do algoritmo de Andras Frank. Inclui um passo a passo guiado para criar um grafo, selecionar o vértice raiz e executar o algoritmo, com feedback visual e textual. Abaixo, apresentamos uma captura de tela da página.
+\subsection{\texttt{Andrasfrank\_v1.html} e \texttt{Andrasfrank\_v2.html}:} 
+Ambas as páginas são dedicadas ao visualizador do algoritmo de Andras Frank (em suas diferentes implementações elucidadas em capítulos anteriores). Inclui um passo a passo guiado para criar um grafo, selecionar o vértice raiz e executar o algoritmo, com feedback visual e textual. Abaixo, apresentamos uma captura de tela da página.
 
 % % Screenshot da página Andras Frank
 % \begin{figure}[H]\centering
