@@ -66,13 +66,42 @@ As ferramentas da primeira categoria permitem criar diagramas de grafos com sem�
 
 Já ferramentas de exploração e edição de grafos permitem que os usuários interajam com representações gráficas de dados, facilitando a manipulação e a análise de estruturas complexas. Essas ferramentas são essenciais para atividades que exigem uma compreensão profunda das relações entre os elementos de um grafo. Elas são adequadas para: reconhecer padrões estruturais (componentes, comunidades), discutir implicações de layouts para percepção de estruturas, atividades de descoberta assistida (``\textit{overview} \textrightarrow{} \textit{filter} \textrightarrow{} \textit{details}'') \cite{shneiderman1996eyes}. Porém existem algumas limitações, como o fato dessas ferramentas serem focadas para análise exploratória de dados, não em algoritmos específicos, alta carga extrínseca ao alternar entre interface gráfica e conceitos teóricos, além falta de controle fino sobre estados intermediários de algoritmos.
 
-% Sobre as ferramentas de visualização de algoritmos, elas são projetadas para ilustrar o funcionamento interno de algoritmos através de animações e representações gráficas. Essas ferramentas são particularmente eficazes para demonstrar processos dinâmicos e mudanças de estado ao longo do tempo. Evidências sugerem ganhos quando o estudante prevê, manipula e explica o que vê, ao invés de consumir animações passivamente. \cite{visualgo,hundhausen2002meta,naps2003engagement}
+Sobre as ferramentas de visualização de algoritmos, elas são projetadas para ilustrar o funcionamento interno de algoritmos através de animações e representações gráficas. Essas ferramentas são particularmente eficazes para demonstrar processos dinâmicos e mudanças de estado ao longo do tempo. Evidências sugerem ganhos quando o estudante prevê, manipula e explica o que vê, ao invés de consumir animações passivamente. \cite{visualgo,hundhausen2002meta,naps2003engagement}
 
 Ainda temos ferramentas em ambientes programáveia, elas são valiosas para criar exemplos reprodutíveis e explorar algoritmos de forma prática.Contudo, requerem familiaridade com programação e podem introduzir carga extrínseca se o foco se desviar para detalhes de implementação. A curadoria do conteúdo é essencial para manter o foco didático e evitar dispersão.
 
-Abaixo sumarizamos as categorias discutidas, com suas finalidades, forças e limitações e exemplos representativos.
+Abaixo sumarizamos as categorias discutidas, com suas forças e limitações e exemplos representativos.
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{X X X X}
+\hline
+\textbf{Categoria} & \textbf{Forças} & \textbf{Limitações} & \textbf{Exemplos} \\
+\hline
 
-% TODO: COLOCAR TABELA AQUI
+Diagramas programáveis e tipografia matemática &
+Semântica visual estável; co-referência entre texto e diagrama; manutenção e versionamento fáceis; layouts consistentes. &
+Interação offline; curva de aprendizado de sintaxe; pouco adequadas para representar dinâmica de algoritmos. &
+\textit{Graphviz/dot}; \textit{TikZ/PGF} \\
+
+Exploração e edição de grafos &
+Layouts automáticos; suporte a filtros e métricas; adequadas para investigar padrões estruturais e relações complexas. &
+Foco maior em análise do que em algoritmos; alternância entre interface gráfica e conceitos teóricos aumenta carga extrínseca; pouco controle sobre estados intermediários. &
+\textit{Gephi}; \textit{yEd}; \textit{Cytoscape} \\
+
+Visualização de algoritmos &
+Explica transformações dinâmicas; eficaz para raciocínio procedimental; ganhos quando o estudante prevê, manipula e explica o que vê. &
+Pode induzir consumo passivo; limita personalização e integração com código. &
+\textit{VisuAlgo}; repositórios de animações de algoritmos \\
+
+Ambientes programáveis e reprodutibilidade &
+Alta flexibilidade; integra código, texto e visualizações; ideal para exploração prática e criação de exemplos reprodutíveis. &
+Exige familiaridade com programação; risco de dispersão em detalhes técnicos; requer curadoria didática. &
+\textit{Jupyter Notebooks}; \textit{NetworkX} \\
+\hline
+\end{tabularx}
+\caption{Síntese das categorias de ferramentas digitais para o ensino de grafos e digrafos.}
+\end{table}
 
 Tendo em vista essas categorias, desenvolvemos uma aplicação \textit{web} interativa que combina elementos de visualização de algoritmos e ambientes programáveis, com foco específico nos algoritmos de arborescência de custo mínimo. A seguir, apresentamos princípios envolvendo a teoria de interação humano-computador que orientaram o desenho da ferramenta, e em seguida descrevemos a aplicação com seus respectivos detalhes de implementação e como ela se posiciona nesse ecossistema.
 
