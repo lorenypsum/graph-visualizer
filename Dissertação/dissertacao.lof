@@ -48,3 +48,4 @@
 \contentsline {figure}{\numberline {47}{\ignorespaces Pico de memória na Fase~I: mediana \(539\) kB.}}{85}{figure.caption.82}%
 \contentsline {figure}{\numberline {48}{\ignorespaces Tamanho de \(D_0\) versus \(|V|\): relação linear confirma \(|A_0| = O(|V|)\).}}{85}{figure.caption.83}%
 \contentsline {figure}{\numberline {49}{\ignorespaces Condensação de $D_0$ e fontes do DAG: ver o grafo “como” blocos (SCCs) ajuda a articular o local (entradas por vértice) com o global (cortes e contrações).}}{89}{figure.caption.84}%
+\contentsline {figure}{\numberline {50}{\ignorespaces Captura de tela de \texttt {home.html}: visão geral com resumo e integrantes.}}{98}{figure.caption.88}%
