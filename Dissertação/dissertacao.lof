@@ -49,12 +49,12 @@
 \contentsline {figure}{\numberline {48}{\ignorespaces Tamanho de \(D_0\) versus \(|V|\): relação linear confirma \(|A_0| = O(|V|)\).}}{86}{figure.caption.83}%
 \contentsline {figure}{\numberline {49}{\ignorespaces Condensação de $D_0$ e fontes do DAG: ver o grafo “como” blocos (SCCs) ajuda a articular o local (entradas por vértice) com o global (cortes e contrações).}}{90}{figure.caption.84}%
 \contentsline {figure}{\numberline {50}{\ignorespaces Captura de tela de \texttt {home.html}: visão geral com resumo e integrantes.}}{106}{figure.caption.86}%
-\contentsline {figure}{\numberline {51}{\ignorespaces \texttt {home.html}: navegação lateral + conteúdo hierárquico (contexto \textrightarrow resumo \textrightarrow equipe).}}{110}{figure.caption.87}%
+\contentsline {figure}{\numberline {51}{\ignorespaces \texttt {home.html}: navegação lateral + conteúdo hierárquico (contexto \textrightarrow resumo \textrightarrow equipe).}}{109}{figure.caption.87}%
 \contentsline {figure}{\numberline {52}{\ignorespaces Captura de tela de \texttt {draw\_graph.html}: editor livre de grafos.}}{110}{figure.caption.88}%
 \contentsline {figure}{\numberline {53}{\ignorespaces \texttt {draw\_graph.html}: foco primordial no componente editor.}}{114}{figure.caption.89}%
 \contentsline {figure}{\numberline {54}{\ignorespaces \texttt {sidebar.html}: lista vertical reforçando modelo mental estável de navegação.}}{116}{figure.caption.90}%
-\contentsline {figure}{\numberline {55}{\ignorespaces Captura de tela de \texttt {chuliu.html}: criação de grafo, seleção de raiz e execução do algoritmo.}}{117}{figure.caption.91}%
-\contentsline {figure}{\numberline {56}{\ignorespaces \texttt {chuliu.html} - tripartição funcional (navegação, conteúdo interativo, guia de passos).}}{124}{figure.caption.92}%
-\contentsline {figure}{\numberline {57}{\ignorespaces Captura de tela de \texttt {andrasfrank.html}: interface para o procedimento em duas fases.}}{125}{figure.caption.93}%
-\contentsline {figure}{\numberline {58}{\ignorespaces \texttt {andrasfrank.html} - reutilização de padrão para consistência cognitiva.}}{132}{figure.caption.94}%
-\contentsline {figure}{\numberline {59}{\ignorespaces A \texttt {barra lateral} injeta navegação consistente; páginas de algoritmo formam trilha exploratória (instância livre \textrightarrow algoritmo 1 \textrightarrow algoritmo 2 \textrightarrow algoritmo 3).}}{133}{figure.caption.95}%
+\contentsline {figure}{\numberline {55}{\ignorespaces Captura de tela de \texttt {chuliu.html}: criação de grafo, seleção de raiz e execução do algoritmo.}}{116}{figure.caption.91}%
+\contentsline {figure}{\numberline {56}{\ignorespaces \texttt {chuliu.html} - tripartição funcional (navegação, conteúdo interativo, guia de passos).}}{123}{figure.caption.92}%
+\contentsline {figure}{\numberline {57}{\ignorespaces Captura de tela de \texttt {andrasfrank.html}: interface para o procedimento em duas fases.}}{124}{figure.caption.93}%
+\contentsline {figure}{\numberline {58}{\ignorespaces \texttt {andrasfrank.html} - reutilização de padrão para consistência cognitiva.}}{131}{figure.caption.94}%
+\contentsline {figure}{\numberline {59}{\ignorespaces A \texttt {barra lateral} injeta navegação consistente; páginas de algoritmo formam trilha exploratória (instância livre \textrightarrow algoritmo 1 \textrightarrow algoritmo 2 \textrightarrow algoritmo 3).}}{132}{figure.caption.95}%
