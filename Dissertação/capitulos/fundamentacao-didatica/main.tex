@@ -13,14 +13,12 @@ Então, como ensinar e aprender conceitos abstratos de forma eficaz? O ensino de
 
 O ensino de matemática no ensino superior exige transitar entre registros de representação (intuitivo, visual, simbólico, formal) com intencionalidade didática \cite{tall1991advanced}. À luz da teoria da carga cognitiva, é útil distinguir: (i) a \emph{carga intrínseca}, determinada pela complexidade dos esquemas a construir e pelos pré-requisitos ativados; (ii) a \emph{carga extrínseca}, criada pela forma de apresentação; e (iii) a \emph{carga pertinente} (\emph{germane}), isto é, o esforço dedicado à organização e automatização de esquemas \cite{sweller1988cognitive}. Em cursos avançados, a extrínseca cresce quando definições, símbolos e figuras não são co-referenciados no tempo e no espaço, dificultando a coordenação entre o que se lê, o que se vê e o que se infere.
 
-\subsection{Desafios centrais}
 Aprender conteúdos de alta abstração envolve lidar com sobrecarga cognitiva intrínseca e extrínseca \cite{sweller1988cognitive}. Diretrizes de aprendizagem multimídia indicam que combinar representações verbais e visuais pode reduzir carga desnecessária e favorecer integração semântica \cite{mayer2009multimedia,paivio1990}. Em matemática avançada, a transição entre níveis de representação (intuitivo, formal, simbólico) exige mediação cuidadosa \cite{tall1991advanced} e atenção a como exemplos, contraexemplos e invariantes são apresentados.
 
-
-No caso específico de algoritmos com provas baseadas em complementaridade primal--dual, é frequente que estudantes compreendam os passos operacionais sem internalizar a estrutura teórica que garante correção e otimalidade.
+No caso específico de algoritmos com provas baseadas em teorias mais complexas, é frequente que estudantes compreendam os passos operacionais sem internalizar a estrutura teórica que garante correção e otimalidade.
 
 \subsection{Lidando com grafos e digrafos}
-Na prática, o que mais dificulta o ensino de digrafos não é definir vértices e arcos, mas articular o que fazemos localmente com as estruturas globais que sustentam as provas de correção e de otimalidade em arborescências de custo mínimo — em particular, nos métodos de Chu–Liu/Edmonds e de Frank \cite{bondy2008graph,diestel2017graph,west2001introduction}. Quando essa articulação não aparece, cresce a \emph{carga intrínseca} (múltiplas dependências simultâneas) e também a \emph{carga extrínseca} (o esforço de alinhar texto, fórmulas e figuras). Nesse contexto específico destacamos três desafios didáticos:
+Na prática, o que mais dificulta o ensino de digrafos não é definir vértices e arcos, mas articular as operações que fazemos com essas estruturas de dados e como os algortimos que são processados nas mesmas envolvem provas de correção e de otimalidade, no caso dessa dissertação, as arborescências de custo mínimo — e os métodos de Chu–Liu/Edmonds e de Frank. Quando essa articulação não aparece, cresce a \emph{carga intrínseca} (múltiplas dependências simultâneas) e também a \emph{carga extrínseca} (o esforço de alinhar texto, fórmulas e figuras). Nesse contexto específico destacamos três desafios didáticos:
 
 O primeiro diz respeito a articular o local com o global. Escolher a melhor aresta de entrada para cada vértice não garante coerência global, pois pode levar à formação de ciclos. Uma dificuldade típica consiste na tendência de projetar a heurística local para o todo, o que leva estudantes a se surpreenderem com ciclos “inesperados”, gerando sobrecarga por conflito entre intuições locais e restrições globais.
 
@@ -43,8 +41,7 @@ No campo específico de matemática avançada, Tall enfatiza a coordenação ent
 
 De modo convergente, pesquisas em educação em ciência da computação apontam que visualizações de algoritmos só se traduzem em melhora de aprendizagem quando ativam processos mentais do estudante, promovendo previsão, manipulação e explicação, em vez de mera observação passiva \cite{hundhausen2002meta,naps2003engagement}. Assim, tanto na matemática quanto na computação, o poder das visualizações reside menos no formato gráfico em si e mais na forma como elas integram e articulam o raciocínio.
 
-\subsection{Disseminação de conteúdos avançados: o ecossistema de ferramentas}
-
+\section{Disseminação de conteúdos avançados: o ecossistema de ferramentas}
 
 Materiais que conectam teoria, evidências empíricas e interatividade têm maior potencial de transferência e retenção.
 
