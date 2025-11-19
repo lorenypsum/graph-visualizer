@@ -3,7 +3,7 @@
 Thomás de Aquino, em sua obra \emph{De veritate}, argumenta que o conhecimento humano começa com a percepção sensorial do mundo concreto, mas alcança sua plenitude ao transcender o particular e abraçar o universal através da abstração. Esse processo de abstração é fundamental para a matemática e a ciência da computação, onde conceitos complexos são frequentemente representados por meio de símbolos e estruturas que vão além da experiência direta.
 
 
-Grafos e digrafos são simultaneamente concretos (nós e arestas) e abstratos (propriedades globais como cortes e conectividade). Essas noções exigem transitar entre níveis de representação (intuitivo, visual, simbólico, formal) \cite{tall1991advanced}, o que pode ser desafiador. A abstração é poderosa, mas também pode ser uma barreira: conceitos como “corte ativo” ou “complementaridade primal–dual” são difíceis de visualizar e internalizar sem apoio didático adequado.
+Grafos e digrafos são simultaneamente concretos (nós e arestas) e abstratos (propriedades globais como cortes e conectividade). Essas noções exigem transitar entre níveis de representação (intuitivo, visual, simbólico, formal) \cite{tall1991advanced}, o que pode ser desafiador. A abstração é poderosa, mas também pode ser uma barreira: conceitos como “complementaridade primal–dual” podem ser difíceis de visualizar e internalizar sem apoio didático adequado.
 
 
 Então, como ensinar e aprender conceitos abstratos de forma eficaz? O ensino de matemática no ensino superior, especialmente em áreas como teoria dos grafos parecem sofrer com dificuldades específicas. A seguir, discutimos essas dificuldades e como o uso de ferramentas visuais e interativas pode ajudar a superá-las.
@@ -35,7 +35,7 @@ Operações como selecionar arestas de entrada, identificar subconjuntos minimai
 Há evidências de que diagramas e animações, quando bem projetados, podem acelerar a compreensão de relações topológicas e causais \cite{larkin1987diagram,ware2012information}.
 
 
-A teoria da carga cognitiva sugere que combinar representações verbais e visuais pode reduzir carga extrínseca e favorecer integração semântica \cite{mayer2009multimedia,paivio1990}. Diretrizes de aprendizagem multimídia recomendam evitar excesso de elementos visuais que não contribuam para o entendimento (reduzindo carga extrínseca) e alinhar texto e imagens no tempo e no espaço (reduzindo esforço de coordenação) \cite{mayer2009multimedia}.
+A teoria da carga cognitiva sugere que combinar representações verbais e visuais pode reduzir \emph{carga extrínseca} e favorecer integração semântica \cite{mayer2009multimedia,paivio1990}. Diretrizes de aprendizagem multimídia recomendam evitar excesso de elementos visuais que não contribuam para o entendimento (reduzindo carga extrínseca) e alinhar texto e imagens no tempo e no espaço (reduzindo esforço de coordenação) \cite{mayer2009multimedia}.
 
 
 No campo específico de matemática avançada, Tall enfatiza a coordenação entre registros — intuitivo, visual, simbólico e formal — como motor da passagem do pensamento predominantemente procedimental para o conceitual \cite{tall1991advanced}. Diagramas não são meros adornos: estruturam inferências espaciais e relacionais de modo mais eficiente que sentenças lineares \cite{larkin1987diagram}.
@@ -47,11 +47,15 @@ Esses princípios orientaram o desenvolvimento do sistema interativo criado nest
 
 \section{O ecossistema de ferramentas}
 
-Materiais que conectam teoria, evidências empíricas e interatividade têm maior potencial de transferência e retenção.
+Materiais que articulam teoria, evidências empíricas e interatividade tendem a favorecer transferência e retenção. Com base nesses fundamentos, realizamos um levantamento de ferramentas digitais relevantes para o ensino de grafos e dígrafos, buscando mapear soluções existentes, suas finalidades e limitações. Esse mapeamento permitiu identificar tanto o espaço de possibilidades quanto lacunas específicas que motivaram o desenvolvimento da aplicação proposta neste trabalho.
 
-Tendo em vista esses fundamentos, ferramentas digitais podem ajudar a reduzir carga extrínseca e a integrar registros (visual, simbólico, formal) quando a interação é desenhada para promover \emph{engajamento ativo} \cite{mayer2009multimedia,sweller1988cognitive,hundhausen2002meta,naps2003engagement}. A seguir, apresentamos categorias de ferramentas úteis no ensino de grafos, indicando finalidades, forças e limitações, e posicionamos a nossa aplicação nesse ecossistema.
+De modo geral, ferramentas digitais podem reduzir carga extrínseca e facilitar a integração entre registros visual, simbólico e formal quando a interação é projetada para promover engajamento ativo \cite{mayer2009multimedia,sweller1988cognitive,hundhausen2002meta,naps2003engagement}. No entanto, as abordagens disponíveis atualmente distribuem-se em diferentes categorias, cada qual cobrindo apenas parte das necessidades envolvidas no ensino de algoritmos para arborescências.
 
-Várias ferramentas digitais podem apoiar o ensino de grafos e digrafos, cada uma com forças e limitações específicas. A seguir, discutimos quatro categorias principais: (i) diagramas programáveis e tipografia matemática, (ii) exploração e edição de grafos, (iii) visualização de algoritmos, e (iv) ambientes programáveis e reprodutibilidade.
+% A seguir, descrevemos cada categoria, apresentando suas forças, limitações e exemplos representativos observados na revisão
+
+% Várias ferramentas digitais podem apoiar o ensino de grafos e digrafos, cada uma com forças e limitações específicas. A seguir, discutimos quatro categorias principais: (i) diagramas programáveis e tipografia matemática, (ii) exploração e edição de grafos, (iii) visualização de algoritmos, e (iv) ambientes programáveis e reprodutibilidade.
+
+A seguir, descrevemos quatro categorias de ferramentas digitais que podem apoiar o ensino de grafos e dígrafos, indicando para cada uma suas forças, limitações e exemplos representativos: (i) diagramas programáveis e tipografia matemática; (ii) exploração e edição de grafos; (iii) visualização de algoritmos; e (iv) ambientes programáveis e reprodutibilidade.
 
 As ferramentas da primeira categoria permitem criar diagramas de grafos com semântica visual consistente, integrando-os a textos matemáticos. Essas ferramentas são úteis para ilustrar conceitos, definições e provas em materiais didáticos. Existem uma série de benefícios didáticos como semântica visual estável (mesmo conceito, apresentado da mesma forma), autoria próxima ao símbolo e ao texto (co-referência) e manutenção e versionamento fáceis. Podemos levantar como limitações o fato de que as interação costumam ser offline (figuras estáticas) e a curva de aprendizado de sintaxe pode ser um obstáculo inicial. Em contextos de prova e definição, esses recursos ancoram a narrativa formal com diagramas que obedecem às diretrizes de \cite{larkin1987diagram,ware2012information}.
 
@@ -96,5 +100,6 @@ A Tabela~\ref{tab:ferramentas-categorias} sumariza as categorias discutidas, com
     \label{tab:ferramentas-categorias}
 \end{table}
 
-Tendo em vista essas categorias, desenvolvemos uma aplicação \textit{web} interativa que combina elementos de visualização de algoritmos e ambientes programáveis, com foco específico nos algoritmos de arborescência de custo mínimo. A seguir, apresentamos princípios envolvendo a teoria de interação humano-computador que orientaram o desenho da ferramenta, e em seguida descrevemos a aplicação com seus respectivos detalhes de implementação e como ela se posiciona nesse ecossistema.
+% Tendo em vista essas categorias, desenvolvemos uma aplicação \textit{web} interativa que combina elementos de visualização de algoritmos e ambientes programáveis, com foco específico nos algoritmos de arborescência de custo mínimo. A seguir, apresentamos princípios envolvendo a teoria de interação humano-computador que orientaram o desenho da ferramenta, e em seguida descrevemos a aplicação com seus respectivos detalhes de implementação e como ela se posiciona nesse ecossistema.
 
+Esse levantamento mostra que, embora existam soluções robustas em cada categoria, nenhuma delas integra de forma unificada a visualização de algoritmos, a manipulação direta do grafo com acesso aos estados intermediários (como contrações, custos reduzidos e reexpansões) e a coordenação entre a representação visual e a explicitação conceitual subjacente. Diante dessas lacunas, desenvolvemos uma aplicação web interativa que combina visualização algorítmica e manipulação gráfica, com foco específico nos procedimentos que compõem a construção de arborescências de custo mínimo. Na seção seguinte, apresentamos os princípios de interação humano–computador que orientaram esse design e detalhamos como a aplicação se posiciona no ecossistema identificado.
