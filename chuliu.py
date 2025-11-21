@@ -43,7 +43,7 @@ def reduce_costs(D: nx.DiGraph, v: str, lang="pt"):
     in_edges = D.in_edges(v, data=True)
 
     # Calculate the minimum weight among the incoming edges
-    yv = min((data.get("w", 0) for _, _, data in in_edges))
+    yv = min((data["w"] for _, _, data in in_edges))
 
     # Subtract Yv from each incoming edge
     for u, _, _ in in_edges:
