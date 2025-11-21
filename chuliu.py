@@ -97,7 +97,7 @@ def find_cycle(D_zero: nx.DiGraph):
 
 
 # Contrai um ciclo C em G, substituindo-o por um supernó rotulado pelo `label`
-def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: str, lang="pt"):
+def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: int, lang="pt"):
     """
     Contract a cycle C in graph G, replacing it with a supernode labeled `label`.
     Returns the modified graph G' with the contracted cycle, the list of incoming edges (in_edge), and outgoing edges (out_edge).
@@ -113,10 +113,10 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: str, lang="pt"):
         - out_from_cycle: A dictionary mapping nodes outside the cycle to tuples (node_in_cycle, weight)
     """
 
-    cycle_nodes: set[str] = set(C.nodes())
+    cycle_nodes: set[int] = set(C.nodes())
 
     # Stores the vertex u outside the cycle and the vertex v inside the cycle that receives the minimum weight edge
-    in_to_cycle: dict[str, tuple[str, float]] = {}
+    in_to_cycle: dict[int, tuple[int, float]] = {}
 
     for u in D.nodes:
         if u not in cycle_nodes:
