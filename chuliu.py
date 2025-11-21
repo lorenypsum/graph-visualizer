@@ -6,7 +6,7 @@ def remove_in_edges_to(
     D: nx.DiGraph, r: int, log=None, boilerplate: bool = True, lang="pt"
 ):
     """
-    Remove all edges entering the root vertex r in graph G.
+    Remove all edges entering the root vertex r in graph D.
     Returns the updated graph.
 
     Parameters:
@@ -72,6 +72,7 @@ def get_Dzero(D: nx.DiGraph, r: int, lang="pt"):
             u = next((u for u, _, data in in_edges if data["w"] == 0))
             D_zero.add_edge(u, v, w=0)
     return D_zero
+
 
 # Encontra um circuito (ciclo dirigido) em G
 def find_cycle(D_zero: nx.DiGraph):
@@ -163,40 +164,67 @@ def chuliu_edmonds(
     D: nx.DiGraph,
     r: int,
     level=0,
-    draw_fn=None,
-    log=None,
-    boilerplate: bool = True,
-    lang="pt",
-    metrics: dict | None = None,
-    ):
+    **kwargs,
+):
+    """
+    Wrapper function for the Chu-Liu/Edmonds algorithm.
+
+    Parameters:
+        - D: A directed graph (networkx.DiGraph)
+        - r: The root node
+        - level: Recursion level (default: 0)
+        - **kwargs: Additional parameters passed to cle:
+            - draw_fn: Optional drawing function
+            - log: Optional logging function
+            - boilerplate: If True, enables logging (default: True)
+            - lang: Language for messages ("en" or "pt", default: "pt")
+            - metrics: Optional dict to collect algorithm metrics
+
+    Returns:
+        - Optimum arborescence as a directed graph (networkx.DiGraph)
+    """
     return cle(
         D,
         r,
         len(D.nodes),
         level,
-        draw_fn=draw_fn,
-        log=log,
-        boilerplate=boilerplate,
-        lang=lang,
-        metrics=metrics,
+        **kwargs,
     )
-    
+
 
 # Encontra a arborescência ótima em G com raiz r usando o algoritmo de Chu-Liu/Edmonds
 def cle(
     D: nx.DiGraph,
     r: int,
     label: int,
-    level = 0,
-    draw_fn=None,
-    log=None,
-    boilerplate: bool = True,
-    lang="pt",
-    metrics: dict | None = None,
+    level=0,
+    **kwargs,
 ):
     """
     Finds the optimum arborescence in a directed graph G with root r using the Chu-Liu/Edmonds algorithm.
+
+    Parameters:
+        - D: A directed graph (networkx.DiGraph)
+        - r: The root node
+        - label: Label for contracted supernodes
+        - level: Recursion level (default: 0)
+        - **kwargs: Additional parameters:
+            - draw_fn: Optional drawing function
+            - log: Optional logging function
+            - boilerplate: If True, enables logging (default: True)
+            - lang: Language for messages ("en" or "pt", default: "pt")
+            - metrics: Optional dict to collect algorithm metrics
+
+    Returns:
+        - Optimum arborescence as a directed graph (networkx.DiGraph)
     """
+
+    # Extract parameters from kwargs with defaults
+    draw_fn = kwargs.get("draw_fn", None)
+    log = kwargs.get("log", None)
+    boilerplate = kwargs.get("boilerplate", True)
+    lang = kwargs.get("lang", "pt")
+    metrics = kwargs.get("metrics", None)
 
     indent = "  " * level
 
@@ -215,11 +243,15 @@ def cle(
 
     if lang == "en":
         assert r in D, (
-            "\n chuliu_edmonds: The root vertex '" + str(r) + "' is not present in the graph."
+            "\n chuliu_edmonds: The root vertex '"
+            + str(r)
+            + "' is not present in the graph."
         )
     elif lang == "pt":
         assert r in D, (
-            "\n chuliu_edmonds: O vértice raiz '" + str(r) + "' não está presente no grafo."
+            "\n chuliu_edmonds: O vértice raiz '"
+            + str(r)
+            + "' não está presente no grafo."
         )
 
     D_copy = cast(nx.DiGraph, D.copy())
@@ -298,10 +330,9 @@ def cle(
 
     C = find_cycle(D_zero)
 
-    # cl = f"\n n*{level}"  # contracted label
     if metrics is not None:
         metrics["contractions"] += 1
-    
+
     in_to_cycle, out_from_cycle = contract_cycle(D_copy, C, label, lang=lang)
 
     # Recursive call
@@ -339,9 +370,6 @@ def cle(
         assert (
             v is not None
         ), f"\n chuliu_edmonds: Nenhum vértice do ciclo encontrado que recebeu a aresta de entrada de '{u}'."
-
-    # Remove the internal edge entering vertex `v` from cycle C
-    # remove_edge_cycle(C, v)
 
     # Add the external edge entering the cycle and restore remaining cycle edges
     F_prime.add_edge(u, v)
@@ -388,7 +416,9 @@ def cle(
 
     # Remove the contracted node
     if lang == "en":
-        assert label in F_prime, f"\nchuliu_edmonds: Vertex '{label}' not found in the graph."
+        assert (
+            label in F_prime
+        ), f"\nchuliu_edmonds: Vertex '{label}' not found in the graph."
     elif lang == "pt":
         assert (
             label in F_prime
@@ -425,5 +455,3 @@ def cle(
                 draw_fn(F_prime, f"\n{indent}Arborescência final.")
     return F_prime
 
-
-# Note: interactive test removed to avoid execution and type-checking issues.

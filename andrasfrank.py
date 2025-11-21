@@ -103,11 +103,7 @@ def has_arborescence(D, r0):
 def phase1(
     D_original,
     r0,
-    draw_fn=None,
-    log=None,
-    boilerplate: bool = True,
-    lang="pt",
-    metrics: dict | None = None,
+    **kwargs,
 ):
     """
     Find the minimum arborescence in a directed graph D with root r0.
@@ -116,11 +112,24 @@ def phase1(
     Parameters:
         - D_original: directed graph (DiGraph)
         - r0: root node
+        - **kwargs: Additional parameters:
+            - draw_fn: Optional drawing function
+            - log: Optional logging function
+            - boilerplate: If True, enables logging (default: True)
+            - lang: Language for messages ("en" or "pt", default: "pt")
+            - metrics: Optional dict to collect algorithm metrics
 
     Returns:
         - A_zero: list of arcs (u, v) that form the minimum arborescence
         - Dual_list: list of tuples (X, z(X)) representing the dual variables
     """
+
+    # Extract parameters from kwargs with defaults
+    draw_fn = kwargs.get("draw_fn", None)
+    log = kwargs.get("log", None)
+    boilerplate = kwargs.get("boilerplate", True)
+    lang = kwargs.get("lang", "pt")
+    metrics = kwargs.get("metrics", None)
 
     D_copy = D_original.copy()
     A_zero = []
@@ -215,9 +224,7 @@ def phase1(
     return A_zero, Dual_list
 
 
-def phase2(
-    D_original, r0, A_zero, draw_fn=None, log=None, boilerplate: bool = True, lang="pt"
-):
+def phase2(D_original, r0, A_zero, **kwargs):
     """
     Find the minimum arborescence in a directed graph D with root r0.
     The function returns the minimum arborescence as a DiGraph.
@@ -226,10 +233,21 @@ def phase2(
         - D_original: directed graph (DiGraph)
         - r0: root node
         - A_zero: list of arcs (u, v) that form the minimum arborescence
+        - **kwargs: Additional parameters:
+            - draw_fn: Optional drawing function
+            - log: Optional logging function
+            - boilerplate: If True, enables logging (default: True)
+            - lang: Language for messages ("en" or "pt", default: "pt")
 
     Returns:
         - Arb: directed graph (DiGraph) representing the minimum arborescence
     """
+
+    # Extract parameters from kwargs with defaults
+    draw_fn = kwargs.get("draw_fn", None)
+    log = kwargs.get("log", None)
+    boilerplate = kwargs.get("boilerplate", True)
+    lang = kwargs.get("lang", "pt")
     Arb = nx.DiGraph()
 
     # Add the root node
@@ -252,9 +270,7 @@ def phase2(
     return Arb
 
 
-def phase2_v2(
-    D_original, r0, A_zero, draw_fn=None, log=None, boilerplate: bool = True, lang="pt"
-):
+def phase2_v2(D_original, r0, A_zero, **kwargs):
     """
     Find the minimum arborescence in a directed graph D with root r0.
     The function returns the minimum arborescence as a DiGraph.
@@ -263,10 +279,21 @@ def phase2_v2(
         - D_original: directed graph (DiGraph)
         - r0: root node
         - A_zero: list of arcs (u, v) that form the minimum arborescence
+        - **kwargs: Additional parameters:
+            - draw_fn: Optional drawing function
+            - log: Optional logging function
+            - boilerplate: If True, enables logging (default: True)
+            - lang: Language for messages ("en" or "pt", default: "pt")
 
     Returns:
         - Arb: directed graph (DiGraph) representing the minimum arborescence
     """
+
+    # Extract parameters from kwargs with defaults
+    draw_fn = kwargs.get("draw_fn", None)
+    log = kwargs.get("log", None)
+    boilerplate = kwargs.get("boilerplate", True)
+    lang = kwargs.get("lang", "pt")
     Arb = nx.DiGraph()
     for i, (u, v) in enumerate(A_zero):
         Arb.add_edge(u, v, w=i)
@@ -315,20 +342,26 @@ def phase2_v2(
     return A
 
 
-def check_dual_optimality_condition(
-    Arb, Dual_list, log=None, boilerplate: bool = True, lang="pt"
-):
+def check_dual_optimality_condition(Arb, Dual_list, **kwargs):
     """
     Verifica a condição dual: z(X) > 0 implica que exatamente uma aresta de Arb entra em X.
 
     Parameters:
         - Arb: arborescência (DiGraph)
         - Dual_list: lista de tuplas (X, z(X)) representando as variáveis duais
-        - r0: nó raiz
+        - **kwargs: Additional parameters:
+            - log: Optional logging function
+            - boilerplate: If True, enables logging (default: True)
+            - lang: Language for messages ("en" or "pt", default: "pt")
 
     Returns:
         - bool: True se a condição dual é satisfeita, False caso contrário
     """
+
+    # Extract parameters from kwargs with defaults
+    log = kwargs.get("log", None)
+    boilerplate = kwargs.get("boilerplate", True)
+    lang = kwargs.get("lang", "pt")
     for X, z in Dual_list:
         for u, v in Arb.edges():
             count = 0
@@ -351,12 +384,33 @@ def check_dual_optimality_condition(
 # empacotar as chamadas em função.
 def andras_frank_algorithm(
     D,
-    draw_fn=None,
-    log=None,
-    boilerplate: bool = True,
-    lang="pt",
-    metrics: dict | None = None,
+    **kwargs,
 ):
+    """
+    Execute the András Frank algorithm to find minimum arborescence.
+
+    Parameters:
+        - D: directed graph (DiGraph)
+        - **kwargs: Additional parameters:
+            - draw_fn: Optional drawing function
+            - log: Optional logging function
+            - boilerplate: If True, enables logging (default: True)
+            - lang: Language for messages ("en" or "pt", default: "pt")
+            - metrics: Optional dict to collect algorithm metrics
+
+    Returns:
+        - arborescence_frank: DiGraph from phase2
+        - arborescence_frank_v2: DiGraph from phase2_v2
+        - dual_frank: bool indicating if dual condition is satisfied
+        - dual_frank_v2: bool indicating if dual condition is satisfied for v2
+    """
+    # Extract parameters from kwargs with defaults
+    draw_fn = kwargs.get("draw_fn", None)
+    log = kwargs.get("log", None)
+    boilerplate = kwargs.get("boilerplate", True)
+    lang = kwargs.get("lang", "pt")
+    metrics = kwargs.get("metrics", None)
+
     if boilerplate and log:
         if lang == "en":
             log(f"\nExecuting András Frank algorithm...")
@@ -366,11 +420,7 @@ def andras_frank_algorithm(
     A_zero, Dual_list = phase1(
         D,
         "r0",
-        draw_fn=draw_fn,
-        log=log,
-        boilerplate=boilerplate,
-        lang=lang,
-        metrics=metrics,
+        **kwargs,
     )
 
     if boilerplate and log:
@@ -385,19 +435,15 @@ def andras_frank_algorithm(
                 log(f"\nO grafo não contém uma arborescência com raiz r0.")
         return None, None
 
-    arborescence_frank = phase2(
-        D, "r0", A_zero, draw_fn=draw_fn, log=log, boilerplate=boilerplate, lang=lang
-    )
-    arborescence_frank_v2 = phase2_v2(
-        D, "r0", A_zero, draw_fn=draw_fn, log=log, boilerplate=boilerplate, lang=lang
-    )
+    arborescence_frank = phase2(D, "r0", A_zero, **kwargs)
+    arborescence_frank_v2 = phase2_v2(D, "r0", A_zero, **kwargs)
 
     dual_frank = check_dual_optimality_condition(
-        arborescence_frank, Dual_list, log=log, boilerplate=boilerplate, lang=lang
+        arborescence_frank, Dual_list, **kwargs
     )
 
     dual_frank_v2 = check_dual_optimality_condition(
-        arborescence_frank_v2, Dual_list, log=log, boilerplate=boilerplate, lang=lang
+        arborescence_frank_v2, Dual_list, **kwargs
     )
 
     if dual_frank and dual_frank_v2:

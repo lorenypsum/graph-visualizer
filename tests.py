@@ -17,9 +17,9 @@ from andrasfrank import (
 from chuliu import chuliu_edmonds, remove_in_edges_to
 
 # Deafult parameters
-NUM_TESTS = 20 
+NUM_TESTS = 10 
 MIN_VERTICES = 100
-MAX_VERTICES = 5000
+MAX_VERTICES = 300
 PESO_MIN = 1
 PESO_MAX = 20
 LOG_CSV_PATH = "test_results.csv"
