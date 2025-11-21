@@ -1,17 +1,18 @@
 import networkx as nx
 from typing import Optional, cast
 
-#Remove todas as arestas que entram no vértice raiz r0 em G
-def remove_edges_to_r0(
-    D: nx.DiGraph, r0: str, log=None, boilerplate: bool = True, lang="pt"
+
+# Remove todas as arestas que entram no vértice raiz r0 em G
+def remove_in_edges_to(
+    D: nx.DiGraph, r: int, log=None, boilerplate: bool = True, lang="pt"
 ):
     """
-    Remove all edges entering the root vertex r0 in graph G.
+    Remove all edges entering the root vertex r in graph G.
     Returns the updated graph.
 
     Parameters:
         - D: A directed graph (networkx.DiGraph)
-        - r0: The root node
+        - r: The root node
         - log: Optional logging function to log information
         - boilerplate: If True, enables logging
         - lang: Language for logging messages ("en" for English, "pt" for Portuguese
@@ -21,9 +22,9 @@ def remove_edges_to_r0(
     """
 
     # Remove all edges entering r0
-    in_edges = list(D.in_edges(r0))
+    in_edges = list(D.in_edges(r))
     D.remove_edges_from(in_edges)
-    return D
+
 
 # Normalização dos pesos das arestas que entram em um vértice
 def reduce_weights(D: nx.DiGraph, node: str, lang="pt"):
@@ -98,6 +99,7 @@ def find_cycle(A_zero: nx.DiGraph):
     # Create a subgraph containing only the cycle
     return A_zero.subgraph(nodes_in_cycle).copy()
 
+
 # Contrai um ciclo C em G, substituindo-o por um supernó rotulado pelo `label`
 def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: str, lang="pt"):
     """
@@ -163,6 +165,7 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: str, lang="pt"):
     D.remove_nodes_from(cycle_nodes)
     return in_to_cycle, out_from_cycle
 
+
 # Remove a aresta interna que entra no vértice de entrada do ciclo
 def remove_edge_cycle(C: nx.DiGraph, v):
     """
@@ -179,6 +182,7 @@ def remove_edge_cycle(C: nx.DiGraph, v):
 
     predecessor = next((u for u, _ in C.in_edges(v)))
     C.remove_edge(predecessor, v)
+
 
 # Encontra a arborescência ótima em G com raiz r0 usando o algoritmo de Chu-Liu/Edmonds
 def chuliu_edmonds(
@@ -218,22 +222,16 @@ def chuliu_edmonds(
         )
     elif lang == "pt":
         assert r0 in D, (
-            "\nchuliu_edmonds: O vértice raiz '"
-            + r0
-            + "' não está presente no grafo."
+            "\nchuliu_edmonds: O vértice raiz '" + r0 + "' não está presente no grafo."
         )
 
     D_copy = cast(nx.DiGraph, D.copy())
 
     if boilerplate and log:
         if lang == "en":
-            log(
-                f"\nchuliu_edmonds:{indent}Removing edges entering '{r0}'"
-            )
+            log(f"\nchuliu_edmonds:{indent}Removing edges entering '{r0}'")
         elif lang == "pt":
-            log(
-                f"\nchuliu_edmonds:{indent}Removendo arestas que entram em '{r0}'"
-            )
+            log(f"\nchuliu_edmonds:{indent}Removendo arestas que entram em '{r0}'")
         if draw_fn:
             if lang == "en":
                 draw_fn(
@@ -303,7 +301,7 @@ def chuliu_edmonds(
 
     C = find_cycle(A_zero)
 
-    cl = f"\n n*{level}" # contracted label
+    cl = f"\n n*{level}"  # contracted label
     if metrics is not None:
         metrics["contractions"] += 1
     in_to_cycle, out_from_cycle = contract_cycle(D_copy, C, cl, lang=lang)
@@ -330,7 +328,7 @@ def chuliu_edmonds(
         assert (
             in_edge is not None
         ), f"\nchuliu_edmonds: Nenhuma aresta encontrada entrando no vértice '{cl}'."
-    
+
     # At this point in_edge is guaranteed not None
     u, _, _ = cast(tuple, in_edge)
     v, _ = in_to_cycle[u]
@@ -351,9 +349,7 @@ def chuliu_edmonds(
     F_prime.add_edge(u, v)
     if boilerplate and log:
         if lang == "en":
-            log(
-                f"\nchuliu_edmonds:{indent}Adding incoming edge to cycle: ({u}, {v})"
-            )
+            log(f"\nchuliu_edmonds:{indent}Adding incoming edge to cycle: ({u}, {v})")
         elif lang == "pt":
             log(
                 f"\nchuliu_edmonds:{indent}Adicionando aresta de entrada ao ciclo: ({u}, {v})"
@@ -363,9 +359,7 @@ def chuliu_edmonds(
         F_prime.add_edge(u_c, v_c)
         if boilerplate and log:
             if lang == "en":
-                log(
-                    f"\nchuliu_edmonds:{indent}Adding cycle edge: ({u_c}, {v_c})"
-                )
+                log(f"\nchuliu_edmonds:{indent}Adding cycle edge: ({u_c}, {v_c})")
             elif lang == "pt":
                 log(
                     f"\nchuliu_edmonds:{indent}Adicionando aresta do ciclo: ({u_c}, {v_c})"
@@ -395,9 +389,7 @@ def chuliu_edmonds(
 
     # Remove the contracted node
     if lang == "en":
-        assert (
-            cl in F_prime
-        ), f"\nchuliu_edmonds: Vertex '{cl}' not found in the graph."
+        assert cl in F_prime, f"\nchuliu_edmonds: Vertex '{cl}' not found in the graph."
     elif lang == "pt":
         assert (
             cl in F_prime
@@ -406,13 +398,9 @@ def chuliu_edmonds(
 
     if boilerplate and log:
         if lang == "en":
-            log(
-                f"\nchuliu_edmonds:{indent}Contracted vertex '{cl}' removed."
-            )
+            log(f"\nchuliu_edmonds:{indent}Contracted vertex '{cl}' removed.")
         elif lang == "pt":
-            log(
-                f"\nchuliu_edmonds:{indent}Vértice contraído '{cl}' removido."
-            )
+            log(f"\nchuliu_edmonds:{indent}Vértice contraído '{cl}' removido.")
 
     # Update the edge weights with the original weights from G
     for u2, v2 in F_prime.edges:
