@@ -64,7 +64,7 @@ def build_rooted_digraph(
 
     D = nx.DiGraph()
     D.add_node(root)
-    nodes = [f"v{i}" for i in range(n - 1)]
+    nodes = [i for i in range(n - 1)]
     all_nodes = [root] + nodes
 
     # Connect the root to at least one other node to ensure connectivity
