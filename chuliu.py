@@ -57,7 +57,6 @@ def get_Dzero(D: nx.DiGraph, r: int):
     Returns:
         - D_zero: A directed graph (networkx.DiGraph) representing F*
     """
-
     # Create an empty directed graph for D_zero
     D_zero = nx.DiGraph()
     for v in D.nodes():
@@ -66,7 +65,6 @@ def get_Dzero(D: nx.DiGraph, r: int):
             u = next((u for u, _, data in in_edges if data["w"] == 0))
             D_zero.add_edge(u, v, w=0)
     return D_zero
-
 
 # Encontra um circuito (ciclo dirigido) em D_zero
 def find_cycle(D_zero: nx.DiGraph):
@@ -80,28 +78,25 @@ def find_cycle(D_zero: nx.DiGraph):
     Returns:
         - A directed graph (networkx.DiGraph) representing the cycle. 
     """
-
     nodes_in_cycle = set()
     # Extract nodes involved in the cycle
     for u, v, _ in nx.find_cycle(D_zero, orientation="original"):
         nodes_in_cycle.update([u, v])
-    # Create a subgraph containing only the cycle
     
+    # Create a subgraph containing only the cycle
     D_zero_digraph = D_zero.subgraph(nodes_in_cycle).to_directed() # Note: convert to directed graph because subgraph returns a Graph
     return D_zero_digraph
 
 
-# Contrai um ciclo C em G, substituindo-o por um supernó rotulado pelo `label`
-def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: int, lang="pt"):
+# Contrai um ciclo C em D, substituindo-o por um supernó rotulado pelo `label`
+def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: int):
     """
-    Contract a cycle C in graph G, replacing it with a supernode labeled `label`.
-    Returns the modified graph G' with the contracted cycle, the list of incoming edges (in_edge), and outgoing edges (out_edge).
-
+    Contract a cycle C in digraph D, replacing it with a supernode labeled `label`.
+    Returns the modified digraph D' with the contracted cycle, the list of incoming edges (in_edge), and outgoing edges (out_edge).
     Parameters:
         - D: A directed graph (networkx.DiGraph)
         - C: A directed graph (networkx.DiGraph) representing the cycle to be contracted
         - label: The label for the new supernode
-        - lang: Language for error messages ("en" for English, "pt" for Portuguese)
 
     Returns:
         - in_to_cycle: A dictionary mapping nodes outside the cycle to tuples (node_in_cycle, weight)
@@ -329,7 +324,7 @@ def cle(
     if metrics is not None:
         metrics["contractions"] += 1
 
-    in_to_cycle, out_from_cycle = contract_cycle(D_copy, C, label, lang=lang)
+    in_to_cycle, out_from_cycle = contract_cycle(D_copy, C, label)
 
     # Recursive call
     F_prime = cle(
