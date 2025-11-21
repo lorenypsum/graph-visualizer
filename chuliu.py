@@ -68,17 +68,17 @@ def get_Dzero(D: nx.DiGraph, r: int):
     return D_zero
 
 
-# Encontra um circuito (ciclo dirigido) em G
+# Encontra um circuito (ciclo dirigido) em D_zero
 def find_cycle(D_zero: nx.DiGraph):
     """
-    Finds a directed cycle in the graph.
+    Finds a directed cycle in the digraph.
     Returns a subgraph containing the cycle, or None if there is none.
 
     Parameters:
         - D_zero: A directed graph (networkx.DiGraph)
 
     Returns:
-        - A directed graph (networkx.DiGraph) representing the cycle, or None if no cycle is found.
+        - A directed graph (networkx.DiGraph) representing the cycle. 
     """
 
     nodes_in_cycle = set()
@@ -86,7 +86,9 @@ def find_cycle(D_zero: nx.DiGraph):
     for u, v, _ in nx.find_cycle(D_zero, orientation="original"):
         nodes_in_cycle.update([u, v])
     # Create a subgraph containing only the cycle
-    return D_zero.subgraph(nodes_in_cycle)
+    
+    D_zero_digraph = D_zero.subgraph(nodes_in_cycle).to_directed() # Note: convert to directed graph because subgraph returns a Graph
+    return D_zero_digraph
 
 
 # Contrai um ciclo C em G, substituindo-o por um supernó rotulado pelo `label`
