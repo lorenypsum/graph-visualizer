@@ -12,23 +12,17 @@ Agora, traduzimos esses princípios em código e interface: a aplicação \texti
 \section{Descrição da aplicação}
 Nesta seção apresentaremos a aplicação web que desenvolvemos para materializar, de forma interativa e didática, os algoritmos discutidos nos capítulos anteriores. Objetiva-se descrever a finalidade da ferramenta, os princípios de design operacionalizados na interface e os principais recursos que sustentam a exploração pedagógica de arborescências dirigidas. Apresentamos aqui uma visão de alto nível da aplicação antes de detalhar a sua arquitetura, páginas e fluxo de interação.
 
-% A respeito do desenvolvimento, ele se deu pela adoção de tecnologias \textit{web} modernas, combinando HTML5 e Tailwind CSS para composição responsiva, PyScript para execução de código Python diretamente no navegador e bibliotecas científicas amplamente utilizadas em grafos e visualização. NetworkX foi empregado para a manipulação de grafos dirigidos e Matplotlib para gerar snapshots estáticos dos estados intermediários dos algoritmos. 
-
-% Para permitir exportação e reutilização do estado da aplicação, empregamos serialização JSON no formato \texttt{node\_link}. Além disso, cada página carrega exclusivamente seus componentes e dependências, evitando \emph{payload} excessivo e reduzindo a latência percebida pelo usuário — uma decisão alinhada ao objetivo de manter a eficiência cognitiva durante a navegação e exploração dos algoritmos.
 \subsection{Objetivo da Ferramenta}
 A aplicação \textit{web} foi concebida como uma ferramenta educacional interativa para auxiliar na compreensão dos algoritmos de Chu-Liu/Edmonds e Andras Frank para a construção de $r$-arborescências dirigidas de custo mínimo. Seu principal objetivo é permitir que estudantes e pesquisadores explorem visualmente o funcionamento desses algoritmos, acompanhando passo a passo suas operações em grafos dirigidos.
 
 \subsection{Estrutura e Funcionalidades}
+\label{subsec:estrutura-funcionalidades}
 
-A aplicação organiza-se em módulos funcionais desenhados para atender aos objetivos didáticos do projeto. A navegação é dividida em três eixos principais:
+A aplicação organiza-se em módulos funcionais projetados para atender aos objetivos didáticos do projeto, distribuídos em três eixos principais de navegação. O primeiro eixo, dedicado à visualização algorítmica, reúne três páginas focadas na execução passo a passo dos métodos estudados. Uma delas apresenta o algoritmo de Chu-Liu/Edmonds, enquanto as outras duas exploram diferentes implementações do algoritmo de Frank. Nessas páginas, o sistema mostra as iterações de forma sequencial, evidencia as alterações visuais no grafo e exibe o resultado final da $r$-arborescência.
 
-\begin{itemize}
-    \item \textbf{Visualização Algorítmica:} O núcleo da ferramenta consiste em três páginas dedicadas à execução passo a passo dos métodos estudados. Uma página detalha o algoritmo de Chu-Liu/Edmonds, enquanto outras duas exploram implementações distintas do algoritmo de Frank. Em todas elas, o sistema exibe as iterações de forma sequencial, apresentando as alterações visuais no grafo e o resultado final da $r$-arborescência.
+O segundo eixo corresponde à modelagem livre, disponibilizando uma interface de edição em formato de sandbox na qual o usuário pode desenhar grafos arbitrariamente. Esse espaço oferece liberdade para experimentar diferentes topologias e estruturas, permitindo testar hipóteses além dos exemplos previamente definidos.
 
-    \item \textbf{Modelagem Livre:} Uma interface de edição (\textit{sandbox}) permite que o usuário desenhe grafos arbitrariamente. Este recurso possibilita a exploração de diferentes topologias e estruturas, oferecendo liberdade para testar hipóteses fora dos exemplos pré-definidos.
-
-    \item \textbf{Disseminação Científica:} Uma seção informativa dedicada à divulgação da dissertação e do projeto. O objetivo é contextualizar a ferramenta, explicando as motivações de seu desenvolvimento e servindo como ponto de difusão do conhecimento teórico sobre o funcionamento dos algoritmos implementados.
-\end{itemize}
+Por fim, o terceiro eixo concentra-se na disseminação científica, reunindo uma página informativa dedicada à divulgação da dissertação e do projeto. Seu propósito é contextualizar a ferramenta, esclarecer as motivações de seu desenvolvimento e servir como canal de difusão do conhecimento teórico acerca dos algoritmos implementados.
 
 
 \subsection{Fluxo de interação}
@@ -50,8 +44,87 @@ A arquitetura da aplicação foi projetada para operar integralmente no lado do 
 \end{itemize}
 
 
+% \begin{figure}[htbp]
+%     \centering
+%     \begin{tikzpicture}[
+%         node distance=1.5cm,
+%         auto,
+%         block/.style={
+%             rectangle, 
+%             draw, 
+%             fill=blue!10, 
+%             text width=4.5cm, 
+%             text centered, 
+%             rounded corners, 
+%             minimum height=3em,
+%             font=\small
+%         },
+%         line/.style={
+%             draw, 
+%             -latex, 
+%             thick
+%         },
+%         dashedbox/.style={
+%             draw, 
+%             dashed, 
+%             fill=gray!5, 
+%             inner sep=0.8cm, 
+%             rounded corners,
+%             label={[anchor=north west, xshift=0.5cm, yshift=-0.5cm]north west:\textbf{Navegador (Client-Side)}}
+%         }
+%     ]
 
-[Image of client side web application architecture diagram]
+%     % Nós Principais
+%     \node [block] (interface) {
+%         \textbf{Camada de Apresentação} \\ 
+%         HTML5 + Tailwind CSS \\ 
+%         (DOM Elements \& Canvas)
+%     };
+
+%     \node [block, below=of interface] (pyscript) {
+%         \textbf{Ponte de Execução} \\ 
+%         PyScript (WebAssembly) \\ 
+%         (Interpolação Python-JS)
+%     };
+
+%     \node [block, below=of pyscript] (core) {
+%         \textbf{Núcleo de Processamento} \\ 
+%         NetworkX (Algoritmos) \\ 
+%         Matplotlib (Renderização)
+%     };
+
+%     \node [block, right=of pyscript, xshift=1cm, fill=yellow!10] (data) {
+%         \textbf{Persistência de Dados} \\ 
+%         JSON (node\_link)
+%     };
+
+%     % Container (Browser Environment)
+%     \begin{scope}[on background layer]
+%         \node [dashedbox, fit=(interface) (core) (data)] (browser) {};
+%     \end{scope}
+
+%     % Conexões (Setas)
+%     % Interface -> PyScript
+%     \path [line] (interface) -- node [right, font=\footnotesize] {Eventos / Input} (pyscript);
+    
+%     % PyScript -> Core
+%     \path [line] (pyscript) -- node [right, font=\footnotesize] {Chamadas de Função} (core);
+    
+%     % Core -> PyScript (Retorno)
+%     \path [line] (core.west) -- ++(-0.5,0) |- node [left, near start, font=\footnotesize] {Snapshots / Grafos} (pyscript.west);
+    
+%     % PyScript -> Interface (Update)
+%     \path [line] (pyscript.west) -- ++(-0.5,0) |- (interface.west);
+
+%     % Data Flow
+%     \path [line] (interface) -| node [near start, above, font=\footnotesize] {Export} (data);
+%     \path [line] (data) -- node [above, font=\footnotesize] {Load} (pyscript);
+
+%     \end{tikzpicture}
+
+%     \caption{Diagrama da arquitetura da aplicação, evidenciando o fluxo de dados e o processamento local via PyScript.}
+%     \label{fig:arquitetura_sistema}
+% \end{figure}
 
 
 Esta organização modular assegura que cada página carregue apenas os \textit{scripts} necessários para sua função específica, otimizando o tempo de carregamento e o consumo de recursos do navegador.
@@ -142,10 +215,8 @@ A estrutura de arquivos da aplicação é organizada em diretórios e componente
 
 \subsection{Páginas da Aplicação \textit{web}}
 
-A seguir, apresentamos os códigos desenvolvidos para os algoritmos implementados realizarem a interação com os usuários.
+A seguir, apresentamos as páginas que compoem a ferramente desenvolvida.
 
-
-\subsection*{\texttt{Index.html}:} o arquivo \texttt{index.html} define a estrutura principal da página HTML, incluindo a integração com PyScript e Tailwind CSS para estilos responsivos.
 
 \subsection*{\texttt{Home.html}:} o arquivo \texttt{home.html} serve como a página inicial da aplicação, oferecendo uma visão geral do projeto, incluindo um resumo do trabalho e informações sobre os integrantes. A estrutura da página é projetada para ser acolhedora e informativa, utilizando Tailwind CSS para garantir uma aparência moderna e responsiva. Abaixo, apresentamos um exemplo de captura de tela da página.
 
@@ -157,7 +228,7 @@ A seguir, apresentamos os códigos desenvolvidos para os algoritmos implementado
 \end{figure}
 
 
-\subsection*{\texttt{Draw\_graph.html}:} Editor de grafos livre com funcionalidades de criação, edição, importação e exportação. Utiliza \texttt{Cytoscape.js} para visualização interativa e \texttt{PyScript} para lógica algorítmica. Abaixo, apresentamos uma captura de tela da página.
+\subsection*{\texttt{Draw graph}:} Editor de grafos livre com funcionalidades de criação, edição, importação e exportação. Ele constitui o segundo módulo que definimos na seção de  ~\ref{subsec:estrutura-funcionalidades} Utiliza \texttt{Cytoscape.js} para visualização interativa e \texttt{PyScript} para lógica algorítmica. Abaixo, apresentamos uma captura de tela da página.
 
 % Screenshot da página Draw Graph
 \begin{figure}[H]\centering
@@ -166,9 +237,9 @@ A seguir, apresentamos os códigos desenvolvidos para os algoritmos implementado
 	\label{fig:draw_html_screenshot}
 \end{figure}
 
-\subsection*{\texttt{Sidebar.html}:} componente de navegação lateral consistente em todas as páginas. Utiliza Tailwind CSS para estilo e inclui links para as principais seções do site, reforçando um modelo mental estável de navegação. 
+\subsection*{\texttt{Tese}:} Essa página compoem o módulo 3 apresentado na seção ~\ref{subsec:estrutura-funcionalidades}, nela apresentamos nossa tese bem como permitimos o download da mesmo, o intuito é permitir com que o usuário possa ter um entendimento maior tanto dos algoritmos quanto do nosso sistema. 
 
-\subsection*{\texttt{Chuliu.html}:} página dedicada ao visualizador do algoritmo de Chu-Liu/Edmonds. Inclui um passo a passo guiado para criar um grafo, selecionar o nó raiz e executar o algoritmo, com feedback visual e textual. Abaixo, apresentamos uma captura de tela da página.
+\subsection*{\texttt{Chuliu/Edmonds}:} página dedicada ao visualizador do algoritmo de Chu-Liu/Edmonds. Inclui um passo a passo guiado para criar um grafo, selecionar o nó raiz e executar o algoritmo, com feedback visual e textual. ELe faz parte do primeiro módulo destacado na seção~\ref{subsec:estrutura-funcionalidades}. Abaixo, apresentamos uma captura de tela da página.
 
 % Screenshot da página Chu-Liu/Edmonds
 \begin{figure}[H]\centering
@@ -189,8 +260,9 @@ A figura a seguir destaca a tripartição funcional da página: navegação late
 \end{figure}
 
 % TODO - REMOVER ESSA PARTE E COLOCAR O ANDRAS FRANK V1 E V2
-\subsection{\texttt{Andrasfrank\_v1.html} e \texttt{Andrasfrank\_v2.html}:} 
-Ambas as páginas são dedicadas ao visualizador do algoritmo de Andras Frank (em suas diferentes implementações elucidadas em capítulos anteriores). Inclui um passo a passo guiado para criar um grafo, selecionar o vértice raiz e executar o algoritmo, com feedback visual e textual. Abaixo, apresentamos uma captura de tela da página.
+\subsection{Página do Andrasfrank (v1) e Andrasfrank (v2):}
+Ambas as páginas são dedicadas ao visualizador do algoritmo de Andras Frank (em suas diferentes implementações elucidadas em capítulos anteriores). Assim como na página dedicada ao algoritmo de Chu–Liu/Edmonds, essa página também faz parte do módulo 1 definido na seção ~\ref{subsec:estrutura-funcionalidades} 
+Além disso, ele inclui um passo a passo guiado para criar um grafo, selecionar o vértice raiz e executar o algoritmo, com feedback visual e textual. Abaixo, apresentamos uma captura de tela da página.
 
 % Screenshot da página Andras Frank
 \begin{figure}[H]\centering
@@ -215,7 +287,7 @@ O ecossistema de páginas cria uma narrativa pedagógica: contextualização (\t
 
 % A figura a seguir sumariza o fluxo e a reutilização arquitetural entre páginas.
 
-\subsection{Síntese arquitetural das páginas}
+\subsection{Estrutura das páginas}
 \begin{figure}[H]\centering
 	\begin{tikzpicture}[node distance=2.2cm,>=Stealth]
 		\node[draw,rounded corners,fill=purple!10] (home) {home};
