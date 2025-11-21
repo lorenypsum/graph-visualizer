@@ -1,7 +1,7 @@
 import networkx as nx
 from typing import Optional, cast
 
-# Remove todas as arestas que entram no vértice raiz r0 em G
+# Remove todas as arestas que entram no vértice raiz r em G
 def remove_in_edges_to(
     D: nx.DiGraph, r: int, log=None, boilerplate: bool = True, lang="pt"
 ):
@@ -52,7 +52,7 @@ def reduce_costs(D: nx.DiGraph, v: int, lang="pt"):
 # Cria o conjunto Dzero
 def get_Dzero(D: nx.DiGraph, r: int, lang="pt"):
     """
-    Creates the set D_zero from graph G and root r0.
+    Creates the set D_zero from graph G and root r.
     An returns a directed graph D_zero.
 
     Parameters:
@@ -91,7 +91,7 @@ def find_cycle(D_zero: nx.DiGraph):
     for u, v, _ in nx.find_cycle(D_zero, orientation="original"):
         nodes_in_cycle.update([u, v])
     # Create a subgraph containing only the cycle
-    return D_zero.subgraph(nodes_in_cycle).copy()
+    return D_zero.subgraph(nodes_in_cycle)
 
 
 # Contrai um ciclo C em G, substituindo-o por um supernó rotulado pelo `label`
@@ -161,27 +161,27 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: int, lang="pt"):
 
 
 # Remove a aresta interna que entra no vértice de entrada do ciclo
-def remove_edge_cycle(C: nx.DiGraph, v):
-    """
-    Remove the internal edge entering the entry vertex `v` from cycle C,
-    since `v` now receives an external edge from the graph.
+# def remove_edge_cycle(C: nx.DiGraph, v):
+#     """
+#     Remove the internal edge entering the entry vertex `v` from cycle C,
+#     since `v` now receives an external edge from the graph.
 
-    Parameters:
-        - C: subgraph of the cycle
-        - external_entry_edge: tuple (u, v, w) — external edge connecting to the cycle
+#     Parameters:
+#         - C: subgraph of the cycle
+#         - external_entry_edge: tuple (u, v, w) — external edge connecting to the cycle
 
-    Returns:
-        - The modified cycle (with one less edge)
-    """
+#     Returns:
+#         - The modified cycle (with one less edge)
+#     """
 
-    predecessor = next((u for u, _ in C.in_edges(v)))
-    C.remove_edge(predecessor, v)
+#     predecessor = next((u for u, _ in C.in_edges(v)))
+#     C.remove_edge(predecessor, v)
 
 
-# Encontra a arborescência ótima em G com raiz r0 usando o algoritmo de Chu-Liu/Edmonds
+# Encontra a arborescência ótima em G com raiz r usando o algoritmo de Chu-Liu/Edmonds
 def chuliu_edmonds(
     D: nx.DiGraph,
-    r0: str,
+    r: str,
     level=0,
     draw_fn=None,
     log=None,
@@ -190,7 +190,7 @@ def chuliu_edmonds(
     metrics: dict | None = None,
 ):
     """
-    Finds the optimum arborescence in a directed graph G with root r0 using the Chu-Liu/Edmonds algorithm.
+    Finds the optimum arborescence in a directed graph G with root r using the Chu-Liu/Edmonds algorithm.
     """
 
     indent = "  " * level
@@ -209,23 +209,23 @@ def chuliu_edmonds(
             log(f"\nchuliu_edmonds:{indent}Iniciando nível {level}")
 
     if lang == "en":
-        assert r0 in D, (
+        assert r in D, (
             "\nchuliu_edmonds: The root vertex '"
-            + r0
+            + r
             + "' is not present in the graph."
         )
     elif lang == "pt":
-        assert r0 in D, (
-            "\nchuliu_edmonds: O vértice raiz '" + r0 + "' não está presente no grafo."
+        assert r in D, (
+            "\nchuliu_edmonds: O vértice raiz '" + r + "' não está presente no grafo."
         )
 
     D_copy = cast(nx.DiGraph, D.copy())
 
     if boilerplate and log:
         if lang == "en":
-            log(f"\nchuliu_edmonds:{indent}Removing edges entering '{r0}'")
+            log(f"\nchuliu_edmonds:{indent}Removing edges entering '{r}'")
         elif lang == "pt":
-            log(f"\nchuliu_edmonds:{indent}Removendo arestas que entram em '{r0}'")
+            log(f"\nchuliu_edmonds:{indent}Removendo arestas que entram em '{r}'")
         if draw_fn:
             if lang == "en":
                 draw_fn(
@@ -239,7 +239,7 @@ def chuliu_edmonds(
                 )
 
     for v in D_copy.nodes:
-        if v != r0:
+        if v != r:
             reduce_costs(D_copy, v, lang=lang)
 
         if boilerplate and log:
@@ -264,7 +264,7 @@ def chuliu_edmonds(
                     )
 
     # Build D_zero
-    D_zero = get_Dzero(D_copy, r0, lang=lang)
+    D_zero = get_Dzero(D_copy, r, lang=lang)
 
     if boilerplate and log:
         if lang == "en":
@@ -303,7 +303,7 @@ def chuliu_edmonds(
     # Recursive call
     F_prime = chuliu_edmonds(
         D_copy,
-        r0,
+        r,
         level + 1,
         draw_fn=None,
         log=None,
@@ -330,27 +330,28 @@ def chuliu_edmonds(
     if lang == "en":
         assert (
             v is not None
-        ), f"\nchuliu_edmonds: No vertex in the cycle found to receive the incoming edge from '{u}'."
+        ), f"\n chuliu_edmonds: No vertex in the cycle found to receive the incoming edge from '{u}'."
     elif lang == "pt":
         assert (
             v is not None
-        ), f"\nchuliu_edmonds: Nenhum vértice do ciclo encontrado que recebeu a aresta de entrada de '{u}'."
+        ), f"\n chuliu_edmonds: Nenhum vértice do ciclo encontrado que recebeu a aresta de entrada de '{u}'."
 
     # Remove the internal edge entering vertex `v` from cycle C
-    remove_edge_cycle(C, v)
+    # remove_edge_cycle(C, v)
 
     # Add the external edge entering the cycle and restore remaining cycle edges
     F_prime.add_edge(u, v)
     if boilerplate and log:
         if lang == "en":
-            log(f"\nchuliu_edmonds:{indent}Adding incoming edge to cycle: ({u}, {v})")
+            log(f"\n chuliu_edmonds:{indent}Adding incoming edge to cycle: ({u}, {v})")
         elif lang == "pt":
             log(
-                f"\nchuliu_edmonds:{indent}Adicionando aresta de entrada ao ciclo: ({u}, {v})"
+                f"\n chuliu_edmonds:{indent}Adicionando aresta de entrada ao ciclo: ({u}, {v})"
             )
 
     for u_c, v_c in C.edges:
-        F_prime.add_edge(u_c, v_c)
+        if v_c != v:
+            F_prime.add_edge(u_c, v_c)
         if boilerplate and log:
             if lang == "en":
                 log(f"\nchuliu_edmonds:{indent}Adding cycle edge: ({u_c}, {v_c})")
