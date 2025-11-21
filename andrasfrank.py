@@ -1,27 +1,6 @@
 import networkx as nx
 import heapq
 
-# TODO: Verificar se precisa mesmo dessa função
-# def build_D_zero(D):
-#     """
-#     Build a directed graph D_zero and from the input directed graph D,
-#     where D_zero contains only the edges with weight zero.
-
-#     Parameters:
-#     - D: directed graph (DiGraph)
-
-#     Returns:
-#     - D_zero: directed graph (DiGraph) containing only edges with weight zero ???
-#     """
-
-#     D_zero = nx.DiGraph()
-
-#     for v in D.nodes():
-#         D_zero.add_node(v)
-
-#     return D_zero
-
-
 def get_arcs_entering_X(D, X):
     """
     Get the arcs entering a set X in a directed graph D.
@@ -61,7 +40,8 @@ def get_minimum_weight_cut(arcs):
 def update_weights_in_X(D, arcs, min_weight, A_zero, D_zero):
     """
     Update the weights of the arcs in a directed graph D for the nodes in set X.
-    ATTENTION: The function produces collateral effect in the provided directed graph by updating its arcs weights.
+    ATTENTION: The function produces collateral effect in the provided directed graph 
+    by updating its arcs weights.
 
     Parameters:
         - D: directed graph (DiGraph)
@@ -71,7 +51,7 @@ def update_weights_in_X(D, arcs, min_weight, A_zero, D_zero):
         - D_zero: directed graph (DiGraph) to store the arcs that reach weight zero
 
     Returns:
-        - None
+        - Nothing. The function updates D, A_zero, and D_zero in place.
     """
 
     for u, v, _ in arcs:
