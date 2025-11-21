@@ -218,7 +218,7 @@ A estrutura de arquivos da aplicação é organizada em diretórios e componente
 A seguir, apresentamos as páginas que compoem a ferramente desenvolvida.
 
 
-\subsection*{\texttt{Home.html}:} o arquivo \texttt{home.html} serve como a página inicial da aplicação, oferecendo uma visão geral do projeto, incluindo um resumo do trabalho e informações sobre os integrantes. A estrutura da página é projetada para ser acolhedora e informativa, utilizando Tailwind CSS para garantir uma aparência moderna e responsiva. Abaixo, apresentamos um exemplo de captura de tela da página.
+\subsection*{\texttt{Home}:} o arquivo \texttt{home.html} serve como a página inicial da aplicação, oferecendo uma visão geral do projeto, incluindo um resumo do trabalho e informações sobre os integrantes. A estrutura da página é projetada para ser acolhedora e informativa, utilizando Tailwind CSS para garantir uma aparência moderna e responsiva. Abaixo, apresentamos um exemplo de captura de tela da página.
 
 % Screenshot da página Home
 \begin{figure}[H]\centering
@@ -237,7 +237,13 @@ A seguir, apresentamos as páginas que compoem a ferramente desenvolvida.
 	\label{fig:draw_html_screenshot}
 \end{figure}
 
-\subsection*{\texttt{Tese}:} Essa página compoem o módulo 3 apresentado na seção ~\ref{subsec:estrutura-funcionalidades}, nela apresentamos nossa tese bem como permitimos o download da mesmo, o intuito é permitir com que o usuário possa ter um entendimento maior tanto dos algoritmos quanto do nosso sistema. 
+\subsection*{\texttt{Tese}:} Essa página compoem o módulo 3 apresentado na seção ~\ref{subsec:estrutura-funcionalidades}, nela apresentamos nossa tese bem como permitimos o download da mesmo, o intuito é permitir com que o usuário possa ter um entendimento maior tanto dos algoritmos quanto do nosso sistema.
+
+\begin{figure}[H]\centering
+	\includegraphics[width=0.95\textwidth]{../assets/tesehtml.png}
+	\caption{Captura de tela de \texttt{tese.html}: visão geral com resumo e integrantes.}
+	\label{fig:tese_html_screenshot}
+\end{figure}
 
 \subsection*{\texttt{Chuliu/Edmonds}:} página dedicada ao visualizador do algoritmo de Chu-Liu/Edmonds. Inclui um passo a passo guiado para criar um grafo, selecionar o nó raiz e executar o algoritmo, com feedback visual e textual. ELe faz parte do primeiro módulo destacado na seção~\ref{subsec:estrutura-funcionalidades}. Abaixo, apresentamos uma captura de tela da página.
 
@@ -256,7 +262,8 @@ A figura a seguir destaca a tripartição funcional da página: navegação late
 		\node[draw,rounded corners,fill=green!10,right=1.6cm of maincl,minimum width=2cm,minimum height=3.4cm] (rs) {Passos};
 		\draw[->] (maincl.east) -- (rs.west);
 	\end{tikzpicture}
-	\caption{\texttt{chuliu.html} - tripartição funcional (navegação, conteúdo interativo, guia de passos). A presença do passo a passo auxilia na compreensão sequencial do algoritmo.}
+	\caption{Tripartição funcional (navegação, conteúdo interativo, guia de passos). A presença do passo a passo auxilia na compreensão sequencial do algoritmo.}
+	\label{fig:triparticao_paginas}
 \end{figure}
 
 % TODO - REMOVER ESSA PARTE E COLOCAR O ANDRAS FRANK V1 E V2
@@ -271,23 +278,12 @@ Além disso, ele inclui um passo a passo guiado para criar um grafo, selecionar 
 	\label{fig:andrasfrank_html_screenshot}
 \end{figure}
 
-A figura a seguir ilustra a reutilização do padrão de tripartição funcional para manter consistência cognitiva entre páginas.
+Assim como na página do algoritmo de Chu–Liu/Edmonds (fig. ~\ref{fig:fig:triparticao_paginas}) a página dedicadas às implementações do algoritmo do Andras Frank também utilização o padrão de tripartição funcional para manter consistência cognitiva entre páginas.
 
-\begin{figure}[H]\centering
-	\begin{tikzpicture}[node distance=1.4cm]
-		\node[draw,rounded corners,fill=gray!10,minimum width=1.6cm] (sb5) {Barra Lateral};
-		\node[draw,rounded corners,fill=blue!8,right=0.6cm of sb5,minimum width=5.2cm,minimum height=3.4cm] (mainaf) {Principal (Passos + Editor + Logs)};
-		\node[draw,rounded corners,fill=green!10,right=2.6cm of mainaf,minimum width=2cm,minimum height=3.4cm] (rsa) {Passos};
-		\draw[->] (mainaf.east) -- (rsa.west);
-	\end{tikzpicture}
-	\caption{\texttt{andrasfrank.html} - reutilização de padrão para consistência cognitiva.}
-\end{figure}
-
-O ecossistema de páginas cria uma narrativa pedagógica: contextualização (\texttt{home}) \,$\rightarrow$\, experimentação livre (\texttt{draw\_graph}) \,$\rightarrow$\, exploração guiada (\texttt{chuliu}, \texttt{andrasfrank (v1)} e \texttt{andrasfrank (v2)}) \,$\rightarrow$\, consolidação formal (\texttt{tese}). Tal sequência ainda reduz a carga intrínseca inicial.
-
-% A figura a seguir sumariza o fluxo e a reutilização arquitetural entre páginas.
 
 \subsection{Estrutura das páginas}
+
+A estrutura das páginas da aplicação segue um padrão modular e reutilizável, facilitando a manutenção e extensão futura. Cada página é composta por três seções principais: uma barra lateral de navegação, um conteúdo interativo central e um painel de passos à direita. Essa organização promove consistência cognitiva e facilita a navegação do usuário entre diferentes funcionalidades.
 \begin{figure}[H]\centering
 	\begin{tikzpicture}[node distance=2.2cm,>=Stealth]
 		\node[draw,rounded corners,fill=purple!10] (home) {home};
