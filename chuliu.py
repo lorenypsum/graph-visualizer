@@ -265,37 +265,37 @@ def chuliu_edmonds(
                         f"\nchuliu_edmonds:{indent}Após ajuste de pesos",
                     )
 
-    # Build A_zero
-    A_zero = get_Dzero(D_copy, r0, lang=lang)
+    # Build D_zero
+    D_zero = get_Dzero(D_copy, r0, lang=lang)
 
     if boilerplate and log:
         if lang == "en":
-            log(f"\nchuliu_edmonds:{indent}Building A_zero")
+            log(f"\nchuliu_edmonds:{indent}Building D_zero")
         elif lang == "pt":
-            log(f"\nchuliu_edmonds:{indent}Construindo A_zero")
+            log(f"\nchuliu_edmonds:{indent}Construindo D_zero")
         if draw_fn:
             if lang == "en":
-                draw_fn(A_zero, f"\nchuliu_edmonds:{indent}A_zero")
+                draw_fn(D_zero, f"\nchuliu_edmonds:{indent}D_zero")
             elif lang == "pt":
-                draw_fn(A_zero, f"\nchuliu_edmonds:{indent}A_zero")
+                draw_fn(D_zero, f"\nchuliu_edmonds:{indent}D_zero")
 
-    if nx.is_arborescence(A_zero):
-        for u, v in A_zero.edges:
-            A_zero[u][v]["w"] = D[u][v]["w"]
-        return A_zero
+    if nx.is_arborescence(D_zero):
+        for u, v in D_zero.edges:
+            D_zero[u][v]["w"] = D[u][v]["w"]
+        return D_zero
 
     # Otherwise, contract a cycle and recurse
     if boilerplate and log:
         if lang == "en":
             log(
-                f"\nchuliu_edmonds:{indent}A_zero is not an arborescence. Continuing..."
+                f"\nchuliu_edmonds:{indent}D_zero is not an arborescence. Continuing..."
             )
         elif lang == "pt":
             log(
-                f"\nchuliu_edmonds:{indent}A_zero não é uma arborescência. Continuando..."
+                f"\nchuliu_edmonds:{indent}D_zero não é uma arborescência. Continuando..."
             )
 
-    C = find_cycle(A_zero)
+    C = find_cycle(D_zero)
 
     cl = f"\n n*{level}"  # contracted label
     if metrics is not None:
