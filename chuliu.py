@@ -17,10 +17,10 @@ def remove_in_edges_to(
         - lang: Language for logging messages ("en" for English, "pt" for Portuguese
 
     Returns:
-        - D: The updated directed graph (networkx.DiGraph) with edges to r0 removed
+        - D: The updated directed graph (networkx.DiGraph) with edges to r removed
     """
 
-    # Remove all edges entering r0
+    # Remove all edges entering r
     in_edges = list(D.in_edges(r))
     D.remove_edges_from(in_edges)
 
@@ -49,7 +49,7 @@ def reduce_costs(D: nx.DiGraph, v: int, lang="pt"):
         D[u][v]["w"] -= yv
 
 
-# Cria o conjunto A0
+# Cria o conjunto Dzero
 def get_Dzero(D: nx.DiGraph, r: int, lang="pt"):
     """
     Creates the set D_zero from graph G and root r0.
