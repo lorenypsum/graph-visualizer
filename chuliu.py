@@ -3,8 +3,7 @@ from typing import Optional, cast
 
 # Remove todas as arestas que entram no vértice raiz r em G
 def remove_in_edges_to(
-    D: nx.DiGraph, r: int, log=None, boilerplate: bool = True, lang="pt"
-):
+    D: nx.DiGraph, r: int):
     """
     Remove all edges entering the root vertex r in graph D.
     Returns the updated graph.

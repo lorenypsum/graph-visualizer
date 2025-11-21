@@ -17,14 +17,14 @@ from andrasfrank import (
 from chuliu import chuliu_edmonds, remove_in_edges_to
 
 # Deafult parameters
-NUM_TESTS = 10 
+NUM_TESTS = 10
 MIN_VERTICES = 100
 MAX_VERTICES = 300
 PESO_MIN = 1
 PESO_MAX = 20
 LOG_CSV_PATH = "test_results.csv"
 LOG_TXT_PATH = "test_log.txt"
-ROOT = "r0"
+ROOT = 0
 LANG = "pt"  # Change to "en" for English logs
 
 # Instance family configuration
@@ -38,14 +38,19 @@ def log_console_and_file(msg, log_txt_path=LOG_TXT_PATH):
 
 
 def build_rooted_digraph(
-    n=10, m=None, root="r0", peso_min=1, peso_max=10, family: str = "random"
+    n=MIN_VERTICES,
+    m=None,
+    root=ROOT,
+    peso_min=PESO_MIN,
+    peso_max=PESO_MAX,
+    family: str = "random",
 ):
     """
     Create a directed graph with n vertices, m edges.
     Parameters:
         - n: número de vértices (default: 10)
         - m: número de arestas (default: 2*n)
-        - r0: rótulo do vértice raiz (default: "r0")
+        - r: rótulo do vértice raiz (default: "r")
         - peso_min: peso mínimo das arestas (default: 1)
         - peso_max: peso máximo das arestas (default: 10)
     Returns:
@@ -71,7 +76,7 @@ def build_rooted_digraph(
     reached = {root}
     remaining = set(nodes)
 
-    # Ensure all nodes are reachable from r0
+    # Ensure all nodes are reachable from r
     while remaining:
         v = remaining.pop()
         u = random.choice(list(reached))
@@ -116,12 +121,14 @@ def build_rooted_digraph(
                 D.add_edge(u, v, w=random.randint(peso_min, peso_max))
     return D
 
-def contains_arborescence(D, r0):
+
+def contains_arborescence(D, r):
     """
-    Check if G contains an arborescence with root r0.
+    Check if G contains an arborescence with root r.
     """
-    tree = nx.dfs_tree(D, source=r0)
+    tree = nx.dfs_tree(D, source=r)
     return tree.number_of_nodes() == D.number_of_nodes(), tree
+
 
 def get_total_digraph_cost(D_arbo):
     """
@@ -134,17 +141,39 @@ def volume_tester(
     num_tests=NUM_TESTS,
     min_vertices=MIN_VERTICES,
     max_vertices=MAX_VERTICES,
-    root=ROOT,
+    r=ROOT,
     peso_min=PESO_MIN,
     peso_max=PESO_MAX,
     log_csv_path=LOG_CSV_PATH,
     log_txt_path=LOG_TXT_PATH,
-    draw_fn: Optional[Callable] = None,
-    log: Optional[Callable[[str], None]] = None,
-    boilerplate: bool = True,
-    lang=LANG,
     family: str = FAMILY,
+    **kwargs,
 ):
+    """
+    Run volume tests comparing Chu-Liu/Edmonds and András Frank algorithms.
+
+    Parameters:
+        - num_tests: Number of tests to run
+        - min_vertices: Minimum number of vertices
+        - max_vertices: Maximum number of vertices
+        - r: Root vertex
+        - peso_min: Minimum edge weight
+        - peso_max: Maximum edge weight
+        - log_csv_path: Path to CSV log file
+        - log_txt_path: Path to text log file
+        - family: Instance family ("random", "dense", "sparse", "layered")
+        - **kwargs: Additional parameters:
+            - draw_fn: Optional drawing function
+            - log: Optional logging function
+            - boilerplate: If True, enables logging (default: True)
+            - lang: Language for messages ("en" or "pt", default: "pt")
+    """
+
+    # Extract parameters from kwargs with defaults
+    draw_fn = kwargs.get("draw_fn", None)
+    log = kwargs.get("log", None)
+    boilerplate = kwargs.get("boilerplate", True)
+    lang = kwargs.get("lang", LANG)
     success_count = 0
     failure_count = 0
     chuliu_greater_than_frank = 0
@@ -227,54 +256,55 @@ def volume_tester(
         peak_kb = None
         try:
             D = build_rooted_digraph(
-                n=n, m=m, root=root, peso_min=peso_min, peso_max=peso_max, family=family
+                n=n, m=m, root=r, peso_min=peso_min, peso_max=peso_max, family=family
             )
 
             D1_copy = nx.DiGraph(D)
 
             contains_arborescence_result, tree_result = contains_arborescence(
-                D1_copy, root
+                D1_copy, r
             )
 
             if contains_arborescence_result:
                 if boilerplate and log:
                     if lang == "en":
                         log(
-                            f"\n The original graph contains an arborescence with root {root}. Starting tests..."
+                            f"\n The original graph contains an arborescence with root {r}. Starting tests..."
                         )
                         if draw_fn:
                             draw_fn(
                                 tree_result,
-                                title=f"Original Arborescence with root {root}",
+                                title=f"Original Arborescence with root {r}",
                             )
                     elif lang == "pt":
                         log(
-                            f"\n O grafo original contém uma arborescência com raiz {root}. Iniciando os testes..."
+                            f"\n O grafo original contém uma arborescência com raiz {r}. Iniciando os testes..."
                         )
                         if draw_fn:
                             draw_fn(
                                 tree_result,
-                                title=f"Arborescência Original com raiz {root}",
+                                title=f"Arborescência Original com raiz {r}",
                             )
 
             if lang == "en":
                 remove_in_edges_to(
-                    D1_copy, root, log=log, boilerplate=boilerplate, lang="en"
+                    D1_copy, r
                 )
             elif lang == "pt":
                 remove_in_edges_to(
-                    D1_copy, root, log=log, boilerplate=boilerplate, lang="pt"
+                    D1_copy, r
                 )
 
             # Chu-Liu/Edmonds Algorithm (timed)
             t1 = time.perf_counter()
             arbo_chuliu = chuliu_edmonds(
                 D1_copy,
-                root,
+                r,
                 draw_fn=draw_fn,
                 log=log,
                 boilerplate=boilerplate,
                 metrics=chu_metrics,
+                lang=lang,
             )
             t_chuliu = time.perf_counter() - t1
             custo_chuliu = get_total_digraph_cost(arbo_chuliu)
@@ -297,7 +327,7 @@ def volume_tester(
             t1 = time.perf_counter()
             A_zero, Dual_list = phase1(
                 D1_copy,
-                root,
+                r,
                 draw_fn=None,
                 log=log,
                 boilerplate=boilerplate,
@@ -313,7 +343,7 @@ def volume_tester(
             t1 = time.perf_counter()
             arbo_frank_v1 = phase2(
                 D1_copy,
-                root,
+                r,
                 A_zero,
                 draw_fn=None,
                 log=None,
@@ -326,7 +356,7 @@ def volume_tester(
             t1 = time.perf_counter()
             arbo_frank_v2 = phase2_v2(
                 D1_copy,
-                root,
+                r,
                 A_zero,
                 draw_fn=None,
                 log=None,
@@ -403,11 +433,11 @@ def volume_tester(
                 if boilerplate and log:
                     if lang == "en":
                         log(
-                            "\n The graph does not contain an arborescence with root r0. Test aborted."
+                            "\n The graph does not contain an arborescence with root r. Test aborted."
                         )
                     elif lang == "pt":
                         log(
-                            "\n O grafo não contém uma arborescência com raiz r0. Teste abortado."
+                            "\n O grafo não contém uma arborescência com raiz r. Teste abortado."
                         )
                 if draw_fn:
                     draw_fn(D1_copy)
@@ -479,14 +509,14 @@ volume_tester(
     num_tests=NUM_TESTS,
     min_vertices=MIN_VERTICES,
     max_vertices=MAX_VERTICES,
-    root=ROOT,
+    r=ROOT,
     peso_min=PESO_MIN,
     peso_max=PESO_MAX,
     log_csv_path=LOG_CSV_PATH,
     log_txt_path=LOG_TXT_PATH,
+    family=FAMILY,
     draw_fn=None,
     log=log_console_and_file,
     boilerplate=True,
     lang="pt",
-    family=FAMILY,
 )
