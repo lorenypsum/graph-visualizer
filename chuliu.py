@@ -51,29 +51,28 @@ def reduce_costs(D: nx.DiGraph, v: str, lang="pt"):
 
 
 # Cria o conjunto A0
-def get_Azero(D: nx.DiGraph, r0: str, lang="pt"):
+def get_Dzero(D: nx.DiGraph, r0: str, lang="pt"):
     """
-    Creates the set A_zero from graph G and root r0.
-    An returns a directed graph A_zero.
+    Creates the set D_zero from graph G and root r0.
+    An returns a directed graph D_zero.
 
     Parameters:
         - D: A directed graph (networkx.DiGraph)
-        - r0: The rootve
+        - r0: The root vertex
         - lang: Language for error messages ("en" for English, "pt" for Portuguese)
 
     Returns:
-        - A_zero: A directed graph (networkx.DiGraph) representing F*
+        - D_zero: A directed graph (networkx.DiGraph) representing F*
     """
 
-    # Create an empty directed graph for A_zero
-    A_zero = nx.DiGraph()
-
+    # Create an empty directed graph for D_zero
+    D_zero = nx.DiGraph()
     for v in D.nodes():
         if v != r0:
             in_edges = D.in_edges(v, data=True)
             u = next((u for u, _, data in in_edges if data.get("w") == 0))
-            A_zero.add_edge(u, v, w=0)
-    return A_zero
+            D_zero.add_edge(u, v, w=0)
+    return D_zero
 
 
 # Encontra um circuito (ciclo dirigido) em G
@@ -267,7 +266,7 @@ def chuliu_edmonds(
                     )
 
     # Build A_zero
-    A_zero = get_Azero(D_copy, r0, lang=lang)
+    A_zero = get_Dzero(D_copy, r0, lang=lang)
 
     if boilerplate and log:
         if lang == "en":
