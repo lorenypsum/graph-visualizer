@@ -123,7 +123,7 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: int, lang="pt"):
             # Find the minimum weight edge that u has to any vertex in C
             min_weight_edge_to_cycle = min(
                 (
-                    (v, data.get("w", float("inf")))
+                    (v, data["w"])
                     for _, v, data in D.out_edges(u, data=True)
                     if v in cycle_nodes
                 ),
@@ -137,16 +137,16 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: int, lang="pt"):
         D.add_edge(u, label, w=w)
 
     # Stores the vertex v outside the cycle that receives the minimum weight edge from a vertex u inside the cycle
-    out_from_cycle: dict[str, tuple[str, float]] = {}
+    out_from_cycle: dict[int, tuple[int, float]] = {}
 
     for v in D.nodes:
         if v not in cycle_nodes:
             # Find the minimum weight edge that v receives from any vertex in C
             min_weight_edge_from_cycle = min(
                 (
-                    (u2, data.get("w", float("inf")))
-                    for u2, _, data in D.in_edges(v, data=True)
-                    if u2 in cycle_nodes
+                    (u, data["w"])
+                    for u, _, data in D.in_edges(v, data=True)
+                    if u in cycle_nodes
                 ),
                 key=lambda x: x[1],
                 default=None,
