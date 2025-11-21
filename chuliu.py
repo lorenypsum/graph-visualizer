@@ -70,7 +70,7 @@ def get_Dzero(D: nx.DiGraph, r0: str, lang="pt"):
     for v in D.nodes():
         if v != r0:
             in_edges = D.in_edges(v, data=True)
-            u = next((u for u, _, data in in_edges if data.get("w") == 0))
+            u = next((u for u, _, data in in_edges if data["w"] == 0))
             D_zero.add_edge(u, v, w=0)
     return D_zero
 
