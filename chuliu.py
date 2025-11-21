@@ -27,7 +27,7 @@ def remove_in_edges_to(
 
 
 # Normalização dos pesos das arestas que entram em um vértice
-def reduce_costs(D: nx.DiGraph, v: str, lang="pt"):
+def reduce_costs(D: nx.DiGraph, v: int, lang="pt"):
     """
     Change the costs of incoming edges into the `v`
     by subtracting the minimum incoming weight from each in the Graph G.
@@ -51,14 +51,14 @@ def reduce_costs(D: nx.DiGraph, v: str, lang="pt"):
 
 
 # Cria o conjunto A0
-def get_Dzero(D: nx.DiGraph, r0: str, lang="pt"):
+def get_Dzero(D: nx.DiGraph, r: int, lang="pt"):
     """
     Creates the set D_zero from graph G and root r0.
     An returns a directed graph D_zero.
 
     Parameters:
         - D: A directed graph (networkx.DiGraph)
-        - r0: The root vertex
+        - r: The root vertex
         - lang: Language for error messages ("en" for English, "pt" for Portuguese)
 
     Returns:
@@ -68,7 +68,7 @@ def get_Dzero(D: nx.DiGraph, r0: str, lang="pt"):
     # Create an empty directed graph for D_zero
     D_zero = nx.DiGraph()
     for v in D.nodes():
-        if v != r0:
+        if v != r:
             in_edges = D.in_edges(v, data=True)
             u = next((u for u, _, data in in_edges if data["w"] == 0))
             D_zero.add_edge(u, v, w=0)
@@ -76,13 +76,13 @@ def get_Dzero(D: nx.DiGraph, r0: str, lang="pt"):
 
 
 # Encontra um circuito (ciclo dirigido) em G
-def find_cycle(A_zero: nx.DiGraph):
+def find_cycle(D_zero: nx.DiGraph):
     """
     Finds a directed cycle in the graph.
     Returns a subgraph containing the cycle, or None if there is none.
 
     Parameters:
-        - A_zero: A directed graph (networkx.DiGraph)
+        - D_zero: A directed graph (networkx.DiGraph)
 
     Returns:
         - A directed graph (networkx.DiGraph) representing the cycle, or None if no cycle is found.
@@ -90,10 +90,10 @@ def find_cycle(A_zero: nx.DiGraph):
 
     nodes_in_cycle = set()
     # Extract nodes involved in the cycle
-    for u, v, _ in nx.find_cycle(A_zero, orientation="original"):
+    for u, v, _ in nx.find_cycle(D_zero, orientation="original"):
         nodes_in_cycle.update([u, v])
     # Create a subgraph containing only the cycle
-    return A_zero.subgraph(nodes_in_cycle).copy()
+    return D_zero.subgraph(nodes_in_cycle).copy()
 
 
 # Contrai um ciclo C em G, substituindo-o por um supernó rotulado pelo `label`
