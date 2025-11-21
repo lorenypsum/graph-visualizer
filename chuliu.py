@@ -47,13 +47,12 @@ def reduce_costs(D: nx.DiGraph, v: int):
 # Cria o conjunto Dzero
 def get_Dzero(D: nx.DiGraph, r: int):
     """
-    Creates the set D_zero from graph G and root r.
-    An returns a directed graph D_zero.
+    Creates the set D_zero from digraph D and root r.
+    An returns a directed digraph D_zero.
 
     Parameters:
         - D: A directed graph (networkx.DiGraph)
         - r: The root vertex
-        - lang: Language for error messages ("en" for English, "pt" for Portuguese)
 
     Returns:
         - D_zero: A directed graph (networkx.DiGraph) representing F*
