@@ -9,6 +9,126 @@ Agora, traduzimos esses princípios em código e interface: a aplicação \texti
 
 % Com isso em mente, a aplicação \textit{web} interativa foi desenvolvida para ilustrar os algoritmos de Chu–Liu/Edmonds e Frank, permitindo aos usuários acompanhar passo a passo o funcionamento de ambos os métodos. 
 
+\section{Descrição da aplicação}
+Nesta seção apresentaremos a aplicação web que desenvolvemos para materializar, de forma interativa e didática, os algoritmos discutidos nos capítulos anteriores. Objetiva-se descrever a finalidade da ferramenta, os princípios de design operacionalizados na interface e os principais recursos que sustentam a exploração pedagógica de arborescências dirigidas. Apresentamos aqui uma visão de alto nível da aplicação antes de detalhar a sua arquitetura, páginas e fluxo de interação.
+
+\subsection{Objetivo da Ferramenta}
+A aplicação \textit{web} foi concebida como uma ferramenta educacional interativa para auxiliar na compreensão dos algoritmos de Chu-Liu/Edmonds e Andras Frank para a construção de $r$-arborescências dirigidas de custo mínimo. Seu principal objetivo é permitir que estudantes e pesquisadores explorem visualmente o funcionamento desses algoritmos, acompanhando passo a passo suas operações em grafos dirigidos.
+
+\subsection{Estrutura e Funcionalidades}
+\label{subsec:estrutura-funcionalidades}
+
+A aplicação organiza-se em módulos funcionais projetados para atender aos objetivos didáticos do projeto, distribuídos em três eixos principais de navegação. O primeiro eixo, dedicado à visualização algorítmica, reúne três páginas focadas na execução passo a passo dos métodos estudados. Uma delas apresenta o algoritmo de Chu-Liu/Edmonds, enquanto as outras duas exploram diferentes implementações do algoritmo de Frank. Nessas páginas, o sistema mostra as iterações de forma sequencial, evidencia as alterações visuais no grafo e exibe o resultado final da $r$-arborescência.
+
+O segundo eixo corresponde à modelagem livre, disponibilizando uma interface de edição em formato de sandbox na qual o usuário pode desenhar grafos arbitrariamente. Esse espaço oferece liberdade para experimentar diferentes topologias e estruturas, permitindo testar hipóteses além dos exemplos previamente definidos.
+
+Por fim, o terceiro eixo concentra-se na disseminação científica, reunindo uma página informativa dedicada à divulgação da dissertação e do projeto. Seu propósito é contextualizar a ferramenta, esclarecer as motivações de seu desenvolvimento e servir como canal de difusão do conhecimento teórico acerca dos algoritmos implementados.
+
+
+\subsection{Fluxo de interação}
+
+O fluxo de interação foi projetado para ser linear e intuitivo, guiando o usuário desde a criação do grafo até a visualização dos resultados do algoritmo. O fluxo típico é o seguinte: primeiro o usuário monta ou carrega um grafo de teste; em seguida, define (ou confirma) o vértice raiz \(r_0\); depois, executa o algoritmo, aplicando normalizações e seleção de arestas conforme implementado; então, observa os estados sequenciais gerados, onde cada snapshot reforça invariantes como arestas escolhidas, pesos e estrutura alcançada; por fim, o usuário pode optar por exportar o grafo resultante para replicação em notebooks ou comparação com a abordagem dual futura.
+
+Além disso, o log textual funciona como uma \emph{trilha de auditoria didática}. Cada ação do usuário (adição de aresta, definição de raiz, execução de passo) atualiza o grafo e o log, permitindo rastrear a evolução do estado. A exportação em JSON facilita a reimportação e análise posterior.
+
+\subsection{Arquitetura do Sistema}
+
+A arquitetura da aplicação foi projetada para operar integralmente no lado do cliente (\textit{client-side}), utilizando o navegador como ambiente de execução para o código Python via WebAssembly. O sistema estrutura-se em três camadas lógicas principais:
+
+\begin{itemize}
+    \item \textbf{Camada de Apresentação:} Responsável pela interface com o usuário, desenvolvida em HTML5 e estilizada com o \textit{framework} utilitário Tailwind CSS. Esta camada gerencia a entrada de dados e a exibição dos resultados, mantendo a responsividade em diferentes dispositivos.
+
+    \item \textbf{Núcleo de Processamento (PyScript):} Atua como a ponte entre a interface \textit{web} e as bibliotecas científicas. O PyScript permite a importação e execução de módulos Python diretamente no DOM. O processamento dos grafos é realizado pela biblioteca \texttt{NetworkX}, enquanto a geração das representações visuais estáticas (snapshots) é delegada ao \texttt{Matplotlib}.
+
+    \item \textbf{Camada de Dados e Persistência:} A troca de informações entre o editor livre e os algoritmos utiliza o formato JSON (\textit{JavaScript Object Notation}). Os grafos são serializados no padrão \texttt{node\_link}, permitindo a representação leve de nós, arestas e atributos (pesos e custos) para armazenamento local ou transferência entre módulos.
+\end{itemize}
+
+
+% \begin{figure}[htbp]
+%     \centering
+%     \begin{tikzpicture}[
+%         node distance=1.5cm,
+%         auto,
+%         block/.style={
+%             rectangle, 
+%             draw, 
+%             fill=blue!10, 
+%             text width=4.5cm, 
+%             text centered, 
+%             rounded corners, 
+%             minimum height=3em,
+%             font=\small
+%         },
+%         line/.style={
+%             draw, 
+%             -latex, 
+%             thick
+%         },
+%         dashedbox/.style={
+%             draw, 
+%             dashed, 
+%             fill=gray!5, 
+%             inner sep=0.8cm, 
+%             rounded corners,
+%             label={[anchor=north west, xshift=0.5cm, yshift=-0.5cm]north west:\textbf{Navegador (Client-Side)}}
+%         }
+%     ]
+
+%     % Nós Principais
+%     \node [block] (interface) {
+%         \textbf{Camada de Apresentação} \\ 
+%         HTML5 + Tailwind CSS \\ 
+%         (DOM Elements \& Canvas)
+%     };
+
+%     \node [block, below=of interface] (pyscript) {
+%         \textbf{Ponte de Execução} \\ 
+%         PyScript (WebAssembly) \\ 
+%         (Interpolação Python-JS)
+%     };
+
+%     \node [block, below=of pyscript] (core) {
+%         \textbf{Núcleo de Processamento} \\ 
+%         NetworkX (Algoritmos) \\ 
+%         Matplotlib (Renderização)
+%     };
+
+%     \node [block, right=of pyscript, xshift=1cm, fill=yellow!10] (data) {
+%         \textbf{Persistência de Dados} \\ 
+%         JSON (node\_link)
+%     };
+
+%     % Container (Browser Environment)
+%     \begin{scope}[on background layer]
+%         \node [dashedbox, fit=(interface) (core) (data)] (browser) {};
+%     \end{scope}
+
+%     % Conexões (Setas)
+%     % Interface -> PyScript
+%     \path [line] (interface) -- node [right, font=\footnotesize] {Eventos / Input} (pyscript);
+    
+%     % PyScript -> Core
+%     \path [line] (pyscript) -- node [right, font=\footnotesize] {Chamadas de Função} (core);
+    
+%     % Core -> PyScript (Retorno)
+%     \path [line] (core.west) -- ++(-0.5,0) |- node [left, near start, font=\footnotesize] {Snapshots / Grafos} (pyscript.west);
+    
+%     % PyScript -> Interface (Update)
+%     \path [line] (pyscript.west) -- ++(-0.5,0) |- (interface.west);
+
+%     % Data Flow
+%     \path [line] (interface) -| node [near start, above, font=\footnotesize] {Export} (data);
+%     \path [line] (data) -- node [above, font=\footnotesize] {Load} (pyscript);
+
+%     \end{tikzpicture}
+
+%     \caption{Diagrama da arquitetura da aplicação, evidenciando o fluxo de dados e o processamento local via PyScript.}
+%     \label{fig:arquitetura_sistema}
+% \end{figure}
+
+
+Esta organização modular assegura que cada página carregue apenas os \textit{scripts} necessários para sua função específica, otimizando o tempo de carregamento e o consumo de recursos do navegador.
+
 \section{Princípios de interação humano-computador}
 
 
@@ -79,29 +199,15 @@ Esses princípios de interação humano-computador foram fundamentais para o des
 	\label{tab:principios-ihc}
 \end{table}
 
-\section{Descrição da aplicação}
-Nesta seção apresentaremos a aplicação web que desenvolvemos para materializar, de forma interativa e didática, os algoritmos discutidos nos capítulos anteriores. Objetiva-se descrever a finalidade da ferramenta, os princípios de design operacionalizados na interface e os principais recursos que sustentam a exploração pedagógica de arborescências dirigidas. Apresentamos aqui uma visão de alto nível da aplicação antes de detalhar a sua arquitetura, páginas e fluxo de interação.
-
-% Como já mencionado anteriormente, a aplicação \textit{web} foi desenvolvida para ilustrar os algoritmos de Chu–Liu/Edmonds e Frank, permitindo aos usuários acompanhar passo a passo o funcionamento de ambos os métodos. ferramenta foi projetada com base em princípios de interação humano-computador, visando maximizar a compreensão e o engajamento dos usuários.
-
-% \subsection{Visão geral das páginas}
-% A  aplicação \textit{web} é organizada em páginas HTML independentes, cada uma dedicada a uma parte específica da experiência do usuário. A página \texttt{home.html} apresenta um panorama geral da ferramenta; \texttt{chuliu.html} executa passo a passo o algoritmo de Chu-Liu e Edmonds; \texttt{andrasfrank\_v1.html} e \texttt{andrasfrank\_v2.html} oferecem a estrutura inicial para a futura visualização da abordagem primal–-dual em suas duas versões; e \texttt{draw\_graph.html} funciona como um editor livre para criação manual de grafos. Todas as páginas carregam dinamicamente o componente compartilhado de navegação lateral (\texttt{sidebar.html}) e importam apenas os scripts necessários ao seu funcionamento, garantindo modularidade e reduzindo sobrecarga desnecessária na interface.
-
-O desenvolvimento adotou tecnologias \textit{web} modernas, combinando HTML5 e Tailwind CSS para composição responsiva, PyScript para execução de código Python diretamente no navegador e bibliotecas científicas amplamente utilizadas em grafos e visualização. NetworkX foi empregado para a manipulação de grafos dirigidos e Matplotlib para gerar snapshots estáticos dos estados intermediários dos algoritmos. 
-% Em páginas avançadas, como \texttt{chuliu.html}, \texttt{andrasfrank\_v1.html} e \texttt{andrasfrank\_v2.html}, a infraestrutura também já prevê o uso futuro de Cytoscape.js para interações mais ricas.
-
-Para permitir exportação e reutilização do estado da aplicação, empregamos serialização JSON no formato \texttt{node\_link}. Além disso, cada página carrega exclusivamente seus componentes e dependências, evitando \emph{payload} excessivo e reduzindo a latência percebida pelo usuário — uma decisão alinhada ao objetivo de manter a eficiência cognitiva durante a navegação e exploração dos algoritmos.
 
 
-\subsection{Fluxo de interação}
 
-O fluxo de interação foi projetado para ser linear e intuitivo, guiando o usuário desde a criação do grafo até a visualização dos resultados do algoritmo. O fluxo típico é o seguinte: primeiro o usuário monta ou carrega um grafo de teste; em seguida, define (ou confirma) o vértice raiz \(r_0\); depois, executa o algoritmo, aplicando normalizações e seleção de arestas conforme implementado; então, observa os estados sequenciais gerados, onde cada snapshot reforça invariantes como arestas escolhidas, pesos e estrutura alcançada; por fim, o usuário pode optar por exportar o grafo resultante para replicação em notebooks ou comparação com a abordagem dual futura.
 
-Além disso, o log textual funciona como uma \emph{trilha de auditoria didática}. Cada ação do usuário (adição de aresta, definição de raiz, execução de passo) atualiza o grafo e o log, permitindo rastrear a evolução do estado. A exportação em JSON facilita a reimportação e análise posterior.
 
 \section{Detalhes de Implementação}
 
 A aplicação foi implementada utilizando tecnologias \textit{web} modernas, com foco em simplicidade, modularidade e reprodutibilidade. A seguir, detalhamos os principais aspectos técnicos da implementação.
+
 
 \subsection{Estrutura de arquivos}
 
@@ -109,10 +215,8 @@ A estrutura de arquivos da aplicação é organizada em diretórios e componente
 
 \subsection{Páginas da Aplicação \textit{web}}
 
-A seguir, apresentamos os códigos desenvolvidos para os algoritmos implementados realizarem a interação com os usuários.
+A seguir, apresentamos as páginas que compoem a ferramente desenvolvida.
 
-
-\subsection*{\texttt{Index.html}:} o arquivo \texttt{index.html} define a estrutura principal da página HTML, incluindo a integração com PyScript e Tailwind CSS para estilos responsivos.
 
 \subsection*{\texttt{Home.html}:} o arquivo \texttt{home.html} serve como a página inicial da aplicação, oferecendo uma visão geral do projeto, incluindo um resumo do trabalho e informações sobre os integrantes. A estrutura da página é projetada para ser acolhedora e informativa, utilizando Tailwind CSS para garantir uma aparência moderna e responsiva. Abaixo, apresentamos um exemplo de captura de tela da página.
 
@@ -124,7 +228,7 @@ A seguir, apresentamos os códigos desenvolvidos para os algoritmos implementado
 \end{figure}
 
 
-\subsection*{\texttt{Draw\_graph.html}:} Editor de grafos livre com funcionalidades de criação, edição, importação e exportação. Utiliza \texttt{Cytoscape.js} para visualização interativa e \texttt{PyScript} para lógica algorítmica. Abaixo, apresentamos uma captura de tela da página.
+\subsection*{\texttt{Draw graph}:} Editor de grafos livre com funcionalidades de criação, edição, importação e exportação. Ele constitui o segundo módulo que definimos na seção de  ~\ref{subsec:estrutura-funcionalidades} Utiliza \texttt{Cytoscape.js} para visualização interativa e \texttt{PyScript} para lógica algorítmica. Abaixo, apresentamos uma captura de tela da página.
 
 % Screenshot da página Draw Graph
 \begin{figure}[H]\centering
@@ -133,9 +237,9 @@ A seguir, apresentamos os códigos desenvolvidos para os algoritmos implementado
 	\label{fig:draw_html_screenshot}
 \end{figure}
 
-\subsection*{\texttt{Sidebar.html}:} componente de navegação lateral consistente em todas as páginas. Utiliza Tailwind CSS para estilo e inclui links para as principais seções do site, reforçando um modelo mental estável de navegação. 
+\subsection*{\texttt{Tese}:} Essa página compoem o módulo 3 apresentado na seção ~\ref{subsec:estrutura-funcionalidades}, nela apresentamos nossa tese bem como permitimos o download da mesmo, o intuito é permitir com que o usuário possa ter um entendimento maior tanto dos algoritmos quanto do nosso sistema. 
 
-\subsection*{\texttt{Chuliu.html}:} página dedicada ao visualizador do algoritmo de Chu-Liu/Edmonds. Inclui um passo a passo guiado para criar um grafo, selecionar o nó raiz e executar o algoritmo, com feedback visual e textual. Abaixo, apresentamos uma captura de tela da página.
+\subsection*{\texttt{Chuliu/Edmonds}:} página dedicada ao visualizador do algoritmo de Chu-Liu/Edmonds. Inclui um passo a passo guiado para criar um grafo, selecionar o nó raiz e executar o algoritmo, com feedback visual e textual. ELe faz parte do primeiro módulo destacado na seção~\ref{subsec:estrutura-funcionalidades}. Abaixo, apresentamos uma captura de tela da página.
 
 % Screenshot da página Chu-Liu/Edmonds
 \begin{figure}[H]\centering
@@ -156,8 +260,9 @@ A figura a seguir destaca a tripartição funcional da página: navegação late
 \end{figure}
 
 % TODO - REMOVER ESSA PARTE E COLOCAR O ANDRAS FRANK V1 E V2
-\subsection{\texttt{Andrasfrank\_v1.html} e \texttt{Andrasfrank\_v2.html}:} 
-Ambas as páginas são dedicadas ao visualizador do algoritmo de Andras Frank (em suas diferentes implementações elucidadas em capítulos anteriores). Inclui um passo a passo guiado para criar um grafo, selecionar o vértice raiz e executar o algoritmo, com feedback visual e textual. Abaixo, apresentamos uma captura de tela da página.
+\subsection{Página do Andrasfrank (v1) e Andrasfrank (v2):}
+Ambas as páginas são dedicadas ao visualizador do algoritmo de Andras Frank (em suas diferentes implementações elucidadas em capítulos anteriores). Assim como na página dedicada ao algoritmo de Chu–Liu/Edmonds, essa página também faz parte do módulo 1 definido na seção ~\ref{subsec:estrutura-funcionalidades} 
+Além disso, ele inclui um passo a passo guiado para criar um grafo, selecionar o vértice raiz e executar o algoritmo, com feedback visual e textual. Abaixo, apresentamos uma captura de tela da página.
 
 % Screenshot da página Andras Frank
 \begin{figure}[H]\centering
@@ -180,9 +285,9 @@ A figura a seguir ilustra a reutilização do padrão de tripartição funcional
 
 O ecossistema de páginas cria uma narrativa pedagógica: contextualização (\texttt{home}) \,$\rightarrow$\, experimentação livre (\texttt{draw\_graph}) \,$\rightarrow$\, exploração guiada (\texttt{chuliu}, \texttt{andrasfrank (v1)} e \texttt{andrasfrank (v2)}) \,$\rightarrow$\, consolidação formal (\texttt{tese}). Tal sequência ainda reduz a carga intrínseca inicial.
 
-A figura a seguir sumariza o fluxo e a reutilização arquitetural entre páginas.
+% A figura a seguir sumariza o fluxo e a reutilização arquitetural entre páginas.
 
-\subsection{Síntese arquitetural das páginas}
+\subsection{Estrutura das páginas}
 \begin{figure}[H]\centering
 	\begin{tikzpicture}[node distance=2.2cm,>=Stealth]
 		\node[draw,rounded corners,fill=purple!10] (home) {home};
