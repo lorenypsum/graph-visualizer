@@ -1,19 +1,16 @@
 import networkx as nx
-from typing import Optional, cast
+from typing import cast
 
 # Remove todas as arestas que entram no vértice raiz r em G
 def remove_in_edges_to(
     D: nx.DiGraph, r: int):
     """
-    Remove all edges entering the root vertex r in graph D.
+    Remove all edges entering the root vertex r in digraph D.
     Returns the updated graph.
 
     Parameters:
         - D: A directed graph (networkx.DiGraph)
         - r: The root node
-        - log: Optional logging function to log information
-        - boilerplate: If True, enables logging
-        - lang: Language for logging messages ("en" for English, "pt" for Portuguese
 
     Returns:
         - D: The updated directed graph (networkx.DiGraph) with edges to r removed
@@ -25,18 +22,17 @@ def remove_in_edges_to(
 
 
 # Normalização dos pesos das arestas que entram em um vértice
-def reduce_costs(D: nx.DiGraph, v: int, lang="pt"):
+def reduce_costs(D: nx.DiGraph, v: int):
     """
     Change the costs of incoming edges into the `v`
-    by subtracting the minimum incoming weight from each in the Graph G.
+    by subtracting the minimum incoming weight from each in the digraph D.
 
     Parameters:
         - D: A directed graph (networkx.DiGraph)
         - v: The target v whose incoming edges will be adjusted
-        - lang: Language for error messages ("en" for English, "pt" for Portuguese)
 
     Returns:
-        - Nothing (the graph G is modified in place)
+        - Nothing (the digraph D is modified in place)
     """
     in_edges = D.in_edges(v, data=True)
 
@@ -49,7 +45,7 @@ def reduce_costs(D: nx.DiGraph, v: int, lang="pt"):
 
 
 # Cria o conjunto Dzero
-def get_Dzero(D: nx.DiGraph, r: int, lang="pt"):
+def get_Dzero(D: nx.DiGraph, r: int):
     """
     Creates the set D_zero from graph G and root r.
     An returns a directed graph D_zero.
@@ -274,7 +270,7 @@ def cle(
 
     for v in D_copy.nodes:
         if v != r:
-            reduce_costs(D_copy, v, lang=lang)
+            reduce_costs(D_copy, v)
 
         if boilerplate and log:
             if lang == "en":
@@ -298,7 +294,7 @@ def cle(
                     )
 
     # Build D_zero
-    D_zero = get_Dzero(D_copy, r, lang=lang)
+    D_zero = get_Dzero(D_copy, r)
 
     if boilerplate and log:
         if lang == "en":
