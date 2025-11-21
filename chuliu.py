@@ -1,7 +1,6 @@
 import networkx as nx
 from typing import Optional, cast
 
-
 # Remove todas as arestas que entram no vértice raiz r0 em G
 def remove_in_edges_to(
     D: nx.DiGraph, r: int, log=None, boilerplate: bool = True, lang="pt"
@@ -74,7 +73,6 @@ def get_Dzero(D: nx.DiGraph, r: int, lang="pt"):
             D_zero.add_edge(u, v, w=0)
     return D_zero
 
-
 # Encontra um circuito (ciclo dirigido) em G
 def find_cycle(D_zero: nx.DiGraph):
     """
@@ -133,8 +131,8 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: int, lang="pt"):
             if min_weight_edge_to_cycle:
                 in_to_cycle[u] = min_weight_edge_to_cycle
 
-    for u, (v, w) in in_to_cycle.items():
-        D.add_edge(u, label, w=w)
+    for u, (v, c) in in_to_cycle.items():
+        D.add_edge(u, label, w=c)
 
     # Stores the vertex v outside the cycle that receives the minimum weight edge from a vertex u inside the cycle
     out_from_cycle: dict[int, tuple[int, float]] = {}
@@ -154,8 +152,8 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: int, lang="pt"):
             if min_weight_edge_from_cycle:
                 out_from_cycle[v] = min_weight_edge_from_cycle
 
-    for v, (u, w) in out_from_cycle.items():
-        D.add_edge(label, v, w=w)
+    for v, (u, c) in out_from_cycle.items():
+        D.add_edge(label, v, w=c)
 
     # Remove all nodes in the cycle from G
     D.remove_nodes_from(cycle_nodes)
