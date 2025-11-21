@@ -365,7 +365,7 @@ def cle(
                 )
 
     # Add the external edges leaving the cycle
-    for _, z, _ in F_prime.out_edges(label, data=True):
+    for _, z, _ in list(F_prime.out_edges(label, data=True)):
         if lang == "en":
             assert (
                 z in out_from_cycle

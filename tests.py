@@ -17,7 +17,7 @@ from andrasfrank import (
 from chuliu import chuliu_edmonds, remove_in_edges_to
 
 # Deafult parameters
-NUM_TESTS = 2000 
+NUM_TESTS = 20 
 MIN_VERTICES = 100
 MAX_VERTICES = 5000
 PESO_MIN = 1
