@@ -1,7 +1,7 @@
 import networkx as nx
 import heapq
 
-def get_arcs_entering_X(D, X):
+def get_arcs_entering_X(D: nx.DiGraph, X: set):
     """
     Get the arcs entering a set X in a directed graph D.
     The function returns a list of tuples representing the arcs entering X with the designated weights.
@@ -22,7 +22,7 @@ def get_arcs_entering_X(D, X):
     return arcs
 
 
-def get_minimum_weight_cut(arcs):
+def get_minimum_weight_cut(arcs: list[tuple[int, int, dict]]):
     """
     Get the minimum weight arcs from a list of arcs.
     The function returns a list of tuples representing the minimum weight arcs.
@@ -37,7 +37,7 @@ def get_minimum_weight_cut(arcs):
     return min(data["w"] for _, _, data in arcs)
 
 
-def update_weights_in_X(D, arcs, min_weight, A_zero, D_zero):
+def update_weights_in_X(D: nx.DiGraph, arcs: list[tuple[int, int, dict]], min_weight: float, A_zero: list[tuple[int, int]], D_zero: nx.DiGraph):
     """
     Update the weights of the arcs in a directed graph D for the nodes in set X.
     ATTENTION: The function produces collateral effect in the provided directed graph 
@@ -53,7 +53,6 @@ def update_weights_in_X(D, arcs, min_weight, A_zero, D_zero):
     Returns:
         - Nothing. The function updates D, A_zero, and D_zero in place.
     """
-
     for u, v, _ in arcs:
         D[u][v]["w"] -= min_weight
         if D[u][v]["w"] == 0:
@@ -61,37 +60,37 @@ def update_weights_in_X(D, arcs, min_weight, A_zero, D_zero):
             D_zero.add_edge(u, v)
 
 
-def has_arborescence(D, r0):
+def has_arborescence(D: nx.DiGraph, r: int):
     """
-    Check if a directed graph D has an arborescence with root r0.
+    Check if a directed graph D has an arborescence with root r.
     The function returns True if an arborescence exists, otherwise False.
 
     Parameters:
         - D: directed graph (DiGraph)
-        - r0: root node
+        - r: root node
 
     Returns:
         - bool: True if an arborescence exists, otherwise False
     """
 
-    # Verify if the graph is a DFS tree with root r0
-    tree = nx.dfs_tree(D, r0)
+    # Verify if the graph is a DFS tree with root r
+    tree = nx.dfs_tree(D, r)
 
     return tree.number_of_nodes() == D.number_of_nodes()
 
 
 def phase1(
-    D_original,
-    r0,
+    D_original: nx.DiGraph,
+    r: int,
     **kwargs,
 ):
     """
-    Find the minimum arborescence in a directed graph D with root r0.
+    Find the minimum arborescence in a directed graph D with root r.
     The function returns the minimum arborescence as a list of arcs.
 
     Parameters:
         - D_original: directed graph (DiGraph)
-        - r0: root node
+        - r: root node
         - **kwargs: Additional parameters:
             - draw_fn: Optional drawing function
             - log: Optional logging function
@@ -147,7 +146,7 @@ def phase1(
                     title=f"Componentes fortemente conexos em D_zero - Iteração {iteration}",
                 )
 
-        # The sources are where there are no incoming arcs, R0 is always a source.
+        # The sources are where there are no incoming arcs, r is always a source.
         sources = [x for x in C.nodes() if C.in_degree(x) == 0]
 
         if boilerplate and log:
@@ -157,7 +156,7 @@ def phase1(
                 log(f"\nFontes: {sources}")
 
         if len(sources) == 1:
-            # If there is only one source, it means it is R0 and there are no more arcs to be processed.
+            # If there is only one source, it means it is r and there are no more arcs to be processed.
             if boilerplate and log:
                 if lang == "en":
                     log(f"\nOnly one source found, algorithm finished.")
@@ -167,7 +166,7 @@ def phase1(
 
         for u in sources:
             X = C.nodes[u]["members"]
-            if r0 in X:
+            if r in X:
                 continue
             arcs = get_arcs_entering_X(D_copy, X)
             min_weight = get_minimum_weight_cut(arcs)
@@ -204,14 +203,14 @@ def phase1(
     return A_zero, Dual_list
 
 
-def phase2(D_original, r0, A_zero, **kwargs):
+def phase2(D_original, r, A_zero, **kwargs):
     """
-    Find the minimum arborescence in a directed graph D with root r0.
+    Find the minimum arborescence in a directed graph D with root r.
     The function returns the minimum arborescence as a DiGraph.
 
     Parameters:
         - D_original: directed graph (DiGraph)
-        - r0: root node
+        - r: root node
         - A_zero: list of arcs (u, v) that form the minimum arborescence
         - **kwargs: Additional parameters:
             - draw_fn: Optional drawing function
@@ -231,7 +230,7 @@ def phase2(D_original, r0, A_zero, **kwargs):
     Arb = nx.DiGraph()
 
     # Add the root node
-    Arb.add_node(r0)
+    Arb.add_node(r)
     n = len(D_original.nodes())
 
     # While there are arcs to be considered
@@ -250,14 +249,14 @@ def phase2(D_original, r0, A_zero, **kwargs):
     return Arb
 
 
-def phase2_v2(D_original, r0, A_zero, **kwargs):
+def phase2_v2(D_original, r, A_zero, **kwargs):
     """
-    Find the minimum arborescence in a directed graph D with root r0.
+    Find the minimum arborescence in a directed graph D with root r.
     The function returns the minimum arborescence as a DiGraph.
 
     Parameters:
         - D_original: directed graph (DiGraph)
-        - r0: root node
+        - r: root node
         - A_zero: list of arcs (u, v) that form the minimum arborescence
         - **kwargs: Additional parameters:
             - draw_fn: Optional drawing function
@@ -279,11 +278,11 @@ def phase2_v2(D_original, r0, A_zero, **kwargs):
         Arb.add_edge(u, v, w=i)
 
     # Set of visited vertices, starting with the root
-    V = {r0}
+    V = {r}
 
     # Priority queue to store the edges
     q = []
-    for u, v, data in Arb.out_edges(r0, data=True):
+    for u, v, data in Arb.out_edges(r, data=True):
 
         # Add edges to the priority queue with their weights
         heapq.heappush(q, (data["w"], u, v))
@@ -399,7 +398,7 @@ def andras_frank_algorithm(
 
     A_zero, Dual_list = phase1(
         D,
-        "r0",
+        "r",
         **kwargs,
     )
 
@@ -407,16 +406,16 @@ def andras_frank_algorithm(
         log(f"\nA_zero: \n{A_zero}")
         log(f"\nDual_list: \n{Dual_list}")
 
-    if not has_arborescence(D, "r0"):
+    if not has_arborescence(D, "r"):
         if boilerplate and log:
             if lang == "en":
-                log(f"\nThe graph does not contain an arborescence with root r0.")
+                log(f"\nThe graph does not contain an arborescence with root r.")
             elif lang == "pt":
-                log(f"\nO grafo não contém uma arborescência com raiz r0.")
+                log(f"\nO grafo não contém uma arborescência com raiz r.")
         return None, None
 
-    arborescence_frank = phase2(D, "r0", A_zero, **kwargs)
-    arborescence_frank_v2 = phase2_v2(D, "r0", A_zero, **kwargs)
+    arborescence_frank = phase2(D, "r", A_zero, **kwargs)
+    arborescence_frank_v2 = phase2_v2(D, "r", A_zero, **kwargs)
 
     dual_frank = check_dual_optimality_condition(
         arborescence_frank, Dual_list, **kwargs

@@ -1,8 +1,6 @@
 import networkx as nx
 from typing import cast
 
-
-# Remove todas as arestas que entram no vértice raiz r em G
 def remove_in_edges_to(D: nx.DiGraph, r: int):
     """
     Remove all edges entering the root vertex r in digraph D.
@@ -20,8 +18,6 @@ def remove_in_edges_to(D: nx.DiGraph, r: int):
     in_edges = list(D.in_edges(r))
     D.remove_edges_from(in_edges)
 
-
-# Normalização dos pesos das arestas que entram em um vértice
 def reduce_costs(D: nx.DiGraph, v: int):
     """
     Change the costs of incoming edges into the `v`
@@ -43,8 +39,6 @@ def reduce_costs(D: nx.DiGraph, v: int):
     for u, _, _ in in_edges:
         D[u][v]["w"] -= yv
 
-
-# Cria o conjunto Dzero
 def get_Dzero(D: nx.DiGraph, r: int):
     """
     Creates the set D_zero from digraph D and root r.
@@ -66,8 +60,6 @@ def get_Dzero(D: nx.DiGraph, r: int):
             D_zero.add_edge(u, v, w=0)
     return D_zero
 
-
-# Encontra um circuito (ciclo dirigido) em D_zero
 def find_cycle(D_zero: nx.DiGraph):
     """
     Finds a directed cycle in the digraph.
@@ -90,8 +82,6 @@ def find_cycle(D_zero: nx.DiGraph):
     ).to_directed()  # Note: convert to directed graph because subgraph returns a Graph
     return D_zero_digraph
 
-
-# Contrai um ciclo C em D, substituindo-o por um supernó rotulado pelo `label`
 def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: int):
     """
     Contract a cycle C in digraph D, replacing it with a supernode labeled `label`.
@@ -154,8 +144,15 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: int):
     D.remove_nodes_from(cycle_nodes)
     return in_to_cycle, out_from_cycle
 
-
-def expand_arborescence(D, label, C, in_to_cycle, out_from_cycle, F_prime, **kwargs):
+def expand_arborescence(
+    D: nx.DiGraph,
+    label: int,
+    C: nx.DiGraph,
+    in_to_cycle: dict[int, tuple[int, float]],
+    out_from_cycle: dict[int, tuple[int, float]],
+    F_prime: nx.DiGraph,
+    **kwargs,
+):
     """
     Expand the contracted cycle back into the arborescence.
 
@@ -291,7 +288,6 @@ def expand_arborescence(D, label, C, in_to_cycle, out_from_cycle, F_prime, **kwa
                 draw_fn(F_prime, f"\n{indent}Arborescência final.")
     return F_prime
 
-
 def chuliu_edmonds(
     D: nx.DiGraph,
     r: int,
@@ -323,8 +319,6 @@ def chuliu_edmonds(
         **kwargs,
     )
 
-
-# Encontra a arborescência ótima em G com raiz r usando o algoritmo de Chu-Liu/Edmonds
 def cle(
     D: nx.DiGraph,
     r: int,
@@ -350,7 +344,6 @@ def cle(
     Returns:
         - Optimum arborescence as a directed graph (networkx.DiGraph)
     """
-
     # Extract parameters from kwargs with defaults
     draw_fn = kwargs.get("draw_fn", None)
     log = kwargs.get("log", None)
@@ -493,5 +486,4 @@ def cle(
         out_from_cycle=out_from_cycle,
         F_prime=F_prime,
     )
-
     return F_prime_expanded
