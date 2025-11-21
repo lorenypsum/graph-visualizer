@@ -27,30 +27,27 @@ def remove_in_edges_to(
 
 
 # Normalização dos pesos das arestas que entram em um vértice
-def reduce_weights(D: nx.DiGraph, node: str, lang="pt"):
+def reduce_costs(D: nx.DiGraph, v: str, lang="pt"):
     """
-    Change the weights of incoming edges into the `node`
+    Change the costs of incoming edges into the `v`
     by subtracting the minimum incoming weight from each in the Graph G.
 
     Parameters:
         - D: A directed graph (networkx.DiGraph)
-        - node: The target node whose incoming edges will be adjusted
+        - v: The target v whose incoming edges will be adjusted
         - lang: Language for error messages ("en" for English, "pt" for Portuguese)
 
     Returns:
         - Nothing (the graph G is modified in place)
     """
-    incoming_edges = D.in_edges(node, data=True)
+    in_edges = D.in_edges(v, data=True)
 
     # Calculate the minimum weight among the incoming edges
-    yv = min((data.get("w", 0) for _, _, data in incoming_edges))
+    yv = min((data.get("w", 0) for _, _, data in in_edges))
 
     # Subtract Yv from each incoming edge
-    for u, _, _ in incoming_edges:
-        # Ensure the edge has a weight attribute
-        if "w" not in D[u][node]:
-            D[u][node]["w"] = 0
-        D[u][node]["w"] -= yv
+    for u, _, _ in in_edges:
+        D[u][v]["w"] -= yv
 
 
 # Cria o conjunto A0
@@ -61,7 +58,7 @@ def get_Azero(D: nx.DiGraph, r0: str, lang="pt"):
 
     Parameters:
         - D: A directed graph (networkx.DiGraph)
-        - r0: The root node
+        - r0: The rootve
         - lang: Language for error messages ("en" for English, "pt" for Portuguese)
 
     Returns:
@@ -246,7 +243,7 @@ def chuliu_edmonds(
 
     for v in D_copy.nodes:
         if v != r0:
-            reduce_weights(D_copy, v, lang=lang)
+            reduce_costs(D_copy, v, lang=lang)
 
         if boilerplate and log:
             if lang == "en":
