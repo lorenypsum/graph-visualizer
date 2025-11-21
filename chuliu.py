@@ -159,24 +159,6 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: int, lang="pt"):
     D.remove_nodes_from(cycle_nodes)
     return in_to_cycle, out_from_cycle
 
-
-# Remove a aresta interna que entra no vértice de entrada do ciclo
-# def remove_edge_cycle(C: nx.DiGraph, v):
-#     """
-#     Remove the internal edge entering the entry vertex `v` from cycle C,
-#     since `v` now receives an external edge from the graph.
-
-#     Parameters:
-#         - C: subgraph of the cycle
-#         - external_entry_edge: tuple (u, v, w) — external edge connecting to the cycle
-
-#     Returns:
-#         - The modified cycle (with one less edge)
-#     """
-
-#     predecessor = next((u for u, _ in C.in_edges(v)))
-#     C.remove_edge(predecessor, v)
-
 def chuliu_edmonds(
     D: nx.DiGraph,
     r: int,
@@ -227,9 +209,9 @@ def cle(
 
     if boilerplate and log:
         if lang == "en":
-            log(f"\nchuliu_edmonds:{indent}Starting level {level}")
+            log(f"\n chuliu_edmonds:{indent}Starting level {level}")
         elif lang == "pt":
-            log(f"\nchuliu_edmonds:{indent}Iniciando nível {level}")
+            log(f"\n chuliu_edmonds:{indent}Iniciando nível {level}")
 
     if lang == "en":
         assert r in D, (
@@ -244,19 +226,19 @@ def cle(
 
     if boilerplate and log:
         if lang == "en":
-            log(f"\nchuliu_edmonds:{indent}Removing edges entering '{r}'")
+            log(f"\n chuliu_edmonds:{indent}Removing edges entering '{r}'")
         elif lang == "pt":
-            log(f"\nchuliu_edmonds:{indent}Removendo arestas que entram em '{r}'")
+            log(f"\n chuliu_edmonds:{indent}Removendo arestas que entram em '{r}'")
         if draw_fn:
             if lang == "en":
                 draw_fn(
                     D_copy,
-                    f"\nchuliu_edmonds:{indent}After removing incoming edges",
+                    f"\n chuliu_edmonds:{indent}After removing incoming edges",
                 )
             elif lang == "pt":
                 draw_fn(
                     D_copy,
-                    f"\nchuliu_edmonds:{indent}Após remoção de entradas",
+                    f"\n chuliu_edmonds:{indent}Após remoção de entradas",
                 )
 
     for v in D_copy.nodes:
@@ -266,11 +248,11 @@ def cle(
         if boilerplate and log:
             if lang == "en":
                 log(
-                    f"\nchuliu_edmonds:{indent}Normalizing weights of incoming edges to '{v}'"
+                    f"\n chuliu_edmonds:{indent}Normalizing weights of incoming edges to '{v}'"
                 )
             elif lang == "pt":
                 log(
-                    f"\nchuliu_edmonds:{indent}Normalizando pesos de arestas de entrada para '{v}'"
+                    f"\n chuliu_edmonds:{indent}Normalizando pesos de arestas de entrada para '{v}'"
                 )
             if draw_fn:
                 if lang == "en":
@@ -387,21 +369,21 @@ def cle(
         if lang == "en":
             assert (
                 z in out_from_cycle
-            ), f"\nchuliu_edmonds: No outgoing edge found for vertex '{z}'."
+            ), f"\n chuliu_edmonds: No outgoing edge found for vertex '{z}'."
         elif lang == "pt":
             assert (
                 z in out_from_cycle
-            ), f"\nchuliu_edmonds: Nenhuma aresta de saída encontrada para o vértice '{z}'."
+            ), f"\n chuliu_edmonds: Nenhuma aresta de saída encontrada para o vértice '{z}'."
         u_cycle, _ = out_from_cycle[z]
         F_prime.add_edge(u_cycle, z)
         if boilerplate and log:
             if lang == "en":
                 log(
-                    f"\nchuliu_edmonds:{indent}Adding outgoing edge from cycle: ({u_cycle}, {z})"
+                    f"\n chuliu_edmonds:{indent}Adding outgoing edge from cycle: ({u_cycle}, {z})"
                 )
             elif lang == "pt":
                 log(
-                    f"\nchuliu_edmonds:{indent}Adicionando aresta externa de saída: ({u_cycle}, {z})"
+                    f"\n chuliu_edmonds:{indent}Adicionando aresta externa de saída: ({u_cycle}, {z})"
                 )
 
     # Remove the contracted node
@@ -415,20 +397,20 @@ def cle(
 
     if boilerplate and log:
         if lang == "en":
-            log(f"\nchuliu_edmonds:{indent}Contracted vertex '{label}' removed.")
+            log(f"\n chuliu_edmonds:{indent}Contracted vertex '{label}' removed.")
         elif lang == "pt":
-            log(f"\nchuliu_edmonds:{indent}Vértice contraído '{label}' removido.")
+            log(f"\n chuliu_edmonds:{indent}Vértice contraído '{label}' removido.")
 
     # Update the edge weights with the original weights from G
     for u2, v2 in F_prime.edges:
         if lang == "en":
             assert (
                 u2 in D and v2 in D
-            ), f"\nchuliu_edmonds: Vertex '{u2}' or '{v2}' not found in the original graph."
+            ), f"\n chuliu_edmonds: Vertex '{u2}' or '{v2}' not found in the original graph."
         elif lang == "pt":
             assert (
                 u2 in D and v2 in D
-            ), f"\nchuliu_edmonds: Vértice '{u2}' ou '{v2}' não encontrado no grafo original."
+            ), f"\n chuliu_edmonds: Vértice '{u2}' ou '{v2}' não encontrado no grafo original."
         F_prime[u2][v2]["w"] = D[u2][v2]["w"]
 
     if boilerplate and log:

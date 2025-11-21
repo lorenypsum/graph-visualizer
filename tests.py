@@ -17,9 +17,9 @@ from andrasfrank import (
 from chuliu import chuliu_edmonds, remove_in_edges_to
 
 # Deafult parameters
-NUM_TESTS = 10
+NUM_TESTS = 2000 
 MIN_VERTICES = 100
-MAX_VERTICES = 200
+MAX_VERTICES = 5000
 PESO_MIN = 1
 PESO_MAX = 20
 LOG_CSV_PATH = "test_results.csv"
@@ -116,14 +116,12 @@ def build_rooted_digraph(
                 D.add_edge(u, v, w=random.randint(peso_min, peso_max))
     return D
 
-
 def contains_arborescence(D, r0):
     """
     Check if G contains an arborescence with root r0.
     """
     tree = nx.dfs_tree(D, source=r0)
     return tree.number_of_nodes() == D.number_of_nodes(), tree
-
 
 def get_total_digraph_cost(D_arbo):
     """
