@@ -177,12 +177,35 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: int, lang="pt"):
 #     predecessor = next((u for u, _ in C.in_edges(v)))
 #     C.remove_edge(predecessor, v)
 
-
-# Encontra a arborescência ótima em G com raiz r usando o algoritmo de Chu-Liu/Edmonds
 def chuliu_edmonds(
     D: nx.DiGraph,
-    r: str,
+    r: int,
     level=0,
+    draw_fn=None,
+    log=None,
+    boilerplate: bool = True,
+    lang="pt",
+    metrics: dict | None = None,
+    ):
+    return cle(
+        D,
+        r,
+        len(D.nodes),
+        level,
+        draw_fn=draw_fn,
+        log=log,
+        boilerplate=boilerplate,
+        lang=lang,
+        metrics=metrics,
+    )
+    
+
+# Encontra a arborescência ótima em G com raiz r usando o algoritmo de Chu-Liu/Edmonds
+def cle(
+    D: nx.DiGraph,
+    r: int,
+    label: int,
+    level = 0,
     draw_fn=None,
     log=None,
     boilerplate: bool = True,
@@ -210,13 +233,11 @@ def chuliu_edmonds(
 
     if lang == "en":
         assert r in D, (
-            "\nchuliu_edmonds: The root vertex '"
-            + r
-            + "' is not present in the graph."
+            "\n chuliu_edmonds: The root vertex '" + str(r) + "' is not present in the graph."
         )
     elif lang == "pt":
         assert r in D, (
-            "\nchuliu_edmonds: O vértice raiz '" + r + "' não está presente no grafo."
+            "\n chuliu_edmonds: O vértice raiz '" + str(r) + "' não está presente no grafo."
         )
 
     D_copy = cast(nx.DiGraph, D.copy())
@@ -295,15 +316,17 @@ def chuliu_edmonds(
 
     C = find_cycle(D_zero)
 
-    cl = f"\n n*{level}"  # contracted label
+    # cl = f"\n n*{level}"  # contracted label
     if metrics is not None:
         metrics["contractions"] += 1
-    in_to_cycle, out_from_cycle = contract_cycle(D_copy, C, cl, lang=lang)
+    
+    in_to_cycle, out_from_cycle = contract_cycle(D_copy, C, label, lang=lang)
 
     # Recursive call
-    F_prime = chuliu_edmonds(
+    F_prime = cle(
         D_copy,
         r,
+        label + 1,
         level + 1,
         draw_fn=None,
         log=None,
@@ -312,17 +335,16 @@ def chuliu_edmonds(
         metrics=metrics,
     )
 
-    in_edge = next(iter(F_prime.in_edges(cl, data=True)))
+    in_edge = next(iter(F_prime.in_edges(label, data=True)))
 
     if lang == "en":
         assert (
             in_edge is not None
-        ), f"\nchuliu_edmonds: No incoming edge found for vertex '{cl}'."
+        ), f"\nchuliu_edmonds: No incoming edge found for vertex '{label}'."
     elif lang == "pt":
         assert (
             in_edge is not None
-        ), f"\nchuliu_edmonds: Nenhuma aresta encontrada entrando no vértice '{cl}'."
-
+        ), f"\nchuliu_edmonds: Nenhuma aresta encontrada entrando no vértice '{label}'."
     # At this point in_edge is guaranteed not None
     u, _, _ = cast(tuple, in_edge)
     v, _ = in_to_cycle[u]
@@ -361,7 +383,7 @@ def chuliu_edmonds(
                 )
 
     # Add the external edges leaving the cycle
-    for _, z, _ in F_prime.out_edges(cl, data=True):
+    for _, z, _ in F_prime.out_edges(label, data=True):
         if lang == "en":
             assert (
                 z in out_from_cycle
@@ -384,18 +406,18 @@ def chuliu_edmonds(
 
     # Remove the contracted node
     if lang == "en":
-        assert cl in F_prime, f"\nchuliu_edmonds: Vertex '{cl}' not found in the graph."
+        assert label in F_prime, f"\nchuliu_edmonds: Vertex '{label}' not found in the graph."
     elif lang == "pt":
         assert (
-            cl in F_prime
-        ), f"\nchuliu_edmonds: Vértice '{cl}' não encontrado no grafo."
-    F_prime.remove_node(cl)
+            label in F_prime
+        ), f"\nchuliu_edmonds: Vértice '{label}' não encontrado no grafo."
+    F_prime.remove_node(label)
 
     if boilerplate and log:
         if lang == "en":
-            log(f"\nchuliu_edmonds:{indent}Contracted vertex '{cl}' removed.")
+            log(f"\nchuliu_edmonds:{indent}Contracted vertex '{label}' removed.")
         elif lang == "pt":
-            log(f"\nchuliu_edmonds:{indent}Vértice contraído '{cl}' removido.")
+            log(f"\nchuliu_edmonds:{indent}Vértice contraído '{label}' removido.")
 
     # Update the edge weights with the original weights from G
     for u2, v2 in F_prime.edges:
