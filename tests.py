@@ -18,11 +18,11 @@ from andrasfrank import (
 from chuliu import chuliu_edmonds, remove_in_edges_to
 
 # Default parameters
-NUM_TESTS = 10
+NUM_TESTS = 2000
 MIN_VERTICES = 100
-MAX_VERTICES = 1000
+MAX_VERTICES = 5000
 PESO_MIN = 1
-PESO_MAX = 20
+PESO_MAX = 50
 LOG_CSV_PATH = "test_results.csv"
 LOG_TXT_PATH = "test_log.txt"
 ROOT = 0
@@ -30,7 +30,6 @@ LANG = "pt"  # Change to "en" for English logs
 
 # Instance family configuration
 FAMILY = "random"  # options: random | dense | sparse | layered
-
 
 @dataclass
 class TestMetrics:
@@ -56,15 +55,13 @@ class TestMetrics:
             "phase1_iterations": None,
         }
     )
-    peak_kb: Optional[int] = None
+    peak_kb: Optional[int] = None # pico de memória em KB
     success: bool = False
     erro: str = ""
-
 
 @dataclass
 class TestConfig:
     """Configuration for test execution."""
-
     num_tests: int = NUM_TESTS
     min_vertices: int = MIN_VERTICES
     max_vertices: int = MAX_VERTICES
@@ -73,7 +70,7 @@ class TestConfig:
     peso_max: int = PESO_MAX
     log_csv_path: str = LOG_CSV_PATH
     log_txt_path: str = LOG_TXT_PATH
-    family: str = FAMILY
+    family: str = FAMILY # tipo de grafo
     draw_fn: Optional[Callable] = None
     log: Optional[Callable] = None
     boilerplate: bool = True
@@ -269,7 +266,6 @@ def initialize_csv_log(log_csv_path: str) -> None:
                 "Frank_maior_que_ChuLiu",
             ]
         )
-
 
 def write_test_result(
     log_csv_path: str,
