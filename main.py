@@ -5,7 +5,7 @@ from js import Blob, URL, document, alert
 from pyscript import when, display
 import json
 
-from chuliu import find_optimum_arborescence_chuliu, remove_edges_to_r0
+from chuliu import find_optimum_arborescence_chuliu, remove_in_edges_to
 
 
 def log_in_box(msg: str):
@@ -127,8 +127,8 @@ def run_algorithm(event):
         return
 
     log_in_box("Executando algoritmo de Chu-Liu...")
-    print(remove_edges_to_r0)
-    G_filtered = remove_edges_to_r0(G, r0)
+    print(remove_in_edges_to)
+    G_filtered = remove_in_edges_to(G, r0)
     T = find_optimum_arborescence_chuliu(
         G_filtered, r0, draw_fn=draw_graph, log=log_in_box
     )

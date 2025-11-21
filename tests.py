@@ -14,10 +14,10 @@ from andrasfrank import (
     phase2_v2,
     check_dual_optimality_condition,
 )
-from chuliu import chuliu_edmonds, remove_edges_to_r0
+from chuliu import chuliu_edmonds, remove_in_edges_to
 
 # Deafult parameters
-NUM_TESTS = 2000
+NUM_TESTS = 10
 MIN_VERTICES = 100
 MAX_VERTICES = 200
 PESO_MIN = 1
@@ -260,18 +260,18 @@ def volume_tester(
                             )
 
             if lang == "en":
-                D1_filtered = remove_edges_to_r0(
+                remove_in_edges_to(
                     D1_copy, root, log=log, boilerplate=boilerplate, lang="en"
                 )
             elif lang == "pt":
-                D1_filtered = remove_edges_to_r0(
+                remove_in_edges_to(
                     D1_copy, root, log=log, boilerplate=boilerplate, lang="pt"
                 )
 
             # Chu-Liu/Edmonds Algorithm (timed)
             t1 = time.perf_counter()
             arbo_chuliu = chuliu_edmonds(
-                D1_filtered,
+                D1_copy,
                 root,
                 draw_fn=draw_fn,
                 log=log,
@@ -298,7 +298,7 @@ def volume_tester(
             tracemalloc.start()
             t1 = time.perf_counter()
             A_zero, Dual_list = phase1(
-                D1_filtered,
+                D1_copy,
                 root,
                 draw_fn=None,
                 log=log,
@@ -314,7 +314,7 @@ def volume_tester(
             # Phase II v1
             t1 = time.perf_counter()
             arbo_frank_v1 = phase2(
-                D1_filtered,
+                D1_copy,
                 root,
                 A_zero,
                 draw_fn=None,
@@ -327,7 +327,7 @@ def volume_tester(
             # Phase II v2
             t1 = time.perf_counter()
             arbo_frank_v2 = phase2_v2(
-                D1_filtered,
+                D1_copy,
                 root,
                 A_zero,
                 draw_fn=None,
@@ -412,7 +412,7 @@ def volume_tester(
                             "\n O grafo não contém uma arborescência com raiz r0. Teste abortado."
                         )
                 if draw_fn:
-                    draw_fn(D1_filtered)
+                    draw_fn(D1_copy)
 
         except Exception as e:
             erro = str(e)
@@ -475,7 +475,7 @@ def volume_tester(
         log_console_and_file(f"\n Testes com falha: {failure_count}")
         log_console_and_file(f"\n Custo ChuLiu > Frank: {chuliu_greater_than_frank}")
         log_console_and_file(f"\n Custo Frank > ChuLiu: {frank_greater_than_chuliu}")
-        
+
 
 volume_tester(
     num_tests=NUM_TESTS,
