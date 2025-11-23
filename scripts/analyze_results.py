@@ -86,10 +86,10 @@ def summarize(rows):
     # plots
     # 1) Boxplots of times
     fig, ax = plt.subplots(figsize=(8, 4))
-    ax.boxplot(
+    bp = ax.boxplot(
         [t_chuliu, t_f1, t_f2v1, t_f2v2],
-        labels=["Chu–Liu", "Fase I", "Fase II v1", "Fase II v2"],
     )
+    ax.set_xticklabels(["Chu–Liu", "Fase I", "Fase II v1", "Fase II v2"])
     ax.set_ylabel("tempo (s)")
     ax.set_title("Distribuição de tempos por etapa")
     fig.tight_layout()
@@ -111,9 +111,9 @@ def summarize(rows):
     # 3) Speedup hist
     fig, ax = plt.subplots(figsize=(8, 4))
     ax.hist(speedups, bins=20, alpha=0.8)
-    ax.set_xlabel("speedup (Fase II v1 / v2)")
+    ax.set_xlabel("aceleramento (speedup) (Fase II v1 / v2)")
     ax.set_ylabel("contagem")
-    ax.set_title("Distribuição de speedup na Fase II (heap vs sem heap)")
+    ax.set_title("Distribuição de aceleramento na Fase II (heap vs sem heap)")
     fig.tight_layout()
     fig.savefig(os.path.join(OUT_DIR, "fig_speedup_hist.png"), dpi=180)
     plt.close(fig)
@@ -126,7 +126,7 @@ def summarize(rows):
         alpha=0.8,
     )
     ax[0].set_title("Contrações (Chu–Liu)")
-    ax[0].set_xlabel("#contrações")
+    ax[0].set_xlabel("nº de contrações")
     ax[0].set_ylabel("contagem")
     ax[1].hist(
         [d for d in depth if d is not None],

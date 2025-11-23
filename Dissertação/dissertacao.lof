@@ -44,7 +44,7 @@
 \contentsline {figure}{\numberline {43}{\ignorespaces Distribuição de tempos: Fase~I apresenta maior mediana (\(7{,}63\) s) e variabilidade que Chu--Liu/Edmonds (\(0{,}18\) s).}}{83}{figure.caption.77}%
 \contentsline {figure}{\numberline {44}{\ignorespaces Escalonamento temporal em função de \(|A|\): crescimento aproximadamente linear.}}{84}{figure.caption.78}%
 \contentsline {figure}{\numberline {45}{\ignorespaces Aceleração na Fase~II: v2 (\emph {heap}) apresenta mediana de \(61{,}54\times \) sobre v1.}}{84}{figure.caption.79}%
-\contentsline {figure}{\numberline {46}{\ignorespaces Contrações em Chu--Liu: mediana 2, média \(7{,}89\).}}{84}{figure.caption.80}%
+\contentsline {figure}{\numberline {46}{\ignorespaces Distribuição do número de contrações de ciclos realizadas por Chu--Liu/Edmonds: mediana 2, média \(7{,}89\), máximo 824. A maioria das instâncias requer poucas contrações.}}{84}{figure.caption.80}%
 \contentsline {figure}{\numberline {47}{\ignorespaces Pico de memória na Fase~I: mediana \(11\) MB.}}{85}{figure.caption.81}%
 \contentsline {figure}{\numberline {48}{\ignorespaces Tamanho de \(D_0\) versus \(|V|\): relação linear confirma \(|A_0| = O(|V|)\).}}{85}{figure.caption.82}%
 \contentsline {figure}{\numberline {49}{\ignorespaces Captura de tela de \texttt {home.html}: visão geral com resumo e integrantes.}}{99}{figure.caption.86}%
