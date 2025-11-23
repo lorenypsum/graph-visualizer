@@ -18,9 +18,9 @@ from andrasfrank import (
 from chuliu import chuliu_edmonds, remove_in_edges_to
 
 # Default parameters
-NUM_TESTS = 10
+NUM_TESTS = 2000
 MIN_VERTICES = 100
-MAX_VERTICES = 500
+MAX_VERTICES = 5000
 PESO_MIN = 1
 PESO_MAX = 50
 LOG_CSV_PATH = "test_results.csv"
@@ -30,7 +30,6 @@ LANG = "pt"  # Change to "en" for English logs
 
 # Instance family configuration
 FAMILY = "random"  # options: random | dense | sparse | layered
-
 
 @dataclass
 class TestMetrics:
@@ -82,7 +81,7 @@ class TestConfig:
 
 def log_console_and_file(msg: str, log_txt_path: str = LOG_TXT_PATH) -> None:
     """Log message to both console and file."""
-    print(msg)
+    #print(msg)
     with open(log_txt_path, "a") as f:
         f.write(msg + "\n")
 
