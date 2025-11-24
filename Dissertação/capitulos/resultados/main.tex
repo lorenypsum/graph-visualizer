@@ -1,33 +1,33 @@
 \chapter{Chu-liu / Edmonds vs. Frank}
 
-Neste capítulo, apresentamos uma análise comparativa entre os algoritmos de Chu--Liu--Edmonds e András Frank para o problema da arborescência de custo mínimo. Ambas metodologias são equivalentes e resolvem o problema de arborescência de custo mínimo, mas adotam estratégias distintas na redução de custos e na construção da solução:
+Neste capítulo, apresentamos uma análise comparativa entre os algoritmos de Chu--Liu--Edmonds e András Frank para o problema da arborescência de custo mínimo. Ambas metodologias são equivalentes e resolvem o mesmo problema, mas adotam estratégias distintas na redução de custos e na construção da solução.
 
 O algoritmo de Chu--Liu--Edmonds \cite{chu1965,edmonds1967optimum} opera recursivamente selecionando para cada vértice \(v \neq r\) um arco de entrada de custo mínimo, contraindo ciclos detectados e ajustando custos, até eliminar todos os ciclos.
 
 O algoritmo de Frank \cite{frank1981,frank2014} também reduz custos subtraindo o mínimo de entrada, mas identifica \emph{subconjuntos minimais} via componentes fortemente conexas, processando múltiplos vértices simultaneamente. Opera em duas fases: (i) redução até criar arcos de custo reduzido zero e (ii) construção da arborescência a partir desses arcos.
 
-A seguir, apresentamos experimentos empíricos que avaliam o comportamento prático dessas metodologias em termos de tempo de execução, consumo de memória e características estruturais dos digrafos processados. Vale salientar que este trabalho não explora variantes ou otimizações específicas, mas sim o comportamento dos algoritmos em sua forma clássica.
+A seguir, apresentamos os experimentos empíricos que avaliam o comportamento prático dessas metodologias em termos de tempo de execução, consumo de memória e características estruturais dos digrafos processados. Vale salientar que este trabalho não tem como objetivo explorar otimizações específicas, mas sim o comportamento dos algoritmos em sua forma clássica.
 
 \section{Análise comparativa dos algoritmos}
 
-Conduzimos 2000 experimentos em digrafos enraizados aleatórios com quantide de vértices \(|V| \in [101, 4999]\)(mediana 2557 vértices), e número de arestas \(|A|\) com densidade média de \(1{,}98n\) arcos sendo n o número de vértices e pesos inteiros em \([1, 50]\). Para cada instância, executamos Chu--Liu--Edmonds e as duas fases de Frank (com variantes v1 e v2 da Fase~II), registrando custos, tempos e outras métricas adequadas.
+Conduzimos 2000 experimentos em digrafos enraizados aleatórios com quantidade de vértices \(|V| \in [101, 4996]\) sendo a mediana de 2464 vértices, e número de arestas \(|A|\) com densidade média de \(1{,}98n\) arcos e pesos inteiros \(\in [1, 50]\). Para cada instância, executamos Chu--Liu--Edmonds e as duas fases de Andras--Frank com duas versões v1 e v2 para a fase II, sendo v2 uma versão otimizada utilizando fila de prioridade heap, os testes registraram informações sobre custos, tempos de execução, consumo de memória e outras métricas que detalharemos adiante.
 
-Os 2000 testes confirmaram que todos os métodos retornam sempre o mesmo custo, com 100\% de sucesso, validando a corretude das implementações e a equivalência teórica entre Chu--Liu/Edmonds e Frank \cite{frank2014,schrijver2003comb}. Além disso, as verificações da condição de otimalidade dual foram bem-sucedidas em todos os casos para ambas as variantes de Frank.
+Os 2000 testes confirmaram que todos os métodos retornam sempre o mesmo custo, validando a corretude das implementações e a equivalência teórica entre Chu--Liu/Edmonds e Frank \cite{frank2014,schrijver2003comb}. Além disso, as verificações da condição de otimalidade dual foram bem-sucedidas em todos os casos para ambas as variantes de Frank.
 
-Quanto ao desempenho temporal, a Fase~I de Frank apresenta tempo mediano de \(7{,}63\) s (média \(9{,}84\) s), significativamente superior ao tempo mediano de Chu--Liu/Edmonds (\(0{,}18\) s, média \(0{,}52\) s). A Fase~I, responsável pela identificação de subconjuntos minimais via componentes fortemente conexas, domina o tempo total de execução do método de Frank. A Fase~II, em contrapartida, representa uma fração residual do processamento: mediana de \(0{,}84\) s para versão 1 do algoritmo e \(0{,}013\) s para a versão 2 (utilizando heap).
+Quanto ao desempenho temporal, a Fase~I de Frank apresenta tempo mediano de \(8{,}93\) s (média \(12{,}40\) s), significativamente superior ao tempo mediano de Chu--Liu/Edmonds (\(0{,}25\) s, média \(0{,}58\) s). A Fase~I, responsável pela identificação de subconjuntos minimais via componentes fortemente conexas, domina o tempo total de execução do método de Frank. A Fase~II, em contrapartida, representa uma fração residual do processamento: mediana de \(0{,}98\) s para versão 1 do algoritmo e \(0{,}016\) s para a versão 2 (utilizando heap).
 
-A comparação entre as duas variantes da Fase~II revela ganho expressivo com o uso de \emph{heap} (fila de prioridade). A versão v2 apresenta aceleração mediana de \(61{,}54\times\) (média \(63{,}07\times\)) sobre a versão v1, confirmando empiricamente a vantagem da estrutura de dados com complexidade \(O(\log n)\) versus \(O(n)\) por operação de seleção de mínimo.
+A comparação entre as duas variantes da Fase~II revela ganho expressivo com o uso de \emph{heap} (fila de prioridade). A versão v2 apresenta aceleração mediana de \(58{,}12\times\) (média \(61{,}30\times\)) sobre a versão v1, confirmando empiricamente a vantagem da estrutura de dados com complexidade \(O(\log n)\) versus \(O(n)\) por operação de seleção de mínimo.
 
-As métricas estruturais mostram que o número de contrações em Chu--Liu/Edmonds é pequeno (mediana 2, média 7,89, máximo 824), muito abaixo do limite teórico \(O(n)\) \cite{schrijver2003comb}, indicando que as estruturas dificilmente apresentam alta complexidade cíclica durante o processo de contração.
+As métricas estruturais mostram que o número de contrações em Chu--Liu/Edmonds é pequeno (mediana 2, média 6,82, máximo 406), muito abaixo do limite teórico \(O(n)\) \cite{schrijver2003comb}, indicando que as estruturas dificilmente apresentam alta complexidade cíclica durante o processo de contração.
 
-O consumo de memória na Fase~I mantém-se modesto (mediana 11~MB, média 12~MB), viabilizando a aplicação dos algoritmos mesmo em ambientes com recursos limitados.
+O consumo de memória na Fase~I mantém-se modesto (mediana 11{,}5~MB, média 14{,}8~MB), viabilizando a aplicação dos algoritmos mesmo em ambientes com recursos limitados.
 
 As Figuras~\ref{fig:times-boxplot}--\ref{fig:d0-vs-v} apresentam os resultados experimentais.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=.85\linewidth]{figures/fig_times_boxplot.png}
-    \caption{Distribuição de tempos: Fase~I apresenta maior mediana (\(7{,}63\) s) e variabilidade que Chu--Liu/Edmonds (\(0{,}18\) s).}
+    \caption{Distribuição de tempos: Fase~I apresenta maior mediana (\(8{,}93\) s) e variabilidade que Chu--Liu/Edmonds (\(0{,}25\) s).}
     \label{fig:times-boxplot}
 \end{figure}
 
@@ -41,21 +41,21 @@ As Figuras~\ref{fig:times-boxplot}--\ref{fig:d0-vs-v} apresentam os resultados e
 \begin{figure}[H]
     \centering
     \includegraphics[width=.75\linewidth]{figures/fig_speedup_hist.png}
-    \caption{Aceleração na Fase~II: v2 (\emph{heap}) apresenta mediana de \(61{,}54\times\) sobre v1.}
+    \caption{Aceleração na Fase~II: v2 (\emph{heap}) apresenta mediana de \(58{,}12\times\) sobre v1.}
     \label{fig:speedup}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=.75\linewidth]{figures/fig_contractions_depth.png}
-    \caption{Distribuição do número de contrações de ciclos realizadas por Chu--Liu/Edmonds: mediana 2, média \(7{,}89\), máximo 824. A maioria das instâncias requer poucas contrações.}
+    \caption{Distribuição do número de contrações de ciclos realizadas por Chu--Liu/Edmonds: mediana 2, média \(6{,}82\), máximo 406. A maioria das instâncias requer poucas contrações.}
     \label{fig:contr-depth}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=.75\linewidth]{figures/fig_peakmem_hist.png}
-    \caption{Pico de memória na Fase~I: mediana \(11\) MB.}
+    \caption{Pico de memória na Fase~I: mediana \(11{,}5\) MB.}
     \label{fig:peakmem}
 \end{figure}
 
@@ -70,8 +70,8 @@ As Figuras~\ref{fig:times-boxplot}--\ref{fig:d0-vs-v} apresentam os resultados e
 
 Os experimentos validam empiricamente as previsões teóricas e revelam características importantes do comportamento prático dos algoritmos. A equivalência de custos em 100\% das 2000 instâncias, somada à verificação bem-sucedida das condições de otimalidade dual, confirma a corretude das implementações.
 
-Chu--Liu/Edmonds demonstra-se mais eficiente para construção direta de arborescências nas instâncias aleatórias testadas (mediana \(0{,}18\) s, média \(0{,}52\) s), enquanto o método de Frank apresenta overhead significativo na Fase~I (mediana \(7{,}63\) s, média \(9{,}84\) s) devido ao processamento de subconjuntos minimais via componentes fortemente conexas. A versão heap da Fase~II valida os ganhos assintóticos esperados, com aceleração de \(61{,}54\times\) (mediana) sobre a versão linear, demonstrando que melhorias algorítmicas fundamentais se traduzem em benefícios práticos mensuráveis.
+Chu--Liu/Edmonds demonstra-se mais eficiente para construção direta de arborescências nas instâncias aleatórias testadas (mediana \(0{,}25\) s, média \(0{,}58\) s), enquanto o método de Frank apresenta overhead significativo na Fase~I (mediana \(8{,}93\) s, média \(12{,}40\) s) devido ao processamento de subconjuntos minimais via componentes fortemente conexas. A versão heap da Fase~II valida os ganhos assintóticos esperados, com aceleração de \(58{,}12\times\) (mediana) sobre a versão linear, demonstrando que melhorias algorítmicas fundamentais se traduzem em benefícios práticos mensuráveis.
 
-O comportamento em digrafos aleatórios é significativamente melhor que os limites teóricos de pior caso. O número de contrações observado (mediana 2, média 7,89) é muito inferior ao limite \(O(n)\), e o subgrafo \(D_0\) mantém razão \(|A_0|/|V_0| \approx 1{,}02\). O consumo modesto de memória (mediana 11~MB) e a escalabilidade observada viabilizam a aplicação prática de ambos os métodos em contextos com recursos computacionais limitados.
+O comportamento em digrafos aleatórios é significativamente melhor que os limites teóricos de pior caso. O número de contrações observado (mediana 2, média 6,82) é muito inferior ao limite \(O(n)\), e o subgrafo \(D_0\) mantém razão \(|A_0|/|V_0| \approx 1{,}00\). O consumo modesto de memória (mediana 11{,}5~MB) e a escalabilidade observada viabilizam a aplicação prática de ambos os métodos em contextos com recursos computacionais limitados.
 
 Compreender os algoritmos teoricamente e validá-los empiricamente é fundamental, mas como transformar esse conhecimento em aprendizagem efetiva? Desenvolvemos uma aplicação \textit{web} que permite acompanhar passo a passo o funcionamento de ambos os algoritmos de forma visual e interativa. O próximo capítulo discute os fundamentos didáticos que orientaram esse design.

@@ -6,7 +6,7 @@ from collections import defaultdict
 import matplotlib.pyplot as plt
 
 ROOT = os.path.dirname(os.path.dirname(__file__))
-CSV_PATH = os.path.join(ROOT, "test_results.csv")
+CSV_PATH = os.path.join(ROOT, "test_results copy.csv")
 OUT_DIR = os.path.join(ROOT, "Latex", "figures")
 os.makedirs(OUT_DIR, exist_ok=True)
 
