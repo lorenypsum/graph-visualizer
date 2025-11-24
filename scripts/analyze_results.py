@@ -94,8 +94,8 @@ def summarize(rows):
         [t_chuliu, t_f1, t_f2v1, t_f2v2],
     )
     ax.set_xticklabels(["Chu–Liu", "Fase I", "Fase II v1", "Fase II v2"])
-    ax.set_ylabel("tempo (s)")
-    ax.set_title("Distribuição de tempos por etapa")
+    ax.set_ylabel("Tempo (s)")
+    ax.set_title("Distribuição de Tempos por Etapa")
     fig.tight_layout()
     fig.savefig(os.path.join(OUT_DIR, "fig_times_boxplot.png"), dpi=180)
     plt.close(fig)
@@ -105,8 +105,8 @@ def summarize(rows):
     ax.scatter(edges, t_f1, s=12, alpha=0.6, label="Fase I")
     ax.scatter(edges, t_chuliu, s=12, alpha=0.6, label="Chu-Liu")
     ax.set_xlabel("|A| (arestas)")
-    ax.set_ylabel("tempo (s)")
-    ax.set_title("Escalonamento em funcao de |A|")
+    ax.set_ylabel("Tempo (s)")
+    ax.set_title("Escalonamento em Função de |A|")
     ax.legend()
     fig.tight_layout()
     fig.savefig(os.path.join(OUT_DIR, "fig_time_vs_edges_scatter.png"), dpi=180)
@@ -128,8 +128,8 @@ def summarize(rows):
 
     ax[0].set_xticks(positions)
     ax[0].set_xticklabels(["v1\n(lista)", "v2\n(heap)"], fontsize=11, fontweight="bold")
-    ax[0].set_ylabel("Tempo de execucao (segundos)", fontsize=11)
-    ax[0].set_title("Fase II: Comparacao de Desempenho", fontsize=12, fontweight="bold")
+    ax[0].set_ylabel("Tempo de Execução (segundos)", fontsize=11)
+    ax[0].set_title("Fase II: Comparação de Desempenho", fontsize=12, fontweight="bold")
     ax[0].grid(axis="y", alpha=0.3, linestyle="--")
 
     # Add median values as text
@@ -181,17 +181,17 @@ def summarize(rows):
     )
 
     ax[1].set_xlabel(
-        "Fator de Aceleracao (tempo v1 / tempo v2)", fontsize=11, fontweight="bold"
+        "Fator de Aceleração (tempo v1 / tempo v2)", fontsize=11, fontweight="bold"
     )
-    ax[1].set_ylabel("Numero de Instancias", fontsize=11)
-    ax[1].set_title("Distribuicao do Speedup", fontsize=12, fontweight="bold")
+    ax[1].set_ylabel("Número de Instâncias", fontsize=11)
+    ax[1].set_title("Distribuição do Speedup", fontsize=12, fontweight="bold")
     ax[1].legend(fontsize=10, loc="upper right")
     ax[1].grid(axis="y", alpha=0.3, linestyle="--")
 
     # Add explanatory text box with formula
     text_box = "Speedup = Tempo v1 / Tempo v2\n"
     text_box += f"Total: {len(speedups)} testes\n"
-    text_box += f"v2 e {med_speedup:.0f}x mais rapida"
+    text_box += f"v2 é {med_speedup:.0f}x mais rápida"
     ax[1].text(
         0.02,
         0.98,
@@ -240,13 +240,13 @@ def summarize(rows):
         color="orange",
         linestyle=":",
         linewidth=2.5,
-        label=f"Media: {mean_contr:.1f}",
+        label=f"Média: {mean_contr:.1f}",
         zorder=5,
     )
 
-    ax[0].set_xlabel("Numero de Contracoes de Ciclos", fontsize=11)
-    ax[0].set_ylabel("Numero de Instancias", fontsize=11)
-    ax[0].set_title("Contracoes em Chu-Liu/Edmonds", fontsize=12, fontweight="bold")
+    ax[0].set_xlabel("Número de Contrações de Ciclos", fontsize=11)
+    ax[0].set_ylabel("Número de Instâncias", fontsize=11)
+    ax[0].set_title("Contrações em Chu-Liu/Edmonds", fontsize=12, fontweight="bold")
     ax[0].legend(fontsize=10)
     ax[0].grid(axis="y", alpha=0.3, linestyle="--")
 
@@ -293,12 +293,12 @@ def summarize(rows):
         color="orange",
         linestyle=":",
         linewidth=2.5,
-        label=f"Media: {mean_depth:.1f}",
+        label=f"Média: {mean_depth:.1f}",
         zorder=5,
     )
 
-    ax[1].set_xlabel("Profundidade de Recursao", fontsize=11)
-    ax[1].set_ylabel("Numero de Instancias", fontsize=11)
+    ax[1].set_xlabel("Profundidade de Recursão", fontsize=11)
+    ax[1].set_ylabel("Número de Instâncias", fontsize=11)
     ax[1].set_title("Profundidade em Chu-Liu/Edmonds", fontsize=12, fontweight="bold")
     ax[1].legend(fontsize=10)
     ax[1].grid(axis="y", alpha=0.3, linestyle="--")
@@ -323,9 +323,9 @@ def summarize(rows):
     # 5) Peak memory
     fig, ax = plt.subplots(figsize=(8, 4))
     ax.hist(peak_kb, bins=20, alpha=0.8)
-    ax.set_xlabel("Pico de memória na Fase I (kB)")
+    ax.set_xlabel("Pico de Memória na Fase I (kB)")
     ax.set_ylabel("Contagem")
-    ax.set_title("Uso de memória - Fase I")
+    ax.set_title("Uso de Memória - Fase I")
     fig.tight_layout()
     fig.savefig(os.path.join(OUT_DIR, "fig_peakmem_hist.png"), dpi=180)
     plt.close(fig)

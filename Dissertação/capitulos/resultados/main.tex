@@ -39,7 +39,7 @@ A comparação entre as duas variantes da Fase~II revela ganho expressivo com o 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\linewidth]{figures/fig_speedup_hist.png}
-    \caption{Comparação de desempenho entre implementações da Fase~II. \textbf{Esquerda}: boxplots coloridos mostram diferença clara --- v1 (vermelho, lista) tem mediana de \(0{,}98\) s enquanto v2 (azul, heap) reduz para \(0{,}016\) s. \textbf{Direita}: histograma do fator de aceleração mostra distribuição concentrada entre 40× e 80×, com mediana \(58{,}12\times\) (linha tracejada vermelha) e média \(61{,}30\times\) (linha pontilhada laranja).}
+    \caption{Comparação de desempenho entre implementações da Fase~II. À esquerda o gráfico de boxplot mostra da distribuição de tempo da v1 do algoritmo com mediana de \(0{,}98\) s enquanto v2 reduz para \(0{,}016\) s. O gráfico da direita apresenta o histograma do fator de aceleração - \emph{speedup} mostrando a distribuição concentrada entre 40× e 80×, com mediana \(58{,}12\times\) (linha tracejada vermelha) e média \(61{,}30\times\) (linha pontilhada laranja).}
     \label{fig:speedup}
 \end{figure}
 
@@ -48,7 +48,7 @@ As métricas estruturais do algoritmo de Chu--Liu/Edmonds são apresentadas na F
 \begin{figure}[H]
     \centering
     \includegraphics[width=\linewidth]{figures/fig_contractions_depth.png}
-    \caption{Métricas estruturais de Chu--Liu/Edmonds. \textbf{Esquerda}: histograma vermelho mostra que o número de contrações (eixo horizontal) é concentrado em valores baixos --- a maioria das 2000 instâncias (eixo vertical) requer menos de 20 contrações, com mediana 2 (linha tracejada) e média \(6{,}82\) (linha pontilhada). \textbf{Direita}: histograma azul da profundidade de recursão exibe padrão similar, confirmando baixa complexidade cíclica.}
+    \caption{Métricas estruturais de Chu--Liu/Edmonds. À esquerda, o histograma vermelho mostra que o número de contrações (eixo horizontal) é concentrado em valores baixos --- a maioria das 2000 instâncias (eixo vertical) requer menos de 20 contrações, com mediana 2 (linha tracejada) e média \(6{,}82\) (linha pontilhada). À direita, histograma azul da profundidade de recursão exibe padrão similar, confirmando baixa complexidade cíclica.}
     \label{fig:contr-depth}
 \end{figure}
 
@@ -70,9 +70,9 @@ O consumo de memória na Fase~I mantém-se modesto (mediana 11{,}5~MB, média 14
 
 \section{Conclusões}
 
-Os experimentos validam empiricamente as previsões teóricas e revelam características importantes do comportamento prático dos algoritmos. A equivalência de custos em 100\% das 2000 instâncias, somada à verificação bem-sucedida das condições de otimalidade dual, confirma a corretude das implementações.
+Os experimentos validam empiricamente as previsões teóricas e revelam características importantes do comportamento prático dos algoritmos. A equivalência de custos é verificada em todas as 2000 instâncias, somada à verificação bem-sucedida das condições de otimalidade dual, confirma a corretude das implementações.
 
-Chu--Liu/Edmonds demonstra-se mais eficiente para construção direta de arborescências nas instâncias aleatórias testadas (mediana \(0{,}25\) s, média \(0{,}58\) s), enquanto o método de Frank apresenta overhead significativo na Fase~I (mediana \(8{,}93\) s, média \(12{,}40\) s) devido ao processamento de subconjuntos minimais via componentes fortemente conexas. A versão heap da Fase~II valida os ganhos assintóticos esperados, com aceleração de \(58{,}12\times\) (mediana) sobre a versão linear, demonstrando que melhorias algorítmicas fundamentais se traduzem em benefícios práticos mensuráveis.
+Chu--Liu/Edmonds demonstra-se mais eficiente para construção direta de arborescências nas instâncias aleatórias testadas (mediana \(0{,}25\) s, média \(0{,}58\) s), enquanto o método de Frank apresenta tempo adicional significativo na Fase~I (mediana \(8{,}93\) s, média \(12{,}40\) s) devido ao processamento de subconjuntos minimais via componentes fortemente conexas. A versão heap da Fase~II valida os ganhos assintóticos esperados, com aceleração de \(58{,}12\times\) (mediana) sobre a versão linear, demonstrando que melhorias algorítmicas fundamentais se traduzem em benefícios práticos mensuráveis.
 
 O comportamento em digrafos aleatórios é significativamente melhor que os limites teóricos de pior caso. O número de contrações observado (mediana 2, média 6,82) é muito inferior ao limite \(O(n)\), e o subgrafo \(D_0\) mantém razão \(|A_0|/|V_0| \approx 1{,}00\). O consumo modesto de memória (mediana 11{,}5~MB) e a escalabilidade observada viabilizam a aplicação prática de ambos os métodos em contextos com recursos computacionais limitados.
 
