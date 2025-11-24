@@ -111,8 +111,7 @@ def phase1(
     metrics = kwargs.get("metrics", None)
 
     D_copy = D_original.copy()
-    F = []
-    sigma = []  # List to store the variables (X, z(X))
+    sigma = []  # List to store the variables (a, X, z(X))
     D_zero = nx.DiGraph()
     D_zero.add_nodes_from(D_copy.nodes())
 
@@ -210,10 +209,9 @@ def phase1(
 
             a = update_weights(D_copy, arcs, min_weight)
 
-            F.append(a)
             D_zero.add_edge(a[0], a[1])
 
-            sigma.append((X, min_weight))
+            sigma.append((a, X, min_weight))
 
     # Collect metrics if requested
     if metrics is not None:
@@ -225,14 +223,12 @@ def phase1(
     if boilerplate and log:
         if lang == "en":
             log(f"\n andras_frank: Phase 1 completed in {iteration} iterations")
-            log(f" andras_frank: F has {len(F)} arcs")
             log(f" andras_frank: sigma has {len(sigma)} variables")
         elif lang == "pt":
             log(f"\n andras_frank: Fase 1 concluída em {iteration} iterações")
-            log(f" andras_frank: F possui {len(F)} arcos")
             log(f" andras_frank: sigma possui {len(sigma)} variáveis")
 
-    return F, sigma
+    return sigma
 
 def phase2(D_original: nx.DiGraph, r: int, F: list[tuple[int, int]], **kwargs):
     """
@@ -436,7 +432,7 @@ def phase2_v2(D_original: nx.DiGraph, r: int, F: list[tuple[int, int]], **kwargs
     return A
 
 def check_dual_optimality_condition(
-    Arb: nx.DiGraph, sigma: list[tuple[set[int], float]], **kwargs
+    Arb: nx.DiGraph, sigma: list[tuple[int, set[int], float]], **kwargs
 ):
     """
     Verifica a condição dual: z(X) > 0 implica que exatamente uma aresta de Arb entra em X.
@@ -466,7 +462,7 @@ def check_dual_optimality_condition(
             log(f"\n andras_frank: Verificando condição de otimalidade dual")
             log(f" andras_frank: Verificando {len(sigma)} variáveis duais")
 
-    for X, z in sigma:
+    for _, X, z in sigma:
         count = 0
         for u, v in Arb.edges():
             if u not in X and v in X:
@@ -531,19 +527,21 @@ def andras_frank_algorithm(
 
     if boilerplate and log:
         if lang == "en":
-            log(f"\nExecuting András Frank algorithm...")
+            log(f"\n Executing András Frank algorithm...")
         elif lang == "pt":
-            log(f"\nExecutando algoritmo de András Frank...")
+            log(f"\n Executando algoritmo de András Frank...")
 
-    F, sigma = phase1(
+    sigma = phase1(
         D,
         0,
         **kwargs,
     )
 
+    F = [a for a, _, _ in sigma]
+
     if boilerplate and log:
-        log(f"\nF: \n{F}")
-        log(f"\nsigma: \n{sigma}")
+        log(f"\n F: \n{F}")
+        log(f"\n sigma: \n{sigma}")
 
     if not has_arborescence(D, 0):
         if boilerplate and log:

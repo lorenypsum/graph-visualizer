@@ -347,7 +347,7 @@ def run_frank_phase1(
     """Run András Frank Phase 1 with memory tracking."""
     tracemalloc.start()
     t1 = time.perf_counter()
-    A_zero, Dual_list = phase1(
+    sigma = phase1(
         D,
         r,
         draw_fn=None,
@@ -356,17 +356,18 @@ def run_frank_phase1(
         lang=config.lang,
         metrics=frank_metrics,
     )
+    F = [a for a, _, _ in sigma]
     t_elapsed = time.perf_counter() - t1
     current, peak = tracemalloc.get_traced_memory()
     tracemalloc.stop()
     peak_kb = int(peak / 1024)
-    return A_zero, Dual_list, t_elapsed, peak_kb
+    return F, sigma, t_elapsed, peak_kb
 
 
 def run_frank_phase2(
     D: nx.DiGraph,
     r: int,
-    A_zero: list,
+    F: list,
     config: TestConfig,
     use_v2: bool = False,
 ) -> Tuple[nx.DiGraph, float]:
@@ -376,7 +377,7 @@ def run_frank_phase2(
     arbo = phase_func(
         D,
         r,
-        A_zero,
+        F,
         draw_fn=None,
         log=None,
         boilerplate=config.boilerplate,
@@ -390,7 +391,7 @@ def verify_algorithms(
     arbo_chuliu: nx.DiGraph,
     arbo_frank_v1: nx.DiGraph,
     arbo_frank_v2: nx.DiGraph,
-    Dual_list: list,
+    sigma: list,
     config: TestConfig,
 ) -> Tuple[float, float, float, bool, bool]:
     """Verify both algorithms and check dual conditions."""
@@ -409,14 +410,14 @@ def verify_algorithms(
     # Check dual conditions
     dual_v1 = check_dual_optimality_condition(
         arbo_frank_v1,
-        Dual_list,
+        sigma,
         log=config.log,
         boilerplate=config.boilerplate,
         lang=config.lang,
     )
     dual_v2 = check_dual_optimality_condition(
         arbo_frank_v2,
-        Dual_list,
+        sigma,
         log=config.log,
         boilerplate=config.boilerplate,
         lang=config.lang,
@@ -511,16 +512,16 @@ def run_single_test(
         )
 
         # Run András Frank Phase 1
-        A_zero, Dual_list, metrics.t_phase1, metrics.peak_kb = run_frank_phase1(
+        F, sigma, metrics.t_phase1, metrics.peak_kb = run_frank_phase1(
             D_copy, config.r, config, metrics.frank_metrics
         )
 
         # Run András Frank Phase 2 (both versions)
         arbo_frank_v1, metrics.t_phase2_v1 = run_frank_phase2(
-            D_copy, config.r, A_zero, config, use_v2=False
+            D_copy, config.r, F, config, use_v2=False
         )
         arbo_frank_v2, metrics.t_phase2_v2 = run_frank_phase2(
-            D_copy, config.r, A_zero, config, use_v2=True
+            D_copy, config.r, F, config, use_v2=True
         )
 
         # Verify results
@@ -531,7 +532,7 @@ def run_single_test(
             metrics.dual_frank_v1,
             metrics.dual_frank_v2,
         ) = verify_algorithms(
-            arbo_chuliu, arbo_frank_v1, arbo_frank_v2, Dual_list, config
+            arbo_chuliu, arbo_frank_v1, arbo_frank_v2, sigma, config
         )
 
         metrics.success = True
