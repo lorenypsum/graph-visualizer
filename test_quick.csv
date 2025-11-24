@@ -1,3 +1,1 @@
 Teste,Familia,Vertices,Arestas,Custo_ChuLiu,Custo_Frank_v1,Custo_Frank_v2,Tempo_total_s,Tempo_ChuLiu_s,Tempo_Fase1_s,Tempo_Fase2_v1_s,Tempo_Fase2_v2_s,Dual_Frank_v1,Dual_Frank_v2,Contractions,MaxDepth,D0_edges,D0_nodes,Dual_count,Fase1_iter,PeakMem_kB,Sucesso,Erro,Total_sucessos,Total_falhas,ChuLiu_maior_que_Frank,Frank_maior_que_ChuLiu
-1,random,20,51,138,138,138,0.02364716603187844,0.003998,0.016329,9e-05,0.000109,True,True,5,5,27,20,24,7,142,OK,,1,0,0,0
-2,random,13,20,107,107,107,0.008574917039368302,0.000801,0.006033,4.8e-05,6.7e-05,True,True,0,0,12,13,12,2,51,OK,,2,0,0,0

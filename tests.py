@@ -20,7 +20,7 @@ from chuliu import chuliu_edmonds, remove_in_edges_to
 # Default parameters
 NUM_TESTS = 10
 MIN_VERTICES = 100
-MAX_VERTICES = 200
+MAX_VERTICES = 1000
 PESO_MIN = 1
 PESO_MAX = 50
 LOG_CSV_PATH = "test_results.csv"
@@ -30,6 +30,7 @@ LANG = "pt"  # Change to "en" for English logs
 
 # Instance family configuration
 FAMILY = "random"  # options: random | dense | sparse | layered
+
 
 @dataclass
 class TestMetrics:

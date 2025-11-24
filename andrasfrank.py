@@ -1,7 +1,6 @@
 import networkx as nx
 import heapq
 
-
 def get_in_arcs(D: nx.DiGraph, X: set, **kwargs):
     """
     Get the arcs entering a set X in a directed graph D.
@@ -24,10 +23,6 @@ def get_in_arcs(D: nx.DiGraph, X: set, **kwargs):
 
     arcs = []
 
-    for u, v, data in D.edges(data=True):
-        if u not in X and v in X:
-            arcs.append((u, v, data))
-
     if boilerplate and log:
         if lang == "en":
             log(f" andras_frank: Found {len(arcs)} arcs entering set X={X}")
@@ -35,47 +30,13 @@ def get_in_arcs(D: nx.DiGraph, X: set, **kwargs):
             log(
                 f" andras_frank: Encontrados {len(arcs)} arcos entrando no conjunto X={X}"
             )
-    return arcs
 
+    return [(u, v, data) for u, v, data in D.edges(data=True) if u not in X and v in X]
 
-def get_minimum_weight_cut(arcs: list[tuple[int, int, dict]], **kwargs):
-    """
-    Get the minimum weight arcs from a list of arcs.
-    The function returns a list of tuples representing the minimum weight arcs.
-
-    Parameters:
-    - arcs: list of tuples (u, v, data)
-    - **kwargs: Additional parameters:
-        - log: Optional logging function
-        - boilerplate: If True, enables logging (default: True)
-        - lang: Language for messages ("en" or "pt", default: "pt")
-
-    Returns:
-    - min_weight: minimum weight found among the arcs
-    """
-    log = kwargs.get("log", None)
-    boilerplate = kwargs.get("boilerplate", True)
-    lang = kwargs.get("lang", "pt")
-
-    min_weight = min(data["w"] for _, _, data in arcs)
-
-    if boilerplate and log:
-        if lang == "en":
-            log(f" andras_frank: Minimum weight in cut: {min_weight}")
-        elif lang == "pt":
-            log(f" andras_frank: Peso mínimo no corte: {min_weight}")
-
-    return min_weight
-
-
-def update_weights_in_X(
+def update_weights(
     D: nx.DiGraph,
     arcs: list[tuple[int, int, dict]],
-    min_weight: float,
-    A_zero: list[tuple[int, int]],
-    D_zero: nx.DiGraph,
-    **kwargs,
-):
+    min_weight: float):
     """
     Update the weights of the arcs in a directed graph D for the nodes in set X.
     ATTENTION: The function produces collateral effect in the provided directed graph
@@ -95,28 +56,11 @@ def update_weights_in_X(
     Returns:
         - Nothing. The function updates D, A_zero, and D_zero in place.
     """
-    log = kwargs.get("log", None)
-    boilerplate = kwargs.get("boilerplate", True)
-    lang = kwargs.get("lang", "pt")
-
-    zero_weight_arcs = 0
     for u, v, _ in arcs:
         D[u][v]["w"] -= min_weight
         if D[u][v]["w"] == 0:
-            A_zero.append((u, v))
-            D_zero.add_edge(u, v)
-            zero_weight_arcs += 1
-
-    if boilerplate and log:
-        if lang == "en":
-            log(
-                f" andras_frank: Updated {len(arcs)} arcs weights. {zero_weight_arcs} arcs reached zero weight."
-            )
-        elif lang == "pt":
-            log(
-                f" andras_frank: Atualizados pesos de {len(arcs)} arcos. {zero_weight_arcs} arcos atingiram peso zero."
-            )
-
+            a = (u, v)
+    return a
 
 def has_arborescence(D: nx.DiGraph, r: int):
     """
@@ -130,12 +74,10 @@ def has_arborescence(D: nx.DiGraph, r: int):
     Returns:
         - bool: True if an arborescence exists, otherwise False
     """
-
     # Verify if the graph is a DFS tree with root r
     tree = nx.dfs_tree(D, r)
 
     return tree.number_of_nodes() == D.number_of_nodes()
-
 
 def phase1(
     D_original: nx.DiGraph,
@@ -264,32 +206,14 @@ def phase1(
                         f" andras_frank: Arcos entrando em X: {[(u, v, data['w']) for u, v, data in arcs]}"
                     )
 
-            min_weight = get_minimum_weight_cut(arcs, **kwargs)
+            min_weight = min(data["w"] for _, _, data in arcs)
 
-            update_weights_in_X(D_copy, arcs, min_weight, A_zero, D_zero, **kwargs)
+            a = update_weights(D_copy, arcs, min_weight)
 
-            # If min_weight is zero, ignore
-            if min_weight != 0:
-                Dual_list.append((X, min_weight))
-                if boilerplate and log:
-                    if lang == "en":
-                        log(
-                            f" andras_frank: Added dual variable: z({X}) = {min_weight}"
-                        )
-                    elif lang == "pt":
-                        log(
-                            f" andras_frank: Adicionada variável dual: z({X}) = {min_weight}"
-                        )
-            else:
-                if boilerplate and log:
-                    if lang == "en":
-                        log(
-                            f" andras_frank: Minimum weight is zero, not adding to dual list"
-                        )
-                    elif lang == "pt":
-                        log(
-                            f" andras_frank: Peso mínimo é zero, não adicionando à lista dual"
-                        )
+            A_zero.append(a)
+            D_zero.add_edge(a[0], a[1])
+
+            Dual_list.append((X, min_weight))
 
     # Collect metrics if requested
     if metrics is not None:
@@ -309,7 +233,6 @@ def phase1(
             log(f" andras_frank: Dual_list possui {len(Dual_list)} variáveis")
 
     return A_zero, Dual_list
-
 
 def phase2(D_original: nx.DiGraph, r: int, A_zero: list[tuple[int, int]], **kwargs):
     """
@@ -387,7 +310,6 @@ def phase2(D_original: nx.DiGraph, r: int, A_zero: list[tuple[int, int]], **kwar
             )
 
     return Arb
-
 
 def phase2_v2(D_original: nx.DiGraph, r: int, A_zero: list[tuple[int, int]], **kwargs):
     """
@@ -513,7 +435,6 @@ def phase2_v2(D_original: nx.DiGraph, r: int, A_zero: list[tuple[int, int]], **k
     # Return the resulting arborescence
     return A
 
-
 def check_dual_optimality_condition(
     Arb: nx.DiGraph, Dual_list: list[tuple[set[int], float]], **kwargs
 ):
@@ -580,8 +501,6 @@ def check_dual_optimality_condition(
 
     return True
 
-
-# empacotar as chamadas em função.
 def andras_frank_algorithm(
     D: nx.DiGraph,
     **kwargs,
@@ -609,7 +528,6 @@ def andras_frank_algorithm(
     log = kwargs.get("log", None)
     boilerplate = kwargs.get("boilerplate", True)
     lang = kwargs.get("lang", "pt")
-    metrics = kwargs.get("metrics", None)
 
     if boilerplate and log:
         if lang == "en":
