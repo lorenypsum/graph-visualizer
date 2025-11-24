@@ -46,7 +46,7 @@ def update_weights(
         - D: directed graph (DiGraph)
         - arcs: list of tuples (u, v, data) where u not in X and v in X
         - min_weight: minimum weight to be subtracted from the arcs weights
-        - A_zero: list to store the arcs that reach weight zero
+        - F: list to store the arcs that reach weight zero
         - D_zero: directed graph (DiGraph) to store the arcs that reach weight zero
         - **kwargs: Additional parameters:
             - log: Optional logging function
@@ -54,7 +54,7 @@ def update_weights(
             - lang: Language for messages ("en" or "pt", default: "pt")
 
     Returns:
-        - Nothing. The function updates D, A_zero, and D_zero in place.
+        - Nothing. The function updates D, F, and D_zero in place.
     """
     for u, v, _ in arcs:
         D[u][v]["w"] -= min_weight
@@ -99,8 +99,8 @@ def phase1(
             - metrics: Optional dict to collect algorithm metrics
 
     Returns:
-        - A_zero: list of arcs (u, v) that form the minimum arborescence
-        - Dual_list: list of tuples (X, z(X)) representing the dual variables
+        - F: list of arcs (u, v) that form the minimum arborescence
+        - Iam: list of tuples (X, z(X))
     """
 
     # Extract parameters from kwargs with defaults
@@ -111,8 +111,8 @@ def phase1(
     metrics = kwargs.get("metrics", None)
 
     D_copy = D_original.copy()
-    A_zero = []
-    Dual_list = []  # List to store the dual variables (X, z(X))
+    F = []
+    Iam = []  # List to store the variables (X, z(X))
     D_zero = nx.DiGraph()
     D_zero.add_nodes_from(D_copy.nodes())
 
@@ -120,13 +120,13 @@ def phase1(
 
     if boilerplate and log:
         if lang == "en":
-            log(f"\n andras_frank: Phase 1 - Starting dual algorithm")
+            log(f"\n andras_frank: Phase 1 - Starting the algorithm")
             log(
                 f" andras_frank: Graph has {D_copy.number_of_nodes()} nodes and {D_copy.number_of_edges()} edges"
             )
             log(f" andras_frank: Root node: {r}")
         elif lang == "pt":
-            log(f"\n andras_frank: Fase 1 - Iniciando algoritmo dual")
+            log(f"\n andras_frank: Fase 1 - Iniciando algoritmo")
             log(
                 f" andras_frank: Grafo possui {D_copy.number_of_nodes()} nós e {D_copy.number_of_edges()} arestas"
             )
@@ -210,31 +210,31 @@ def phase1(
 
             a = update_weights(D_copy, arcs, min_weight)
 
-            A_zero.append(a)
+            F.append(a)
             D_zero.add_edge(a[0], a[1])
 
-            Dual_list.append((X, min_weight))
+            Iam.append((X, min_weight))
 
     # Collect metrics if requested
     if metrics is not None:
         metrics["phase1_iterations"] = iteration
         metrics["d0_edges"] = D_zero.number_of_edges()
         metrics["d0_nodes"] = D_zero.number_of_nodes()
-        metrics["dual_count"] = len(Dual_list)
+        metrics["dual_count"] = len(Iam)
 
     if boilerplate and log:
         if lang == "en":
             log(f"\n andras_frank: Phase 1 completed in {iteration} iterations")
-            log(f" andras_frank: A_zero has {len(A_zero)} arcs")
-            log(f" andras_frank: Dual_list has {len(Dual_list)} variables")
+            log(f" andras_frank: F has {len(F)} arcs")
+            log(f" andras_frank: Iam has {len(Iam)} variables")
         elif lang == "pt":
             log(f"\n andras_frank: Fase 1 concluída em {iteration} iterações")
-            log(f" andras_frank: A_zero possui {len(A_zero)} arcos")
-            log(f" andras_frank: Dual_list possui {len(Dual_list)} variáveis")
+            log(f" andras_frank: F possui {len(F)} arcos")
+            log(f" andras_frank: Iam possui {len(Iam)} variáveis")
 
-    return A_zero, Dual_list
+    return F, Iam
 
-def phase2(D_original: nx.DiGraph, r: int, A_zero: list[tuple[int, int]], **kwargs):
+def phase2(D_original: nx.DiGraph, r: int, F: list[tuple[int, int]], **kwargs):
     """
     Find the minimum arborescence in a directed graph D with root r.
     The function returns the minimum arborescence as a DiGraph.
@@ -242,7 +242,7 @@ def phase2(D_original: nx.DiGraph, r: int, A_zero: list[tuple[int, int]], **kwar
     Parameters:
         - D_original: directed graph (DiGraph)
         - r: root node
-        - A_zero: list of arcs (u, v) that form the minimum arborescence
+        - F: list of arcs (u, v) that form the minimum arborescence
         - **kwargs: Additional parameters:
             - draw_fn: Optional drawing function
             - log: Optional logging function
@@ -262,15 +262,15 @@ def phase2(D_original: nx.DiGraph, r: int, A_zero: list[tuple[int, int]], **kwar
 
     if boilerplate and log:
         if lang == "en":
-            log(f"\n andras_frank: Phase 2 - Building arborescence from A_zero")
+            log(f"\n andras_frank: Phase 2 - Building arborescence from F")
             log(f" andras_frank: Starting with root {r}")
-            log(f" andras_frank: Total arcs in A_zero: {len(A_zero)}")
+            log(f" andras_frank: Total arcs in F: {len(F)}")
         elif lang == "pt":
             log(
-                f"\n andras_frank: Fase 2 - Construindo arborescência a partir de A_zero"
+                f"\n andras_frank: Fase 2 - Construindo arborescência a partir de F"
             )
             log(f" andras_frank: Iniciando com raiz {r}")
-            log(f" andras_frank: Total de arcos em A_zero: {len(A_zero)}")
+            log(f" andras_frank: Total de arcos em F: {len(F)}")
 
     # Add the root node
     Arb.add_node(r)
@@ -278,7 +278,7 @@ def phase2(D_original: nx.DiGraph, r: int, A_zero: list[tuple[int, int]], **kwar
 
     # While there are arcs to be considered
     for _ in range(n - 1):
-        for u, v in A_zero:
+        for u, v in F:
             if u in Arb.nodes() and v not in Arb.nodes():
                 edge_data = D_original.get_edge_data(u, v)
                 Arb.add_edge(u, v, **edge_data)
@@ -311,7 +311,7 @@ def phase2(D_original: nx.DiGraph, r: int, A_zero: list[tuple[int, int]], **kwar
 
     return Arb
 
-def phase2_v2(D_original: nx.DiGraph, r: int, A_zero: list[tuple[int, int]], **kwargs):
+def phase2_v2(D_original: nx.DiGraph, r: int, F: list[tuple[int, int]], **kwargs):
     """
     Find the minimum arborescence in a directed graph D with root r.
     The function returns the minimum arborescence as a DiGraph.
@@ -319,7 +319,7 @@ def phase2_v2(D_original: nx.DiGraph, r: int, A_zero: list[tuple[int, int]], **k
     Parameters:
         - D_original: directed graph (DiGraph)
         - r: root node
-        - A_zero: list of arcs (u, v) that form the minimum arborescence
+        - F: list of arcs (u, v) that form the minimum arborescence
         - **kwargs: Additional parameters:
             - draw_fn: Optional drawing function
             - log: Optional logging function
@@ -342,16 +342,16 @@ def phase2_v2(D_original: nx.DiGraph, r: int, A_zero: list[tuple[int, int]], **k
                 f"\n andras_frank: Phase 2 v2 - Building arborescence using priority queue"
             )
             log(f" andras_frank: Starting with root {r}")
-            log(f" andras_frank: Total arcs in A_zero: {len(A_zero)}")
+            log(f" andras_frank: Total arcs in F: {len(F)}")
         elif lang == "pt":
             log(
                 f"\n andras_frank: Fase 2 v2 - Construindo arborescência usando fila de prioridade"
             )
             log(f" andras_frank: Iniciando com raiz {r}")
-            log(f" andras_frank: Total de arcos em A_zero: {len(A_zero)}")
+            log(f" andras_frank: Total de arcos em F: {len(F)}")
 
     Arb = nx.DiGraph()
-    for i, (u, v) in enumerate(A_zero):
+    for i, (u, v) in enumerate(F):
         Arb.add_edge(u, v, w=i)
 
     # Set of visited vertices, starting with the root
@@ -436,14 +436,14 @@ def phase2_v2(D_original: nx.DiGraph, r: int, A_zero: list[tuple[int, int]], **k
     return A
 
 def check_dual_optimality_condition(
-    Arb: nx.DiGraph, Dual_list: list[tuple[set[int], float]], **kwargs
+    Arb: nx.DiGraph, Iam: list[tuple[set[int], float]], **kwargs
 ):
     """
     Verifica a condição dual: z(X) > 0 implica que exatamente uma aresta de Arb entra em X.
 
     Parameters:
         - Arb: arborescência (DiGraph)
-        - Dual_list: lista de tuplas (X, z(X)) representando as variáveis duais
+        - Iam: lista de tuplas (X, z(X)) representando as variáveis duais
         - **kwargs: Additional parameters:
             - log: Optional logging function
             - boilerplate: If True, enables logging (default: True)
@@ -461,12 +461,12 @@ def check_dual_optimality_condition(
     if boilerplate and log:
         if lang == "en":
             log(f"\n andras_frank: Checking dual optimality condition")
-            log(f" andras_frank: Checking {len(Dual_list)} dual variables")
+            log(f" andras_frank: Checking {len(Iam)} dual variables")
         elif lang == "pt":
             log(f"\n andras_frank: Verificando condição de otimalidade dual")
-            log(f" andras_frank: Verificando {len(Dual_list)} variáveis duais")
+            log(f" andras_frank: Verificando {len(Iam)} variáveis duais")
 
-    for X, z in Dual_list:
+    for X, z in Iam:
         count = 0
         for u, v in Arb.edges():
             if u not in X and v in X:
@@ -535,15 +535,15 @@ def andras_frank_algorithm(
         elif lang == "pt":
             log(f"\nExecutando algoritmo de András Frank...")
 
-    A_zero, Dual_list = phase1(
+    F, Iam = phase1(
         D,
         0,
         **kwargs,
     )
 
     if boilerplate and log:
-        log(f"\nA_zero: \n{A_zero}")
-        log(f"\nDual_list: \n{Dual_list}")
+        log(f"\nF: \n{F}")
+        log(f"\nIam: \n{Iam}")
 
     if not has_arborescence(D, 0):
         if boilerplate and log:
@@ -553,14 +553,14 @@ def andras_frank_algorithm(
                 log(f"\nO grafo não contém uma arborescência com raiz 0.")
         return None, None
 
-    arborescence_frank = phase2(D, 0, A_zero, **kwargs)
-    arborescence_frank_v2 = phase2_v2(D, 0, A_zero, **kwargs)
+    arborescence_frank = phase2(D, 0, F, **kwargs)
+    arborescence_frank_v2 = phase2_v2(D, 0, F, **kwargs)
     dual_frank = check_dual_optimality_condition(
-        arborescence_frank, Dual_list, **kwargs
+        arborescence_frank, Iam, **kwargs
     )
 
     dual_frank_v2 = check_dual_optimality_condition(
-        arborescence_frank_v2, Dual_list, **kwargs
+        arborescence_frank_v2, Iam, **kwargs
     )
 
     if dual_frank and dual_frank_v2:

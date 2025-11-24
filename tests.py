@@ -20,7 +20,7 @@ from chuliu import chuliu_edmonds, remove_in_edges_to
 # Default parameters
 NUM_TESTS = 10
 MIN_VERTICES = 100
-MAX_VERTICES = 1000
+MAX_VERTICES = 300
 PESO_MIN = 1
 PESO_MAX = 50
 LOG_CSV_PATH = "test_results.csv"
@@ -31,11 +31,9 @@ LANG = "pt"  # Change to "en" for English logs
 # Instance family configuration
 FAMILY = "random"  # options: random | dense | sparse | layered
 
-
 @dataclass
 class TestMetrics:
     """Container for test execution metrics."""
-
     custo_chuliu: Optional[float] = None
     custo_frank_v1: Optional[float] = None
     custo_frank_v2: Optional[float] = None
@@ -85,7 +83,6 @@ def log_console_and_file(msg: str, log_txt_path: str = LOG_TXT_PATH) -> None:
     print(msg)
     with open(log_txt_path, "a") as f:
         f.write(msg + "\n")
-
 
 def get_edge_count_for_family(n: int, family: str, m: Optional[int] = None) -> int:
     """Calculate appropriate edge count based on graph family."""
