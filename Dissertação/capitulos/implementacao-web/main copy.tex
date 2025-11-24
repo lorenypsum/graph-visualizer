@@ -1,27 +1,18 @@
 \chapter{A interação humano--computacional em ação: uma aplicação \textit{web} interativa}
 
 
-Discutimos até aqui fundamentos teóricos dos algoritmos, análises de complexidade, resultados empíricos e princípios pedagógicos que justificam o uso de ferramentas interativas. Estabelecemos \emph{o quê} ensinar (Chu–Liu/Edmonds e Frank), \emph{por quê} usar visualizações (redução de carga cognitiva, engajamento ativo).
+Discutimos até aqui fundamentos teóricos dos algoritmos, análises de complexidade, resultados empíricos e princípios pedagógicos que justificam o uso de ferramentas interativas. Estabelecemos \emph{o quê} ensinar (Chu–Liu/Edmonds e Frank), \emph{por quê} usar visualizações (redução de carga cognitiva, engajamento ativo) e \emph{como} estruturar o design (heurísticas de IHC, visão geral com detalhe sob demanda, feedback imediato).
 
 
-O passo seguinte consiste em transformar essas diretrizes em uma solução concreta. A aplicação \textit{web} desenvolvida busca materializar os princípios apresentados, integrando escolhas didáticas e heurísticas de IHC em uma interface que favorece exploração gradual, leitura orientada e compreensão progressiva. Assim, passamos do plano conceitual para o plano operacional: \emph{como} traduzir teoria e princípios pedagógicos em decisões de design
-
-Mas antes de fundamentar os conceitos de design utilizados iremos apresentar o objetivo da aplicação, sua estrutura e principais funcionalidades, bem como o fluxo de interação proposto para os usuários.
-
-% Isto é, cada botão, cada visualização e cada mensagem de log foi projetada intencionalmente, guiada pelos princípios de IHC e pelas necessidades pedagógicas identificadas, a fim de maximizar a compreensão e o engajamento dos usuários
+Agora, traduzimos esses princípios em código e interface: a aplicação \textit{web} que desenvolvemos busca materializar cada uma das diretrizes discutidas. Isto é, cada botão, cada visualização e cada mensagem de log foi projetada intencionalmente, guiada pelos princípios de IHC e pelas necessidades pedagógicas identificadas, a fim de maximizar a compreensão e o engajamento dos usuários
 
 
 % Com isso em mente, a aplicação \textit{web} interativa foi desenvolvida para ilustrar os algoritmos de Chu–Liu/Edmonds e Frank, permitindo aos usuários acompanhar passo a passo o funcionamento de ambos os métodos. 
 
-% \section{Descrição da aplicação}
-% Nesta seção apresentaremos a aplicação web que desenvolvemos para materializar, de forma interativa e didática, os algoritmos discutidos nos capítulos anteriores. Objetiva-se descrever a finalidade da ferramenta, os princípios de design operacionalizados na interface e os principais recursos que sustentam a exploração pedagógica de arborescências dirigidas. 
-% % Apresentamos aqui uma visão de alto nível da aplicação antes de detalhar a sua arquitetura, páginas e fluxo de interação.
-
-% Para que esses objetivos pedagógicos fossem atingidos, não bastava implementar os algoritmos; a interface precisava seguir rigorosos critérios de usabilidade e didática, a seguir trataremos destes aspectos. 
-
-
 \section{Descrição da aplicação}
-% \subsection{Objetivo da Ferramenta}
+Nesta seção apresentaremos a aplicação web que desenvolvemos para materializar, de forma interativa e didática, os algoritmos discutidos nos capítulos anteriores. Objetiva-se descrever a finalidade da ferramenta, os princípios de design operacionalizados na interface e os principais recursos que sustentam a exploração pedagógica de arborescências dirigidas. Apresentamos aqui uma visão de alto nível da aplicação antes de detalhar a sua arquitetura, páginas e fluxo de interação.
+
+\subsection{Objetivo da Ferramenta}
 A aplicação \textit{web} foi concebida como uma ferramenta educacional interativa para auxiliar na compreensão dos algoritmos de Chu-Liu/Edmonds e Andras Frank para a construção de $r$-arborescências dirigidas de custo mínimo. Seu principal objetivo é permitir que estudantes e pesquisadores explorem visualmente o funcionamento desses algoritmos, acompanhando passo a passo suas operações em grafos dirigidos.
 
 \subsection{Estrutura e Funcionalidades}
@@ -335,5 +326,4 @@ A arquitetura modular e reutilizável das páginas \textit{web} facilita manuten
 \section{Considerações Finais e Trabalhos Futuros} 
 
 
-Este capítulo detalhou a implementação técnica do visualizador interativo de arborescências dirigidas, cobrindo desde a arquitetura \textit{web} até a integração de algoritmos complexos. A escolha de tecnologias modernas como HTML5, CSS3, JavaScript e PyScript permitiu criar uma interface intuitiva e responsiva, facilitando a experimentação e a compreensão dos algoritmos de Chu--Liu/Edmonds e Andras Frank. A reutilização de padrões arquiteturais promoveu consistência cognitiva, enquanto a estrutura modular assegura a manutenção e a extensibilidade do projeto.
-Não obstante os resultados alcançados, a aplicação apresenta oportunidades de evolução para aprofundar a experiência didática. Atualmente, a ausência de uma visualização explícita da contração de ciclos e a falta de uma comparação lado a lado entre as abordagens de Chu--Liu e Frank limitam a clareza de certos processos. Para endereçar essas questões, planeja-se incorporar animações de contração com agrupamentos colapsáveis e desenvolver um módulo comparativo dedicado, incluindo uma extensão paralela para a abordagem primal--dual de Frank.No aspecto visual, o layout planar simples impõe restrições em instâncias densas. A mitigação desse problema prevê a adoção de layouts adaptativos (como \textit{spring} ou \textit{dagre-like}) e a implementação de uma camada de sinalização cromática para custos reduzidos e arcos críticos ($c'=0$). Por fim, a funcionalidade de exportação será expandida para gerar relatórios automáticos (PDF/ZIP) que contemplem estados intermediários e métricas de desempenho, superando a limitação atual de exportar apenas os grafos inicial e final. No próximo capítulo, discutiremos as conclusões gerais da dissertação.
+Este capítulo detalhou a implementação técnica do visualizador interativo de arborescências dirigidas, cobrindo desde a arquitetura \textit{web} até a integração de algoritmos complexos. A escolha de tecnologias modernas como HTML5, CSS3, JavaScript e PyScript permitiu criar uma interface intuitiva e responsiva, facilitando a experimentação e a compreensão dos algoritmos de Chu--Liu/Edmonds e Andras Frank. A reutilização de padrões arquiteturais promoveu consistência cognitiva, enquanto a estrutura modular assegura a manutenção e a extensibilidade do projeto.Não obstante os resultados alcançados, a aplicação apresenta oportunidades de evolução para aprofundar a experiência didática. Atualmente, a ausência de uma visualização explícita da contração de ciclos e a falta de uma comparação lado a lado entre as abordagens de Chu--Liu e Frank limitam a clareza de certos processos. Para endereçar essas questões, planeja-se incorporar animações de contração com agrupamentos colapsáveis e desenvolver um módulo comparativo dedicado, incluindo uma extensão paralela para a abordagem primal--dual de Frank.No aspecto visual, o layout planar simples impõe restrições em instâncias densas. A mitigação desse problema prevê a adoção de layouts adaptativos (como \textit{spring} ou \textit{dagre-like}) e a implementação de uma camada de sinalização cromática para custos reduzidos e arcos críticos ($c'=0$). Por fim, a funcionalidade de exportação será expandida para gerar relatórios automáticos (PDF/ZIP) que contemplem estados intermediários e métricas de desempenho, superando a limitação atual de exportar apenas os grafos inicial e final. No próximo capítulo, discutiremos as conclusões gerais da dissertação.
