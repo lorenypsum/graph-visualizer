@@ -99,9 +99,9 @@ def phase1(
             - metrics: Optional dict to collect algorithm metrics
 
     Returns:
-        - F: list of arcs (u, v) that form the minimum arborescence
-        - Iam: list of tuples (X, z(X))
+        - sigma: list of tuples (X, z(X))
     """
+
 
     # Extract parameters from kwargs with defaults
     draw_fn = kwargs.get("draw_fn", None)
@@ -112,7 +112,7 @@ def phase1(
 
     D_copy = D_original.copy()
     F = []
-    Iam = []  # List to store the variables (X, z(X))
+    sigma = []  # List to store the variables (X, z(X))
     D_zero = nx.DiGraph()
     D_zero.add_nodes_from(D_copy.nodes())
 
@@ -213,26 +213,26 @@ def phase1(
             F.append(a)
             D_zero.add_edge(a[0], a[1])
 
-            Iam.append((X, min_weight))
+            sigma.append((X, min_weight))
 
     # Collect metrics if requested
     if metrics is not None:
         metrics["phase1_iterations"] = iteration
         metrics["d0_edges"] = D_zero.number_of_edges()
         metrics["d0_nodes"] = D_zero.number_of_nodes()
-        metrics["dual_count"] = len(Iam)
+        metrics["dual_count"] = len(sigma)
 
     if boilerplate and log:
         if lang == "en":
             log(f"\n andras_frank: Phase 1 completed in {iteration} iterations")
             log(f" andras_frank: F has {len(F)} arcs")
-            log(f" andras_frank: Iam has {len(Iam)} variables")
+            log(f" andras_frank: sigma has {len(sigma)} variables")
         elif lang == "pt":
             log(f"\n andras_frank: Fase 1 concluída em {iteration} iterações")
             log(f" andras_frank: F possui {len(F)} arcos")
-            log(f" andras_frank: Iam possui {len(Iam)} variáveis")
+            log(f" andras_frank: sigma possui {len(sigma)} variáveis")
 
-    return F, Iam
+    return F, sigma
 
 def phase2(D_original: nx.DiGraph, r: int, F: list[tuple[int, int]], **kwargs):
     """
@@ -436,14 +436,14 @@ def phase2_v2(D_original: nx.DiGraph, r: int, F: list[tuple[int, int]], **kwargs
     return A
 
 def check_dual_optimality_condition(
-    Arb: nx.DiGraph, Iam: list[tuple[set[int], float]], **kwargs
+    Arb: nx.DiGraph, sigma: list[tuple[set[int], float]], **kwargs
 ):
     """
     Verifica a condição dual: z(X) > 0 implica que exatamente uma aresta de Arb entra em X.
 
     Parameters:
         - Arb: arborescência (DiGraph)
-        - Iam: lista de tuplas (X, z(X)) representando as variáveis duais
+        - sigma: lista de tuplas (X, z(X)) representando as variáveis duais
         - **kwargs: Additional parameters:
             - log: Optional logging function
             - boilerplate: If True, enables logging (default: True)
@@ -461,12 +461,12 @@ def check_dual_optimality_condition(
     if boilerplate and log:
         if lang == "en":
             log(f"\n andras_frank: Checking dual optimality condition")
-            log(f" andras_frank: Checking {len(Iam)} dual variables")
+            log(f" andras_frank: Checking {len(sigma)} dual variables")
         elif lang == "pt":
             log(f"\n andras_frank: Verificando condição de otimalidade dual")
-            log(f" andras_frank: Verificando {len(Iam)} variáveis duais")
+            log(f" andras_frank: Verificando {len(sigma)} variáveis duais")
 
-    for X, z in Iam:
+    for X, z in sigma:
         count = 0
         for u, v in Arb.edges():
             if u not in X and v in X:
@@ -535,7 +535,7 @@ def andras_frank_algorithm(
         elif lang == "pt":
             log(f"\nExecutando algoritmo de András Frank...")
 
-    F, Iam = phase1(
+    F, sigma = phase1(
         D,
         0,
         **kwargs,
@@ -543,7 +543,7 @@ def andras_frank_algorithm(
 
     if boilerplate and log:
         log(f"\nF: \n{F}")
-        log(f"\nIam: \n{Iam}")
+        log(f"\nsigma: \n{sigma}")
 
     if not has_arborescence(D, 0):
         if boilerplate and log:
@@ -556,11 +556,11 @@ def andras_frank_algorithm(
     arborescence_frank = phase2(D, 0, F, **kwargs)
     arborescence_frank_v2 = phase2_v2(D, 0, F, **kwargs)
     dual_frank = check_dual_optimality_condition(
-        arborescence_frank, Iam, **kwargs
+        arborescence_frank, sigma, **kwargs
     )
 
     dual_frank_v2 = check_dual_optimality_condition(
-        arborescence_frank_v2, Iam, **kwargs
+        arborescence_frank_v2, sigma, **kwargs
     )
 
     if dual_frank and dual_frank_v2:
