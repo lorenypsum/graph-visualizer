@@ -1,0 +1,1 @@
+Teste,Familia,Vertices,Arestas,Custo_ChuLiu,Custo_Frank_v1,Custo_Frank_v2,Tempo_total_s,Tempo_ChuLiu_s,Tempo_Fase1_s,Tempo_Fase2_v1_s,Tempo_Fase2_v2_s,Dual_Frank_v1,Dual_Frank_v2,Contractions,MaxDepth,D0_edges,D0_nodes,Dual_count,Fase1_iter,PeakMem_kB,Sucesso,Erro,Total_sucessos,Total_falhas,ChuLiu_maior_que_Frank,Frank_maior_que_ChuLiu

@@ -1,5 +1,6 @@
 import networkx as nx
 
+
 # Normalização dos pesos das arestas que entram em um vértice
 def normalize_incoming_edge_weights(D: nx.DiGraph, node: str, lang="pt"):
     """
@@ -168,9 +169,7 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: str, lang="pt"):
 
 
 # Remove todas as arestas que entram no vértice raiz r0 em G
-def remove_edges_to_r0(
-    D: nx.DiGraph, r0: str, log=None, boilerplate: bool = True, lang="pt"
-):
+def remove_edges_to_r0(D: nx.DiGraph, r0: str, **kwargs):
     """
     Remove all edges entering the root vertex r0 in graph G.
     Returns the updated graph.
@@ -178,13 +177,19 @@ def remove_edges_to_r0(
     Parameters:
         - D: A directed graph (networkx.DiGraph)
         - r0: The root node
-        - log: Optional logging function to log information
-        - boilerplate: If True, enables logging
-        - lang: Language for logging messages ("en" for English, "pt" for Portuguese
+        - **kwargs: Additional parameters:
+            - log: Optional logging function to log information
+            - boilerplate: If True, enables logging (default: True)
+            - lang: Language for logging messages ("en" or "pt", default: "pt")
 
     Returns:
         - D: The updated directed graph (networkx.DiGraph) with edges to r0 removed
     """
+
+    # Extract parameters from kwargs with defaults
+    log = kwargs.get("log", None)
+    boilerplate = kwargs.get("boilerplate", True)
+    lang = kwargs.get("lang", "pt")
 
     # Verify that r0 exists in G
     if lang == "en":
@@ -240,17 +245,7 @@ def remove_internal_edge_to_cycle_entry(C: nx.DiGraph, v):
 
 
 # Encontra a arborescência ótima em G com raiz r0 usando o algoritmo de Chu-Liu/Edmonds
-def find_optimum_arborescence_chuliu(
-        D: nx.DiGraph, 
-        r0: str, 
-        level=0, 
-        id=1, 
-        draw_fn=None, 
-        draw_step=None, 
-        log=None,
-        boilerplate: bool = True,
-        lang="pt",):
-
+def find_optimum_arborescence_chuliu(D: nx.DiGraph, r0: str, level=0, id=1, **kwargs):
     """
     Finds the optimum arborescence in a directed graph G with root r0 using the Chu-Liu/Edmonds algorithm.
 
@@ -258,10 +253,13 @@ def find_optimum_arborescence_chuliu(
         - D: A directed graph (networkx.DiGraph)
         - r0: The root node
         - level: The current recursion level (used for logging and visualization)
-        - draw_fn: Optional function to visualize the graph at each step
-        - log: Optional logging function to log information
-        - boilerplate: If True, enables logging and visualization
-        - lang: Language for logging messages ("en" for English, "pt" for Portuguese
+        - id: Current step ID for visualization
+        - **kwargs: Additional parameters:
+            - draw_fn: Optional function to visualize the graph at each step
+            - draw_step: Optional function for step-by-step visualization
+            - log: Optional logging function to log information
+            - boilerplate: If True, enables logging and visualization (default: True)
+            - lang: Language for logging messages ("en" or "pt", default: "pt")
 
     Returns:
         - A directed graph (networkx.DiGraph) representing the optimum arborescence
@@ -276,6 +274,13 @@ def find_optimum_arborescence_chuliu(
         - AssertionError: If vertices u or v are not found in the original graph G
     """
 
+    # Extract parameters from kwargs with defaults
+    draw_fn = kwargs.get("draw_fn", None)
+    draw_step = kwargs.get("draw_step", None)
+    log = kwargs.get("log", None)
+    boilerplate = kwargs.get("boilerplate", True)
+    lang = kwargs.get("lang", "pt")
+
     indent = "  " * level
 
     if boilerplate and log:
@@ -285,38 +290,30 @@ def find_optimum_arborescence_chuliu(
             log(f"Iniciando nível {level}")
 
     if lang == "en":
-        assert (
-            r0 in D
-        ), f"The root vertex '{r0}' is not present in the graph."
+        assert r0 in D, f"The root vertex '{r0}' is not present in the graph."
     elif lang == "pt":
-        assert (
-            r0 in D
-        ), f"O vértice raiz '{r0}' não está presente no grafo."
+        assert r0 in D, f"O vértice raiz '{r0}' não está presente no grafo."
 
     D_copy = D.copy()
 
     if boilerplate and log:
         if lang == "en":
-            log(
-                f"Removing edges entering '{r0}'"
-            )
+            log(f"Removing edges entering '{r0}'")
         elif lang == "pt":
-            log(
-                f"Removendo arestas que entram em '{r0}'"
-            )
+            log(f"Removendo arestas que entram em '{r0}'")
         if draw_step:
             if lang == "en":
                 draw_step(
                     D_copy,
-                    id=id, 
-                    title = f"After removing incoming edges", 
+                    id=id,
+                    title=f"After removing incoming edges",
                     description=f"After removing incoming edges",
                 )
             elif lang == "pt":
                 draw_step(
                     D_copy,
-                    id=id, 
-                    title = f"Após remoção de entradas", 
+                    id=id,
+                    title=f"Após remoção de entradas",
                     description=f"Após remoção de entradas",
                 )
 
@@ -326,35 +323,32 @@ def find_optimum_arborescence_chuliu(
 
         if boilerplate and log:
             if lang == "en":
-                log(
-                    f"Normalizing weights of incoming edges to '{v}'"
-                )
+                log(f"Normalizing weights of incoming edges to '{v}'")
             elif lang == "pt":
-                log(
-                    f"Normalizando pesos de arestas de entrada para '{v}'"
-                )
-            
-            id=id + 1
+                log(f"Normalizando pesos de arestas de entrada para '{v}'")
+
+            id = id + 1
             if draw_step:
                 if lang == "en":
                     draw_step(
                         D_copy,
-                        id=id, 
-                        title = f"Weight adjustment", 
-                        description= f"After weight adjustment",
+                        id=id,
+                        title=f"Weight adjustment",
+                        description=f"After weight adjustment",
                     )
                 elif lang == "pt":
                     draw_step(
                         D_copy,
-                        id=id, 
-                        title = f"Ajuste de pesos", description= f"Após ajuste de pesos",
+                        id=id,
+                        title=f"Ajuste de pesos",
+                        description=f"Após ajuste de pesos",
                     )
 
     # Build F_star
     F_star = get_Fstar(D_copy, r0, lang=lang)
 
-    id=id + 1
-    
+    id = id + 1
+
     if boilerplate and log:
         if lang == "en":
             log(f"{indent}Building F_star")
@@ -362,10 +356,19 @@ def find_optimum_arborescence_chuliu(
             log(f"{indent}Construindo F_star")
         if draw_step:
             if lang == "pt":
-                draw_step(F_star, id=id, title = f"F_star", description=f"Conjunto F* (arestas de custo zero após ajuste dos pesos de entrada de cada vértice, exceto a raiz).")
+                draw_step(
+                    F_star,
+                    id=id,
+                    title=f"F_star",
+                    description=f"Conjunto F* (arestas de custo zero após ajuste dos pesos de entrada de cada vértice, exceto a raiz).",
+                )
             elif lang == "en":
-                draw_step(F_star, id=id, title = f"F_star", description=f"Set F* (edges with zero cost after adjusting the weights of incoming edges to each vertex, except the root).")
-
+                draw_step(
+                    F_star,
+                    id=id,
+                    title=f"F_star",
+                    description=f"Set F* (edges with zero cost after adjusting the weights of incoming edges to each vertex, except the root).",
+                )
 
     if nx.is_arborescence(F_star):
         for u, v in F_star.edges:
@@ -375,22 +378,16 @@ def find_optimum_arborescence_chuliu(
     else:
         if boilerplate and log:
             if lang == "en":
-                log(
-                    f"{indent}F_star is not an arborescence. Continuing..."
-                )
+                log(f"{indent}F_star is not an arborescence. Continuing...")
             elif lang == "pt":
-                log(
-                    f"{indent}F_star não é uma arborescência. Continuando..."
-                )
+                log(f"{indent}F_star não é uma arborescência. Continuando...")
 
         C: nx.DiGraph = find_cycle(F_star)
 
         if lang == "en":
             assert C, f"\nNo cycle found in F_star."
         elif lang == "pt":
-            assert (
-                C
-            ), f"\nNenhum ciclo encontrado em F_star."
+            assert C, f"\nNenhum ciclo encontrado em F_star."
 
         contracted_label = f"\n n*{level}"
         in_to_cycle, out_from_cycle = contract_cycle(
@@ -399,15 +396,11 @@ def find_optimum_arborescence_chuliu(
 
         # Recursive call
         F_prime = find_optimum_arborescence_chuliu(
-            D=D_copy, 
-            r0=r0, 
-            level=level + 1, 
-            id=id, 
-            draw_fn=draw_fn,
-            draw_step=draw_step,
-            log=log,
-            boilerplate=boilerplate,
-            lang=lang,
+            D=D_copy,
+            r0=r0,
+            level=level + 1,
+            id=id,
+            **kwargs,
         )
 
         # Identify the vertex in the cycle that received the only incoming edge from the arborescence
@@ -444,26 +437,18 @@ def find_optimum_arborescence_chuliu(
         F_prime.add_edge(u, v)
         if boilerplate and log:
             if lang == "en":
-                log(
-                    f"\n {indent}Adding incoming edge to cycle: ({u}, {v})"
-                )
+                log(f"\n {indent}Adding incoming edge to cycle: ({u}, {v})")
             elif lang == "pt":
-                log(
-                    f"\n {indent}Adicionando aresta de entrada ao ciclo: ({u}, {v})"
-                )
+                log(f"\n {indent}Adicionando aresta de entrada ao ciclo: ({u}, {v})")
 
         # Add the remaining edges of the modified cycle C
         for u_c, v_c in C.edges:
             F_prime.add_edge(u_c, v_c)
             if boilerplate and log:
                 if lang == "en":
-                    log(
-                        f"\n {indent}Adding cycle edge: ({u_c}, {v_c})"
-                    )
+                    log(f"\n {indent}Adding cycle edge: ({u_c}, {v_c})")
                 elif lang == "pt":
-                    log(
-                        f"\n {indent}Adicionando aresta do ciclo: ({u_c}, {v_c})"
-                    )
+                    log(f"\n {indent}Adicionando aresta do ciclo: ({u_c}, {v_c})")
 
         # Add the external edges leaving the cycle
         for _, z, _ in F_prime.out_edges(contracted_label, data=True):
@@ -482,9 +467,7 @@ def find_optimum_arborescence_chuliu(
 
             if boilerplate and log:
                 if lang == "en":
-                    log(
-                        f"\n{indent}Adding outgoing edge from cycle: ({u_cycle}, {z})"
-                    )
+                    log(f"\n{indent}Adding outgoing edge from cycle: ({u_cycle}, {z})")
                 elif lang == "pt":
                     log(
                         f"\n{indent}Adicionando aresta externa de saída: ({u_cycle}, {z})"
@@ -525,13 +508,9 @@ def find_optimum_arborescence_chuliu(
 
         if boilerplate and log:
             if lang == "en":
-                log(
-                    f"\n✅{indent}Final arborescence: {list(F_prime.edges)}"
-                )
+                log(f"\n✅{indent}Final arborescence: {list(F_prime.edges)}")
             elif lang == "pt":
-                log(
-                    f"\n✅{indent}Arborescência final: {list(F_prime.edges)}"
-                )
+                log(f"\n✅{indent}Arborescência final: {list(F_prime.edges)}")
             # if draw_fn:
             #     if lang == "en":
             #         draw_fn(

@@ -1,43 +1,34 @@
 import networkx as nx
-from typing import Optional, cast
+from typing import cast
 
-# Remove todas as arestas que entram no vértice raiz r0 em G
-def remove_in_edges_to(
-    D: nx.DiGraph, r: int, log=None, boilerplate: bool = True, lang="pt"
-):
+def remove_in_edges_to(D: nx.DiGraph, r: int):
     """
-    Remove all edges entering the root vertex r in graph G.
+    Remove all edges entering the root vertex r in digraph D.
     Returns the updated graph.
 
     Parameters:
         - D: A directed graph (networkx.DiGraph)
         - r: The root node
-        - log: Optional logging function to log information
-        - boilerplate: If True, enables logging
-        - lang: Language for logging messages ("en" for English, "pt" for Portuguese
 
     Returns:
-        - D: The updated directed graph (networkx.DiGraph) with edges to r0 removed
+        - D: The updated directed graph (networkx.DiGraph) with edges to r removed
     """
 
-    # Remove all edges entering r0
+    # Remove all edges entering r
     in_edges = list(D.in_edges(r))
     D.remove_edges_from(in_edges)
 
-
-# Normalização dos pesos das arestas que entram em um vértice
-def reduce_costs(D: nx.DiGraph, v: int, lang="pt"):
+def reduce_costs(D: nx.DiGraph, v: int):
     """
     Change the costs of incoming edges into the `v`
-    by subtracting the minimum incoming weight from each in the Graph G.
+    by subtracting the minimum incoming weight from each in the digraph D.
 
     Parameters:
         - D: A directed graph (networkx.DiGraph)
         - v: The target v whose incoming edges will be adjusted
-        - lang: Language for error messages ("en" for English, "pt" for Portuguese)
 
     Returns:
-        - Nothing (the graph G is modified in place)
+        - Nothing (the digraph D is modified in place)
     """
     in_edges = D.in_edges(v, data=True)
 
@@ -48,22 +39,18 @@ def reduce_costs(D: nx.DiGraph, v: int, lang="pt"):
     for u, _, _ in in_edges:
         D[u][v]["w"] -= yv
 
-
-# Cria o conjunto A0
-def get_Dzero(D: nx.DiGraph, r: int, lang="pt"):
+def get_Dzero(D: nx.DiGraph, r: int):
     """
-    Creates the set D_zero from graph G and root r0.
-    An returns a directed graph D_zero.
+    Creates the set D_zero from digraph D and root r.
+    An returns a directed digraph D_zero.
 
     Parameters:
         - D: A directed graph (networkx.DiGraph)
         - r: The root vertex
-        - lang: Language for error messages ("en" for English, "pt" for Portuguese)
 
     Returns:
         - D_zero: A directed graph (networkx.DiGraph) representing F*
     """
-
     # Create an empty directed graph for D_zero
     D_zero = nx.DiGraph()
     for v in D.nodes():
@@ -73,38 +60,36 @@ def get_Dzero(D: nx.DiGraph, r: int, lang="pt"):
             D_zero.add_edge(u, v, w=0)
     return D_zero
 
-# Encontra um circuito (ciclo dirigido) em G
 def find_cycle(D_zero: nx.DiGraph):
     """
-    Finds a directed cycle in the graph.
+    Finds a directed cycle in the digraph.
     Returns a subgraph containing the cycle, or None if there is none.
 
     Parameters:
         - D_zero: A directed graph (networkx.DiGraph)
 
     Returns:
-        - A directed graph (networkx.DiGraph) representing the cycle, or None if no cycle is found.
+        - A directed graph (networkx.DiGraph) representing the cycle.
     """
-
     nodes_in_cycle = set()
     # Extract nodes involved in the cycle
     for u, v, _ in nx.find_cycle(D_zero, orientation="original"):
         nodes_in_cycle.update([u, v])
+
     # Create a subgraph containing only the cycle
-    return D_zero.subgraph(nodes_in_cycle).copy()
+    D_zero_digraph = D_zero.subgraph(
+        nodes_in_cycle
+    ).to_directed()  # Note: convert to directed graph because subgraph returns a Graph
+    return D_zero_digraph
 
-
-# Contrai um ciclo C em G, substituindo-o por um supernó rotulado pelo `label`
-def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: int, lang="pt"):
+def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: int):
     """
-    Contract a cycle C in graph G, replacing it with a supernode labeled `label`.
-    Returns the modified graph G' with the contracted cycle, the list of incoming edges (in_edge), and outgoing edges (out_edge).
-
+    Contract a cycle C in digraph D, replacing it with a supernode labeled `label`.
+    Returns the modified digraph D' with the contracted cycle, the list of incoming edges (in_edge), and outgoing edges (out_edge).
     Parameters:
         - D: A directed graph (networkx.DiGraph)
         - C: A directed graph (networkx.DiGraph) representing the cycle to be contracted
         - label: The label for the new supernode
-        - lang: Language for error messages ("en" for English, "pt" for Portuguese)
 
     Returns:
         - in_to_cycle: A dictionary mapping nodes outside the cycle to tuples (node_in_cycle, weight)
@@ -159,39 +144,212 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: int, lang="pt"):
     D.remove_nodes_from(cycle_nodes)
     return in_to_cycle, out_from_cycle
 
-
-# Remove a aresta interna que entra no vértice de entrada do ciclo
-def remove_edge_cycle(C: nx.DiGraph, v):
-    """
-    Remove the internal edge entering the entry vertex `v` from cycle C,
-    since `v` now receives an external edge from the graph.
-
-    Parameters:
-        - C: subgraph of the cycle
-        - external_entry_edge: tuple (u, v, w) — external edge connecting to the cycle
-
-    Returns:
-        - The modified cycle (with one less edge)
-    """
-
-    predecessor = next((u for u, _ in C.in_edges(v)))
-    C.remove_edge(predecessor, v)
-
-
-# Encontra a arborescência ótima em G com raiz r0 usando o algoritmo de Chu-Liu/Edmonds
-def chuliu_edmonds(
+def expand_arborescence(
     D: nx.DiGraph,
-    r0: str,
-    level=0,
-    draw_fn=None,
-    log=None,
-    boilerplate: bool = True,
-    lang="pt",
-    metrics: dict | None = None,
+    label: int,
+    C: nx.DiGraph,
+    in_to_cycle: dict[int, tuple[int, float]],
+    out_from_cycle: dict[int, tuple[int, float]],
+    F_prime: nx.DiGraph,
+    **kwargs,
 ):
     """
-    Finds the optimum arborescence in a directed graph G with root r0 using the Chu-Liu/Edmonds algorithm.
+    Expand the contracted cycle back into the arborescence.
+
+    Parameters:
+        - D: Original directed graph
+        - label: Label of the contracted supernode
+        - C: The cycle that was contracted
+        - in_to_cycle: Dictionary mapping external nodes to cycle entry points
+        - out_from_cycle: Dictionary mapping external nodes to cycle exit points
+        - F_prime: The arborescence with contracted cycle
+        - **kwargs: Additional parameters:
+            - draw_fn: Optional drawing function
+            - log: Optional logging function
+            - boilerplate: If True, enables logging (default: True)
+            - lang: Language for messages ("en" or "pt", default: "pt")
+            - indent: Indentation string for logging (default: "")
+
+    Returns:
+        - F_prime: The expanded arborescence
     """
+
+    # Extract parameters from kwargs with defaults
+    draw_fn = kwargs.get("draw_fn", None)
+    log = kwargs.get("log", None)
+    boilerplate = kwargs.get("boilerplate", True)
+    lang = kwargs.get("lang", "pt")
+    indent = kwargs.get("indent", "")
+
+    in_edge = next(iter(F_prime.in_edges(label, data=True)))
+
+    if lang == "en":
+        assert (
+            in_edge is not None
+        ), f"\nchuliu_edmonds: No incoming edge found for vertex '{label}'."
+    elif lang == "pt":
+        assert (
+            in_edge is not None
+        ), f"\nchuliu_edmonds: Nenhuma aresta encontrada entrando no vértice '{label}'."
+    # At this point in_edge is guaranteed not None
+    u, _, _ = cast(tuple, in_edge)
+    v, _ = in_to_cycle[u]
+
+    if lang == "en":
+        assert (
+            v is not None
+        ), f"\n chuliu_edmonds: No vertex in the cycle found to receive the incoming edge from '{u}'."
+    elif lang == "pt":
+        assert (
+            v is not None
+        ), f"\n chuliu_edmonds: Nenhum vértice do ciclo encontrado que recebeu a aresta de entrada de '{u}'."
+
+    # Add the external edge entering the cycle and restore remaining cycle edges
+    F_prime.add_edge(u, v)
+    if boilerplate and log:
+        if lang == "en":
+            log(f"\n chuliu_edmonds:{indent}Adding incoming edge to cycle: ({u}, {v})")
+        elif lang == "pt":
+            log(
+                f"\n chuliu_edmonds:{indent}Adicionando aresta de entrada ao ciclo: ({u}, {v})"
+            )
+
+    for u_c, v_c in C.edges:
+        if v_c != v:
+            F_prime.add_edge(u_c, v_c)
+        if boilerplate and log:
+            if lang == "en":
+                log(f"\nchuliu_edmonds:{indent}Adding cycle edge: ({u_c}, {v_c})")
+            elif lang == "pt":
+                log(
+                    f"\nchuliu_edmonds:{indent}Adicionando aresta do ciclo: ({u_c}, {v_c})"
+                )
+
+    # Add the external edges leaving the cycle
+    for _, z, _ in list(F_prime.out_edges(label, data=True)):
+        if lang == "en":
+            assert (
+                z in out_from_cycle
+            ), f"\n chuliu_edmonds: No outgoing edge found for vertex '{z}'."
+        elif lang == "pt":
+            assert (
+                z in out_from_cycle
+            ), f"\n chuliu_edmonds: Nenhuma aresta de saída encontrada para o vértice '{z}'."
+        u_cycle, _ = out_from_cycle[z]
+        F_prime.add_edge(u_cycle, z)
+        if boilerplate and log:
+            if lang == "en":
+                log(
+                    f"\n chuliu_edmonds:{indent}Adding outgoing edge from cycle: ({u_cycle}, {z})"
+                )
+            elif lang == "pt":
+                log(
+                    f"\n chuliu_edmonds:{indent}Adicionando aresta externa de saída: ({u_cycle}, {z})"
+                )
+
+    # Remove the contracted node
+    if lang == "en":
+        assert (
+            label in F_prime
+        ), f"\nchuliu_edmonds: Vertex '{label}' not found in the graph."
+    elif lang == "pt":
+        assert (
+            label in F_prime
+        ), f"\nchuliu_edmonds: Vértice '{label}' não encontrado no grafo."
+    F_prime.remove_node(label)
+
+    if boilerplate and log:
+        if lang == "en":
+            log(f"\n chuliu_edmonds:{indent}Contracted vertex '{label}' removed.")
+        elif lang == "pt":
+            log(f"\n chuliu_edmonds:{indent}Vértice contraído '{label}' removido.")
+
+    # Update the edge weights with the original weights from G
+    for u2, v2 in F_prime.edges:
+        if lang == "en":
+            assert (
+                u2 in D and v2 in D
+            ), f"\n chuliu_edmonds: Vertex '{u2}' or '{v2}' not found in the original graph."
+        elif lang == "pt":
+            assert (
+                u2 in D and v2 in D
+            ), f"\n chuliu_edmonds: Vértice '{u2}' ou '{v2}' não encontrado no grafo original."
+        F_prime[u2][v2]["w"] = D[u2][v2]["w"]
+
+    if boilerplate and log:
+        if lang == "en":
+            log(f"\n✅{indent}Final arborescence: {list(F_prime.edges)}")
+        elif lang == "pt":
+            log(f"\n✅{indent}Arborescência final: {list(F_prime.edges)}")
+        if draw_fn:
+            if lang == "en":
+                draw_fn(F_prime, f"\n{indent}Final Arborescence.")
+            elif lang == "pt":
+                draw_fn(F_prime, f"\n{indent}Arborescência final.")
+    return F_prime
+
+def chuliu_edmonds(
+    D: nx.DiGraph,
+    r: int,
+    level=0,
+    **kwargs,
+):
+    """
+    Wrapper function for the Chu-Liu/Edmonds algorithm.
+
+    Parameters:
+        - D: A directed graph (networkx.DiGraph)
+        - r: The root node
+        - level: Recursion level (default: 0)
+        - **kwargs: Additional parameters passed to cle:
+            - draw_fn: Optional drawing function
+            - log: Optional logging function
+            - boilerplate: If True, enables logging (default: True)
+            - lang: Language for messages ("en" or "pt", default: "pt")
+            - metrics: Optional dict to collect algorithm metrics
+
+    Returns:
+        - Optimum arborescence as a directed graph (networkx.DiGraph)
+    """
+    return cle(
+        D,
+        r,
+        len(D.nodes),
+        level,
+        **kwargs,
+    )
+
+def cle(
+    D: nx.DiGraph,
+    r: int,
+    label: int,
+    level=0,
+    **kwargs,
+):
+    """
+    Finds the optimum arborescence in a directed graph G with root r using the Chu-Liu/Edmonds algorithm.
+
+    Parameters:
+        - D: A directed graph (networkx.DiGraph)
+        - r: The root node
+        - label: Label for contracted supernodes
+        - level: Recursion level (default: 0)
+        - **kwargs: Additional parameters:
+            - draw_fn: Optional drawing function
+            - log: Optional logging function
+            - boilerplate: If True, enables logging (default: True)
+            - lang: Language for messages ("en" or "pt", default: "pt")
+            - metrics: Optional dict to collect algorithm metrics
+
+    Returns:
+        - Optimum arborescence as a directed graph (networkx.DiGraph)
+    """
+    # Extract parameters from kwargs with defaults
+    draw_fn = kwargs.get("draw_fn", None)
+    log = kwargs.get("log", None)
+    boilerplate = kwargs.get("boilerplate", True)
+    lang = kwargs.get("lang", "pt")
+    metrics = kwargs.get("metrics", None)
 
     indent = "  " * level
 
@@ -204,52 +362,54 @@ def chuliu_edmonds(
 
     if boilerplate and log:
         if lang == "en":
-            log(f"\nchuliu_edmonds:{indent}Starting level {level}")
+            log(f"\n chuliu_edmonds:{indent}Starting level {level}")
         elif lang == "pt":
-            log(f"\nchuliu_edmonds:{indent}Iniciando nível {level}")
+            log(f"\n chuliu_edmonds:{indent}Iniciando nível {level}")
 
     if lang == "en":
-        assert r0 in D, (
-            "\nchuliu_edmonds: The root vertex '"
-            + r0
+        assert r in D, (
+            "\n chuliu_edmonds: The root vertex '"
+            + str(r)
             + "' is not present in the graph."
         )
     elif lang == "pt":
-        assert r0 in D, (
-            "\nchuliu_edmonds: O vértice raiz '" + r0 + "' não está presente no grafo."
+        assert r in D, (
+            "\n chuliu_edmonds: O vértice raiz '"
+            + str(r)
+            + "' não está presente no grafo."
         )
 
     D_copy = cast(nx.DiGraph, D.copy())
 
     if boilerplate and log:
         if lang == "en":
-            log(f"\nchuliu_edmonds:{indent}Removing edges entering '{r0}'")
+            log(f"\n chuliu_edmonds:{indent}Removing edges entering '{r}'")
         elif lang == "pt":
-            log(f"\nchuliu_edmonds:{indent}Removendo arestas que entram em '{r0}'")
+            log(f"\n chuliu_edmonds:{indent}Removendo arestas que entram em '{r}'")
         if draw_fn:
             if lang == "en":
                 draw_fn(
                     D_copy,
-                    f"\nchuliu_edmonds:{indent}After removing incoming edges",
+                    f"\n chuliu_edmonds:{indent}After removing incoming edges",
                 )
             elif lang == "pt":
                 draw_fn(
                     D_copy,
-                    f"\nchuliu_edmonds:{indent}Após remoção de entradas",
+                    f"\n chuliu_edmonds:{indent}Após remoção de entradas",
                 )
 
     for v in D_copy.nodes:
-        if v != r0:
-            reduce_costs(D_copy, v, lang=lang)
+        if v != r:
+            reduce_costs(D_copy, v)
 
         if boilerplate and log:
             if lang == "en":
                 log(
-                    f"\nchuliu_edmonds:{indent}Normalizing weights of incoming edges to '{v}'"
+                    f"\n chuliu_edmonds:{indent}Normalizing weights of incoming edges to '{v}'"
                 )
             elif lang == "pt":
                 log(
-                    f"\nchuliu_edmonds:{indent}Normalizando pesos de arestas de entrada para '{v}'"
+                    f"\n chuliu_edmonds:{indent}Normalizando pesos de arestas de entrada para '{v}'"
                 )
             if draw_fn:
                 if lang == "en":
@@ -264,7 +424,7 @@ def chuliu_edmonds(
                     )
 
     # Build D_zero
-    D_zero = get_Dzero(D_copy, r0, lang=lang)
+    D_zero = get_Dzero(D_copy, r)
 
     if boilerplate and log:
         if lang == "en":
@@ -295,15 +455,16 @@ def chuliu_edmonds(
 
     C = find_cycle(D_zero)
 
-    cl = f"\n n*{level}"  # contracted label
     if metrics is not None:
         metrics["contractions"] += 1
-    in_to_cycle, out_from_cycle = contract_cycle(D_copy, C, cl, lang=lang)
+
+    in_to_cycle, out_from_cycle = contract_cycle(D_copy, C, label)
 
     # Recursive call
-    F_prime = chuliu_edmonds(
+    F_prime = cle(
         D_copy,
-        r0,
+        r,
+        label + 1,
         level + 1,
         draw_fn=None,
         log=None,
@@ -312,113 +473,17 @@ def chuliu_edmonds(
         metrics=metrics,
     )
 
-    in_edge = next(iter(F_prime.in_edges(cl, data=True)))
-
-    if lang == "en":
-        assert (
-            in_edge is not None
-        ), f"\nchuliu_edmonds: No incoming edge found for vertex '{cl}'."
-    elif lang == "pt":
-        assert (
-            in_edge is not None
-        ), f"\nchuliu_edmonds: Nenhuma aresta encontrada entrando no vértice '{cl}'."
-
-    # At this point in_edge is guaranteed not None
-    u, _, _ = cast(tuple, in_edge)
-    v, _ = in_to_cycle[u]
-
-    if lang == "en":
-        assert (
-            v is not None
-        ), f"\nchuliu_edmonds: No vertex in the cycle found to receive the incoming edge from '{u}'."
-    elif lang == "pt":
-        assert (
-            v is not None
-        ), f"\nchuliu_edmonds: Nenhum vértice do ciclo encontrado que recebeu a aresta de entrada de '{u}'."
-
-    # Remove the internal edge entering vertex `v` from cycle C
-    remove_edge_cycle(C, v)
-
-    # Add the external edge entering the cycle and restore remaining cycle edges
-    F_prime.add_edge(u, v)
-    if boilerplate and log:
-        if lang == "en":
-            log(f"\nchuliu_edmonds:{indent}Adding incoming edge to cycle: ({u}, {v})")
-        elif lang == "pt":
-            log(
-                f"\nchuliu_edmonds:{indent}Adicionando aresta de entrada ao ciclo: ({u}, {v})"
-            )
-
-    for u_c, v_c in C.edges:
-        F_prime.add_edge(u_c, v_c)
-        if boilerplate and log:
-            if lang == "en":
-                log(f"\nchuliu_edmonds:{indent}Adding cycle edge: ({u_c}, {v_c})")
-            elif lang == "pt":
-                log(
-                    f"\nchuliu_edmonds:{indent}Adicionando aresta do ciclo: ({u_c}, {v_c})"
-                )
-
-    # Add the external edges leaving the cycle
-    for _, z, _ in F_prime.out_edges(cl, data=True):
-        if lang == "en":
-            assert (
-                z in out_from_cycle
-            ), f"\nchuliu_edmonds: No outgoing edge found for vertex '{z}'."
-        elif lang == "pt":
-            assert (
-                z in out_from_cycle
-            ), f"\nchuliu_edmonds: Nenhuma aresta de saída encontrada para o vértice '{z}'."
-        u_cycle, _ = out_from_cycle[z]
-        F_prime.add_edge(u_cycle, z)
-        if boilerplate and log:
-            if lang == "en":
-                log(
-                    f"\nchuliu_edmonds:{indent}Adding outgoing edge from cycle: ({u_cycle}, {z})"
-                )
-            elif lang == "pt":
-                log(
-                    f"\nchuliu_edmonds:{indent}Adicionando aresta externa de saída: ({u_cycle}, {z})"
-                )
-
-    # Remove the contracted node
-    if lang == "en":
-        assert cl in F_prime, f"\nchuliu_edmonds: Vertex '{cl}' not found in the graph."
-    elif lang == "pt":
-        assert (
-            cl in F_prime
-        ), f"\nchuliu_edmonds: Vértice '{cl}' não encontrado no grafo."
-    F_prime.remove_node(cl)
-
-    if boilerplate and log:
-        if lang == "en":
-            log(f"\nchuliu_edmonds:{indent}Contracted vertex '{cl}' removed.")
-        elif lang == "pt":
-            log(f"\nchuliu_edmonds:{indent}Vértice contraído '{cl}' removido.")
-
-    # Update the edge weights with the original weights from G
-    for u2, v2 in F_prime.edges:
-        if lang == "en":
-            assert (
-                u2 in D and v2 in D
-            ), f"\nchuliu_edmonds: Vertex '{u2}' or '{v2}' not found in the original graph."
-        elif lang == "pt":
-            assert (
-                u2 in D and v2 in D
-            ), f"\nchuliu_edmonds: Vértice '{u2}' ou '{v2}' não encontrado no grafo original."
-        F_prime[u2][v2]["w"] = D[u2][v2]["w"]
-
-    if boilerplate and log:
-        if lang == "en":
-            log(f"\n✅{indent}Final arborescence: {list(F_prime.edges)}")
-        elif lang == "pt":
-            log(f"\n✅{indent}Arborescência final: {list(F_prime.edges)}")
-        if draw_fn:
-            if lang == "en":
-                draw_fn(F_prime, f"\n{indent}Final Arborescence.")
-            elif lang == "pt":
-                draw_fn(F_prime, f"\n{indent}Arborescência final.")
-    return F_prime
-
-
-# Note: interactive test removed to avoid execution and type-checking issues.
+    F_prime_expanded = expand_arborescence(
+        D,
+        label,
+        draw_fn=draw_fn,
+        log=log,
+        boilerplate=boilerplate,
+        lang=lang,
+        indent=indent,
+        C=C,
+        in_to_cycle=in_to_cycle,
+        out_from_cycle=out_from_cycle,
+        F_prime=F_prime,
+    )
+    return F_prime_expanded
