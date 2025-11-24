@@ -36,7 +36,7 @@ Além disso, o log textual funciona como uma \emph{trilha de auditoria didática
 A arquitetura da aplicação foi projetada para operar integralmente no lado do cliente (\textit{client-side}), utilizando o navegador como ambiente de execução para o código Python via WebAssembly. O sistema estrutura-se em três camadas lógicas principais:
 
 \begin{itemize}
-    \item \textbf{Camada de Apresentação:} Responsável pela interface com o usuário, desenvolvida em HTML5 e estilizada com o \textit{framework} utilitário Tailwind CSS. Esta camada gerencia a entrada de dados e a exibição dos resultados, mantendo a responsividade em diferentes dispositivos.
+    \item \textbf{Camada de Apresentação:} Responsável pela interface com o usuário, estruturada em HTML5, estilizada com o \textit{framework} utilitário Tailwind CSS e dinamizada por JavaScript. Esta camada gerencia a entrada de dados, a interatividade dos elementos e a exibição dos resultados, mantendo a responsividade em diferentes dispositivos.
 
     \item \textbf{Núcleo de Processamento (PyScript):} Atua como a ponte entre a interface \textit{web} e as bibliotecas científicas. O PyScript permite a importação e execução de módulos Python diretamente no DOM. O processamento dos grafos é realizado pela biblioteca \texttt{NetworkX}, enquanto a geração das representações visuais estáticas (snapshots) é delegada ao \texttt{Matplotlib}.
 
