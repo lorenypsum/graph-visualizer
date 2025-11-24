@@ -16,9 +16,9 @@ Os 2000 testes confirmaram que todos os métodos retornam sempre o mesmo custo, 
 
 Quanto ao desempenho temporal, a Fase~I de Frank apresenta tempo mediano de \(8{,}93\) s (média \(12{,}40\) s), significativamente superior ao tempo mediano de Chu--Liu/Edmonds (\(0{,}25\) s, média \(0{,}58\) s). A Fase~I, responsável pela identificação de subconjuntos minimais via componentes fortemente conexas, domina o tempo total de execução do método de Frank. A Fase~II, em contrapartida, representa uma fração residual do processamento com mediana de \(0{,}98\) s para versão 1 do algoritmo e \(0{,}016\) s para a versão 2 (utilizando heap).
 
-A comparação entre as duas variantes da Fase~II revela ganho expressivo com o uso de \emph{heap}. A versão v2 apresenta fator de aceleração (\emph{speedup}) com mediana de \(58{,}12\times\) (média \(61{,}30\times\)) sobre a versão v1, confirmando empiricamente a vantagem da estrutura de dados com complexidade \(O(\log n)\) versus \(O(n)\) por operação de seleção de mínimo.
+A comparação entre as duas variantes da Fase~II revela ganho expressivo com o uso de \emph{heap}. A Figura~\ref{fig:speedup} apresenta essa comparação em dois painéis: à esquerda, o boxplot evidencia a diferença de magnitude entre os tempos de execução --- enquanto v1 (lista) apresenta mediana de \(0{,}98\) s, a versão v2 (heap) reduz para \(0{,}016\) s; à direita, o histograma do fator de aceleração (\emph{speedup}) mostra que a maioria das instâncias atinge aceleração entre 40× e 80×, com mediana de \(58{,}12\times\) e média de \(61{,}30\times\). Esses resultados confirmam empiricamente a vantagem da estrutura de dados com complexidade \(O(\log n)\) versus \(O(n)\) por operação de seleção de mínimo.
 
-As métricas estruturais mostram que o número de contrações em Chu--Liu/Edmonds é pequeno (mediana 2, média 6,82, máximo 406), muito abaixo do limite teórico \(O(n)\) \cite{schrijver2003comb}, indicando que as estruturas dificilmente apresentam alta complexidade cíclica durante o processo de contração.
+As métricas estruturais do algoritmo de Chu--Liu/Edmonds são apresentadas na Figura~\ref{fig:contr-depth} em dois histogramas. O painel esquerdo mostra que o número de contrações é pequeno (mediana 2, média 6,82, máximo 406), muito abaixo do limite teórico \(O(n)\) \cite{schrijver2003comb}, com a grande maioria das instâncias requerendo menos de 20 contrações. O painel direito exibe a profundidade de recursão, que acompanha o número de contrações, indicando que as estruturas dificilmente apresentam alta complexidade cíclica durante o processo de contração.
 
 O consumo de memória na Fase~I mantém-se modesto (mediana 11{,}5~MB, média 14{,}8~MB), viabilizando a aplicação dos algoritmos mesmo em ambientes com recursos limitados.
 
@@ -40,15 +40,15 @@ As Figuras~\ref{fig:times-boxplot}--\ref{fig:d0-vs-v} apresentam os resultados e
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=.75\linewidth]{figures/fig_speedup_hist.png}
-    \caption{Aceleração na Fase~II: v2 (\emph{heap}) apresenta mediana de \(58{,}12\times\) sobre v1.}
+    \includegraphics[width=\linewidth]{figures/fig_speedup_hist.png}
+    \caption{Comparação de desempenho entre implementações da Fase~II. \textbf{Esquerda}: boxplots coloridos mostram diferença clara --- v1 (vermelho, lista) tem mediana de \(0{,}98\) s enquanto v2 (azul, heap) reduz para \(0{,}016\) s. \textbf{Direita}: histograma do fator de aceleração mostra distribuição concentrada entre 40× e 80×, com mediana \(58{,}12\times\) (linha tracejada vermelha) e média \(61{,}30\times\) (linha pontilhada laranja).}
     \label{fig:speedup}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=.75\linewidth]{figures/fig_contractions_depth.png}
-    \caption{Distribuição do número de contrações de ciclos realizadas por Chu--Liu/Edmonds: mediana 2, média \(6{,}82\), máximo 406. A maioria das instâncias requer poucas contrações.}
+    \includegraphics[width=\linewidth]{figures/fig_contractions_depth.png}
+    \caption{Métricas estruturais de Chu--Liu/Edmonds. \textbf{Esquerda}: histograma vermelho mostra que o número de contrações (eixo horizontal) é concentrado em valores baixos --- a maioria das 2000 instâncias (eixo vertical) requer menos de 20 contrações, com mediana 2 (linha tracejada) e média \(6{,}82\) (linha pontilhada). \textbf{Direita}: histograma azul da profundidade de recursão exibe padrão similar, confirmando baixa complexidade cíclica.}
     \label{fig:contr-depth}
 \end{figure}
 

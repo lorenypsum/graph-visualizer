@@ -3,6 +3,10 @@ import os
 import statistics as stats
 from collections import defaultdict
 
+import matplotlib
+
+matplotlib.rcParams["font.family"] = "DejaVu Sans"
+matplotlib.rcParams["axes.unicode_minus"] = False
 import matplotlib.pyplot as plt
 
 ROOT = os.path.dirname(os.path.dirname(__file__))
@@ -99,42 +103,219 @@ def summarize(rows):
     # 2) Scatter: tempo vs arestas
     fig, ax = plt.subplots(figsize=(8, 4))
     ax.scatter(edges, t_f1, s=12, alpha=0.6, label="Fase I")
-    ax.scatter(edges, t_chuliu, s=12, alpha=0.6, label="Chu–Liu")
+    ax.scatter(edges, t_chuliu, s=12, alpha=0.6, label="Chu-Liu")
     ax.set_xlabel("|A| (arestas)")
     ax.set_ylabel("tempo (s)")
-    ax.set_title("Escalonamento em função de |A|")
+    ax.set_title("Escalonamento em funcao de |A|")
     ax.legend()
     fig.tight_layout()
     fig.savefig(os.path.join(OUT_DIR, "fig_time_vs_edges_scatter.png"), dpi=180)
     plt.close(fig)
 
-    # 3) Speedup hist
-    fig, ax = plt.subplots(figsize=(8, 4))
-    ax.hist(speedups, bins=20, alpha=0.8)
-    ax.set_xlabel("aceleramento (speedup) (Fase II v1 / v2)")
-    ax.set_ylabel("contagem")
-    ax.set_title("Distribuição de aceleramento na Fase II (heap vs sem heap)")
+    # 3) Fase II comparison: v1 vs v2 - REDESIGNED FOR CLARITY
+    fig, ax = plt.subplots(1, 2, figsize=(12, 5))
+
+    # Left: Direct time comparison with clear labels
+    positions = [1, 2]
+    bp = ax[0].boxplot(
+        [t_f2v1, t_f2v2], positions=positions, patch_artist=True, widths=0.6
+    )
+
+    # Color boxes differently
+    colors = ["#ff9999", "#66b3ff"]
+    for patch, color in zip(bp["boxes"], colors):
+        patch.set_facecolor(color)
+
+    ax[0].set_xticks(positions)
+    ax[0].set_xticklabels(["v1\n(lista)", "v2\n(heap)"], fontsize=11, fontweight="bold")
+    ax[0].set_ylabel("Tempo de execucao (segundos)", fontsize=11)
+    ax[0].set_title("Fase II: Comparacao de Desempenho", fontsize=12, fontweight="bold")
+    ax[0].grid(axis="y", alpha=0.3, linestyle="--")
+
+    # Add median values as text
+    med_v1, med_v2 = stats.median(t_f2v1), stats.median(t_f2v2)
+    ax[0].text(
+        1,
+        med_v1,
+        f" {med_v1:.2f}s",
+        ha="left",
+        va="center",
+        fontsize=10,
+        fontweight="bold",
+        color="darkred",
+    )
+    ax[0].text(
+        2,
+        med_v2,
+        f" {med_v2:.3f}s",
+        ha="left",
+        va="center",
+        fontsize=10,
+        fontweight="bold",
+        color="darkblue",
+    )
+
+    # Right: Speedup histogram with better annotations
+    n, bins, patches = ax[1].hist(
+        speedups, bins=35, alpha=0.75, color="#66b3ff", edgecolor="black", linewidth=0.8
+    )
+
+    med_speedup = stats.median(speedups)
+    mean_speedup = stats.mean(speedups)
+
+    ax[1].axvline(
+        x=med_speedup,
+        color="red",
+        linestyle="--",
+        linewidth=2.5,
+        label=f"Mediana: {med_speedup:.1f}x",
+        zorder=5,
+    )
+    ax[1].axvline(
+        x=mean_speedup,
+        color="orange",
+        linestyle=":",
+        linewidth=2.5,
+        label=f"Media: {mean_speedup:.1f}x",
+        zorder=5,
+    )
+
+    ax[1].set_xlabel(
+        "Fator de Aceleracao (tempo v1 / tempo v2)", fontsize=11, fontweight="bold"
+    )
+    ax[1].set_ylabel("Numero de Instancias", fontsize=11)
+    ax[1].set_title("Distribuicao do Speedup", fontsize=12, fontweight="bold")
+    ax[1].legend(fontsize=10, loc="upper right")
+    ax[1].grid(axis="y", alpha=0.3, linestyle="--")
+
+    # Add explanatory text box with formula
+    text_box = "Speedup = Tempo v1 / Tempo v2\n"
+    text_box += f"Total: {len(speedups)} testes\n"
+    text_box += f"v2 e {med_speedup:.0f}x mais rapida"
+    ax[1].text(
+        0.02,
+        0.98,
+        text_box,
+        transform=ax[1].transAxes,
+        fontsize=9,
+        verticalalignment="top",
+        bbox=dict(boxstyle="round", facecolor="wheat", alpha=0.5),
+    )
+
     fig.tight_layout()
     fig.savefig(os.path.join(OUT_DIR, "fig_speedup_hist.png"), dpi=180)
     plt.close(fig)
 
-    # 4) Contractions and depth hist
-    fig, ax = plt.subplots(1, 2, figsize=(10, 4))
-    ax[0].hist(
-        [c for c in contractions if c is not None],
-        bins=range(0, max(contractions + [1]) + 1),
-        alpha=0.8,
+    # 4) Contractions and depth hist - REDESIGNED FOR CLARITY
+    fig, ax = plt.subplots(1, 2, figsize=(12, 5))
+
+    # Left: Contractions histogram with clear labels
+    contr_clean = [c for c in contractions if c is not None]
+    max_contr = max(contr_clean)
+
+    # Limit bins to reasonable range for better visualization
+    bin_limit = min(50, max_contr + 1)
+    n, bins, patches = ax[0].hist(
+        contr_clean,
+        bins=range(0, bin_limit),
+        alpha=0.75,
+        color="#ff9999",
+        edgecolor="black",
+        linewidth=0.8,
     )
-    ax[0].set_title("Contrações (Chu–Liu)")
-    ax[0].set_xlabel("nº de contrações")
-    ax[0].set_ylabel("contagem")
-    ax[1].hist(
-        [d for d in depth if d is not None],
-        bins=range(0, max(depth + [1]) + 1),
-        alpha=0.8,
+
+    med_contr = int(stats.median(contr_clean))
+    mean_contr = stats.mean(contr_clean)
+
+    ax[0].axvline(
+        x=med_contr,
+        color="red",
+        linestyle="--",
+        linewidth=2.5,
+        label=f"Mediana: {med_contr}",
+        zorder=5,
     )
-    ax[1].set_title("Profundidade de recursão (Chu–Liu)")
-    ax[1].set_xlabel("profundidade")
+    ax[0].axvline(
+        x=mean_contr,
+        color="orange",
+        linestyle=":",
+        linewidth=2.5,
+        label=f"Media: {mean_contr:.1f}",
+        zorder=5,
+    )
+
+    ax[0].set_xlabel("Numero de Contracoes de Ciclos", fontsize=11)
+    ax[0].set_ylabel("Numero de Instancias", fontsize=11)
+    ax[0].set_title("Contracoes em Chu-Liu/Edmonds", fontsize=12, fontweight="bold")
+    ax[0].legend(fontsize=10)
+    ax[0].grid(axis="y", alpha=0.3, linestyle="--")
+
+    # Add statistics box
+    stats_text = f"Min: {min(contr_clean)}\nMax: {max_contr}\n2000 testes"
+    ax[0].text(
+        0.98,
+        0.98,
+        stats_text,
+        transform=ax[0].transAxes,
+        fontsize=9,
+        verticalalignment="top",
+        horizontalalignment="right",
+        bbox=dict(boxstyle="round", facecolor="wheat", alpha=0.3),
+    )
+
+    # Right: Depth histogram
+    depth_clean = [d for d in depth if d is not None]
+    max_depth = max(depth_clean)
+
+    bin_limit_depth = min(50, max_depth + 1)
+    n, bins, patches = ax[1].hist(
+        depth_clean,
+        bins=range(0, bin_limit_depth),
+        alpha=0.75,
+        color="#66b3ff",
+        edgecolor="black",
+        linewidth=0.8,
+    )
+
+    med_depth = int(stats.median(depth_clean))
+    mean_depth = stats.mean(depth_clean)
+
+    ax[1].axvline(
+        x=med_depth,
+        color="red",
+        linestyle="--",
+        linewidth=2.5,
+        label=f"Mediana: {med_depth}",
+        zorder=5,
+    )
+    ax[1].axvline(
+        x=mean_depth,
+        color="orange",
+        linestyle=":",
+        linewidth=2.5,
+        label=f"Media: {mean_depth:.1f}",
+        zorder=5,
+    )
+
+    ax[1].set_xlabel("Profundidade de Recursao", fontsize=11)
+    ax[1].set_ylabel("Numero de Instancias", fontsize=11)
+    ax[1].set_title("Profundidade em Chu-Liu/Edmonds", fontsize=12, fontweight="bold")
+    ax[1].legend(fontsize=10)
+    ax[1].grid(axis="y", alpha=0.3, linestyle="--")
+
+    # Add statistics box
+    stats_text_depth = f"Min: {min(depth_clean)}\nMax: {max_depth}\n2000 testes"
+    ax[1].text(
+        0.98,
+        0.98,
+        stats_text_depth,
+        transform=ax[1].transAxes,
+        fontsize=9,
+        verticalalignment="top",
+        horizontalalignment="right",
+        bbox=dict(boxstyle="round", facecolor="wheat", alpha=0.3),
+    )
+
     fig.tight_layout()
     fig.savefig(os.path.join(OUT_DIR, "fig_contractions_depth.png"), dpi=180)
     plt.close(fig)
@@ -142,9 +323,9 @@ def summarize(rows):
     # 5) Peak memory
     fig, ax = plt.subplots(figsize=(8, 4))
     ax.hist(peak_kb, bins=20, alpha=0.8)
-    ax.set_xlabel("pico de memória na Fase I (kB)")
-    ax.set_ylabel("contagem")
-    ax.set_title("Uso de memória — Fase I")
+    ax.set_xlabel("Pico de memória na Fase I (kB)")
+    ax.set_ylabel("Contagem")
+    ax.set_title("Uso de memória - Fase I")
     fig.tight_layout()
     fig.savefig(os.path.join(OUT_DIR, "fig_peakmem_hist.png"), dpi=180)
     plt.close(fig)
