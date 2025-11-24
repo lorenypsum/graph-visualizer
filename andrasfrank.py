@@ -2,7 +2,7 @@ import networkx as nx
 import heapq
 
 
-def get_arcs_entering_X(D: nx.DiGraph, X: set, **kwargs):
+def get_in_arcs(D: nx.DiGraph, X: set, **kwargs):
     """
     Get the arcs entering a set X in a directed graph D.
     The function returns a list of tuples representing the arcs entering X with the designated weights.
@@ -35,7 +35,6 @@ def get_arcs_entering_X(D: nx.DiGraph, X: set, **kwargs):
             log(
                 f" andras_frank: Encontrados {len(arcs)} arcos entrando no conjunto X={X}"
             )
-
     return arcs
 
 
@@ -253,7 +252,7 @@ def phase1(
                 elif lang == "pt":
                     log(f"\n andras_frank: Processando fonte {u} com conjunto X={X}")
 
-            arcs = get_arcs_entering_X(D_copy, X, **kwargs)
+            arcs = get_in_arcs(D_copy, X, **kwargs)
 
             if boilerplate and log:
                 if lang == "en":
