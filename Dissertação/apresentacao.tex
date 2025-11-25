@@ -175,7 +175,7 @@
 				\draw[arb] (a) -- node[left,font=\tiny,black] {2} (d);
 				\draw[arb] (d) -- node[below,font=\tiny,black] {1} (e);
 			\end{tikzpicture}
-			\caption{ Geradora Mínima}
+			\caption{Geradora Mínima}
 			\caption{Custo: 13}
 		\end{figure}
 	\end{columns}
@@ -194,13 +194,13 @@
 
 			\item \textbf{Verificar}: se $D_0$ é uma $r$-arborescência $\Rightarrow$ \textbf{devolver} $D_0$
 
-			Caso contrário:
+			      Caso contrário:
 
 			\item \textbf{Contração}: encontrar ciclo $C$ em $D_0$ e contrair
-			
+
 			\item \textbf{Chamada recursiva}: Seja $D' = D/C$ e $w' = w_\lambda/C$. Calcular $T' =$ chu-liu-edmonds$(D', w', r)$
-			
-			\item \textbf{Expandir}: \textbf{devolver} expand$(T')$
+
+			\item \textbf{Devolver}: expandir$(T')$
 		\end{enumerate}
 	\end{block}
 \end{frame}
@@ -208,28 +208,31 @@
 % ==================== SLIDE 4: EXEMPLO DETALHADO ====================
 \begin{frame}{Digrafo de Exemplo}
 	\begin{center}
-		\begin{tikzpicture}[scale=1.2,
-				vertex/.style={circle,draw,minimum size=0.8cm,font=\large},
-				edge/.style={->,>=stealth,thick}]
+		\begin{figure}[H]
+			\begin{tikzpicture}[scale=1.2, >=Stealth,
+					vertex/.style={circle,draw,fill=blue!8,thick,inner sep=1.2pt,minimum size=8mm},
+					chosen/.style={->, very thick, draw=blue},
+					edge/.style={->,semithick}]
 
-			\node[vertex,fill=red!20] (r) at (0,2) {$r$};
-			\node[vertex] (A) at (2,3) {$A$};
-			\node[vertex] (B) at (4,3) {$B$};
-			\node[vertex] (C) at (2,1) {$C$};
-			\node[vertex] (D) at (4,1) {$D$};
-			\node[vertex] (E) at (6,2) {$E$};
+				\node[vertex] (r) at (0,0) {$r$};
+				\node[vertex] (a) at (3,1.6) {$a$};
+				\node[vertex] (b) at (3,-1.6) {$b$};
+				\node[vertex] (c) at (6,2.2) {$c$};
+				\node[vertex] (d) at (6,0.0) {$d$};
+				\node[vertex] (e) at (6,-2.2) {$e$};
 
-			\draw[edge] (r) -- node[above] {2} (A);
-			\draw[edge] (r) -- node[below] {10} (C);
-			\draw[edge] (r) to[bend left] node[above] {10} (B);
-			\draw[edge] (B) -- node[right] {1} (A);
-			\draw[edge] (A) -- node[left] {4} (C);
-			\draw[edge] (C) -- node[below] {2} (D);
-			\draw[edge] (D) to[bend right] node[below] {2} (B);
-			\draw[edge] (B) -- node[above] {8} (E);
-			\draw[edge] (C) -- node[below] {4} (E);
-
-		\end{tikzpicture}
+				\draw[chosen] (r) -- node[above,font=\scriptsize] {1} (a);
+				\draw[chosen] (r) -- node[below,font=\scriptsize] {2} (b);
+				\draw[edge] (r) .. controls (0.8,2.4) and (5.2,3.0) .. node[yshift=4pt,pos=0.53,font=\scriptsize] {3} (c);
+				\draw[edge] (b) to[bend left=12] node[left,font=\scriptsize] {4} (a);
+				\draw[edge] (a) to[bend left=14] node[right,font=\scriptsize] {5} (b);
+				\draw[edge] (a) -- node[right,font=\scriptsize] {3} (d);
+				\draw[chosen] (a) -- node[above,font=\scriptsize] {1} (c);
+				\draw[chosen] (b) -- node[above,font=\scriptsize] {1} (d);
+				\draw[chosen] (b) -- node[below,font=\scriptsize] {2} (e);
+				\draw[edge] (c) .. controls (7.6,2.6) and (7.6,-2.6) .. node[xshift=8pt,pos=0.52,font=\scriptsize] {5} (e);
+			\end{tikzpicture}
+		\end{figure}
 	\end{center}
 
 	\begin{alertblock}{Objetivo}
@@ -242,75 +245,76 @@
 		\column{0.5\textwidth}
 		\textbf{Redução de custos $\lambda$:}
 		\begin{itemize}
-			\item $\lambda(A) = 1$ $\Rightarrow$ $(B,A)$: $1-1=0$
-			\item $\lambda(B) = 2$ $\Rightarrow$ $(D,B)$: $2-2=0$
-			\item $\lambda(C) = 4$ $\Rightarrow$ $(A,C)$: $4-4=0$
-			\item $\lambda(D) = 2$ $\Rightarrow$ $(C,D)$: $2-2=0$
-			\item $\lambda(E) = 4$ $\Rightarrow$ $(C,E)$: $4-4=0$
+			\item $\lambda(a) = 1$ (arco $(r,a)$)
+			\item $\lambda(b) = 2$ (arco $(r,b)$)
+			\item $\lambda(c) = 1$ (arco $(a,c)$)
+			\item $\lambda(d) = 1$ (arcos $(b,d)$)
+			\item $\lambda(e) = 2$ (arco $(b,e)$)
 		\end{itemize}
 
 		\vspace{0.2cm}
 		\emph{Escolhemos arcos de custo zero para formar $D_0$}
 
 		\column{0.5\textwidth}
-		\begin{tikzpicture}[scale=0.9,
-				vertex/.style={circle,draw,minimum size=0.7cm},
-				selected/.style={->,>=stealth,thick,blue},
-				unselected/.style={->,>=stealth,gray!30}]
+		\begin{tikzpicture}[scale=0.9, >=Stealth,
+				vertex/.style={circle,draw,fill=blue!8,thick,inner sep=1.2pt,minimum size=7mm},
+				selected/.style={->,very thick,draw=blue},
+				unselected/.style={->,semithick,draw=black!35}]
 
-			\node[vertex,fill=red!20] (r) at (0,2) {$r$};
-			\node[vertex] (A) at (2,3) {$A$};
-			\node[vertex] (B) at (4,3) {$B$};
-			\node[vertex] (C) at (2,1) {$C$};
-			\node[vertex] (D) at (4,1) {$D$};
-			\node[vertex] (E) at (6,2) {$E$};
+			\node[vertex] (r) at (0,0) {$r$};
+			\node[vertex] (a) at (2.5,1.3) {$a$};
+			\node[vertex] (b) at (2.5,-1.3) {$b$};
+			\node[vertex] (c) at (5,1.8) {$c$};
+			\node[vertex] (d) at (5,0.0) {$d$};
+			\node[vertex] (e) at (5,-1.8) {$e$};
 
-			\draw[unselected] (r) -- node[above,black] {2} (A);
-			\draw[unselected] (r) -- node[below,black] {10} (C);
-			\draw[unselected] (r) to[bend left] node[above,black] {10} (B);
-			\draw[selected] (B) -- node[right] {1} (A);
-			\draw[selected] (A) -- node[left] {4} (C);
-			\draw[selected] (C) -- node[below] {2} (D);
-			\draw[unselected] (D) to[bend right] node[below,black] {2} (B);
-			\draw[unselected] (B) -- node[above,black] {8} (E);
-			\draw[selected] (C) -- node[below] {4} (E);
+			\draw[selected] (r) -- node[above,font=\scriptsize,text=blue] {0} (a);
+			\draw[selected] (r) -- node[below,font=\scriptsize,text=blue] {0} (b);
+			\draw[selected] (a) -- node[above,font=\scriptsize,text=blue] {0} (c);
+			\draw[selected] (b) -- node[above,font=\scriptsize,text=blue] {0} (d);
+			\draw[selected] (b) -- node[below,font=\scriptsize,text=blue] {0} (e);
+			\draw[unselected] (b) to[bend left=12] node[above,font=\scriptsize,text=black] {2} (a);
+			\draw[unselected] (a) to[bend left=14] node[below,font=\scriptsize,text=black] {3} (b);
+			\draw[unselected] (a) -- node[right,font=\scriptsize,text=black] {2} (d);
+			\draw[unselected] (r) .. controls (0.6,2.0) and (4.2,2.5) .. node[yshift=3pt,pos=0.53,font=\scriptsize,text=black] {2} (c);
+			\draw[unselected] (c) .. controls (6.3,2.2) and (6.3,-2.2) .. node[xshift=7pt,pos=0.52,font=\scriptsize,text=black] {3} (e);
 
 		\end{tikzpicture}
 	\end{columns}
 
 	\vspace{0.3cm}
-	\begin{alertblock}{$D_0$ não é uma $r$-arborescência}
-		Ciclo detectado: $A \to C \to D \to B \to A$
+	\begin{alertblock}{$D_0$ \' e uma $r$-arboresc\^encia!}
+		Neste exemplo, $D_0 = \{(r,a), (r,b), (a,c), (b,d), (b,e)\}$ forma uma $r$-arboresc\^encia.
 
-		\emph{Em outras palavras:} há vértices não alcançáveis a partir de $r$
+		\emph{Em outras palavras:} todos os v\'ertices s\~ao alcan\c{c}\'aveis a partir de $r$ e cada v\'ertice tem exatamente um arco entrando
 	\end{alertblock}
 \end{frame}
 
-\begin{frame}{Passo 2: Contração do Ciclo}
+\begin{frame}{Caso com Ciclo: Outro Exemplo}
 	\begin{columns}[c]
 		\column{0.5\textwidth}
-		\textbf{Ciclo $C$ encontrado:} $\{A, B, C, D\}$
+		\textbf{Quando $D_0$ tem ciclo:}
 
 		\vspace{0.3cm}
-		Contraímos $C$ em supervértice $x_C$
-
-		\emph{Em outras palavras:} todos os vértices de $C$ viram um único vértice
+		Se ap\'os redu\c{c}\~ao de custos, $D_0$ cont\'em um ciclo $C$, contra\'imos $C$ em superv\'ertice $x_C$
 
 		\vspace{0.3cm}
-		Custos já foram reduzidos por $\lambda$:
-		$$w_{\lambda}(r,A) = 2-1 = 1$$
+		\emph{Em outras palavras:} todos os v\'ertices de $C$ viram um \'unico v\'ertice
+
+		\vspace{0.3cm}
+		Custos s\~ao ajustados usando os custos $\lambda$-reduzidos
 
 		\column{0.5\textwidth}
-		\begin{tikzpicture}[scale=1,
-				vertex/.style={circle,draw,minimum size=0.7cm},
-				super/.style={circle,draw,thick,minimum size=1.5cm,fill=yellow!20}]
+		\begin{tikzpicture}[scale=1.2, >=Stealth,
+				vertex/.style={circle,draw,fill=blue!8,thick,minimum size=7mm},
+				super/.style={circle,draw,very thick,fill=orange!10,minimum size=1.2cm}]
 
-			\node[vertex,fill=red!20] (r) at (0,2) {$r$};
-			\node[super] (vC) at (3,2.5) {$v_C$};
-			\node[vertex] (E) at (6,2) {$E$};
+			\node[vertex] (r) at (0,0) {$r$};
+			\node[super] (xC) at (3,0) {$x_C$};
+			\node[vertex] (v) at (5.5,0) {$v$};
 
-			\draw[->,>=stealth,thick] (r) -- node[above] {$2-1=1$} (vC);
-			\draw[->,>=stealth,thick] (vC) -- node[above] {4} (E);
+			\draw[->,thick] (r) -- node[above,font=\scriptsize] {custo} (xC);
+			\draw[->,thick] (xC) -- node[above,font=\scriptsize] {custo} (v);
 
 		\end{tikzpicture}
 	\end{columns}
@@ -323,70 +327,71 @@
 	\end{block}
 \end{frame}
 
-\begin{frame}{Passo 3: Solução Recursiva no Digrafo Contraído}
+\begin{frame}{Passo 3: Solu\c{c}\~ao Recursiva (quando h\'a ciclo)}
 	\begin{center}
-		\begin{tikzpicture}[scale=1.2,
-				vertex/.style={circle,draw,minimum size=0.7cm},
-				super/.style={circle,draw,thick,minimum size=1.5cm,fill=yellow!20}]
+		\begin{tikzpicture}[scale=1.2, >=Stealth,
+				vertex/.style={circle,draw,fill=blue!8,thick,minimum size=7mm},
+				super/.style={circle,draw,very thick,fill=orange!10,minimum size=1.2cm}]
 
-			\node[vertex,fill=red!20] (r) at (0,2) {$r$};
-			\node[super] (vC) at (3,2.5) {$x_C$};
-			\node[vertex] (E) at (6,2) {$E$};
+			\node[vertex] (r) at (0,0) {$r$};
+			\node[super] (xC) at (3,0) {$x_C$};
+			\node[vertex] (v) at (5.5,0) {$v$};
 
-			\draw[->,>=stealth,thick,blue] (r) -- node[above] {1} (vC);
-			\draw[->,>=stealth,thick,blue] (vC) -- node[above] {4} (E);
+			\draw[->,very thick,blue] (r) -- node[above,font=\scriptsize,text=blue] {} (xC);
+			\draw[->,very thick,blue] (xC) -- node[above,font=\scriptsize,text=blue] {} (v);
 
 		\end{tikzpicture}
 	\end{center}
 
-	O algoritmo devolve $T' = \{(r, x_C), (x_C, E)\}$
+	O algoritmo devolve $T'$ (arboresc\^encia no digrafo contra\'ido)
 
 	\vspace{0.3cm}
-	\emph{Em outras palavras:} encontramos a $r$-arborescência ótima no grafo contraído
+	\emph{Em outras palavras:} encontramos a $r$-arboresc\^encia \'otima no grafo contra\'ido
 
 	\vspace{0.3cm}
-	\textbf{Próximo passo:} expandir $T'$ de volta para obter $T$ no digrafo original
+	\textbf{Pr\'oximo passo:} expandir $T'$ de volta para obter $T$ no digrafo original
 \end{frame}
 
-\begin{frame}{Passo 4: Expansão da Solução}
+\begin{frame}{Solu\c{c}\~ao Final}
 	\begin{columns}[c]
 		\column{0.5\textwidth}
-		\textbf{Função expand$(T')$:}
+		\textbf{Para nosso exemplo:}
 
-		Arco $(r, x_C)$ em $T'$ corresponde a $(r,A)$ em $D$
+		Como $D_0$ j\'a \' e uma $r$-arboresc\^encia, o algoritmo termina diretamente!
 
 		\vspace{0.3cm}
 		\emph{Em outras palavras:}
 		\begin{itemize}
-			\item Incluir $(r,A)$ que entra no ciclo
-			\item Incluir todos os arcos do ciclo $C$ \textbf{exceto} $(B,A)$
-			\item Resultado: cada vértice tem grau de entrada 1
+			\item N\~ao h\'a ciclo
+			\item Todos v\'ertices alcan\c{c}\'aveis de $r$
+			\item Cada v\'ertice tem grau de entrada 1
+			\item Solu\c{c}\~ao \'otima encontrada!
 		\end{itemize}
 
 		\column{0.5\textwidth}
-		\begin{tikzpicture}[scale=0.9,
-				vertex/.style={circle,draw,minimum size=0.7cm},
-				selected/.style={->,>=stealth,thick,blue}]
+		\begin{tikzpicture}[scale=0.9, >=Stealth,
+				vertex/.style={circle,draw,fill=blue!8,thick,inner sep=1.2pt,minimum size=7mm},
+				selected/.style={->,very thick,draw=blue}]
 
-			\node[vertex,fill=red!20] (r) at (0,2) {$r$};
-			\node[vertex] (A) at (2,3) {$A$};
-			\node[vertex] (B) at (4,3) {$B$};
-			\node[vertex] (C) at (2,1) {$C$};
-			\node[vertex] (D) at (4,1) {$D$};
-			\node[vertex] (E) at (6,2) {$E$};
+			\node[vertex] (r) at (0,0) {$r$};
+			\node[vertex] (a) at (2.5,1.3) {$a$};
+			\node[vertex] (b) at (2.5,-1.3) {$b$};
+			\node[vertex] (c) at (5,1.8) {$c$};
+			\node[vertex] (d) at (5,0.0) {$d$};
+			\node[vertex] (e) at (5,-1.8) {$e$};
 
-			\draw[selected] (r) -- node[above] {2} (A);
-			\draw[selected] (A) -- node[left] {4} (C);
-			\draw[selected] (C) -- node[below] {2} (D);
-			\draw[selected] (D) to[bend right] node[below] {2} (B);
-			\draw[selected] (C) -- node[below] {4} (E);
+			\draw[selected] (r) -- node[above,font=\scriptsize,text=blue] {1} (a);
+			\draw[selected] (r) -- node[below,font=\scriptsize,text=blue] {2} (b);
+			\draw[selected] (a) -- node[above,font=\scriptsize,text=blue] {1} (c);
+			\draw[selected] (b) -- node[above,font=\scriptsize,text=blue] {1} (d);
+			\draw[selected] (b) -- node[below,font=\scriptsize,text=blue] {2} (e);
 
 		\end{tikzpicture}
 	\end{columns}
 
 	\vspace{0.3cm}
-	\begin{exampleblock}{Solução Ótima}
-		Custo total: $2 + 4 + 2 + 2 + 4 = 14$
+	\begin{exampleblock}{Solu\c{c}\~ao \'Otima}
+		Custo total: $1 + 2 + 1 + 1 + 2 = 7$
 	\end{exampleblock}
 \end{frame}
 
