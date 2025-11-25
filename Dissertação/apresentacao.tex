@@ -1,31 +1,44 @@
 \documentclass[aspectratio=169]{beamer}
 
-% Tema e cores
+% Tema e cores baseados no design do site ArboGraph
 \usetheme{CambridgeUS}
 \usecolortheme{default}
-\setbeamercolor{structure}{fg=green!50!black}
-\setbeamercolor{palette primary}{bg=green!40!black,fg=white}
-\setbeamercolor{palette secondary}{bg=green!40!black,fg=white}
-\setbeamercolor{palette tertiary}{bg=green!40!black,fg=white}
-\setbeamercolor{frametitle}{bg=green!50!black,fg=white}
-% Cores da caixa do título na capa
-\setbeamercolor{title}{fg=white!30!white}
-\setbeamercolor{titlelike}{bg=green!40!black,fg=white}
+
+% Paleta de cores do logo e site
+\definecolor{primarypurple}{RGB}{53, 43, 103}    % #352B67 - roxo escuro principal
+\definecolor{secondarypurple}{RGB}{75, 66, 119}  % #4B4277 - roxo médio
+\definecolor{accentpurple}{RGB}{141, 121, 229}   % #8d79e5 - roxo vibrante
+\definecolor{lightpurple}{RGB}{164, 156, 255}    % #a49cc5ff - roxo claro (borda)
+\definecolor{textgray}{RGB}{120, 116, 134}       % #787486 - cinza texto
+\definecolor{lightgray}{RGB}{229, 229, 229}      % #E5E5E5 - fundo claro
+\definecolor{divider}{RGB}{219, 219, 219}        % #DBDBDB - linhas divisórias
+
+% Estrutura geral
+\setbeamercolor{structure}{fg=primarypurple}
+\setbeamercolor{palette primary}{bg=primarypurple,fg=white}
+\setbeamercolor{palette secondary}{bg=secondarypurple,fg=white}
+\setbeamercolor{palette tertiary}{bg=accentpurple,fg=white}
+\setbeamercolor{frametitle}{bg=primarypurple,fg=white}
+
+% Cores da capa
+\setbeamercolor{title}{fg=lightgray}
+\setbeamercolor{titlelike}{bg=primarypurple,fg=white}
+\setbeamercolor{author}{fg=textgray}
+\setbeamercolor{institute}{fg=textgray}
+\setbeamercolor{date}{fg=textgray}
 
 % Cores dos blocos (caixas de texto)
-\definecolor{blockbg}{RGB}{46, 125, 50}      % Verde escuro para título
-\definecolor{blockbody}{RGB}{232, 245, 233}  % Verde muito claro para corpo
-\definecolor{alertbg}{RGB}{106, 27, 154}     % Roxo para alerta
-\definecolor{alertbody}{RGB}{245, 245, 245}  % Cinza claro para corpo alerta
+\setbeamercolor{block title}{bg=secondarypurple,fg=white}
+\setbeamercolor{block body}{bg=lightgray,fg=black}
+\setbeamercolor{block title alerted}{bg=secondarypurple,fg=white}
+\setbeamercolor{block body alerted}{bg=lightgray,fg=black}
 
-\setbeamercolor{block title}{bg=blockbg,fg=white}
-\setbeamercolor{block body}{bg=blockbody,fg=black}
-\setbeamercolor{block title alerted}{bg=alertbg,fg=white}
-\setbeamercolor{block body alerted}{bg=alertbody,fg=black}
-\setbeamercolor{block title example}{bg=blockbg,fg=white}
-\setbeamercolor{block body example}{bg=blockbody,fg=black}
+% Itens e enumerações
+\setbeamercolor{item}{fg=accentpurple}
+\setbeamercolor{enumerate item}{fg=accentpurple}
+\setbeamercolor{enumerate subitem}{fg=lightpurple}
 
-% Remover/customizar sombra dos blocos
+% Remover sombra dos blocos
 \setbeamertemplate{blocks}[rounded][shadow=false]
 
 \usepackage[utf8]{inputenc}
@@ -42,11 +55,12 @@
 
 % Logo da UFABC
 \logo{\includegraphics[height=0.9cm]{logo-ufabc.png}}
+
 % Configurações do título
-\title[r-Arborescências Geradoras Mínimas]{Algoritmos para r-Arborescências Geradoras Mínimas em Digrafos:}
+\title[ArboGraph]{Algoritmos para r-Arborescências Geradoras Mínimas em Digrafos:}
 \subtitle{Uma Aplicação Web Interativa}
-\author{Lorena Sampaio, Samira Haddad \\ Orientador: Prof. Dr. Mário Leston Rey}
-\institute{Universidade Federal do ABC \\ Centro de Matemática, Computação e Cognição}
+\author[L. Sampaio, S. Haddad]{Lorena Sampaio, Samira Haddad \\ Orientador: Prof. Dr. Mário Leston Rey}
+\institute[UFABC]{Universidade Federal do ABC \\ Centro de Matemática, Computação e Cognição}
 \date{\today}
 
 % Comandos personalizados
