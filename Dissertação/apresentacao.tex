@@ -83,32 +83,20 @@
 \section{Introdução}
 
 \begin{frame}{O Problema}
-	\begin{block}{Arborescência de Custo Mínimo}
-		Dado um digrafo $D = (V, A)$ com pesos $w: A \to \mathbb{R}$ e raiz $r \in V$:
+	\begin{block}{Encontrar uma $r$-Arborescência Geradora de Custo Mínimo}
+		Dado um $r$-digrafo ponderado $(D,w,r)$:
 		\begin{itemize}
-			\item Encontrar uma $r$-arborescência geradora $T$
-			\item Que minimize $w(T) = \sum_{a \in A(T)} w(a)$
+			\item Encontrar uma $r$-arborescência geradora de custo mínimo de $D$
 		\end{itemize}
 	\end{block}
 
-	\vspace{0.5cm}
+	\vspace{0.3cm}
 
-	\begin{columns}[c]
-		\column{0.5\textwidth}
-		\textbf{Aplicações:}
-		\begin{itemize}
-			\item Redes de comunicação
-			\item Logística
-			\item Otimização de recursos
-		\end{itemize}
-
-		\column{0.5\textwidth}
-		\textbf{Algoritmos estudados:}
+	\textbf{Algoritmos estudados:}
 		\begin{enumerate}
 			\item Chu-Liu-Edmonds (1965-67)
 			\item András Frank (1981-2014)
 		\end{enumerate}
-	\end{columns}
 \end{frame}
 
 % ==================== SLIDE 3: EXEMPLO ====================
