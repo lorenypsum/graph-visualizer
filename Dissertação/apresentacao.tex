@@ -13,12 +13,17 @@
 \setbeamercolor{titlelike}{bg=green!40!black,fg=white}
 
 % Cores dos blocos (caixas de texto)
-\setbeamercolor{block title}{bg=green!40!black,fg=white}
-\setbeamercolor{block body}{bg=green!5!white,fg=black}
-\setbeamercolor{block title alerted}{bg=red!70!black,fg=white}
-\setbeamercolor{block body alerted}{bg=red!5!white,fg=black}
-\setbeamercolor{block title example}{bg=green!40!black,fg=white}
-\setbeamercolor{block body example}{bg=green!5!white,fg=black}
+\definecolor{blockbg}{RGB}{46, 125, 50}      % Verde escuro para título
+\definecolor{blockbody}{RGB}{232, 245, 233}  % Verde muito claro para corpo
+\definecolor{alertbg}{RGB}{106, 27, 154}     % Roxo para alerta
+\definecolor{alertbody}{RGB}{245, 245, 245}  % Cinza claro para corpo alerta
+
+\setbeamercolor{block title}{bg=blockbg,fg=white}
+\setbeamercolor{block body}{bg=blockbody,fg=black}
+\setbeamercolor{block title alerted}{bg=alertbg,fg=white}
+\setbeamercolor{block body alerted}{bg=alertbody,fg=black}
+\setbeamercolor{block title example}{bg=blockbg,fg=white}
+\setbeamercolor{block body example}{bg=blockbody,fg=black}
 
 % Remover/customizar sombra dos blocos
 \setbeamertemplate{blocks}[rounded][shadow=false]
