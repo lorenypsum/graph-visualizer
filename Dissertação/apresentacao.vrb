@@ -1,0 +1,28 @@
+\frametitle{Implementação: Expansão da Solução}
+\begin{block}{Função \texttt{expand(T', C, entering\_arc)}}
+		Substituir supervértice $x_C$ pelos vértices originais de $C$
+	\end{block}
+
+	\begin{lstlisting}[language=Python, basicstyle=\footnotesize\ttfamily]
+def expand(T_prime, C, entering_arc):
+    T = T_prime.copy()
+    T.remove_node(xC)
+
+    # Adicionar vertices do ciclo
+    T.add_nodes_from(C)
+
+    # Encontrar qual vertice de C recebe o arco externo
+    u, v_in_C = entering_arc  # arco que entra no ciclo
+    T.add_edge(u, v_in_C)
+
+    # Adicionar arcos do ciclo exceto o que entra em v_in_C
+    for i in range(len(C)):
+        v_from = C[i]
+        v_to = C[(i + 1) % len(C)]
+        if v_to != v_in_C:
+            T.add_edge(v_from, v_to)
+
+    return T
+	\end{lstlisting}
+
+	\textbf{Complexidade:} $O(|C|)$ para processar vértices do ciclo

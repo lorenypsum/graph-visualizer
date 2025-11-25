@@ -181,6 +181,25 @@
 	\end{columns}
 \end{frame}
 
+% ==================== SEÇÃO 2: CHU-LIU-EDMONDS ====================
+\section{Algoritmo de Chu-Liu-Edmonds}
+
+\begin{frame}{Chu-Liu-Edmonds: Ideia Principal}
+	\begin{block}{Algoritmo Recursivo}
+		\begin{enumerate}
+			\item \textbf{Reduzir custos}: para cada vértice $v \neq r$, subtrair $\lambda(v) = \min\{w(a) : a \in \delta^-(v)\}$
+
+			      \emph{Em outras palavras:} tornar zero o custo do arco mais barato que entra em cada vértice
+
+			\item \textbf{Construir $D_0$}: escolher um arco $a_v$ de custo reduzido zero para cada $v \neq r$
+
+			\item \textbf{Verificar}: se $D_0$ é uma $r$-arborescência $\Rightarrow$ \textbf{devolver} $D_0$
+
+			\item \textbf{Caso contrário}: encontrar ciclo $C$ em $D_0$, contrair e resolver recursivamente
+		\end{enumerate}
+	\end{block}
+\end{frame}
+
 % ==================== SLIDE 4: EXEMPLO DETALHADO ====================
 \begin{frame}{Digrafo de Exemplo}
 	\begin{center}
@@ -213,34 +232,20 @@
 	\end{alertblock}
 \end{frame}
 
-% ==================== SEÇÃO 2: CHU-LIU-EDMONDS ====================
-\section{Algoritmo de Chu-Liu-Edmonds}
-
-\begin{frame}{Chu-Liu-Edmonds: Ideia Principal}
-	\begin{block}{Estratégia Recursiva}
-		\begin{enumerate}
-			\item Para cada vértice $v \neq r$: escolher arco de entrada de \textbf{custo mínimo}
-			\item Se não há ciclos $\Rightarrow$ solução ótima encontrada!
-			\item Se há ciclos $\Rightarrow$ \textbf{contrair} e resolver recursivamente
-		\end{enumerate}
-	\end{block}
-
-	\begin{center}
-		\textbf{Escolha Gulosa} + \textbf{Contração de Ciclos}
-	\end{center}
-\end{frame}
-
-\begin{frame}{Passo 1: Escolha Gulosa}
+\begin{frame}{Passo 1: Redução de Custos e Construção de $D_0$}
 	\begin{columns}[c]
 		\column{0.5\textwidth}
-		Para cada vértice, selecionar arco de entrada mínimo:
+		\textbf{Redução de custos $\lambda$:}
 		\begin{itemize}
-			\item $A$: arco $(B,A)$ peso 1 {\color{blue}$\checkmark$}
-			\item $B$: arco $(r,B)$ peso 10
-			\item $C$: arco $(A,C)$ peso 4 {\color{blue}$\checkmark$}
-			\item $D$: arco $(C,D)$ peso 2 {\color{blue}$\checkmark$}
-			\item $E$: arco $(C,E)$ peso 4 {\color{blue}$\checkmark$}
+			\item $\lambda(A) = 1$ $\Rightarrow$ $(B,A)$: $1-1=0$
+			\item $\lambda(B) = 2$ $\Rightarrow$ $(D,B)$: $2-2=0$
+			\item $\lambda(C) = 4$ $\Rightarrow$ $(A,C)$: $4-4=0$
+			\item $\lambda(D) = 2$ $\Rightarrow$ $(C,D)$: $2-2=0$
+			\item $\lambda(E) = 4$ $\Rightarrow$ $(C,E)$: $4-4=0$
 		\end{itemize}
+
+		\vspace{0.2cm}
+		\emph{Escolhemos arcos de custo zero para formar $D_0$}
 
 		\column{0.5\textwidth}
 		\begin{tikzpicture}[scale=0.9,
@@ -269,22 +274,26 @@
 	\end{columns}
 
 	\vspace{0.3cm}
-	\begin{alertblock}{Problema}
+	\begin{alertblock}{$D_0$ não é uma $r$-arborescência}
 		Ciclo detectado: $A \to C \to D \to B \to A$
+
+		\emph{Em outras palavras:} há vértices não alcançáveis a partir de $r$
 	\end{alertblock}
 \end{frame}
 
 \begin{frame}{Passo 2: Contração do Ciclo}
 	\begin{columns}[c]
 		\column{0.5\textwidth}
-		\textbf{Ciclo encontrado:} $\{A, B, C, D\}$
+		\textbf{Ciclo $C$ encontrado:} $\{A, B, C, D\}$
 
 		\vspace{0.3cm}
-		Contraímos em um super-vértice $v_C$
+		Contraímos $C$ em supervértice $x_C$
+
+		\emph{Em outras palavras:} todos os vértices de $C$ viram um único vértice
 
 		\vspace{0.3cm}
-		Ajustamos pesos dos arcos que \textbf{entram} no ciclo:
-		$$w'(u,v_C) = w(u,v) - w(\text{min\_in}(v))$$
+		Custos já foram reduzidos por $\lambda$:
+		$$w_{\lambda}(r,A) = 2-1 = 1$$
 
 		\column{0.5\textwidth}
 		\begin{tikzpicture}[scale=1,
@@ -302,19 +311,21 @@
 	\end{columns}
 
 	\vspace{0.5cm}
-	\begin{block}{Recursão}
-		Resolver o problema no digrafo contraído
+	\begin{block}{Chamada Recursiva}
+		Resolvemos chu-liu-edmonds$(D/C \mapsto x_C, w_\lambda/C \mapsto x_C, r)$
+
+		\emph{Em outras palavras:} aplicamos o mesmo algoritmo no digrafo menor
 	\end{block}
 \end{frame}
 
-\begin{frame}{Passo 3: Solução no Digrafo Contraído}
+\begin{frame}{Passo 3: Solução Recursiva no Digrafo Contraído}
 	\begin{center}
 		\begin{tikzpicture}[scale=1.2,
 				vertex/.style={circle,draw,minimum size=0.7cm},
 				super/.style={circle,draw,thick,minimum size=1.5cm,fill=yellow!20}]
 
 			\node[vertex,fill=red!20] (r) at (0,2) {$r$};
-			\node[super] (vC) at (3,2.5) {$v_C$};
+			\node[super] (vC) at (3,2.5) {$x_C$};
 			\node[vertex] (E) at (6,2) {$E$};
 
 			\draw[->,>=stealth,thick,blue] (r) -- node[above] {1} (vC);
@@ -323,26 +334,28 @@
 		\end{tikzpicture}
 	\end{center}
 
-	Escolha gulosa:
-	\begin{itemize}
-		\item $(r, v_C)$ peso 1
-		\item $(v_C, E)$ peso 4
-	\end{itemize}
+	O algoritmo devolve $T' = \{(r, x_C), (x_C, E)\}$
 
-	\textbf{Sem ciclos!} $\Rightarrow$ Solução encontrada no digrafo contraído
+	\vspace{0.3cm}
+	\emph{Em outras palavras:} encontramos a $r$-arborescência ótima no grafo contraído
+
+	\vspace{0.3cm}
+	\textbf{Próximo passo:} expandir $T'$ de volta para obter $T$ no digrafo original
 \end{frame}
 
-\begin{frame}{Passo 4: Expandindo a Solução}
+\begin{frame}{Passo 4: Expansão da Solução}
 	\begin{columns}[c]
 		\column{0.5\textwidth}
-		No digrafo contraído: $(r, v_C)$ foi escolhido
+		\textbf{Função expand$(T')$:}
+
+		Arco $(r, x_C)$ em $T'$ corresponde a $(r,A)$ em $D$
 
 		\vspace{0.3cm}
-		Expandindo $v_C$:
+		\emph{Em outras palavras:}
 		\begin{itemize}
-			\item Remover arco $(B, A)$ do ciclo
-			\item Manter: $(A,C)$, $(C,D)$, $(D,B)$
-			\item Adicionar: $(r,A)$ peso 2
+			\item Incluir $(r,A)$ que entra no ciclo
+			\item Incluir todos os arcos do ciclo $C$ \textbf{exceto} $(B,A)$
+			\item Resultado: cada vértice tem grau de entrada 1
 		\end{itemize}
 
 		\column{0.5\textwidth}
