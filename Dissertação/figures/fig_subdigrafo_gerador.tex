@@ -11,7 +11,7 @@
 \centering
 \begin{tikzpicture}[>=Stealth]
     % estilos
-    	\tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!60}, span/.style={->, very thick, draw=blue!60}}
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!60}, span/.style={->, very thick, draw=blue!60}}
     % vértices
     \node[v, label=below:$a$] (a) at (0,0) {};
     \node[v, label=below:$b$] (b) at (2,0) {};
@@ -19,7 +19,7 @@
     \node[v, label=above:$d$] (d) at (3,1.6) {};
     \node[v, label=below:$e$] (e) at (4.2,0) {};
     \node[v, label=below:$f$] (f) at (5.4,0) {};
-    % arcos do dígrafo original (cinza)
+    % arcos do digrafo original (cinza)
     \draw[a] (a) -- (b);
     \draw[a] (c) -- (a);
     \draw[a] (b) -- (c);
@@ -28,7 +28,7 @@
     \draw[a] (f) -- (e);
     \draw[a] (b) to[bend left=20] (e);
     \draw[a] (e) to[bend left=20] (b);
-    % arcos do subdígrafo gerador (azul): V'=V e A' \subseteq A
+    % arcos do subdigrafo gerador (azul): V'=V e A' \subseteq A
     \draw[span] (a) -- (b);
     \draw[span] (b) -- (c);
     \draw[span] (d) -- (b);

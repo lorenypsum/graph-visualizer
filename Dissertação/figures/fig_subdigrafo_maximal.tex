@@ -16,11 +16,11 @@
     \node[v, label=below:$b$] (b) at (0,0) {};
     \node[v, label=below:$c$] (c) at (2.0,0) {};
     \node[v, label=above:$d$] (d) at (1.0,1.6) {};
-    % arcos do dígrafo original (cinza)
+    % arcos do digrafo original (cinza)
     \draw[a] (b) -- (c);
     \draw[a] (c) -- (d);
     \draw[a] (d) -- (b);
-    % subdígrafo maximal acíclico (azul): mantém dois arcos, omite o terceiro que fecharia o circuito
+    % subdigrafo maximal acíclico (azul): mantém dois arcos, omite o terceiro que fecharia o circuito
     \draw[keep] (b) -- (c);
     \draw[keep] (c) -- (d);
     % anotação
