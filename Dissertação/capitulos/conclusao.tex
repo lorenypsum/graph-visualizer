@@ -1,52 +1,26 @@
 \chapter{Conclusão}
 \label{cap:conclusao}
-Ao final desta tese, refletimos sobre o ponto de chegada: o visualizador interativo de arborescências dirigidas. Este projeto foi concebido com o propósito de apresentar de forma didática os algoritmos envolvidos no problema da $r$-arborescência de custo mínimo. 
+Este projeto foi concebido com o propósito de apresentar de forma didática os algoritmos envolvidos no problema da $r$-arborescência geradora mínima e consideramos que alcançamos esse objetivo com sucesso.
+
+Implementamos os algoritmos de Chu--Liu--Edmonds e András Frank, ambos fundamentais para a resolução do problema em questão. Através de uma análise detalhada e comparativa, conseguimos não apenas validar suas eficiências teóricas, mas também demonstrar suas performances práticas em diferentes cenários.
+
+A partir desse desenvolvimento, criamos uma aplicação \textit{web} interativa que permite aos usuários visualizar e compreender passo a passo o funcionamento desses algoritmos. A ferramenta foi projetada para ser intuitiva e acessível, facilitando o aprendizado tanto para estudantes quanto para profissionais interessados na área.
 
 
-Nessa trajetória, os fins não justificam os meios; pelo contrário, os meios pelos quais buscamos a solução, os algoritmos de Chu–-Liu--Edmonds e o de Andras Frank, constituem o ponto central de discussão e a essência deste trabalho.
+\section*{Contribuições}
 
+Este trabalho realiza a interseção entre teoria dos grafos e design pedagógico, culminando no desenvolvimento de um visualizador interativo de arborescências dirigidas que promove a compreensão de algoritmos cruciais para o problema de busca $r$-arborescência geradora mínima.
 
-O algoritmo de Chu--Liu--Edmonds é um clássico da teoria dos grafos, com diversas aplicações práticas. Já o algoritmo de Andras Frank, embora menos conhecido, oferece uma abordagem elegante e eficiente para o mesmo problema, utilizando conceitos avançados de otimização combinatória. Ambos os algoritmos possuem complexidades e sutilezas que podem ser desafiadoras para estudantes e profissionais que buscam compreendê-los profundamente. Nesse contexto ressaltamos invariantes, cortes e custos reduzidos, e mostrando como escolhas locais se conectam a garantias globais de otimalidade. Procuramos menos descrever “o que o algoritmo faz” e mais explicitar “por que” cada passo se justifica, aproximando a mecânica operacional da linguagem primal--dual e de suas condições de complementaridade.
+A primeira e principal contribuição dessa dissertação é a implementação detalhada dos algoritmos de Chu--Liu--Edmonds e András Frank, acompanhada de uma análise comparativa de suas eficiências teóricas e práticas. Essa análise não apenas valida os fundamentos matemáticos subjacentes, mas também oferece insights valiosos sobre o desempenho dos algoritmos em diferentes contextos.
 
+A segunda contribuição significativa é a criação de uma aplicação \textit{web} interativa que serve como uma ferramenta educacional inovadora. Essa aplicação permite aos usuários explorar visualmente os algoritmos, facilitando a compreensão de conceitos complexos por meio de uma interface intuitiva e acessível. A integração de visualizações dinâmicas com explicações passo a passo representa um avanço na forma como algoritmos são ensinados e aprendidos.
+Acreditamos que seja uma ferramenta que contribui para o ecossistemas de recursos educacionais em ciência da computação e teoria dos grafos.
 
-Os algoritmos foram implementados em Python, aproveitando bibliotecas como NetworkX para manipulação de grafos e Matplotlib para visualização. A escolha do Python se deve à sua sintaxe clara e à vasta gama de bibliotecas científicas disponíveis, facilitando tanto a implementação quanto a compreensão dos algoritmos. A integração com PyScript permitiu que esses algoritmos fossem executados diretamente no navegador, eliminando a necessidade de instalações complexas e tornando a ferramenta acessível a um público mais amplo. Os resultados foram validados através de testes com grafos de diferentes tamanhos e estruturas, garantindo a correção e eficiência das implementações.
+\section*{Limitações}
+Apesar dos avanços alcançados, a implementação apresenta algumas limitações que devem ser consideradas. A complexidade dos algoritmos pode levar a tempos de execução elevados para grafos muito grandes, o que pode impactar a experiência do usuário. Além disso, a interface, embora intuitiva, pode beneficiar-se de melhorias adicionais em termos de acessibilidade e usabilidade, especialmente para usuários com menos experiência em manipulação de grafos. Outro ponto de atenção está relacionado a dependência de bibliotecas externas, como Cytoscape.js e PyScript, que podem introduzir desafios de compatibilidade e manutenção a longo prazo. 
 
-
-A interface \textit{web} foi projetada com foco na usabilidade e na experiência do usuário, utilizando HTML5, CSS3 e JavaScript para criar uma plataforma interativa e intuitiva obedecendo a princípios de design centrados no usuário orientados por princípios de interação humano-computacional. A estrutura modular da página permite fácil navegação entre diferentes seções, como a criação de grafos, a execução dos algoritmos e a visualização dos resultados. Elementos interativos, como botões, menus suspensos e áreas de desenho, foram incorporados para facilitar a interação do usuário com a ferramenta. A reutilização de padrões arquiteturais entre as páginas promoveu consistência cognitiva, enquanto a sequência lógica de páginas guia o usuário do contexto à experimentação e formalização, alinhando-se a princípios pedagógicos orientados pela teoria da aprendizagem.
-
-
-A partir desse desenvolvimento, o visualizador interativo de arborescências dirigidas se apresenta como uma ferramenta valiosa para estudantes, educadores e profissionais interessados em teoria dos grafos e algoritmos de otimização. A seguir destacamos algumas contribuições.
-
-
-% \section{Contribuições}
-% Este trabalho contribui para a interseção entre teoria dos grafos e design pedagógico criando um visualizador interativo de arborescências dirigidas que promove a compreensão de algoritmos que resolvem o problema da r-arborescência de custo-mínimo. As principais contribuições incluem:
-% \begin{itemize}
-%     \item \textbf{Integração de Algoritmos Complexos:} Implementação detalhada dos algoritmos de Chu--Liu--Edmonds e Andras Frank, destacando suas bases teóricas e operacionais, e demonstrando como decisões locais se traduzem em garantias globais de otimalidade.
-%     \item \textbf{Design Pedagógico:} Aplicação de princípios de interação humano-computador e de aprendizagem multimídia para criar uma interface que facilita a compreensão de conceitos complexos, reduzindo a carga cognitiva e promovendo o engajamento ativo.
-%     \item \textbf{Arquitetura Modular e Reutilizável:} Desenvolvimento de uma estrutura \textit{web} que permite fácil manutenção, extensão e consistência cognitiva entre diferentes páginas, utilizando tecnologias modernas como PyScript, NetworkX e Matplotlib.
-%     \item \textbf{Ferramenta Acessível e Reprodutível:} Criação de uma ferramenta que pode ser acessada diretamente no navegador, eliminando barreiras de adoção e permitindo que usuários experimentem e aprendam de forma autônoma.
-%     \item \textbf{Documentação e Avaliação:} Fornecimento de documentação detalhada e avaliação preliminar da interface, oferecendo insights sobre a eficácia pedagógica e identificando áreas para melhorias futuras.
-% \end{itemize}
-% Essas contribuições avançam o estado da arte na visualização e ensino de algoritmos de grafos, oferecendo uma plataforma que combina rigor teórico com práticas de design centradas no usuário.
-
-\section{Contribuições}
-
-Este trabalho contribui para a interseção entre teoria dos grafos e design pedagógico, culminando no desenvolvimento de um visualizador interativo de arborescências dirigidas que promove a compreensão de algoritmos cruciais para o problema da $r$-arborescência de custo-mínimo.
-
-A primeira e principal contribuição reside na integração detalhada de algoritmos complexos, como os de Chu--Liu--Edmonds e Andras Frank. A ferramenta não apenas implementa esses métodos, mas também destaca suas bases teóricas e operacionais, demonstrando como decisões locais se traduzem em garantias globais de otimalidade.
-
-Este rigor teórico é complementado pelo design pedagógico da aplicação. Mediante a aplicação de princípios de Interação Humano-Computador (IHC) e de aprendizagem multimídia, o sistema foi desenhado para criar uma interface que facilita a compreensão de conceitos complexos, atuando ativamente na redução da carga cognitiva e promovendo o engajamento do usuário.
-
-Tecnicamente, a contribuição se manifesta em uma arquitetura modular e reutilizável. O desenvolvimento utilizou tecnologias modernas como PyScript, NetworkX e Matplotlib, resultando em uma estrutura web que assegura fácil manutenção e consistência cognitiva entre as diferentes páginas. Essa escolha técnica culmina na criação de uma ferramenta acessível e reprodutível, que pode ser acessada diretamente no navegador, eliminando barreiras de adoção e permitindo que usuários experimentem e aprendam de forma autônoma.
-
-Em suma, estas contribuições avançam o estado da arte na visualização e ensino de algoritmos de grafos, oferecendo uma plataforma que combina rigor teórico com práticas de design centradas no usuário.
-
-\section{Limitações}
-Apesar dos avanços alcançados, a implementação apresenta algumas limitações que devem ser consideradas. A complexidade dos algoritmos pode levar a tempos de execução elevados para grafos muito grandes, o que pode impactar a experiência do usuário. Além disso, a interface, embora intuitiva, pode beneficiar-se de melhorias adicionais em termos de acessibilidade e usabilidade, especialmente para usuários com menos experiência em manipulação de grafos (descrevemos essas melhorias na seção 6.4 do capítulo anterior). Outro ponto de atenção está relacionado a dependência de bibliotecas externas, como Cytoscape.js e PyScript, que podem introduzir desafios de compatibilidade e manutenção a longo prazo. 
-% Finalmente, a avaliação da ferramenta foi preliminar e baseada em um número limitado de usuários; estudos mais abrangentes são necessários para validar sua eficácia pedagógica.
-
-\section{Trabalhos Futuros}
-Para aprimorar a ferramenta, futuras iterações podem focar em otimizações de desempenho para lidar com grafos maiores de forma mais eficiente. A interface pode ser refinada com base em testes de usabilidade, incorporando feedback de uma base de usuários diversificada. A adição de funcionalidades avançadas, como suporte a diferentes tipos de grafos e algoritmos adicionais, pode expandir o escopo da ferramenta. A integração de análises de aprendizado, como rastreamento do progresso do usuário e sugestões personalizadas, também pode enriquecer a experiência educacional. Finalmente, a realização de estudos formais para avaliar o impacto pedagógico da ferramenta em ambientes educacionais contribuirá para validar sua eficácia e orientar futuras melhorias.
+\section*{Trabalhos Futuros}
+Para aprimorar a ferramenta, futuras iterações podem focar em otimizações de desempenho para lidar com digrafos maiores de forma mais eficiente. A interface pode ser refinada com base em testes de usabilidade, incorporando feedback de uma base de usuários diversificada. A adição de funcionalidades avançadas, como suporte a diferentes tipos de grafos e algoritmos adicionais, pode expandir o escopo da ferramenta. A integração de análises de aprendizado, como rastreamento do progresso do usuário e sugestões personalizadas, também pode enriquecer a experiência educacional. Finalmente, a realização de estudos formais para avaliar o impacto pedagógico da ferramenta em ambientes educacionais contribuirá para validar sua eficácia e orientar futuras melhorias.
 
 \clearpage
 \appendix
