@@ -184,7 +184,7 @@
 % ==================== SEÇÃO 2: CHU-LIU-EDMONDS ====================
 \section{Algoritmo de Chu-Liu-Edmonds}
 
-\begin{frame}{Chu-Liu-Edmonds: Ideia Principal}
+\begin{frame}{Chu-Liu-Edmonds}
 	\begin{block}{Algoritmo Recursivo: dado um r-digrafo ponderado $(D,w,r)$}
 		chu--liu--edmonds($(D,w,r)$):
 		\begin{enumerate}
@@ -206,57 +206,111 @@
 \end{frame}
 
 % ==================== SLIDE 4: EXEMPLO DETALHADO ====================
-\begin{frame}{Digrafo de Exemplo}
+\begin{frame}{Digrafo $D$}
+	\vspace{-0.3cm}
 	\begin{center}
-		\begin{figure}[H]
-			\begin{tikzpicture}[scale=1.2, >=Stealth,
-					vertex/.style={circle,draw,fill=blue!8,thick,inner sep=1.2pt,minimum size=8mm},
-					chosen/.style={->, very thick, draw=blue},
-					edge/.style={->,semithick}]
+		\begin{tikzpicture}[scale=0.85, >=Stealth,
+				vertex/.style={circle,draw,fill=blue!8,thick,inner sep=1.2pt,minimum size=7mm},
+				chosen/.style={->, very thick, draw=blue},
+				edge/.style={->,semithick}]
 
-				\node[vertex] (r) at (0,0) {$r$};
-				\node[vertex] (a) at (3,1.6) {$a$};
-				\node[vertex] (b) at (3,-1.6) {$b$};
-				\node[vertex] (c) at (6,2.2) {$c$};
-				\node[vertex] (d) at (6,0.0) {$d$};
-				\node[vertex] (e) at (6,-2.2) {$e$};
+			\node[vertex] (r) at (0,0) {$r$};
+			\node[vertex] (a) at (3,1.6) {$a$};
+			\node[vertex] (b) at (3,-1.6) {$b$};
+			\node[vertex] (c) at (6,2.2) {$c$};
+			\node[vertex] (d) at (6,0.0) {$d$};
+			\node[vertex] (e) at (6,-2.2) {$e$};
 
-				\draw[edge] (r) -- node[above,font=\scriptsize] {1} (a);
-				\draw[edge] (r) -- node[below,font=\scriptsize] {2} (b);
-				\draw[edge] (r) .. controls (0.8,2.4) and (5.2,3.0) .. node[yshift=4pt,pos=0.53,font=\scriptsize] {3} (c);
-				\draw[edge] (b) to[bend left=12] node[left,font=\scriptsize] {4} (a);
-				\draw[edge] (a) to[bend left=14] node[right,font=\scriptsize] {5} (b);
-				\draw[edge] (a) -- node[right,font=\scriptsize] {3} (d);
-				\draw[edge] (a) -- node[above,font=\scriptsize] {1} (c);
-				\draw[edge] (b) -- node[above,font=\scriptsize] {1} (d);
-				\draw[edge] (b) -- node[below,font=\scriptsize] {2} (e);
-				\draw[edge] (c) .. controls (7.6,2.6) and (7.6,-2.6) .. node[xshift=8pt,pos=0.52,font=\scriptsize] {5} (e);
-			\end{tikzpicture}
-		\end{figure}
+			\draw[edge] (r) -- node[above,font=\scriptsize] {1} (a);
+			\draw[edge] (r) -- node[below,font=\scriptsize] {2} (b);
+			\draw[edge] (r) .. controls (0.8,2.4) and (5.2,3.0) .. node[yshift=4pt,pos=0.53,font=\scriptsize] {3} (c);
+			\draw[edge] (b) to[bend left=12] node[left,font=\scriptsize] {4} (a);
+			\draw[edge] (a) to[bend left=14] node[right,font=\scriptsize] {5} (b);
+			\draw[edge] (a) -- node[right,font=\scriptsize] {3} (d);
+			\draw[edge] (a) -- node[above,font=\scriptsize] {1} (c);
+			\draw[edge] (b) -- node[above,font=\scriptsize] {1} (d);
+			\draw[edge] (b) -- node[below,font=\scriptsize] {2} (e);
+			\draw[edge] (c) .. controls (7.6,2.6) and (7.6,-2.6) .. node[xshift=8pt,pos=0.52,font=\scriptsize] {5} (e);
+		\end{tikzpicture}
 	\end{center}
 
+	\vspace{0.2cm}
 	\begin{alertblock}{Objetivo}
-		Encontrar a $r$-arborescência geradora de custo mínimo
+		Encontrar a $r$-arborescência geradora de custo mínimo através do algoritmo de Chu-Liu-Edmonds
 	\end{alertblock}
 \end{frame}
 
-\begin{frame}{Passo 1: Redução de Custos e Construção de $D_0$}
+\begin{frame}{Passo 1: Redução de Custos}
 	\begin{columns}[c]
 		\column{0.5\textwidth}
-		\textbf{Redução de custos $\lambda$:}
+		\textbf{Escolha gulosa:}
+
+		Para cada $v \neq r$, calcular:
+		$$\lambda(v) := \min\{w(a) : a \in \delta^-(v)\}$$
+
+		\vspace{0.3cm}
+		Custos $\lambda$-reduzidos:
+		$$w_\lambda(uv) := w(uv) - \lambda(v)$$
+
+		\vspace{0.3cm}
+		\textbf{Valores de $\lambda$:}
 		\begin{itemize}
-			\item $\lambda(a) = 1$ (arco $(r,a)$)
-			\item $\lambda(b) = 2$ (arco $(r,b)$)
-			\item $\lambda(c) = 1$ (arco $(a,c)$)
-			\item $\lambda(d) = 1$ (arcos $(b,d)$)
-			\item $\lambda(e) = 2$ (arco $(b,e)$)
+			\item $\lambda(a) = 1$, $\lambda(b) = 2$
+			\item $\lambda(c) = 1$, $\lambda(d) = 1$, $\lambda(e) = 2$
 		\end{itemize}
 
-		\vspace{0.2cm}
-		\emph{Escolhemos arcos de custo zero para formar $D_0$}
+		\column{0.5\textwidth}
+		\begin{tikzpicture}[scale=0.85, >=Stealth,
+				vertex/.style={circle,draw,fill=blue!8,thick,inner sep=1.2pt,minimum size=7mm},
+				edge/.style={->,semithick}]
+
+			\node[vertex] (r) at (0,0) {$r$};
+			\node[vertex] (a) at (2.5,1.3) {$a$};
+			\node[vertex] (b) at (2.5,-1.3) {$b$};
+			\node[vertex] (c) at (5,1.8) {$c$};
+			\node[vertex] (d) at (5,0.0) {$d$};
+			\node[vertex] (e) at (5,-1.8) {$e$};
+
+			\draw[edge] (r) -- node[above,font=\scriptsize] {0} (a);
+			\draw[edge] (r) -- node[below,font=\scriptsize] {0} (b);
+			\draw[edge] (r) .. controls (0.6,2.0) and (4.2,2.5) .. node[yshift=3pt,pos=0.53,font=\scriptsize] {2} (c);
+			\draw[edge] (b) to[bend left=12] node[left,font=\scriptsize] {2} (a);
+			\draw[edge] (a) to[bend left=14] node[right,font=\scriptsize] {3} (b);
+			\draw[edge] (a) -- node[right,font=\scriptsize] {2} (d);
+			\draw[edge] (a) -- node[above,font=\scriptsize] {0} (c);
+			\draw[edge] (b) -- node[above,font=\scriptsize] {0} (d);
+			\draw[edge] (b) -- node[below,font=\scriptsize] {0} (e);
+			\draw[edge] (c) .. controls (6.3,2.2) and (6.3,-2.2) .. node[xshift=7pt,pos=0.52,font=\scriptsize] {3} (e);
+
+		\end{tikzpicture}
+	\end{columns}
+
+	\vspace{0.3cm}
+	\begin{block}{Custos Reduzidos}
+		Após subtrair $\lambda(v)$ de cada arco entrando em $v$, os arcos com custo zero formam candidatos para $D_0$
+	\end{block}
+\end{frame}
+
+\begin{frame}{Passo 2: Construção de $D_0$}
+	\begin{columns}[c]
+		\column{0.5\textwidth}
+		\textbf{Formação de $D_0$:}
+
+		Para cada $v \neq r$, escolher um arco $a_v \in \delta^-(v)$ com $w_\lambda(a_v) = 0$
+
+		\vspace{0.3cm}
+		Formar:
+		$$D_0 := (V, \{a_v : v \in V \setminus \{r\}\})$$
+
+		\vspace{0.3cm}
+		\textbf{Arcos escolhidos:}
+		\begin{itemize}
+			\item $(r,a)$, $(r,b)$
+			\item $(a,c)$, $(b,d)$, $(b,e)$
+		\end{itemize}
 
 		\column{0.5\textwidth}
-		\begin{tikzpicture}[scale=0.9, >=Stealth,
+		\begin{tikzpicture}[scale=0.85, >=Stealth,
 				vertex/.style={circle,draw,fill=blue!8,thick,inner sep=1.2pt,minimum size=7mm},
 				selected/.style={->,very thick,draw=blue},
 				unselected/.style={->,semithick,draw=black!35}]
@@ -273,8 +327,8 @@
 			\draw[selected] (a) -- node[above,font=\scriptsize,text=blue] {0} (c);
 			\draw[selected] (b) -- node[above,font=\scriptsize,text=blue] {0} (d);
 			\draw[selected] (b) -- node[below,font=\scriptsize,text=blue] {0} (e);
-			\draw[unselected] (b) to[bend left=12] node[above,font=\scriptsize,text=black] {2} (a);
-			\draw[unselected] (a) to[bend left=14] node[below,font=\scriptsize,text=black] {3} (b);
+			\draw[unselected] (b) to[bend left=12] node[left,font=\scriptsize,text=black] {2} (a);
+			\draw[unselected] (a) to[bend left=14] node[right,font=\scriptsize,text=black] {3} (b);
 			\draw[unselected] (a) -- node[right,font=\scriptsize,text=black] {2} (d);
 			\draw[unselected] (r) .. controls (0.6,2.0) and (4.2,2.5) .. node[yshift=3pt,pos=0.53,font=\scriptsize,text=black] {2} (c);
 			\draw[unselected] (c) .. controls (6.3,2.2) and (6.3,-2.2) .. node[xshift=7pt,pos=0.52,font=\scriptsize,text=black] {3} (e);
@@ -283,10 +337,8 @@
 	\end{columns}
 
 	\vspace{0.3cm}
-	\begin{alertblock}{$D_0$ \' e uma $r$-arboresc\^encia!}
-		Neste exemplo, $D_0 = \{(r,a), (r,b), (a,c), (b,d), (b,e)\}$ forma uma $r$-arboresc\^encia.
-
-		\emph{Em outras palavras:} todos os v\'ertices s\~ao alcan\c{c}\'aveis a partir de $r$ e cada v\'ertice tem exatamente um arco entrando
+	\begin{alertblock}{$D_0$ é uma $r$-arborescência!}
+		Neste exemplo, $D_0 = \{(r,a), (r,b), (a,c), (b,d), (b,e)\}$ forma uma $r$-arborescência.
 	\end{alertblock}
 \end{frame}
 
