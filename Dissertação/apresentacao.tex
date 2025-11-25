@@ -221,15 +221,15 @@
 				\node[vertex] (d) at (6,0.0) {$d$};
 				\node[vertex] (e) at (6,-2.2) {$e$};
 
-				\draw[chosen] (r) -- node[above,font=\scriptsize] {1} (a);
-				\draw[chosen] (r) -- node[below,font=\scriptsize] {2} (b);
+				\draw[edge] (r) -- node[above,font=\scriptsize] {1} (a);
+				\draw[edge] (r) -- node[below,font=\scriptsize] {2} (b);
 				\draw[edge] (r) .. controls (0.8,2.4) and (5.2,3.0) .. node[yshift=4pt,pos=0.53,font=\scriptsize] {3} (c);
 				\draw[edge] (b) to[bend left=12] node[left,font=\scriptsize] {4} (a);
 				\draw[edge] (a) to[bend left=14] node[right,font=\scriptsize] {5} (b);
 				\draw[edge] (a) -- node[right,font=\scriptsize] {3} (d);
-				\draw[chosen] (a) -- node[above,font=\scriptsize] {1} (c);
-				\draw[chosen] (b) -- node[above,font=\scriptsize] {1} (d);
-				\draw[chosen] (b) -- node[below,font=\scriptsize] {2} (e);
+				\draw[edge] (a) -- node[above,font=\scriptsize] {1} (c);
+				\draw[edge] (b) -- node[above,font=\scriptsize] {1} (d);
+				\draw[edge] (b) -- node[below,font=\scriptsize] {2} (e);
 				\draw[edge] (c) .. controls (7.6,2.6) and (7.6,-2.6) .. node[xshift=8pt,pos=0.52,font=\scriptsize] {5} (e);
 			\end{tikzpicture}
 		\end{figure}
