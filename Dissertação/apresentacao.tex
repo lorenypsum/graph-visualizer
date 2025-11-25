@@ -1,0 +1,657 @@
+\documentclass[aspectratio=169]{beamer}
+
+% Tema e cores
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% Pacotes
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{graphs,arrows.meta,positioning,fit,calc}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{xcolor}
+\usepackage{booktabs}
+
+% Configurações do título
+\title[Arborescências de Custo Mínimo]{Algoritmos para Arborescências de Custo Mínimo em Digrafos}
+\subtitle{Chu-Liu-Edmonds e András Frank}
+\author{Seu Nome}
+\institute{Universidade de São Paulo \\ Instituto de Matemática e Estatística}
+\date{\today}
+
+% Comandos personalizados
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\D}{\mathcal{D}}
+
+\begin{document}
+
+% ==================== SLIDE 1: TÍTULO ====================
+\begin{frame}
+	\titlepage
+\end{frame}
+
+% ==================== SLIDE 2: SUMÁRIO ====================
+\begin{frame}{Sumário}
+	\tableofcontents
+\end{frame}
+
+% ==================== SEÇÃO 1: INTRODUÇÃO ====================
+\section{Introdução}
+
+\begin{frame}{O Problema}
+	\begin{block}{Arborescência de Custo Mínimo}
+		Dado um digrafo $D = (V, A)$ com pesos $w: A \to \mathbb{R}$ e raiz $r \in V$:
+		\begin{itemize}
+			\item Encontrar uma $r$-arborescência geradora $T$
+			\item Que minimize $w(T) = \sum_{a \in A(T)} w(a)$
+		\end{itemize}
+	\end{block}
+
+	\vspace{0.5cm}
+
+	\begin{columns}[c]
+		\column{0.5\textwidth}
+		\textbf{Aplicações:}
+		\begin{itemize}
+			\item Redes de comunicação
+			\item Logística
+			\item Otimização de recursos
+		\end{itemize}
+
+		\column{0.5\textwidth}
+		\textbf{Algoritmos estudados:}
+		\begin{enumerate}
+			\item Chu-Liu-Edmonds (1965-67)
+			\item András Frank (1981-2014)
+		\end{enumerate}
+	\end{columns}
+\end{frame}
+
+% ==================== SLIDE 3: EXEMPLO ====================
+\begin{frame}{Digrafo de Exemplo}
+	\begin{center}
+		\begin{tikzpicture}[scale=1.2,
+				vertex/.style={circle,draw,minimum size=0.8cm,font=\large},
+				edge/.style={->,>=stealth,thick}]
+
+			\node[vertex,fill=red!20] (r) at (0,2) {$r$};
+			\node[vertex] (A) at (2,3) {$A$};
+			\node[vertex] (B) at (4,3) {$B$};
+			\node[vertex] (C) at (2,1) {$C$};
+			\node[vertex] (D) at (4,1) {$D$};
+			\node[vertex] (E) at (6,2) {$E$};
+
+			\draw[edge] (r) -- node[above] {2} (A);
+			\draw[edge] (r) -- node[below] {10} (C);
+			\draw[edge] (r) to[bend left] node[above] {10} (B);
+			\draw[edge] (B) -- node[right] {1} (A);
+			\draw[edge] (A) -- node[left] {4} (C);
+			\draw[edge] (C) -- node[below] {2} (D);
+			\draw[edge] (D) to[bend right] node[below] {2} (B);
+			\draw[edge] (B) -- node[above] {8} (E);
+			\draw[edge] (C) -- node[below] {4} (E);
+
+		\end{tikzpicture}
+	\end{center}
+
+	\begin{alertblock}{Objetivo}
+		Encontrar a $r$-arborescência geradora de custo mínimo
+	\end{alertblock}
+\end{frame}
+
+% ==================== SEÇÃO 2: CHU-LIU-EDMONDS ====================
+\section{Algoritmo de Chu-Liu-Edmonds}
+
+\begin{frame}{Chu-Liu-Edmonds: Ideia Principal}
+	\begin{block}{Estratégia Recursiva}
+		\begin{enumerate}
+			\item Para cada vértice $v \neq r$: escolher arco de entrada de \textbf{custo mínimo}
+			\item Se não há ciclos $\Rightarrow$ solução ótima encontrada!
+			\item Se há ciclos $\Rightarrow$ \textbf{contrair} e resolver recursivamente
+		\end{enumerate}
+	\end{block}
+
+	\begin{center}
+		\textbf{Escolha Gulosa} + \textbf{Contração de Ciclos}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Passo 1: Escolha Gulosa}
+	\begin{columns}[c]
+		\column{0.5\textwidth}
+		Para cada vértice, selecionar arco de entrada mínimo:
+		\begin{itemize}
+			\item $A$: arco $(B,A)$ peso 1 {\color{blue}$\checkmark$}
+			\item $B$: arco $(r,B)$ peso 10
+			\item $C$: arco $(A,C)$ peso 4 {\color{blue}$\checkmark$}
+			\item $D$: arco $(C,D)$ peso 2 {\color{blue}$\checkmark$}
+			\item $E$: arco $(C,E)$ peso 4 {\color{blue}$\checkmark$}
+		\end{itemize}
+
+		\column{0.5\textwidth}
+		\begin{tikzpicture}[scale=0.9,
+				vertex/.style={circle,draw,minimum size=0.7cm},
+				selected/.style={->,>=stealth,thick,blue},
+				unselected/.style={->,>=stealth,gray!30}]
+
+			\node[vertex,fill=red!20] (r) at (0,2) {$r$};
+			\node[vertex] (A) at (2,3) {$A$};
+			\node[vertex] (B) at (4,3) {$B$};
+			\node[vertex] (C) at (2,1) {$C$};
+			\node[vertex] (D) at (4,1) {$D$};
+			\node[vertex] (E) at (6,2) {$E$};
+
+			\draw[unselected] (r) -- node[above,black] {2} (A);
+			\draw[unselected] (r) -- node[below,black] {10} (C);
+			\draw[unselected] (r) to[bend left] node[above,black] {10} (B);
+			\draw[selected] (B) -- node[right] {1} (A);
+			\draw[selected] (A) -- node[left] {4} (C);
+			\draw[selected] (C) -- node[below] {2} (D);
+			\draw[unselected] (D) to[bend right] node[below,black] {2} (B);
+			\draw[unselected] (B) -- node[above,black] {8} (E);
+			\draw[selected] (C) -- node[below] {4} (E);
+
+		\end{tikzpicture}
+	\end{columns}
+
+	\vspace{0.3cm}
+	\begin{alertblock}{Problema}
+		Ciclo detectado: $A \to C \to D \to B \to A$
+	\end{alertblock}
+\end{frame}
+
+\begin{frame}{Passo 2: Contração do Ciclo}
+	\begin{columns}[c]
+		\column{0.5\textwidth}
+		\textbf{Ciclo encontrado:} $\{A, B, C, D\}$
+
+		\vspace{0.3cm}
+		Contraímos em um super-vértice $v_C$
+
+		\vspace{0.3cm}
+		Ajustamos pesos dos arcos que \textbf{entram} no ciclo:
+		$$w'(u,v_C) = w(u,v) - w(\text{min\_in}(v))$$
+
+		\column{0.5\textwidth}
+		\begin{tikzpicture}[scale=1,
+				vertex/.style={circle,draw,minimum size=0.7cm},
+				super/.style={circle,draw,thick,minimum size=1.5cm,fill=yellow!20}]
+
+			\node[vertex,fill=red!20] (r) at (0,2) {$r$};
+			\node[super] (vC) at (3,2.5) {$v_C$};
+			\node[vertex] (E) at (6,2) {$E$};
+
+			\draw[->,>=stealth,thick] (r) -- node[above] {$2-1=1$} (vC);
+			\draw[->,>=stealth,thick] (vC) -- node[above] {4} (E);
+
+		\end{tikzpicture}
+	\end{columns}
+
+	\vspace{0.5cm}
+	\begin{block}{Recursão}
+		Resolver o problema no digrafo contraído
+	\end{block}
+\end{frame}
+
+\begin{frame}{Passo 3: Solução no Digrafo Contraído}
+	\begin{center}
+		\begin{tikzpicture}[scale=1.2,
+				vertex/.style={circle,draw,minimum size=0.7cm},
+				super/.style={circle,draw,thick,minimum size=1.5cm,fill=yellow!20}]
+
+			\node[vertex,fill=red!20] (r) at (0,2) {$r$};
+			\node[super] (vC) at (3,2.5) {$v_C$};
+			\node[vertex] (E) at (6,2) {$E$};
+
+			\draw[->,>=stealth,thick,blue] (r) -- node[above] {1} (vC);
+			\draw[->,>=stealth,thick,blue] (vC) -- node[above] {4} (E);
+
+		\end{tikzpicture}
+	\end{center}
+
+	Escolha gulosa:
+	\begin{itemize}
+		\item $(r, v_C)$ peso 1
+		\item $(v_C, E)$ peso 4
+	\end{itemize}
+
+	\textbf{Sem ciclos!} $\Rightarrow$ Solução encontrada no digrafo contraído
+\end{frame}
+
+\begin{frame}{Passo 4: Expandindo a Solução}
+	\begin{columns}[c]
+		\column{0.5\textwidth}
+		No digrafo contraído: $(r, v_C)$ foi escolhido
+
+		\vspace{0.3cm}
+		Expandindo $v_C$:
+		\begin{itemize}
+			\item Remover arco $(B, A)$ do ciclo
+			\item Manter: $(A,C)$, $(C,D)$, $(D,B)$
+			\item Adicionar: $(r,A)$ peso 2
+		\end{itemize}
+
+		\column{0.5\textwidth}
+		\begin{tikzpicture}[scale=0.9,
+				vertex/.style={circle,draw,minimum size=0.7cm},
+				selected/.style={->,>=stealth,thick,blue}]
+
+			\node[vertex,fill=red!20] (r) at (0,2) {$r$};
+			\node[vertex] (A) at (2,3) {$A$};
+			\node[vertex] (B) at (4,3) {$B$};
+			\node[vertex] (C) at (2,1) {$C$};
+			\node[vertex] (D) at (4,1) {$D$};
+			\node[vertex] (E) at (6,2) {$E$};
+
+			\draw[selected] (r) -- node[above] {2} (A);
+			\draw[selected] (A) -- node[left] {4} (C);
+			\draw[selected] (C) -- node[below] {2} (D);
+			\draw[selected] (D) to[bend right] node[below] {2} (B);
+			\draw[selected] (C) -- node[below] {4} (E);
+
+		\end{tikzpicture}
+	\end{columns}
+
+	\vspace{0.3cm}
+	\begin{exampleblock}{Solução Ótima}
+		Custo total: $2 + 4 + 2 + 2 + 4 = 14$
+	\end{exampleblock}
+\end{frame}
+
+% ==================== SEÇÃO 3: ANDRÁS FRANK ====================
+\section{Algoritmo de András Frank}
+
+\begin{frame}{András Frank: Visão Geral}
+	\begin{block}{Abordagem em Duas Fases}
+		\textbf{Fase I:} Construir cobertura de subconjuntos minimais via redução de custos
+
+		\textbf{Fase II:} Extrair arborescência da cobertura
+	\end{block}
+
+	\vspace{0.5cm}
+
+	\begin{columns}[c]
+		\column{0.5\textwidth}
+		\textbf{Diferencial:}
+		\begin{itemize}
+			\item Trabalha com múltiplos vértices simultaneamente
+			\item Usa componentes fortemente conexas
+			\item Redução sistemática de custos
+		\end{itemize}
+
+		\column{0.5\textwidth}
+		\textbf{Complexidade:}
+		\begin{itemize}
+			\item Fase I: $O(nm)$
+			\item Fase II v1 (lista): $O(n^2)$
+			\item Fase II v2 (heap): $O(n \log n)$
+		\end{itemize}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Fase I: Redução de Custos}
+	\textbf{Para cada vértice} $v \neq r$: subtrair o mínimo de entrada
+
+	\begin{center}
+		\begin{tikzpicture}[scale=1.1,
+				vertex/.style={circle,draw,minimum size=0.7cm}]
+
+			% Antes
+			\begin{scope}
+				\node[vertex,fill=red!20] (r1) at (0,2) {$r$};
+				\node[vertex] (A1) at (2,3) {$A$};
+				\node[vertex] (B1) at (4,3) {$B$};
+				\node[vertex] (C1) at (2,1) {$C$};
+
+				\draw[->,>=stealth] (r1) -- node[above] {2} (A1);
+				\draw[->,>=stealth] (r1) to[bend left] node[above] {10} (B1);
+				\draw[->,>=stealth] (B1) -- node[right] {1} (A1);
+				\draw[->,>=stealth] (A1) -- node[left] {4} (C1);
+
+				\node at (2,0) {\textbf{Original}};
+			\end{scope}
+
+			% Depois
+			\begin{scope}[xshift=6cm]
+				\node[vertex,fill=red!20] (r2) at (0,2) {$r$};
+				\node[vertex] (A2) at (2,3) {$A$};
+				\node[vertex] (B2) at (4,3) {$B$};
+				\node[vertex] (C2) at (2,1) {$C$};
+
+				\draw[->,>=stealth,blue] (r2) -- node[above] {1} (A2);
+				\draw[->,>=stealth] (r2) to[bend left] node[above] {10} (B2);
+				\draw[->,>=stealth,blue,very thick] (B2) -- node[right] {\textbf{0}} (A2);
+				\draw[->,>=stealth,blue,very thick] (A2) -- node[left] {\textbf{0}} (C2);
+
+				\node at (2,0) {\textbf{Após Redução}};
+			\end{scope}
+
+		\end{tikzpicture}
+	\end{center}
+
+	Arcos com custo \textbf{zero} formam o digrafo $D_0$
+\end{frame}
+
+\begin{frame}{Fase I: Componentes Fortemente Conexas}
+	\begin{columns}[c]
+		\column{0.5\textwidth}
+		Identificar componentes fortemente conexas (CFCs) em $D_0$
+
+		\vspace{0.3cm}
+		Cada CFC forma um \textbf{subconjunto minimal}
+
+		\vspace{0.3cm}
+		Construir sequência laminar de subconjuntos
+
+		\column{0.5\textwidth}
+		\begin{tikzpicture}[scale=0.9]
+			\node[draw,circle,fill=yellow!20,minimum size=1.2cm] (S1) at (0,2) {$S_1$};
+			\node[draw,circle,fill=yellow!20,minimum size=1.2cm] (S2) at (2,2) {$S_2$};
+			\node[draw,circle,fill=yellow!20,minimum size=1.2cm] (S3) at (1,0.5) {$S_3$};
+
+			\draw[->,>=stealth,thick] (S1) to[bend left] (S2);
+			\draw[->,>=stealth,thick] (S2) to[bend left] (S1);
+			\draw[->,>=stealth,thick] (S2) -- (S3);
+		\end{tikzpicture}
+	\end{columns}
+
+	\vspace{0.5cm}
+	\begin{block}{Condição de Otimalidade}
+		Sequência $\lambda$ satisfaz: $|\delta^-(X)| = 1$ para cada $X$ em $\lambda$
+	\end{block}
+\end{frame}
+
+\begin{frame}{Fase II: Construção da Arborescência}
+	\textbf{Objetivo:} Extrair arborescência de $D_0$ respeitando $\lambda$
+
+	\vspace{0.3cm}
+
+	\begin{enumerate}
+		\item Iniciar com conjunto $R = \{r\}$
+		\item Para cada $v$ fora de $R$:
+		      \begin{itemize}
+			      \item Selecionar arco $(u,v)$ com $u \in R$ e custo reduzido zero
+			      \item Adicionar $v$ a $R$
+		      \end{itemize}
+		\item Repetir até incluir todos os vértices
+	\end{enumerate}
+
+	\vspace{0.5cm}
+
+	\begin{exampleblock}{Resultado}
+		Arborescência ótima com mesma solução: custo 14
+	\end{exampleblock}
+\end{frame}
+
+% ==================== SEÇÃO 4: RESULTADOS ====================
+\section{Resultados Experimentais}
+
+\begin{frame}{Comparação de Desempenho}
+	\textbf{Experimentos:} 2000 digrafos aleatórios, $|V| \in [101, 4996]$
+
+	\vspace{0.3cm}
+
+	\begin{center}
+		\begin{tabular}{lcc}
+			\toprule
+			\textbf{Algoritmo}    & \textbf{Tempo Mediano} & \textbf{Tempo Médio} \\
+			\midrule
+			Chu-Liu-Edmonds       & 0,25 s                 & 0,58 s               \\
+			Frank Fase I          & 8,93 s                 & 12,40 s              \\
+			Frank Fase II (lista) & 0,98 s                 & 1,34 s               \\
+			Frank Fase II (heap)  & \textbf{0,016 s}       & \textbf{0,020 s}     \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+
+	\vspace{0.5cm}
+
+	\begin{block}{Speedup Fase II}
+		Heap vs Lista: aceleração de \textbf{58,12 vezes} (mediana)
+	\end{block}
+\end{frame}
+
+\begin{frame}{Características Estruturais}
+	\begin{columns}[c]
+		\column{0.5\textwidth}
+		\textbf{Contrações (Chu-Liu):}
+		\begin{itemize}
+			\item Mediana: 2 contrações
+			\item Média: 6,82
+			\item Máximo: 406
+			\item 93,8\% com $< 20$
+		\end{itemize}
+
+		\vspace{0.3cm}
+		Muito abaixo do limite teórico $O(n)$
+
+		\column{0.5\textwidth}
+		\begin{center}
+			\includegraphics[width=\textwidth]{figures/fig_contractions_depth.png}
+		\end{center}
+	\end{columns}
+
+	\vspace{0.3cm}
+	\textbf{Consumo de memória:} mediana 11,5 MB (Fase I)
+\end{frame}
+
+% ==================== SEÇÃO 5: APLICAÇÃO WEB ====================
+\section{Aplicação Web}
+
+\begin{frame}{Motivação Didática}
+	\begin{block}{Desafio}
+		Algoritmos de grafos são \textbf{abstratos} e \textbf{difíceis de visualizar}
+	\end{block}
+
+	\vspace{0.5cm}
+
+	\begin{columns}[c]
+		\column{0.5\textwidth}
+		\textbf{Solução Proposta:}
+		\begin{itemize}
+			\item Visualização interativa
+			\item Execução passo a passo
+			\item Feedback imediato
+			\item Acessível via navegador
+		\end{itemize}
+
+		\column{0.5\textwidth}
+		\textbf{Tecnologias:}
+		\begin{itemize}
+			\item PyScript (Python no browser)
+			\item JavaScript
+			\item HTML5/CSS3
+			\item NetworkX
+		\end{itemize}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Arquitetura da Aplicação}
+	\begin{center}
+		\begin{tikzpicture}[
+				node distance=1.5cm,
+				box/.style={rectangle,draw,thick,minimum width=3cm,minimum height=1cm,align=center}]
+
+			\node[box,fill=blue!20] (ui) {Interface HTML/CSS};
+			\node[box,fill=green!20,below of=ui] (pyscript) {PyScript\\(Python)};
+			\node[box,fill=yellow!20,below of=pyscript] (algos) {Algoritmos\\Chu-Liu | Frank};
+			\node[box,fill=orange!20,below of=algos] (nx) {NetworkX};
+
+			\draw[->,>=stealth,thick] (ui) -- (pyscript);
+			\draw[->,>=stealth,thick] (pyscript) -- (algos);
+			\draw[->,>=stealth,thick] (algos) -- (nx);
+			\draw[->,>=stealth,thick] (nx) to[bend right=60] (ui);
+
+		\end{tikzpicture}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Interface: Página Principal}
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{../assets/homehtml.png}
+	\end{center}
+
+	\begin{itemize}
+		\item Navegação intuitiva entre algoritmos
+		\item Acesso direto aos exemplos interativos
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Interface: Desenho de Grafos}
+	\begin{center}
+		\includegraphics[width=0.75\textwidth]{../assets/drawhtml.png}
+	\end{center}
+
+	Funcionalidades:
+	\begin{itemize}
+		\item Adicionar vértices e arestas
+		\item Definir pesos
+		\item Exportar/importar grafos em JSON
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Interface: Chu-Liu-Edmonds}
+	\begin{center}
+		\includegraphics[width=0.75\textwidth]{../assets/chuliuhtml.png}
+	\end{center}
+
+	\begin{itemize}
+		\item Visualização passo a passo
+		\item Destacamento de ciclos detectados
+		\item Log detalhado das operações
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Interface: András Frank}
+	\begin{center}
+		\includegraphics[width=0.75\textwidth]{../assets/andrasfrankv1html.png}
+	\end{center}
+
+	\begin{itemize}
+		\item Exibição das duas fases
+		\item Visualização de CFCs
+		\item Comparação entre versões (lista vs heap)
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Princípios de Design}
+	\begin{block}{Teoria dos Registros de Representação (Duval)}
+		Transitar entre diferentes representações:
+		\begin{itemize}
+			\item \textbf{Visual:} diagramas do grafo
+			\item \textbf{Simbólico:} código Python
+			\item \textbf{Textual:} log das operações
+		\end{itemize}
+	\end{block}
+
+	\vspace{0.5cm}
+
+	\begin{alertblock}{Feedback Imediato}
+		Validação em tempo real das operações do usuário
+	\end{alertblock}
+\end{frame}
+
+% ==================== SEÇÃO 6: CONCLUSÕES ====================
+\section{Conclusões}
+
+\begin{frame}{Contribuições do Trabalho}
+	\begin{enumerate}
+		\item \textbf{Implementação completa} de dois algoritmos clássicos
+		      \begin{itemize}
+			      \item Chu-Liu-Edmonds: recursivo com contração
+			      \item András Frank: duas fases com otimização heap
+		      \end{itemize}
+
+		      \vspace{0.3cm}
+
+		\item \textbf{Análise experimental} detalhada
+		      \begin{itemize}
+			      \item 2000 instâncias aleatórias
+			      \item Comparação de desempenho e características estruturais
+		      \end{itemize}
+
+		      \vspace{0.3cm}
+
+		\item \textbf{Aplicação web interativa}
+		      \begin{itemize}
+			      \item Ferramenta didática para visualização
+			      \item Execução passo a passo dos algoritmos
+			      \item Design centrado no usuário
+		      \end{itemize}
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}{Principais Resultados}
+	\begin{itemize}
+		\item \textbf{Corretude validada:} custos idênticos em todas as instâncias
+
+		      \vspace{0.3cm}
+
+		\item \textbf{Chu-Liu-Edmonds} mais rápido para construção direta
+		      \begin{itemize}
+			      \item Mediana: 0,25 s vs 8,93 s (Fase I Frank)
+		      \end{itemize}
+
+		      \vspace{0.3cm}
+
+		\item \textbf{Otimização heap} fundamental na Fase II
+		      \begin{itemize}
+			      \item Speedup: 58× (mediana), 61× (média)
+		      \end{itemize}
+
+		      \vspace{0.3cm}
+
+		\item \textbf{Comportamento prático} muito melhor que limites teóricos
+		      \begin{itemize}
+			      \item Contrações: mediana 2 (limite $O(n)$)
+			      \item Memória modesta: 11,5 MB
+		      \end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Trabalhos Futuros}
+	\begin{block}{Extensões Possíveis}
+		\begin{itemize}
+			\item Implementar outras variantes (Tarjan, Gabow)
+			\item Análise em grafos com estruturas especiais
+			\item Paralelização dos algoritmos
+			\item Extensão para grafos dinâmicos
+		\end{itemize}
+	\end{block}
+
+	\vspace{0.5cm}
+
+	\begin{block}{Melhorias na Aplicação}
+		\begin{itemize}
+			\item Modo de edição visual de grafos
+			\item Geração automática de casos de teste
+			\item Exercícios interativos com correção automática
+			\item Integração com plataformas de ensino (Moodle, Jupyter)
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+% ==================== SLIDE FINAL ====================
+\begin{frame}[plain]
+	\centering
+	\vfill
+
+	{\Huge Obrigado!}
+
+	\vspace{1cm}
+
+	{\Large Perguntas?}
+
+	\vspace{1cm}
+
+	{\normalsize \texttt{https://github.com/lorenypsum/graph-visualizer}}
+
+	\vfill
+\end{frame}
+
+\end{document}
