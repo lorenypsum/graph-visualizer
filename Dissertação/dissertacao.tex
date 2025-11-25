@@ -1,37 +1,43 @@
 \documentclass[
 	% -- opções da classe memoir --
-	12pt,					% tamanho da fonte
+	11pt,					% tamanho da fonte
 	openright,				% capítulos começam em pág ímpar (insere página vazia caso preciso)
-	oneside,					% para impressão em verso e anverso. Oposto a oneside
-	a4paper,					% tamanho do papel. 
+	oneside,				% para impressão só frente
+	a4paper,				% tamanho do papel. 
 	% -- opções da classe abntex2 --
 	%chapter=TITLE,			% títulos de capítulos convertidos em letras maiúsculas
 	%section=TITLE,			% títulos de seções convertidos em letras maiúsculas
 	%subsection=TITLE,		% títulos de subseções convertidos em letras maiúsculas
 	%subsubsection=TITLE,	% títulos de subsubseções convertidos em letras maiúsculas
 	% -- opções do pacote babel --
-	english,					% idioma adicional para hifenização
-	%french,					% idioma adicional para hifenização
+	english,				% idioma adicional para hifenização
+	%french,				% idioma adicional para hifenização
 	%spanish,				% idioma adicional para hifenização
 	brazil					% o último idioma é o principal do documento
 	]{abntex2}
 
+
+
+
 % ---------------------
 % Pacotes OBRIGATÓRIOS
 % ---------------------
-%\usepackage{lmodern}				% Usa a fonte Latin Modern			
+%\usepackage{lmodern}
+\usepackage[adobe-utopia]{mathdesign}		
 \usepackage[T1]{fontenc}			% Selecao de codigos de fonte.
 \usepackage[utf8]{inputenc}		% Codificacao do documento (conversão automática dos acentos)
 \usepackage{lastpage}			% Usado pela Ficha catalográfica
 \usepackage{indentfirst}			% Indenta o primeiro parágrafo de cada seção.
 \usepackage{color}				% Controle das cores
-\usepackage{graphicx,graphicx}	% Inclusão de gráficos
+\usepackage{graphicx}	        % Inclusão de gráficos
+
 % Configuração global para limitar o tamanho das figuras
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth \linewidth \else \Gin@nat@width \fi}
 \def\maxheight{\ifdim\Gin@nat@height>0.75\textheight 0.75\textheight \else \Gin@nat@height \fi}
 \makeatother
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+
 \usepackage{epsfig,subfig}		% Inclusão de figuras
 \usepackage{microtype} 			% Melhorias de justificação
 \usepackage{verbatim}           %comentarios de mais de uma linha
@@ -41,7 +47,7 @@
 % Pacotes ADICIONAIS
 % ---------------------
 \usepackage{lipsum}						% Geração de dummy text
-\usepackage{siunitx,amsmath,amssymb,mathrsfs, cleveref}	% Comandos matemáticos avançados 
+\usepackage{siunitx,amsmath,mathrsfs,cleveref}	% Comandos matemáticos avançados 
 \usepackage{setspace}  					% Para permitir espaçamento simples, 1 1/2 e duplo
 \usepackage{tabularx} 					% Para poder ter tabelas com colunas de largura auto-ajustável
 \usepackage{afterpage} 					% Para executar um comando depois do fim da página corrente
@@ -57,7 +63,8 @@
 \usepackage{calrsfs}
 % ---------------------
 %\usepackage{times}
-\usepackage{newpxtext}
+%\usepackage{newpxtext}
+%\usepackage{mathptmx}
 \usepackage{svg}
 
 % tracejado e riscado
@@ -77,13 +84,25 @@
 % ---------------------
 
 \usepackage{listings}
+\lstset{
+  literate=%
+   {á}{{\'a}}1 {â}{{\^a}}1 {ã}{{\~a}}1 {à}{{\`a}}1
+   {é}{{\'e}}1 {ê}{{\^e}}1
+   {í}{{\'i}}1
+   {ó}{{\'o}}1 {ô}{{\^o}}1 {õ}{{\~o}}1
+   {ú}{{\'u}}1
+   {ç}{{\c{c}}}1
+}
+
 \usepackage{booktabs}
 %\usepackage{makeidx}
 %\usepackage{imakeidx}
 \usepackage[scaled=0.8]{newtxtt}
 \usepackage[scaled=0.85]{beramono}
 \usepackage{tikz}
+\usetikzlibrary{fit}
 \usetikzlibrary{graphs,arrows.meta,positioning,fit,calc,decorations.pathmorphing}
+
 %\usegdlibrary{force}
 \usepackage{bbm}
 
@@ -94,11 +113,11 @@
 \usepackage{booktabs}
 \usepackage{adjustbox}
 
-
 \usepackage{rotating} % para sidewaystable
 \usepackage{caption}
 \usepackage{booktabs} % para melhor aparência das tabelas		
 \robustify{\citeonline}
+
 \input{pretextual/macros}
 \input{pretextual/environments}
 
@@ -111,6 +130,15 @@
 % Inclui Configurações de aparência do PDF Final
 \input{extras/conf_pdf}
 \input{extras/conf_code}
+
+% ----------------------------------------------------------
+% Ajuste de margens para melhorar a legibilidade
+% (linhas menos compridas)
+% ----------------------------------------------------------
+\setlrmarginsandblock{3.5cm}{3.5cm}{*}  % margens esquerda/direita
+\setulmarginsandblock{3cm}{3cm}{*}      % margens superior/inferior
+\checkandfixthelayout
+
 % O tamanho da identação do parágrafo é dado por:
 \setlength{\parindent}{1.3cm}
 
@@ -129,8 +157,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 
-% Retira espaço extra obsoleto entre as frases.
+´% Retira espaço extra obsoleto entre as frases.
 \frenchspacing
+`
+% Espaçamento 1,5 entre linhas (confortável para leitura de TCC)
+\OnehalfSpacing
 
 % ----------------------------------------------------------
 % ELEMENTOS PRÉ-TEXTUAIS (Capa, Resumo, Abstract, etc.)
@@ -201,7 +232,7 @@
 % A classe abntex2 já gerencia a numeração de páginas automaticamente
 
 % Inclui cada capitulo do Trabalho
-%\include{capitulos/introducao}
+\include{capitulos/introducao}
 \include{capitulos/fundamentacao-teorica/main}
 \include{capitulos/implementacao-chuliu/main}
 \include{capitulos/implementacao-andrasfrank/main}
@@ -217,13 +248,14 @@
 \postextual
 
 % Referências bibliográficas
+%\nocite{*}
 \bibliography{bibliografia}
 
 
 % Glossário (Consulte o manual)
 %\glossary
 % Apêndices
-%\include{postextual/apendices}
+%\include{posttextual/apendices}
 
 % Anexos
 \include{postextual/anexos}
