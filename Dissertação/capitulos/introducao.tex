@@ -1,25 +1,10 @@
 \chapter{Introdução}
 
+Encontrar uma \textit{r-arborescência geradora mínimas} em digrafos é um problema clássico em Ciência da Computação estudado desde os anos 1960, com formulações fundamentais apresentadas por Jack Edmonds em 1967 \cite{edmonds}.
 
-Encontrar uma \textit{r-arborescência de custo mínimo} em grafos dirigidos é um problema estudado em ciência da computação desde os anos 1960, com formulações fundamentais apresentadas por Jack Edmonds em 1967 \cite{edmonds1967optimum}.
+Nesse trabalho implementamos dois algoritmos para esse problema: o algoritmo de Chu--Liu--Edmonds \cite{chu,edmonds} e o procedimento em duas fases de András Frank \cite{frankco,frankks}. 
 
-
-Essa busca dialoga com um princípio filosófico formulado na Idade Média por Guilherme de Ockham: a navalha de Occam (princípio da parcimônia), uma heurística filosófica segundo a qual, entre explicações concorrentes para um fenômeno, devemos preferir a mais simples ou a que faz menos suposições.
-Podemos pensar na navalha de Occam como critério de escolha entre explicações por meio de uma \textit{teia explicativa mínima}: uma estrutura que conecta fatos ou observações com o mínimo de relações explicativas necessárias.
-Quando tais relações envolvem dependência ou causalidade, podemos representá-las pictograficamente como setas direcionadas entre os fatos (as hipóteses aparecem como rótulos dessas setas).
-Para refinar o modelo, associamos um custo a cada relação (por exemplo, o esforço para validar a relação ou a complexidade da explicação).
-
-
-Encontrar a \textit{teia explicativa mínima} equivale, nessa metáfora, a encontrar uma \textit{r-arborescência de custo mínimo}: fixamos um vértice raiz \(r\) (a explicação inicial) e escolhemos um conjunto mínimo de relações explicativas de modo que todos os fatos tenham um caminho dirigido que leve a \(r\), minimizando o custo total das arestas.
-
-
-A \textit{r-arborescência} (também chamada \textit{out-arborescência}) orienta as arestas para fora de \(r\): cada vértice \(v\neq r\) tem exatamente uma aresta de entrada, e há um caminho dirigido único de \(r\) até \(v\). Já a \textit{r-arborescência inversa} (\textit{in-arborescência}) orienta as arestas em direção a \(r\): cada \(v\neq r\) tem exatamente uma aresta de saída, e de cada vértice parte um caminho dirigido único até \(r\) \cite{edmonds1967optimum,frank2014}.
-
-
-Com essa distinção em mente, este trabalho concentra-se na variante inversa. Formalmente, dado um grafo dirigido \(G=(V,E)\) com custos \(c:E\to\mathbb{R}^+\) nas arestas e um vértice raiz \(r\in V\), procura-se uma \textit{r-arborescência inversa} — isto é, uma árvore direcionada que atinja todos os vértices por caminhos dirigidos até \(r\) — que minimize o custo total das arestas selecionadas (cf. \cite{edmonds1967optimum,frank2014}).
-
-
-Nosso interesse, porém, não é apenas encontrar a arborescência mínima: o percurso até ela também importa, pois revela propriedades estruturais dos digrafos e ilumina técnicas distintas de otimização. Por isso, investigamos duas rotas clássicas e complementares: (i) o algoritmo de Chu--Liu/Edmonds, que opera por normalização dos custos das arestas de entrada, seleção sistemática de arestas de custo zero e contração de ciclos até obter um grafo reduzido, seguida pela reexpansão para reconstrução da solução \cite{chu1965,edmonds1967optimum}; e (ii) a abordagem dual, em duas fases, de András Frank, fundamentada em cortes dirigidos, na qual se maximiza uma função de cortes c-viável para induzir arestas de custo zero e, em seguida, extrai-se a arborescência apenas a partir dessas arestas \cite{frank2014}. Embora assentados em princípios distintos — contração de ciclos no plano primal versus empacotamento/dualidade por cortes —, ambos os paradigmas produzem soluções ótimas e tornam explícitas a variedade de abordagens matemáticas que podem ser empregadas para resolver o mesmo problema.
+Além disso, desenvolvemos uma aplicação \textit{web} interativa que permite a visualização passo a passo dos algoritmos, facilitando o entendimento de suas operações e estruturas subjacentes.
 
 \section{Justificativa}
 
