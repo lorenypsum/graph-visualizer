@@ -1,10 +1,10 @@
 \chapter{Chu-liu / Edmonds vs. Frank}
 
-Neste capítulo, apresentamos uma análise comparativa entre os algoritmos de Chu--Liu--Edmonds e András Frank para o problema da arborescência de custo mínimo. Ambas metodologias são equivalentes e resolvem o mesmo problema, mas adotam estratégias distintas na redução de custos e na construção da solução.
+Neste capítulo, apresentamos uma análise comparativa entre os algoritmos de Chu--Liu--Edmonds e András Frank para o problema da arborescência geradora de peso mínimo. Ambas metodologias são equivalentes e resolvem o mesmo problema, mas adotam estratégias distintas na redução de pesos e na construção da solução.
 
-O algoritmo de Chu--Liu--Edmonds \cite{chu1965,edmonds1967optimum} opera recursivamente selecionando para cada vértice \(v \neq r\) um arco de entrada de custo mínimo, contraindo ciclos detectados e ajustando custos, até eliminar todos os ciclos.
+O algoritmo de Chu--Liu--Edmonds \cite{chu1965,edmonds1967optimum} opera recursivamente selecionando para cada vértice \(v \neq r\) um arco de entrada de peso mínimo, contraindo ciclos detectados e ajustando pesos, até eliminar todos os ciclos.
 
-O algoritmo de Frank \cite{frank1981,frank2014} também reduz custos subtraindo o mínimo de entrada, mas identifica \emph{subconjuntos minimais} via componentes fortemente conexas, processando múltiplos vértices simultaneamente. Opera em duas fases: (i) redução até criar arcos de custo reduzido zero e (ii) construção da arborescência a partir desses arcos.
+O algoritmo de Frank \cite{frank1981,frank2014} também reduz pesos subtraindo o mínimo de entrada, mas identifica \emph{subconjuntos minimais} via componentes fortemente conexas, processando múltiplos vértices simultaneamente. Opera em duas fases: (i) redução até criar arcos de peso reduzido zero e (ii) construção da arborescência a partir desses arcos.
 
 A seguir, apresentamos os experimentos empíricos que avaliam o comportamento prático dessas metodologias em termos de tempo de execução, consumo de memória e características estruturais dos digrafos processados. Vale salientar que este trabalho não tem como objetivo explorar otimizações específicas, mas sim o comportamento dos algoritmos em sua forma clássica.
 
@@ -12,7 +12,7 @@ A seguir, apresentamos os experimentos empíricos que avaliam o comportamento pr
 
 Conduzimos 2000 experimentos em digrafos aleatórios construídos a partir de uma raiz \(r\) com quantidade de vértices \(|V| \in [101, 4996]\) (mediana 2464), número de arestas \(|A|\) proporcional ao número de vértices com densidade média de \(1{,}98|V|\) arcos e pesos inteiros associados \(\in [1, 50]\). Para cada instância, executamos Chu--Liu/Edmonds e as duas fases de András Frank com duas versões v1 e v2 para a Fase~II, sendo a v2 uma versão otimizada utilizando fila de prioridade - \emph{heap}.
 
-Os 2000 testes confirmaram que todos os métodos retornam sempre o mesmo custo, validando a corretude das implementações e a equivalência teórica entre Chu--Liu/Edmonds e Frank. Além disso, as verificações da condição de otimalidade dual foram bem-sucedidas em todos os casos para ambas as variantes de Frank.
+Os 2000 testes confirmaram que todos os métodos retornam sempre o mesmo peso, validando a corretude das implementações e a equivalência teórica entre Chu--Liu/Edmonds e Frank. Além disso, as verificações da condição de otimalidade dual foram bem-sucedidas em todos os casos para ambas as variantes de Frank.
 
 Quanto ao desempenho temporal, a Fase~I de Frank apresenta tempo mediano de \(8{,}93\) s (média \(12{,}40\)s), significativamente superior ao tempo mediano de Chu--Liu/Edmonds (\(0{,}25\)s, média \(0{,}58\)s). A Fase~I, responsável pela identificação de subconjuntos minimais via componentes fortemente conexas, domina o tempo total de execução do método de Frank. A Fase~II, em contrapartida, representa uma fração residual do processamento com mediana de \(0{,}98\)s para versão 1 do algoritmo e \(0{,}016\)s para a versão 2.
 
@@ -70,7 +70,7 @@ O consumo de memória na Fase~I mantém-se modesto (mediana 11{,}5~MB, média 14
 
 \section{Conclusões}
 
-Os experimentos validam empiricamente as previsões teóricas e revelam características importantes do comportamento prático dos algoritmos. A equivalência de custos é verificada em todas as 2000 instâncias, somada à verificação bem-sucedida das condições de otimalidade dual.
+Os experimentos validam empiricamente as previsões teóricas e revelam características importantes do comportamento prático dos algoritmos. A equivalência de pesos é verificada em todas as 2000 instâncias, somada à verificação bem-sucedida das condições de otimalidade dual.
 
 Chu--Liu/Edmonds demonstra-se mais eficiente para construção direta de arborescências nas instâncias aleatórias testadas (mediana \(0{,}25\)s, média \(0{,}58\)s), enquanto o método de Frank apresenta tempo adicional significativo na Fase~I (mediana \(8{,}93\)s, média \(12{,}40\)s) devido ao processamento de subconjuntos minimais via componentes fortemente conexas. A versão heap da Fase~II valida os ganhos assintóticos esperados, com aceleração de 58,12 vezes (mediana) sobre a versão linear, demonstrando que melhorias algorítmicas fundamentais se traduzem em benefícios práticos mensuráveis.
 
