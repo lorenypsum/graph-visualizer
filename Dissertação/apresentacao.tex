@@ -185,15 +185,22 @@
 \section{Algoritmo de Chu-Liu-Edmonds}
 
 \begin{frame}{Chu-Liu-Edmonds: Ideia Principal}
-	\begin{block}{Algoritmo Recursivo}
+	\begin{block}{Algoritmo Recursivo: dado um r-digrafo ponderado $(D,w,r)$}
+		chu--liu--edmonds($(D,w,r)$):
 		\begin{enumerate}
 			\item \textbf{Reduzir custos}: para cada vértice $v \neq r$, subtrair $\lambda(v) = \min\{w(a) : a \in \delta^-(v)\}$
 
-			\item \textbf{Construir $D_0$}: escolher um arco $a_v$ de custo reduzido zero para cada $v \neq r$
+			\item \textbf{Construir $D_0$}: escolhendo um arco $a_v$ de custo reduzido zero para cada $v \neq r$
 
 			\item \textbf{Verificar}: se $D_0$ é uma $r$-arborescência $\Rightarrow$ \textbf{devolver} $D_0$
 
-			\item \textbf{Caso contrário}: encontrar ciclo $C$ em $D_0$, contrair e resolver recursivamente
+			Caso contrário:
+
+			\item \textbf{Contração}: encontrar ciclo $C$ em $D_0$ e contrair
+			
+			\item \textbf{Chamada recursiva}: Seja $D' = D/C$ e $w' = w_\lambda/C$. Calcular $T' =$ chu-liu-edmonds$(D', w', r)$
+			
+			\item \textbf{Expandir}: \textbf{devolver} expand$(T')$
 		\end{enumerate}
 	\end{block}
 \end{frame}
