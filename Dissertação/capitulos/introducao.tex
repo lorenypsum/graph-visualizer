@@ -6,26 +6,17 @@ Nesse trabalho implementamos dois algoritmos para esse problema: o algoritmo de 
 
 Além disso, desenvolvemos uma aplicação \textit{web} interativa que permite a visualização passo a passo dos algoritmos, facilitando o entendimento de suas operações e estruturas subjacentes.
 
-\section{Justificativa}
-
-
-A busca por uma \textit{r-arborescêncide custo mínimo} em grafos dirigidos é um problema clássico com aplicações em diversas áreas, como redes de comunicação, planejamento de rotas, análise de dependências e modelagem de processos. Mas, não precisamos dessa justificação prática para nos interessarmos pelo problema: a riqueza estrutural dos digrafos e a variedade de técnicas algorítmicas disponíveis o tornam um excelente caso de estudo em otimização combinatória.
-
-
-Do ponto de vista didático, a metáfora da “teia explicativa mínima” torna concreto o porquê de estudarmos arborescências enraizadas: ela mapeia perguntas sobre explicação, alcance e economia de recursos para estruturas dirigidas, servindo de fio condutor nas implementações e nos experimentos que apresentamos.
-
-\section{Objetivos}
-
-
-O objetivo principal deste trabalho é analisar, implementar e comparar duas abordagens clássicas para o problema de \textit{r-arborescência de custo mínimo} em grafos dirigidos oferecendo uma aplicação \textit{web} interativa que facilite o entendimento e a experimentação com o algoritmo de Chu--Liu/Edmonds e o método de András Frank, tornando-o acessível para estudantes e educadores.
 
 \section{Estrutura do Trabalho}
 
 Resumidamente, o trabalho abrange as seguintes frentes:
 
+No (Capítulo~\ref{cap:preliminares}), apresentamos definições e conceitos básicos sobre digrafos, arborescências, custos e dualidade.
+
+No (Capítulo~\ref{cap:chuliu-edmonds}), detalhamos o algoritmo de Chu--Liu--Edmonds, enfatizando seus invariantes e a prova de correção.
+
 \begin{enumerate}
     \item \textbf{Definições Preliminares}: fixação de notação e conceitos fundamentais (digrafos, arborescências, custos e dualidade).
-    \item \textbf{Em busca da Arborescência Perdida}: motivação do problema e intuições que guiam os algoritmos.
     \item \textbf{Algoritmo de Chu--Liu/Edmonds}: detalhamento da abordagem primal por normalização/contração de ciclos, com ênfase em invariantes e correção.
     \item \textbf{Procedimento em Duas Fases de András Frank}: detalhamento da abordagem dual por cortes c-viáveis, com ênfase em invariantes e correção.
     \item \textbf{Discussão e Resultados: Chu-liu/Edmonds vs Frank}: comparação de desempenho e estrutura das soluções, com testes em larga escala.
