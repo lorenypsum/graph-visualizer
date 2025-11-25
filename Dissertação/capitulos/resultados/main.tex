@@ -2,7 +2,7 @@
 
 Neste capítulo, apresentamos uma análise comparativa entre os algoritmos de Chu--Liu--Edmonds e András Frank para o problema da arborescência geradora de peso mínimo. Ambas metodologias são equivalentes e resolvem o mesmo problema, mas adotam estratégias distintas na redução de pesos e na construção da solução.
 
-O algoritmo de Chu--Liu--Edmonds \cite{chu1965,edmonds1967optimum} opera recursivamente selecionando para cada vértice \(v \neq r\) um arco de entrada de peso mínimo, contraindo ciclos detectados e ajustando pesos, até eliminar todos os ciclos.
+O algoritmo de Chu--Liu--Edmonds \cite{chu,edmonds} opera recursivamente selecionando para cada vértice \(v \neq r\) um arco de entrada de peso mínimo, contraindo ciclos detectados e ajustando pesos, até eliminar todos os ciclos.
 
 O algoritmo de Frank \cite{frank1981,frank2014} também reduz pesos subtraindo o mínimo de entrada, mas identifica \emph{subconjuntos minimais} via componentes fortemente conexas, processando múltiplos vértices simultaneamente. Opera em duas fases: (i) redução até criar arcos de peso reduzido zero e (ii) construção da arborescência a partir desses arcos.
 
