@@ -1,28 +1,45 @@
-\frametitle{Implementação: Expansão da Solução}
-\begin{block}{Função \texttt{expand(T', C, entering\_arc)}}
-		Substituir supervértice $x_C$ pelos vértices originais de $C$
-	\end{block}
-
-	\begin{lstlisting}[language=Python, basicstyle=\footnotesize\ttfamily]
-def expand(T_prime, C, entering_arc):
-    T = T_prime.copy()
-    T.remove_node(xC)
-
-    # Adicionar vertices do ciclo
-    T.add_nodes_from(C)
-
-    # Encontrar qual vertice de C recebe o arco externo
-    u, v_in_C = entering_arc  # arco que entra no ciclo
-    T.add_edge(u, v_in_C)
-
-    # Adicionar arcos do ciclo exceto o que entra em v_in_C
-    for i in range(len(C)):
-        v_from = C[i]
-        v_to = C[(i + 1) % len(C)]
-        if v_to != v_in_C:
-            T.add_edge(v_from, v_to)
-
-    return T
+\frametitle{Chu-Liu-Edmonds: Pseudoc\'odigo}
+\begin{lstlisting}[mathescape=true, language=Python, basicstyle=\footnotesize\ttfamily]
+def chu-liu-edmonds($D$, $w$, $r$):
+    $\lambda := \bigl\{(v, \min\{w(a) : a \in \delta^-(v)\}): v \in V\setminus\{r\}\bigr\}$
+    para cada $v \in V\setminus\{r\}$, seja $a_v \in \delta^-(v)$ tal que $w_\lambda(a_v) = 0$
+    seja $D_0 := \bigl(V, \{a_v : v \in V \setminus \{r\}\}\bigr)$
+    if $D_0$ e uma $r$-arborescencia: return $D_0$
+    seja $C$ um ciclo em $D_0$
+    $T' :=$ chu-liu-edmonds($D/C \mapsto x_C$, $w_\lambda/C \mapsto x_C$, $r$)
+    $T :=$ expand($T'$)
+    return $T$
 	\end{lstlisting}
 
-	\textbf{Complexidade:} $O(|C|)$ para processar vértices do ciclo
+	\vspace{0.2cm}
+	\textbf{Ideia:} calcular custos $\lambda$-reduzidos, construir $D_0$ com arcos de custo zero; se n\~ao \'e $r$-arboresc\^encia, contrair ciclo e resolver recursivamente; expandir solu\c{c}\~ao
+\end{frame}% ==================== SLIDE 4: EXEMPLO DETALHADO ====================
+\begin{frame}{Digrafo de Exemplo}
+	\begin{center}
+		\begin{tikzpicture}[scale=1.2,
+				vertex/.style={circle,draw,minimum size=0.8cm,font=\large},
+				edge/.style={->,>=stealth,thick}]
+
+			\node[vertex,fill=red!20] (r) at (0,2) {$r$};
+			\node[vertex] (A) at (2,3) {$A$};
+			\node[vertex] (B) at (4,3) {$B$};
+			\node[vertex] (C) at (2,1) {$C$};
+			\node[vertex] (D) at (4,1) {$D$};
+			\node[vertex] (E) at (6,2) {$E$};
+
+			\draw[edge] (r) -- node[above] {2} (A);
+			\draw[edge] (r) -- node[below] {10} (C);
+			\draw[edge] (r) to[bend left] node[above] {10} (B);
+			\draw[edge] (B) -- node[right] {1} (A);
+			\draw[edge] (A) -- node[left] {4} (C);
+			\draw[edge] (C) -- node[below] {2} (D);
+			\draw[edge] (D) to[bend right] node[below] {2} (B);
+			\draw[edge] (B) -- node[above] {8} (E);
+			\draw[edge] (C) -- node[below] {4} (E);
+
+		\end{tikzpicture}
+	\end{center}
+
+	\begin{alertblock}{Objetivo}
+		Encontrar a $r$-arborescência geradora de custo mínimo
+	\end{alertblock}
