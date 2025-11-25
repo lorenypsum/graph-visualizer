@@ -41,6 +41,9 @@
 % Remover sombra dos blocos
 \setbeamertemplate{blocks}[rounded][shadow=false]
 
+% Remover "Figura" dos captions
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[brazil]{babel}
@@ -90,16 +93,74 @@
 		\end{itemize}
 	\end{block}
 
-	\vspace{0.3cm}
+	\vspace{0.5cm}
 
 	\textbf{Algoritmos estudados:}
-		\begin{enumerate}
-			\item Chu-Liu-Edmonds (1965-67)
-			\item András Frank (1981-2014)
-		\end{enumerate}
+	\begin{enumerate}
+		\item Chu-Liu-Edmonds (1965-67)
+		\item András Frank (1981-2014)
+	\end{enumerate}
 \end{frame}
 
 % ==================== SLIDE 3: EXEMPLO ====================
+\begin{frame}{Exemplo: $r$-Arborescência Geradora}
+	\textbf{Exemplo de uma r-arborescência mínima:}
+	\begin{columns}[c]
+		\column{0.4\textwidth}
+		\begin{figure}[H]
+			\begin{tikzpicture}[scale=0.9,
+					vertex/.style={circle,draw,fill=blue!10,minimum size=0.6cm,font=\small},
+					edge/.style={->,>=stealth,thick,gray!40}]
+
+				\node[vertex,fill=red!20] (r) at (2,2.5) {$r$};
+				\node[vertex] (a) at (0,1) {$a$};
+				\node[vertex] (b) at (2,1) {$b$};
+				\node[vertex] (c) at (4,1) {$c$};
+				\node[vertex] (d) at (1,0) {$d$};
+				\node[vertex] (e) at (3,0) {$e$};
+
+				\draw[edge] (r) -- node[above left,font=\tiny] {3} (a);
+				\draw[edge] (r) -- node[above,font=\tiny] {5} (b);
+				\draw[edge] (r) -- node[above right,font=\tiny] {4} (c);
+				\draw[edge] (a) -- node[left,font=\tiny] {2} (d);
+				\draw[edge] (b) -- node[above,font=\tiny] {1} (a);
+				\draw[edge] (b) -- node[above,font=\tiny] {3} (d);
+				\draw[edge] (c) -- node[right,font=\tiny] {2} (e);
+				\draw[edge] (c) -- node[above,font=\tiny] {4} (b);
+				\draw[edge] (a) to[bend right] node[below,font=\tiny] {6} (e);
+				\draw[edge] (d) to[bend left] node[below,font=\tiny] {1} (e);
+			\end{tikzpicture}
+			\caption{Digrafo Original}
+		\end{figure}
+
+		\column{0.4\textwidth}
+		\begin{figure}[H]
+			\begin{tikzpicture}[scale=0.9,
+					vertex/.style={circle,draw,fill=blue!10,minimum size=0.6cm,font=\small},
+					arb/.style={->,>=stealth,very thick,accentpurple}]
+
+				\node[vertex,fill=red!20] (r) at (2,2.5) {$r$};
+				\node[vertex] (a) at (0,1) {$a$};
+				\node[vertex] (b) at (2,1) {$b$};
+				\node[vertex] (c) at (4,1) {$c$};
+				\node[vertex] (d) at (1,0) {$d$};
+				\node[vertex] (e) at (3,0) {$e$};
+
+				\draw[arb] (r) -- node[above left,font=\tiny,black] {3} (a);
+				\draw[arb] (r) -- node[above right,font=\tiny,black] {4} (c);
+				\draw[arb] (b) -- node[above,font=\tiny,black] {1} (a);
+				\draw[arb] (a) -- node[left,font=\tiny,black] {2} (d);
+				\draw[arb] (c) -- node[right,font=\tiny,black] {2} (e);
+				\draw[arb] (c) -- node[above,font=\tiny,black] {4} (b);
+			\end{tikzpicture}
+			\caption{r-Arborescência Geradora Mínima}
+		\end{figure}
+		\vspace{0.3cm}
+		{\small Custo total: $3 + 4 + 1 + 2 + 2 + 4 = 16$}
+	\end{columns}
+\end{frame}
+
+% ==================== SLIDE 4: EXEMPLO DETALHADO ====================
 \begin{frame}{Digrafo de Exemplo}
 	\begin{center}
 		\begin{tikzpicture}[scale=1.2,
