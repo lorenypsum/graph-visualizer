@@ -1548,11 +1548,28 @@ def andras_frank(D: nx.DiGraph, r: int):
         \column{0.55\textwidth}
         \textbf{Estrutura em três camadas:}
         \begin{itemize}
-            \item \textbf{Apresentação:} Interface construída em HTML5, estilizada com Tailwind CSS e dinamizada por JavaScript. Responsável pela interação com o usuário, entrada de dados e exibição dos resultados.
-            \item \textbf{Processamento (PyScript):} Ponte entre interface web e bibliotecas científicas. Executa algoritmos em Python (NetworkX) diretamente no navegador, gerando visualizações estáticas com Matplotlib.
+            \item \textbf{Apresentação:} Interface construída em HTML5, estilizada com Tailwind CSS e dinamizada por JavaScript. 
+            \item \textbf{Processamento (PyScript):} Executa algoritmos em Python (NetworkX) diretamente no navegador, gerando visualizações estáticas com Matplotlib.
             \item \textbf{Dados e Persistência:} Utiliza JSON (\texttt{node\_link}) para serializar grafos, armazenar pesos e permitir exportação/importação entre módulos.
         \end{itemize}
-        \vspace{0.3cm}
+        \column{0.45\textwidth}
+        \begin{center}
+            \begin{tikzpicture}[node distance=1.3cm, box/.style={rectangle,draw,rounded corners,minimum width=2.8cm,minimum height=0.9cm,align=center}]
+                \node[box,fill=accentpurple!15] (ui) {Apresentação\\HTML5 + Tailwind + JS};
+                \node[box,fill=accentpurple!8,below=of ui] (py) {Processamento\\PyScript + NetworkX};
+                \node[box,fill=accentpurple!3,below=of py] (data) {Dados/Persistência\\JSON (\texttt{node\_link})};
+                \draw[->,thick] (ui) -- (py);
+                \draw[->,thick] (py) -- (data);
+                \draw[->,thick] (data) -- (ui);
+            \end{tikzpicture}
+        \end{center}
+    \end{columns}
+\end{frame}
+
+
+\begin{frame}{Camadas da Aplicação Web}
+    \begin{columns}[c]
+        \column{0.55\textwidth}
         \textbf{Benefícios:}
         \begin{itemize}
             \item Processamento local e rápido
@@ -1572,7 +1589,6 @@ def andras_frank(D: nx.DiGraph, r: int):
         \end{center}
     \end{columns}
 \end{frame}
-
 
 
 \begin{frame}{Arquitetura da Aplicação}

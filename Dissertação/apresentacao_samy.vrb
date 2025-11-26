@@ -1,27 +1,26 @@
-\frametitle{Passo 5: Implementação da Chamada Recursiva}
-\textbf{Estrutura recursiva:}
+\frametitle{Algoritmo Completo de Frank}
+\textbf{Composição das duas fases:}
 
-	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
-def chuliu_edmonds(D: nx.DiGraph, r: int, label: int):
-    D_copy = D.copy()
+	\begin{lstlisting}[basicstyle=\scriptsize\ttfamily]
+def andras_frank(D: nx.DiGraph, r: int):
+    # Fase I: construir cobertura
+    sigma = phase1(D, r)
+    F = [f for f, _, _ in sigma]
 
-    # Reducao de custos
-    for v in D_copy.nodes:
-        if v != r:
-            reduce_weights(D_copy, v)
+    # Fase II: extrair arborescencia
+    J = phase2_v2(D, r, F)
 
-    D_zero = get_Dzero(D_copy, r)
-
-    if nx.is_arborescence(D_zero):
-        # Restaurar pesos e devolver
-        for u, v in D_zero.edges:
-            D_zero[u][v]["w"] = D[u][v]["w"]
-        return D_zero
-
-    # Contrair ciclo e recursao
-    C = find_cycle(D_zero)
-    in_to_cycle, out_from_cycle = \
-        contract_cycle(D_copy, C, label)
-    F_prime = chuliu_edmonds(D_copy, r, label + 1)
-    # ... expansao ...
+    return J
 \end{lstlisting}
+
+	\vspace{0.3cm}
+	\begin{block}{Complexidade Total}
+		\begin{itemize}
+			\item Fase I: $O(|V||A|)$
+			\item Fase II (heap): $O(|V| \log |V|)$
+			\item \textbf{Total}: $O(|V|(|A| + \log |V|))$
+		\end{itemize}
+	\end{block}
+
+	\vspace{0.2cm}
+	{\small Com heap, Fase II é significativamente mais rápida que versão lista!}
