@@ -495,31 +495,34 @@
 \end{frame}
 
 \begin{frame}{Passo 5: Chamada Recursiva}
-	\begin{center}
-		\begin{tikzpicture}[scale=1.2, >=Stealth,
-				vertex/.style={circle,draw,fill=blue!8,thick,minimum size=7mm},
-				super/.style={circle,draw,very thick,fill=orange!10,minimum size=1.2cm}]
+	\begin{columns}[c]
+		\column{0.48\textwidth}
+		\textbf{Novo problema:} $(D', w', r)$
 
-			\node[vertex] (r) at (0,0) {$r$};
-			\node[super] (xC) at (3,0) {$x_C$};
-			\node[vertex] (v) at (5.5,0) {$v$};
+		\vspace{0.2cm}
+		\textbf{Chamada recursiva:}
+		$$T' := \text{chu--liu--edmonds}(D', w', r)$$
 
-			\draw[->,very thick,blue] (r) -- node[above,font=\scriptsize,text=blue] {} (xC);
-			\draw[->,very thick,blue] (xC) -- node[above,font=\scriptsize,text=blue] {} (v);
+		\vspace{0.2cm}
+		\textbf{Resultado:} $T'$ é uma $r$-arborescência de custo mínimo em $(D', w')$
 
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=2cm,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				super/.style={circle, draw, very thick, fill=orange!10, minimum size=9mm},
+				selected/.style={->, very thick, draw=green!70}]
+			\node[v] (r) {\small $r$};
+			\node[super] (xC) [right=3.5cm of r] {\small $x_C$};
+
+			\draw[selected] (r) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (xC);
 		\end{tikzpicture}
-	\end{center}
 
-	O algoritmo devolve $T'$ (arboresc\^encia no digrafo contra\'ido)
-
-	\vspace{0.3cm}
-	\emph{Em outras palavras:} encontramos a $r$-arboresc\^encia \'otima no grafo contra\'ido
-
-	\vspace{0.3cm}
-	\textbf{Pr\'oximo passo:} expandir $T'$ de volta para obter $T$ no digrafo original
+		\vspace{0.3cm}
+		{\small $r$-arborescência ótima em $D'$}
+	\end{columns}
 \end{frame}
 
-\begin{frame}{Reexpansão da Solução}
+\begin{frame}{Passo 6: Reexpansão da Solução}
 	\begin{columns}[c]
 		\column{0.48\textwidth}
 		\textbf{Dado:} $T'$ ótima em $(D', w')$
@@ -547,7 +550,7 @@
 			\node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
 			\node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
 
-			\draw[selected] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 5} (a);
+			\draw[selected] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (a);
 			\draw[selected] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (b);
 			\draw[selected] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
 		\end{tikzpicture}
