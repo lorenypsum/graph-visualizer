@@ -706,7 +706,7 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph,
 
 	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
 def chuliu_edmonds(D: nx.DiGraph, r: int, label: int):
-    D_copy = D.copy()
+    D_copy = cast(nx.DiGraph, D.copy())
     # Reducao de custos
     for v in D_copy.nodes:
         if v != r:
@@ -719,7 +719,7 @@ def chuliu_edmonds(D: nx.DiGraph, r: int, label: int):
         return D_zero
     # Contrair ciclo e recursao
     C = find_cycle(D_zero)
-    in_to_cycle, out_from_cycle = \
+    in_to_cycle, out_from_cycle =
         contract_cycle(D_copy, C, label)
     F_prime = chuliu_edmonds(D_copy, r, label + 1)
     # ... expansao ...
