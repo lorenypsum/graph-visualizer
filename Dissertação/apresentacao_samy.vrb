@@ -1,0 +1,26 @@
+\frametitle{Algoritmo Completo de Frank}
+\textbf{Composição das duas fases:}
+
+	\begin{lstlisting}[basicstyle=\scriptsize\ttfamily]
+def andras_frank(D: nx.DiGraph, r: int):
+    # Fase I: construir cobertura
+    sigma = phase1(D, r)
+    F = [f for f, _, _ in sigma]
+
+    # Fase II: extrair arborescencia
+    J = phase2_v2(D, r, F)
+
+    return J
+\end{lstlisting}
+
+	\vspace{0.3cm}
+	\begin{block}{Complexidade Total}
+		\begin{itemize}
+			\item Fase I: $O(|V||A|)$
+			\item Fase II (heap): $O(|V| \log |V|)$
+			\item \textbf{Total}: $O(|V|(|A| + \log |V|))$
+		\end{itemize}
+	\end{block}
+
+	\vspace{0.2cm}
+	{\small Com heap, Fase II é significativamente mais rápida que versão lista!}
