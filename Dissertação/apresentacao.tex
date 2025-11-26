@@ -437,7 +437,6 @@ def reduce_weights(D: nx.DiGraph, v: int):
 		\end{itemize}
 	\end{columns}
 
-	\vspace{0.3cm}
 	\begin{block}{Resultado}
 		Após executar \texttt{reduce\_weights(D, v)} para cada $v \neq r$, todos os vértices têm ao menos um arco de entrada com custo zero.
 	\end{block}
@@ -482,8 +481,6 @@ def reduce_weights(D: nx.DiGraph, v: int):
 
 \begin{frame}[fragile]{Passo 2: Implementação da Construção de D0 em Python}
 	\textbf{Função \texttt{get\_Dzero}:}
-
-	\vspace{0.2cm}
 	\begin{columns}[t]
 		\column{0.55\textwidth}
 		\begin{lstlisting}[basicstyle=\tiny\ttfamily]
@@ -508,8 +505,6 @@ def get_Dzero(D: nx.DiGraph, r: int):
 			\item Garantido existir arco de custo zero após redução
 		\end{itemize}
 	\end{columns}
-
-	\vspace{0.3cm}
 	\begin{block}{Observação}
 		Se $D_0$ for uma arborescência, então $D_0$ é necessariamente uma $r$-arborescência ótima.
 	\end{block}
@@ -548,16 +543,13 @@ def get_Dzero(D: nx.DiGraph, r: int):
 			\draw[arc] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 3} (c);
 		\end{tikzpicture}
 	\end{columns}
-	\vspace{0.3cm}
 	\begin{alertblock}{$D_0$ não é uma $r$-arborescência!}
 		Neste exemplo, $D_0 = \{(r,a), (a,b), (c,a)\}$ não forma uma $r$-arborescência pois contém o ciclo $(a, b, c, a)$.
 	\end{alertblock}
 \end{frame}
 
-\begin{frame}[fragile]{Passo 3: Implementação da Verificação de D0 (1/2)}
+\begin{frame}[fragile]{Passo 3: Implementação da Verificação de D0}
 	\textbf{Verificação se é arborescência:}
-
-	\vspace{0.1cm}
 	\begin{lstlisting}[basicstyle=\small\ttfamily]
 # Verificar se D_zero eh arborescencia
 if nx.is_arborescence(D_zero):
@@ -568,33 +560,8 @@ if nx.is_arborescence(D_zero):
 \end{lstlisting}
 
 	\emph{Esse trecho faz parte do caso base da função recursiva principal.}
-
-	\vspace{0.2cm}
 	\begin{block}{Caso Base}
 		Se $D_0$ é uma arborescência, então ela é a $r$-arborescência de custo mínimo. Restauramos os pesos originais e devolvemos.
-	\end{block}
-\end{frame}
-
-\begin{frame}[fragile]{Passo 3: Implementação da Verificação de D0 (2/2)}
-	\textbf{Detecção de ciclo:}
-
-	\vspace{0.1cm}
-	\begin{lstlisting}[basicstyle=\small\ttfamily]
-def find_cycle(D_zero: nx.DiGraph):
-    nodes_in_cycle = set()
-    for u, v, _ in nx.find_cycle(
-            D_zero, orientation="original"):
-        nodes_in_cycle.update([u, v])
-    return D_zero.subgraph(nodes_in_cycle).to_directed()
-\end{lstlisting}
-
-	\vspace{0.2cm}
-	\begin{block}{Descrição}
-		\begin{itemize}
-			\item Usa \texttt{nx.find\_cycle} para encontrar arcos do ciclo
-			\item Coleta todos os vértices envolvidos
-			\item Retorna subdigrafo induzido pelos vértices do ciclo
-		\end{itemize}
 	\end{block}
 \end{frame}
 
@@ -639,15 +606,36 @@ def find_cycle(D_zero: nx.DiGraph):
 	\end{block}
 \end{frame}
 
-\begin{frame}[fragile]{Passo 4: Implementação da Contração (1/2)}
+\begin{frame}[fragile]{Passo 4: Implementação da Contração (1/3)}
+	\textbf{Detecção de ciclo:}
+
+	\vspace{0.1cm}
+	\begin{lstlisting}[basicstyle=\small\ttfamily]
+def find_cycle(D_zero: nx.DiGraph):
+    nodes_in_cycle = set()
+    for u, v, _ in nx.find_cycle(
+            D_zero, orientation="original"):
+        nodes_in_cycle.update([u, v])
+    return D_zero.subgraph(nodes_in_cycle).to_directed()
+\end{lstlisting}
+
+	\begin{block}{Descrição}
+		\begin{itemize}
+			\item Usa \texttt{nx.find\_cycle} para encontrar arcos do ciclo
+			\item Coleta todos os vértices envolvidos
+			\item Retorna subdigrafo induzido pelos vértices do ciclo
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Passo 4: Implementação da Contração (2/3)}
 	\textbf{Arcos essenciais que entram no ciclo:}
 
 	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
 def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, 
                    label: int):
     cycle_nodes: set[int] = set(C.nodes())
-    
-    # Arcos essenciais ENTRANDO no ciclo
+    # Arcos essenciais entrando no ciclo
     in_to_cycle: dict[int, tuple[int, float]] = {}
     for u in D.nodes:
         if u not in cycle_nodes:
@@ -658,18 +646,16 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph,
                 key=lambda x: x[1], default=None)
             if min_edge:
                 in_to_cycle[u] = min_edge
-    
     for u, (v, w) in in_to_cycle.items():
         D.add_edge(u, label, w=w)
 \end{lstlisting}
 
-	\vspace{0.1cm}
-	\begin{block}{Arcos Essenciais de Entrada}
+	\begin{block}{}
 		Para cada vértice externo, encontra o arco de menor custo que entra no ciclo.
 	\end{block}
 \end{frame}
 
-\begin{frame}[fragile]{Passo 4: Implementação da Contração (2/2)}
+\begin{frame}[fragile]{Passo 4: Implementação da Contração (3/3)}
 	\textbf{Arcos essenciais que saem do ciclo:}
 
 	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
