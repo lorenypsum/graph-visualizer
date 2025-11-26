@@ -772,7 +772,7 @@ def chuliu_edmonds(D: nx.DiGraph, r: int, label: int):
 # Encontrar arco que entra em label
 in_edge = next(iter(
     F_prime.in_edges(label, data=True)))
-u, _, _ = in_edge
+u, _, _ = cast(tuple, in_edge)
 
 # Arco correspondente em D original
 v, _ = in_to_cycle[u]
