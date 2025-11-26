@@ -707,20 +707,16 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph,
 	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
 def chuliu_edmonds(D: nx.DiGraph, r: int, label: int):
     D_copy = D.copy()
-    
     # Reducao de custos
     for v in D_copy.nodes:
         if v != r:
             reduce_weights(D_copy, v)
-    
     D_zero = get_Dzero(D_copy, r)
-    
     if nx.is_arborescence(D_zero):
         # Restaurar pesos e devolver
         for u, v in D_zero.edges:
             D_zero[u][v]["w"] = D[u][v]["w"]
         return D_zero
-    
     # Contrair ciclo e recursao
     C = find_cycle(D_zero)
     in_to_cycle, out_from_cycle = \
