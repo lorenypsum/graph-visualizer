@@ -1,26 +1,7 @@
-\frametitle{Passo 6: Implementação da Reexpansão da Solução em Python}
-\textbf{Expansão após chamada recursiva:}
+\frametitle{Passo 6: Implementação da Reexpansão (2/2)}
+\textbf{Transferir arcos externos e restaurar pesos:}
 
-	\vspace{0.2cm}
-	\begin{columns}[t]
-		\column{0.55\textwidth}
-		\begin{lstlisting}[basicstyle=\tiny\ttfamily]
-# F_prime eh solucao em D' (com supervertice)
-# Encontrar arco que entra em label
-in_edge = next(iter(
-    F_prime.in_edges(label, data=True)))
-u, _, _ = in_edge
-
-# Arco correspondente em D original
-v, _ = in_to_cycle[u]
-F_prime.add_edge(u, v)
-
-# Adicionar arcos do ciclo,
-# exceto o que entra em v
-for u_c, v_c in C.edges:
-    if v != v_c:
-        F_prime.add_edge(u_c, v_c)
-
+	\begin{lstlisting}[basicstyle=\small\ttfamily]
 # Arcos que saem do supervertice
 for _, z, _ in list(
         F_prime.out_edges(label, data=True)):
@@ -37,19 +18,7 @@ for u, v in F_prime.edges:
 return F_prime
 \end{lstlisting}
 
-		\column{0.45\textwidth}
-		\textbf{Passos da expansão:}
-		\begin{enumerate}
-			\item Identificar arco que entra em \texttt{label}
-			\item Encontrar arco correspondente em $D$
-			\item Adicionar arcos do ciclo $C$ (exceto um)
-			\item Transferir arcos que saem de \texttt{label}
-			\item Remover \texttt{label}
-			\item Restaurar pesos originais
-		\end{enumerate}
-	\end{columns}
-
 	\vspace{0.2cm}
 	\begin{block}{Correção}
-		A expansão garante que $T$ é uma $r$-arborescência ótima no digrafo original $D$.
+		A expansão garante que $T$ é uma $r$-arborescência ótima no digrafo original.
 	\end{block}

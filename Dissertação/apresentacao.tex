@@ -538,39 +538,46 @@ def get_Dzero(D: nx.DiGraph, r: int):
 	\end{alertblock}
 \end{frame}
 
-\begin{frame}[fragile]{Passo 3: Implementação da Verificação de D0 em Python}
-	\textbf{Verificação e detecção de ciclo:}
+\begin{frame}[fragile]{Passo 3: Implementação da Verificação de D0 (1/2)}
+	\textbf{Verificação se é arborescência:}
 
 	\vspace{0.2cm}
-	\begin{columns}[t]
-		\column{0.55\textwidth}
-		\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+	\begin{lstlisting}[basicstyle=\small\ttfamily]
 # Verificar se D_zero eh arborescencia
 if nx.is_arborescence(D_zero):
     # Restaurar pesos originais
     for u, v in D_zero.edges:
         D_zero[u][v]["w"] = D[u][v]["w"]
     return D_zero
+\end{lstlisting}
 
-# Encontrar ciclo
+	\vspace{0.3cm}
+	\begin{block}{Caso Base}
+		Se $D_0$ é uma arborescência, então ela é a $r$-arborescência de custo mínimo. Restauramos os pesos originais e devolvemos.
+	\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Passo 3: Implementação da Verificação de D0 (2/2)}
+	\textbf{Detecção de ciclo:}
+
+	\vspace{0.2cm}
+	\begin{lstlisting}[basicstyle=\small\ttfamily]
 def find_cycle(D_zero: nx.DiGraph):
     nodes_in_cycle = set()
     for u, v, _ in nx.find_cycle(
             D_zero, orientation="original"):
         nodes_in_cycle.update([u, v])
-    return D_zero.subgraph(
-                    nodes_in_cycle)
+    return D_zero.subgraph(nodes_in_cycle)
 \end{lstlisting}
 
-		\column{0.45\textwidth}
-		\textbf{Descrição:}
+	\vspace{0.3cm}
+	\begin{block}{Descrição}
 		\begin{itemize}
-			\item Usa função de biblioteca \texttt{is\_arborescence}
-			\item Se não for arborescência, encontra um ciclo
-			\item \texttt{find\_cycle} retorna os arcos do ciclo
-			\item Constrói subdigrafo induzido pelos vértices do ciclo
+			\item Usa \texttt{nx.find\_cycle} para encontrar arcos do ciclo
+			\item Coleta todos os vértices envolvidos
+			\item Retorna subdigrafo induzido pelos vértices do ciclo
 		\end{itemize}
-	\end{columns}
+	\end{block}
 \end{frame}
 
 \begin{frame}{Passo 4: Contração de Ciclos}
@@ -614,61 +621,59 @@ def find_cycle(D_zero: nx.DiGraph):
 	\end{block}
 \end{frame}
 
-\begin{frame}[fragile]{Passo 4: Implementação da Contração de Ciclos em Python}
-	\textbf{Função \texttt{contract\_cycle} (parte 1):}
+\begin{frame}[fragile]{Passo 4: Implementação da Contração (1/2)}
+	\textbf{Arcos essenciais que entram no ciclo:}
 
-	\vspace{0.1cm}
-	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
-def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: int):
+	\begin{lstlisting}[basicstyle=\scriptsize\ttfamily]
+def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, 
+                   label: int):
     cycle_nodes: set[int] = set(C.nodes())
     
-    # Encontrar arcos essenciais que ENTRAM no ciclo
+    # Arcos essenciais ENTRANDO no ciclo
     in_to_cycle: dict[int, tuple[int, float]] = {}
     for u in D.nodes:
         if u not in cycle_nodes:
-            min_edge = min(((v, data["w"])
-                           for _, v, data in D.out_edges(u, data=True)
-                           if v in cycle_nodes),
-                          key=lambda x: x[1], default=None)
+            min_edge = min(
+                ((v, data["w"])
+                 for _, v, data in D.out_edges(u, data=True)
+                 if v in cycle_nodes),
+                key=lambda x: x[1], default=None)
             if min_edge:
                 in_to_cycle[u] = min_edge
     
-    # Adicionar arcos de u para label (supervertice)
     for u, (v, w) in in_to_cycle.items():
         D.add_edge(u, label, w=w)
 \end{lstlisting}
 
-	\vspace{0.1cm}
-	{\small Arcos \textbf{essenciais}: menor custo de cada vértice externo para o ciclo}
+	\vspace{0.2cm}
+	{\small Para cada vértice externo, encontra o arco de menor custo para o ciclo}
 \end{frame}
 
-\begin{frame}[fragile]{Passo 4: Implementação da Contração de Ciclos em Python (cont.)}
-	\textbf{Função \texttt{contract\_cycle} (parte 2):}
+\begin{frame}[fragile]{Passo 4: Implementação da Contração (2/2)}
+	\textbf{Arcos essenciais que saem do ciclo:}
 
-	\vspace{0.1cm}
-	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
-    # Encontrar arcos essenciais que SAEM do ciclo
+	\begin{lstlisting}[basicstyle=\scriptsize\ttfamily]
+    # Arcos essenciais SAINDO do ciclo
     out_from_cycle: dict[int, tuple[int, float]] = {}
     for v in D.nodes:
         if v not in cycle_nodes:
-            min_edge = min(((u, data["w"])
-                           for u, _, data in D.in_edges(v, data=True)
-                           if u in cycle_nodes),
-                          key=lambda x: x[1], default=None)
+            min_edge = min(
+                ((u, data["w"])
+                 for u, _, data in D.in_edges(v, data=True)
+                 if u in cycle_nodes),
+                key=lambda x: x[1], default=None)
             if min_edge:
                 out_from_cycle[v] = min_edge
     
-    # Adicionar arcos de label para v
     for v, (u, w) in out_from_cycle.items():
         D.add_edge(label, v, w=w)
     
-    # Remover vertices do ciclo
     D.remove_nodes_from(cycle_nodes)
     return in_to_cycle, out_from_cycle
 \end{lstlisting}
 
-	\vspace{0.1cm}
-	{\small Os dicionários retornados são usados na expansão. Complexidade: $O(m)$}
+	\vspace{0.2cm}
+	{\small Os dicionários são usados na expansão. Complexidade: $O(m)$}
 \end{frame}
 
 \begin{frame}{Passo 5: Chamada Recursiva}
@@ -699,15 +704,11 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: int):
 	\end{columns}
 \end{frame}
 
-\begin{frame}[fragile]{Passo 5: Implementação da Chamada Recursiva em Python}
-	\textbf{Estrutura recursiva do algoritmo:}
+\begin{frame}[fragile]{Passo 5: Implementação da Chamada Recursiva}
+	\textbf{Estrutura recursiva:}
 
-	\vspace{0.2cm}
-	\begin{columns}[t]
-		\column{0.55\textwidth}
-		\begin{lstlisting}[basicstyle=\scriptsize\ttfamily]
-def chuliu_edmonds(D: nx.DiGraph, 
-                   r: int, label: int):
+	\begin{lstlisting}[basicstyle=\scriptsize\ttfamily]
+def chuliu_edmonds(D: nx.DiGraph, r: int, label: int):
     D_copy = D.copy()
     
     # Reducao de custos
@@ -719,32 +720,17 @@ def chuliu_edmonds(D: nx.DiGraph,
     
     if nx.is_arborescence(D_zero):
         # Restaurar pesos e devolver
-        ...
+        for u, v in D_zero.edges:
+            D_zero[u][v]["w"] = D[u][v]["w"]
         return D_zero
     
-    # Contrair ciclo e chamar recursao
+    # Contrair ciclo e recursao
     C = find_cycle(D_zero)
     in_to_cycle, out_from_cycle = \
         contract_cycle(D_copy, C, label)
-    
-    F_prime = chuliu_edmonds(
-                D_copy, r, label + 1)
+    F_prime = chuliu_edmonds(D_copy, r, label + 1)
+    # ... expansao ...
 \end{lstlisting}
-
-		\column{0.45\textwidth}
-		\textbf{Observações:}
-		\begin{itemize}
-			\item \texttt{label} identifica o supervértice
-			\item Cada chamada recursiva incrementa \texttt{label}
-			\item Caso base: $D_0$ é arborescência
-			\item Caso recursivo: contrai ciclo e resolve subproblema
-		\end{itemize}
-	\end{columns}
-
-	\vspace{0.3cm}
-	\begin{block}{Garantia}
-		Cada chamada reduz o número de vértices em pelo menos 1 (o ciclo contraído).
-	\end{block}
 \end{frame}
 
 \begin{frame}{Passo 6: Reexpansão da Solução}
@@ -785,14 +771,11 @@ def chuliu_edmonds(D: nx.DiGraph,
 	\end{columns}
 \end{frame}
 
-\begin{frame}[fragile]{Passo 6: Implementação da Reexpansão da Solução em Python}
-	\textbf{Expansão após chamada recursiva:}
+\begin{frame}[fragile]{Passo 6: Implementação da Reexpansão (1/2)}
+	\textbf{Encontrar e adicionar arco correspondente:}
 
-	\vspace{0.2cm}
-	\begin{columns}[t]
-		\column{0.55\textwidth}
-		\begin{lstlisting}[basicstyle=\tiny\ttfamily]
-# F_prime eh solucao em D' (com supervertice)
+	\begin{lstlisting}[basicstyle=\small\ttfamily]
+# F_prime: solucao em D' (com supervertice)
 # Encontrar arco que entra em label
 in_edge = next(iter(
     F_prime.in_edges(label, data=True)))
@@ -802,12 +785,20 @@ u, _, _ = in_edge
 v, _ = in_to_cycle[u]
 F_prime.add_edge(u, v)
 
-# Adicionar arcos do ciclo, 
-# exceto o que entra em v
+# Adicionar arcos do ciclo (exceto o que entra em v)
 for u_c, v_c in C.edges:
     if v != v_c:
         F_prime.add_edge(u_c, v_c)
+\end{lstlisting}
 
+	\vspace{0.2cm}
+	{\small Identifica qual arco do ciclo não será incluído na solução}
+\end{frame}
+
+\begin{frame}[fragile]{Passo 6: Implementação da Reexpansão (2/2)}
+	\textbf{Transferir arcos externos e restaurar pesos:}
+
+	\begin{lstlisting}[basicstyle=\small\ttfamily]
 # Arcos que saem do supervertice
 for _, z, _ in list(
         F_prime.out_edges(label, data=True)):
@@ -824,21 +815,9 @@ for u, v in F_prime.edges:
 return F_prime
 \end{lstlisting}
 
-		\column{0.45\textwidth}
-		\textbf{Passos da expansão:}
-		\begin{enumerate}
-			\item Identificar arco que entra em \texttt{label}
-			\item Encontrar arco correspondente em $D$
-			\item Adicionar arcos do ciclo $C$ (exceto um)
-			\item Transferir arcos que saem de \texttt{label}
-			\item Remover \texttt{label}
-			\item Restaurar pesos originais
-		\end{enumerate}
-	\end{columns}
-
 	\vspace{0.2cm}
 	\begin{block}{Correção}
-		A expansão garante que $T$ é uma $r$-arborescência ótima no digrafo original $D$.
+		A expansão garante que $T$ é uma $r$-arborescência ótima no digrafo original.
 	\end{block}
 \end{frame}
 
