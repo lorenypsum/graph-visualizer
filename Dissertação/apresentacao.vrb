@@ -1,7 +1,7 @@
 \frametitle{Passo 6: Implementação da Reexpansão (2/2)}
 \textbf{Transferir arcos externos e restaurar pesos:}
 
-	\begin{lstlisting}[basicstyle=\small\ttfamily]
+	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
 # Arcos que saem do supervertice
 for _, z, _ in list(
         F_prime.out_edges(label, data=True)):
@@ -18,7 +18,5 @@ for u, v in F_prime.edges:
 return F_prime
 \end{lstlisting}
 
-	\vspace{0.2cm}
-	\begin{block}{Correção}
-		A expansão garante que $T$ é uma $r$-arborescência ótima no digrafo original.
-	\end{block}
+	\vspace{0.05cm}
+	{\small \textbf{Correção:} A expansão garante que $T$ é uma $r$-arborescência ótima no digrafo original.}
