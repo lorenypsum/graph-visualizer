@@ -220,6 +220,13 @@
 	\end{columns}
 \end{frame}
 
+\begin{frame}{Intermissão}
+	\begin{center}
+		\LARGE
+		Algoritmo de Chu-Liu-Edmonds
+	\end{center}
+\end{frame}
+
 % ==================== SEÇÃO 2: CHU-LIU-EDMONDS ====================
 \section{Algoritmo de Chu-Liu-Edmonds}
 
@@ -810,6 +817,27 @@ return F_prime
 
 	\vspace{0.05cm}
 	{\small \textbf{Correção:} A expansão garante que $T$ é uma $r$-arborescência ótima no digrafo original.}
+\end{frame}
+
+\begin{frame}{Complexidade do Algoritmo}
+	\textbf{Análise de Complexidade:}
+	\begin{itemize}
+		\item Cada chamada recursiva reduz o número de vértices em pelo menos 1
+		\item No pior caso, pode haver até $O(n)$ chamadas recursivas
+		\item Cada chamada envolve operações de redução de custos, construção de $D_0$, detecção de ciclos e contração, cada uma com complexidade $O(m)$
+	\end{itemize}
+
+	\vspace{0.3cm}
+	\textbf{Complexidade Total:}
+	$$O(n \cdot m)$$
+	onde $n$ é o número de vértices e $m$ é o número de arcos no digrafo original.
+\end{frame}
+
+\begin{frame}{Intermissão}
+	\begin{center}
+		\LARGE
+		Algoritmo de András Frank
+	\end{center}
 \end{frame}
 
 % ==================== SEÇÃO 3: ANDRÁS FRANK ====================
