@@ -1554,13 +1554,14 @@ def andras_frank(D: nx.DiGraph, r: int):
         \end{itemize}
         \column{0.45\textwidth}
         \begin{center}
-            \begin{tikzpicture}[node distance=1.3cm, box/.style={rectangle,draw,rounded corners,minimum width=2.8cm,minimum height=0.9cm,align=center}]
+            \begin{tikzpicture}[node distance=0.7cm, box/.style={rectangle,draw,rounded corners,minimum width=2.8cm,minimum height=0.9cm,align=center}]
                 \node[box,fill=accentpurple!15] (ui) {Apresentação\\HTML5 + Tailwind + JS};
                 \node[box,fill=accentpurple!8,below=of ui] (py) {Processamento\\PyScript + NetworkX};
                 \node[box,fill=accentpurple!3,below=of py] (data) {Dados/Persistência\\JSON (\texttt{node\_link})};
                 \draw[->,thick] (ui) -- (py);
                 \draw[->,thick] (py) -- (data);
-                \draw[->,thick] (data) -- (ui);
+                % Seta lateral para evitar sobreposição
+                \draw[->,thick] (ui.east) .. controls +(1.2,0) and +(1.2,0) .. (data.east);
             \end{tikzpicture}
         \end{center}
     \end{columns}
@@ -1578,13 +1579,14 @@ def andras_frank(D: nx.DiGraph, r: int):
         \end{itemize}
         \column{0.45\textwidth}
         \begin{center}
-            \begin{tikzpicture}[node distance=1.3cm, box/.style={rectangle,draw,rounded corners,minimum width=2.8cm,minimum height=0.9cm,align=center}]
+            \begin{tikzpicture}[node distance=0.7cm, box/.style={rectangle,draw,rounded corners,minimum width=2.8cm,minimum height=0.9cm,align=center}]
                 \node[box,fill=accentpurple!15] (ui) {Apresentação\\HTML5 + Tailwind + JS};
                 \node[box,fill=accentpurple!8,below=of ui] (py) {Processamento\\PyScript + NetworkX};
                 \node[box,fill=accentpurple!3,below=of py] (data) {Dados/Persistência\\JSON (\texttt{node\_link})};
                 \draw[->,thick] (ui) -- (py);
                 \draw[->,thick] (py) -- (data);
-                \draw[->,thick] (data) -- (ui);
+                % Seta lateral para evitar sobreposição
+                \draw[->,thick] (ui.east) .. controls +(1.2,0) and +(1.2,0) .. (data.east);
             \end{tikzpicture}
         \end{center}
     \end{columns}
