@@ -633,13 +633,13 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph,
     in_to_cycle: dict[int, tuple[int, float]] = {}
     for u in D.nodes:
         if u not in cycle_nodes:
-            min_edge = min(
+            min_weight_edge_to_cycle = min(
                 ((v, data["w"])
                  for _, v, data in D.out_edges(u, data=True)
                  if v in cycle_nodes),
                 key=lambda x: x[1], default=None)
-            if min_edge:
-                in_to_cycle[u] = min_edge
+            if min_weight_edge_to_cycle:
+                in_to_cycle[u] = min_weight_edge_to_cycle
     for u, (v, w) in in_to_cycle.items():
         D.add_edge(u, label, w=w)
 \end{lstlisting}
@@ -651,30 +651,25 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph,
 
 \begin{frame}[fragile]{Passo 4: Implementação da Contração (3/3)}
 	\textbf{Arcos essenciais que saem do ciclo:}
-
 	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
-    # Arcos essenciais SAINDO do ciclo
+    # Arcos essenciais saindo do ciclo
     out_from_cycle: dict[int, tuple[int, float]] = {}
     for v in D.nodes:
         if v not in cycle_nodes:
-            min_edge = min(
+            min_weight_edge_from_cycle = min(
                 ((u, data["w"])
                  for u, _, data in D.in_edges(v, data=True)
                  if u in cycle_nodes),
                 key=lambda x: x[1], default=None)
-            if min_edge:
-                out_from_cycle[v] = min_edge
-    
+            if min_weight_edge_from_cycle:
+                out_from_cycle[v] = min_weight_edge_from_cycle
     for v, (u, w) in out_from_cycle.items():
         D.add_edge(label, v, w=w)
-    
     D.remove_nodes_from(cycle_nodes)
     return in_to_cycle, out_from_cycle
 \end{lstlisting}
-
-	\vspace{0.1cm}
-	\begin{block}{Arcos Essenciais de Saída}
-		Os dicionários retornados são usados na expansão. Complexidade: $O(m)$
+	\begin{block}{}
+		Encontra o arco de menor custo que sai do ciclo para cada vértice externo. Os dicionários retornados serão usados na expansão.
 	\end{block}
 \end{frame}
 
