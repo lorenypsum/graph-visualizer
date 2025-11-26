@@ -826,126 +826,589 @@ return F_prime
 % ==================== SEÇÃO 3: ANDRÁS FRANK ====================
 \section{Algoritmo de András Frank}
 
-\begin{frame}{András Frank: Visão Geral}
+\begin{frame}{Algoritmo de András Frank}
 	\begin{block}{Abordagem em Duas Fases}
-		\textbf{Fase I:} Construir cobertura de subconjuntos minimais via redução de custos
+		\textbf{Fase I (Fulkerson):} Construir cobertura de $r$-conjuntos via redução de custos
 
-		\textbf{Fase II:} Extrair arborescência da cobertura
+		\textbf{Fase II (Frank):} Extrair $r$-arborescência geradora da cobertura
 	\end{block}
 
-	\vspace{0.5cm}
+	\vspace{0.3cm}
 
-	\begin{columns}[c]
-		\column{0.5\textwidth}
-		\textbf{Diferencial:}
-		\begin{itemize}
-			\item Trabalha com múltiplos vértices simultaneamente
-			\item Usa componentes fortemente conexas
-			\item Redução sistemática de custos
-		\end{itemize}
-
-		\column{0.5\textwidth}
-		\textbf{Complexidade:}
-		\begin{itemize}
-			\item Fase I: $O(nm)$
-			\item Fase II v1 (lista): $O(n^2)$
-			\item Fase II v2 (heap): $O(n \log n)$
-		\end{itemize}
-	\end{columns}
+	\textbf{Fase I:} dado um $r$-digrafo ponderado $(D,w,r)$
+	\begin{enumerate}
+		\item \textbf{Inicializar}: $c := w$, $\sigma := \epsilon$ (sequência vazia)
+		\item \textbf{Enquanto} $F$ não cobre todos $r$-conjuntos:
+		      \begin{itemize}
+			      \item Encontrar $r$-conjunto minimal $R_k$ não coberto por $F$
+			      \item Calcular $\lambda_k := \min\{c(a) : a \in \delta^-(R_k)\}$
+			      \item Selecionar $f_k \in \delta^-(R_k)$ com $c(f_k) = \lambda_k$
+			      \item $\sigma := \sigma \cdot (f_k, R_k, \lambda_k)$
+			      \item $c := c - \lambda_k \mathbf{1}_{\delta^-(R_k)}$
+		      \end{itemize}
+		\item \textbf{Devolver}: $\sigma = ((f_i, R_i, \lambda_i))_{i \in [k)}$
+	\end{enumerate}
 \end{frame}
 
-\begin{frame}{Fase I: Redução de Custos}
-	\textbf{Para cada vértice} $v \neq r$: subtrair o mínimo de entrada
-
-	\begin{center}
-		\begin{tikzpicture}[scale=1.1,
-				vertex/.style={circle,draw,minimum size=0.7cm}]
-
-			% Antes
-			\begin{scope}
-				\node[vertex,fill=red!20] (r1) at (0,2) {$r$};
-				\node[vertex] (A1) at (2,3) {$A$};
-				\node[vertex] (B1) at (4,3) {$B$};
-				\node[vertex] (C1) at (2,1) {$C$};
-
-				\draw[->,>=stealth] (r1) -- node[above] {2} (A1);
-				\draw[->,>=stealth] (r1) to[bend left] node[above] {10} (B1);
-				\draw[->,>=stealth] (B1) -- node[right] {1} (A1);
-				\draw[->,>=stealth] (A1) -- node[left] {4} (C1);
-
-				\node at (2,0) {\textbf{Original}};
-			\end{scope}
-
-			% Depois
-			\begin{scope}[xshift=6cm]
-				\node[vertex,fill=red!20] (r2) at (0,2) {$r$};
-				\node[vertex] (A2) at (2,3) {$A$};
-				\node[vertex] (B2) at (4,3) {$B$};
-				\node[vertex] (C2) at (2,1) {$C$};
-
-				\draw[->,>=stealth,blue] (r2) -- node[above] {1} (A2);
-				\draw[->,>=stealth] (r2) to[bend left] node[above] {10} (B2);
-				\draw[->,>=stealth,blue,very thick] (B2) -- node[right] {\textbf{0}} (A2);
-				\draw[->,>=stealth,blue,very thick] (A2) -- node[left] {\textbf{0}} (C2);
-
-				\node at (2,0) {\textbf{Após Redução}};
-			\end{scope}
-
-		\end{tikzpicture}
-	\end{center}
-
-	Arcos com custo \textbf{zero} formam o digrafo $D_0$
-\end{frame}
-
-\begin{frame}{Fase I: Componentes Fortemente Conexas}
+\begin{frame}{Exemplo: Digrafo Inicial}
 	\begin{columns}[c]
-		\column{0.5\textwidth}
-		Identificar componentes fortemente conexas (CFCs) em $D_0$
+		\column{0.48\textwidth}
+		\textbf{Digrafo ponderado $(D,w,r)$:}
+
+		\vspace{0.2cm}
+		\begin{itemize}
+			\item Vértices: $\{r, a, b, c\}$
+			\item Raiz: $r$
+			\item Objetivo: encontrar $r$-arborescência geradora de custo mínimo
+		\end{itemize}
 
 		\vspace{0.3cm}
-		Cada CFC forma um \textbf{subconjunto minimal}
+		\textbf{Pesos dos arcos:}
+		\begin{itemize}
+			\item $(r,a): 2$, $(r,b): 10$
+			\item $(b,a): 1$, $(a,c): 4$
+		\end{itemize}
 
-		\vspace{0.3cm}
-		Construir sequência laminar de subconjuntos
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				arc/.style={->, thick, draw=gray!70}]
+			\node[v,fill=red!20] (r) {\small $r$};
+			\node[v] (a) [below right=1.5cm and 1.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.5cm and 1.2cm of r] {\small $b$};
+			\node[v] (c) [right=2.5cm of a] {\small $c$};
 
-		\column{0.5\textwidth}
-		\begin{tikzpicture}[scale=0.9]
-			\node[draw,circle,fill=yellow!20,minimum size=1.2cm] (S1) at (0,2) {$S_1$};
-			\node[draw,circle,fill=yellow!20,minimum size=1.2cm] (S2) at (2,2) {$S_2$};
-			\node[draw,circle,fill=yellow!20,minimum size=1.2cm] (S3) at (1,0.5) {$S_3$};
-
-			\draw[->,>=stealth,thick] (S1) to[bend left] (S2);
-			\draw[->,>=stealth,thick] (S2) to[bend left] (S1);
-			\draw[->,>=stealth,thick] (S2) -- (S3);
+			\draw[arc] (r) -- node[midway, below left] {\scriptsize 2} (a);
+			\draw[arc] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
+			\draw[arc] (b) -- node[midway, above right] {\scriptsize 1} (a);
+			\draw[arc] (a) -- node[midway, below] {\scriptsize 4} (c);
 		\end{tikzpicture}
 	\end{columns}
 
-	\vspace{0.5cm}
-	\begin{block}{Condição de Otimalidade}
-		Sequência $\lambda$ satisfaz: $|\delta^-(X)| = 1$ para cada $X$ em $\lambda$
+	\vspace{0.3cm}
+	\begin{alertblock}{Problema}
+		Aplicar o algoritmo de András Frank para encontrar a $r$-arborescência geradora de custo mínimo.
+	\end{alertblock}
+\end{frame}
+
+\begin{frame}{Fase I - Iteração 1: Encontrar $r$-conjunto Minimal}
+	\begin{columns}[c]
+		\column{0.48\textwidth}
+		\textbf{Estado inicial:}
+		\begin{itemize}
+			\item $F = \emptyset$ (nenhum arco selecionado)
+			\item $D_0 = (V, \emptyset)$
+			\item $\mathcal{C}(D_0)$ tem 4 fontes
+		\end{itemize}
+
+		\vspace{0.2cm}
+		\textbf{Fontes que são $r$-conjuntos:}
+		\begin{itemize}
+			\item $\{a\}$, $\{b\}$, $\{c\}$
+		\end{itemize}
+
+		\vspace{0.2cm}
+		\textbf{Escolha:} $R_0 = \{a\}$ (minimal)
+
+		\vspace{0.2cm}
+		Arcos que entram em $\{a\}$:
+		\begin{itemize}
+			\item $(r,a): 2$
+			\item $(b,a): 1$ ← \textbf{mínimo}
+		\end{itemize}
+
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				rset/.style={draw=orange!70, very thick, dashed, rounded corners},
+				arc/.style={->, thick, draw=gray!70},
+				selected/.style={->, very thick, draw=green!70}]
+			\node[v,fill=red!20] (r) {\small $r$};
+			\node[v] (a) [below right=1.5cm and 1.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.5cm and 1.2cm of r] {\small $b$};
+			\node[v] (c) [right=2.5cm of a] {\small $c$};
+
+			\draw[arc] (r) -- node[midway, below left] {\scriptsize 2} (a);
+			\draw[arc] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
+			\draw[selected] (b) -- node[midway, above right] {\scriptsize 1} (a);
+			\draw[arc] (a) -- node[midway, below] {\scriptsize 4} (c);
+
+			\node[rset, fit=(a)] {};
+			\node[orange!70, above=0.2cm of a] {\small $R_0$};
+		\end{tikzpicture}
+
+		\vspace{0.2cm}
+		{\small $\lambda_0 = 1$, $f_0 = (b,a)$}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Fase I - Iteração 1: Redução de Custos}
+	\begin{columns}[c]
+		\column{0.48\textwidth}
+		\textbf{Atualização:}
+		\begin{itemize}
+			\item $\sigma = [(f_0, R_0, \lambda_0)]$
+			\item $F = \{(b,a)\}$
+			\item $D_0 = (V, \{(b,a)\})$
+		\end{itemize}
+
+		\vspace{0.2cm}
+		\textbf{Redução de custos:}
+		\begin{itemize}
+			\item $c(r,a) = 2 - 1 = 1$
+			\item $c(b,a) = 1 - 1 = 0$ \checkmark
+		\end{itemize}
+
+		\vspace{0.2cm}
+		Custos reduzidos:
+		\begin{itemize}
+			\item $(r,a): 1$, $(r,b): 10$
+			\item $(b,a): 0$, $(a,c): 4$
+		\end{itemize}
+
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				arc/.style={->, thick, draw=gray!70},
+				zero/.style={->, very thick, draw=blue!70}]
+			\node[v,fill=red!20] (r) {\small $r$};
+			\node[v] (a) [below right=1.5cm and 1.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.5cm and 1.2cm of r] {\small $b$};
+			\node[v] (c) [right=2.5cm of a] {\small $c$};
+
+			\draw[arc] (r) -- node[midway, below left] {\scriptsize 1} (a);
+			\draw[arc] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
+			\draw[zero] (b) -- node[midway, above right] {\scriptsize 0} (a);
+			\draw[arc] (a) -- node[midway, below] {\scriptsize 4} (c);
+		\end{tikzpicture}
+
+		\vspace{0.2cm}
+		{\small Arcos azuis têm custo zero}
+	\end{columns}
+
+	\vspace{0.2cm}
+	\begin{block}{Observação}
+		Custos são reduzidos para garantir que $\sigma$ seja $w$-disjunta.
+	\end{block}
+\end{frame}
+
+\begin{frame}{Fase I - Iteração 2: Próximo $r$-conjunto}
+	\begin{columns}[c]
+		\column{0.48\textwidth}
+		\textbf{Estado:} $F = \{(b,a)\}$
+
+		\vspace{0.2cm}
+		$\mathcal{C}(D_0)$ agora tem:
+		\begin{itemize}
+			\item CFC: $\{b, a\}$ (b → a)
+			\item Fontes: $\{r\}$, $\{c\}$
+		\end{itemize}
+
+		\vspace{0.2cm}
+		\textbf{Escolha:} $R_1 = \{c\}$
+
+		\vspace{0.2cm}
+		Arcos que entram em $\{c\}$:
+		\begin{itemize}
+			\item $(a,c): 4$ ← único
+		\end{itemize}
+
+		\vspace{0.2cm}
+		$\lambda_1 = 4$, $f_1 = (a,c)$
+
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				rset/.style={draw=orange!70, very thick, dashed, rounded corners},
+				arc/.style={->, thick, draw=gray!70},
+				zero/.style={->, thick, draw=blue!70},
+				selected/.style={->, very thick, draw=green!70}]
+			\node[v,fill=red!20] (r) {\small $r$};
+			\node[v] (a) [below right=1.5cm and 1.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.5cm and 1.2cm of r] {\small $b$};
+			\node[v] (c) [right=2.5cm of a] {\small $c$};
+
+			\draw[arc] (r) -- node[midway, below left] {\scriptsize 1} (a);
+			\draw[arc] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
+			\draw[zero] (b) -- node[midway, above right] {\scriptsize 0} (a);
+			\draw[selected] (a) -- node[midway, below] {\scriptsize 4} (c);
+
+			\node[rset, fit=(c)] {};
+			\node[orange!70, above=0.2cm of c] {\small $R_1$};
+		\end{tikzpicture}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Fase I - Iteração 2: Redução e Estado Final}
+	\begin{columns}[c]
+		\column{0.48\textwidth}
+		\textbf{Atualização:}
+		\begin{itemize}
+			\item $F = \{(b,a), (a,c)\}$
+			\item $D_0 = (V, F)$
+		\end{itemize}
+
+		\vspace{0.2cm}
+		\textbf{Redução:}
+		\begin{itemize}
+			\item $c(a,c) = 4 - 4 = 0$ \checkmark
+		\end{itemize}
+
+		\vspace{0.2cm}
+		$\mathcal{C}(D_0)$ agora:
+		\begin{itemize}
+			\item CFC: $\{r\}$, $\{b,a,c\}$
+			\item Apenas 1 fonte (contém $r$)
+		\end{itemize}
+
+		\vspace{0.2cm}
+		\textbf{Fim da Fase I!}
+
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				zero/.style={->, very thick, draw=blue!70},
+				arc/.style={->, thick, draw=gray!70}]
+			\node[v,fill=red!20] (r) {\small $r$};
+			\node[v] (a) [below right=1.5cm and 1.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.5cm and 1.2cm of r] {\small $b$};
+			\node[v] (c) [right=2.5cm of a] {\small $c$};
+
+			\draw[arc] (r) -- node[midway, below left] {\scriptsize 1} (a);
+			\draw[arc] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
+			\draw[zero] (b) -- node[midway, above right] {\scriptsize 0} (a);
+			\draw[zero] (a) -- node[midway, below] {\scriptsize 0} (c);
+		\end{tikzpicture}
+
+		\vspace{0.2cm}
+		{\small Cobertura de $r$-conjuntos construída!}
+	\end{columns}
+
+	\vspace{0.2cm}
+	\begin{block}{Sequência devolvida}
+		$\sigma = [(f_0=(b,a), R_0=\{a\}, \lambda_0=1), (f_1=(a,c), R_1=\{c\}, \lambda_1=4)]$
+	\end{block}
+\end{frame}
+
+\begin{frame}{Fase II: Extração da Arborescência}
+	\begin{columns}[c]
+		\column{0.48\textwidth}
+		\textbf{Entrada da Fase II:}
+		\begin{itemize}
+			\item $F = [f_0, f_1] = [(b,a), (a,c)]$
+		\end{itemize}
+
+		\vspace{0.2cm}
+		\textbf{Algoritmo guloso:}
+		\begin{enumerate}
+			\item $U = \{r\}$, $J = \emptyset$
+			\item Iterar sobre $F$ em ordem:
+			      \begin{itemize}
+				      \item $(b,a)$: $b \notin U$ $\times$ pular
+				      \item $(a,c)$: $a \notin U$ $\times$ pular
+			      \end{itemize}
+			\item Precisamos incluir arcos de $D$ não em $F$!
+		\end{enumerate}
+
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				inU/.style={circle, draw, fill=green!20, minimum size=7mm},
+				arc/.style={->, thick, draw=gray!70},
+				covered/.style={->, thick, draw=blue!70}]
+			\node[v,fill=red!20,inU] (r) {\small $r$};
+			\node[v] (a) [below right=1.5cm and 1.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.5cm and 1.2cm of r] {\small $b$};
+			\node[v] (c) [right=2.5cm of a] {\small $c$};
+
+			\draw[arc] (r) -- node[midway, below left] {\scriptsize 2} (a);
+			\draw[arc] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
+			\draw[covered] (b) -- node[midway, above right] {\scriptsize 1} (a);
+			\draw[covered] (a) -- node[midway, below] {\scriptsize 4} (c);
+		\end{tikzpicture}
+
+		\vspace{0.2cm}
+		{\small Verde = vértices em $U$}
+	\end{columns}
+
+	\vspace{0.2cm}
+	\begin{alertblock}{Observação}
+		Fase II precisa considerar \textbf{todos} arcos de $D$, não apenas $F$.
+	\end{alertblock}
+\end{frame}
+
+\begin{frame}{Fase II: Construção Passo a Passo}
+	\begin{columns}[c]
+		\column{0.48\textwidth}
+		\textbf{Iteração 1:}
+		\begin{itemize}
+			\item $U = \{r\}$
+			\item Procurar arco saindo de $U$
+			\item $(r,a)$: $r \in U$, $a \notin U$ $\checkmark$
+			\item $U := U \cup \{a\}$
+			\item $J := \{(r,a)\}$
+		\end{itemize}
+
+		\vspace{0.2cm}
+		\textbf{Iteração 2:}
+		\begin{itemize}
+			\item $(b,a)$: $a \in U$ $\times$
+			\item $(a,c)$: $a \in U$, $c \notin U$ $\checkmark$
+			\item $U := \{r, a, c\}$
+			\item $J := \{(r,a), (a,c)\}$
+		\end{itemize}
+
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				inJ/.style={circle, draw, fill=green!20, minimum size=7mm},
+				selected/.style={->, very thick, draw=green!70}]
+			\node[inJ,fill=red!20] (r) {\small $r$};
+			\node[inJ] (a) [below right=1.5cm and 1.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.5cm and 1.2cm of r] {\small $b$};
+			\node[inJ] (c) [right=2.5cm of a] {\small $c$};
+
+			\draw[selected] (r) -- node[midway, below left] {\scriptsize 2} (a);
+			\draw[->, thick, draw=gray!40] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
+			\draw[->, thick, draw=gray!40] (b) -- node[midway, above right] {\scriptsize 1} (a);
+			\draw[selected] (a) -- node[midway, below] {\scriptsize 4} (c);
+		\end{tikzpicture}
+
+		\vspace{0.2cm}
+		{\small $J$ = arborescência geradora}
+	\end{columns}
+
+	\vspace{0.2cm}
+	\begin{exampleblock}{Resultado Final}
+		$r$-arborescência de custo $w(J) = 2 + 4 = 6$ (custo mínimo!)
+	\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Fase I: Sequência $w$-disjunta}
+	\textbf{Conceitos fundamentais:}
+
+	\vspace{0.2cm}
+	Uma sequência $((R_i, \lambda_i))_{i \in [k)}$ é \textbf{$w$-disjunta} se:
+	$$\sum_{i \in [k)} \lambda_i [a \in \delta^-(R_i)] \le w(a)$$
+	para cada arco $a \in A(D)$.
+
+	\vspace{0.3cm}
+	\textbf{Interpretação:}
+	\begin{itemize}
+		\item $\lambda_i$ é a multiplicidade do $r$-conjunto $R_i$
+		\item O peso total usado por todos os $R_i$ não excede $w(a)$
+	\end{itemize}
+
+	\vspace{0.3cm}
+	\begin{block}{Coleção Laminar}
+		$\{R_i : i \in [k)\}$ é laminar: para quaisquer $R_i, R_j$:
+		$$R_i \subseteq R_j \quad\text{ou}\quad R_j \subseteq R_i \quad\text{ou}\quad R_i \cap R_j = \emptyset$$
+	\end{block}
+\end{frame}
+
+\begin{frame}{Fase I: Encontrando $r$-conjuntos Minimais}
+	\textbf{Como encontrar um $r$-conjunto minimal não coberto?}
+
+	\vspace{0.2cm}
+	Seja $D_0 := (V, F)$ onde $F = \{f_i : i \in [k)\}$.
+
+	\vspace{0.2cm}
+	\begin{enumerate}
+		\item Calcular a condensação $\mathcal{C}(D_0)$
+		\item Identificar componentes fortemente conexas (CFCs)
+		\item Encontrar uma fonte $S$ em $\mathcal{C}(D_0)$ tal que $r \notin S$
+	\end{enumerate}
+
+	\vspace{0.3cm}
+	\begin{block}{Proposição}
+		Toda fonte $S$ de $\mathcal{C}(D_0)$ com $r \notin S$ é um $r$-conjunto minimal não coberto por $F$.
+	\end{block}
+
+	\vspace{0.2cm}
+	{\small \textbf{Complexidade:} Identificação de CFCs em $O(|A|)$ usando Kosaraju}
+\end{frame}
+
+\begin{frame}[fragile]{Fase I: Implementação - Estrutura Principal}
+	\textbf{Função \texttt{phase1}:}
+
+	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+def phase1(D: nx.DiGraph, r: int):
+    D_copy = D.copy()
+    sigma = []
+    D_zero = nx.DiGraph()
+    D_zero.add_nodes_from(D_copy.nodes())
+    
+    while True:
+        C = nx.condensation(D_zero)
+        sources = [x for x in C.nodes() 
+                   if C.in_degree(x) == 0]
+        if len(sources) == 1: 
+            break
+        
+        for s in sources:
+            X = C.nodes[s]["members"]
+            if r in X:
+                continue
+            # ... (continua no proximo slide)
+\end{lstlisting}
+
+	\vspace{0.05cm}
+	{\small \textbf{Observação:} Loop principal até todos $r$-conjuntos estarem cobertos}
+\end{frame}
+
+\begin{frame}[fragile]{Fase I: Implementação - Seleção de Arcos}
+	\textbf{Continuação da função \texttt{phase1}:}
+
+	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+            # ... (continuacao do loop)
+            arcs = [(u, v, data) 
+                    for u, v, data in D_copy.edges(data=True) 
+                    if u not in X and v in X]
+            
+            min_weight = min(data["w"] for _, _, data in arcs)
+            a = update_weights(D_copy, arcs, min_weight)
+            
+            D_zero.add_edge(a[0], a[1])
+            sigma.append((a, X, min_weight))
+    
+    return sigma
+\end{lstlisting}
+
+	\vspace{0.05cm}
+	{\small \textbf{Complexidade:} $O(|V||A|)$ - limitado por $2|V|-1$ iterações}
+\end{frame}
+
+\begin{frame}[fragile]{Fase I: Implementação - Atualização de Pesos}
+	\textbf{Função \texttt{update\_weights}:}
+
+	\begin{lstlisting}[basicstyle=\scriptsize\ttfamily]
+def update_weights(D: nx.DiGraph, 
+                   arcs: list[tuple[int, int, dict]],
+                   min_weight: float):
+    for u, v, _ in arcs:
+        D[u][v]["w"] -= min_weight
+        if D[u][v]["w"] == 0:
+            a = (u, v)
+    return a
+\end{lstlisting}
+
+	\vspace{0.2cm}
+	\begin{block}{Descrição}
+		\begin{itemize}
+			\item Reduz peso de todos arcos que entram no $r$-conjunto
+			\item Devolve arco com peso zero (custo reduzido mínimo)
+			\item Atualiza o digrafo in-place
+		\end{itemize}
 	\end{block}
 \end{frame}
 
 \begin{frame}{Fase II: Construção da Arborescência}
-	\textbf{Objetivo:} Extrair arborescência de $D_0$ respeitando $\lambda$
+	\textbf{Entrada:} Sequência $(f_i)_{i \in [k)}$ da Fase I
+
+	\vspace{0.2cm}
+	\textbf{Objetivo:} Extrair $J \subseteq \{f_i : i \in [k)\}$ que é uma $r$-arborescência geradora
 
 	\vspace{0.3cm}
-
+	\textbf{Algoritmo guloso:}
 	\begin{enumerate}
-		\item Iniciar com conjunto $R = \{r\}$
-		\item Para cada $v$ fora de $R$:
+		\item Iniciar com $U := \{r\}$ e $J := \emptyset$
+		\item Para $t = 1$ até $|V|-1$:
 		      \begin{itemize}
-			      \item Selecionar arco $(u,v)$ com $u \in R$ e custo reduzido zero
-			      \item Adicionar $v$ a $R$
+			      \item Para cada $f_i = (u_i, v_i)$ na sequência:
+			      \item Se $u_i \in U$ e $v_i \notin U$:
+			            \begin{itemize}
+				            \item $U := U \cup \{v_i\}$
+				            \item $J := J \cup \{f_i\}$
+				            \item Passar para próxima iteração
+			            \end{itemize}
 		      \end{itemize}
-		\item Repetir até incluir todos os vértices
 	\end{enumerate}
 
-	\vspace{0.5cm}
+	\vspace{0.3cm}
+	\begin{block}{Invariante}
+		Em cada iteração, $\varrho_J(R_i) \le 1$ para todo $i \in [k)$
+	\end{block}
+\end{frame}
 
-	\begin{exampleblock}{Resultado}
-		Arborescência ótima com mesma solução: custo 14
-	\end{exampleblock}
+\begin{frame}[fragile]{Fase II: Implementação - Versão Lista}
+	\textbf{Versão 1: Iteração sobre lista}
+
+	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+def phase2(D: nx.DiGraph, r: int, 
+           F: list[tuple[int, int]]):
+    Arb = nx.DiGraph()
+    Arb.add_node(r)
+    n = len(D.nodes())
+    
+    for _ in range(n - 1):
+        for u, v in F:
+            if u in Arb.nodes() and v not in Arb.nodes():
+                edge_data = D.get_edge_data(u, v)
+                Arb.add_edge(u, v, **edge_data)
+                break
+    
+    return Arb
+\end{lstlisting}
+
+	\vspace{0.05cm}
+	{\small \textbf{Complexidade:} $O(|V||F|) = O(|V|^2)$ pois $|F| \le 2|V|-1$}
+\end{frame}
+
+\begin{frame}[fragile]{Fase II: Implementação - Versão Heap}
+	\textbf{Versão 2: Usando fila de prioridade (estilo Dijkstra)}
+
+	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+def phase2_v2(D, r, F):
+    Arb = nx.DiGraph()
+    for i, (u, v) in enumerate(F):
+        Arb.add_edge(u, v, w=i)  # prioridade = indice
+    
+    V = {r}
+    q = []
+    for u, v, data in Arb.out_edges(r, data=True):
+        heapq.heappush(q, (data["w"], u, v))
+    
+    J = nx.DiGraph()
+    while q:
+        _, u, v = heapq.heappop(q)
+        if v in V: continue
+        J.add_edge(u, v, w=D[u][v]["w"])
+        V.add(v)
+        for x, y, data in Arb.out_edges(v, data=True):
+            heapq.heappush(q, (data["w"], x, y))
+    return J
+\end{lstlisting}
+
+	\vspace{0.05cm}
+	{\small \textbf{Complexidade:} $O(|V| \log |V|)$ usando heap binário}
+\end{frame}
+
+\begin{frame}[fragile]{Algoritmo Completo de Frank}
+	\textbf{Composição das duas fases:}
+
+	\begin{lstlisting}[basicstyle=\scriptsize\ttfamily]
+def andras_frank(D: nx.DiGraph, r: int):
+    # Fase I: construir cobertura
+    sigma = phase1(D, r)
+    F = [f for f, _, _ in sigma]
+    
+    # Fase II: extrair arborescencia
+    J = phase2_v2(D, r, F)
+    
+    return J
+\end{lstlisting}
+
+	\vspace{0.3cm}
+	\begin{block}{Complexidade Total}
+		\begin{itemize}
+			\item Fase I: $O(|V||A|)$
+			\item Fase II (heap): $O(|V| \log |V|)$
+			\item \textbf{Total}: $O(|V|(|A| + \log |V|))$
+		\end{itemize}
+	\end{block}
+
+	\vspace{0.2cm}
+	{\small Com heap, Fase II é significativamente mais rápida que versão lista!}
 \end{frame}
 
 % ==================== SEÇÃO 4: RESULTADOS ====================

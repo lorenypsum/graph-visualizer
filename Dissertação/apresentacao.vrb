@@ -1,22 +1,26 @@
-\frametitle{Passo 6: Implementação da Reexpansão (2/2)}
-\textbf{Transferir arcos externos e restaurar pesos:}
+\frametitle{Algoritmo Completo de Frank}
+\textbf{Composição das duas fases:}
 
-	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
-# Arcos que saem do supervertice
-for _, z, _ in list(
-        F_prime.out_edges(label, data=True)):
-    u_cycle, _ = out_from_cycle[z]
-    F_prime.add_edge(u_cycle, z)
+	\begin{lstlisting}[basicstyle=\scriptsize\ttfamily]
+def andras_frank(D: nx.DiGraph, r: int):
+    # Fase I: construir cobertura
+    sigma = phase1(D, r)
+    F = [f for f, _, _ in sigma]
 
-# Remover supervertice
-F_prime.remove_node(label)
+    # Fase II: extrair arborescencia
+    J = phase2_v2(D, r, F)
 
-# Restaurar pesos originais
-for u, v in F_prime.edges:
-    F_prime[u][v]["w"] = D[u][v]["w"]
-
-return F_prime
+    return J
 \end{lstlisting}
 
-	\vspace{0.05cm}
-	{\small \textbf{Correção:} A expansão garante que $T$ é uma $r$-arborescência ótima no digrafo original.}
+	\vspace{0.3cm}
+	\begin{block}{Complexidade Total}
+		\begin{itemize}
+			\item Fase I: $O(|V||A|)$
+			\item Fase II (heap): $O(|V| \log |V|)$
+			\item \textbf{Total}: $O(|V|(|A| + \log |V|))$
+		\end{itemize}
+	\end{block}
+
+	\vspace{0.2cm}
+	{\small Com heap, Fase II é significativamente mais rápida que versão lista!}
