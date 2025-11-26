@@ -571,8 +571,6 @@ if nx.is_arborescence(D_zero):
 		\textbf{Operação:}
 
 		Contrair ciclo $C$ em supervértice $x_C$.
-
-		\vspace{0.2cm}
 		\textbf{Novo problema:}
 		$(D', w', r)$ onde:
 		\begin{itemize}
@@ -582,9 +580,6 @@ if nx.is_arborescence(D_zero):
 
 		\vspace{0.1cm}
 		O arco de $D'$ que entra em $x_C$ deve corresponder ao arco de $D$ que entra em algum vértice de $C$
-
-		\vspace{0.2cm}
-		\emph{Podem ter arcos saindo de $x_C$ em $D'$.}
 
 		\column{0.52\textwidth}
 		\begin{tikzpicture}[>=Stealth, node distance=2cm,
@@ -597,10 +592,9 @@ if nx.is_arborescence(D_zero):
 		\end{tikzpicture}
 
 		\vspace{0.3cm}
-		{\small Digrafo contraído $D'$}
+		{\small Digrafo contraído $D'$ -}
+		\emph{podem ter arcos saindo de $x_C$ em $D'$.}
 	\end{columns}
-
-	\vspace{0.2cm}
 	\begin{block}{Propriedade}
 		Uma solução ótima em $D'$ pode ser expandida para uma solução ótima em $D$.
 	\end{block}
