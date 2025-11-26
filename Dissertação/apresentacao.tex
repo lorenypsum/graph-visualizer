@@ -57,6 +57,15 @@
 \usepackage{booktabs}
 \usepackage{listings}
 
+% Logo da UFABC no canto superior direito (após carregar tikz)
+\addtobeamertemplate{frametitle}{}{%
+	\begin{tikzpicture}[remember picture,overlay]
+		\node[anchor=north east,yshift=-40pt,xshift=-3pt] at (current page.north east) {
+			\includegraphics[height=0.8cm]{logo-ufabc.png}
+		};
+	\end{tikzpicture}
+}
+
 % Configuração do listings para código Python
 \lstset{
 	language=Python,
@@ -80,7 +89,7 @@
 }
 
 % Logo da UFABC
-\logo{\includegraphics[height=0.9cm]{logo-ufabc.png}}
+%\logo{\includegraphics[height=0.9cm]{logo-ufabc.png}}
 
 % Configurações do título
 \title[Projeto de Graduação de Curso]{Algoritmos para r-Arborescências Geradoras Mínimas em Digrafos:}
