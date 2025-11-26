@@ -242,49 +242,49 @@
 
 % ...existing code...
 \begin{frame}{Digrafo $D$}
-  \begin{columns}[t] % alinhamento pelo topo
-    \column{0.01\textwidth}
-	\column{0.44\textwidth}
-	  \hspace*{6mm}
-      \begin{alertblock}{Objetivo}
-        Encontrar a $r$-arborescência geradora de custo mínimo através do algoritmo de Chu-Liu-Edmonds.
-        \vspace{0.6em}
+	\begin{columns}[t] % alinhamento pelo topo
+		\column{0.01\textwidth}
+		\column{0.44\textwidth}
+		\hspace*{6mm}
+		\begin{alertblock}{Objetivo}
+			Encontrar a $r$-arborescência geradora de custo mínimo através do algoritmo de Chu-Liu-Edmonds.
+			\vspace{0.6em}
 
-        Pontos principais:
-        \begin{itemize}
-          \item Redução de custos por vértice;
-          \item Construção de \(D_0\) com arestas de custo zero;
-          \item Contração de ciclos e recursão.
-        \end{itemize}
-		\vspace{4mm}
-      \end{alertblock}
+			Pontos principais:
+			\begin{itemize}
+				\item Redução de custos por vértice;
+				\item Construção de \(D_0\) com arestas de custo zero;
+				\item Contração de ciclos e recursão.
+			\end{itemize}
+			\vspace{4mm}
+		\end{alertblock}
 
-    \column{0.55\textwidth}
-      \begin{center}
-        \begin{tikzpicture}[scale=0.9, >=Stealth,
-            vertex/.style={circle,draw,fill=blue!8,thick,inner sep=1.2pt,minimum size=7mm},
-            edge/.style={->,semithick,gray!70}]
-          % nós (posições ajustadas)
-          \node[vertex] (r) at (0,0) {$r$};
-          \node[vertex] (a) at (2,1.6) {$a$};
-          \node[vertex] (b) at (2,-1.6) {$b$};
-          \node[vertex] (c) at (4,2.2) {$c$};
-          \node[vertex] (d) at (4,0) {$d$};
-          \node[vertex] (e) at (4,-2.2) {$e$};
+		\column{0.55\textwidth}
+		\begin{center}
+			\begin{tikzpicture}[scale=0.9, >=Stealth,
+					vertex/.style={circle,draw,fill=blue!8,thick,inner sep=1.2pt,minimum size=7mm},
+					edge/.style={->,semithick,gray!70}]
+				% nós (posições ajustadas)
+				\node[vertex] (r) at (0,0) {$r$};
+				\node[vertex] (a) at (2,1.6) {$a$};
+				\node[vertex] (b) at (2,-1.6) {$b$};
+				\node[vertex] (c) at (4,2.2) {$c$};
+				\node[vertex] (d) at (4,0) {$d$};
+				\node[vertex] (e) at (4,-2.2) {$e$};
 
-          \draw[edge] (r) -- node[above,font=\scriptsize] {1} (a);
-          \draw[edge] (r) -- node[below,font=\scriptsize] {2} (b);
-          \draw[edge] (r) .. controls (0.8,2.4) and (3.2,3.0) .. node[above, yshift=2pt,pos=0.53,font=\scriptsize] {3} (c);
-          \draw[edge] (b) to[bend left=12] node[left,font=\scriptsize] {4} (a);
-          \draw[edge] (a) to[bend left=14] node[right,font=\scriptsize] {5} (b);
-          \draw[edge] (a) -- node[right,font=\scriptsize] {3} (d);
-          \draw[edge] (a) -- node[above,font=\scriptsize] {1} (c);
-          \draw[edge] (b) -- node[above,font=\scriptsize] {1} (d);
-          \draw[edge] (b) -- node[below,font=\scriptsize] {2} (e);
-          \draw[edge] (c) .. controls (5.6,2.6) and (5.6,-2.6) .. node[xshift=8pt,pos=0.52,font=\scriptsize] {5} (e);
-        \end{tikzpicture}
-      \end{center}
-  \end{columns}
+				\draw[edge] (r) -- node[above,font=\scriptsize] {1} (a);
+				\draw[edge] (r) -- node[below,font=\scriptsize] {2} (b);
+				\draw[edge] (r) .. controls (0.8,2.4) and (3.2,3.0) .. node[above, yshift=2pt,pos=0.53,font=\scriptsize] {3} (c);
+				\draw[edge] (b) to[bend left=12] node[left,font=\scriptsize] {4} (a);
+				\draw[edge] (a) to[bend left=14] node[right,font=\scriptsize] {5} (b);
+				\draw[edge] (a) -- node[right,font=\scriptsize] {3} (d);
+				\draw[edge] (a) -- node[above,font=\scriptsize] {1} (c);
+				\draw[edge] (b) -- node[above,font=\scriptsize] {1} (d);
+				\draw[edge] (b) -- node[below,font=\scriptsize] {2} (e);
+				\draw[edge] (c) .. controls (5.6,2.6) and (5.6,-2.6) .. node[xshift=8pt,pos=0.52,font=\scriptsize] {5} (e);
+			\end{tikzpicture}
+		\end{center}
+	\end{columns}
 \end{frame}
 % ...existing code...
 
@@ -296,11 +296,11 @@
 		Para cada $v \neq r$, calcular:
 		$$\lambda(v) := \min\{w(a) : a \in \delta^-(v)\}$$
 
-		\vspace{0.3cm}
+		\vspace{0.1cm}
 		Custos $\lambda$-reduzidos:
 		$$w_\lambda(uv) := w(uv) - \lambda(v)$$
 
-		\vspace{0.3cm}
+		\vspace{0.1cm}
 		\textbf{Valores de $\lambda$:}
 		\begin{itemize}
 			\item $\lambda(a) = 1$, $\lambda(b) = 2$
@@ -311,7 +311,6 @@
 		\begin{tikzpicture}[scale=0.85, >=Stealth,
 				vertex/.style={circle,draw,fill=blue!8,thick,inner sep=1.2pt,minimum size=7mm},
 				edge/.style={->,semithick,draw=black!35}]
-
 			\node[vertex] (r) at (0,0) {$r$};
 			\node[vertex] (a) at (2.5,1.3) {$a$};
 			\node[vertex] (b) at (2.5,-1.3) {$b$};
@@ -329,12 +328,11 @@
 			\draw[edge] (b) -- node[above,font=\scriptsize ,text=blue] {0} (d);
 			\draw[edge] (b) -- node[below,font=\scriptsize ,text=blue] {0} (e);
 			\draw[edge] (c) .. controls (6.3,2.2) and (6.3,-2.2) .. node[xshift=7pt,pos=0.52,font=\scriptsize ,text=accentpurple] {3} (e);
-
 		\end{tikzpicture}
 	\end{columns}
 
-	\vspace{0.2cm}
-	\begin{block}{Custos Reduzidos}
+	\vspace{0.1cm}
+	\begin{block}{}
 		Arcos com custo zero são candidatos para $D_0$
 	\end{block}
 \end{frame}
