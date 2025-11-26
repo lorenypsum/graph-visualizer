@@ -369,7 +369,7 @@
 		\vspace{0.2cm}
 		{\small Arcos do ciclo têm custo zero!}
 	\end{columns}
-	
+
 	\vspace{0.1cm}
 	\begin{block}{}
 		Arcos com custo zero são candidatos para $D_0$
@@ -380,54 +380,80 @@
 	\begin{columns}[c]
 		\column{0.5\textwidth}
 		\textbf{Formação de $D_0$:}
+		\vspace{0.1cm}
+		Para cada $v \neq r$, escolher um arco $a_v \in \delta^-(v)$ com $w_\lambda(a_v) = 0$ formar:
 
-		Para cada $v \neq r$, escolher um arco $a_v \in \delta^-(v)$ com $w_\lambda(a_v) = 0$
-
-		\vspace{0.3cm}
-		Formar:
 		$$D_0 := (V, \{a_v : v \in V \setminus \{r\}\})$$
 
-		\vspace{0.3cm}
+		\vspace{0.1cm}
 		\textbf{Arcos escolhidos:}
 		\begin{itemize}
-			\item $(r,a)$, $(r,b)$
-			\item $(a,c)$, $(b,d)$, $(b,e)$
+			\item $(r,a)$
+			\item $(a,b)$, $(c,a)$
 		\end{itemize}
 
 		\column{0.5\textwidth}
-		\begin{tikzpicture}[scale=0.85, >=Stealth,
-				vertex/.style={circle,draw,fill=blue!8,thick,inner sep=1.2pt,minimum size=7mm},
-				selected/.style={->,very thick,draw=blue},
-				unselected/.style={->,semithick,draw=black!35}]
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				cycle/.style={->, very thick, draw=blue!70},
+				arc/.style={->, dashed, draw=gray!60}]
+			\node[v] (r) {\small $r$};
+			\node[v] (a) [right=2.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
+			\node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
 
-			\node[vertex] (r) at (0,0) {$r$};
-			\node[vertex] (a) at (2.5,1.3) {$a$};
-			\node[vertex] (b) at (2.5,-1.3) {$b$};
-			\node[vertex] (c) at (5,1.8) {$c$};
-			\node[vertex] (d) at (5,0.0) {$d$};
-			\node[vertex] (e) at (5,-1.8) {$e$};
+			\draw[cycle] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (b);
+			\draw[cycle] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (c);
+			\draw[cycle] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (a);
 
-			\draw[selected] (r) -- node[above,font=\scriptsize,text=blue] {0} (a);
-			\draw[selected] (r) -- node[below,font=\scriptsize,text=blue] {0} (b);
-			\draw[selected] (a) -- node[above,font=\scriptsize,text=blue] {0} (c);
-			\draw[selected] (b) -- node[above,font=\scriptsize,text=blue] {0} (d);
-			\draw[selected] (b) -- node[below,font=\scriptsize,text=blue] {0} (e);
-			\draw[unselected] (b) to[bend left=12] node[left,font=\scriptsize,text=black] {2} (a);
-			\draw[unselected] (a) to[bend left=14] node[right,font=\scriptsize,text=black] {3} (b);
-			\draw[unselected] (a) -- node[right,font=\scriptsize,text=black] {2} (d);
-			\draw[unselected] (r) .. controls (0.6,2.0) and (4.2,2.5) .. node[yshift=3pt,pos=0.53,font=\scriptsize,text=black] {2} (c);
-			\draw[unselected] (c) .. controls (6.3,2.2) and (6.3,-2.2) .. node[xshift=7pt,pos=0.52,font=\scriptsize,text=black] {3} (e);
-
+			\draw[cycle] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 0} (a);
+			\draw[arc] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 1} (b);
+			\draw[arc] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 3} (c);
 		\end{tikzpicture}
 	\end{columns}
+\end{frame}
 
+\begin{frame}{Passo 3: Verificação de $D_0$}
+	\begin{columns}[c]
+		\column{0.48\textwidth}
+		\textbf{Verificar:}
+
+		Se $D_0$ é uma $r$-arborescência $\Rightarrow$ \textbf{devolver} $D_0$
+
+		\vspace{0.3cm}
+		\textbf{Caso contrário:}
+
+		$D_0$ contém algum ciclo $C$.
+
+		$\Rightarrow$ \textbf{prosseguir} para os passos 4 e 5.
+
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				cycle/.style={->, very thick, draw=blue!70},
+				arc/.style={->, dashed, draw=gray!60}]
+			\node[v] (r) {\small $r$};
+			\node[v] (a) [right=2.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
+			\node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
+
+			\draw[cycle] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (b);
+			\draw[cycle] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (c);
+			\draw[cycle] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (a);
+
+			\draw[cycle] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 0} (a);
+			\draw[arc] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 1} (b);
+			\draw[arc] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 3} (c);
+		\end{tikzpicture}
+	\end{columns}
 	\vspace{0.3cm}
-	\begin{alertblock}{$D_0$ é uma $r$-arborescência!}
-		Neste exemplo, $D_0 = \{(r,a), (r,b), (a,c), (b,d), (b,e)\}$ forma uma $r$-arborescência.
+	\begin{alertblock}{$D_0$ não é uma $r$-arborescência!}
+		Neste exemplo, $D_0 = \{(r,a), (a,b), (c,a)\}$ não forma uma $r$-arborescência pois contém o ciclo $(a, b, c, a)$.
 	\end{alertblock}
 \end{frame}
 
-\begin{frame}{Contração de Ciclos}
+
+\begin{frame}{Passo 4: Contração de Ciclos}
 	\begin{columns}[c]
 		\column{0.48\textwidth}
 		\textbf{Operação:}
@@ -436,17 +462,17 @@
 
 		\vspace{0.2cm}
 		\textbf{Novo problema:}
-
 		$(D', w', r)$ onde:
 		\begin{itemize}
 			\item $D' := D/C \mapsto x_C$
 			\item $w' := w_\lambda/C \mapsto x_C$
 		\end{itemize}
 
+		\vspace{0.1cm}
+		O arco de $D'$ que entra em $x_C$ deve corresponder ao arco de $D$ que entra em algum vértice de $C$
+		
 		\vspace{0.2cm}
-		\textbf{Recursão:}
-
-		Resolver problema no digrafo menor recursivamente.
+		\emph{Podem ter arcos saindo de $x_C$ em $D'$.}
 
 		\column{0.52\textwidth}
 		\begin{tikzpicture}[>=Stealth, node distance=2cm,
@@ -455,7 +481,7 @@
 			\node[v] (r) {\small $r$};
 			\node[super] (xC) [right=3.5cm of r] {\small $x_C$};
 
-			\draw[->, very thick] (r) to[bend left=12] node[midway, above, sloped] {\scriptsize 1} (xC);
+			\draw[->, very thick] (r) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (xC);
 		\end{tikzpicture}
 
 		\vspace{0.3cm}
@@ -468,21 +494,8 @@
 	\end{block}
 \end{frame}
 
-\begin{frame}{Passo 3: Contração de Ciclos}
-	\begin{columns}[c]
-		\column{0.5\textwidth}
-		\textbf{Quando $D_0$ tem ciclo:}
-
-		\vspace{0.3cm}
-		Se ap\'os redu\c{c}\~ao de custos, $D_0$ cont\'em um ciclo $C$, contra\'imos $C$ em superv\'ertice $x_C$
-
-		\vspace{0.3cm}
-		\emph{Em outras palavras:} todos os v\'ertices de $C$ viram um \'unico v\'ertice
-
-		\vspace{0.3cm}
-		Custos s\~ao ajustados usando os custos $\lambda$-reduzidos
-
-		\column{0.5\textwidth}
+\begin{frame}{Passo 5: Chamada Recursiva}
+	\begin{center}
 		\begin{tikzpicture}[scale=1.2, >=Stealth,
 				vertex/.style={circle,draw,fill=blue!8,thick,minimum size=7mm},
 				super/.style={circle,draw,very thick,fill=orange!10,minimum size=1.2cm}]
@@ -491,18 +504,19 @@
 			\node[super] (xC) at (3,0) {$x_C$};
 			\node[vertex] (v) at (5.5,0) {$v$};
 
-			\draw[->,thick] (r) -- node[above,font=\scriptsize] {custo} (xC);
-			\draw[->,thick] (xC) -- node[above,font=\scriptsize] {custo} (v);
+			\draw[->,very thick,blue] (r) -- node[above,font=\scriptsize,text=blue] {} (xC);
+			\draw[->,very thick,blue] (xC) -- node[above,font=\scriptsize,text=blue] {} (v);
 
 		\end{tikzpicture}
-	\end{columns}
+	\end{center}
 
-	\vspace{0.5cm}
-	\begin{block}{Chamada Recursiva}
-		Resolvemos chu-liu-edmonds$(D/C \mapsto x_C, w_\lambda/C \mapsto x_C, r)$
+	O algoritmo devolve $T'$ (arboresc\^encia no digrafo contra\'ido)
 
-		\emph{Em outras palavras:} aplicamos o mesmo algoritmo no digrafo menor
-	\end{block}
+	\vspace{0.3cm}
+	\emph{Em outras palavras:} encontramos a $r$-arboresc\^encia \'otima no grafo contra\'ido
+
+	\vspace{0.3cm}
+	\textbf{Pr\'oximo passo:} expandir $T'$ de volta para obter $T$ no digrafo original
 \end{frame}
 
 \begin{frame}{Reexpansão da Solução}
@@ -543,30 +557,7 @@
 	\end{columns}
 \end{frame}
 
-\begin{frame}{Passo 4: Chamada Recursiva}
-	\begin{center}
-		\begin{tikzpicture}[scale=1.2, >=Stealth,
-				vertex/.style={circle,draw,fill=blue!8,thick,minimum size=7mm},
-				super/.style={circle,draw,very thick,fill=orange!10,minimum size=1.2cm}]
 
-			\node[vertex] (r) at (0,0) {$r$};
-			\node[super] (xC) at (3,0) {$x_C$};
-			\node[vertex] (v) at (5.5,0) {$v$};
-
-			\draw[->,very thick,blue] (r) -- node[above,font=\scriptsize,text=blue] {} (xC);
-			\draw[->,very thick,blue] (xC) -- node[above,font=\scriptsize,text=blue] {} (v);
-
-		\end{tikzpicture}
-	\end{center}
-
-	O algoritmo devolve $T'$ (arboresc\^encia no digrafo contra\'ido)
-
-	\vspace{0.3cm}
-	\emph{Em outras palavras:} encontramos a $r$-arboresc\^encia \'otima no grafo contra\'ido
-
-	\vspace{0.3cm}
-	\textbf{Pr\'oximo passo:} expandir $T'$ de volta para obter $T$ no digrafo original
-\end{frame}
 
 \begin{frame}{Solução Final -- Exemplo Original}
 	\begin{columns}[c]
