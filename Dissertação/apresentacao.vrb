@@ -1,45 +1,55 @@
-\frametitle{Chu-Liu-Edmonds: Pseudoc\'odigo}
-\begin{lstlisting}[mathescape=true, language=Python, basicstyle=\footnotesize\ttfamily]
-def chu-liu-edmonds($D$, $w$, $r$):
-    $\lambda := \bigl\{(v, \min\{w(a) : a \in \delta^-(v)\}): v \in V\setminus\{r\}\bigr\}$
-    para cada $v \in V\setminus\{r\}$, seja $a_v \in \delta^-(v)$ tal que $w_\lambda(a_v) = 0$
-    seja $D_0 := \bigl(V, \{a_v : v \in V \setminus \{r\}\}\bigr)$
-    if $D_0$ e uma $r$-arborescencia: return $D_0$
-    seja $C$ um ciclo em $D_0$
-    $T' :=$ chu-liu-edmonds($D/C \mapsto x_C$, $w_\lambda/C \mapsto x_C$, $r$)
-    $T :=$ expand($T'$)
-    return $T$
-	\end{lstlisting}
+\frametitle{Passo 6: Implementação da Reexpansão da Solução em Python}
+\textbf{Expansão após chamada recursiva:}
 
 	\vspace{0.2cm}
-	\textbf{Ideia:} calcular custos $\lambda$-reduzidos, construir $D_0$ com arcos de custo zero; se n\~ao \'e $r$-arboresc\^encia, contrair ciclo e resolver recursivamente; expandir solu\c{c}\~ao
-\end{frame}% ==================== SLIDE 4: EXEMPLO DETALHADO ====================
-\begin{frame}{Digrafo de Exemplo}
-	\begin{center}
-		\begin{tikzpicture}[scale=1.2,
-				vertex/.style={circle,draw,minimum size=0.8cm,font=\large},
-				edge/.style={->,>=stealth,thick}]
+	\begin{columns}[t]
+		\column{0.55\textwidth}
+		\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+# F_prime eh solucao em D' (com supervertice)
+# Encontrar arco que entra em label
+in_edge = next(iter(
+    F_prime.in_edges(label, data=True)))
+u, _, _ = in_edge
 
-			\node[vertex,fill=red!20] (r) at (0,2) {$r$};
-			\node[vertex] (A) at (2,3) {$A$};
-			\node[vertex] (B) at (4,3) {$B$};
-			\node[vertex] (C) at (2,1) {$C$};
-			\node[vertex] (D) at (4,1) {$D$};
-			\node[vertex] (E) at (6,2) {$E$};
+# Arco correspondente em D original
+v, _ = in_to_cycle[u]
+F_prime.add_edge(u, v)
 
-			\draw[edge] (r) -- node[above] {2} (A);
-			\draw[edge] (r) -- node[below] {10} (C);
-			\draw[edge] (r) to[bend left] node[above] {10} (B);
-			\draw[edge] (B) -- node[right] {1} (A);
-			\draw[edge] (A) -- node[left] {4} (C);
-			\draw[edge] (C) -- node[below] {2} (D);
-			\draw[edge] (D) to[bend right] node[below] {2} (B);
-			\draw[edge] (B) -- node[above] {8} (E);
-			\draw[edge] (C) -- node[below] {4} (E);
+# Adicionar arcos do ciclo,
+# exceto o que entra em v
+for u_c, v_c in C.edges:
+    if v != v_c:
+        F_prime.add_edge(u_c, v_c)
 
-		\end{tikzpicture}
-	\end{center}
+# Arcos que saem do supervertice
+for _, z, _ in list(
+        F_prime.out_edges(label, data=True)):
+    u_cycle, _ = out_from_cycle[z]
+    F_prime.add_edge(u_cycle, z)
 
-	\begin{alertblock}{Objetivo}
-		Encontrar a $r$-arborescência geradora de custo mínimo
-	\end{alertblock}
+# Remover supervertice
+F_prime.remove_node(label)
+
+# Restaurar pesos originais
+for u, v in F_prime.edges:
+    F_prime[u][v]["w"] = D[u][v]["w"]
+
+return F_prime
+\end{lstlisting}
+
+		\column{0.45\textwidth}
+		\textbf{Passos da expansão:}
+		\begin{enumerate}
+			\item Identificar arco que entra em \texttt{label}
+			\item Encontrar arco correspondente em $D$
+			\item Adicionar arcos do ciclo $C$ (exceto um)
+			\item Transferir arcos que saem de \texttt{label}
+			\item Remover \texttt{label}
+			\item Restaurar pesos originais
+		\end{enumerate}
+	\end{columns}
+
+	\vspace{0.2cm}
+	\begin{block}{Correção}
+		A expansão garante que $T$ é uma $r$-arborescência ótima no digrafo original $D$.
+	\end{block}
