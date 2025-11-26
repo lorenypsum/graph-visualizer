@@ -1543,7 +1543,7 @@ def andras_frank(D: nx.DiGraph, r: int):
 	\end{columns}
 \end{frame}
 
-\begin{frame}{Camadas da Aplicação Web}
+\begin{frame}{Arquitetura da Aplicação}
     \begin{columns}[c]
         \column{0.55\textwidth}
         \textbf{Estrutura em três camadas:}
@@ -1568,7 +1568,7 @@ def andras_frank(D: nx.DiGraph, r: int):
 \end{frame}
 
 
-\begin{frame}{Camadas da Aplicação Web}
+\begin{frame}{Arquitetura da Aplicação}
     \begin{columns}[c]
         \column{0.55\textwidth}
         \textbf{Benefícios:}
@@ -1592,26 +1592,6 @@ def andras_frank(D: nx.DiGraph, r: int):
     \end{columns}
 \end{frame}
 
-
-\begin{frame}{Arquitetura da Aplicação}
-	\begin{center}
-		\begin{tikzpicture}[
-				node distance=1.5cm,
-				box/.style={rectangle,draw,thick,minimum width=3cm,minimum height=1cm,align=center}]
-
-			\node[box,fill=blue!20] (ui) {Interface HTML/CSS};
-			\node[box,fill=green!20,below of=ui] (pyscript) {PyScript\\(Python)};
-			\node[box,fill=yellow!20,below of=pyscript] (algos) {Algoritmos\\Chu-Liu | Frank};
-			\node[box,fill=orange!20,below of=algos] (nx) {NetworkX};
-
-			\draw[->,>=stealth,thick] (ui) -- (pyscript);
-			\draw[->,>=stealth,thick] (pyscript) -- (algos);
-			\draw[->,>=stealth,thick] (algos) -- (nx);
-			\draw[->,>=stealth,thick] (nx) to[bend right=60] (ui);
-
-		\end{tikzpicture}
-	\end{center}
-\end{frame}
 
 \begin{frame}{Interface: Página Principal}
 	\begin{center}
