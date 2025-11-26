@@ -205,136 +205,236 @@
 	\end{block}
 \end{frame}
 
-% ==================== SLIDE 4: EXEMPLO DETALHADO ====================
-% \begin{frame}{Digrafo $D$}
-% 	\vspace{-0.3cm}
-% 	\begin{center}
-% 		\begin{tikzpicture}[scale=0.70, >=Stealth,
-% 				vertex/.style={circle,draw,fill=blue!8,thick,inner sep=1.2pt,minimum size=7mm},
-% 				chosen/.style={->, very thick, draw=blue},
-% 				edge/.style={->,semithick}]
-
-% 			\node[vertex] (r) at (0,0) {$r$};
-% 			\node[vertex] (a) at (3,1.6) {$a$};
-% 			\node[vertex] (b) at (3,-1.6) {$b$};
-% 			\node[vertex] (c) at (6,2.2) {$c$};
-% 			\node[vertex] (d) at (6,0.0) {$d$};
-% 			\node[vertex] (e) at (6,-2.2) {$e$};
-
-% 			\draw[edge] (r) -- node[above,font=\scriptsize] {1} (a);
-% 			\draw[edge] (r) -- node[below,font=\scriptsize] {2} (b);
-% 			\draw[edge] (r) .. controls (0.8,2.4) and (5.2,3.0) .. node[above, yshift=2pt,pos=0.53,font=\scriptsize] {3} (c);
-% 			\draw[edge] (b) to[bend left=12] node[left,font=\scriptsize] {4} (a);
-% 			\draw[edge] (a) to[bend left=14] node[right,font=\scriptsize] {5} (b);
-% 			\draw[edge] (a) -- node[right,font=\scriptsize] {3} (d);
-% 			\draw[edge] (a) -- node[above,font=\scriptsize] {1} (c);
-% 			\draw[edge] (b) -- node[above,font=\scriptsize] {1} (d);
-% 			\draw[edge] (b) -- node[below,font=\scriptsize] {2} (e);
-% 			\draw[edge] (c) .. controls (7.6,2.6) and (7.6,-2.6) .. node[xshift=8pt,pos=0.52,font=\scriptsize] {5} (e);
-% 		\end{tikzpicture}
-% 	\end{center}
-
-% 	\vspace{0.2cm}
-% 	\begin{alertblock}{Objetivo}
-% 		Encontrar a $r$-arborescência geradora de custo mínimo através do algoritmo de Chu-Liu-Edmonds
-% 	\end{alertblock}
-% \end{frame}
 
 % ...existing code...
-\begin{frame}{Digrafo $D$}
-	\begin{columns}[t] % alinhamento pelo topo
-		\column{0.01\textwidth}
-		\column{0.44\textwidth}
-		\hspace*{6mm}
-		\begin{alertblock}{Objetivo}
-			Encontrar a $r$-arborescência geradora de custo mínimo através do algoritmo de Chu-Liu-Edmonds.
-			\vspace{0.6em}
-
-			Pontos principais:
-			\begin{itemize}
-				\item Redução de custos por vértice;
-				\item Construção de \(D_0\) com arestas de custo zero;
-				\item Contração de ciclos e recursão.
-			\end{itemize}
-			\vspace{4mm}
-		\end{alertblock}
-
-		\column{0.55\textwidth}
-		\begin{center}
-			\begin{tikzpicture}[scale=0.9, >=Stealth,
-					vertex/.style={circle,draw,fill=blue!8,thick,inner sep=1.2pt,minimum size=7mm},
-					edge/.style={->,semithick,gray!70}]
-				% nós (posições ajustadas)
-				\node[vertex] (r) at (0,0) {$r$};
-				\node[vertex] (a) at (2,1.6) {$a$};
-				\node[vertex] (b) at (2,-1.6) {$b$};
-				\node[vertex] (c) at (4,2.2) {$c$};
-				\node[vertex] (d) at (4,0) {$d$};
-				\node[vertex] (e) at (4,-2.2) {$e$};
-
-				\draw[edge] (r) -- node[above,font=\scriptsize] {1} (a);
-				\draw[edge] (r) -- node[below,font=\scriptsize] {2} (b);
-				\draw[edge] (r) .. controls (0.8,2.4) and (3.2,3.0) .. node[above, yshift=2pt,pos=0.53,font=\scriptsize] {3} (c);
-				\draw[edge] (b) to[bend left=12] node[left,font=\scriptsize] {4} (a);
-				\draw[edge] (a) to[bend left=14] node[right,font=\scriptsize] {5} (b);
-				\draw[edge] (a) -- node[right,font=\scriptsize] {3} (d);
-				\draw[edge] (a) -- node[above,font=\scriptsize] {1} (c);
-				\draw[edge] (b) -- node[above,font=\scriptsize] {1} (d);
-				\draw[edge] (b) -- node[below,font=\scriptsize] {2} (e);
-				\draw[edge] (c) .. controls (5.6,2.6) and (5.6,-2.6) .. node[xshift=8pt,pos=0.52,font=\scriptsize] {5} (e);
-			\end{tikzpicture}
-		\end{center}
-	\end{columns}
-\end{frame}
-% ...existing code...
-
-\begin{frame}{Passo 1: Redução de Custos}
+\begin{frame}{Escolha Gulosa}
 	\begin{columns}[c]
-		\column{0.5\textwidth}
-		\textbf{Escolha gulosa:}
+		\column{0.48\textwidth}
+		\textbf{Definição:}
 
-		Para cada $v \neq r$, calcular:
-		$$\lambda(v) := \min\{w(a) : a \in \delta^-(v)\}$$
+		Para cada $v \neq r$, escolher um arco $a_v$ de custo mínimo que entra em $v$:
+		$$T := \{a_v : v \in V \setminus \{r\}\}$$
 
-		\vspace{0.1cm}
-		Custos $\lambda$-reduzidos:
-		$$w_\lambda(uv) := w(uv) - \lambda(v)$$
+		\vspace{0.2cm}
+		\textbf{Propriedade:}
 
-		\vspace{0.1cm}
-		\textbf{Valores de $\lambda$:}
-		\begin{itemize}
-			\item $\lambda(a) = 1$, $\lambda(b) = 2$
-			\item $\lambda(c) = 1$, $\lambda(d) = 1$, $\lambda(e) = 2$
-		\end{itemize}
+		Se $T$ é uma $r$-arborescência, então $T$ tem custo mínimo.
 
-		\column{0.5\textwidth}
-		\begin{tikzpicture}[scale=0.85, >=Stealth,
-				vertex/.style={circle,draw,fill=blue!8,thick,inner sep=1.2pt,minimum size=7mm},
-				edge/.style={->,semithick,draw=black!35}]
-			\node[vertex] (r) at (0,0) {$r$};
-			\node[vertex] (a) at (2.5,1.3) {$a$};
-			\node[vertex] (b) at (2.5,-1.3) {$b$};
-			\node[vertex] (c) at (5,1.8) {$c$};
-			\node[vertex] (d) at (5,0.0) {$d$};
-			\node[vertex] (e) at (5,-1.8) {$e$};
+		\vspace{0.2cm}
+		{\small Prova: Para qualquer outra $r$-arborescência $F$, temos $w(T) \le w(F)$.}
 
-			\draw[edge] (r) -- node[above,font=\scriptsize ,text=blue] {0} (a);
-			\draw[edge] (r) -- node[below,font=\scriptsize ,text=blue] {0} (b);
-			\draw[edge] (r) .. controls (0.6,2.0) and (4.2,2.5) .. node[above,yshift=3pt,pos=0.53,font=\scriptsize ,text=accentpurple] {2} (c);
-			\draw[edge] (b) to[bend left=12] node[left,font=\scriptsize ,text=accentpurple] {2} (a);
-			\draw[edge] (a) to[bend left=14] node[right,font=\scriptsize ,text=accentpurple] {3} (b);
-			\draw[edge] (a) -- node[above right,font=\scriptsize ,text=accentpurple] {2} (d);
-			\draw[edge] (a) -- node[above,font=\scriptsize ,text=blue] {0} (c);
-			\draw[edge] (b) -- node[above,font=\scriptsize ,text=blue] {0} (d);
-			\draw[edge] (b) -- node[below,font=\scriptsize ,text=blue] {0} (e);
-			\draw[edge] (c) .. controls (6.3,2.2) and (6.3,-2.2) .. node[xshift=7pt,pos=0.52,font=\scriptsize ,text=accentpurple] {3} (e);
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[scale=0.75, >=Stealth,
+				vtx/.style={circle,draw,fill=blue!8,thick,inner sep=1.2pt,minimum size=6mm},
+				chosen/.style={->, very thick, draw=blue},
+				other/.style={->, semithick, draw=black!35}]
+			\node[vtx] (r) at (0,0) {$r$};
+			\node[vtx] (a) at (3,1.6) {$a$};
+			\node[vtx] (b) at (3,-1.6) {$b$};
+			\node[vtx] (c) at (6,2.2) {$c$};
+			\node[vtx] (d) at (6,0.0) {$d$};
+			\node[vtx] (e) at (6,-2.2) {$e$};
+
+			\draw[other] (b) to[bend left=12] node[left,font=\scriptsize,text=black] {4} (a);
+			\draw[other] (a) to[bend left=14] node[right,font=\scriptsize,text=black] {5} (b);
+			\draw[other] (r) .. controls (0.8,2.4) and (5.2,3.0) .. node[yshift=4pt,pos=0.53,font=\scriptsize,text=black] {3} (c);
+			\draw[other] (a) -- node[right,font=\scriptsize,text=black] {3} (d);
+			\draw[other] (c) .. controls (7.6,2.6) and (7.6,-2.6) .. node[xshift=8pt,pos=0.52,font=\scriptsize,text=black] {5} (e);
+
+			\draw[chosen] (r) -- node[above,font=\scriptsize,text=blue] {1} (a);
+			\draw[chosen] (r) -- node[below,font=\scriptsize,text=blue] {2} (b);
+			\draw[chosen] (a) -- node[above,font=\scriptsize,text=blue] {1} (c);
+			\draw[chosen] (b) -- node[above,font=\scriptsize,text=blue] {1} (d);
+			\draw[chosen] (b) -- node[below,font=\scriptsize,text=blue] {2} (e);
 		\end{tikzpicture}
 	\end{columns}
 
+	\vspace{0.2cm}
+	\begin{alertblock}{Resultado}
+		$T = \{(r,a), (r,b), (a,c), (b,d), (b,e)\}$ é uma $r$-arborescência de custo mínimo!
+	\end{alertblock}
+\end{frame}
+
+\begin{frame}{E quando a escolha gulosa falha?}
+	\begin{columns}[c]
+		\column{0.48\textwidth}
+		\textbf{Problema:}
+
+		A escolha gulosa pode produzir um conjunto $T$ que \emph{não} é uma $r$-arborescência.
+
+		\vspace{0.3cm}
+		\textbf{Exemplo:}
+
+		Os arcos de custo mínimo formam um ciclo $(a, b, c, a)$ sem alcançar $r$.
+
+		\vspace{0.3cm}
+		\textbf{Solução:}
+
+		\begin{enumerate}
+			\item Reduzir custos
+			\item Identificar ciclos
+			\item Contrair ciclos
+			\item Resolver recursivamente
+		\end{enumerate}
+
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				cheap/.style={->, very thick, draw=blue!70},
+				expensive/.style={->, dashed, draw=gray!60}]
+			\node[v] (r) {\small $r$};
+			\node[v] (a) [right=2.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
+			\node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
+
+			\draw[cheap] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (b);
+			\draw[cheap] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
+			\draw[cheap] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (a);
+
+			\draw[expensive] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (a);
+			\draw[expensive] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (b);
+			\draw[expensive] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (c);
+		\end{tikzpicture}
+
+		\vspace{0.2cm}
+		{\small Arcos azuis formam um \textbf{ciclo}!}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Passo 1: Redução de Custos}
+\begin{columns}[t] % alinhamento pelo topo
+	\column{0.01\textwidth}
+	\column{0.44\textwidth}
+	\hspace*{6mm}
+	\begin{alertblock}{Objetivo}
+		Encontrar a $r$-arborescência geradora de custo mínimo através do algoritmo de Chu-Liu-Edmonds.
+		\vspace{0.6em}
+
+		Pontos principais:
+		\begin{itemize}
+			\item Redução de custos por vértice;
+			\item Construção de \(D_0\) com arestas de custo zero;
+			\item Contração de ciclos e recursão.
+		\end{itemize}
+		\vspace{4mm}
+	\end{alertblock}
+
+	\column{0.55\textwidth}
+	\begin{center}
+		\begin{tikzpicture}[scale=0.9, >=Stealth,
+				vertex/.style={circle,draw,fill=blue!8,thick,inner sep=1.2pt,minimum size=7mm},
+				edge/.style={->,semithick,gray!70}]
+			% nós (posições ajustadas)
+			\node[vertex] (r) at (0,0) {$r$};
+			\node[vertex] (a) at (2,1.6) {$a$};
+			\node[vertex] (b) at (2,-1.6) {$b$};
+			\node[vertex] (c) at (4,2.2) {$c$};
+			\node[vertex] (d) at (4,0) {$d$};
+			\node[vertex] (e) at (4,-2.2) {$e$};
+
+			\draw[edge] (r) -- node[above,font=\scriptsize] {1} (a);
+			\draw[edge] (r) -- node[below,font=\scriptsize] {2} (b);
+			\draw[edge] (r) .. controls (0.8,2.4) and (3.2,3.0) .. node[above, yshift=2pt,pos=0.53,font=\scriptsize] {3} (c);
+			\draw[edge] (b) to[bend left=12] node[left,font=\scriptsize] {4} (a);
+			\draw[edge] (a) to[bend left=14] node[right,font=\scriptsize] {5} (b);
+			\draw[edge] (a) -- node[right,font=\scriptsize] {3} (d);
+			\draw[edge] (a) -- node[above,font=\scriptsize] {1} (c);
+			\draw[edge] (b) -- node[above,font=\scriptsize] {1} (d);
+			\draw[edge] (b) -- node[below,font=\scriptsize] {2} (e);
+			\draw[edge] (c) .. controls (5.6,2.6) and (5.6,-2.6) .. node[xshift=8pt,pos=0.52,font=\scriptsize] {5} (e);
+		\end{tikzpicture}
+	\end{center}
+\end{columns}
+\end{frame}
+% ...existing code...
+
+\begin{frame}{Custos Reduzidos}
+	\begin{columns}[c]
+		\column{0.48\textwidth}
+		\textbf{Definição:}
+
+		Para cada $v \in V \setminus \{r\}$:
+		$$\lambda(v) := \min\{w(a) : a \in \delta^-(v)\}$$
+
+		Custo $\lambda$-reduzido:
+		$$w_\lambda(uv) := w(uv) - \lambda(v)$$
+
+		\vspace{0.2cm}
+		\textbf{Propriedade importante:}
+
+		$T$ é ótima em $(D, w)$ se, e somente se, $T$ é ótima em $(D, w_\lambda)$.
+
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				cycle/.style={->, very thick, draw=blue!70},
+				arc/.style={->, dashed, draw=gray!60}]
+			\node[v] (r) {\small $r$};
+			\node[v] (a) [right=2.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
+			\node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
+
+			\draw[cycle] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (b);
+			\draw[cycle] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (c);
+			\draw[cycle] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (a);
+
+			\draw[arc] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 2} (a);
+			\draw[arc] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 1} (b);
+			\draw[arc] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 3} (c);
+		\end{tikzpicture}
+
+		\vspace{0.2cm}
+		{\small Arcos do ciclo têm custo zero!}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Passo 1: Redução de Custos}
+\begin{columns}[c]
+	\column{0.5\textwidth}
+	\textbf{Escolha gulosa:}
+
+	Para cada $v \neq r$, calcular:
+	$$\lambda(v) := \min\{w(a) : a \in \delta^-(v)\}$$
+
 	\vspace{0.1cm}
-	\begin{block}{}
-		Arcos com custo zero são candidatos para $D_0$
-	\end{block}
+	Custos $\lambda$-reduzidos:
+	$$w_\lambda(uv) := w(uv) - \lambda(v)$$
+
+	\vspace{0.1cm}
+	\textbf{Valores de $\lambda$:}
+	\begin{itemize}
+		\item $\lambda(a) = 1$, $\lambda(b) = 2$
+		\item $\lambda(c) = 1$, $\lambda(d) = 1$, $\lambda(e) = 2$
+	\end{itemize}
+
+	\column{0.5\textwidth}
+	\begin{tikzpicture}[scale=0.85, >=Stealth,
+			vertex/.style={circle,draw,fill=blue!8,thick,inner sep=1.2pt,minimum size=7mm},
+			edge/.style={->,semithick,draw=black!35}]
+		\node[vertex] (r) at (0,0) {$r$};
+		\node[vertex] (a) at (2.5,1.3) {$a$};
+		\node[vertex] (b) at (2.5,-1.3) {$b$};
+		\node[vertex] (c) at (5,1.8) {$c$};
+		\node[vertex] (d) at (5,0.0) {$d$};
+		\node[vertex] (e) at (5,-1.8) {$e$};
+
+		\draw[edge] (r) -- node[above,font=\scriptsize ,text=blue] {0} (a);
+		\draw[edge] (r) -- node[below,font=\scriptsize ,text=blue] {0} (b);
+		\draw[edge] (r) .. controls (0.6,2.0) and (4.2,2.5) .. node[above,yshift=3pt,pos=0.53,font=\scriptsize ,text=accentpurple] {2} (c);
+		\draw[edge] (b) to[bend left=12] node[left,font=\scriptsize ,text=accentpurple] {2} (a);
+		\draw[edge] (a) to[bend left=14] node[right,font=\scriptsize ,text=accentpurple] {3} (b);
+		\draw[edge] (a) -- node[above right,font=\scriptsize ,text=accentpurple] {2} (d);
+		\draw[edge] (a) -- node[above,font=\scriptsize ,text=blue] {0} (c);
+		\draw[edge] (b) -- node[above,font=\scriptsize ,text=blue] {0} (d);
+		\draw[edge] (b) -- node[below,font=\scriptsize ,text=blue] {0} (e);
+		\draw[edge] (c) .. controls (6.3,2.2) and (6.3,-2.2) .. node[xshift=7pt,pos=0.52,font=\scriptsize ,text=accentpurple] {3} (e);
+	\end{tikzpicture}
+\end{columns}
+
+\vspace{0.1cm}
+\begin{block}{}
+	Arcos com custo zero são candidatos para $D_0$
+\end{block}
 \end{frame}
 
 \begin{frame}{Passo 2: Construção de $D_0$}
@@ -388,95 +488,177 @@
 	\end{alertblock}
 \end{frame}
 
-\begin{frame}{Caso com Ciclo: Outro Exemplo}
+\begin{frame}{Contração de Ciclos}
 	\begin{columns}[c]
-		\column{0.5\textwidth}
-		\textbf{Quando $D_0$ tem ciclo:}
+		\column{0.48\textwidth}
+		\textbf{Operação:}
 
-		\vspace{0.3cm}
-		Se ap\'os redu\c{c}\~ao de custos, $D_0$ cont\'em um ciclo $C$, contra\'imos $C$ em superv\'ertice $x_C$
+		Contrair ciclo $C$ em supervértice $x_C$.
 
-		\vspace{0.3cm}
-		\emph{Em outras palavras:} todos os v\'ertices de $C$ viram um \'unico v\'ertice
+		\vspace{0.2cm}
+		\textbf{Novo problema:}
 
-		\vspace{0.3cm}
-		Custos s\~ao ajustados usando os custos $\lambda$-reduzidos
+		$(D', w', r)$ onde:
+		\begin{itemize}
+			\item $D' := D/C \mapsto x_C$
+			\item $w' := w_\lambda/C \mapsto x_C$
+		\end{itemize}
 
-		\column{0.5\textwidth}
-		\begin{tikzpicture}[scale=1.2, >=Stealth,
-				vertex/.style={circle,draw,fill=blue!8,thick,minimum size=7mm},
-				super/.style={circle,draw,very thick,fill=orange!10,minimum size=1.2cm}]
+		\vspace{0.2cm}
+		\textbf{Recursão:}
 
-			\node[vertex] (r) at (0,0) {$r$};
-			\node[super] (xC) at (3,0) {$x_C$};
-			\node[vertex] (v) at (5.5,0) {$v$};
+		Resolver problema no digrafo menor recursivamente.
 
-			\draw[->,thick] (r) -- node[above,font=\scriptsize] {custo} (xC);
-			\draw[->,thick] (xC) -- node[above,font=\scriptsize] {custo} (v);
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=2cm,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				super/.style={circle, draw, very thick, fill=orange!10, minimum size=9mm}]
+			\node[v] (r) {\small $r$};
+			\node[super] (xC) [right=3.5cm of r] {\small $x_C$};
 
+			\draw[->, very thick] (r) to[bend left=12] node[midway, above, sloped] {\scriptsize 1} (xC);
 		\end{tikzpicture}
+
+		\vspace{0.3cm}
+		{\small Digrafo contraído $D'$}
 	\end{columns}
 
-	\vspace{0.5cm}
-	\begin{block}{Chamada Recursiva}
-		Resolvemos chu-liu-edmonds$(D/C \mapsto x_C, w_\lambda/C \mapsto x_C, r)$
-
-		\emph{Em outras palavras:} aplicamos o mesmo algoritmo no digrafo menor
+	\vspace{0.2cm}
+	\begin{block}{Propriedade}
+		Uma solução ótima em $D'$ pode ser expandida para uma solução ótima em $D$.
 	\end{block}
 \end{frame}
 
-\begin{frame}{Passo 3: Solu\c{c}\~ao Recursiva (quando h\'a ciclo)}
-	\begin{center}
-		\begin{tikzpicture}[scale=1.2, >=Stealth,
-				vertex/.style={circle,draw,fill=blue!8,thick,minimum size=7mm},
-				super/.style={circle,draw,very thick,fill=orange!10,minimum size=1.2cm}]
-
-			\node[vertex] (r) at (0,0) {$r$};
-			\node[super] (xC) at (3,0) {$x_C$};
-			\node[vertex] (v) at (5.5,0) {$v$};
-
-			\draw[->,very thick,blue] (r) -- node[above,font=\scriptsize,text=blue] {} (xC);
-			\draw[->,very thick,blue] (xC) -- node[above,font=\scriptsize,text=blue] {} (v);
-
-		\end{tikzpicture}
-	\end{center}
-
-	O algoritmo devolve $T'$ (arboresc\^encia no digrafo contra\'ido)
+\begin{frame}{Passo 3: Contração de Ciclos}
+\begin{columns}[c]
+	\column{0.5\textwidth}
+	\textbf{Quando $D_0$ tem ciclo:}
 
 	\vspace{0.3cm}
-	\emph{Em outras palavras:} encontramos a $r$-arboresc\^encia \'otima no grafo contra\'ido
+	Se ap\'os redu\c{c}\~ao de custos, $D_0$ cont\'em um ciclo $C$, contra\'imos $C$ em superv\'ertice $x_C$
 
 	\vspace{0.3cm}
-	\textbf{Pr\'oximo passo:} expandir $T'$ de volta para obter $T$ no digrafo original
+	\emph{Em outras palavras:} todos os v\'ertices de $C$ viram um \'unico v\'ertice
+
+	\vspace{0.3cm}
+	Custos s\~ao ajustados usando os custos $\lambda$-reduzidos
+
+	\column{0.5\textwidth}
+	\begin{tikzpicture}[scale=1.2, >=Stealth,
+			vertex/.style={circle,draw,fill=blue!8,thick,minimum size=7mm},
+			super/.style={circle,draw,very thick,fill=orange!10,minimum size=1.2cm}]
+
+		\node[vertex] (r) at (0,0) {$r$};
+		\node[super] (xC) at (3,0) {$x_C$};
+		\node[vertex] (v) at (5.5,0) {$v$};
+
+		\draw[->,thick] (r) -- node[above,font=\scriptsize] {custo} (xC);
+		\draw[->,thick] (xC) -- node[above,font=\scriptsize] {custo} (v);
+
+	\end{tikzpicture}
+\end{columns}
+
+\vspace{0.5cm}
+\begin{block}{Chamada Recursiva}
+	Resolvemos chu-liu-edmonds$(D/C \mapsto x_C, w_\lambda/C \mapsto x_C, r)$
+
+	\emph{Em outras palavras:} aplicamos o mesmo algoritmo no digrafo menor
+\end{block}
 \end{frame}
 
-\begin{frame}{Solu\c{c}\~ao Final}
+\begin{frame}{Reexpansão da Solução}
 	\begin{columns}[c]
-		\column{0.5\textwidth}
-		\textbf{Para nosso exemplo:}
+		\column{0.48\textwidth}
+		\textbf{Dado:} $T'$ ótima em $(D', w')$
 
-		Como $D_0$ j\'a \' e uma $r$-arboresc\^encia, o algoritmo termina diretamente!
+		\vspace{0.2cm}
+		\textbf{Construir:} $T$ ótima em $(D, w)$
+
+		\vspace{0.2cm}
+		\textbf{Procedimento:}
+		\begin{enumerate}
+			\item Seja $uv$ o arco de $D$ correspondente ao arco $u x_C$ de $T'$
+			\item Incluir $uv$ em $T$
+			\item Incluir todos os arcos de $C$ exceto aquele que entra em $v$
+		\end{enumerate}
+
+		\vspace{0.2cm}
+		{\small Resultado: $T$ é uma $r$-arborescência de custo mínimo}
+
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				selected/.style={->, very thick, draw=green!70}]
+			\node[v] (r) {\small $r$};
+			\node[v] (a) [right=2.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
+			\node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
+
+			\draw[selected] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 5} (a);
+			\draw[selected] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (b);
+			\draw[selected] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
+		\end{tikzpicture}
 
 		\vspace{0.3cm}
-		\emph{Em outras palavras:}
+		{\small $r$-arborescência final no digrafo original}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Passo 4: Chamada Recursiva}
+\begin{center}
+	\begin{tikzpicture}[scale=1.2, >=Stealth,
+			vertex/.style={circle,draw,fill=blue!8,thick,minimum size=7mm},
+			super/.style={circle,draw,very thick,fill=orange!10,minimum size=1.2cm}]
+
+		\node[vertex] (r) at (0,0) {$r$};
+		\node[super] (xC) at (3,0) {$x_C$};
+		\node[vertex] (v) at (5.5,0) {$v$};
+
+		\draw[->,very thick,blue] (r) -- node[above,font=\scriptsize,text=blue] {} (xC);
+		\draw[->,very thick,blue] (xC) -- node[above,font=\scriptsize,text=blue] {} (v);
+
+	\end{tikzpicture}
+\end{center}
+
+O algoritmo devolve $T'$ (arboresc\^encia no digrafo contra\'ido)
+
+\vspace{0.3cm}
+\emph{Em outras palavras:} encontramos a $r$-arboresc\^encia \'otima no grafo contra\'ido
+
+\vspace{0.3cm}
+\textbf{Pr\'oximo passo:} expandir $T'$ de volta para obter $T$ no digrafo original
+\end{frame}
+
+\begin{frame}{Solução Final -- Exemplo Original}
+	\begin{columns}[c]
+		\column{0.48\textwidth}
+		\textbf{Para nosso exemplo inicial:}
+
+		A escolha gulosa produziu uma $r$-arborescência diretamente!
+
+		\vspace{0.3cm}
+		\textbf{Resultado:}
 		\begin{itemize}
-			\item N\~ao h\'a ciclo
-			\item Todos v\'ertices alcan\c{c}\'aveis de $r$
-			\item Cada v\'ertice tem grau de entrada 1
-			\item Solu\c{c}\~ao \'otima encontrada!
+			\item Não há ciclo
+			\item Todos vértices alcançáveis de $r$
+			\item Cada vértice tem grau de entrada 1
+			\item Solução ótima encontrada!
 		\end{itemize}
 
-		\column{0.5\textwidth}
-		\begin{tikzpicture}[scale=0.9, >=Stealth,
-				vertex/.style={circle,draw,fill=blue!8,thick,inner sep=1.2pt,minimum size=7mm},
+		\vspace{0.3cm}
+		\textbf{Custo total:} $1 + 2 + 1 + 1 + 2 = 7$
+
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[scale=0.75, >=Stealth,
+				vtx/.style={circle,draw,fill=blue!8,thick,inner sep=1.2pt,minimum size=6mm},
 				selected/.style={->,very thick,draw=blue}]
 
-			\node[vertex] (r) at (0,0) {$r$};
-			\node[vertex] (a) at (2.5,1.3) {$a$};
-			\node[vertex] (b) at (2.5,-1.3) {$b$};
-			\node[vertex] (c) at (5,1.8) {$c$};
-			\node[vertex] (d) at (5,0.0) {$d$};
-			\node[vertex] (e) at (5,-1.8) {$e$};
+			\node[vtx] (r) at (0,0) {$r$};
+			\node[vtx] (a) at (3,1.6) {$a$};
+			\node[vtx] (b) at (3,-1.6) {$b$};
+			\node[vtx] (c) at (6,2.2) {$c$};
+			\node[vtx] (d) at (6,0.0) {$d$};
+			\node[vtx] (e) at (6,-2.2) {$e$};
 
 			\draw[selected] (r) -- node[above,font=\scriptsize,text=blue] {1} (a);
 			\draw[selected] (r) -- node[below,font=\scriptsize,text=blue] {2} (b);
@@ -486,11 +668,49 @@
 
 		\end{tikzpicture}
 	\end{columns}
+\end{frame}
+
+\begin{frame}{Solução Final -- Exemplo Original}
+\begin{columns}[c]
+	\column{0.5\textwidth}
+	\textbf{Para nosso exemplo:}
+
+	Como $D_0$ j\'a \' e uma $r$-arboresc\^encia, o algoritmo termina diretamente!
 
 	\vspace{0.3cm}
-	\begin{exampleblock}{Solu\c{c}\~ao \'Otima}
-		Custo total: $1 + 2 + 1 + 1 + 2 = 7$
-	\end{exampleblock}
+	\emph{Em outras palavras:}
+	\begin{itemize}
+		\item N\~ao h\'a ciclo
+		\item Todos v\'ertices alcan\c{c}\'aveis de $r$
+		\item Cada v\'ertice tem grau de entrada 1
+		\item Solu\c{c}\~ao \'otima encontrada!
+	\end{itemize}
+
+	\column{0.5\textwidth}
+	\begin{tikzpicture}[scale=0.9, >=Stealth,
+			vertex/.style={circle,draw,fill=blue!8,thick,inner sep=1.2pt,minimum size=7mm},
+			selected/.style={->,very thick,draw=blue}]
+
+		\node[vertex] (r) at (0,0) {$r$};
+		\node[vertex] (a) at (2.5,1.3) {$a$};
+		\node[vertex] (b) at (2.5,-1.3) {$b$};
+		\node[vertex] (c) at (5,1.8) {$c$};
+		\node[vertex] (d) at (5,0.0) {$d$};
+		\node[vertex] (e) at (5,-1.8) {$e$};
+
+		\draw[selected] (r) -- node[above,font=\scriptsize,text=blue] {1} (a);
+		\draw[selected] (r) -- node[below,font=\scriptsize,text=blue] {2} (b);
+		\draw[selected] (a) -- node[above,font=\scriptsize,text=blue] {1} (c);
+		\draw[selected] (b) -- node[above,font=\scriptsize,text=blue] {1} (d);
+		\draw[selected] (b) -- node[below,font=\scriptsize,text=blue] {2} (e);
+
+	\end{tikzpicture}
+\end{columns}
+
+\vspace{0.3cm}
+\begin{exampleblock}{Solu\c{c}\~ao \'Otima}
+	Custo total: $1 + 2 + 1 + 1 + 2 = 7$
+\end{exampleblock}
 \end{frame}
 
 % ==================== SEÇÃO 3: ANDRÁS FRANK ====================
