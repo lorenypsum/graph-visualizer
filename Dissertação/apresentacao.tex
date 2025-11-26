@@ -376,6 +376,10 @@
 	\end{block}
 \end{frame}
 
+\begin{frame}{Passo 1: Implementação da Redução de Custos em Python}
+	
+\end{frame}
+
 \begin{frame}{Passo 2: Construção de $D_0$}
 	\begin{columns}[c]
 		\column{0.5\textwidth}
@@ -411,6 +415,10 @@
 			\draw[arc] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 3} (c);
 		\end{tikzpicture}
 	\end{columns}
+\end{frame}
+
+\begin{frame}{Passo 2: Implementação da Construção de D0 em Python}
+	
 \end{frame}
 
 \begin{frame}{Passo 3: Verificação de $D_0$}
@@ -452,6 +460,8 @@
 	\end{alertblock}
 \end{frame}
 
+\begin{frame}{Passo 3: Implementação da Verificação de D0 em Python}
+\end{frame}
 
 \begin{frame}{Passo 4: Contração de Ciclos}
 	\begin{columns}[c]
@@ -494,6 +504,9 @@
 	\end{block}
 \end{frame}
 
+\begin{frame}{Passo 4: Implementação da Contração de Ciclos em Python}
+\end{frame}
+
 \begin{frame}{Passo 5: Chamada Recursiva}
 	\begin{columns}[c]
 		\column{0.48\textwidth}
@@ -520,6 +533,9 @@
 		\vspace{0.3cm}
 		{\small $r$-arborescência ótima em $D'$}
 	\end{columns}
+\end{frame}
+
+\begin{frame}{Passo 5: Implementação da Chamada Recursiva em Python}
 \end{frame}
 
 \begin{frame}{Passo 6: Reexpansão da Solução}
@@ -560,90 +576,7 @@
 	\end{columns}
 \end{frame}
 
-
-
-\begin{frame}{Solução Final -- Exemplo Original}
-	\begin{columns}[c]
-		\column{0.48\textwidth}
-		\textbf{Para nosso exemplo inicial:}
-
-		A escolha gulosa produziu uma $r$-arborescência diretamente!
-
-		\vspace{0.3cm}
-		\textbf{Resultado:}
-		\begin{itemize}
-			\item Não há ciclo
-			\item Todos vértices alcançáveis de $r$
-			\item Cada vértice tem grau de entrada 1
-			\item Solução ótima encontrada!
-		\end{itemize}
-
-		\vspace{0.3cm}
-		\textbf{Custo total:} $1 + 2 + 1 + 1 + 2 = 7$
-
-		\column{0.52\textwidth}
-		\begin{tikzpicture}[scale=0.75, >=Stealth,
-				vtx/.style={circle,draw,fill=blue!8,thick,inner sep=1.2pt,minimum size=6mm},
-				selected/.style={->,very thick,draw=blue}]
-
-			\node[vtx] (r) at (0,0) {$r$};
-			\node[vtx] (a) at (3,1.6) {$a$};
-			\node[vtx] (b) at (3,-1.6) {$b$};
-			\node[vtx] (c) at (6,2.2) {$c$};
-			\node[vtx] (d) at (6,0.0) {$d$};
-			\node[vtx] (e) at (6,-2.2) {$e$};
-
-			\draw[selected] (r) -- node[above,font=\scriptsize,text=blue] {1} (a);
-			\draw[selected] (r) -- node[below,font=\scriptsize,text=blue] {2} (b);
-			\draw[selected] (a) -- node[above,font=\scriptsize,text=blue] {1} (c);
-			\draw[selected] (b) -- node[above,font=\scriptsize,text=blue] {1} (d);
-			\draw[selected] (b) -- node[below,font=\scriptsize,text=blue] {2} (e);
-
-		\end{tikzpicture}
-	\end{columns}
-\end{frame}
-
-\begin{frame}{Solução Final -- Exemplo Original}
-	\begin{columns}[c]
-		\column{0.5\textwidth}
-		\textbf{Para nosso exemplo:}
-
-		Como $D_0$ j\'a \' e uma $r$-arboresc\^encia, o algoritmo termina diretamente!
-
-		\vspace{0.3cm}
-		\emph{Em outras palavras:}
-		\begin{itemize}
-			\item N\~ao h\'a ciclo
-			\item Todos v\'ertices alcan\c{c}\'aveis de $r$
-			\item Cada v\'ertice tem grau de entrada 1
-			\item Solu\c{c}\~ao \'otima encontrada!
-		\end{itemize}
-
-		\column{0.5\textwidth}
-		\begin{tikzpicture}[scale=0.9, >=Stealth,
-				vertex/.style={circle,draw,fill=blue!8,thick,inner sep=1.2pt,minimum size=7mm},
-				selected/.style={->,very thick,draw=blue}]
-
-			\node[vertex] (r) at (0,0) {$r$};
-			\node[vertex] (a) at (2.5,1.3) {$a$};
-			\node[vertex] (b) at (2.5,-1.3) {$b$};
-			\node[vertex] (c) at (5,1.8) {$c$};
-			\node[vertex] (d) at (5,0.0) {$d$};
-			\node[vertex] (e) at (5,-1.8) {$e$};
-
-			\draw[selected] (r) -- node[above,font=\scriptsize,text=blue] {1} (a);
-			\draw[selected] (r) -- node[below,font=\scriptsize,text=blue] {2} (b);
-			\draw[selected] (a) -- node[above,font=\scriptsize,text=blue] {1} (c);
-			\draw[selected] (b) -- node[above,font=\scriptsize,text=blue] {1} (d);
-			\draw[selected] (b) -- node[below,font=\scriptsize,text=blue] {2} (e);
-
-		\end{tikzpicture}
-	\end{columns}
-
-	\vspace{0.3cm}
-	\begin{exampleblock}{Solu\c{c}\~ao \'Otima}
-		Custo total: $1 + 2 + 1 + 1 + 2 = 7$
-	\end{exampleblock}
+\begin{frame}{Passo 6: Implementação da Reexpansão da Solução em Python}
 \end{frame}
 
 % ==================== SEÇÃO 3: ANDRÁS FRANK ====================
