@@ -938,7 +938,7 @@ def find_cycle(D_zero: nx.DiGraph):
     nodes_in_cycle = set()
     for u, v, _ in nx.find_cycle(D_zero, orientation="original"):
         nodes_in_cycle.update([u, v])
-    return D_zero.subgraph(nodes_in_cycle)  
+    return D_zero.subgraph(nodes_in_cycle).to_directed()  
 \end{lstlisting}
 \end{tcolorbox}
 
