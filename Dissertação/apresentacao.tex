@@ -57,23 +57,6 @@
 \usepackage{booktabs}
 \usepackage{listings}
 
-% Logo da UFABC no canto superior direito (após carregar tikz)
-\addtobeamertemplate{frametitle}{}{%
-	\begin{tikzpicture}[remember picture,overlay]
-		\node[anchor=north east,yshift=-40pt,xshift=-3pt] at (current page.north east) {
-			\includegraphics[height=0.8cm]{logo-ufabc.png}
-		};
-	\end{tikzpicture}
-}
-
-% Logo também na página de capa
-% \addtobeamertemplate{titlepage}{}{%
-% 	\begin{tikzpicture}[remember picture,overlay]
-% 		\node[anchor=north east,yshift=-2pt,xshift=-2pt] at (current page.north east) {
-% 			\includegraphics[height=0.8cm]{logo-ufabc.png}
-% 		};
-% 	\end{tikzpicture}
-% }
 
 % Configuração do listings para código Python
 \lstset{
@@ -97,8 +80,23 @@
 	tabsize=4
 }
 
-% Logo da UFABC
-%\logo{\includegraphics[height=0.9cm]{logo-ufabc.png}}
+% Logo da UFABC no canto superior direito (após carregar tikz)
+\addtobeamertemplate{frametitle}{}{%
+	\begin{tikzpicture}[remember picture,overlay]
+		\node[anchor=north east,yshift=-40pt,xshift=-3pt] at (current page.north east) {
+			\includegraphics[height=0.8cm]{logo-ufabc.png}
+		};
+	\end{tikzpicture}
+}
+
+% Logo da UFABC apenas na capa
+\titlegraphic{
+	\begin{tikzpicture}[remember picture,overlay]
+		\node[anchor=north east,yshift=-12pt,xshift=-213pt] at (current page.north east) {
+			\includegraphics[height=0.8cm]{logo-ufabc.png}
+		};
+	\end{tikzpicture}
+}
 
 % Configurações do título
 \title[Projeto de Graduação de Curso]{Algoritmos para r-Arborescências Geradoras Mínimas em Digrafos:}
