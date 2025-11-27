@@ -905,25 +905,6 @@ return F_prime
 	\end{enumerate}
 \end{frame}
 
-\begin{frame}{Fase I: Invariantes e Propriedades}
-	\textbf{A cada iteração, mantemos:}
-
-	\vspace{0.2cm}
-	\begin{enumerate}
-		\item $c = w - \sum_{i \in [k)} \lambda_i \mathbf{1}_{\delta^-(R_i)}$ {\small (custos reduzidos)}
-		\item Para cada $i \in [k)$: $f_i$ entra em $R_i$
-		\item Para cada $i \in [k)$ e $j < i$: $f_j$ \emph{não} entra em $R_i$ {\small (prioridade)}
-		\item $\{R_i : i \in [k)\}$ é uma \textbf{coleção laminar} de $r$-conjuntos
-		\item $((R_i, \lambda_i))_{i \in [k)}$ é \textbf{$w$-disjunta}
-		\item Para cada $i \in [k)$: $c(f_i) = 0$ {\small (arcos têm custo zero após reduções)}
-	\end{enumerate}
-
-	\vspace{0.2cm}
-	\begin{alertblock}{Garantia}
-		Fontes de $\mathcal{C}(D_0)$ que não contêm $r$ são $r$-conjuntos minimais não cobertos por $F$.
-	\end{alertblock}
-\end{frame}
-
 \begin{frame}{Exemplo: Digrafo Inicial}
 	\begin{columns}[c]
 		\column{0.48\textwidth}
