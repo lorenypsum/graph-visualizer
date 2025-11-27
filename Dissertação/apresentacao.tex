@@ -251,9 +251,8 @@
 	\end{block}
 \end{frame}
 
-
 % ...existing code...
-\begin{frame}{Exemplo: escolha gulosa}
+\begin{frame}{Exemplo: Escolha Gulosa}
 	\begin{columns}[c]
 		\column{0.48\textwidth}
 		\textbf{Definição:}
@@ -328,54 +327,6 @@
 	\end{columns}
 \end{frame}
 
-% \begin{frame}{Passo 1: Redução de Custos}
-% \begin{columns}[t] % alinhamento pelo topo
-% 	\column{0.01\textwidth}
-% 	\column{0.44\textwidth}
-% 	\hspace*{6mm}
-% 	\begin{alertblock}{Objetivo}
-% 		Encontrar a $r$-arborescência geradora de custo mínimo através do algoritmo de Chu-Liu-Edmonds.
-% 		\vspace{0.6em}
-
-% 		Solução:
-% 		\begin{itemize}
-% 			\item Redução de custos por vértice;
-% 			\item Construção de \(D_0\) com arestas de custo zero;
-% 			\item Identificar e contrair de ciclos;
-% 			\item Resolver recursivamente;
-% 		\end{itemize}
-% 		\vspace{4mm}
-% 	\end{alertblock}
-
-% 	\column{0.55\textwidth}
-% 	\begin{center}
-% 		\begin{tikzpicture}[scale=0.9, >=Stealth,
-% 				vertex/.style={circle,draw,fill=blue!8,thick,inner sep=1.2pt,minimum size=7mm},
-% 				edge/.style={->,semithick,gray!70}]
-% 			% nós (posições ajustadas)
-% 			\node[vertex] (r) at (0,0) {$r$};
-% 			\node[vertex] (a) at (2,1.6) {$a$};
-% 			\node[vertex] (b) at (2,-1.6) {$b$};
-% 			\node[vertex] (c) at (4,2.2) {$c$};
-% 			\node[vertex] (d) at (4,0) {$d$};
-% 			\node[vertex] (e) at (4,-2.2) {$e$};
-
-% 			\draw[edge] (r) -- node[above,font=\scriptsize] {1} (a);
-% 			\draw[edge] (r) -- node[below,font=\scriptsize] {2} (b);
-% 			\draw[edge] (r) .. controls (0.8,2.4) and (3.2,3.0) .. node[above, yshift=2pt,pos=0.53,font=\scriptsize] {3} (c);
-% 			\draw[edge] (b) to[bend left=12] node[left,font=\scriptsize] {4} (a);
-% 			\draw[edge] (a) to[bend left=14] node[right,font=\scriptsize] {5} (b);
-% 			\draw[edge] (a) -- node[right,font=\scriptsize] {3} (d);
-% 			\draw[edge] (a) -- node[above,font=\scriptsize] {1} (c);
-% 			\draw[edge] (b) -- node[above,font=\scriptsize] {1} (d);
-% 			\draw[edge] (b) -- node[below,font=\scriptsize] {2} (e);
-% 			\draw[edge] (c) .. controls (5.6,2.6) and (5.6,-2.6) .. node[xshift=8pt,pos=0.52,font=\scriptsize] {5} (e);
-% 		\end{tikzpicture}
-% 	\end{center}
-% \end{columns}
-% \end{frame}
-% ...existing code...
-
 \begin{frame}{Passo 1: Redução de Custos}
 	\begin{columns}[c]
 		\column{0.48\textwidth}
@@ -422,7 +373,7 @@
 	\end{block}
 \end{frame}
 
-\begin{frame}[fragile]{Implementação: Redução de Custos}
+\begin{frame}[fragile]{Passo 1: Implementação - Redução de Custos}
 	\textbf{Função \texttt{reduce\_weights}:}
 	\begin{columns}[t]
 		\column{0.5\textwidth}
@@ -486,7 +437,7 @@ def reduce_weights(D: nx.DiGraph, v: int):
 	\end{columns}
 \end{frame}
 
-\begin{frame}[fragile]{Passo 2: Implementação da Construção de D0 em Python}
+\begin{frame}[fragile]{Passo 2: Implementação - Construção de $D_0$}
 	\textbf{Função \texttt{get\_Dzero}:}
 	\begin{columns}[t]
 		\column{0.55\textwidth}
@@ -555,7 +506,7 @@ def get_Dzero(D: nx.DiGraph, r: int):
 	\end{alertblock}
 \end{frame}
 
-\begin{frame}[fragile]{Passo 3: Implementação da Verificação de D0}
+\begin{frame}[fragile]{Passo 3: Implementação - Verificação de $D_0$}
 	\textbf{Verificação se é arborescência:}
 	\begin{lstlisting}[basicstyle=\small\ttfamily]
 # Verificar se D_zero eh arborescencia
@@ -607,7 +558,7 @@ if nx.is_arborescence(D_zero):
 	\end{block}
 \end{frame}
 
-\begin{frame}[fragile]{Passo 4: Implementação da Contração (1/3)}
+\begin{frame}[fragile]{Passo 4: Implementação - Contração de Ciclos (1/3)}
 	\textbf{Detecção de ciclo:}
 
 	\vspace{0.1cm}
@@ -629,7 +580,7 @@ def find_cycle(D_zero: nx.DiGraph):
 	\end{block}
 \end{frame}
 
-\begin{frame}[fragile]{Passo 4: Implementação da Contração (2/3)}
+\begin{frame}[fragile]{Passo 4: Implementação - Contração de Ciclos (2/3)}
 	\textbf{Arcos essenciais que entram no ciclo:}
 
 	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
@@ -656,7 +607,7 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph,
 	\end{block}
 \end{frame}
 
-\begin{frame}[fragile]{Passo 4: Implementação da Contração (3/3)}
+\begin{frame}[fragile]{Passo 4: Implementação - Contração de Ciclos (3/3)}
 	\textbf{Arcos essenciais que saem do ciclo:}
 	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
     # Arcos essenciais saindo do ciclo
@@ -708,7 +659,7 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph,
 	\end{columns}
 \end{frame}
 
-\begin{frame}[fragile]{Passo 5: Implementação da Chamada Recursiva}
+\begin{frame}[fragile]{Passo 5: Implementação - Chamada Recursiva}
 	\textbf{Estrutura recursiva:}
 
 	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
@@ -771,7 +722,7 @@ def chuliu_edmonds(D: nx.DiGraph, r: int, label: int):
 	\end{columns}
 \end{frame}
 
-\begin{frame}[fragile]{Passo 6: Implementação da Reexpansão (1/2)}
+\begin{frame}[fragile]{Passo 6: Implementação - Reexpansão (1/2)}
 	\textbf{Encontrar e adicionar arco correspondente:}
 
 	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
@@ -795,7 +746,7 @@ for u_c, v_c in C.edges:
 	{\small \textbf{Observação:} Identifica qual arco do ciclo não será incluído na solução final.}
 \end{frame}
 
-\begin{frame}[fragile]{Passo 6: Implementação da Reexpansão (2/2)}
+\begin{frame}[fragile]{Passo 6: Implementação - Reexpansão (2/2)}
 	\textbf{Transferir arcos externos e restaurar pesos:}
 
 	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
