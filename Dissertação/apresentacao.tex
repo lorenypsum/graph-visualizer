@@ -915,7 +915,7 @@ return F_prime
 	\end{alertblock}
 \end{frame}
 
-\begin{frame}{Fase I - Iteração 1: Encontrar $r$-conjunto Minimal}
+\begin{frame}{Fase I: Iteração 1 - Encontrar $r$-conjunto Minimal}
 	\begin{columns}[c]
 		\column{0.48\textwidth}
 		\textbf{Estado inicial:}
@@ -966,7 +966,7 @@ return F_prime
 	\end{columns}
 \end{frame}
 
-\begin{frame}{Fase I - Iteração 1: Redução de Custos}
+\begin{frame}{Fase I: Iteração 1 - Redução de Custos}
 	\begin{columns}[c]
 		\column{0.48\textwidth}
 		\textbf{Atualização:}
@@ -981,13 +981,6 @@ return F_prime
 		\begin{itemize}
 			\item $c(r,a) = 2 - 1 = 1$
 			\item $c(b,a) = 1 - 1 = 0$ \checkmark
-		\end{itemize}
-
-		\vspace{0.2cm}
-		Custos reduzidos:
-		\begin{itemize}
-			\item $(r,a): 1$, $(r,b): 10$
-			\item $(b,a): 0$, $(a,c): 4$
 		\end{itemize}
 
 		\column{0.52\textwidth}
@@ -1010,13 +1003,12 @@ return F_prime
 		{\small Arcos azuis têm custo zero}
 	\end{columns}
 
-	\vspace{0.2cm}
 	\begin{block}{Observação}
 		Custos são reduzidos para garantir que $\sigma$ seja $w$-disjunta.
 	\end{block}
 \end{frame}
 
-\begin{frame}{Fase I - Iteração 2: Próximo $r$-conjunto}
+\begin{frame}{Fase I: Iteração 2 - Próximo $r$-conjunto}
 	\begin{columns}[c]
 		\column{0.48\textwidth}
 		\textbf{Estado:} $F = \{(b,a)\}$
@@ -1063,7 +1055,7 @@ return F_prime
 	\end{columns}
 \end{frame}
 
-\begin{frame}{Fase I - Iteração 2: Redução e Estado Final}
+\begin{frame}{Fase I: Iteração 2 - Redução e Estado Final}
 	\begin{columns}[c]
 		\column{0.48\textwidth}
 		\textbf{Atualização:}
@@ -1085,18 +1077,15 @@ return F_prime
 			\item Apenas 1 fonte (contém $r$)
 		\end{itemize}
 
-		\vspace{0.2cm}
-		\textbf{Fim da Fase I!}
-
 		\column{0.52\textwidth}
-		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
-				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+		\begin{tikzpicture}[>=Stealth, node distance=1.6cm, scale=0.85, transform shape,
+				v/.style={circle, draw, fill=blue!8, minimum size=6mm},
 				zero/.style={->, very thick, draw=blue!70},
 				arc/.style={->, thick, draw=gray!70}]
 			\node[v,fill=red!20] (r) {\small $r$};
-			\node[v] (a) [below right=1.5cm and 1.2cm of r] {\small $a$};
-			\node[v] (b) [above right=1.5cm and 1.2cm of r] {\small $b$};
-			\node[v] (c) [right=2.5cm of a] {\small $c$};
+			\node[v] (a) [below right=1.3cm and 1.0cm of r] {\small $a$};
+			\node[v] (b) [above right=1.3cm and 1.0cm of r] {\small $b$};
+			\node[v] (c) [right=2.0cm of a] {\small $c$};
 
 			\draw[arc] (r) -- node[midway, below left] {\scriptsize 1} (a);
 			\draw[arc] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
@@ -1104,11 +1093,8 @@ return F_prime
 			\draw[zero] (a) -- node[midway, below] {\scriptsize 0} (c);
 		\end{tikzpicture}
 
-		\vspace{0.2cm}
 		{\small Cobertura de $r$-conjuntos construída!}
 	\end{columns}
-
-	\vspace{0.2cm}
 	\begin{block}{Sequência devolvida}
 		$\sigma = [(f_0=(b,a), R_0=\{a\}, \lambda_0=1), (f_1=(a,c), R_1=\{c\}, \lambda_1=4)]$
 	\end{block}
