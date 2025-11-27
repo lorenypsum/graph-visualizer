@@ -832,7 +832,7 @@ return F_prime
 
 \begin{frame}{Fase I: Algoritmo de Fulkerson}
 	\textbf{Processo iterativo}
-	
+
 	\vspace{0.2cm}
 	\textbf{Dado:} um $r$-digrafo ponderado $(D,w,r)$
 	\vspace{0.2cm}
@@ -896,13 +896,13 @@ return F_prime
 			\item $(b,a): 1$, $(a,c): 4$
 		\end{itemize}
 		\column{0.52\textwidth}
-		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
-				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+		\begin{tikzpicture}[>=Stealth, node distance=1.6cm, scale=0.9, transform shape,
+				v/.style={circle, draw, fill=blue!8, minimum size=6.5mm},
 				arc/.style={->, thick, draw=gray!70}]
 			\node[v,fill=red!20] (r) {\small $r$};
-			\node[v] (a) [below right=1.5cm and 1.2cm of r] {\small $a$};
-			\node[v] (b) [above right=1.5cm and 1.2cm of r] {\small $b$};
-			\node[v] (c) [right=2.5cm of a] {\small $c$};
+			\node[v] (a) [below right=1.3cm and 1.1cm of r] {\small $a$};
+			\node[v] (b) [above right=1.3cm and 1.1cm of r] {\small $b$};
+			\node[v] (c) [right=2.2cm of a] {\small $c$};
 
 			\draw[arc] (r) -- node[midway, below left] {\scriptsize 2} (a);
 			\draw[arc] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
@@ -942,15 +942,15 @@ return F_prime
 		\end{itemize}
 
 		\column{0.52\textwidth}
-		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
-				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+		\begin{tikzpicture}[>=Stealth, node distance=1.6cm, scale=0.9, transform shape,
+				v/.style={circle, draw, fill=blue!8, minimum size=6.5mm},
 				rset/.style={draw=orange!70, very thick, dashed, rounded corners},
 				arc/.style={->, thick, draw=gray!70},
 				selected/.style={->, very thick, draw=green!70}]
 			\node[v,fill=red!20] (r) {\small $r$};
-			\node[v] (a) [below right=1.5cm and 1.2cm of r] {\small $a$};
-			\node[v] (b) [above right=1.5cm and 1.2cm of r] {\small $b$};
-			\node[v] (c) [right=2.5cm of a] {\small $c$};
+			\node[v] (a) [below right=1.3cm and 1.1cm of r] {\small $a$};
+			\node[v] (b) [above right=1.3cm and 1.1cm of r] {\small $b$};
+			\node[v] (c) [right=2.2cm of a] {\small $c$};
 
 			\draw[arc] (r) -- node[midway, below left] {\scriptsize 2} (a);
 			\draw[arc] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
@@ -991,14 +991,14 @@ return F_prime
 		\end{itemize}
 
 		\column{0.52\textwidth}
-		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
-				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+		\begin{tikzpicture}[>=Stealth, node distance=1.6cm, scale=0.9, transform shape,
+				v/.style={circle, draw, fill=blue!8, minimum size=6.5mm},
 				arc/.style={->, thick, draw=gray!70},
 				zero/.style={->, very thick, draw=blue!70}]
 			\node[v,fill=red!20] (r) {\small $r$};
-			\node[v] (a) [below right=1.5cm and 1.2cm of r] {\small $a$};
-			\node[v] (b) [above right=1.5cm and 1.2cm of r] {\small $b$};
-			\node[v] (c) [right=2.5cm of a] {\small $c$};
+			\node[v] (a) [below right=1.3cm and 1.1cm of r] {\small $a$};
+			\node[v] (b) [above right=1.3cm and 1.1cm of r] {\small $b$};
+			\node[v] (c) [right=2.2cm of a] {\small $c$};
 
 			\draw[arc] (r) -- node[midway, below left] {\scriptsize 1} (a);
 			\draw[arc] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
@@ -1041,16 +1041,16 @@ return F_prime
 		$\lambda_1 = 4$, $f_1 = (a,c)$
 
 		\column{0.52\textwidth}
-		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
-				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+		\begin{tikzpicture}[>=Stealth, node distance=1.6cm, scale=0.9, transform shape,
+				v/.style={circle, draw, fill=blue!8, minimum size=6.5mm},
 				rset/.style={draw=orange!70, very thick, dashed, rounded corners},
 				arc/.style={->, thick, draw=gray!70},
 				zero/.style={->, thick, draw=blue!70},
 				selected/.style={->, very thick, draw=green!70}]
 			\node[v,fill=red!20] (r) {\small $r$};
-			\node[v] (a) [below right=1.5cm and 1.2cm of r] {\small $a$};
-			\node[v] (b) [above right=1.5cm and 1.2cm of r] {\small $b$};
-			\node[v] (c) [right=2.5cm of a] {\small $c$};
+			\node[v] (a) [below right=1.3cm and 1.1cm of r] {\small $a$};
+			\node[v] (b) [above right=1.3cm and 1.1cm of r] {\small $b$};
+			\node[v] (c) [right=2.2cm of a] {\small $c$};
 
 			\draw[arc] (r) -- node[midway, below left] {\scriptsize 1} (a);
 			\draw[arc] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
