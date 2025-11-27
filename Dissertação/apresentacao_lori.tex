@@ -1511,5 +1511,296 @@ def andras_frank(D: nx.DiGraph, r: int):
 \end{frame}
 
 % ==================== SEÇÃO 4: RESULTADOS ====================
+\section{Resultados Experimentais}
+
+\begin{frame}{Comparação de Desempenho}
+	\textbf{Experimentos:} 2000 digrafos aleatórios, $|V| \in [101, 4996]$
+
+	\vspace{0.3cm}
+
+	\begin{center}
+		\begin{tabular}{lcc}
+			\toprule
+			\textbf{Algoritmo}    & \textbf{Tempo Mediano} & \textbf{Tempo Médio} \\
+			\midrule
+			Chu-Liu-Edmonds       & 0,25 s                 & 0,58 s               \\
+			Frank Fase I          & 8,93 s                 & 12,40 s              \\
+			Frank Fase II (lista) & 0,98 s                 & 1,34 s               \\
+			Frank Fase II (heap)  & \textbf{0,016 s}       & \textbf{0,020 s}     \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+
+	\vspace{0.5cm}
+
+	\begin{block}{Speedup Fase II}
+		Heap vs Lista: aceleração de \textbf{58,12 vezes} (mediana)
+	\end{block}
+\end{frame}
+
+\begin{frame}{Características Estruturais}
+	\begin{columns}[c]
+		\column{0.5\textwidth}
+		\textbf{Contrações (Chu-Liu):}
+		\begin{itemize}
+			\item Mediana: 2 contrações
+			\item Média: 6,82
+			\item Máximo: 406
+			\item 93,8\% com $< 20$
+		\end{itemize}
+
+		\vspace{0.3cm}
+		Muito abaixo do limite teórico $O(n)$
+
+		\column{0.5\textwidth}
+		\begin{center}
+			\includegraphics[width=\textwidth]{figures/fig_contractions_depth.png}
+		\end{center}
+	\end{columns}
+
+	\vspace{0.3cm}
+	\textbf{Consumo de memória:} mediana 11,5 MB (Fase I)
+\end{frame}
+
+% ==================== SEÇÃO 5: DIDÁTICA DO ABSTRATO ====================
+\section{Didática do Abstrato}
+
+\begin{frame}{Desafios na Ensino de Algoritmos de Grafos}
+	\begin{block}{Abstração Excessiva}
+		\begin{itemize}
+			\item Dificuldade em visualizar estruturas
+			\item Compreensão limitada dos passos do algoritmo
+		\end{itemize}
+	\end{block}
+
+	\vspace{0.5cm}
+
+	\begin{alertblock}{Solução Proposta}
+		Ferramenta interativa para visualização e execução passo a passo
+	\end{alertblock}
+\end{frame}
+
+\begin{frame}{Objetivos da Ferramenta Didática}
+	\begin{itemize}
+		\item Facilitar a compreensão dos algoritmos Chu-Liu-Edmonds e András Frank
+		\item Permitir aos usuários interagir com grafos e observar o funcionamento dos algoritmos
+		\item Fornecer feedback imediato sobre as operações realizadas
+		\item Ser acessível via navegador web, sem necessidade de instalação
+	\end{itemize}
+\end{frame}
+
+% ==================== SEÇÃO 6: APLICAÇÃO WEB ====================
+\section{Aplicação Web}
+
+\begin{frame}{Motivação Didática}
+	\begin{block}{Desafio}
+		Algoritmos de grafos são \textbf{abstratos} e \textbf{difíceis de visualizar}
+	\end{block}
+
+	\vspace{0.5cm}
+
+	\begin{columns}[c]
+		\column{0.5\textwidth}
+		\textbf{Solução Proposta:}
+		\begin{itemize}
+			\item Visualização interativa
+			\item Execução passo a passo
+			\item Feedback imediato
+			\item Acessível via navegador
+		\end{itemize}
+
+		\column{0.5\textwidth}
+		\textbf{Tecnologias:}
+		\begin{itemize}
+			\item PyScript (Python no browser)
+			\item JavaScript
+			\item HTML5/CSS3
+			\item NetworkX
+		\end{itemize}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Arquitetura da Aplicação}
+	\begin{center}
+		\begin{tikzpicture}[
+				node distance=1.5cm,
+				box/.style={rectangle,draw,thick,minimum width=3cm,minimum height=1cm,align=center}]
+
+			\node[box,fill=blue!20] (ui) {Interface HTML/CSS};
+			\node[box,fill=green!20,below of=ui] (pyscript) {PyScript\\(Python)};
+			\node[box,fill=yellow!20,below of=pyscript] (algos) {Algoritmos\\Chu-Liu | Frank};
+			\node[box,fill=orange!20,below of=algos] (nx) {NetworkX};
+
+			\draw[->,>=stealth,thick] (ui) -- (pyscript);
+			\draw[->,>=stealth,thick] (pyscript) -- (algos);
+			\draw[->,>=stealth,thick] (algos) -- (nx);
+			\draw[->,>=stealth,thick] (nx) to[bend right=60] (ui);
+
+		\end{tikzpicture}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Interface: Página Principal}
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{../assets/homehtml.png}
+	\end{center}
+
+	\begin{itemize}
+		\item Navegação intuitiva entre algoritmos
+		\item Acesso direto aos exemplos interativos
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Interface: Desenho de Grafos}
+	\begin{center}
+		\includegraphics[width=0.75\textwidth]{../assets/drawhtml.png}
+	\end{center}
+
+	Funcionalidades:
+	\begin{itemize}
+		\item Adicionar vértices e arestas
+		\item Definir pesos
+		\item Exportar/importar grafos em JSON
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Interface: Chu-Liu-Edmonds}
+	\begin{center}
+		\includegraphics[width=0.75\textwidth]{../assets/chuliuhtml.png}
+	\end{center}
+
+	\begin{itemize}
+		\item Visualização passo a passo
+		\item Destacamento de ciclos detectados
+		\item Log detalhado das operações
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Interface: András Frank}
+	\begin{center}
+		\includegraphics[width=0.75\textwidth]{../assets/andrasfrankv1html.png}
+	\end{center}
+
+	\begin{itemize}
+		\item Exibição das duas fases
+		\item Visualização de CFCs
+		\item Comparação entre versões (lista vs heap)
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Princípios de Design}
+	\begin{block}{Teoria dos Registros de Representação (Duval)}
+		Transitar entre diferentes representações:
+		\begin{itemize}
+			\item \textbf{Visual:} diagramas do grafo
+			\item \textbf{Simbólico:} código Python
+			\item \textbf{Textual:} log das operações
+		\end{itemize}
+	\end{block}
+
+	\vspace{0.5cm}
+
+	\begin{alertblock}{Feedback Imediato}
+		Validação em tempo real das operações do usuário
+	\end{alertblock}
+\end{frame}
+
+% ==================== SEÇÃO 7: CONCLUSÕES ====================
+\section{Conclusões}
+
+\begin{frame}{Contribuições do Trabalho}
+	\begin{enumerate}
+		\item \textbf{Implementação completa} de dois algoritmos clássicos
+		      \begin{itemize}
+			      \item Chu-Liu-Edmonds: recursivo com contração
+			      \item András Frank: duas fases com otimização heap
+		      \end{itemize}
+
+		      \vspace{0.3cm}
+
+		\item \textbf{Análise experimental} detalhada
+		      \begin{itemize}
+			      \item 2000 instâncias aleatórias
+			      \item Comparação de desempenho e características estruturais
+		      \end{itemize}
+
+		      \vspace{0.3cm}
+
+		\item \textbf{Aplicação web interativa}
+		      \begin{itemize}
+			      \item Ferramenta didática para visualização
+			      \item Execução passo a passo dos algoritmos
+			      \item Design centrado no usuário
+		      \end{itemize}
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}{Principais Resultados}
+	\begin{itemize}
+		\item \textbf{Corretude validada:} custos idênticos em todas as instâncias
+
+		      \vspace{0.3cm}
+
+		\item \textbf{Chu-Liu-Edmonds} mais rápido para construção direta
+		      \begin{itemize}
+			      \item Mediana: 0,25 s vs 8,93 s (Fase I Frank)
+		      \end{itemize}
+
+		      \vspace{0.3cm}
+
+		\item \textbf{Otimização heap} fundamental na Fase II
+		      \begin{itemize}
+			      \item Speedup: 58× (mediana), 61× (média)
+		      \end{itemize}
+
+		      \vspace{0.3cm}
+
+		\item \textbf{Comportamento prático} muito melhor que limites teóricos
+		      \begin{itemize}
+			      \item Contrações: mediana 2 (limite $O(n)$)
+			      \item Memória modesta: 11,5 MB
+		      \end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Trabalhos Futuros}
+	\begin{block}{Extensões Possíveis}
+		\begin{itemize}
+			\item Implementar outras variantes (Tarjan, Gabow)
+			\item Análise em grafos com estruturas especiais
+			\item Paralelização dos algoritmos
+			\item Extensão para grafos dinâmicos
+		\end{itemize}
+	\end{block}
+
+	\vspace{0.5cm}
+
+	\begin{block}{Melhorias na Aplicação}
+		\begin{itemize}
+			\item Modo de edição visual de grafos
+			\item Geração automática de casos de teste
+			\item Exercícios interativos com correção automática
+			\item Integração com plataformas de ensino (Moodle, Jupyter)
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+% ==================== SLIDE FINAL ====================
+\begin{frame}[plain]
+	\centering
+	\vfill
+
+	{\Huge Obrigado!}
+
+	\vspace{1cm}
+
+	{\Large Perguntas?}
+
+	\vspace{1cm}
+
+	{\normalsize \texttt{https://github.com/lorenypsum/graph-visualizer}}
+
+	\vfill
+\end{frame}
 
 \end{document}
