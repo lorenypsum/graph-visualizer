@@ -1641,6 +1641,48 @@ def andras_frank(D: nx.DiGraph, r: int):
 	\end{itemize}
 \end{frame}
 
+% Slide 1: Fundamentos Cognitivos e Didáticos
+\begin{frame}{Fundamentos Cognitivos e Didáticos}
+    \begin{block}{Desafios do Ensino de Matemática Abstrata}
+        \begin{itemize}
+            \item Conhecimento abstrato exige transitar entre registros: intuitivo, visual, simbólico e formal.
+            \item \textbf{Carga cognitiva:}
+                \begin{itemize}
+                    \item Intrínseca: complexidade dos conceitos e pré-requisitos.
+                    \item Extrínseca: forma de apresentação e coordenação entre texto, fórmulas e figuras.
+                    \item Pertinente: esforço dedicado à organização dos esquemas mentais.
+                \end{itemize}
+            \item Combinar representações verbais e visuais reduz sobrecarga e favorece integração semântica.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+% Slide 2: Lidando com Grafos e Digrafos
+\begin{frame}{Dificuldades Didáticas com Grafos e Digrafos}
+    \begin{block}{Três Eixos de Dificuldade}
+        \begin{enumerate}
+            \item \textbf{Decisões locais vs. coerência global:} Escolhas localmente ótimas podem gerar ciclos, dificultando a compreensão da solução global.
+            \item \textbf{Contração e expansão:} Transitar entre grafo original, condensado e reexpansão exige rastreabilidade e clareza sobre o que muda e o que permanece.
+            \item \textbf{Relação com a teoria primal-dual:} Dificuldade em conectar ações operacionais do algoritmo com fundamentos teóricos e certificados de otimalidade.
+        \end{enumerate}
+    \end{block}
+    \vspace{0.2cm}
+    \textbf{Solução:} Visualização e interação bem projetadas facilitam a integração entre prática e teoria.
+\end{frame}
+
+% Slide 3: O Ecossistema de Ferramentas Digitais
+\begin{frame}{O Ecossistema de Ferramentas para Ensino de Grafos}
+    \begin{block}{Categorias de Ferramentas Digitais}
+        \begin{itemize}
+            \item \textbf{Diagramas programáveis:} Visualização estável e integrada ao texto matemático (\textit{Graphviz}, \textit{TikZ}).
+            \item \textbf{Exploração e edição de grafos:} Manipulação gráfica e análise estrutural (\textit{Gephi}, \textit{yEd}, \textit{Cytoscape}).
+            \item \textbf{Visualização de algoritmos:} Animações e explicações dinâmicas (\textit{VisuAlgo}).
+            \item \textbf{Ambientes programáveis:} Integração de código, texto e visualização para exemplos reprodutíveis (\textit{Jupyter}, \textit{NetworkX}).
+        \end{itemize}
+    \end{block}
+    \vspace{0.2cm}
+    Nenhuma ferramenta cobre todos os aspectos didáticos de forma integrada. A aplicação proposta busca preencher essa lacuna.
+\end{frame}
 
 % ==================== SEÇÃO 6: APLICAÇÃO WEB ====================
 
@@ -1775,10 +1817,9 @@ def andras_frank(D: nx.DiGraph, r: int):
 
 \begin{frame}{Interface: Página Principal}
     \begin{figure}
-        \centering % Garante a centralização horizontal (alternativa a \begin{center})
-        \vfill % Empurra a imagem para baixo, preenchendo o espaço superior
-        \includegraphics[width=0.55\textwidth]{../assets/homehtml.png}
-        \vfill % Empurra a imagem para cima, preenchendo o espaço inferior
+        \centering \vfill
+		\includegraphics[width=0.55\textwidth]{../assets/homehtml.png}
+        \vfill 
 		\vspace{0.8cm}
     \end{figure}
 \end{frame}
