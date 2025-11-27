@@ -1047,7 +1047,7 @@ def update_weights(D: nx.DiGraph,
 	\end{columns}
 \end{frame}
 
-\begin{frame}{Fase I: Iteração 1 - Redução de Custos}
+\begin{frame}{Fase I: Iteração 2 - Redução de Custos}
 	\begin{columns}[c]
 		\column{0.48\textwidth}
 		\textbf{Atualização:}
@@ -1089,97 +1089,7 @@ def update_weights(D: nx.DiGraph,
 	\end{block}
 \end{frame}
 
-\begin{frame}{Fase I: Iteração 2 - Análise da Condensação}
-	\begin{columns}[c]
-		\column{0.48\textwidth}
-		\textbf{Estado:} $F = \{(b,a)\}$
-
-		\vspace{0.2cm}
-		\textbf{Passo 1:} Construir $D_0 = (V, F)$
-		\begin{itemize}
-			\item CFCs de $D_0$: $\{r\}, \{b\}, \{a\}, \{c\}$
-		\end{itemize}
-
-		\vspace{0.2cm}
-		\textbf{Passo 2:} Identificar fontes em $\mathcal{C}(D_0)$
-		\begin{itemize}
-			\item Fonte: CFC sem arco entrando \emph{em $D_0$}
-			\item Todas são fontes: $\{r\}, \{b\}, \{a\}, \{c\}$
-		\end{itemize}
-
-		\vspace{0.2cm}
-		\textbf{Passo 3:} Escolher $r$-conjunto
-		\begin{itemize}
-			\item $r$-conjuntos: $\{b\}, \{c\}$ (não contêm $r$)
-		\end{itemize}
-
-		\column{0.52\textwidth}
-		\begin{tikzpicture}[>=Stealth, node distance=1.6cm, scale=0.9, transform shape,
-				v/.style={circle, draw, fill=blue!8, minimum size=6.5mm},
-				arc/.style={->, thick, draw=gray!70},
-				zero/.style={->, thick, draw=blue!70}]
-			\node[v,fill=red!20] (r) {\small $r$};
-			\node[v] (a) [below right=1.3cm and 1.1cm of r] {\small $a$};
-			\node[v] (b) [above right=1.3cm and 1.1cm of r] {\small $b$};
-			\node[v] (c) [right=2.2cm of a] {\small $c$};
-
-			\draw[arc] (r) -- node[midway, below left] {\scriptsize 1} (a);
-			\draw[arc] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
-			\draw[zero] (b) -- node[midway, above right] {\scriptsize 0} (a);
-			\draw[arc] (a) -- node[midway, below] {\scriptsize 4} (c);
-		\end{tikzpicture}
-
-		\vspace{0.2cm}
-		{\small Digrafo com custos reduzidos}
-	\end{columns}
-	\begin{alertblock}{Observação Importante}
-		Em $D_0 = (V, \{(b,a)\})$, todos os vértices são fontes! Mas apenas $\{b\}$ e $\{c\}$ são $r$-conjuntos.
-	\end{alertblock}
-\end{frame}
-
-\begin{frame}{Fase I: Iteração 2 - Seleção do Arco}
-	\begin{columns}[c]
-		\column{0.48\textwidth}
-		\textbf{Escolha:} $R_1 = \{c\}$
-
-		\vspace{0.2cm}
-		Arcos que entram em $\{c\}$ no digrafo original:
-		\begin{itemize}
-			\item $(a,c): 4$ ← único arco
-		\end{itemize}
-
-		\vspace{0.2cm}
-		\textbf{Seleção:}
-		\begin{itemize}
-			\item $\lambda_1 = 4$ (peso mínimo)
-			\item $f_1 = (a,c)$
-			\item Adicionar $(a,c)$ a $F$
-		\end{itemize}
-
-		\column{0.52\textwidth}
-		\begin{tikzpicture}[>=Stealth, node distance=1.6cm, scale=0.9, transform shape,
-				v/.style={circle, draw, fill=blue!8, minimum size=6.5mm},
-				rset/.style={draw=orange!70, very thick, dashed, rounded corners},
-				arc/.style={->, thick, draw=gray!70},
-				zero/.style={->, thick, draw=blue!70},
-				selected/.style={->, very thick, draw=green!70}]
-			\node[v,fill=red!20] (r) {\small $r$};
-			\node[v] (a) [below right=1.3cm and 1.1cm of r] {\small $a$};
-			\node[v] (b) [above right=1.3cm and 1.1cm of r] {\small $b$};
-			\node[v] (c) [right=2.2cm of a] {\small $c$};
-
-			\draw[arc] (r) -- node[midway, below left] {\scriptsize 1} (a);
-			\draw[arc] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
-			\draw[zero] (b) -- node[midway, above right] {\scriptsize 0} (a);
-			\draw[selected] (a) -- node[midway, below] {\scriptsize 4} (c);
-
-			\node[rset, fit=(c)] {};
-			\node[orange!70, above=0.2cm of c] {\small $R_1$};
-		\end{tikzpicture}
-	\end{columns}
-\end{frame}
-
-\begin{frame}{Fase I: Iteração 2 - Redução de Custos}
+\begin{frame}{Fase I: Iteração 3 - Redução de Custos}
 	\begin{columns}[c]
 		\column{0.48\textwidth}
 		\textbf{Atualização:}
@@ -1196,14 +1106,12 @@ def update_weights(D: nx.DiGraph,
 
 		\vspace{0.2cm}
 		$\mathcal{C}(D_0)$ com $F = \{(b,a), (a,c)\}$:
-		\begin{itemize}
-			\item CFCs: $\{r\}, \{b\}, \{a\}, \{c\}$ (singleton)
-			\item Fontes em $D_0$: $\{r\}, \{b\}$
-			\item Única fonte que contém $r$: $\{r\}$ \checkmark
-		\end{itemize}
 
 		\vspace{0.2cm}
-		\textbf{Mas atenção: $\{b\}$ ainda é r-conjunto!}
+		\begin{itemize}
+			\item CFCs: $\{r\}, \{b\}, \{a\}, \{c\}$
+			\item Fontes em $D_0$: $\{r\}, \{b\}$
+		\end{itemize}
 
 		\column{0.52\textwidth}
 		\begin{tikzpicture}[>=Stealth, node distance=1.6cm, scale=0.85, transform shape,
@@ -1225,7 +1133,7 @@ def update_weights(D: nx.DiGraph,
 	\end{columns}
 \end{frame}
 
-\begin{frame}{Fase I: Iteração 3 - Cobrir $\{b\}$}
+\begin{frame}{Fase I: Iteração 4 - Redução de Custos}
 	\begin{columns}[c]
 		\column{0.48\textwidth}
 		\textbf{Estado:} $F = \{(b,a), (a,c)\}$
@@ -1234,7 +1142,6 @@ def update_weights(D: nx.DiGraph,
 		$\mathcal{C}(D_0)$ ainda tem:
 		\begin{itemize}
 			\item Fonte $\{b\}$ não contém $r$
-			\item $\{b\}$ é r-conjunto não coberto!
 		\end{itemize}
 
 		\vspace{0.2cm}
@@ -1276,7 +1183,7 @@ def update_weights(D: nx.DiGraph,
 	\end{columns}
 \end{frame}
 
-\begin{frame}{Fase I: Iteração 3 - Estado Final}
+\begin{frame}{Fase I: Iteração 5 - Estado Final}
 	\begin{columns}[c]
 		\column{0.48\textwidth}
 		\textbf{Atualização:}
@@ -1288,16 +1195,12 @@ def update_weights(D: nx.DiGraph,
 		\vspace{0.2cm}
 		\textbf{Redução:}
 		\begin{itemize}
-			\item $c(r,b) = 10 - 10 = 0$ \checkmark
+			\item $c(r,b) = 10 - 10 = 0$
 		\end{itemize}
 
 		\vspace{0.2cm}
 		$\mathcal{C}(D_0)$ com $F = \{(b,a), (a,c), (r,b)\}$:
-		\begin{itemize}
-			\item CFC única: $\{r,b,a,c\}$ (todos conectados!)
-			\item Apenas 1 fonte contendo $r$ \checkmark
-		\end{itemize}
-
+		
 		\vspace{0.2cm}
 		\textbf{Condição de parada satisfeita!}
 
