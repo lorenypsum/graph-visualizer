@@ -857,12 +857,13 @@ return F_prime
 		\item $F := \{f_i : i \in [k)\}$ é uma \textbf{cobertura de $r$-conjuntos}
 		\item A sequência $(R_i, \lambda_i)_{i \in [k)}$ é \textbf{$w$-disjunta}
 	\end{itemize}
+
+	\vspace{0.2cm}
+	\textbf{Objetivo da Fase II:} Extrair $r$-arborescência geradora mínima usando $F$ e a propriedade $w$-disjunta.
 \end{frame}
 
 \begin{frame}{Fase I: Conceitos Fundamentais}
 	\textbf{Definições:}
-
-	\vspace{0.2cm}
 	\begin{block}{$r$-conjunto minimal}
 		Um $r$-conjunto $R$ é \textbf{minimal não coberto por $F$} se:
 		\begin{itemize}
@@ -871,20 +872,19 @@ return F_prime
 		\end{itemize}
 	\end{block}
 
-	\vspace{0.2cm}
 	\begin{block}{Sequência $w$-disjunta}
 		Uma sequência $((R_i, \lambda_i))_{i \in [k)}$ é \textbf{$w$-disjunta} se:
 		$$\sum_{i \in [k)} \lambda_i \,[a \in \delta^-(R_i)] \;\le\; w(a) \quad \text{para cada } a \in A(D)$$
-		\vspace{0.1cm}
-		{\small (A soma dos $\lambda_i$ sobre os conjuntos que $a$ entra não excede o peso de $a$)}
 	\end{block}
+	{\small A soma dos $\lambda_i$ sobre os conjuntos que $a$ entra não excede o peso de $a$.}
 \end{frame}
 
 \begin{frame}{Fase I: Algoritmo de Fulkerson}
-	\textbf{Dado:} um $r$-digrafo ponderado $(D,w,r)$
-
+	\textbf{Processo iterativo}
+	
 	\vspace{0.2cm}
-	\textbf{Processo iterativo:}
+	\textbf{Dado:} um $r$-digrafo ponderado $(D,w,r)$
+	\vspace{0.2cm}
 	\begin{enumerate}
 		\item \textbf{Inicializar}:
 		      \begin{itemize}
