@@ -122,19 +122,17 @@
 \headcommand {\beamer@framepages {52}{52}}
 \headcommand {\slideentry {6}{0}{9}{53/53}{}{0}}
 \headcommand {\beamer@framepages {53}{53}}
-\headcommand {\slideentry {6}{0}{10}{54/54}{}{0}}
+\headcommand {\beamer@sectionpages {45}{53}}
+\headcommand {\beamer@subsectionpages {45}{53}}
+\headcommand {\sectionentry {7}{Conclusões}{54}{Conclusões}{0}}
+\headcommand {\slideentry {7}{0}{1}{54/54}{}{0}}
 \headcommand {\beamer@framepages {54}{54}}
-\headcommand {\beamer@sectionpages {45}{54}}
-\headcommand {\beamer@subsectionpages {45}{54}}
-\headcommand {\sectionentry {7}{Conclusões}{55}{Conclusões}{0}}
-\headcommand {\slideentry {7}{0}{1}{55/55}{}{0}}
+\headcommand {\slideentry {7}{0}{2}{55/55}{}{0}}
 \headcommand {\beamer@framepages {55}{55}}
-\headcommand {\slideentry {7}{0}{2}{56/56}{}{0}}
+\headcommand {\slideentry {7}{0}{3}{56/56}{}{0}}
 \headcommand {\beamer@framepages {56}{56}}
-\headcommand {\slideentry {7}{0}{3}{57/57}{}{0}}
-\headcommand {\beamer@framepages {57}{57}}
-\headcommand {\beamer@partpages {1}{57}}
-\headcommand {\beamer@subsectionpages {55}{57}}
-\headcommand {\beamer@sectionpages {55}{57}}
-\headcommand {\beamer@documentpages {57}}
-\headcommand {\gdef \inserttotalframenumber {57}}
+\headcommand {\beamer@partpages {1}{56}}
+\headcommand {\beamer@subsectionpages {54}{56}}
+\headcommand {\beamer@sectionpages {54}{56}}
+\headcommand {\beamer@documentpages {56}}
+\headcommand {\gdef \inserttotalframenumber {56}}
