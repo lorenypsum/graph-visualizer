@@ -114,8 +114,19 @@
 \headcommand {\beamer@framepages {51}{51}}
 \headcommand {\slideentry {4}{0}{4}{52/52}{}{0}}
 \headcommand {\beamer@framepages {52}{52}}
-\headcommand {\beamer@partpages {1}{52}}
-\headcommand {\beamer@subsectionpages {49}{52}}
 \headcommand {\beamer@sectionpages {49}{52}}
-\headcommand {\beamer@documentpages {52}}
-\headcommand {\gdef \inserttotalframenumber {52}}
+\headcommand {\beamer@subsectionpages {49}{52}}
+\headcommand {\sectionentry {5}{Didática do Abstrato}{53}{Didática do Abstrato}{0}}
+\headcommand {\slideentry {5}{0}{1}{53/53}{}{0}}
+\headcommand {\beamer@framepages {53}{53}}
+\headcommand {\slideentry {5}{0}{2}{54/54}{}{0}}
+\headcommand {\beamer@framepages {54}{54}}
+\headcommand {\slideentry {5}{0}{3}{55/55}{}{0}}
+\headcommand {\beamer@framepages {55}{55}}
+\headcommand {\slideentry {5}{0}{4}{56/56}{}{0}}
+\headcommand {\beamer@framepages {56}{56}}
+\headcommand {\beamer@partpages {1}{56}}
+\headcommand {\beamer@subsectionpages {53}{56}}
+\headcommand {\beamer@sectionpages {53}{56}}
+\headcommand {\beamer@documentpages {56}}
+\headcommand {\gdef \inserttotalframenumber {56}}
