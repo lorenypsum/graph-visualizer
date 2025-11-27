@@ -529,6 +529,7 @@ if nx.is_arborescence(D_zero):
 		\textbf{Operação:}
 
 		Contrair ciclo $C$ em supervértice $x_C$.
+		
 		\textbf{Novo problema:}
 		$(D', w', r)$ onde:
 		\begin{itemize}
@@ -932,7 +933,9 @@ return F_prime
 		\end{itemize}
 
 		\vspace{0.2cm}
-		\textbf{Escolha:} $R_0 = \{a\}$ (minimal)
+		\textbf{Escolha:} 
+		
+		$R_0 = \{a\}$ (minimal)
 
 		\vspace{0.2cm}
 		Arcos que entram em $\{a\}$:
@@ -964,6 +967,34 @@ return F_prime
 		\vspace{0.2cm}
 		{\small $\lambda_0 = 1$, $f_0 = (b,a)$}
 	\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Fase I: Implementação - Encontrar $r$-conjunto Minimal}
+	\textbf{Função \texttt{phase1}:}
+
+	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+def phase1(D: nx.DiGraph, r: int):
+    D_copy = D.copy()
+    sigma = []
+    D_zero = nx.DiGraph()
+    D_zero.add_nodes_from(D_copy.nodes())
+    
+    while True:
+        C = nx.condensation(D_zero)
+        sources = [x for x in C.nodes() 
+                   if C.in_degree(x) == 0]
+        if len(sources) == 1: 
+            break
+        
+        for s in sources:
+            X = C.nodes[s]["members"]
+            if r in X:
+                continue
+            # ... (continua no proximo slide)
+\end{lstlisting}
+
+	\vspace{0.05cm}
+	{\small \textbf{Observação:} Loop principal até todos $r$-conjuntos estarem cobertos}
 \end{frame}
 
 \begin{frame}{Fase I: Iteração 1 - Redução de Custos}
@@ -1092,11 +1123,10 @@ return F_prime
 			\draw[zero] (b) -- node[midway, above right] {\scriptsize 0} (a);
 			\draw[zero] (a) -- node[midway, below] {\scriptsize 0} (c);
 		\end{tikzpicture}
-
 		{\small Cobertura de $r$-conjuntos construída!}
 	\end{columns}
 	\begin{block}{Sequência devolvida}
-		$\sigma = [(f_0=(b,a), R_0=\{a\}, \lambda_0=1), (f_1=(a,c), R_1=\{c\}, \lambda_1=4)]$
+		$\sigma = [(f_0=(b,a), R_0=\{a\}, \lambda_0=1), (f_1=(a,c), R_1=\{c\}, \lambda_1=4)]$ -> Fim da Fase I.
 	\end{block}
 \end{frame}
 
@@ -1192,36 +1222,6 @@ return F_prime
 	\begin{exampleblock}{Resultado Final}
 		$r$-arborescência de custo $w(J) = 2 + 4 = 6$ (custo mínimo!)
 	\end{exampleblock}
-\end{frame}
-
-
-
-\begin{frame}[fragile]{Fase I: Implementação - Estrutura Principal}
-	\textbf{Função \texttt{phase1}:}
-
-	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
-def phase1(D: nx.DiGraph, r: int):
-    D_copy = D.copy()
-    sigma = []
-    D_zero = nx.DiGraph()
-    D_zero.add_nodes_from(D_copy.nodes())
-    
-    while True:
-        C = nx.condensation(D_zero)
-        sources = [x for x in C.nodes() 
-                   if C.in_degree(x) == 0]
-        if len(sources) == 1: 
-            break
-        
-        for s in sources:
-            X = C.nodes[s]["members"]
-            if r in X:
-                continue
-            # ... (continua no proximo slide)
-\end{lstlisting}
-
-	\vspace{0.05cm}
-	{\small \textbf{Observação:} Loop principal até todos $r$-conjuntos estarem cobertos}
 \end{frame}
 
 \begin{frame}[fragile]{Fase I: Implementação - Seleção de Arcos}
