@@ -1511,5 +1511,105 @@ def andras_frank(D: nx.DiGraph, r: int):
 \end{frame}
 
 % ==================== SEÇÃO 4: RESULTADOS ====================
+\section{Resultados Experimentais}
+
+\begin{frame}{Comparação de Desempenho}
+    \textbf{Experimentos:} 2000 digrafos aleatórios, $|V| \in [101, 4996]$
+
+    \vspace{0.3cm}
+
+    \begin{center}
+        \begin{tabular}{lcc}
+            \toprule
+            \textbf{Algoritmo}    & \textbf{Tempo Mediano} & \textbf{Tempo Médio} \\
+            \midrule
+            Chu-Liu-Edmonds       & 0,25 s                 & 0,58 s               \\
+            Frank Fase I          & 8,93 s                 & 12,40 s              \\
+            Frank Fase II (lista) & 0,98 s                 & 1,34 s               \\
+            Frank Fase II (heap)  & \textbf{0,016 s}       & \textbf{0,020 s}     \\
+            \bottomrule
+        \end{tabular}
+    \end{center}
+
+    \vspace{0.5cm}
+
+    \begin{block}{Speedup Fase II}
+        Heap vs Lista: aceleração de \textbf{58,12 vezes} (mediana)
+    \end{block}
+\end{frame}
+
+\begin{frame}{Escalonamento e Consumo de Memória}
+    \centering
+    \textbf{Escalonamento temporal:}
+    \begin{itemize}
+        \item Tempo cresce linearmente com o número de arestas
+        \item Fase I de Frank domina o tempo total
+        \item Fase II (heap) é residual e muito rápida
+    \end{itemize}
+    \vspace{0.4cm}
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{figures/fig_times_boxplot.png}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{figures/fig_time_vs_edges_scatter.png}
+    \end{minipage}
+\end{frame}
+
+% \begin{frame}{Características Estruturais}
+%     \begin{columns}[c]
+%         \column{0.5\textwidth}
+%         \textbf{Contrações (Chu-Liu):}
+%         \begin{itemize}
+%             \item Mediana: 2 contrações
+%             \item Média: 6,82
+%             \item Máximo: 406
+%             \item 93,8\% com $< 20$
+%         \end{itemize}
+%         \vspace{0.3cm}
+%         Muito abaixo do limite teórico $O(n)$
+%         \column{0.5\textwidth}
+%         \includegraphics[width=\textwidth]{figures/fig_contractions_depth.png}
+%     \end{columns}
+%     \vspace{0.3cm}
+%     \textbf{Tamanho de $D_0$ vs $|V|$:} relação linear confirma $|A_0| = O(|V|)$
+%     \includegraphics[width=0.7\textwidth]{figures/fig_d0_edges_vs_vertices.png}
+% \end{frame}
+
+\begin{frame}{Principais Resultados}
+    \begin{itemize}
+        \item \textbf{Corretude validada:} custos idênticos em todas as instâncias
+        \item \textbf{Chu-Liu-Edmonds} mais rápido para construção direta
+            \begin{itemize}
+                \item Mediana: 0,25 s vs 8,93 s (Fase I Frank)
+            \end{itemize}
+        \item \textbf{Otimização heap} fundamental na Fase II
+            \begin{itemize}
+                \item Speedup: 58× (mediana), 61× (média)
+            \end{itemize}
+        \item \textbf{Comportamento prático} muito melhor que limites teóricos
+            \begin{itemize}
+                \item Contrações: mediana 2 (limite $O(n)$)
+                \item Memória modesta: 11,5 MB
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Conclusões dos Experimentos}
+    \begin{itemize}
+        \item Equivalência teórica e prática dos algoritmos confirmada
+        \item Chu-Liu/Edmonds é mais eficiente 
+        \item Fase I de Frank é o gargalo computacional
+        \item Heap na Fase II traz ganhos práticos expressivos
+        \item Algoritmos são escaláveis e viáveis para grandes digrafos
+    \end{itemize}
+    
+\end{frame}
+
+
+% ==================== SEÇÃO 5: DIDÁTICA DO ABSTRATO ====================
+
 
 \end{document}
