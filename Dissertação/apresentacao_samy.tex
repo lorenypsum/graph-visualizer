@@ -1543,24 +1543,61 @@ def andras_frank(D: nx.DiGraph, r: int):
 	\end{columns}
 \end{frame}
 
+% \begin{frame}{Aplicação web}
+%     \begin{columns}[c]
+% 		\column{0.5\textwidth}
+% 		\hspace*{0.5cm}
+%         % \begin{alertblock}{Resumo da Aplicação}
+% 		% \textbf{Resumo da Aplicação}
+% 		Ferramenta web interativa para ensino de algoritmos de arborescências dirigidas, permitindo visualização passo a passo, edição livre de grafos e exportação de resultados, com arquitetura modular e foco didático.
+%         % \end{alertblock}
+
+% 		\column{0.48\textwidth}
+%         \hspace*{0.5cm}
+%         \begin{alertblock}{Módulos principais:}
+%             \begin{itemize}
+% 				\item \textbf{Visualização Algorítmica:} Páginas para execução passo a passo dos algoritmos Chu-Liu-Edmonds e András Frank.
+% 				\item \textbf{Modelagem Livre:} Editor sandbox para desenhar, testar e exportar grafos arbitrários.
+% 				\item \textbf{Disseminação Científica:} Página informativa sobre o projeto e a dissertação.
+% 			\end{itemize}
+%         \end{alertblock}
+
+% 		\column{0.48\textwidth}
+%         \hspace*{0.3cm}
+%         % \vspace{0.2cm}
+%         % \textbf{Fluxo de interação:}
+%         % \begin{itemize}
+%         %     \item Criação/importação do grafo
+%         %     \item Definição do vértice raiz
+%         %     \item Execução do algoritmo e visualização dos passos
+%         %     \item Exportação do resultado em JSON
+%         % \end{itemize}
+        
+%     \end{columns}
+% \end{frame}
+
+% ...existing code...
 \begin{frame}{Aplicação web}
     \begin{columns}[c]
-        \column{0.55\textwidth}
-        \textbf{Módulos principais:}
-        \begin{itemize}
-            \item \textbf{Visualização Algorítmica:} Páginas para execução passo a passo dos algoritmos Chu-Liu-Edmonds e András Frank.
-            \item \textbf{Modelagem Livre:} Editor sandbox para desenhar, testar e exportar grafos arbitrários.
-            \item \textbf{Disseminação Científica:} Página informativa sobre o projeto e a dissertação.
-        \end{itemize}
-        % \vspace{0.2cm}
-        % \textbf{Fluxo de interação:}
-        % \begin{itemize}
-        %     \item Criação/importação do grafo
-        %     \item Definição do vértice raiz
-        %     \item Execução do algoritmo e visualização dos passos
-        %     \item Exportação do resultado em JSON
-        % \end{itemize}
-        
+        \column{0.52\textwidth}
+        \hspace*{0.3cm}
+        \begin{minipage}{0.92\columnwidth}
+            Ferramenta web interativa para ensino de algoritmos de arborescências dirigidas, permitindo visualização passo a passo, edição livre de grafos e exportação de resultados, com arquitetura modular e foco didático.
+        \end{minipage}
+
+        \column{0.46\textwidth}
+        \hspace*{0.3cm}
+        \begin{minipage}{0.92\columnwidth}
+            \begin{alertblock}{Módulos principais:}
+                \begin{itemize}
+                    \item \textbf{Visualização Algorítmica:} Páginas para execução passo a passo dos algoritmos Chu-Liu-Edmonds e András Frank.
+                    \item \textbf{Modelagem Livre:} Editor sandbox para desenhar, testar e exportar grafos arbitrários.
+                    \item \textbf{Disseminação Científica:} Página informativa sobre o projeto e a dissertação.
+                \end{itemize}
+            \end{alertblock}
+        \end{minipage}
+
+		\hspace*{0.5cm}
     \end{columns}
 \end{frame}
 
@@ -1613,6 +1650,48 @@ def andras_frank(D: nx.DiGraph, r: int):
     \end{columns}
 \end{frame}
 
+% ...existing code...
+\begin{frame}{Princípios de IHC Aplicados}
+    \begin{block}{Fundamentos para o Design da Ferramenta}
+        O desenvolvimento da aplicação web foi guiado por oito princípios de Interação Humano-Computador (IHC), integrando heurísticas de usabilidade e teorias de aprendizagem:
+    \end{block}
+    \vspace{0.3cm}
+    \begin{itemize}
+        \item \textbf{Usabilidade:} Interface limpa, controles claros e navegação intuitiva.
+        \item \textbf{Eficiência cognitiva:} Redução da carga mental, destaque para informações relevantes.
+        \item \textbf{Feedback imediato:} Atualização visual e textual em tempo real a cada ação.
+        \item \textbf{Engajamento ativo:} Usuário explora, manipula e prediz resultados.
+        \item \textbf{Visão geral com detalhe sob demanda:} Visualização global do grafo e acesso a detalhes conforme interesse.
+        \item \textbf{Consistência semântica:} Terminologia e estilos padronizados em toda a interface.
+        \item \textbf{Múltiplos registros de representação:} Grafo visual, log textual e parâmetros simbólicos.
+        \item \textbf{Prevenção e recuperação de erros:} Validação de entradas e possibilidade de reset do estado.
+    \end{itemize}
+    \vspace{0.2cm}
+    \textbf{Impacto:} Esses princípios garantem uma experiência didática acessível, eficiente e engajadora, facilitando o aprendizado dos algoritmos de arborescências dirigidas.
+\end{frame}
+% ...existing code...
+
+% ...existing code...
+\begin{frame}{Princípios de IHC Aplicados}
+    \begin{block}{Fundamentos para o Design da Ferramenta}
+        O desenvolvimento da aplicação web foi guiado por oito princípios de Interação Humano-Computador (IHC), integrando heurísticas de usabilidade e teorias de aprendizagem:
+        \begin{itemize}
+            \item \textbf{Usabilidade:} Interface limpa, controles claros e navegação intuitiva.
+            \item \textbf{Eficiência cognitiva:} Redução da carga mental, destaque para informações relevantes.
+            \item \textbf{Feedback imediato:} Atualização visual e textual em tempo real a cada ação.
+            \item \textbf{Engajamento ativo:} Usuário explora, manipula e prediz resultados.
+            \item \textbf{Visão geral com detalhe sob demanda:} Visualização global do grafo e acesso a detalhes conforme interesse.
+            \item \textbf{Consistência semântica:} Terminologia e estilos padronizados em toda a interface.
+            \item \textbf{Múltiplos registros de representação:} Grafo visual, log textual e parâmetros simbólicos.
+            \item \textbf{Prevenção e recuperação de erros:} Validação de entradas e possibilidade de reset do estado.
+        \end{itemize}
+    \end{block}
+    \vspace{0.2cm}
+    \begin{alertblock}{Impacto}
+        Esses princípios garantem uma experiência didática acessível, eficiente e engajadora, facilitando o aprendizado dos algoritmos de arborescências dirigidas.
+    \end{alertblock}
+\end{frame}
+% ...existing code...
 
 \begin{frame}{Interface: Página Principal}
 	\begin{center}
