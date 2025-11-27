@@ -905,6 +905,25 @@ return F_prime
 	\end{enumerate}
 \end{frame}
 
+\begin{frame}{Fase I: Encontrando $r$-conjuntos Minimais}
+	\textbf{Como encontrar um $r$-conjunto minimal não coberto?}
+
+	\vspace{0.2cm}
+	Seja $D_0 := (V, F)$ onde $F = \{f_i : i \in [k)\}$.
+
+	\vspace{0.2cm}
+	\begin{enumerate}
+		\item Calcular a condensação $\mathcal{C}(D_0)$
+		\item Identificar componentes fortemente conexas (CFCs)
+		\item Encontrar uma fonte $S$ em $\mathcal{C}(D_0)$ tal que $r \notin S$
+	\end{enumerate}
+
+	\vspace{0.3cm}
+	\begin{block}{Proposição}
+		Toda fonte $S$ de $\mathcal{C}(D_0)$ com $r \notin S$ é um $r$-conjunto minimal não coberto por $F$.
+	\end{block}
+\end{frame}
+
 \begin{frame}{Exemplo: Digrafo Inicial}
 	\begin{columns}[c]
 		\column{0.48\textwidth}
@@ -1239,27 +1258,7 @@ return F_prime
 	\end{exampleblock}
 \end{frame}
 
-\begin{frame}{Fase I: Encontrando $r$-conjuntos Minimais}
-	\textbf{Como encontrar um $r$-conjunto minimal não coberto?}
 
-	\vspace{0.2cm}
-	Seja $D_0 := (V, F)$ onde $F = \{f_i : i \in [k)\}$.
-
-	\vspace{0.2cm}
-	\begin{enumerate}
-		\item Calcular a condensação $\mathcal{C}(D_0)$
-		\item Identificar componentes fortemente conexas (CFCs)
-		\item Encontrar uma fonte $S$ em $\mathcal{C}(D_0)$ tal que $r \notin S$
-	\end{enumerate}
-
-	\vspace{0.3cm}
-	\begin{block}{Proposição}
-		Toda fonte $S$ de $\mathcal{C}(D_0)$ com $r \notin S$ é um $r$-conjunto minimal não coberto por $F$.
-	\end{block}
-
-	\vspace{0.2cm}
-	{\small \textbf{Complexidade:} Identificação de CFCs em $O(|A|)$ usando Kosaraju}
-\end{frame}
 
 \begin{frame}[fragile]{Fase I: Implementação - Estrutura Principal}
 	\textbf{Função \texttt{phase1}:}
