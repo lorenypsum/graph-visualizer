@@ -1184,104 +1184,6 @@ def update_weights(D: nx.DiGraph,
 	\end{center}
 \end{frame}
 
-\begin{frame}{Fase II: Extração da Arborescência}
-	\begin{columns}[c]
-		\column{0.48\textwidth}
-		\textbf{Entrada da Fase II:}
-		\begin{itemize}
-			\item $F = [f_0, f_1] = [(b,a), (a,c)]$
-		\end{itemize}
-
-		\vspace{0.2cm}
-		\textbf{Algoritmo guloso:}
-		\begin{enumerate}
-			\item $U = \{r\}$, $J = \emptyset$
-			\item Iterar sobre $F$ em ordem:
-			      \begin{itemize}
-				      \item $(b,a)$: $b \notin U$ $\times$ pular
-				      \item $(a,c)$: $a \notin U$ $\times$ pular
-			      \end{itemize}
-			\item Precisamos incluir arcos de $D$ não em $F$!
-		\end{enumerate}
-
-		\column{0.52\textwidth}
-		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
-				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
-				inU/.style={circle, draw, fill=green!20, minimum size=7mm},
-				arc/.style={->, thick, draw=gray!70},
-				covered/.style={->, thick, draw=blue!70}]
-			\node[v,fill=red!20,inU] (r) {\small $r$};
-			\node[v] (a) [below right=1.5cm and 1.2cm of r] {\small $a$};
-			\node[v] (b) [above right=1.5cm and 1.2cm of r] {\small $b$};
-			\node[v] (c) [right=2.5cm of a] {\small $c$};
-
-			\draw[arc] (r) -- node[midway, below left] {\scriptsize 2} (a);
-			\draw[arc] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
-			\draw[covered] (b) -- node[midway, above right] {\scriptsize 1} (a);
-			\draw[covered] (a) -- node[midway, below] {\scriptsize 4} (c);
-		\end{tikzpicture}
-
-		\vspace{0.2cm}
-		{\small Verde = vértices em $U$}
-	\end{columns}
-
-	\vspace{0.2cm}
-	\begin{alertblock}{Observação}
-		Fase II precisa considerar \textbf{todos} arcos de $D$, não apenas $F$.
-	\end{alertblock}
-\end{frame}
-
-\begin{frame}{Fase II: Construção Passo a Passo}
-	\begin{columns}[c]
-		\column{0.48\textwidth}
-		\textbf{Iteração 1:}
-		\begin{itemize}
-			\item $U = \{r\}$
-			\item Procurar arco saindo de $U$
-			\item $(r,a)$: $r \in U$, $a \notin U$ $\checkmark$
-			\item $U := U \cup \{a\}$
-			\item $J := \{(r,a)\}$
-		\end{itemize}
-
-		\vspace{0.2cm}
-		\textbf{Iteração 2:}
-		\begin{itemize}
-			\item $(b,a)$: $a \in U$ $\times$
-			\item $(a,c)$: $a \in U$, $c \notin U$ $\checkmark$
-			\item $U := \{r, a, c\}$
-			\item $J := \{(r,a), (a,c)\}$
-		\end{itemize}
-
-		\column{0.52\textwidth}
-		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
-				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
-				inJ/.style={circle, draw, fill=green!20, minimum size=7mm},
-				selected/.style={->, very thick, draw=green!70}]
-			\node[inJ,fill=red!20] (r) {\small $r$};
-			\node[inJ] (a) [below right=1.5cm and 1.2cm of r] {\small $a$};
-			\node[v] (b) [above right=1.5cm and 1.2cm of r] {\small $b$};
-			\node[inJ] (c) [right=2.5cm of a] {\small $c$};
-
-			\draw[selected] (r) -- node[midway, below left] {\scriptsize 2} (a);
-			\draw[->, thick, draw=gray!40] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
-			\draw[->, thick, draw=gray!40] (b) -- node[midway, above right] {\scriptsize 1} (a);
-			\draw[selected] (a) -- node[midway, below] {\scriptsize 4} (c);
-		\end{tikzpicture}
-
-		\vspace{0.2cm}
-		{\small $J$ = arborescência geradora}
-	\end{columns}
-
-	\vspace{0.2cm}
-	\begin{exampleblock}{Resultado Final}
-		$r$-arborescência de custo $w(J) = 2 + 4 = 6$ (custo mínimo!)
-	\end{exampleblock}
-\end{frame}
-
-
-
-
-
 \begin{frame}{Fase II: Construção da Arborescência}
 	\textbf{Entrada:} Sequência $(f_i)_{i \in [k)}$ da Fase I
 
@@ -1390,6 +1292,106 @@ def andras_frank(D: nx.DiGraph, r: int):
 	\vspace{0.2cm}
 	{\small Com heap, Fase II é significativamente mais rápida que versão lista!}
 \end{frame}
+
+\begin{frame}{Fase II: Exemplo - Extração da Arborescência}
+	\begin{columns}[c]
+		\column{0.48\textwidth}
+		\textbf{Entrada da Fase II:}
+		\begin{itemize}
+			\item $F = [f_0, f_1] = [(b,a), (a,c)]$
+		\end{itemize}
+
+		\vspace{0.2cm}
+		\textbf{Algoritmo guloso:}
+		\begin{enumerate}
+			\item $U = \{r\}$, $J = \emptyset$
+			\item Iterar sobre $F$ em ordem:
+			      \begin{itemize}
+				      \item $(b,a)$: $b \notin U$ $\times$ pular
+				      \item $(a,c)$: $a \notin U$ $\times$ pular
+			      \end{itemize}
+			\item Precisamos incluir arcos de $D$ não em $F$!
+		\end{enumerate}
+
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				inU/.style={circle, draw, fill=green!20, minimum size=7mm},
+				arc/.style={->, thick, draw=gray!70},
+				covered/.style={->, thick, draw=blue!70}]
+			\node[v,fill=red!20,inU] (r) {\small $r$};
+			\node[v] (a) [below right=1.5cm and 1.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.5cm and 1.2cm of r] {\small $b$};
+			\node[v] (c) [right=2.5cm of a] {\small $c$};
+
+			\draw[arc] (r) -- node[midway, below left] {\scriptsize 2} (a);
+			\draw[arc] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
+			\draw[covered] (b) -- node[midway, above right] {\scriptsize 1} (a);
+			\draw[covered] (a) -- node[midway, below] {\scriptsize 4} (c);
+		\end{tikzpicture}
+
+		\vspace{0.2cm}
+		{\small Verde = vértices em $U$}
+	\end{columns}
+
+	\vspace{0.2cm}
+	\begin{alertblock}{Observação}
+		Fase II precisa considerar \textbf{todos} arcos de $D$, não apenas $F$.
+	\end{alertblock}
+\end{frame}
+
+\begin{frame}{Fase II: Construção Passo a Passo}
+	\begin{columns}[c]
+		\column{0.48\textwidth}
+		\textbf{Iteração 1:}
+		\begin{itemize}
+			\item $U = \{r\}$
+			\item Procurar arco saindo de $U$
+			\item $(r,a)$: $r \in U$, $a \notin U$ $\checkmark$
+			\item $U := U \cup \{a\}$
+			\item $J := \{(r,a)\}$
+		\end{itemize}
+
+		\vspace{0.2cm}
+		\textbf{Iteração 2:}
+		\begin{itemize}
+			\item $(b,a)$: $a \in U$ $\times$
+			\item $(a,c)$: $a \in U$, $c \notin U$ $\checkmark$
+			\item $U := \{r, a, c\}$
+			\item $J := \{(r,a), (a,c)\}$
+		\end{itemize}
+
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				inJ/.style={circle, draw, fill=green!20, minimum size=7mm},
+				selected/.style={->, very thick, draw=green!70}]
+			\node[inJ,fill=red!20] (r) {\small $r$};
+			\node[inJ] (a) [below right=1.5cm and 1.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.5cm and 1.2cm of r] {\small $b$};
+			\node[inJ] (c) [right=2.5cm of a] {\small $c$};
+
+			\draw[selected] (r) -- node[midway, below left] {\scriptsize 2} (a);
+			\draw[->, thick, draw=gray!40] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
+			\draw[->, thick, draw=gray!40] (b) -- node[midway, above right] {\scriptsize 1} (a);
+			\draw[selected] (a) -- node[midway, below] {\scriptsize 4} (c);
+		\end{tikzpicture}
+
+		\vspace{0.2cm}
+		{\small $J$ = arborescência geradora}
+	\end{columns}
+
+	\vspace{0.2cm}
+	\begin{exampleblock}{Resultado Final}
+		$r$-arborescência de custo $w(J) = 2 + 4 = 6$ (custo mínimo!)
+	\end{exampleblock}
+\end{frame}
+
+
+
+
+
+
 
 \begin{frame}{Intermissão}
 	\begin{center}
