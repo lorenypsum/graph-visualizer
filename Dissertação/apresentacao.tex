@@ -529,7 +529,7 @@ if nx.is_arborescence(D_zero):
 		\textbf{Operação:}
 
 		Contrair ciclo $C$ em supervértice $x_C$.
-		
+
 		\textbf{Novo problema:}
 		$(D', w', r)$ onde:
 		\begin{itemize}
@@ -1007,8 +1007,8 @@ def update_weights(D: nx.DiGraph,
 		\end{itemize}
 
 		\vspace{0.2cm}
-		\textbf{Escolha:} 
-		
+		\textbf{Escolha:}
+
 		$R_0 = \{a\}$ (minimal)
 
 		\vspace{0.2cm}
@@ -1093,8 +1093,8 @@ def update_weights(D: nx.DiGraph,
 		\vspace{0.2cm}
 		$\mathcal{C}(D_0)$ agora tem:
 		\begin{itemize}
-			\item CFC: $\{b, a\}$ (b → a)
-			\item Fontes: $\{r\}$, $\{c\}$
+			\item CFCs: $\{r\}, \{b\}, \{a\}, \{c\}$
+			\item Fontes (não contêm $r$): $\{b\}$, $\{c\}$
 		\end{itemize}
 
 		\vspace{0.2cm}
@@ -1150,7 +1150,7 @@ def update_weights(D: nx.DiGraph,
 		\vspace{0.2cm}
 		$\mathcal{C}(D_0)$ agora:
 		\begin{itemize}
-			\item CFC: $\{r\}$, $\{b,a,c\}$
+			\item CFCs: $\{r\}, \{b\}, \{a\}, \{c\}$
 			\item Apenas 1 fonte (contém $r$)
 		\end{itemize}
 
@@ -1169,7 +1169,7 @@ def update_weights(D: nx.DiGraph,
 			\draw[zero] (b) -- node[midway, above right] {\scriptsize 0} (a);
 			\draw[zero] (a) -- node[midway, below] {\scriptsize 0} (c);
 		\end{tikzpicture}
-		
+
 		{\small Cobertura de $r$-conjuntos construída!}
 	\end{columns}
 	\begin{block}{Sequência devolvida}
