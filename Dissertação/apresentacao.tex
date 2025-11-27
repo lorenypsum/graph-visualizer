@@ -879,6 +879,80 @@ return F_prime
 	{\small \textbf{Complexidade:} identificação de CFCs em $O(|A|)$ usando Kosaraju.}
 \end{frame}
 
+\begin{frame}[fragile]{Fase I: Implementação - Encontrar $r$-conjunto Minimal (1/3)}
+	\textbf{Função \texttt{phase1}:}
+
+	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+def phase1(D: nx.DiGraph, r: int):
+    D_copy = D.copy()
+    sigma = []
+    D_zero = nx.DiGraph()
+    D_zero.add_nodes_from(D_copy.nodes())
+    
+    while True:
+        C = nx.condensation(D_zero)
+        sources = [x for x in C.nodes() 
+                   if C.in_degree(x) == 0]
+        if len(sources) == 1: 
+            break
+        
+        for s in sources:
+            X = C.nodes[s]["members"]
+            if r in X:
+                continue
+            # ... (continua no proximo slide)
+\end{lstlisting}
+
+	\vspace{0.05cm}
+	{\small \textbf{Observação:} Loop principal até todos $r$-conjuntos estarem cobertos}
+\end{frame}
+
+\begin{frame}[fragile]{Fase I: Implementação - Seleção de Arcos (2/3)}
+	\textbf{Continuação da função \texttt{phase1}:}
+
+	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+            # ... (continuacao do loop)
+            arcs = [(u, v, data) 
+                    for u, v, data in D_copy.edges(data=True) 
+                    if u not in X and v in X]
+            
+            min_weight = min(data["w"] for _, _, data in arcs)
+            a = update_weights(D_copy, arcs, min_weight)
+            
+            D_zero.add_edge(a[0], a[1])
+            sigma.append((a, X, min_weight))
+    
+    return sigma
+\end{lstlisting}
+
+	\vspace{0.05cm}
+	{\small \textbf{Complexidade:} $O(|V||A|)$ - limitado por $2|V|-1$ iterações}
+\end{frame}
+
+\begin{frame}[fragile]{Fase I: Implementação - Atualização de Pesos (3/3)}
+	\textbf{Função \texttt{update\_weights}:}
+
+	\begin{lstlisting}[basicstyle=\scriptsize\ttfamily]
+def update_weights(D: nx.DiGraph, 
+                   arcs: list[tuple[int, int, dict]],
+                   min_weight: float):
+    for u, v, _ in arcs:
+        D[u][v]["w"] -= min_weight
+        if D[u][v]["w"] == 0:
+            a = (u, v)
+    return a
+\end{lstlisting}
+
+	\vspace{0.2cm}
+	\begin{block}{Descrição}
+		\begin{itemize}
+			\item Reduz peso de todos arcos que entram no $r$-conjunto
+			\item Devolve arco com peso zero (custo reduzido mínimo)
+			\item Atualiza o digrafo in-place
+		\end{itemize}
+	\end{block}
+\end{frame}
+
 \begin{frame}{Exemplo: Digrafo Inicial}
 	\begin{columns}[c]
 		\column{0.48\textwidth}
@@ -967,34 +1041,6 @@ return F_prime
 		\vspace{0.2cm}
 		{\small $\lambda_0 = 1$, $f_0 = (b,a)$}
 	\end{columns}
-\end{frame}
-
-\begin{frame}[fragile]{Fase I: Implementação - Encontrar $r$-conjunto Minimal}
-	\textbf{Função \texttt{phase1}:}
-
-	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
-def phase1(D: nx.DiGraph, r: int):
-    D_copy = D.copy()
-    sigma = []
-    D_zero = nx.DiGraph()
-    D_zero.add_nodes_from(D_copy.nodes())
-    
-    while True:
-        C = nx.condensation(D_zero)
-        sources = [x for x in C.nodes() 
-                   if C.in_degree(x) == 0]
-        if len(sources) == 1: 
-            break
-        
-        for s in sources:
-            X = C.nodes[s]["members"]
-            if r in X:
-                continue
-            # ... (continua no proximo slide)
-\end{lstlisting}
-
-	\vspace{0.05cm}
-	{\small \textbf{Observação:} Loop principal até todos $r$-conjuntos estarem cobertos}
 \end{frame}
 
 \begin{frame}{Fase I: Iteração 1 - Redução de Custos}
@@ -1123,11 +1169,19 @@ def phase1(D: nx.DiGraph, r: int):
 			\draw[zero] (b) -- node[midway, above right] {\scriptsize 0} (a);
 			\draw[zero] (a) -- node[midway, below] {\scriptsize 0} (c);
 		\end{tikzpicture}
+		
 		{\small Cobertura de $r$-conjuntos construída!}
 	\end{columns}
 	\begin{block}{Sequência devolvida}
 		$\sigma = [(f_0=(b,a), R_0=\{a\}, \lambda_0=1), (f_1=(a,c), R_1=\{c\}, \lambda_1=4)]$ -> Fim da Fase I.
 	\end{block}
+\end{frame}
+
+\begin{frame}{Intermissão}
+	\begin{center}
+		\LARGE
+		Fase II: Duas Abordagens
+	\end{center}
 \end{frame}
 
 \begin{frame}{Fase II: Extração da Arborescência}
@@ -1224,51 +1278,9 @@ def phase1(D: nx.DiGraph, r: int):
 	\end{exampleblock}
 \end{frame}
 
-\begin{frame}[fragile]{Fase I: Implementação - Seleção de Arcos}
-	\textbf{Continuação da função \texttt{phase1}:}
 
-	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
-            # ... (continuacao do loop)
-            arcs = [(u, v, data) 
-                    for u, v, data in D_copy.edges(data=True) 
-                    if u not in X and v in X]
-            
-            min_weight = min(data["w"] for _, _, data in arcs)
-            a = update_weights(D_copy, arcs, min_weight)
-            
-            D_zero.add_edge(a[0], a[1])
-            sigma.append((a, X, min_weight))
-    
-    return sigma
-\end{lstlisting}
 
-	\vspace{0.05cm}
-	{\small \textbf{Complexidade:} $O(|V||A|)$ - limitado por $2|V|-1$ iterações}
-\end{frame}
 
-\begin{frame}[fragile]{Fase I: Implementação - Atualização de Pesos}
-	\textbf{Função \texttt{update\_weights}:}
-
-	\begin{lstlisting}[basicstyle=\scriptsize\ttfamily]
-def update_weights(D: nx.DiGraph, 
-                   arcs: list[tuple[int, int, dict]],
-                   min_weight: float):
-    for u, v, _ in arcs:
-        D[u][v]["w"] -= min_weight
-        if D[u][v]["w"] == 0:
-            a = (u, v)
-    return a
-\end{lstlisting}
-
-	\vspace{0.2cm}
-	\begin{block}{Descrição}
-		\begin{itemize}
-			\item Reduz peso de todos arcos que entram no $r$-conjunto
-			\item Devolve arco com peso zero (custo reduzido mínimo)
-			\item Atualiza o digrafo in-place
-		\end{itemize}
-	\end{block}
-\end{frame}
 
 \begin{frame}{Fase II: Construção da Arborescência}
 	\textbf{Entrada:} Sequência $(f_i)_{i \in [k)}$ da Fase I
