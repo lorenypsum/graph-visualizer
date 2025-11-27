@@ -1543,26 +1543,23 @@ def andras_frank(D: nx.DiGraph, r: int):
 \end{frame}
 
 \begin{frame}{Escalonamento e Consumo de Memória}
-    \begin{columns}[c]
-        \column{0.55\textwidth}
-        \textbf{Escalonamento temporal:}
-        \begin{itemize}
-            \item Tempo cresce linearmente com o número de arestas
-            \item Fase I de Frank domina o tempo total
-            \item Fase II (heap) é residual e muito rápida
-        \end{itemize}
-        \vspace{0.3cm}
-		\includegraphics[width=\textwidth]{figures/fig_times_boxplot.png}
-        % \textbf{Consumo de memória:}
-        % \begin{itemize}
-        %     \item Mediana: 11,5 MB (Fase I)
-        %     \item Viável para ambientes com recursos limitados
-        % \end{itemize}
-        \column{0.45\textwidth}
-        \includegraphics[width=\textwidth]{figures/fig_time_vs_edges_scatter.png}
-        \vspace{0.2cm}
-        % \includegraphics[width=\textwidth]{figures/fig_times_boxplot.png}
-    \end{columns}
+    \centering
+    \textbf{Escalonamento temporal:}
+    \begin{itemize}
+        \item Tempo cresce linearmente com o número de arestas
+        \item Fase I de Frank domina o tempo total
+        \item Fase II (heap) é residual e muito rápida
+    \end{itemize}
+    \vspace{0.4cm}
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{figures/fig_times_boxplot.png}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{figures/fig_time_vs_edges_scatter.png}
+    \end{minipage}
 \end{frame}
 
 % \begin{frame}{Características Estruturais}
