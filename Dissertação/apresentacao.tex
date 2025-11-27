@@ -1200,7 +1200,7 @@ def update_weights(D: nx.DiGraph,
 
 		\vspace{0.2cm}
 		$\mathcal{C}(D_0)$ com $F = \{(b,a), (a,c), (r,b)\}$:
-		
+
 		\vspace{0.2cm}
 		\textbf{Condição de parada satisfeita!}
 
@@ -1338,99 +1338,169 @@ def andras_frank(D: nx.DiGraph, r: int):
 		\column{0.48\textwidth}
 		\textbf{Entrada da Fase II:}
 		\begin{itemize}
-			\item $F = [f_0, f_1] = [(b,a), (a,c)]$
+			\item $F = [f_0, f_1, f_2]$ $= [(b,a), (a,c), (r,b)]$
 		\end{itemize}
 
 		\vspace{0.2cm}
-		\textbf{Algoritmo guloso:}
-		\begin{enumerate}
-			\item $U = \{r\}$, $J = \emptyset$
-			\item Iterar sobre $F$ em ordem:
-			      \begin{itemize}
-				      \item $(b,a)$: $b \notin U$ $\times$ pular
-				      \item $(a,c)$: $a \notin U$ $\times$ pular
-			      \end{itemize}
-			\item Precisamos incluir arcos de $D$ não em $F$!
-		\end{enumerate}
+		\textbf{Estado inicial:}
+		\begin{itemize}
+			\item $U = \{r\}$ (alcançados)
+			\item $J = \emptyset$ (arborescência)
+		\end{itemize}
 
-		\column{0.52\textwidth}
-		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
-				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
-				inU/.style={circle, draw, fill=green!20, minimum size=7mm},
+		\vspace{0.2cm}
+		\textbf{Objetivo:}
+		\begin{itemize}
+			\item Selecionar $|V|-1 = 3$ arcos
+			\item Manter propriedade de arborescência
+		\end{itemize}
+
+		\column{0.45\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=1.7cm, scale=0.85, transform shape,
+				v/.style={circle, draw, fill=blue!8, minimum size=6.5mm},
+				inU/.style={circle, draw, fill=green!20, minimum size=6.5mm},
 				arc/.style={->, thick, draw=gray!70},
 				covered/.style={->, thick, draw=blue!70}]
 			\node[v,fill=red!20,inU] (r) {\small $r$};
-			\node[v] (a) [below right=1.5cm and 1.2cm of r] {\small $a$};
-			\node[v] (b) [above right=1.5cm and 1.2cm of r] {\small $b$};
-			\node[v] (c) [right=2.5cm of a] {\small $c$};
-
-			\draw[arc] (r) -- node[midway, below left] {\scriptsize 2} (a);
+			\node[v] (a) [below right=1.3cm and 1.0cm of r] {\small $a$};
+			\node[v] (b) [above right=1.3cm and 1.0cm of r] {\small $b$};
+			\node[v] (c) [right=2.1cm of a] {\small $c$};			\draw[arc] (r) -- node[midway, below left] {\scriptsize 2} (a);
 			\draw[arc] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
 			\draw[covered] (b) -- node[midway, above right] {\scriptsize 1} (a);
 			\draw[covered] (a) -- node[midway, below] {\scriptsize 4} (c);
 		\end{tikzpicture}
 
-		\vspace{0.2cm}
 		{\small Verde = vértices em $U$}
 	\end{columns}
 
-	\vspace{0.2cm}
 	\begin{alertblock}{Observação}
 		Fase II precisa considerar \textbf{todos} arcos de $D$, não apenas $F$.
 	\end{alertblock}
 \end{frame}
 
-\begin{frame}{Fase II: Construção Passo a Passo}
+\begin{frame}{Fase II: Iteração 1}
 	\begin{columns}[c]
 		\column{0.48\textwidth}
-		\textbf{Iteração 1:}
+		\textbf{Estado:} $U = \{r\}$, $J = \emptyset$
+
+		\vspace{0.2cm}
+		\textbf{Procurar em $F$:}
 		\begin{itemize}
-			\item $U = \{r\}$
-			\item Procurar arco saindo de $U$
-			\item $(r,a)$: $r \in U$, $a \notin U$ $\checkmark$
-			\item $U := U \cup \{a\}$
-			\item $J := \{(r,a)\}$
+			\item $f_0=(b,a)$: $b \notin U$ $\times$
+			\item $f_1=(a,c)$: $a \notin U$ $\times$
+			\item $f_2=(r,b)$: $r \in U$, $b \notin U$ \checkmark
 		\end{itemize}
 
 		\vspace{0.2cm}
-		\textbf{Iteração 2:}
+		\textbf{Ação:}
 		\begin{itemize}
-			\item $(b,a)$: $a \in U$ $\times$
-			\item $(a,c)$: $a \in U$, $c \notin U$ $\checkmark$
-			\item $U := \{r, a, c\}$
-			\item $J := \{(r,a), (a,c)\}$
+			\item Adicionar $(r,b)$ a $J$
+			\item $U := U \cup \{b\} = \{r,b\}$
 		\end{itemize}
 
 		\column{0.52\textwidth}
-		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
-				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
-				inJ/.style={circle, draw, fill=green!20, minimum size=7mm},
-				selected/.style={->, very thick, draw=green!70}]
-			\node[inJ,fill=red!20] (r) {\small $r$};
-			\node[inJ] (a) [below right=1.5cm and 1.2cm of r] {\small $a$};
-			\node[v] (b) [above right=1.5cm and 1.2cm of r] {\small $b$};
-			\node[inJ] (c) [right=2.5cm of a] {\small $c$};
+		\begin{tikzpicture}[>=Stealth, node distance=1.7cm, scale=0.9, transform shape,
+				v/.style={circle, draw, fill=blue!8, minimum size=6.5mm},
+				inU/.style={circle, draw, fill=green!20, minimum size=6.5mm},
+				selected/.style={->, very thick, draw=green!70},
+				arc/.style={->, thick, draw=gray!60}]
+			\node[inU,fill=red!20] (r) {\small $r$};
+			\node[v] (a) [below right=1.3cm and 1.1cm of r] {\small $a$};
+			\node[inU] (b) [above right=1.3cm and 1.1cm of r] {\small $b$};
+			\node[v] (c) [right=2.2cm of a] {\small $c$};
 
-			\draw[selected] (r) -- node[midway, below left] {\scriptsize 2} (a);
-			\draw[->, thick, draw=gray!40] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
-			\draw[->, thick, draw=gray!40] (b) -- node[midway, above right] {\scriptsize 1} (a);
+			\draw[arc] (r) -- node[midway, below left] {\scriptsize 2} (a);
+			\draw[selected] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
+			\draw[arc] (b) -- node[midway, above right] {\scriptsize 1} (a);
+			\draw[arc] (a) -- node[midway, below] {\scriptsize 4} (c);
+		\end{tikzpicture}
+
+		{\small $J = \{(r,b)\}$, custo = 10}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Fase II: Iteração 2}
+	\begin{columns}[c]
+		\column{0.48\textwidth}
+		\textbf{Estado:} $U = \{r,b\}$, $J = \{(r,b)\}$
+
+		\vspace{0.2cm}
+		\textbf{Procurar em $F$:}
+		\begin{itemize}
+			\item $f_0=(b,a)$: $b \in U$, $a \notin U$ \checkmark
+		\end{itemize}
+
+		\vspace{0.2cm}
+		\textbf{Ação:}
+		\begin{itemize}
+			\item Adicionar $(b,a)$ a $J$
+			\item $U := U \cup \{a\} = \{r,b,a\}$
+		\end{itemize}
+
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=1.7cm, scale=0.9, transform shape,
+				v/.style={circle, draw, fill=blue!8, minimum size=6.5mm},
+				inU/.style={circle, draw, fill=green!20, minimum size=6.5mm},
+				selected/.style={->, very thick, draw=green!70},
+				arc/.style={->, thick, draw=gray!60}]
+			\node[inU,fill=red!20] (r) {\small $r$};
+			\node[inU] (a) [below right=1.3cm and 1.1cm of r] {\small $a$};
+			\node[inU] (b) [above right=1.3cm and 1.1cm of r] {\small $b$};
+			\node[v] (c) [right=2.2cm of a] {\small $c$};
+
+			\draw[arc] (r) -- node[midway, below left] {\scriptsize 2} (a);
+			\draw[selected] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
+			\draw[selected] (b) -- node[midway, above right] {\scriptsize 1} (a);
+			\draw[arc] (a) -- node[midway, below] {\scriptsize 4} (c);
+		\end{tikzpicture}
+
+		{\small $J = \{(r,b), (b,a)\}$, custo = 11}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Fase II: Iteração 3 - Estado Final}
+	\begin{columns}[c]
+		\column{0.48\textwidth}
+		\textbf{Estado:} $U = \{r,b,a\}$, $|J| = 2$
+
+		\vspace{0.2cm}
+		\textbf{Procurar em $F$:}
+		\begin{itemize}
+			\item $f_1=(a,c)$: $a \in U$, $c \notin U$ \checkmark
+		\end{itemize}
+
+		\vspace{0.2cm}
+		\textbf{Ação:}
+		\begin{itemize}
+			\item Adicionar $(a,c)$ a $J$
+			\item $U := U \cup \{c\} = V$
+			\item $|J| = 3 = |V|-1$ \checkmark
+		\end{itemize}
+
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=1.7cm, scale=0.9, transform shape,
+				v/.style={circle, draw, fill=blue!8, minimum size=6.5mm},
+				inU/.style={circle, draw, fill=green!20, minimum size=6.5mm},
+				selected/.style={->, very thick, draw=green!70}]
+			\node[inU,fill=red!20] (r) {\small $r$};
+			\node[inU] (a) [below right=1.3cm and 1.1cm of r] {\small $a$};
+			\node[inU] (b) [above right=1.3cm and 1.1cm of r] {\small $b$};
+			\node[inU] (c) [right=2.2cm of a] {\small $c$};
+
+			\draw[->, thick, draw=gray!40] (r) -- node[midway, below left] {\scriptsize 2} (a);
+			\draw[selected] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
+			\draw[selected] (b) -- node[midway, above right] {\scriptsize 1} (a);
 			\draw[selected] (a) -- node[midway, below] {\scriptsize 4} (c);
 		\end{tikzpicture}
 
-		\vspace{0.2cm}
-		{\small $J$ = arborescência geradora}
+		{\small $J$ = $r$-arborescência geradora!}
 	\end{columns}
 
 	\vspace{0.2cm}
 	\begin{exampleblock}{Resultado Final}
-		$r$-arborescência de custo $w(J) = 2 + 4 = 6$ (custo mínimo!)
+		$J = \{(r,b), (b,a), (a,c)\}$ com custo $w(J) = 10 + 1 + 4 = 15$ (custo mínimo!)
 	\end{exampleblock}
 \end{frame}
-
-
-
-
-
 
 
 \begin{frame}{Intermissão}
