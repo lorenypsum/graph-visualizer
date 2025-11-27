@@ -253,7 +253,7 @@
 
 
 % ...existing code...
-\begin{frame}{Escolha Gulosa}
+\begin{frame}{Exemplo: escolha gulosa}
 	\begin{columns}[c]
 		\column{0.48\textwidth}
 		\textbf{Definição:}
@@ -936,7 +936,6 @@ return F_prime
 		\begin{itemize}
 			\item Vértices: $\{r, a, b, c\}$
 			\item Raiz: $r$
-			\item Objetivo: encontrar $r$-arborescência geradora de custo mínimo
 		\end{itemize}
 
 		\vspace{0.3cm}
@@ -945,7 +944,6 @@ return F_prime
 			\item $(r,a): 2$, $(r,b): 10$
 			\item $(b,a): 1$, $(a,c): 4$
 		\end{itemize}
-
 		\column{0.52\textwidth}
 		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
 				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
@@ -961,8 +959,6 @@ return F_prime
 			\draw[arc] (a) -- node[midway, below] {\scriptsize 4} (c);
 		\end{tikzpicture}
 	\end{columns}
-
-	\vspace{0.3cm}
 	\begin{alertblock}{Problema}
 		Aplicar o algoritmo de András Frank para encontrar a $r$-arborescência geradora de custo mínimo.
 	\end{alertblock}
