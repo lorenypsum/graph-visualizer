@@ -379,11 +379,11 @@
 \end{frame}
 
 \ifshowimplementation
-\begin{frame}[fragile]{Passo 1: Implementação - Redução de Custos}
-	\textbf{Função \texttt{reduce\_weights}:}
-	\begin{columns}[t]
-		\column{0.5\textwidth}
-		\begin{lstlisting}[basicstyle=\scriptsize\ttfamily]
+	\begin{frame}[fragile]{Passo 1: Implementação - Redução de Custos}
+		\textbf{Função \texttt{reduce\_weights}:}
+		\begin{columns}[t]
+			\column{0.5\textwidth}
+			\begin{lstlisting}[basicstyle=\scriptsize\ttfamily]
 def reduce_weights(D: nx.DiGraph, v: int):
     in_edges = D.in_edges(v, data=True)
     yv = min((data["w"] 
@@ -392,19 +392,19 @@ def reduce_weights(D: nx.DiGraph, v: int):
         D[u][v]["w"] -= yv
 \end{lstlisting}
 
-		\column{0.45\textwidth}
-		\textbf{Descrição:}
-		\begin{itemize}
-			\item Calcula $\lambda(v) = \min\{w(a) : a \in \delta^-(v)\}$
-			\item Reduz o custo de cada arco que entra em $v$
-			\item Complexidade: $O(k)$ $|A|$ onde $k$ é o número de arcos entrando em $v$
-		\end{itemize}
-	\end{columns}
+			\column{0.45\textwidth}
+			\textbf{Descrição:}
+			\begin{itemize}
+				\item Calcula $\lambda(v) = \min\{w(a) : a \in \delta^-(v)\}$
+				\item Reduz o custo de cada arco que entra em $v$
+				\item Complexidade: $O(k)$ $|A|$ onde $k$ é o número de arcos entrando em $v$
+			\end{itemize}
+		\end{columns}
 
-	\begin{block}{Resultado}
-		Após executar \texttt{reduce\_weights(D, v)} para cada $v \neq r$, todos os vértices têm ao menos um arco de entrada com custo zero.
-	\end{block}
-\end{frame}
+		\begin{block}{Resultado}
+			Após executar \texttt{reduce\_weights(D, v)} para cada $v \neq r$, todos os vértices têm ao menos um arco de entrada com custo zero.
+		\end{block}
+	\end{frame}
 \fi
 
 \begin{frame}{Passo 2: Construção de $D_0$}
@@ -446,11 +446,11 @@ def reduce_weights(D: nx.DiGraph, v: int):
 \end{frame}
 
 \ifshowimplementation
-\begin{frame}[fragile]{Passo 2: Implementação - Construção de $D_0$}
-	\textbf{Função \texttt{get\_Dzero}:}
-	\begin{columns}[t]
-		\column{0.55\textwidth}
-		\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+	\begin{frame}[fragile]{Passo 2: Implementação - Construção de $D_0$}
+		\textbf{Função \texttt{get\_Dzero}:}
+		\begin{columns}[t]
+			\column{0.55\textwidth}
+			\begin{lstlisting}[basicstyle=\tiny\ttfamily]
 def get_Dzero(D: nx.DiGraph, r: int):
     D_zero = nx.DiGraph()
     for v in D.nodes():
@@ -464,18 +464,18 @@ def get_Dzero(D: nx.DiGraph, r: int):
     return D_zero
 \end{lstlisting}
 
-		\column{0.45\textwidth}
-		\textbf{Descrição:}
-		\begin{itemize}
-			\item Para cada vértice $v \neq r$, seleciona um arco com custo zero
-			\item Constrói subdigrafo gerador $D_0$
-			\item Garantido existir arco de custo zero após redução
-		\end{itemize}
-	\end{columns}
-	\begin{block}{Observação}
-		Se $D_0$ for uma arborescência, então $D_0$ é necessariamente uma $r$-arborescência ótima.
-	\end{block}
-\end{frame}
+			\column{0.45\textwidth}
+			\textbf{Descrição:}
+			\begin{itemize}
+				\item Para cada vértice $v \neq r$, seleciona um arco com custo zero
+				\item Constrói subdigrafo gerador $D_0$
+				\item Garantido existir arco de custo zero após redução
+			\end{itemize}
+		\end{columns}
+		\begin{block}{Observação}
+			Se $D_0$ for uma arborescência, então $D_0$ é necessariamente uma $r$-arborescência ótima.
+		\end{block}
+	\end{frame}
 \fi
 
 \begin{frame}{Passo 3: Verificação de $D_0$}
@@ -512,7 +512,7 @@ def get_Dzero(D: nx.DiGraph, r: int):
 		\end{tikzpicture}
 	\end{columns}
 	\begin{alertblock}{$D_0$ não é uma $r$-arborescência!}
-		Neste exemplo, $A_0 = \{(r,a), (a,b), (c,a)\}$ não forma uma $r$-arborescência pois contém o ciclo $(a, b, c, a)$.
+		Neste exemplo, $A_0 = \{(a,b), (b,c), (c,a)\}$ não forma uma $r$-arborescência pois contém o ciclo $(a, b, c, a)$.
 	\end{alertblock}
 \end{frame}
 
@@ -572,11 +572,11 @@ if nx.is_arborescence(D_zero):
 \end{frame}
 
 \ifshowimplementation
-\begin{frame}[fragile]{Passo 4: Implementação - Contração de Ciclos (1/3)}
-	\textbf{Detecção de ciclo:}
+	\begin{frame}[fragile]{Passo 4: Implementação - Contração de Ciclos (1/3)}
+		\textbf{Detecção de ciclo:}
 
-	\vspace{0.1cm}
-	\begin{lstlisting}[basicstyle=\small\ttfamily]
+		\vspace{0.1cm}
+		\begin{lstlisting}[basicstyle=\small\ttfamily]
 def find_cycle(D_zero: nx.DiGraph):
     nodes_in_cycle = set()
     for u, v, _ in nx.find_cycle(
@@ -585,21 +585,21 @@ def find_cycle(D_zero: nx.DiGraph):
     return D_zero.subgraph(nodes_in_cycle).to_directed()
 \end{lstlisting}
 
-	\begin{block}{Descrição}
-		\begin{itemize}
-			\item Usa \texttt{nx.find\_cycle} para encontrar arcos do ciclo
-			\item Coleta todos os vértices envolvidos
-			\item Retorna subdigrafo induzido pelos vértices do ciclo
-		\end{itemize}
-	\end{block}
-\end{frame}
+		\begin{block}{Descrição}
+			\begin{itemize}
+				\item Usa \texttt{nx.find\_cycle} para encontrar arcos do ciclo
+				\item Coleta todos os vértices envolvidos
+				\item Retorna subdigrafo induzido pelos vértices do ciclo
+			\end{itemize}
+		\end{block}
+	\end{frame}
 \fi
 
 \ifshowimplementation
-\begin{frame}[fragile]{Passo 4: Implementação - Contração de Ciclos (2/3)}
-	\textbf{Arcos essenciais que entram no ciclo:}
+	\begin{frame}[fragile]{Passo 4: Implementação - Contração de Ciclos (2/3)}
+		\textbf{Arcos essenciais que entram no ciclo:}
 
-	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+		\begin{lstlisting}[basicstyle=\tiny\ttfamily]
 def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, 
                    label: int):
     cycle_nodes: set[int] = set(C.nodes())
@@ -618,16 +618,16 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph,
         D.add_edge(u, label, w=w)
 \end{lstlisting}
 
-	\begin{block}{}
-		Para cada vértice externo, encontra o arco de menor custo que entra no ciclo.
-	\end{block}
-\end{frame}
+		\begin{block}{}
+			Para cada vértice externo, encontra o arco de menor custo que entra no ciclo.
+		\end{block}
+	\end{frame}
 \fi
 
 \ifshowimplementation
-\begin{frame}[fragile]{Passo 4: Implementação - Contração de Ciclos (3/3)}
-	\textbf{Arcos essenciais que saem do ciclo:}
-	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+	\begin{frame}[fragile]{Passo 4: Implementação - Contração de Ciclos (3/3)}
+		\textbf{Arcos essenciais que saem do ciclo:}
+		\begin{lstlisting}[basicstyle=\tiny\ttfamily]
     # Arcos essenciais saindo do ciclo
     out_from_cycle: dict[int, tuple[int, float]] = {}
     for v in D.nodes:
@@ -644,10 +644,10 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph,
     D.remove_nodes_from(cycle_nodes)
     return in_to_cycle, out_from_cycle
 \end{lstlisting}
-	\begin{block}{}
-		Encontra o arco de menor custo que sai do ciclo para cada vértice externo. Os dicionários retornados serão usados na expansão.
-	\end{block}
-\end{frame}
+		\begin{block}{}
+			Encontra o arco de menor custo que sai do ciclo para cada vértice externo. Os dicionários retornados serão usados na expansão.
+		\end{block}
+	\end{frame}
 \fi
 
 \begin{frame}{Passo 5: Chamada Recursiva}
@@ -679,10 +679,10 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph,
 \end{frame}
 
 \ifshowimplementation
-\begin{frame}[fragile]{Passo 5: Implementação - Chamada Recursiva}
-	\textbf{Estrutura recursiva:}
+	\begin{frame}[fragile]{Passo 5: Implementação - Chamada Recursiva}
+		\textbf{Estrutura recursiva:}
 
-	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+		\begin{lstlisting}[basicstyle=\tiny\ttfamily]
 def chuliu_edmonds(D: nx.DiGraph, r: int, label: int):
     D_copy = cast(nx.DiGraph, D.copy())
     # Reducao de custos
@@ -702,8 +702,8 @@ def chuliu_edmonds(D: nx.DiGraph, r: int, label: int):
     F_prime = chuliu_edmonds(D_copy, r, label + 1)
     # ... expansao ...
 \end{lstlisting}
-\end{frame}
-\fi	
+	\end{frame}
+\fi
 
 \begin{frame}{Passo 6: Reexpansão da Solução}
 	\begin{columns}[c]
@@ -744,10 +744,10 @@ def chuliu_edmonds(D: nx.DiGraph, r: int, label: int):
 \end{frame}
 
 \ifshowimplementation
-\begin{frame}[fragile]{Passo 6: Implementação - Reexpansão (1/2)}
-	\textbf{Encontrar e adicionar arco correspondente:}
+	\begin{frame}[fragile]{Passo 6: Implementação - Reexpansão (1/2)}
+		\textbf{Encontrar e adicionar arco correspondente:}
 
-	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+		\begin{lstlisting}[basicstyle=\tiny\ttfamily]
 # F_prime: solucao em D' (com supervertice)
 # Encontrar arco que entra em label
 in_edge = next(iter(
@@ -764,16 +764,16 @@ for u_c, v_c in C.edges:
         F_prime.add_edge(u_c, v_c)
 \end{lstlisting}
 
-	\vspace{0.05cm}
-	{\small \textbf{Observação:} Identifica qual arco do ciclo não será incluído na solução final.}
-\end{frame}
+		\vspace{0.05cm}
+		{\small \textbf{Observação:} Identifica qual arco do ciclo não será incluído na solução final.}
+	\end{frame}
 \fi
 
 \ifshowimplementation
-\begin{frame}[fragile]{Passo 6: Implementação - Reexpansão (2/2)}
-	\textbf{Transferir arcos externos e restaurar pesos:}
+	\begin{frame}[fragile]{Passo 6: Implementação - Reexpansão (2/2)}
+		\textbf{Transferir arcos externos e restaurar pesos:}
 
-	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+		\begin{lstlisting}[basicstyle=\tiny\ttfamily]
 # Arcos que saem do supervertice
 for _, z, _ in list(
         F_prime.out_edges(label, data=True)):
@@ -790,9 +790,9 @@ for u, v in F_prime.edges:
 return F_prime
 \end{lstlisting}
 
-	\vspace{0.05cm}
-	{\small \textbf{Correção:} A expansão garante que $T$ é uma $r$-arborescência ótima no digrafo original.}
-\end{frame}
+		\vspace{0.05cm}
+		{\small \textbf{Correção:} A expansão garante que $T$ é uma $r$-arborescência ótima no digrafo original.}
+	\end{frame}
 \fi
 
 \begin{frame}{Complexidade do Algoritmo}
@@ -908,10 +908,10 @@ return F_prime
 \end{frame}
 
 \ifshowimplementation
-\begin{frame}[fragile]{Fase I: Implementação - Encontrar $r$-conjunto Minimal (1/3)}
-	\textbf{Função \texttt{phase1}:}
+	\begin{frame}[fragile]{Fase I: Implementação - Encontrar $r$-conjunto Minimal (1/3)}
+		\textbf{Função \texttt{phase1}:}
 
-	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+		\begin{lstlisting}[basicstyle=\tiny\ttfamily]
 def phase1(D: nx.DiGraph, r: int):
     D_copy = D.copy()
     sigma = []
@@ -932,16 +932,16 @@ def phase1(D: nx.DiGraph, r: int):
             # ... (continua no proximo slide)
 \end{lstlisting}
 
-	\vspace{0.05cm}
-	{\small \textbf{Observação:} Loop principal até todos $r$-conjuntos estarem cobertos}
-\end{frame}
+		\vspace{0.05cm}
+		{\small \textbf{Observação:} Loop principal até todos $r$-conjuntos estarem cobertos}
+	\end{frame}
 \fi
 
 \ifshowimplementation
-\begin{frame}[fragile]{Fase I: Implementação - Seleção de Arcos (2/3)}
-	\textbf{Continuação da função \texttt{phase1}:}
+	\begin{frame}[fragile]{Fase I: Implementação - Seleção de Arcos (2/3)}
+		\textbf{Continuação da função \texttt{phase1}:}
 
-	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+		\begin{lstlisting}[basicstyle=\tiny\ttfamily]
             # ... (continuacao do loop)
             arcs = [(u, v, data) 
                     for u, v, data in D_copy.edges(data=True) 
@@ -956,16 +956,16 @@ def phase1(D: nx.DiGraph, r: int):
     return sigma
 \end{lstlisting}
 
-	\vspace{0.05cm}
-	{\small \textbf{Complexidade:} $O(|V||A|)$ - limitado por $2|V|-1$ iterações}
-\end{frame}
+		\vspace{0.05cm}
+		{\small \textbf{Complexidade:} $O(|V||A|)$ - limitado por $2|V|-1$ iterações}
+	\end{frame}
 \fi
 
 \ifshowimplementation
-\begin{frame}[fragile]{Fase I: Implementação - Atualização de Pesos (3/3)}
-	\textbf{Função \texttt{update\_weights}:}
+	\begin{frame}[fragile]{Fase I: Implementação - Atualização de Pesos (3/3)}
+		\textbf{Função \texttt{update\_weights}:}
 
-	\begin{lstlisting}[basicstyle=\scriptsize\ttfamily]
+		\begin{lstlisting}[basicstyle=\scriptsize\ttfamily]
 def update_weights(D: nx.DiGraph, 
                    arcs: list[tuple[int, int, dict]],
                    min_weight: float):
@@ -976,15 +976,15 @@ def update_weights(D: nx.DiGraph,
     return a
 \end{lstlisting}
 
-	\vspace{0.2cm}
-	\begin{block}{Descrição}
-		\begin{itemize}
-			\item Reduz peso de todos arcos que entram no $r$-conjunto
-			\item Devolve arco com peso zero (custo reduzido mínimo)
-			\item Atualiza o digrafo in-place
-		\end{itemize}
-	\end{block}
-\end{frame}
+		\vspace{0.2cm}
+		\begin{block}{Descrição}
+			\begin{itemize}
+				\item Reduz peso de todos arcos que entram no $r$-conjunto
+				\item Devolve arco com peso zero (custo reduzido mínimo)
+				\item Atualiza o digrafo in-place
+			\end{itemize}
+		\end{block}
+	\end{frame}
 \fi
 
 \begin{frame}{Exemplo: Digrafo Inicial}
@@ -1001,22 +1001,25 @@ def update_weights(D: nx.DiGraph,
 		\vspace{0.3cm}
 		\textbf{Pesos dos arcos:}
 		\begin{itemize}
-			\item $(r,a): 2$, $(r,b): 10$
-			\item $(b,a): 1$, $(a,c): 4$
+			\item $(r,a): 3$, $(r,b): 4$, $(r,c): 5$
+			\item $(a,b): 3$, $(b,c): 2$
+			\item $(c,a): 3$
 		\end{itemize}
 		\column{0.52\textwidth}
-		\begin{tikzpicture}[>=Stealth, node distance=1.6cm, scale=0.9, transform shape,
-				v/.style={circle, draw, fill=blue!8, minimum size=6.5mm},
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
 				arc/.style={->, thick, draw=gray!70}]
 			\node[v,fill=red!20] (r) {\small $r$};
-			\node[v] (a) [below right=1.3cm and 1.1cm of r] {\small $a$};
-			\node[v] (b) [above right=1.3cm and 1.1cm of r] {\small $b$};
-			\node[v] (c) [right=2.2cm of a] {\small $c$};
+			\node[v] (a) [right=2.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
+			\node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
 
-			\draw[arc] (r) -- node[midway, below left] {\scriptsize 2} (a);
-			\draw[arc] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
-			\draw[arc] (b) -- node[midway, above right] {\scriptsize 1} (a);
-			\draw[arc] (a) -- node[midway, below] {\scriptsize 4} (c);
+			\draw[arc] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (a);
+			\draw[arc] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (b);
+			\draw[arc] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (c);
+			\draw[arc] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (b);
+			\draw[arc] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
+			\draw[arc] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (a);
 		\end{tikzpicture}
 	\end{columns}
 	\begin{alertblock}{Problema}
@@ -1048,32 +1051,34 @@ def update_weights(D: nx.DiGraph,
 		\vspace{0.2cm}
 		Arcos que entram em $\{a\}$:
 		\begin{itemize}
-			\item $(r,a): 2$
-			\item $(b,a): 1$ ← \textbf{mínimo}
+			\item $(r,a): 3$ ← \textbf{mínimo}
+			\item $(c,a): 3$ ← \textbf{mínimo}
 		\end{itemize}
 
 		\column{0.52\textwidth}
-		\begin{tikzpicture}[>=Stealth, node distance=1.6cm, scale=0.9, transform shape,
-				v/.style={circle, draw, fill=blue!8, minimum size=6.5mm},
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
 				rset/.style={draw=orange!70, very thick, dashed, rounded corners},
 				arc/.style={->, thick, draw=gray!70},
 				selected/.style={->, very thick, draw=green!70}]
 			\node[v,fill=red!20] (r) {\small $r$};
-			\node[v] (a) [below right=1.3cm and 1.1cm of r] {\small $a$};
-			\node[v] (b) [above right=1.3cm and 1.1cm of r] {\small $b$};
-			\node[v] (c) [right=2.2cm of a] {\small $c$};
+			\node[v] (a) [right=2.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
+			\node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
 
-			\draw[arc] (r) -- node[midway, below left] {\scriptsize 2} (a);
-			\draw[arc] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
-			\draw[selected] (b) -- node[midway, above right] {\scriptsize 1} (a);
-			\draw[arc] (a) -- node[midway, below] {\scriptsize 4} (c);
+			\draw[selected] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (a);
+			\draw[arc] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (b);
+			\draw[arc] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (c);
+			\draw[arc] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (b);
+			\draw[arc] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
+			\draw[arc] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (a);
 
 			\node[rset, fit=(a)] {};
 			\node[orange!70, above=0.2cm of a] {\small $R_0$};
 		\end{tikzpicture}
 
 		\vspace{0.2cm}
-		{\small $\lambda_0 = 1$, $f_0 = (b,a)$}
+		{\small $\lambda_0 = 3$, $f_0 = (r,a)$}
 	\end{columns}
 \end{frame}
 
@@ -1083,31 +1088,33 @@ def update_weights(D: nx.DiGraph,
 		\textbf{Atualização:}
 		\begin{itemize}
 			\item $\sigma = [(f_0, R_0, \lambda_0)]$
-			\item $F = \{(b,a)\}$
-			\item $D_0 = (V, \{(b,a)\})$
+			\item $F = \{(r,a)\}$
+			\item $D_0 = (V, \{(r,a)\})$
 		\end{itemize}
 
 		\vspace{0.2cm}
 		\textbf{Redução de custos:}
 		\begin{itemize}
-			\item $c(r,a) = 2 - 1 = 1$
-			\item $c(b,a) = 1 - 1 = 0$ \checkmark
+			\item $c(r,a) = 3 - 3 = 0$ \checkmark
+			\item $c(c,a) = 3 - 3 = 0$ \checkmark
 		\end{itemize}
 
 		\column{0.52\textwidth}
-		\begin{tikzpicture}[>=Stealth, node distance=1.6cm, scale=0.9, transform shape,
-				v/.style={circle, draw, fill=blue!8, minimum size=6.5mm},
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
 				arc/.style={->, thick, draw=gray!70},
 				zero/.style={->, very thick, draw=blue!70}]
 			\node[v,fill=red!20] (r) {\small $r$};
-			\node[v] (a) [below right=1.3cm and 1.1cm of r] {\small $a$};
-			\node[v] (b) [above right=1.3cm and 1.1cm of r] {\small $b$};
-			\node[v] (c) [right=2.2cm of a] {\small $c$};
+			\node[v] (a) [right=2.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
+			\node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
 
-			\draw[arc] (r) -- node[midway, below left] {\scriptsize 1} (a);
-			\draw[arc] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
-			\draw[zero] (b) -- node[midway, above right] {\scriptsize 0} (a);
-			\draw[arc] (a) -- node[midway, below] {\scriptsize 4} (c);
+			\draw[zero] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 0} (a);
+			\draw[arc] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (b);
+			\draw[arc] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (c);
+			\draw[arc] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (b);
+			\draw[arc] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
+			\draw[zero] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (a);
 		\end{tikzpicture}
 
 		\vspace{0.2cm}
@@ -1124,39 +1131,45 @@ def update_weights(D: nx.DiGraph,
 		\column{0.48\textwidth}
 		\textbf{Atualização:}
 		\begin{itemize}
-			\item $F = \{(b,a), (a,c)\}$
+			\item $F = \{(r,a)\}$
 			\item $D_0 = (V, F)$
 		\end{itemize}
 
 		\vspace{0.2cm}
+		\textbf{Escolha:} $R_1 = \{b\}$
+
+		\vspace{0.2cm}
 		\textbf{Redução:}
 		\begin{itemize}
-			\item $c(a,c) = 4 - 4 = 0$ \checkmark
+			\item $(a,b): 3$, $(r,b): 4$ ← \textbf{mínimo: 3}
+			\item $c(a,b) = 3 - 3 = 0$ \checkmark
 		\end{itemize}
 
 		\vspace{0.2cm}
-		$\mathcal{C}(D_0)$ com $F = \{(b,a), (a,c)\}$:
+		$\mathcal{C}(D_0)$ com $F = \{(r,a), (a,b)\}$:
 
 		\vspace{0.2cm}
 		\begin{itemize}
-			\item CFCs: $\{r\}, \{b\}, \{a\}, \{c\}$
-			\item Fontes em $D_0$: $\{r\}, \{b\}$
+			\item CFCs: $\{r\}, \{a\}, \{b\}, \{c\}$
+			\item Fontes em $D_0$: $\{r\}, \{c\}$
 		\end{itemize}
 
 		\column{0.52\textwidth}
-		\begin{tikzpicture}[>=Stealth, node distance=1.6cm, scale=0.85, transform shape,
-				v/.style={circle, draw, fill=blue!8, minimum size=6mm},
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.85, transform shape,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
 				zero/.style={->, very thick, draw=blue!70},
 				arc/.style={->, thick, draw=gray!70}]
 			\node[v,fill=red!20] (r) {\small $r$};
-			\node[v] (a) [below right=1.3cm and 1.0cm of r] {\small $a$};
-			\node[v] (b) [above right=1.3cm and 1.0cm of r] {\small $b$};
-			\node[v] (c) [right=2.0cm of a] {\small $c$};
+			\node[v] (a) [right=2.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
+			\node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
 
-			\draw[arc] (r) -- node[midway, below left] {\scriptsize 1} (a);
-			\draw[arc] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
-			\draw[zero] (b) -- node[midway, above right] {\scriptsize 0} (a);
-			\draw[zero] (a) -- node[midway, below] {\scriptsize 0} (c);
+			\draw[zero] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 0} (a);
+			\draw[arc] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (b);
+			\draw[arc] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (c);
+			\draw[zero] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (b);
+			\draw[arc] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
+			\draw[zero] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (a);
 		\end{tikzpicture}
 
 		{\small Arcos com custo zero em azul}
@@ -1166,49 +1179,52 @@ def update_weights(D: nx.DiGraph,
 \begin{frame}{Fase I: Iteração 4 - Redução de Custos}
 	\begin{columns}[c]
 		\column{0.48\textwidth}
-		\textbf{Estado:} $F = \{(b,a), (a,c)\}$
+		\textbf{Estado:} $F = \{(r,a), (a,b)\}$
 
 		\vspace{0.2cm}
 		$\mathcal{C}(D_0)$ ainda tem:
 		\begin{itemize}
-			\item Fonte $\{b\}$ não contém $r$
+			\item Fonte $\{c\}$ não contém $r$
 		\end{itemize}
 
 		\vspace{0.2cm}
-		\textbf{Escolha:} $R_2 = \{b\}$
+		\textbf{Escolha:} $R_2 = \{c\}$
 
 		\vspace{0.2cm}
-		Arcos que entram em $\{b\}$:
+		Arcos que entram em $\{c\}$:
 		\begin{itemize}
-			\item $(r,b): 10$ ← único arco
+			\item $(b,c): 2$ ← \textbf{mínimo}
+			\item $(r,c): 5$
 		\end{itemize}
 
 		\vspace{0.2cm}
 		\textbf{Seleção:}
 		\begin{itemize}
-			\item $\lambda_2 = 10$
-			\item $f_2 = (r,b)$
+			\item $\lambda_2 = 2$
+			\item $f_2 = (b,c)$
 		\end{itemize}
 
 		\column{0.52\textwidth}
-		\begin{tikzpicture}[>=Stealth, node distance=1.6cm, scale=0.9, transform shape,
-				v/.style={circle, draw, fill=blue!8, minimum size=6.5mm},
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
 				rset/.style={draw=orange!70, very thick, dashed, rounded corners},
 				arc/.style={->, thick, draw=gray!70},
 				zero/.style={->, thick, draw=blue!70},
 				selected/.style={->, very thick, draw=green!70}]
 			\node[v,fill=red!20] (r) {\small $r$};
-			\node[v] (a) [below right=1.3cm and 1.1cm of r] {\small $a$};
-			\node[v] (b) [above right=1.3cm and 1.1cm of r] {\small $b$};
-			\node[v] (c) [right=2.2cm of a] {\small $c$};
+			\node[v] (a) [right=2.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
+			\node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
 
-			\draw[arc] (r) -- node[midway, below left] {\scriptsize 1} (a);
-			\draw[selected] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
-			\draw[zero] (b) -- node[midway, above right] {\scriptsize 0} (a);
-			\draw[zero] (a) -- node[midway, below] {\scriptsize 0} (c);
+			\draw[zero] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 0} (a);
+			\draw[arc] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (b);
+			\draw[arc] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (c);
+			\draw[zero] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (b);
+			\draw[selected] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
+			\draw[zero] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (a);
 
-			\node[rset, fit=(b)] {};
-			\node[orange!70, above=0.2cm of b] {\small $R_2$};
+			\node[rset, fit=(c)] {};
+			\node[orange!70, below=0.2cm of c] {\small $R_2$};
 		\end{tikzpicture}
 	\end{columns}
 \end{frame}
@@ -1218,42 +1234,44 @@ def update_weights(D: nx.DiGraph,
 		\column{0.48\textwidth}
 		\textbf{Atualização:}
 		\begin{itemize}
-			\item $F = \{(b,a), (a,c), (r,b)\}$
+			\item $F = \{(r,a), (a,b), (b,c)\}$
 			\item $D_0 = (V, F)$
 		\end{itemize}
 
 		\vspace{0.2cm}
 		\textbf{Redução:}
 		\begin{itemize}
-			\item $c(r,b) = 10 - 10 = 0$
+			\item $c(b,c) = 2 - 2 = 0$
 		\end{itemize}
 
 		\vspace{0.2cm}
-		$\mathcal{C}(D_0)$ com $F = \{(b,a), (a,c), (r,b)\}$:
+		$\mathcal{C}(D_0)$ com $F = \{(r,a), (a,b), (b,c)\}$:
 
 		\vspace{0.2cm}
 		\textbf{Condição de parada satisfeita!}
 
 		\column{0.52\textwidth}
-		\begin{tikzpicture}[>=Stealth, node distance=1.6cm, scale=0.85, transform shape,
-				v/.style={circle, draw, fill=blue!8, minimum size=6mm},
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.85, transform shape,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
 				zero/.style={->, very thick, draw=blue!70},
 				arc/.style={->, thick, draw=gray!70}]
 			\node[v,fill=red!20] (r) {\small $r$};
-			\node[v] (a) [below right=1.3cm and 1.0cm of r] {\small $a$};
-			\node[v] (b) [above right=1.3cm and 1.0cm of r] {\small $b$};
-			\node[v] (c) [right=2.0cm of a] {\small $c$};
+			\node[v] (a) [right=2.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
+			\node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
 
-			\draw[arc] (r) -- node[midway, below left] {\scriptsize 1} (a);
-			\draw[zero] (r) to[bend left=15] node[midway, above left] {\scriptsize 0} (b);
-			\draw[zero] (b) -- node[midway, above right] {\scriptsize 0} (a);
-			\draw[zero] (a) -- node[midway, below] {\scriptsize 0} (c);
+			\draw[zero] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 0} (a);
+			\draw[arc] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (b);
+			\draw[arc] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (c);
+			\draw[zero] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (b);
+			\draw[zero] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (c);
+			\draw[zero] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (a);
 		\end{tikzpicture}
 
 		{\small Todos arcos de $F$ têm custo zero!}
 	\end{columns}
 	\begin{block}{Sequência devolvida}
-		$\sigma = [(f_0=(b,a), R_0=\{a\}, \lambda_0=1), (f_1=(a,c), R_1=\{c\}, \lambda_1=4), (f_2=(r,b), R_2=\{b\}, \lambda_2=10)]$
+		$\sigma = [(f_0=(r,a), R_0=\{a\}, \lambda_0=3), (f_1=(a,b), R_1=\{b\}, \lambda_1=3), (f_2=(b,c), R_2=\{c\}, \lambda_2=2)]$
 	\end{block}
 \end{frame}
 
@@ -1289,10 +1307,10 @@ def update_weights(D: nx.DiGraph,
 \end{frame}
 
 \ifshowimplementation
-\begin{frame}[fragile]{Fase II: Implementação - Versão Lista}
-	\textbf{Versão 1: Iteração sobre lista}
+	\begin{frame}[fragile]{Fase II: Implementação - Versão Lista}
+		\textbf{Versão 1: Iteração sobre lista}
 
-	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+		\begin{lstlisting}[basicstyle=\tiny\ttfamily]
 def phase2(D: nx.DiGraph, r: int, 
            F: list[tuple[int, int]]):
     Arb = nx.DiGraph()
@@ -1309,16 +1327,16 @@ def phase2(D: nx.DiGraph, r: int,
     return Arb
 \end{lstlisting}
 
-	\vspace{0.05cm}
-	{\small \textbf{Complexidade:} $O(|V||F|) = O(|V|^2)$ pois $|F| \le 2|V|-1$}
-\end{frame}
+		\vspace{0.05cm}
+		{\small \textbf{Complexidade:} $O(|V||F|) = O(|V|^2)$ pois $|F| \le 2|V|-1$}
+	\end{frame}
 \fi
 
 \ifshowimplementation
-\begin{frame}[fragile]{Fase II: Implementação - Versão Heap}
-	\textbf{Versão 2: Usando fila de prioridade (estilo Dijkstra)}
+	\begin{frame}[fragile]{Fase II: Implementação - Versão Heap}
+		\textbf{Versão 2: Usando fila de prioridade (estilo Dijkstra)}
 
-	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+		\begin{lstlisting}[basicstyle=\tiny\ttfamily]
 def phase2_v2(D, r, F):
     Arb = nx.DiGraph()
     for i, (u, v) in enumerate(F):
@@ -1340,15 +1358,15 @@ def phase2_v2(D, r, F):
     return J
 \end{lstlisting}
 
-	\vspace{0.05cm}
-	{\small \textbf{Complexidade:} $O(|V| \log |V|)$ usando heap binário}
-\end{frame}
+		\vspace{0.05cm}
+		{\small \textbf{Complexidade:} $O(|V| \log |V|)$ usando heap binário}
+	\end{frame}
 \fi
 
 \ifshowimplementation
-\begin{frame}[fragile]{Algoritmo Completo de Frank}
-	\textbf{Composição das duas fases:}
-	\begin{lstlisting}[basicstyle=\scriptsize\ttfamily]
+	\begin{frame}[fragile]{Algoritmo Completo de Frank}
+		\textbf{Composição das duas fases:}
+		\begin{lstlisting}[basicstyle=\scriptsize\ttfamily]
 def andras_frank(D: nx.DiGraph, r: int):
     # Fase I: construir cobertura
     sigma = phase1(D, r)
@@ -1357,16 +1375,16 @@ def andras_frank(D: nx.DiGraph, r: int):
     J = phase2_v2(D, r, F)
     return J
 \end{lstlisting}
-	\begin{block}{Complexidade Total}
-		\begin{itemize}
-			\item Fase I: $O(|V||A|)$
-			\item Fase II: $O(|V| \log |V|)$ (heap)
-			\item \textbf{Total}: $O(|V|(|A| + \log |V|))$
-		\end{itemize}
-	\end{block}
+		\begin{block}{Complexidade Total}
+			\begin{itemize}
+				\item Fase I: $O(|V||A|)$
+				\item Fase II: $O(|V| \log |V|)$ (heap)
+				\item \textbf{Total}: $O(|V|(|A| + \log |V|))$
+			\end{itemize}
+		\end{block}
 
-	{\small A Fase II é significativamente mais rápida usando heap do que lista!}
-\end{frame}
+		{\small A Fase II é significativamente mais rápida usando heap do que lista!}
+	\end{frame}
 \fi
 
 \begin{frame}{Fase II: Exemplo - Extração da Arborescência}
@@ -1374,7 +1392,7 @@ def andras_frank(D: nx.DiGraph, r: int):
 		\column{0.48\textwidth}
 		\textbf{Entrada da Fase II:}
 		\begin{itemize}
-			\item $F = [f_0, f_1, f_2]$ $= [(b,a), (a,c), (r,b)]$
+			\item $F = [f_0, f_1, f_2]$ $= [(r,a), (a,b), (b,c)]$
 		\end{itemize}
 
 		\vspace{0.2cm}
@@ -1392,18 +1410,22 @@ def andras_frank(D: nx.DiGraph, r: int):
 		\end{itemize}
 
 		\column{0.45\textwidth}
-		\begin{tikzpicture}[>=Stealth, node distance=1.7cm, scale=0.85, transform shape,
-				v/.style={circle, draw, fill=blue!8, minimum size=6.5mm},
-				inU/.style={circle, draw, fill=green!20, minimum size=6.5mm},
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.85, transform shape,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				inU/.style={circle, draw, fill=green!20, minimum size=7mm},
 				arc/.style={->, thick, draw=gray!70},
 				covered/.style={->, thick, draw=blue!70}]
 			\node[v,fill=red!20,inU] (r) {\small $r$};
-			\node[v] (a) [below right=1.3cm and 1.0cm of r] {\small $a$};
-			\node[v] (b) [above right=1.3cm and 1.0cm of r] {\small $b$};
-			\node[v] (c) [right=2.1cm of a] {\small $c$};			\draw[arc] (r) -- node[midway, below left] {\scriptsize 2} (a);
-			\draw[arc] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
-			\draw[covered] (b) -- node[midway, above right] {\scriptsize 1} (a);
-			\draw[covered] (a) -- node[midway, below] {\scriptsize 4} (c);
+			\node[v] (a) [right=2.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
+			\node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
+
+			\draw[covered] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (a);
+			\draw[arc] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (b);
+			\draw[arc] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (c);
+			\draw[covered] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (b);
+			\draw[covered] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
+			\draw[arc] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (a);
 		\end{tikzpicture}
 
 		{\small Verde = vértices em $U$}
@@ -1422,111 +1444,115 @@ def andras_frank(D: nx.DiGraph, r: int):
 		\vspace{0.2cm}
 		\textbf{Procurar em $F$:}
 		\begin{itemize}
-			\item $f_0=(b,a)$: $b \notin U$ $\times$
-			\item $f_1=(a,c)$: $a \notin U$ $\times$
-			\item $f_2=(r,b)$: $r \in U$, $b \notin U$ \checkmark
+			\item $f_0=(r,a)$: $r \in U$, $a \notin U$ \checkmark
 		\end{itemize}
 
 		\vspace{0.2cm}
 		\textbf{Ação:}
 		\begin{itemize}
-			\item Adicionar $(r,b)$ a $J$
-			\item $U := U \cup \{b\} = \{r,b\}$
+			\item Adicionar $(r,a)$ a $J$
+			\item $U := U \cup \{a\} = \{r,a\}$
 		\end{itemize}
 
 		\column{0.52\textwidth}
-		\begin{tikzpicture}[>=Stealth, node distance=1.7cm, scale=0.9, transform shape,
-				v/.style={circle, draw, fill=blue!8, minimum size=6.5mm},
-				inU/.style={circle, draw, fill=green!20, minimum size=6.5mm},
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				inU/.style={circle, draw, fill=green!20, minimum size=7mm},
 				selected/.style={->, very thick, draw=green!70},
 				arc/.style={->, thick, draw=gray!60}]
 			\node[inU,fill=red!20] (r) {\small $r$};
-			\node[v] (a) [below right=1.3cm and 1.1cm of r] {\small $a$};
-			\node[inU] (b) [above right=1.3cm and 1.1cm of r] {\small $b$};
-			\node[v] (c) [right=2.2cm of a] {\small $c$};
+			\node[inU] (a) [right=2.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
+			\node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
 
-			\draw[arc] (r) -- node[midway, below left] {\scriptsize 2} (a);
-			\draw[selected] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
-			\draw[arc] (b) -- node[midway, above right] {\scriptsize 1} (a);
-			\draw[arc] (a) -- node[midway, below] {\scriptsize 4} (c);
+			\draw[selected] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (a);
+			\draw[arc] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (b);
+			\draw[arc] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (c);
+			\draw[arc] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (b);
+			\draw[arc] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
+			\draw[arc] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (a);
 		\end{tikzpicture}
 
-		{\small $J = \{(r,b)\}$, custo = 10}
+		{\small $J = \{(r,a)\}$, custo = 3}
 	\end{columns}
 \end{frame}
 
 \begin{frame}{Fase II: Iteração 2}
 	\begin{columns}[c]
 		\column{0.48\textwidth}
-		\textbf{Estado:} $U = \{r,b\}$, $J = \{(r,b)\}$
+		\textbf{Estado:} $U = \{r,a\}$, $J = \{(r,a)\}$
 
 		\vspace{0.2cm}
 		\textbf{Procurar em $F$:}
 		\begin{itemize}
-			\item $f_0=(b,a)$: $b \in U$, $a \notin U$ \checkmark
+			\item $f_1=(a,b)$: $a \in U$, $b \notin U$ \checkmark
 		\end{itemize}
 
 		\vspace{0.2cm}
 		\textbf{Ação:}
 		\begin{itemize}
-			\item Adicionar $(b,a)$ a $J$
-			\item $U := U \cup \{a\} = \{r,b,a\}$
+			\item Adicionar $(a,b)$ a $J$
+			\item $U := U \cup \{b\} = \{r,a,b\}$
 		\end{itemize}
 
 		\column{0.52\textwidth}
-		\begin{tikzpicture}[>=Stealth, node distance=1.7cm, scale=0.9, transform shape,
-				v/.style={circle, draw, fill=blue!8, minimum size=6.5mm},
-				inU/.style={circle, draw, fill=green!20, minimum size=6.5mm},
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				inU/.style={circle, draw, fill=green!20, minimum size=7mm},
 				selected/.style={->, very thick, draw=green!70},
 				arc/.style={->, thick, draw=gray!60}]
 			\node[inU,fill=red!20] (r) {\small $r$};
-			\node[inU] (a) [below right=1.3cm and 1.1cm of r] {\small $a$};
-			\node[inU] (b) [above right=1.3cm and 1.1cm of r] {\small $b$};
-			\node[v] (c) [right=2.2cm of a] {\small $c$};
+			\node[inU] (a) [right=2.2cm of r] {\small $a$};
+			\node[inU] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
+			\node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
 
-			\draw[arc] (r) -- node[midway, below left] {\scriptsize 2} (a);
-			\draw[selected] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
-			\draw[selected] (b) -- node[midway, above right] {\scriptsize 1} (a);
-			\draw[arc] (a) -- node[midway, below] {\scriptsize 4} (c);
+			\draw[selected] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (a);
+			\draw[arc] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (b);
+			\draw[arc] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (c);
+			\draw[selected] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (b);
+			\draw[arc] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
+			\draw[arc] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (a);
 		\end{tikzpicture}
 
-		{\small $J = \{(r,b), (b,a)\}$, custo = 11}
+		{\small $J = \{(r,a), (a,b)\}$, custo = 6}
 	\end{columns}
 \end{frame}
 
 \begin{frame}{Fase II: Iteração 3 - Estado Final}
 	\begin{columns}[c]
 		\column{0.48\textwidth}
-		\textbf{Estado:} $U = \{r,b,a\}$, $|J| = 2$
+		\textbf{Estado:} $U = \{r,a,b\}$, $|J| = 2$
 
 		\vspace{0.2cm}
 		\textbf{Procurar em $F$:}
 		\begin{itemize}
-			\item $f_1=(a,c)$: $a \in U$, $c \notin U$ \checkmark
+			\item $f_2=(b,c)$: $b \in U$, $c \notin U$ \checkmark
 		\end{itemize}
 
 		\vspace{0.2cm}
 		\textbf{Ação:}
 		\begin{itemize}
-			\item Adicionar $(a,c)$ a $J$
+			\item Adicionar $(b,c)$ a $J$
 			\item $U := U \cup \{c\} = V$
 			\item $|J| = 3 = |V|-1$ \checkmark
 		\end{itemize}
 
 		\column{0.52\textwidth}
-		\begin{tikzpicture}[>=Stealth, node distance=1.7cm, scale=0.9, transform shape,
-				v/.style={circle, draw, fill=blue!8, minimum size=6.5mm},
-				inU/.style={circle, draw, fill=green!20, minimum size=6.5mm},
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				inU/.style={circle, draw, fill=green!20, minimum size=7mm},
 				selected/.style={->, very thick, draw=green!70}]
 			\node[inU,fill=red!20] (r) {\small $r$};
-			\node[inU] (a) [below right=1.3cm and 1.1cm of r] {\small $a$};
-			\node[inU] (b) [above right=1.3cm and 1.1cm of r] {\small $b$};
-			\node[inU] (c) [right=2.2cm of a] {\small $c$};
+			\node[inU] (a) [right=2.2cm of r] {\small $a$};
+			\node[inU] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
+			\node[inU] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
 
-			\draw[->, thick, draw=gray!40] (r) -- node[midway, below left] {\scriptsize 2} (a);
-			\draw[selected] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
-			\draw[selected] (b) -- node[midway, above right] {\scriptsize 1} (a);
-			\draw[selected] (a) -- node[midway, below] {\scriptsize 4} (c);
+			\draw[->, thick, draw=gray!40] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (b);
+			\draw[->, thick, draw=gray!40] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (c);
+			\draw[->, thick, draw=gray!40] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (a);
+			\draw[selected] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (a);
+			\draw[selected] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (b);
+			\draw[selected] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
 		\end{tikzpicture}
 
 		{\small $J$ = $r$-arborescência geradora!}
@@ -1534,7 +1560,7 @@ def andras_frank(D: nx.DiGraph, r: int):
 
 	\vspace{0.2cm}
 	\begin{exampleblock}{Resultado Final}
-		$J = \{(r,b), (b,a), (a,c)\}$ com custo $w(J) = 10 + 1 + 4 = 15$ (custo mínimo!)
+		$J = \{(r,a), (a,b), (b,c)\}$ com custo $w(J) = 3 + 3 + 2 = 8$ (custo mínimo!)
 	\end{exampleblock}
 \end{frame}
 
