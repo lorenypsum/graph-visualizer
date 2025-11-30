@@ -131,10 +131,10 @@
 \section{Introdução}
 
 \begin{frame}{O Problema}
-	\begin{block}{Encontrar uma $r$-Arborescência Geradora de Custo Mínimo}
+	\begin{block}{Encontrar uma $r$-Arborescência Geradora de Peso Mínimo}
 		Dado um $r$-digrafo ponderado $(D,w,r)$:
 		\begin{itemize}
-			\item Encontrar uma $r$-arborescência geradora de custo mínimo de $D$
+			\item Encontrar uma $r$-arborescência geradora de peso mínimo de $D$
 		\end{itemize}
 	\end{block}
 
@@ -197,7 +197,7 @@
 				\draw[arb] (c) -- node[above,font=\tiny,black] {4} (b);
 			\end{tikzpicture}
 			\caption{r-Arborescência Geradora}
-			\caption{Custo: 16}
+			\caption{Peso: 16}
 		\end{figure}
 
 		\column{0.3\textwidth}
@@ -220,7 +220,7 @@
 				\draw[arb] (d) -- node[below,font=\tiny,black] {1} (e);
 			\end{tikzpicture}
 			\caption{Geradora Mínima}
-			\caption{Custo: 13}
+			\caption{Peso: 13}
 		\end{figure}
 	\end{columns}
 \end{frame}
@@ -239,9 +239,9 @@
 	\begin{block}{Algoritmo Recursivo: dado um r-digrafo ponderado $(D,w,r)$}
 		chu--liu--edmonds($(D,w,r)$):
 		\begin{enumerate}
-			\item \textbf{Reduzir custos}: para cada vértice $v \neq r$, subtrair $\lambda(v) = \min\{w(a) : a \in \delta^-(v)\}$
+			\item \textbf{Reduzir pesos}: para cada vértice $v \neq r$, subtrair $\lambda(v) = \min\{w(a) : a \in \delta^-(v)\}$
 
-			\item \textbf{Construir $D_0$}: escolhendo um arco $a_v$ de custo reduzido zero para cada $v \neq r$
+			\item \textbf{Construir $D_0$}: escolhendo um arco $a_v$ de peso reduzido zero para cada $v \neq r$
 
 			\item \textbf{Verificar}: se $D_0$ é uma $r$-arborescência $\Rightarrow$ \textbf{devolver} $D_0$
 
@@ -262,13 +262,13 @@
 		\column{0.48\textwidth}
 		\textbf{Definição:}
 
-		Para cada $v \neq r$, escolher um arco $a_v$ de custo mínimo que entra em $v$:
+		Para cada $v \neq r$, escolher um arco $a_v$ de peso mínimo que entra em $v$:
 		$$T := \{a_v : v \in V \setminus \{r\}\}$$
 
 		\vspace{0.2cm}
 		\textbf{Propriedade:}
 
-		Se $T$ é uma $r$-arborescência, então $T$ tem custo mínimo.
+		Se $T$ é uma $r$-arborescência, então $T$ tem peso mínimo.
 
 		\column{0.52\textwidth}
 		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
@@ -292,7 +292,7 @@
 
 	\vspace{0.2cm}
 	\begin{alertblock}{Resultado}
-		$T = \{(r,a), (a,b), (b,c)\}$ é uma $r$-arborescência de custo mínimo!
+		$T = \{(r,a), (a,b), (b,c)\}$ é uma $r$-arborescência geradora mínima!
 	\end{alertblock}
 \end{frame}
 
@@ -306,7 +306,7 @@
 		\vspace{0.3cm}
 		\textbf{Exemplo:}
 
-		Os arcos de custo mínimo formam um ciclo $(a, b, c, a)$ sem alcançar $r$.
+		Os arcos de peso mínimo formam um ciclo $(a, b, c, a)$ sem alcançar $r$.
 
 		\column{0.52\textwidth}
 		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
@@ -332,7 +332,7 @@
 	\end{columns}
 \end{frame}
 
-\begin{frame}{Passo 1: Redução de Custos}
+\begin{frame}{Passo 1: Redução de Pesos}
 	\begin{columns}[c]
 		\column{0.48\textwidth}
 		\textbf{Definição:}
@@ -341,7 +341,7 @@
 		Para cada $v \in V \setminus \{r\}$:
 		$$\lambda(v) := \min\{w(a) : a \in \delta^-(v)\}$$
 
-		Custo $\lambda$-reduzido:
+		Peso $\lambda$-reduzido:
 		$$w_\lambda(uv) := w(uv) - \lambda(v)$$
 		\vspace{0.1cm}
 		\textbf{Valores de $\lambda$:}
@@ -369,17 +369,17 @@
 		\end{tikzpicture}
 
 		\vspace{0.2cm}
-		{\small Arcos do ciclo têm custo zero!}
+		{\small Arcos do ciclo têm peso zero!}
 	\end{columns}
 
 	\vspace{0.1cm}
 	\begin{block}{}
-		Arcos com custo zero são candidatos para $A_0$ em $D_0$.
+		Arcos com peso zero são candidatos para $A_0$ em $D_0$.
 	\end{block}
 \end{frame}
 
 \ifshowimplementation
-	\begin{frame}[fragile]{Passo 1: Implementação - Redução de Custos}
+	\begin{frame}[fragile]{Passo 1: Implementação - Redução de Pesos}
 		\textbf{Função \texttt{reduce\_weights}:}
 		\begin{columns}[t]
 			\column{0.5\textwidth}
@@ -396,13 +396,13 @@ def reduce_weights(D: nx.DiGraph, v: int):
 			\textbf{Descrição:}
 			\begin{itemize}
 				\item Calcula $\lambda(v) = \min\{w(a) : a \in \delta^-(v)\}$
-				\item Reduz o custo de cada arco que entra em $v$
+				\item Reduz o peso de cada arco que entra em $v$
 				\item Complexidade: $O(k)$ $|A|$ onde $k$ é o número de arcos entrando em $v$
 			\end{itemize}
 		\end{columns}
 
 		\begin{block}{Resultado}
-			Após executar \texttt{reduce\_weights(D, v)} para cada $v \neq r$, todos os vértices têm ao menos um arco de entrada com custo zero.
+			Após executar \texttt{reduce\_weights(D, v)} para cada $v \neq r$, todos os vértices têm ao menos um arco de entrada com peso zero.
 		\end{block}
 	\end{frame}
 \fi
@@ -467,9 +467,9 @@ def get_Dzero(D: nx.DiGraph, r: int):
 			\column{0.45\textwidth}
 			\textbf{Descrição:}
 			\begin{itemize}
-				\item Para cada vértice $v \neq r$, seleciona um arco com custo zero
+				\item Para cada vértice $v \neq r$, seleciona um arco com peso zero
 				\item Constrói subdigrafo gerador $D_0$
-				\item Garantido existir arco de custo zero após redução
+				\item Garantido existir arco de peso zero após redução
 			\end{itemize}
 		\end{columns}
 		\begin{block}{Observação}
@@ -530,7 +530,7 @@ if nx.is_arborescence(D_zero):
 
 		\emph{Esse trecho faz parte do caso base da função recursiva principal.}
 		\begin{block}{Caso Base}
-			Se $D_0$ é uma arborescência, então ela é a $r$-arborescência de custo mínimo. Restauramos os pesos originais e devolvemos.
+			Se $D_0$ é uma arborescência, então ela é a $r$-arborescência geradora mínima. Restauramos os pesos originais e devolvemos.
 		\end{block}
 	\end{frame}
 \fi
@@ -619,7 +619,7 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph,
 \end{lstlisting}
 
 		\begin{block}{}
-			Para cada vértice externo, encontra o arco de menor custo que entra no ciclo.
+			Para cada vértice externo, encontra o arco de menor peso que entra no ciclo.
 		\end{block}
 	\end{frame}
 \fi
@@ -645,7 +645,7 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph,
     return in_to_cycle, out_from_cycle
 \end{lstlisting}
 		\begin{block}{}
-			Encontra o arco de menor custo que sai do ciclo para cada vértice externo. Os dicionários retornados serão usados na expansão.
+			Encontra o arco de menor peso que sai do ciclo para cada vértice externo. Os dicionários retornados serão usados na expansão.
 		\end{block}
 	\end{frame}
 \fi
@@ -660,7 +660,7 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph,
 		$$T' := \text{chu--liu--edmonds}(D', w', r)$$
 
 		\vspace{0.2cm}
-		\textbf{Resultado:} $T'$ é uma $r$-arborescência de custo mínimo em $(D', w')$
+		\textbf{Resultado:} $T'$ é uma $r$-arborescência geradora mínima em $(D', w')$
 
 		\column{0.52\textwidth}
 		\begin{tikzpicture}[>=Stealth, node distance=2cm,
@@ -685,7 +685,7 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph,
 		\begin{lstlisting}[basicstyle=\tiny\ttfamily]
 def chuliu_edmonds(D: nx.DiGraph, r: int, label: int):
     D_copy = cast(nx.DiGraph, D.copy())
-    # Reducao de custos
+    # Reducao de pesos
     for v in D_copy.nodes:
         if v != r:
             reduce_weights(D_copy, v)
@@ -722,7 +722,7 @@ def chuliu_edmonds(D: nx.DiGraph, r: int, label: int):
 		\end{enumerate}
 
 		\vspace{0.2cm}
-		{\small Resultado: $T$ é uma $r$-arborescência de custo mínimo}
+		{\small Resultado: $T$ é uma $r$-arborescência geradora mínima}
 
 		\column{0.52\textwidth}
 		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
@@ -800,7 +800,7 @@ return F_prime
 	\begin{itemize}
 		\item Cada chamada recursiva reduz o número de vértices em pelo menos 1
 		\item No pior caso, pode haver até $O(n)$ chamadas recursivas
-		\item Cada chamada envolve operações de redução de custos, construção de $D_0$, detecção de ciclos e contração, cada uma com complexidade $O(m)$
+		\item Cada chamada envolve operações de redução de pesos, construção de $D_0$, detecção de ciclos e contração, cada uma com complexidade $O(m)$
 	\end{itemize}
 
 	\vspace{0.3cm}
@@ -821,7 +821,7 @@ return F_prime
 
 \begin{frame}{Algoritmo de András Frank}
 	\begin{block}{Abordagem em Duas Fases}
-		\textbf{Fase I (Fulkerson):} Construir cobertura de $r$-conjuntos via redução de custos
+		\textbf{Fase I (Fulkerson):} Construir cobertura de $r$-conjuntos via redução de pesos
 
 		\textbf{Fase II (Frank):} Extrair $r$-arborescência geradora da cobertura
 	\end{block}
@@ -868,7 +868,7 @@ return F_prime
 	\begin{enumerate}
 		\item \textbf{Inicializar}:
 		      \begin{itemize}
-			      \item $c := w$ (custos correntes)
+			      \item $c := w$ (pesos correntes)
 			      \item $\sigma := \epsilon$ (sequência vazia)
 			      \item $F := \emptyset$ (conjunto de arcos selecionados)
 		      \end{itemize}
@@ -878,7 +878,7 @@ return F_prime
 			      \item Selecionar $f \in \delta^-(R)$ com $c(f) = \lambda$
 			      \item $\sigma := \sigma \cdot (f, R, \lambda)$
 			      \item $F := F \cup \{f\}$
-			      \item $c := c - \lambda \mathbf{1}_{\delta^-(R)}$ {\small (reduzir custos)}
+			      \item $c := c - \lambda \mathbf{1}_{\delta^-(R)}$ {\small (reduzir pesos)}
 			      \item $D_0 := (V, F)$ {\small (atualizar digrafo auxiliar)}
 		      \end{itemize}
 		\item \textbf{Devolver}: $\sigma$
@@ -980,7 +980,7 @@ def update_weights(D: nx.DiGraph,
 		\begin{block}{Descrição}
 			\begin{itemize}
 				\item Reduz peso de todos arcos que entram no $r$-conjunto
-				\item Devolve arco com peso zero (custo reduzido mínimo)
+				\item Devolve arco com peso zero (peso reduzido mínimo)
 				\item Atualiza o digrafo in-place
 			\end{itemize}
 		\end{block}
@@ -1023,7 +1023,7 @@ def update_weights(D: nx.DiGraph,
 		\end{tikzpicture}
 	\end{columns}
 	\begin{alertblock}{Problema}
-		Aplicar o algoritmo de András Frank para encontrar a $r$-arborescência geradora de custo mínimo.
+		Aplicar o algoritmo de András Frank para encontrar a $r$-arborescência geradora de peso mínimo.
 	\end{alertblock}
 \end{frame}
 
@@ -1082,7 +1082,7 @@ def update_weights(D: nx.DiGraph,
 	\end{columns}
 \end{frame}
 
-\begin{frame}{Fase I: Iteração 2 - Redução de Custos}
+\begin{frame}{Fase I: Iteração 2 - Redução de Pesos}
 	\begin{columns}[c]
 		\column{0.48\textwidth}
 		\textbf{Atualização:}
@@ -1093,7 +1093,7 @@ def update_weights(D: nx.DiGraph,
 		\end{itemize}
 
 		\vspace{0.2cm}
-		\textbf{Redução de custos:}
+		\textbf{Redução de pesos:}
 		\begin{itemize}
 			\item $c(r,a) = 3 - 3 = 0$ \checkmark
 			\item $c(c,a) = 3 - 3 = 0$ \checkmark
@@ -1118,15 +1118,15 @@ def update_weights(D: nx.DiGraph,
 		\end{tikzpicture}
 
 		\vspace{0.2cm}
-		{\small Arcos azuis têm custo zero}
+		{\small Arcos azuis têm peso zero}
 	\end{columns}
 
 	\begin{block}{Observação}
-		Custos são reduzidos para garantir que $\sigma$ seja $w$-disjunta.
+		Pesos são reduzidos para garantir que $\sigma$ seja $w$-disjunta.
 	\end{block}
 \end{frame}
 
-\begin{frame}{Fase I: Iteração 3 - Redução de Custos}
+\begin{frame}{Fase I: Iteração 3 - Redução de Pesos}
 	\begin{columns}[c]
 		\column{0.48\textwidth}
 		\textbf{Atualização:}
@@ -1172,11 +1172,11 @@ def update_weights(D: nx.DiGraph,
 			\draw[zero] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (a);
 		\end{tikzpicture}
 
-		{\small Arcos com custo zero em azul}
+		{\small Arcos com peso zero em azul}
 	\end{columns}
 \end{frame}
 
-\begin{frame}{Fase I: Iteração 4 - Redução de Custos}
+\begin{frame}{Fase I: Iteração 4 - Redução de Pesos}
 	\begin{columns}[c]
 		\column{0.48\textwidth}
 		\textbf{Estado:} $F = \{(r,a), (a,b)\}$
@@ -1268,7 +1268,7 @@ def update_weights(D: nx.DiGraph,
 			\draw[zero] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (a);
 		\end{tikzpicture}
 
-		{\small Todos arcos de $F$ têm custo zero!}
+		{\small Todos arcos de $F$ têm peso zero!}
 	\end{columns}
 	\begin{block}{Sequência devolvida}
 		$\sigma = [(f_0=(r,a), R_0=\{a\}, \lambda_0=3), (f_1=(a,b), R_1=\{b\}, \lambda_1=3), (f_2=(b,c), R_2=\{c\}, \lambda_2=2)]$
@@ -1473,7 +1473,7 @@ def andras_frank(D: nx.DiGraph, r: int):
 			\draw[arc] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (a);
 		\end{tikzpicture}
 
-		{\small $J = \{(r,a)\}$, custo = 3}
+		{\small $J = \{(r,a)\}$, peso = 3}
 	\end{columns}
 \end{frame}
 
@@ -1514,7 +1514,7 @@ def andras_frank(D: nx.DiGraph, r: int):
 			\draw[arc] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (a);
 		\end{tikzpicture}
 
-		{\small $J = \{(r,a), (a,b)\}$, custo = 6}
+		{\small $J = \{(r,a), (a,b)\}$, peso = 6}
 	\end{columns}
 \end{frame}
 
@@ -1560,7 +1560,7 @@ def andras_frank(D: nx.DiGraph, r: int):
 
 	\vspace{0.2cm}
 	\begin{exampleblock}{Resultado Final}
-		$J = \{(r,a), (a,b), (b,c)\}$ com custo $w(J) = 3 + 3 + 2 = 8$ (custo mínimo!)
+		$J = \{(r,a), (a,b), (b,c)\}$ com peso $w(J) = 3 + 3 + 2 = 8$ (peso mínimo!)
 	\end{exampleblock}
 \end{frame}
 
@@ -1642,7 +1642,7 @@ def andras_frank(D: nx.DiGraph, r: int):
 
 \begin{frame}{Principais Resultados}
 	\begin{itemize}
-		\item \textbf{Corretude validada:} custos idênticos em todas as instâncias
+		\item \textbf{Corretude validada:} pesos idênticos em todas as instâncias
 		\item \textbf{Chu-Liu-Edmonds} mais rápido para construção direta
 		      \begin{itemize}
 			      \item Mediana: 0,25 s vs 8,93 s (Fase I Frank)
