@@ -1,20 +1,25 @@
-\frametitle{Algoritmo Completo de Frank}
-\textbf{Composição das duas fases:}
-	\begin{lstlisting}[basicstyle=\scriptsize\ttfamily]
-def andras_frank(D: nx.DiGraph, r: int):
-    # Fase I: construir cobertura
-    sigma = phase1(D, r)
-    F = [f for f, _, _ in sigma]
-    # Fase II: extrair arborescencia
-    J = phase2_v2(D, r, F)
-    return J
+\frametitle{Passo 1: Implementação - Redução de Custos}
+\textbf{Função \texttt{reduce\_weights}:}
+	\begin{columns}[t]
+		\column{0.5\textwidth}
+		\begin{lstlisting}[basicstyle=\scriptsize\ttfamily]
+def reduce_weights(D: nx.DiGraph, v: int):
+    in_edges = D.in_edges(v, data=True)
+    yv = min((data["w"]
+              for _, _, data in in_edges))
+    for u, _, _ in in_edges:
+        D[u][v]["w"] -= yv
 \end{lstlisting}
-	\begin{block}{Complexidade Total}
-		\begin{itemize}
-			\item Fase I: $O(|V||A|)$
-			\item Fase II: $O(|V| \log |V|)$ (heap)
-			\item \textbf{Total}: $O(|V|(|A| + \log |V|))$
-		\end{itemize}
-	\end{block}
 
-	{\small A Fase II é significativamente mais rápida usando heap do que lista!}
+		\column{0.45\textwidth}
+		\textbf{Descrição:}
+		\begin{itemize}
+			\item Calcula $\lambda(v) = \min\{w(a) : a \in \delta^-(v)\}$
+			\item Reduz o custo de cada arco que entra em $v$
+			\item Complexidade: $O(k)$ $|A|$ onde $k$ é o número de arcos entrando em $v$
+		\end{itemize}
+	\end{columns}
+
+	\begin{block}{Resultado}
+		Após executar \texttt{reduce\_weights(D, v)} para cada $v \neq r$, todos os vértices têm ao menos um arco de entrada com custo zero.
+	\end{block}
