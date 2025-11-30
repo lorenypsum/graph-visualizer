@@ -872,13 +872,13 @@ return F_prime
 			      \item $\sigma := \epsilon$ (sequência vazia)
 			      \item $F := \emptyset$ (conjunto de arcos selecionados)
 		      \end{itemize}
-		\item \textbf{Enquanto} existir fonte $R_k$ em $\mathcal{C}(D_0)$ com $r \notin R_k$:
+		\item \textbf{Enquanto} existir fonte $R$ em $\mathcal{C}(D_0)$ com $r \notin R$:
 		      \begin{itemize}
-			      \item Calcular $\lambda_k := \min\{c(a) : a \in \delta^-(R_k)\}$
-			      \item Selecionar $f_k \in \delta^-(R_k)$ com $c(f_k) = \lambda_k$
-			      \item $\sigma := \sigma \cdot (f_k, R_k, \lambda_k)$
-			      \item $F := F \cup \{f_k\}$
-			      \item $c := c - \lambda_k \mathbf{1}_{\delta^-(R_k)}$ {\small (reduzir custos)}
+			      \item Calcular $\lambda := \min\{c(a) : a \in \delta^-(R)\}$
+			      \item Selecionar $f \in \delta^-(R)$ com $c(f) = \lambda$
+			      \item $\sigma := \sigma \cdot (f, R, \lambda)$
+			      \item $F := F \cup \{f\}$
+			      \item $c := c - \lambda \mathbf{1}_{\delta^-(R)}$ {\small (reduzir custos)}
 			      \item $D_0 := (V, F)$ {\small (atualizar digrafo auxiliar)}
 		      \end{itemize}
 		\item \textbf{Devolver}: $\sigma$
