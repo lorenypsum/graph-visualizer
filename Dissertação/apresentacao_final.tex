@@ -1062,45 +1062,71 @@ def update_weights(D: nx.DiGraph,
   \end{frame}
 \fi
 
-% \begin{frame}{Exemplo: Digrafo Inicial}
-%   \begin{columns}[c]
-%     \column{0.48\textwidth}
-%     \textbf{Digrafo ponderado $(D,w,r)$:}
+\begin{frame}{Exemplo: Digrafo Inicial}
+  \begin{columns}[c]
+    \column{0.48\textwidth}
+    \textbf{Digrafo ponderado $(D,w,r)$:}
 
-%     \vspace{0.2cm}
-%     \begin{itemize}
-%       \item Vértices: $\{r, a, b, c\}$
-%       \item Raiz: $r$
-%     \end{itemize}
+    \vspace{0.2cm}
+    \begin{itemize}
+      \item Vértices: $\{r, a, b, c\}$
+      \item Raiz: $r$
+    \end{itemize}
 
-%     \vspace{0.3cm}
-%     \textbf{Pesos dos arcos:}
-%     \begin{itemize}
-%       \item $(r,a): 3$, $(r,b): 4$, $(r,c): 5$
-%       \item $(a,b): 3$, $(b,c): 2$
-%       \item $(c,a): 3$
-%     \end{itemize}
-%     \column{0.52\textwidth}
-%     \begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
-%         v/.style={circle, draw, fill=blue!8, minimum size=7mm},
-%         arc/.style={->, thick, draw=gray!70}]
-%       \node[v,fill=red!20] (r) {\small $r$};
-%       \node[v] (a) [right=2.2cm of r] {\small $a$};
-%       \node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
-%       \node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
+    \vspace{0.3cm}
+    \textbf{Pesos dos arcos:}
+    \begin{itemize}
+      \item $(r,a): 3$, $(r,b): 4$, $(r,c): 5$
+      \item $(a,b): 3$, $(b,c): 2$
+      \item $(c,a): 3$
+    \end{itemize}
+    \column{0.52\textwidth}
+    \begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
+        v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+        arc/.style={->, thick, draw=gray!70}]
+      \node[v,fill=red!20] (r) {\small $r$};
+      \node[v] (b) [right=1.8cm of r] {\small $b$};
+      \node[v] (a) [above=1.2cm of b] {\small $a$};
+      \node[v] (c) [below=1.2cm of b] {\small $c$};
 
-%       \draw[arc] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (a);
-%       \draw[arc] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (b);
-%       \draw[arc] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (c);
-%       \draw[arc] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (b);
-%       \draw[arc] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
-%       \draw[arc] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (a);
-%     \end{tikzpicture}
-%   \end{columns}
-%   \begin{alertblock}{Problema}
-%     Aplicar o algoritmo de András Frank para encontrar a $r$-arborescência geradora de peso mínimo.
-%   \end{alertblock}
-% \end{frame}
+      \node[v] (g) [below right=1.4cm and 1.5cm of b] {\small $g$};
+
+      \node[v] (d) [right=1.2cm of b] {\small $d$};
+
+      \node[v] (f) [right=1.2cm of d] {\small $f$};
+
+      \node[v] (e) [above right=1.2cm and 0.6cm of d] {\small $e$};
+
+      \draw[arc] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 4} (a);
+      \draw[arc] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 6} (b);
+      \draw[arc] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (c);
+
+
+      \draw[arc] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 8} (b);
+
+
+      \draw[arc] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
+      \draw[arc] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 5} (d);
+
+      % \draw[arc] (c) to[bend left=12] node[midway, above, sloped] {\scriptsize 4} (g);
+      \draw[arc] (c) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (f);
+
+      % \draw[arc] (d) to[bend left=14] node[midway, below, sloped] {\scriptsize 4} (e);
+      % \draw[arc] (d) to[bend left=14] node[midway, below, sloped] {\scriptsize 4} (g);
+
+      % \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (a);
+      % \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 2} (f);
+      % \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 4} (d);
+
+      % \draw[arc] (f) to[bend left=14] node[midway, below, sloped] {\scriptsize 1} (d);
+
+
+    \end{tikzpicture}
+  \end{columns}
+  \begin{alertblock}{Problema}
+    Aplicar o algoritmo de András Frank para encontrar a $r$-arborescência geradora de peso mínimo.
+  \end{alertblock}
+\end{frame}
 
 % \begin{frame}{Fase I: Iteração 1 - Encontrar $r$-conjunto Minimal}
 %   \begin{columns}[c]

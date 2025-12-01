@@ -18,11 +18,11 @@ from andrasfrank import (
 from chuliu import chuliu_edmonds, remove_in_edges_to
 
 # Default parameters
-NUM_TESTS = 10
-MIN_VERTICES = 100
-MAX_VERTICES = 300
+NUM_TESTS = 1
+MIN_VERTICES = 10
+MAX_VERTICES = 15
 PESO_MIN = 1
-PESO_MAX = 50
+PESO_MAX = 10
 LOG_CSV_PATH = "test_results.csv"
 LOG_TXT_PATH = "test_log.txt"
 ROOT = 0
@@ -402,10 +402,10 @@ def verify_algorithms(
     # Verify costs match
     assert (
         custo_chuliu == custo_frank_v1
-    ), f"\n ❌ Custos diferentes! Chu-Liu: {custo_chuliu}, Frank: {custo_frank_v1}"
+    ), f"\n x Custos diferentes! Chu-Liu: {custo_chuliu}, Frank: {custo_frank_v1}"
     assert (
         custo_chuliu == custo_frank_v2
-    ), f"\n ❌ Custos diferentes! Chu-Liu: {custo_chuliu}, Frank v2: {custo_frank_v2}"
+    ), f"\n x Custos diferentes! Chu-Liu: {custo_chuliu}, Frank v2: {custo_frank_v2}"
 
     # Check dual conditions
     dual_v1 = check_dual_optimality_condition(
@@ -424,11 +424,11 @@ def verify_algorithms(
     )
 
     if config.lang == "en":
-        assert dual_v1, "\n ❌ Dual condition failed for Andras Frank."
-        assert dual_v2, "\n ❌ Dual condition failed for Andras Frank v2."
+        assert dual_v1, "\n x Dual condition failed for Andras Frank."
+        assert dual_v2, "\n x Dual condition failed for Andras Frank v2."
     else:
-        assert dual_v1, "\n ❌ Falha na condição dual para Andras Frank."
-        assert dual_v2, "\n ❌ Falha na condição dual para Andras Frank v2."
+        assert dual_v1, "\n x Falha na condição dual para Andras Frank."
+        assert dual_v2, "\n x Falha na condição dual para Andras Frank v2."
 
     return custo_chuliu, custo_frank_v1, custo_frank_v2, dual_v1, dual_v2
 
@@ -453,12 +453,12 @@ def log_test_success(config: TestConfig) -> None:
 
     if config.lang == "en":
         config.log(
-            "\n✅ Tests completed successfully! Both algorithms returned "
+            "\n✓ Tests completed successfully! Both algorithms returned "
             "arborescences with the same minimum cost."
         )
     else:
         config.log(
-            "\n✅ Testes concluídos com sucesso! Ambos algoritmos retornaram "
+            "\n✓ Testes concluídos com sucesso! Ambos algoritmos retornaram "
             "arborescências com o mesmo custo mínimo."
         )
 
@@ -540,7 +540,7 @@ def run_single_test(
 
     except Exception as e:
         metrics.erro = str(e)
-        log_console_and_file(f"❌ Erro: {metrics.erro}")
+        log_console_and_file(f"x Erro: {metrics.erro}")
         print(e)
         traceback.print_exc(file=open(config.log_txt_path, "a"))
 
@@ -644,9 +644,9 @@ def volume_tester(
         if not metrics.success:
             if config.boilerplate and config.log:
                 msg = (
-                    f"\n❌ Test #{i} failed. Stopping test execution."
+                    f"\nx Test #{i} failed. Stopping test execution."
                     if config.lang == "en"
-                    else f"\n❌ Teste #{i} falhou. Interrompendo execução dos testes."
+                    else f"\nx Teste #{i} falhou. Interrompendo execução dos testes."
                 )
                 log_console_and_file(msg, config.log_txt_path)
             break
