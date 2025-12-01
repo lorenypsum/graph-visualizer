@@ -2226,7 +2226,7 @@ def andras_frank(D: nx.DiGraph, r: int):
     \vspace{0.2cm}
     \textbf{Procurar em $F$:}
     \begin{itemize}
-      \item $f_1=(c,f)$: $c \in U$, $f \notin U$ \checkmark
+      \item $f_5=(c,f)$: $c \in U$, $f \notin U$ \checkmark
     \end{itemize}
 
     \vspace{0.2cm}
@@ -2295,7 +2295,7 @@ def andras_frank(D: nx.DiGraph, r: int):
     \vspace{0.2cm}
     \textbf{Procurar em $F$:}
     \begin{itemize}
-      \item $f_1=(f,d)$: $f \in U$, $d \notin U$ \checkmark
+      \item $f_4=(f,d)$: $f \in U$, $d \notin U$ \checkmark
     \end{itemize}
 
     \vspace{0.2cm}
@@ -2364,7 +2364,7 @@ def andras_frank(D: nx.DiGraph, r: int):
     \vspace{0.2cm}
     \textbf{Procurar em $F$:}
     \begin{itemize}
-      \item $f_1=(d,g)$: $d \in U$, $g \notin U$ \checkmark
+      \item $f_3=(d,g)$: $d \in U$, $g \notin U$ \checkmark
     \end{itemize}
 
     \vspace{0.2cm}
@@ -2433,7 +2433,7 @@ def andras_frank(D: nx.DiGraph, r: int):
     \vspace{0.2cm}
     \textbf{Procurar em $F$:}
     \begin{itemize}
-      \item $f_1=(d,e)$: $d \in U$, $e \notin U$ \checkmark
+      \item $f_6=(d,e)$: $d \in U$, $e \notin U$ \checkmark
     \end{itemize}
 
     \vspace{0.2cm}
@@ -2497,20 +2497,20 @@ def andras_frank(D: nx.DiGraph, r: int):
 \begin{frame}{Fase II: Iteração 7}
   \begin{columns}[c]
     \column{0.48\textwidth}
-    % \textbf{Estado:} $U = \{r\}$, $J = \emptyset$
+    \textbf{Estado:} $U = \{r,b,c,f,d,g,e\}$
 
-    % \vspace{0.2cm}
-    % \textbf{Procurar em $F$:}
-    % \begin{itemize}
-    %   \item $f_0=(r,a)$: $r \in U$, $a \notin U$ \checkmark
-    % \end{itemize}
+    \vspace{0.2cm}
+    \textbf{Procurar em $F$:}
+    \begin{itemize}
+      \item $f_2=(e,a)$: $e \in U$, $a \notin U$ \checkmark
+    \end{itemize}
 
-    % \vspace{0.2cm}
-    % \textbf{Ação:}
-    % \begin{itemize}
-    %   \item Adicionar $(r,a)$ a $J$
-    %   \item $U := U \cup \{a\} = \{r,a\}$
-    % \end{itemize}
+    \vspace{0.2cm}
+    \textbf{Ação:}
+    \begin{itemize}
+      \item Adicionar $(e,a)$ a $J$
+      \item $U := U \cup \{e\} = \{r,b,c,f,d,g,e,a\}$
+    \end{itemize}
 
     \column{0.52\textwidth}
     \begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
