@@ -1076,9 +1076,9 @@ def update_weights(D: nx.DiGraph,
     \vspace{0.02cm}
     \textbf{Pesos dos arcos:}
     \begin{itemize}
-      \item $(r,a): 4$, $(r,b): 6$, $(r,c): 5$
+      \item $(r,a): 5$, $(r,b): 6$, $(r,c): 5$
       \item $(a,b): 8$, $(b,c): 2$, $(b,d): 5$
-      \item $(c,g): 4$, $(c,f): 3$, $(d,g): 4$
+      \item $(c,g): 8$, $(c,f): 3$, $(d,g): 4$
       \item $(d,e): 4$, $(e,d): 4$, $(e,a): 3$
       \item $(e,f): 2$, $(f,d): 1$
     \end{itemize}
@@ -1099,7 +1099,7 @@ def update_weights(D: nx.DiGraph,
 
       \node[v] (e) [above right=1.2cm and 0.6cm of d] {\small $e$};
 
-      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 4} (a);
+      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 5} (a);
       \draw[arc] (r) to node[midway, above, sloped] {\scriptsize 6} (b);
       \draw[arc] (r) to[bend right=13] node[midway, below, sloped] {\scriptsize 5} (c);
 
@@ -1180,7 +1180,7 @@ def update_weights(D: nx.DiGraph,
 
       \node[v] (e) [above right=1.2cm and 0.6cm of d] {\small $e$};
 
-      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 4} (a);
+      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 5} (a);
       \draw[arc] (r) to node[midway, above, sloped] {\scriptsize 6} (b);
       \draw[arc] (r) to[bend right=13] node[midway, below, sloped] {\scriptsize 5} (c);
 
@@ -1252,7 +1252,7 @@ def update_weights(D: nx.DiGraph,
 
       \node[v] (e) [above right=1.2cm and 0.6cm of d] {\small $e$};
 
-      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 4} (a);
+      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 5} (a);
       \draw[arc] (r) to node[midway, above, sloped] {\scriptsize \textcolor{green} 1} (b);
       \draw[arc] (r) to[bend right=13] node[midway, below, sloped] {\scriptsize 5} (c);
 
@@ -1335,7 +1335,7 @@ def update_weights(D: nx.DiGraph,
 
       \node[v] (e) [above right=1.2cm and 0.6cm of d] {\small $e$};
 
-      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 4} (a);
+      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 5} (a);
       \draw[arc] (r) to node[midway, above, sloped] {\scriptsize 1} (b);
       \draw[arc] (r) to[bend right=13] node[midway, below, sloped] {\scriptsize \textcolor{green} 3} (c);
 
@@ -1385,7 +1385,7 @@ def update_weights(D: nx.DiGraph,
     \vspace{0.2cm}
     Arcos que entram em $\{a\}$:
     \begin{itemize}
-      \item $(r,a): 4$ 
+      \item $(r,a): 5$ 
       \item $(e,a): 3$ ← \textbf{mínimo}
     \end{itemize}
 
@@ -1416,7 +1416,7 @@ def update_weights(D: nx.DiGraph,
 
       \node[v] (e) [above right=1.2cm and 0.6cm of d] {\small $e$};
 
-      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize \textcolor{green} 1} (a);
+      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize \textcolor{green} 2} (a);
       \draw[arc] (r) to node[midway, above, sloped] {\scriptsize 1} (b);
       \draw[arc] (r) to[bend right=13] node[midway, below, sloped] {\scriptsize 3} (c);
 
@@ -1491,7 +1491,7 @@ def update_weights(D: nx.DiGraph,
 
       \node[v] (e) [above right=1.2cm and 0.6cm of d] {\small $e$};
 
-      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 1} (a);
+      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 2} (a);
       \draw[arc] (r) to node[midway, above, sloped] {\scriptsize 1} (b);
       \draw[arc] (r) to[bend right=13] node[midway, below, sloped] {\scriptsize 3} (c);
 
@@ -1567,7 +1567,7 @@ def update_weights(D: nx.DiGraph,
 
       \node[v] (e) [above right=1.2cm and 0.6cm of d] {\small $e$};
 
-      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 1} (a);
+      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 2} (a);
       \draw[arc] (r) to node[midway, above, sloped] {\scriptsize 1} (b);
       \draw[arc] (r) to[bend right=13] node[midway, below, sloped] {\scriptsize 3} (c);
 
@@ -1642,7 +1642,7 @@ def update_weights(D: nx.DiGraph,
 
       \node[v] (e) [above right=1.2cm and 0.6cm of d] {\small $e$};
 
-      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 1} (a);
+      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 2} (a);
       \draw[arc] (r) to node[midway, above, sloped] {\scriptsize 1} (b);
       \draw[arc] (r) to[bend right=13] node[midway, below, sloped] {\scriptsize 3} (c);
 
@@ -1716,7 +1716,7 @@ def update_weights(D: nx.DiGraph,
 
       \node[v] (e) [above right=1.2cm and 0.6cm of d] {\small $e$};
 
-      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 1} (a);
+      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 2} (a);
       \draw[arc] (r) to node[midway, above, sloped] {\scriptsize 1} (b);
       \draw[arc] (r) to[bend right=13] node[midway, below, sloped] {\scriptsize 3} (c);
 
@@ -1748,254 +1748,820 @@ def update_weights(D: nx.DiGraph,
   \end{columns}
 \end{frame}
 
-% \begin{frame}{Fase I: Iteração 5 - Estado Final}
+% \begin{frame}{Fase I: Iteração 9 - Redução de Pesos}
 %   \begin{columns}[c]
 %     \column{0.48\textwidth}
-%     \textbf{Atualização:}
-%     \begin{itemize}
-%       \item $F = \{(r,a), (a,b), (b,c)\}$
-%       \item $D_0 = (V, F)$
-%     \end{itemize}
+%     \textbf{Estado:} $F = \{(g,b), (b,c), (e,a), (d,g), (f,d), (c,f), (d,e)\}$
 
 %     \vspace{0.2cm}
-%     \textbf{Redução:}
-%     \begin{itemize}
-%       \item $c(b,c) = 2 - 2 = 0$
-%     \end{itemize}
-
-%     \vspace{0.2cm}
-%     $\mathcal{C}(D_0)$ com $F = \{(r,a), (a,b), (b,c)\}$:
-
-%     \vspace{0.2cm}
-%     \textbf{Condição de parada satisfeita!}
-
-%     \column{0.52\textwidth}
-%     \begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.85, transform shape,
-%         v/.style={circle, draw, fill=blue!8, minimum size=7mm},
-%         zero/.style={->, very thick, draw=blue!70},
-%         arc/.style={->, thick, draw=gray!70}]
-%       \node[v,fill=red!20] (r) {\small $r$};
-%       \node[v] (a) [right=2.2cm of r] {\small $a$};
-%       \node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
-%       \node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
-
-%       \draw[zero] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 0} (a);
-%       \draw[arc] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (b);
-%       \draw[arc] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (c);
-%       \draw[zero] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (b);
-%       \draw[zero] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (c);
-%       \draw[zero] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (a);
-%     \end{tikzpicture}
-
-%     {\small Todos arcos de $F$ têm peso zero!}
-%   \end{columns}
-%   \begin{block}{Sequência devolvida}
-%     $\sigma = [(f_0=(r,a), R_0=\{a\}, \lambda_0=3), (f_1=(a,b), R_1=\{b\}, \lambda_1=3), (f_2=(b,c), R_2=\{c\}, \lambda_2=2)]$
-%   \end{block}
-% \end{frame}
-
-% \begin{frame}{Intermissão}
-%   \begin{center}
-%     \LARGE
-%     Fase II: Duas Abordagens
-%   \end{center}
-% \end{frame}
-
-% \begin{frame}{Fase II: Construção da Arborescência}
-%   \textbf{Entrada:} Sequência $(f_i)_{i \in [k)}$ da Fase I
-
-%   \textbf{Objetivo:} Extrair $J \subseteq \{f_i : i \in [k)\}$ que é uma $r$-arborescência geradora
-
-%   \textbf{Algoritmo guloso:}
-%   \begin{enumerate}
-%     \item Iniciar com $U := \{r\}$ e $J := \emptyset$
-%     \item Para $t = 1$ até $|V|-1$:
-%           \begin{itemize}
-%             \item Para cada $f_i = (u_i, v_i)$ na sequência:
-%             \item Se $u_i \in U$ e $v_i \notin U$:
-%                   \begin{itemize}
-%                     \item $U := U \cup \{v_i\}$
-%                     \item $J := J \cup \{f_i\}$
-%                     \item Passar para próxima iteração
-%                   \end{itemize}
-%           \end{itemize}
-%   \end{enumerate}
-%   \begin{block}{Invariante}
-%     Em cada iteração, $\varrho_J(R_i) \le 1$ para todo $i \in [k)$
-%   \end{block}
-% \end{frame}
-
-% \ifshowimplementation
-%   \begin{frame}[fragile]{Fase II: Implementação - Versão Lista}
-%     \textbf{Versão 1: Iteração sobre lista}
-
-%     \begin{lstlisting}[basicstyle=\tiny\ttfamily]
-% def phase2(D: nx.DiGraph, r: int, 
-%            F: list[tuple[int, int]]):
-%     Arb = nx.DiGraph()
-%     Arb.add_node(r)
-%     n = len(D.nodes())
     
-%     for _ in range(n - 1):
-%         for u, v in F:
-%             if u in Arb.nodes() and v not in Arb.nodes():
-%                 edge_data = D.get_edge_data(u, v)
-%                 Arb.add_edge(u, v, **edge_data)
-%                 break
-    
-%     return Arb
-% \end{lstlisting}
+%     \textbf{Escolha:} $R_7 = \{e\}$
 
-%     \vspace{0.05cm}
-%     {\small \textbf{Complexidade:} $O(|V||F|) = O(|V|^2)$ pois $|F| \le 2|V|-1$}
-%   \end{frame}
-% \fi
-
-% \ifshowimplementation
-%   \begin{frame}[fragile]{Fase II: Implementação - Versão Heap}
-%     \textbf{Versão 2: Usando fila de prioridade (estilo Dijkstra)}
-
-%     \begin{lstlisting}[basicstyle=\tiny\ttfamily]
-% def phase2_v2(D, r, F):
-%     Arb = nx.DiGraph()
-%     for i, (u, v) in enumerate(F):
-%         Arb.add_edge(u, v, w=i)  # prioridade = indice
-    
-%     V = {r}
-%     q = []
-%     for u, v, data in Arb.out_edges(r, data=True):
-%         heapq.heappush(q, (data["w"], u, v))
-    
-%     J = nx.DiGraph()
-%     while q:
-%         _, u, v = heapq.heappop(q)
-%         if v in V: continue
-%         J.add_edge(u, v, w=D[u][v]["w"])
-%         V.add(v)
-%         for x, y, data in Arb.out_edges(v, data=True):
-%             heapq.heappush(q, (data["w"], x, y))
-%     return J
-% \end{lstlisting}
-
-%     \vspace{0.05cm}
-%     {\small \textbf{Complexidade:} $O(|V| \log |V|)$ usando heap binário}
-%   \end{frame}
-% \fi
-
-% \ifshowimplementation
-%   \begin{frame}[fragile]{Algoritmo Completo de Frank}
-%     \textbf{Composição das duas fases:}
-%     \begin{lstlisting}[basicstyle=\scriptsize\ttfamily]
-% def andras_frank(D: nx.DiGraph, r: int):
-%     # Fase I: construir cobertura
-%     sigma = phase1(D, r)
-%     F = [f for f, _, _ in sigma]
-%     # Fase II: extrair arborescencia
-%     J = phase2_v2(D, r, F)
-%     return J
-% \end{lstlisting}
-%     \begin{block}{Complexidade Total}
-%       \begin{itemize}
-%         \item Fase I: $O(|V||A|)$
-%         \item Fase II: $O(|V| \log |V|)$ (heap)
-%         \item \textbf{Total}: $O(|V|(|A| + \log |V|))$
-%       \end{itemize}
-%     \end{block}
-
-%     {\small A Fase II é significativamente mais rápida usando heap do que lista!}
-%   \end{frame}
-% \fi
-
-% \begin{frame}{Fase II: Exemplo - Extração da Arborescência}
-%   \begin{columns}[c]
-%     \column{0.48\textwidth}
-%     \textbf{Entrada da Fase II:}
+%     \vspace{0.2cm}
+%     Arcos que entram em $\{e\}$:
 %     \begin{itemize}
-%       \item $F = [f_0, f_1, f_2]$ $= [(r,a), (a,b), (b,c)]$
+%       \item $(d,e): 4$ ← \textbf{mínimo}
 %     \end{itemize}
 
 %     \vspace{0.2cm}
-%     \textbf{Estado inicial:}
+%     \textbf{Seleção:}
 %     \begin{itemize}
-%       \item $U = \{r\}$ (alcançados)
-%       \item $J = \emptyset$ (arborescência)
-%     \end{itemize}
-
-%     \vspace{0.2cm}
-%     \textbf{Objetivo:}
-%     \begin{itemize}
-%       \item Selecionar $|V|-1 = 3$ arcos
-%       \item Manter propriedade de arborescência
-%     \end{itemize}
-
-%     \column{0.45\textwidth}
-%     \begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.85, transform shape,
-%         v/.style={circle, draw, fill=blue!8, minimum size=7mm},
-%         inU/.style={circle, draw, fill=green!20, minimum size=7mm},
-%         arc/.style={->, thick, draw=gray!70},
-%         covered/.style={->, thick, draw=blue!70}]
-%       \node[v,fill=red!20,inU] (r) {\small $r$};
-%       \node[v] (a) [right=2.2cm of r] {\small $a$};
-%       \node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
-%       \node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
-
-%       \draw[covered] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (a);
-%       \draw[arc] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (b);
-%       \draw[arc] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (c);
-%       \draw[covered] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (b);
-%       \draw[covered] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
-%       \draw[arc] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (a);
-%     \end{tikzpicture}
-
-%     {\small Verde = vértices em $U$}
-%   \end{columns}
-
-%   \begin{alertblock}{Observação}
-%     Fase II precisa considerar \textbf{todos} arcos de $D$, não apenas $F$.
-%   \end{alertblock}
-% \end{frame}
-
-% \begin{frame}{Fase II: Iteração 1}
-%   \begin{columns}[c]
-%     \column{0.48\textwidth}
-%     \textbf{Estado:} $U = \{r\}$, $J = \emptyset$
-
-%     \vspace{0.2cm}
-%     \textbf{Procurar em $F$:}
-%     \begin{itemize}
-%       \item $f_0=(r,a)$: $r \in U$, $a \notin U$ \checkmark
-%     \end{itemize}
-
-%     \vspace{0.2cm}
-%     \textbf{Ação:}
-%     \begin{itemize}
-%       \item Adicionar $(r,a)$ a $J$
-%       \item $U := U \cup \{a\} = \{r,a\}$
+%       \item $\lambda_7 = 4$
+%       \item $f_7 = (d,e)$
 %     \end{itemize}
 
 %     \column{0.52\textwidth}
 %     \begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
 %         v/.style={circle, draw, fill=blue!8, minimum size=7mm},
-%         inU/.style={circle, draw, fill=green!20, minimum size=7mm},
+%         rset/.style={draw=orange!70, very thick, dashed, rounded corners},
+%         arc/.style={->, thick, draw=gray!70},
 %         selected/.style={->, very thick, draw=green!70},
-%         arc/.style={->, thick, draw=gray!60}]
-%       \node[inU,fill=red!20] (r) {\small $r$};
-%       \node[inU] (a) [right=2.2cm of r] {\small $a$};
-%       \node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
-%       \node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
+%         zero/.style={->, very thick, draw=blue!70}]
+%       \node[v,fill=red!20] (r) {\small $r$};
+%       \node[v] (b) [right=1.8cm of r] {\small $b$};
+%       \node[v] (a) [above=1.2cm of b] {\small $a$};
+%       \node[v] (c) [below=1.2cm of b] {\small $c$};
 
-%       \draw[selected] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (a);
-%       \draw[arc] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (b);
-%       \draw[arc] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (c);
-%       \draw[arc] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (b);
-%       \draw[arc] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
-%       \draw[arc] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (a);
+%       \node[v] (g) [below right=1.4cm and 1.5cm of b] {\small $g$};
+
+%       \node[v] (d) [right=1.2cm of b] {\small $d$};
+
+%       \node[v] (f) [right=1.2cm of d] {\small $f$};
+
+%       \node[v] (e) [above right=1.2cm and 0.6cm of d] {\small $e$};
+
+%       \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 2} (a);
+%       \draw[arc] (r) to node[midway, above, sloped] {\scriptsize 1} (b);
+%       \draw[arc] (r) to[bend right=13] node[midway, below, sloped] {\scriptsize 3} (c);
+
+
+%       \draw[arc] (a) to node[midway, above, sloped] {\scriptsize 3} (b);
+
+
+%       \draw[zero] (b) to node[midway, above, sloped] {\scriptsize 0} (c);
+%       \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 4} (d);
+
+%       \draw[arc] (c) to node[midway, above, sloped] {\scriptsize 4} (g);
+%       \draw[zero] (c) to[bend right=70] node[midway, below, sloped] {\scriptsize 0} (f);
+
+%       \draw[selected] (d) to[bend left=14] node[midway, above, sloped] {\scriptsize \textcolor{green} 4} (e);
+%       \draw[zero] (d) to node[midway, below, sloped] {\scriptsize 0} (g);
+
+%       \draw[zero] (e) to node[midway, above, sloped] {\scriptsize 0} (a);
+%       \draw[arc] (e) to[bend left=14] node[midway, above, sloped] {\scriptsize 3} (f);
+%       \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (d);
+
+%       \draw[zero] (g) to node[midway, above, sloped] {\scriptsize 0} (b);
+
+%       \draw[zero] (f) to node[midway, below, sloped] {\scriptsize 0} (d);
+
+%       \node[rset, fit=(e)] {};
+%       \node[orange!70, above=0.2cm of e] {\small $R_5$};
+      
 %     \end{tikzpicture}
-
-%     {\small $J = \{(r,a)\}$, peso = 3}
 %   \end{columns}
 % \end{frame}
 
+\begin{frame}{Fase I: Iteração 9 - Estado Final}
+  \begin{columns}[c]
+    \column{0.48\textwidth}
+    
+    \textbf{Redução:}
+    \begin{itemize}
+      \item $c(r,b) = 1 - 1 = 0$
+    \end{itemize}
+
+    
+    \vspace{0.2cm}
+    \textbf{Condição de parada satisfeita!}
+
+    \column{0.52\textwidth}
+    \begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
+        v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+        rset/.style={draw=orange!70, very thick, dashed, rounded corners},
+        arc/.style={->, thick, draw=gray!70},
+        selected/.style={->, very thick, draw=green!70},
+        zero/.style={->, very thick, draw=blue!70}]
+      \node[v,fill=red!20] (r) {\small $r$};
+      \node[v] (b) [right=1.8cm of r] {\small $b$};
+      \node[v] (a) [above=1.2cm of b] {\small $a$};
+      \node[v] (c) [below=1.2cm of b] {\small $c$};
+
+      \node[v] (g) [below right=1.4cm and 1.5cm of b] {\small $g$};
+
+      \node[v] (d) [right=1.2cm of b] {\small $d$};
+
+      \node[v] (f) [right=1.2cm of d] {\small $f$};
+
+      \node[v] (e) [above right=1.2cm and 0.6cm of d] {\small $e$};
+
+      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize \textcolor{green} 1} (a);
+      \draw[selected] (r) to node[midway, above, sloped] {\scriptsize \textcolor{green} 0} (b);
+      \draw[arc] (r) to[bend right=13] node[midway, below, sloped] {\scriptsize \textcolor{green} 2} (c);
+
+
+      \draw[arc] (a) to node[midway, above, sloped] {\scriptsize 3} (b);
+
+
+      \draw[zero] (b) to node[midway, above, sloped] {\scriptsize 0} (c);
+      \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 4} (d);
+
+      \draw[arc] (c) to node[midway, above, sloped] {\scriptsize 4} (g);
+      \draw[zero] (c) to[bend right=70] node[midway, below, sloped] {\scriptsize 0} (f);
+
+      \draw[zero] (d) to[bend left=14] node[midway, above, sloped] {\scriptsize 4} (e);
+      \draw[zero] (d) to node[midway, below, sloped] {\scriptsize 0} (g);
+
+      \draw[zero] (e) to node[midway, above, sloped] {\scriptsize 0} (a);
+      \draw[arc] (e) to[bend left=14] node[midway, above, sloped] {\scriptsize 3} (f);
+      \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (d);
+
+      \draw[zero] (g) to node[midway, above, sloped] {\scriptsize 0} (b);
+
+      \draw[zero] (f) to node[midway, below, sloped] {\scriptsize 0} (d);
+
+      
+    \end{tikzpicture}
+
+    {\small Todos arcos de $F$ têm peso zero!}
+  \end{columns}
+  % \begin{block}{Sequência devolvida}
+  %   $\sigma = [(f_0=(r,a), R_0=\{a\}, \lambda_0=3), (f_1=(a,b), R_1=\{b\}, \lambda_1=3), (f_2=(b,c), R_2=\{c\}, \lambda_2=2)]$
+  % \end{block}
+\end{frame}
+
+\begin{frame}{Intermissão}
+  \begin{center}
+    \LARGE
+    Fase II: Duas Abordagens
+  \end{center}
+\end{frame}
+
+\begin{frame}{Fase II: Construção da Arborescência}
+  \textbf{Entrada:} Sequência $(f_i)_{i \in [k)}$ da Fase I
+
+  \textbf{Objetivo:} Extrair $J \subseteq \{f_i : i \in [k)\}$ que é uma $r$-arborescência geradora
+
+  \textbf{Algoritmo guloso:}
+  \begin{enumerate}
+    \item Iniciar com $U := \{r\}$ e $J := \emptyset$
+    \item Para $t = 1$ até $|V|-1$:
+          \begin{itemize}
+            \item Para cada $f_i = (u_i, v_i)$ na sequência:
+            \item Se $u_i \in U$ e $v_i \notin U$:
+                  \begin{itemize}
+                    \item $U := U \cup \{v_i\}$
+                    \item $J := J \cup \{f_i\}$
+                    \item Passar para próxima iteração
+                  \end{itemize}
+          \end{itemize}
+  \end{enumerate}
+  \begin{block}{Invariante}
+    Em cada iteração, $\varrho_J(R_i) \le 1$ para todo $i \in [k)$
+  \end{block}
+\end{frame}
+
+\ifshowimplementation
+  \begin{frame}[fragile]{Fase II: Implementação - Versão Lista}
+    \textbf{Versão 1: Iteração sobre lista}
+
+    \begin{lstlisting}[basicstyle=\tiny\ttfamily]
+def phase2(D: nx.DiGraph, r: int, 
+           F: list[tuple[int, int]]):
+    Arb = nx.DiGraph()
+    Arb.add_node(r)
+    n = len(D.nodes())
+    
+    for _ in range(n - 1):
+        for u, v in F:
+            if u in Arb.nodes() and v not in Arb.nodes():
+                edge_data = D.get_edge_data(u, v)
+                Arb.add_edge(u, v, **edge_data)
+                break
+    
+    return Arb
+\end{lstlisting}
+
+    \vspace{0.05cm}
+    {\small \textbf{Complexidade:} $O(|V||F|) = O(|V|^2)$ pois $|F| \le 2|V|-1$}
+  \end{frame}
+\fi
+
+\ifshowimplementation
+  \begin{frame}[fragile]{Fase II: Implementação - Versão Heap}
+    \textbf{Versão 2: Usando fila de prioridade (estilo Dijkstra)}
+
+    \begin{lstlisting}[basicstyle=\tiny\ttfamily]
+def phase2_v2(D, r, F):
+    Arb = nx.DiGraph()
+    for i, (u, v) in enumerate(F):
+        Arb.add_edge(u, v, w=i)  # prioridade = indice
+    
+    V = {r}
+    q = []
+    for u, v, data in Arb.out_edges(r, data=True):
+        heapq.heappush(q, (data["w"], u, v))
+    
+    J = nx.DiGraph()
+    while q:
+        _, u, v = heapq.heappop(q)
+        if v in V: continue
+        J.add_edge(u, v, w=D[u][v]["w"])
+        V.add(v)
+        for x, y, data in Arb.out_edges(v, data=True):
+            heapq.heappush(q, (data["w"], x, y))
+    return J
+\end{lstlisting}
+
+    \vspace{0.05cm}
+    {\small \textbf{Complexidade:} $O(|V| \log |V|)$ usando heap binário}
+  \end{frame}
+\fi
+
+\ifshowimplementation
+  \begin{frame}[fragile]{Algoritmo Completo de Frank}
+    \textbf{Composição das duas fases:}
+    \begin{lstlisting}[basicstyle=\scriptsize\ttfamily]
+def andras_frank(D: nx.DiGraph, r: int):
+    # Fase I: construir cobertura
+    sigma = phase1(D, r)
+    F = [f for f, _, _ in sigma]
+    # Fase II: extrair arborescencia
+    J = phase2_v2(D, r, F)
+    return J
+\end{lstlisting}
+    \begin{block}{Complexidade Total}
+      \begin{itemize}
+        \item Fase I: $O(|V||A|)$
+        \item Fase II: $O(|V| \log |V|)$ (heap)
+        \item \textbf{Total}: $O(|V|(|A| + \log |V|))$
+      \end{itemize}
+    \end{block}
+
+    {\small A Fase II é significativamente mais rápida usando heap do que lista!}
+  \end{frame}
+\fi
+
+\begin{frame}{Fase II: Exemplo - Extração da Arborescência}
+  \begin{columns}[c]
+    \column{0.48\textwidth}
+    \textbf{Entrada da Fase II:}
+    \begin{itemize}
+      \item $F = [f_0, f_1, f_2, f_3, f_4, f_5, f_6, f_7]$ $= [(b,g), (b,c), (e,a), (d,g), (f,d), (c,f), (d,e), (r,b)]$
+    \end{itemize}
+
+    \vspace{0.2cm}
+    \textbf{Estado inicial:}
+    \begin{itemize}
+      \item $U = \{r\}$ (alcançados)
+      \item $J = \emptyset$ (arborescência)
+    \end{itemize}
+
+    \vspace{0.2cm}
+    \textbf{Objetivo:}
+    \begin{itemize}
+      \item Selecionar $|V|-1 = 7$ arcos
+      \item Manter propriedade de arborescência
+    \end{itemize}
+
+    \column{0.45\textwidth}
+    \begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
+        v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+        rset/.style={draw=orange!70, very thick, dashed, rounded corners},
+        arc/.style={->, thick, draw=gray!70},
+        selected/.style={->, very thick, draw=green!70},
+        zero/.style={->, very thick, draw=blue!70}]
+      \node[v,fill=red!20] (r) {\small $r$};
+      \node[v] (b) [right=1.8cm of r] {\small $b$};
+      \node[v] (a) [above=1.2cm of b] {\small $a$};
+      \node[v] (c) [below=1.2cm of b] {\small $c$};
+
+      \node[v] (g) [below right=1.4cm and 1.5cm of b] {\small $g$};
+
+      \node[v] (d) [right=1.2cm of b] {\small $d$};
+
+      \node[v] (f) [right=1.2cm of d] {\small $f$};
+
+      \node[v] (e) [above right=1.2cm and 0.6cm of d] {\small $e$};
+
+      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 1} (a);
+      \draw[zero] (r) to node[midway, above, sloped] {\scriptsize 0} (b);
+      \draw[arc] (r) to[bend right=13] node[midway, below, sloped] {\scriptsize 2} (c);
+
+
+      \draw[arc] (a) to node[midway, above, sloped] {\scriptsize 3} (b);
+
+
+      \draw[zero] (b) to node[midway, above, sloped] {\scriptsize 0} (c);
+      \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 4} (d);
+
+      \draw[arc] (c) to node[midway, above, sloped] {\scriptsize 4} (g);
+      \draw[zero] (c) to[bend right=70] node[midway, below, sloped] {\scriptsize 0} (f);
+
+      \draw[zero] (d) to[bend left=14] node[midway, above, sloped] {\scriptsize 4} (e);
+      \draw[zero] (d) to node[midway, below, sloped] {\scriptsize 0} (g);
+
+      \draw[zero] (e) to node[midway, above, sloped] {\scriptsize 0} (a);
+      \draw[arc] (e) to[bend left=14] node[midway, above, sloped] {\scriptsize 3} (f);
+      \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (d);
+
+      \draw[zero] (g) to node[midway, above, sloped] {\scriptsize 0} (b);
+
+      \draw[zero] (f) to node[midway, below, sloped] {\scriptsize 0} (d);
+
+      
+    \end{tikzpicture}
+
+    {\small Verde = vértices em $U$}
+  \end{columns}
+
+  \begin{alertblock}{Observação}
+    Fase II precisa considerar \textbf{todos} arcos de $D$, não apenas $F$.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Fase II: Iteração 1}
+  \begin{columns}[c]
+    \column{0.48\textwidth}
+    % \textbf{Estado:} $U = \{r\}$, $J = \emptyset$
+
+    % \vspace{0.2cm}
+    % \textbf{Procurar em $F$:}
+    % \begin{itemize}
+    %   \item $f_0=(r,a)$: $r \in U$, $a \notin U$ \checkmark
+    % \end{itemize}
+
+    % \vspace{0.2cm}
+    % \textbf{Ação:}
+    % \begin{itemize}
+    %   \item Adicionar $(r,a)$ a $J$
+    %   \item $U := U \cup \{a\} = \{r,a\}$
+    % \end{itemize}
+
+    \column{0.52\textwidth}
+    \begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
+        v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+        arc/.style={->, thick, draw=gray!70},
+        selected/.style={->, very thick, draw=green!70},
+        zero/.style={->, very thick, draw=blue!70}]
+      \node[v,fill=red!20] (r) {\small $r$};
+      \node[v] (b) [right=1.8cm of r] {\small $b$};
+      \node[v] (a) [above=1.2cm of b] {\small $a$};
+      \node[v] (c) [below=1.2cm of b] {\small $c$};
+
+      \node[v] (g) [below right=1.4cm and 1.5cm of b] {\small $g$};
+
+      \node[v] (d) [right=1.2cm of b] {\small $d$};
+
+      \node[v] (f) [right=1.2cm of d] {\small $f$};
+
+      \node[v] (e) [above right=1.2cm and 0.6cm of d] {\small $e$};
+
+      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 5} (a);
+      \draw[arc] (r) to node[midway, above, sloped] {\scriptsize 6} (b);
+      \draw[arc] (r) to[bend right=13] node[midway, below, sloped] {\scriptsize 5} (c);
+
+
+      \draw[arc] (a) to node[midway, above, sloped] {\scriptsize 8} (b);
+
+
+      \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 2} (c);
+      \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 5} (d);
+
+      \draw[arc] (c) to node[midway, above, sloped] {\scriptsize 8} (g);
+      \draw[arc] (c) to[bend right=70] node[midway, below, sloped] {\scriptsize 3} (f);
+
+      \draw[arc] (d) to[bend left=14] node[midway, above, sloped] {\scriptsize 4} (e);
+      \draw[arc] (d) to node[midway, below, sloped] {\scriptsize 4} (g);
+
+      \draw[arc] (e) to node[midway, above, sloped] {\scriptsize 3} (a);
+      \draw[arc] (e) to[bend left=14] node[midway, above, sloped] {\scriptsize 6} (f);
+      \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 4} (d);
+
+      \draw[arc] (f) to node[midway, below, sloped] {\scriptsize 1} (d);
+      
+      \draw[arc] (g) to node[midway, above, sloped] {\scriptsize 5} (b);
+
+
+    \end{tikzpicture}
+
+    % {\small $J = \{(r,a)\}$, peso = 3}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Fase II: Iteração 2}
+  \begin{columns}[c]
+    \column{0.48\textwidth}
+    % \textbf{Estado:} $U = \{r\}$, $J = \emptyset$
+
+    % \vspace{0.2cm}
+    % \textbf{Procurar em $F$:}
+    % \begin{itemize}
+    %   \item $f_0=(r,a)$: $r \in U$, $a \notin U$ \checkmark
+    % \end{itemize}
+
+    % \vspace{0.2cm}
+    % \textbf{Ação:}
+    % \begin{itemize}
+    %   \item Adicionar $(r,a)$ a $J$
+    %   \item $U := U \cup \{a\} = \{r,a\}$
+    % \end{itemize}
+
+    \column{0.52\textwidth}
+    \begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
+        v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+        arc/.style={->, thick, draw=gray!70},
+        selected/.style={->, very thick, draw=green!70},
+        zero/.style={->, very thick, draw=blue!70}]
+      \node[v,fill=red!20] (r) {\small $r$};
+      \node[v] (b) [right=1.8cm of r] {\small $b$};
+      \node[v] (a) [above=1.2cm of b] {\small $a$};
+      \node[v] (c) [below=1.2cm of b] {\small $c$};
+
+      \node[v] (g) [below right=1.4cm and 1.5cm of b] {\small $g$};
+
+      \node[v] (d) [right=1.2cm of b] {\small $d$};
+
+      \node[v] (f) [right=1.2cm of d] {\small $f$};
+
+      \node[v] (e) [above right=1.2cm and 0.6cm of d] {\small $e$};
+
+      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 5} (a);
+      \draw[arc] (r) to node[midway, above, sloped] {\scriptsize 6} (b);
+      \draw[arc] (r) to[bend right=13] node[midway, below, sloped] {\scriptsize 5} (c);
+
+
+      \draw[arc] (a) to node[midway, above, sloped] {\scriptsize 8} (b);
+
+
+      \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 2} (c);
+      \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 5} (d);
+
+      \draw[arc] (c) to node[midway, above, sloped] {\scriptsize 8} (g);
+      \draw[arc] (c) to[bend right=70] node[midway, below, sloped] {\scriptsize 3} (f);
+
+      \draw[arc] (d) to[bend left=14] node[midway, above, sloped] {\scriptsize 4} (e);
+      \draw[arc] (d) to node[midway, below, sloped] {\scriptsize 4} (g);
+
+      \draw[arc] (e) to node[midway, above, sloped] {\scriptsize 3} (a);
+      \draw[arc] (e) to[bend left=14] node[midway, above, sloped] {\scriptsize 6} (f);
+      \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 4} (d);
+
+      \draw[arc] (f) to node[midway, below, sloped] {\scriptsize 1} (d);
+      
+      \draw[arc] (g) to node[midway, above, sloped] {\scriptsize 5} (b);
+
+
+    \end{tikzpicture}
+
+    % {\small $J = \{(r,a)\}$, peso = 3}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Fase II: Iteração 3}
+  \begin{columns}[c]
+    \column{0.48\textwidth}
+    % \textbf{Estado:} $U = \{r\}$, $J = \emptyset$
+
+    % \vspace{0.2cm}
+    % \textbf{Procurar em $F$:}
+    % \begin{itemize}
+    %   \item $f_0=(r,a)$: $r \in U$, $a \notin U$ \checkmark
+    % \end{itemize}
+
+    % \vspace{0.2cm}
+    % \textbf{Ação:}
+    % \begin{itemize}
+    %   \item Adicionar $(r,a)$ a $J$
+    %   \item $U := U \cup \{a\} = \{r,a\}$
+    % \end{itemize}
+
+    \column{0.52\textwidth}
+    \begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
+        v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+        arc/.style={->, thick, draw=gray!70},
+        selected/.style={->, very thick, draw=green!70},
+        zero/.style={->, very thick, draw=blue!70}]
+      \node[v,fill=red!20] (r) {\small $r$};
+      \node[v] (b) [right=1.8cm of r] {\small $b$};
+      \node[v] (a) [above=1.2cm of b] {\small $a$};
+      \node[v] (c) [below=1.2cm of b] {\small $c$};
+
+      \node[v] (g) [below right=1.4cm and 1.5cm of b] {\small $g$};
+
+      \node[v] (d) [right=1.2cm of b] {\small $d$};
+
+      \node[v] (f) [right=1.2cm of d] {\small $f$};
+
+      \node[v] (e) [above right=1.2cm and 0.6cm of d] {\small $e$};
+
+      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 5} (a);
+      \draw[arc] (r) to node[midway, above, sloped] {\scriptsize 6} (b);
+      \draw[arc] (r) to[bend right=13] node[midway, below, sloped] {\scriptsize 5} (c);
+
+
+      \draw[arc] (a) to node[midway, above, sloped] {\scriptsize 8} (b);
+
+
+      \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 2} (c);
+      \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 5} (d);
+
+      \draw[arc] (c) to node[midway, above, sloped] {\scriptsize 8} (g);
+      \draw[arc] (c) to[bend right=70] node[midway, below, sloped] {\scriptsize 3} (f);
+
+      \draw[arc] (d) to[bend left=14] node[midway, above, sloped] {\scriptsize 4} (e);
+      \draw[arc] (d) to node[midway, below, sloped] {\scriptsize 4} (g);
+
+      \draw[arc] (e) to node[midway, above, sloped] {\scriptsize 3} (a);
+      \draw[arc] (e) to[bend left=14] node[midway, above, sloped] {\scriptsize 6} (f);
+      \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 4} (d);
+
+      \draw[arc] (f) to node[midway, below, sloped] {\scriptsize 1} (d);
+      
+      \draw[arc] (g) to node[midway, above, sloped] {\scriptsize 5} (b);
+
+
+    \end{tikzpicture}
+
+    % {\small $J = \{(r,a)\}$, peso = 3}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Fase II: Iteração 4}
+  \begin{columns}[c]
+    \column{0.48\textwidth}
+    % \textbf{Estado:} $U = \{r\}$, $J = \emptyset$
+
+    % \vspace{0.2cm}
+    % \textbf{Procurar em $F$:}
+    % \begin{itemize}
+    %   \item $f_0=(r,a)$: $r \in U$, $a \notin U$ \checkmark
+    % \end{itemize}
+
+    % \vspace{0.2cm}
+    % \textbf{Ação:}
+    % \begin{itemize}
+    %   \item Adicionar $(r,a)$ a $J$
+    %   \item $U := U \cup \{a\} = \{r,a\}$
+    % \end{itemize}
+
+    \column{0.52\textwidth}
+    \begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
+        v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+        arc/.style={->, thick, draw=gray!70},
+        selected/.style={->, very thick, draw=green!70},
+        zero/.style={->, very thick, draw=blue!70}]
+      \node[v,fill=red!20] (r) {\small $r$};
+      \node[v] (b) [right=1.8cm of r] {\small $b$};
+      \node[v] (a) [above=1.2cm of b] {\small $a$};
+      \node[v] (c) [below=1.2cm of b] {\small $c$};
+
+      \node[v] (g) [below right=1.4cm and 1.5cm of b] {\small $g$};
+
+      \node[v] (d) [right=1.2cm of b] {\small $d$};
+
+      \node[v] (f) [right=1.2cm of d] {\small $f$};
+
+      \node[v] (e) [above right=1.2cm and 0.6cm of d] {\small $e$};
+
+      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 5} (a);
+      \draw[arc] (r) to node[midway, above, sloped] {\scriptsize 6} (b);
+      \draw[arc] (r) to[bend right=13] node[midway, below, sloped] {\scriptsize 5} (c);
+
+
+      \draw[arc] (a) to node[midway, above, sloped] {\scriptsize 8} (b);
+
+
+      \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 2} (c);
+      \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 5} (d);
+
+      \draw[arc] (c) to node[midway, above, sloped] {\scriptsize 8} (g);
+      \draw[arc] (c) to[bend right=70] node[midway, below, sloped] {\scriptsize 3} (f);
+
+      \draw[arc] (d) to[bend left=14] node[midway, above, sloped] {\scriptsize 4} (e);
+      \draw[arc] (d) to node[midway, below, sloped] {\scriptsize 4} (g);
+
+      \draw[arc] (e) to node[midway, above, sloped] {\scriptsize 3} (a);
+      \draw[arc] (e) to[bend left=14] node[midway, above, sloped] {\scriptsize 6} (f);
+      \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 4} (d);
+
+      \draw[arc] (f) to node[midway, below, sloped] {\scriptsize 1} (d);
+      
+      \draw[arc] (g) to node[midway, above, sloped] {\scriptsize 5} (b);
+
+
+    \end{tikzpicture}
+
+    % {\small $J = \{(r,a)\}$, peso = 3}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Fase II: Iteração 5}
+  \begin{columns}[c]
+    \column{0.48\textwidth}
+    % \textbf{Estado:} $U = \{r\}$, $J = \emptyset$
+
+    % \vspace{0.2cm}
+    % \textbf{Procurar em $F$:}
+    % \begin{itemize}
+    %   \item $f_0=(r,a)$: $r \in U$, $a \notin U$ \checkmark
+    % \end{itemize}
+
+    % \vspace{0.2cm}
+    % \textbf{Ação:}
+    % \begin{itemize}
+    %   \item Adicionar $(r,a)$ a $J$
+    %   \item $U := U \cup \{a\} = \{r,a\}$
+    % \end{itemize}
+
+    \column{0.52\textwidth}
+    \begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
+        v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+        arc/.style={->, thick, draw=gray!70},
+        selected/.style={->, very thick, draw=green!70},
+        zero/.style={->, very thick, draw=blue!70}]
+      \node[v,fill=red!20] (r) {\small $r$};
+      \node[v] (b) [right=1.8cm of r] {\small $b$};
+      \node[v] (a) [above=1.2cm of b] {\small $a$};
+      \node[v] (c) [below=1.2cm of b] {\small $c$};
+
+      \node[v] (g) [below right=1.4cm and 1.5cm of b] {\small $g$};
+
+      \node[v] (d) [right=1.2cm of b] {\small $d$};
+
+      \node[v] (f) [right=1.2cm of d] {\small $f$};
+
+      \node[v] (e) [above right=1.2cm and 0.6cm of d] {\small $e$};
+
+      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 5} (a);
+      \draw[arc] (r) to node[midway, above, sloped] {\scriptsize 6} (b);
+      \draw[arc] (r) to[bend right=13] node[midway, below, sloped] {\scriptsize 5} (c);
+
+
+      \draw[arc] (a) to node[midway, above, sloped] {\scriptsize 8} (b);
+
+
+      \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 2} (c);
+      \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 5} (d);
+
+      \draw[arc] (c) to node[midway, above, sloped] {\scriptsize 8} (g);
+      \draw[arc] (c) to[bend right=70] node[midway, below, sloped] {\scriptsize 3} (f);
+
+      \draw[arc] (d) to[bend left=14] node[midway, above, sloped] {\scriptsize 4} (e);
+      \draw[arc] (d) to node[midway, below, sloped] {\scriptsize 4} (g);
+
+      \draw[arc] (e) to node[midway, above, sloped] {\scriptsize 3} (a);
+      \draw[arc] (e) to[bend left=14] node[midway, above, sloped] {\scriptsize 6} (f);
+      \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 4} (d);
+
+      \draw[arc] (f) to node[midway, below, sloped] {\scriptsize 1} (d);
+      
+      \draw[arc] (g) to node[midway, above, sloped] {\scriptsize 5} (b);
+
+
+    \end{tikzpicture}
+
+    % {\small $J = \{(r,a)\}$, peso = 3}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Fase II: Iteração 6}
+  \begin{columns}[c]
+    \column{0.48\textwidth}
+    % \textbf{Estado:} $U = \{r\}$, $J = \emptyset$
+
+    % \vspace{0.2cm}
+    % \textbf{Procurar em $F$:}
+    % \begin{itemize}
+    %   \item $f_0=(r,a)$: $r \in U$, $a \notin U$ \checkmark
+    % \end{itemize}
+
+    % \vspace{0.2cm}
+    % \textbf{Ação:}
+    % \begin{itemize}
+    %   \item Adicionar $(r,a)$ a $J$
+    %   \item $U := U \cup \{a\} = \{r,a\}$
+    % \end{itemize}
+
+    \column{0.52\textwidth}
+    \begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
+        v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+        arc/.style={->, thick, draw=gray!70},
+        selected/.style={->, very thick, draw=green!70},
+        zero/.style={->, very thick, draw=blue!70}]
+      \node[v,fill=red!20] (r) {\small $r$};
+      \node[v] (b) [right=1.8cm of r] {\small $b$};
+      \node[v] (a) [above=1.2cm of b] {\small $a$};
+      \node[v] (c) [below=1.2cm of b] {\small $c$};
+
+      \node[v] (g) [below right=1.4cm and 1.5cm of b] {\small $g$};
+
+      \node[v] (d) [right=1.2cm of b] {\small $d$};
+
+      \node[v] (f) [right=1.2cm of d] {\small $f$};
+
+      \node[v] (e) [above right=1.2cm and 0.6cm of d] {\small $e$};
+
+      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 5} (a);
+      \draw[arc] (r) to node[midway, above, sloped] {\scriptsize 6} (b);
+      \draw[arc] (r) to[bend right=13] node[midway, below, sloped] {\scriptsize 5} (c);
+
+
+      \draw[arc] (a) to node[midway, above, sloped] {\scriptsize 8} (b);
+
+
+      \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 2} (c);
+      \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 5} (d);
+
+      \draw[arc] (c) to node[midway, above, sloped] {\scriptsize 8} (g);
+      \draw[arc] (c) to[bend right=70] node[midway, below, sloped] {\scriptsize 3} (f);
+
+      \draw[arc] (d) to[bend left=14] node[midway, above, sloped] {\scriptsize 4} (e);
+      \draw[arc] (d) to node[midway, below, sloped] {\scriptsize 4} (g);
+
+      \draw[arc] (e) to node[midway, above, sloped] {\scriptsize 3} (a);
+      \draw[arc] (e) to[bend left=14] node[midway, above, sloped] {\scriptsize 6} (f);
+      \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 4} (d);
+
+      \draw[arc] (f) to node[midway, below, sloped] {\scriptsize 1} (d);
+      
+      \draw[arc] (g) to node[midway, above, sloped] {\scriptsize 5} (b);
+
+
+    \end{tikzpicture}
+
+    % {\small $J = \{(r,a)\}$, peso = 3}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Fase II: Iteração 7}
+  \begin{columns}[c]
+    \column{0.48\textwidth}
+    % \textbf{Estado:} $U = \{r\}$, $J = \emptyset$
+
+    % \vspace{0.2cm}
+    % \textbf{Procurar em $F$:}
+    % \begin{itemize}
+    %   \item $f_0=(r,a)$: $r \in U$, $a \notin U$ \checkmark
+    % \end{itemize}
+
+    % \vspace{0.2cm}
+    % \textbf{Ação:}
+    % \begin{itemize}
+    %   \item Adicionar $(r,a)$ a $J$
+    %   \item $U := U \cup \{a\} = \{r,a\}$
+    % \end{itemize}
+
+    \column{0.52\textwidth}
+    \begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
+        v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+        arc/.style={->, thick, draw=gray!70},
+        selected/.style={->, very thick, draw=green!70},
+        zero/.style={->, very thick, draw=blue!70}]
+      \node[v,fill=red!20] (r) {\small $r$};
+      \node[v] (b) [right=1.8cm of r] {\small $b$};
+      \node[v] (a) [above=1.2cm of b] {\small $a$};
+      \node[v] (c) [below=1.2cm of b] {\small $c$};
+
+      \node[v] (g) [below right=1.4cm and 1.5cm of b] {\small $g$};
+
+      \node[v] (d) [right=1.2cm of b] {\small $d$};
+
+      \node[v] (f) [right=1.2cm of d] {\small $f$};
+
+      \node[v] (e) [above right=1.2cm and 0.6cm of d] {\small $e$};
+
+      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 5} (a);
+      \draw[arc] (r) to node[midway, above, sloped] {\scriptsize 6} (b);
+      \draw[arc] (r) to[bend right=13] node[midway, below, sloped] {\scriptsize 5} (c);
+
+
+      \draw[arc] (a) to node[midway, above, sloped] {\scriptsize 8} (b);
+
+
+      \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 2} (c);
+      \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 5} (d);
+
+      \draw[arc] (c) to node[midway, above, sloped] {\scriptsize 8} (g);
+      \draw[arc] (c) to[bend right=70] node[midway, below, sloped] {\scriptsize 3} (f);
+
+      \draw[arc] (d) to[bend left=14] node[midway, above, sloped] {\scriptsize 4} (e);
+      \draw[arc] (d) to node[midway, below, sloped] {\scriptsize 4} (g);
+
+      \draw[arc] (e) to node[midway, above, sloped] {\scriptsize 3} (a);
+      \draw[arc] (e) to[bend left=14] node[midway, above, sloped] {\scriptsize 6} (f);
+      \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 4} (d);
+
+      \draw[arc] (f) to node[midway, below, sloped] {\scriptsize 1} (d);
+      
+      \draw[arc] (g) to node[midway, above, sloped] {\scriptsize 5} (b);
+
+
+    \end{tikzpicture}
+
+    % {\small $J = \{(r,a)\}$, peso = 3}
+  \end{columns}
+\end{frame}
 % \begin{frame}{Fase II: Iteração 2}
 %   \begin{columns}[c]
 %     \column{0.48\textwidth}
