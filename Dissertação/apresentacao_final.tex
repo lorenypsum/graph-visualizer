@@ -1097,28 +1097,28 @@ def update_weights(D: nx.DiGraph,
 
       \node[v] (e) [above right=1.2cm and 0.6cm of d] {\small $e$};
 
-      \draw[arc] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 4} (a);
-      \draw[arc] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 6} (b);
-      \draw[arc] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (c);
+      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 4} (a);
+      \draw[arc] (r) to node[midway, above, sloped] {\scriptsize 6} (b);
+      \draw[arc] (r) to[bend right=13] node[midway, below, sloped] {\scriptsize 5} (c);
 
 
-      \draw[arc] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 8} (b);
+      \draw[arc] (a) to node[midway, above, sloped] {\scriptsize 8} (b);
 
 
-      \draw[arc] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
-      \draw[arc] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 5} (d);
+      \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 2} (c);
+      \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 5} (d);
 
-      % \draw[arc] (c) to[bend left=12] node[midway, above, sloped] {\scriptsize 4} (g);
-      \draw[arc] (c) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (f);
+      \draw[arc] (c) to node[midway, above, sloped] {\scriptsize 4} (g);
+      \draw[arc] (c) to[bend right=40] node[midway, above, sloped] {\scriptsize 3} (f);
 
-      % \draw[arc] (d) to[bend left=14] node[midway, below, sloped] {\scriptsize 4} (e);
-      % \draw[arc] (d) to[bend left=14] node[midway, below, sloped] {\scriptsize 4} (g);
+      \draw[arc] (d) to[bend left=14] node[midway, below, sloped] {\scriptsize 4} (e);
+      \draw[arc] (d) to node[midway, below, sloped] {\scriptsize 4} (g);
 
-      % \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (a);
-      % \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 2} (f);
-      % \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 4} (d);
+      \draw[arc] (e) to node[midway, below, sloped] {\scriptsize 3} (a);
+      \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 2} (f);
+      \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 4} (d);
 
-      % \draw[arc] (f) to[bend left=14] node[midway, below, sloped] {\scriptsize 1} (d);
+      \draw[arc] (f) to node[midway, below, sloped] {\scriptsize 1} (d);
 
 
     \end{tikzpicture}
