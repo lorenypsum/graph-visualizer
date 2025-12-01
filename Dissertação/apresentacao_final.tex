@@ -2083,89 +2083,20 @@ def andras_frank(D: nx.DiGraph, r: int):
 \begin{frame}{Fase II: Iteração 1}
   \begin{columns}[c]
     \column{0.48\textwidth}
-    % \textbf{Estado:} $U = \{r\}$, $J = \emptyset$
+    \textbf{Estado:} $U = \{r\}$, $J = \emptyset$
 
-    % \vspace{0.2cm}
-    % \textbf{Procurar em $F$:}
-    % \begin{itemize}
-    %   \item $f_0=(r,a)$: $r \in U$, $a \notin U$ \checkmark
-    % \end{itemize}
+    \vspace{0.2cm}
+    \textbf{Procurar em $F$:}
+    \begin{itemize}
+      \item $f_7=(r,b)$: $r \in U$, $b \notin U$ \checkmark
+    \end{itemize}
 
-    % \vspace{0.2cm}
-    % \textbf{Ação:}
-    % \begin{itemize}
-    %   \item Adicionar $(r,a)$ a $J$
-    %   \item $U := U \cup \{a\} = \{r,a\}$
-    % \end{itemize}
-
-    \column{0.52\textwidth}
-    \begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
-        v/.style={circle, draw, fill=blue!8, minimum size=7mm},
-        arc/.style={->, thick, draw=gray!70},
-        selected/.style={->, very thick, draw=green!70},
-        zero/.style={->, very thick, draw=blue!70}]
-      \node[v,fill=red!20] (r) {\small $r$};
-      \node[v] (b) [right=1.8cm of r] {\small $b$};
-      \node[v] (a) [above=1.2cm of b] {\small $a$};
-      \node[v] (c) [below=1.2cm of b] {\small $c$};
-
-      \node[v] (g) [below right=1.4cm and 1.5cm of b] {\small $g$};
-
-      \node[v] (d) [right=1.2cm of b] {\small $d$};
-
-      \node[v] (f) [right=1.2cm of d] {\small $f$};
-
-      \node[v] (e) [above right=1.2cm and 0.6cm of d] {\small $e$};
-
-      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 5} (a);
-      \draw[arc] (r) to node[midway, above, sloped] {\scriptsize 6} (b);
-      \draw[arc] (r) to[bend right=13] node[midway, below, sloped] {\scriptsize 5} (c);
-
-
-      \draw[arc] (a) to node[midway, above, sloped] {\scriptsize 8} (b);
-
-
-      \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 2} (c);
-      \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 5} (d);
-
-      \draw[arc] (c) to node[midway, above, sloped] {\scriptsize 8} (g);
-      \draw[arc] (c) to[bend right=70] node[midway, below, sloped] {\scriptsize 3} (f);
-
-      \draw[arc] (d) to[bend left=14] node[midway, above, sloped] {\scriptsize 4} (e);
-      \draw[arc] (d) to node[midway, below, sloped] {\scriptsize 4} (g);
-
-      \draw[arc] (e) to node[midway, above, sloped] {\scriptsize 3} (a);
-      \draw[arc] (e) to[bend left=14] node[midway, above, sloped] {\scriptsize 6} (f);
-      \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 4} (d);
-
-      \draw[arc] (f) to node[midway, below, sloped] {\scriptsize 1} (d);
-      
-      \draw[arc] (g) to node[midway, above, sloped] {\scriptsize 5} (b);
-
-
-    \end{tikzpicture}
-
-    % {\small $J = \{(r,a)\}$, peso = 3}
-  \end{columns}
-\end{frame}
-
-\begin{frame}{Fase II: Iteração 2}
-  \begin{columns}[c]
-    \column{0.48\textwidth}
-    % \textbf{Estado:} $U = \{r\}$, $J = \emptyset$
-
-    % \vspace{0.2cm}
-    % \textbf{Procurar em $F$:}
-    % \begin{itemize}
-    %   \item $f_0=(r,a)$: $r \in U$, $a \notin U$ \checkmark
-    % \end{itemize}
-
-    % \vspace{0.2cm}
-    % \textbf{Ação:}
-    % \begin{itemize}
-    %   \item Adicionar $(r,a)$ a $J$
-    %   \item $U := U \cup \{a\} = \{r,a\}$
-    % \end{itemize}
+    \vspace{0.2cm}
+    \textbf{Ação:}
+    \begin{itemize}
+      \item Adicionar $(r,b)$ a $J$
+      \item $U := U \cup \{b\} = \{r,b\}$
+    \end{itemize}
 
     \column{0.52\textwidth}
     \begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
@@ -2218,23 +2149,23 @@ def andras_frank(D: nx.DiGraph, r: int):
   \end{columns}
 \end{frame}
 
-\begin{frame}{Fase II: Iteração 3}
+\begin{frame}{Fase II: Iteração 2}
   \begin{columns}[c]
     \column{0.48\textwidth}
-    % \textbf{Estado:} $U = \{r\}$, $J = \emptyset$
+    \textbf{Estado:} $U = \{r,b\}$, $J = \emptyset$
 
-    % \vspace{0.2cm}
-    % \textbf{Procurar em $F$:}
-    % \begin{itemize}
-    %   \item $f_0=(r,a)$: $r \in U$, $a \notin U$ \checkmark
-    % \end{itemize}
+    \vspace{0.2cm}
+    \textbf{Procurar em $F$:}
+    \begin{itemize}
+      \item $f_1=(b,c)$: $r \in U$, $c \notin U$ \checkmark
+    \end{itemize}
 
-    % \vspace{0.2cm}
-    % \textbf{Ação:}
-    % \begin{itemize}
-    %   \item Adicionar $(r,a)$ a $J$
-    %   \item $U := U \cup \{a\} = \{r,a\}$
-    % \end{itemize}
+    \vspace{0.2cm}
+    \textbf{Ação:}
+    \begin{itemize}
+      \item Adicionar $(b,c)$ a $J$
+      \item $U := U \cup \{c\} = \{r,b,c\}$
+    \end{itemize}
 
     \column{0.52\textwidth}
     \begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
@@ -2287,23 +2218,23 @@ def andras_frank(D: nx.DiGraph, r: int):
   \end{columns}
 \end{frame}
 
-\begin{frame}{Fase II: Iteração 4}
+\begin{frame}{Fase II: Iteração 3}
   \begin{columns}[c]
     \column{0.48\textwidth}
-    % \textbf{Estado:} $U = \{r\}$, $J = \emptyset$
+    \textbf{Estado:} $U = \{r,b,c\}$, $J = \emptyset$
 
-    % \vspace{0.2cm}
-    % \textbf{Procurar em $F$:}
-    % \begin{itemize}
-    %   \item $f_0=(r,a)$: $r \in U$, $a \notin U$ \checkmark
-    % \end{itemize}
+    \vspace{0.2cm}
+    \textbf{Procurar em $F$:}
+    \begin{itemize}
+      \item $f_1=(e,a)$: $r \in U$, $a \notin U$ \checkmark
+    \end{itemize}
 
-    % \vspace{0.2cm}
-    % \textbf{Ação:}
-    % \begin{itemize}
-    %   \item Adicionar $(r,a)$ a $J$
-    %   \item $U := U \cup \{a\} = \{r,a\}$
-    % \end{itemize}
+    \vspace{0.2cm}
+    \textbf{Ação:}
+    \begin{itemize}
+      \item Adicionar $(r,a)$ a $J$
+      \item $U := U \cup \{a\} = \{r,a\}$
+    \end{itemize}
 
     \column{0.52\textwidth}
     \begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
@@ -2356,7 +2287,7 @@ def andras_frank(D: nx.DiGraph, r: int):
   \end{columns}
 \end{frame}
 
-\begin{frame}{Fase II: Iteração 5}
+\begin{frame}{Fase II: Iteração 4}
   \begin{columns}[c]
     \column{0.48\textwidth}
     % \textbf{Estado:} $U = \{r\}$, $J = \emptyset$
@@ -2425,7 +2356,7 @@ def andras_frank(D: nx.DiGraph, r: int):
   \end{columns}
 \end{frame}
 
-\begin{frame}{Fase II: Iteração 6}
+\begin{frame}{Fase II: Iteração 5}
   \begin{columns}[c]
     \column{0.48\textwidth}
     % \textbf{Estado:} $U = \{r\}$, $J = \emptyset$
@@ -2494,7 +2425,7 @@ def andras_frank(D: nx.DiGraph, r: int):
   \end{columns}
 \end{frame}
 
-\begin{frame}{Fase II: Iteração 7}
+\begin{frame}{Fase II: Iteração 6}
   \begin{columns}[c]
     \column{0.48\textwidth}
     % \textbf{Estado:} $U = \{r\}$, $J = \emptyset$
@@ -2563,7 +2494,7 @@ def andras_frank(D: nx.DiGraph, r: int):
   \end{columns}
 \end{frame}
 
-\begin{frame}{Fase II: Iteração 8}
+\begin{frame}{Fase II: Iteração 7}
   \begin{columns}[c]
     \column{0.48\textwidth}
     % \textbf{Estado:} $U = \{r\}$, $J = \emptyset$
