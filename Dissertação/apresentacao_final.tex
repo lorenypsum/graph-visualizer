@@ -1067,18 +1067,20 @@ def update_weights(D: nx.DiGraph,
     \column{0.48\textwidth}
     \textbf{Digrafo ponderado $(D,w,r)$:}
 
-    \vspace{0.2cm}
+    \vspace{0.02cm}
     \begin{itemize}
-      \item Vértices: $\{r, a, b, c\}$
+      \item Vértices: $\{r, a, b, c, d, e, f, g\}$
       \item Raiz: $r$
     \end{itemize}
 
-    \vspace{0.3cm}
+    \vspace{0.02cm}
     \textbf{Pesos dos arcos:}
     \begin{itemize}
-      \item $(r,a): 3$, $(r,b): 4$, $(r,c): 5$
-      \item $(a,b): 3$, $(b,c): 2$
-      \item $(c,a): 3$
+      \item $(r,a): 4$, $(r,b): 6$, $(r,c): 5$
+      \item $(a,b): 8$, $(b,c): 2$, $(b,d): 5$
+      \item $(c,g): 4$, $(c,f): 3$, $(d,g): 4$
+      \item $(d,e): 4$, $(e,d): 4$, $(e,a): 3$
+      \item $(e,f): 2$, $(f,d): 1$
     \end{itemize}
     \column{0.52\textwidth}
     \begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
@@ -1109,13 +1111,13 @@ def update_weights(D: nx.DiGraph,
       \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 5} (d);
 
       \draw[arc] (c) to node[midway, above, sloped] {\scriptsize 4} (g);
-      \draw[arc] (c) to[bend right=40] node[midway, above, sloped] {\scriptsize 3} (f);
+      \draw[arc] (c) to[bend right=70] node[midway, below, sloped] {\scriptsize 3} (f);
 
-      \draw[arc] (d) to[bend left=14] node[midway, below, sloped] {\scriptsize 4} (e);
+      \draw[arc] (d) to[bend left=14] node[midway, above, sloped] {\scriptsize 4} (e);
       \draw[arc] (d) to node[midway, below, sloped] {\scriptsize 4} (g);
 
-      \draw[arc] (e) to node[midway, below, sloped] {\scriptsize 3} (a);
-      \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 2} (f);
+      \draw[arc] (e) to node[midway, above, sloped] {\scriptsize 3} (a);
+      \draw[arc] (e) to[bend left=14] node[midway, above, sloped] {\scriptsize 2} (f);
       \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 4} (d);
 
       \draw[arc] (f) to node[midway, below, sloped] {\scriptsize 1} (d);
