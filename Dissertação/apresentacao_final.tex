@@ -1562,49 +1562,33 @@ def update_weights(D: nx.DiGraph,
         v/.style={circle, draw, fill=blue!8, minimum size=7mm},
         rset/.style={draw=orange!70, very thick, dashed, rounded corners},
         arc/.style={->, thick, draw=gray!70},
-        selected/.style={->, very thick, draw=green!70},
+        selected/.style={->, very thick, draw=red!70},
         zero/.style={->, very thick, draw=blue!70}]
       \node[v,fill=red!20] (r) {\small $r$};
       \node[v] (b) [right=1.8cm of r] {\small $b$};
       \node[v] (a) [above=1.2cm of b] {\small $a$};
       \node[v] (c) [below=1.2cm of b] {\small $c$};
-
       \node[v] (g) [below right=1.4cm and 1.5cm of b] {\small $g$};
-
       \node[v] (d) [right=1.2cm of b] {\small $d$};
-
       \node[v] (f) [right=1.2cm of d] {\small $f$};
-
       \node[v] (e) [above right=1.2cm and 0.6cm of d] {\small $e$};
-
       \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 2} (a);
       \draw[arc] (r) to node[midway, above, sloped] {\scriptsize 1} (b);
       \draw[arc] (r) to[bend right=13] node[midway, below, sloped] {\scriptsize 3} (c);
-
-
       \draw[arc] (a) to node[midway, above, sloped] {\scriptsize 3} (b);
-
-
       \draw[zero] (b) to node[midway, above, sloped] {\scriptsize 0} (c);
       \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 5} (d);
-
       \draw[arc] (c) to node[midway, above, sloped] {\scriptsize \textcolor{green} 4} (g);
       \draw[arc] (c) to[bend right=70] node[midway, below, sloped] {\scriptsize 3} (f);
-
       \draw[arc] (d) to[bend left=14] node[midway, above, sloped] {\scriptsize 4} (e);
-      \draw[selected] (d) to node[midway, below, sloped] {\scriptsize \textcolor{green} 0} (g);
-
+      \draw[selected] (d) to node[midway, below, sloped] {\scriptsize \textcolor{red}{$f_3$}} (g);
       \draw[zero] (e) to node[midway, above, sloped] {\scriptsize 0} (a);
       \draw[arc] (e) to[bend left=14] node[midway, above, sloped] {\scriptsize 6} (f);
       \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 4} (d);
-
       \draw[zero] (g) to node[midway, above, sloped] {\scriptsize 0} (b);
-
       \draw[arc] (f) to node[midway, below, sloped] {\scriptsize 1} (d);
-
       \node[rset, fit=(g)] {};
       \node[orange!70, below=0.2cm of g] {\small $R_3$};
-
     \end{tikzpicture}
   \end{columns}
 \end{frame}
