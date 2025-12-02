@@ -1753,17 +1753,17 @@ def update_weights(D: nx.DiGraph,
       \draw[arc] (r) to node[midway, above, sloped] {\scriptsize 1} (b);
       \draw[arc] (r) to[bend right=13] node[midway, below, sloped] {\scriptsize 3} (c);
       \draw[arc] (a) to node[midway, above, sloped] {\scriptsize 3} (b);
-      \draw[zero] (b) to node[midway, above, sloped] {\scriptsize 0} (c);
+      \draw[zero] (b) to node[midway, above, sloped] {\scriptsize \textcolor{blue}{$f_1$}} (c);
       \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 4} (d);
       \draw[arc] (c) to node[midway, above, sloped] {\scriptsize 4} (g);
-      \draw[zero] (c) to[bend right=70] node[midway, below, sloped] {\scriptsize 0} (f);
+      \draw[zero] (c) to[bend right=70] node[midway, below, sloped] {\scriptsize \textcolor{blue}{$f_5$}} (f);
       \draw[selected] (d) to[bend left=14] node[midway, above, sloped] {\scriptsize \textcolor{red}{$f_6$}} (e);
-      \draw[zero] (d) to node[midway, below, sloped] {\scriptsize 0} (g);
-      \draw[zero] (e) to node[midway, above, sloped] {\scriptsize 0} (a);
+      \draw[zero] (d) to node[midway, below, sloped] {\scriptsize \textcolor{blue}{$f_3$}} (g);
+      \draw[zero] (e) to node[midway, above, sloped] {\scriptsize \textcolor{blue}{$f_2$}} (a);
       \draw[arc] (e) to[bend left=14] node[midway, above, sloped] {\scriptsize 3} (f);
       \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (d);
       \draw[zero] (g) to node[midway, above, sloped] {\scriptsize \textcolor{blue}{$f_0$}} (b);
-      \draw[zero] (f) to node[midway, below, sloped] {\scriptsize 0} (d);
+      \draw[zero] (f) to node[midway, below, sloped] {\scriptsize \textcolor{blue}{$f_4$}} (d);
       \node[rset, fit=(e)] {};
       \node[orange!70, above=0.2cm of e] {\small $R_5$};
     \end{tikzpicture}
