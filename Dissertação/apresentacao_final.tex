@@ -87,13 +87,13 @@
 }
 
 % Logo da UFABC no canto superior direito (após carregar tikz)
-\addtobeamertemplate{frametitle}{}{%
-	\begin{tikzpicture}[remember picture,overlay]
-		\node[anchor=north east,yshift=-40pt,xshift=-3pt] at (current page.north east) {
-			\includegraphics[height=0.8cm]{logo-ufabc.png}
-		};
-	\end{tikzpicture}
-}
+% \addtobeamertemplate{frametitle}{}{%
+% 	\begin{tikzpicture}[remember picture,overlay]
+% 		\node[anchor=north east,yshift=-40pt,xshift=-3pt] at (current page.north east) {
+% 			\includegraphics[height=0.8cm]{logo-ufabc.png}
+% 		};
+% 	\end{tikzpicture}
+% }
 
 % Logo da UFABC apenas na capa
 \titlegraphic{
@@ -988,8 +988,8 @@ return F_prime
 
     \end{tikzpicture}
   \end{center}
-    \begin{center}
-      \small{Um arco $a$ de peso $5$ que entra nos $r$-conjuntos
+  \begin{center}
+    \small{Um arco $a$ de peso $5$ que entra nos $r$-conjuntos
       $R_1$, $R_2$ e $R_3$ com multiplidades $2$, $1$, e $1$, respectivamente.
     }
   \end{center}
@@ -1051,58 +1051,70 @@ return F_prime
 % \end{frame}
 
 \begin{frame}{Fase I: Algoritmo de Fulkerson}
-  \textbf{Processo iterativo}
+  \begin{columns}[c]
+    \column{0.52\textwidth}
+    \textbf{Dado:} $(D,w,r)$
+    \vspace{0.1cm}
+    \begin{enumerate}
+      \item \textbf{Inicializar}:
+            \begin{itemize}
+              \item $c := w$
+              \item $\sigma := \epsilon$
+              \item $F := \emptyset$
+            \end{itemize}
+      \item \textbf{Enquanto} $\exists$ fonte $R$ em $\mathcal{C}(D_0)$, $r \notin R$:
+            \begin{itemize}
+              \item $\lambda := \min\{c(a) : a \in \delta^-(R)\}$
+              \item $f \in \delta^-(R)$ com $c(f) = \lambda$
+              \item $\sigma := \sigma \cdot (f, R, \lambda)$
+              \item $F := F \cup \{f\}$
+              \item $c := c - \lambda \mathbf{1}_{\delta^-(R)}$
+              \item $D_0 := (V, F)$
+            \end{itemize}
+      \item \textbf{Devolver}: $\sigma$
+    \end{enumerate}
 
-  \vspace{0.2cm}
-  \textbf{Dado:} um $r$-digrafo ponderado $(D,w,r)$
-  \vspace{0.2cm}
-  \begin{enumerate}
-    \item \textbf{Inicializar}:
-          \begin{itemize}
-            \item $c := w$ (pesos correntes)
-            \item $\sigma := \epsilon$ (sequência vazia)
-            \item $F := \emptyset$ (conjunto de arcos selecionados)
-          \end{itemize}
-    \item \textbf{Enquanto} existir fonte $R$ em $\mathcal{C}(D_0)$ com $r \notin R$:
-          \begin{itemize}
-            \item Calcular $\lambda := \min\{c(a) : a \in \delta^-(R)\}$
-            \item Selecionar $f \in \delta^-(R)$ com $c(f) = \lambda$
-            \item $\sigma := \sigma \cdot (f, R, \lambda)$
-            \item $F := F \cup \{f\}$
-            \item $c := c - \lambda \mathbf{1}_{\delta^-(R)}$ {\small (reduzir pesos)}
-            \item $D_0 := (V, F)$ {\small (atualizar digrafo auxiliar)}
-          \end{itemize}
-    \item \textbf{Devolver}: $\sigma$
-  \end{enumerate}
+    \column{0.48\textwidth}
+    \begin{tikzpicture}[>=Stealth, scale=0.65, transform shape,
+        component/.style={circle, draw, thick, minimum size=1.2cm, fill=blue!10},
+        root/.style={circle, draw, thick, minimum size=1.2cm, fill=red!20},
+        source/.style={circle, draw, thick, minimum size=1.2cm, fill=green!20},
+        arc/.style={->, thick, draw=gray!70}]
+
+      % Componente r (isolada)
+      \node[root] (r) at (0, 3) {$r$};
+
+      % Componentes fortes - duas fontes
+      \node[source] (S1) at (-2, 1) {$S_1$};
+      \node[source] (S2) at (2, 1) {$S_2$};
+
+      % Outras componentes (não-fontes)
+      \node[component] (C1) at (-1, -0.5) {$C_1$};
+      \node[component] (C2) at (1.5, -0.5) {$C_2$};
+
+      % Arcos entre componentes
+      \draw[arc] (S1) to[bend right=15] (C1);
+      \draw[arc] (S2) to[bend left=15] (C2);
+      \draw[arc] (S1) to[bend left=10] (C2);
+      \draw[arc] (C1) to[bend right=10] (C2);
+
+      % Legenda
+      \node[anchor=west, font=\large] at (-3.2, -1.8) {\textcolor{red!70}{$\bullet$ raiz $r$}};
+      \node[anchor=west, font=\large] at (-3.2, -2.2) {\textcolor{green!70}{$\bullet$ fontes}};
+      \node[anchor=west, font=\large] at (-3.2, -2.6) {\textcolor{blue!70}{$\bullet$ não-fontes}};
+    \end{tikzpicture}
+
+    \vspace{0.1cm}
+    {\small Condensação $\mathcal{C}(D_0)$ com $r$ isolado e duas fontes $S_1, S_2$, ressaltando que $S_1, S_2$ são componentes fortemente conexas. - não vértices individuais.}
+  \end{columns}
 \end{frame}
 
-\begin{frame}{Fase I: Invariantes do Algoritmo}
-  \textbf{Em cada iteração}, a sequência $\sigma = ((f_i, R_i, \lambda_i))_{i \in [k)}$ satisfaz:
-
-  \vspace{0.2cm}
-  \begin{enumerate}
-    \item $c = w - \sum_{i \in [k)} \lambda_i \mathbf{1}_{\delta^-(R_i)}$ \hfill {\small (pesos reduzidos)}
-
-    \item $\forall i \in [k): f_i$ entra em $R_i$
-
-    \item $\forall i \in [k), \forall j \in [i): f_j$ \emph{não} entra em $R_i$ \hfill {\small (prioridade)}
-
-    \item $\{R_i : i \in [k)\}$ é uma \textbf{coleção laminar} de $r$-conjuntos
-
-    \item $((R_i, \lambda_i))_{i \in [k)}$ é uma sequência \textbf{$w$-disjunta}
-
-    \item $\forall i \in [k): c(f_i) = 0$ \hfill {\small (peso reduzido zero)}
-  \end{enumerate}
-
-  \vspace{0.2cm}
-  {\small A laminaridade garante estrutura hierárquica; a condição (6) garante a otimalidade.}
-\end{frame}
 
 \begin{frame}{Fase I: Encontrando $r$-conjuntos Minimais}
   \textbf{Como encontrar um $r$-conjunto minimal não coberto?}
 
   \vspace{0.2cm}
-  Seja $D_0 := (V, F)$ onde $F = \{f_i : i \in [k)\}$.
+  Seja $D_0 := (V, F)$ onde $F = \{f_i : i \in [k)\}$ (o conjunto de arcos escolhidos).
 
   \vspace{0.2cm}
   \begin{enumerate}
