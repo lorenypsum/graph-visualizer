@@ -1872,10 +1872,10 @@ def update_weights(D: nx.DiGraph,
       \node[v] (d) [right=1.2cm of b] {\small $d$};
       \node[v] (f) [right=1.2cm of d] {\small $f$};
       \node[v] (e) [above right=1.2cm and 0.6cm of d] {\small $e$};
-      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 1} (a);
+      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize \textcolor{red} 2} (a);
       \draw[selected] (r) to node[midway, above, sloped] {\scriptsize \textcolor{red} {$f_7$}} (b);
-      \draw[arc] (r) to[bend right=13] node[midway, below, sloped] {\scriptsize 2} (c);
-      \draw[arc] (a) to node[midway, above, sloped] {\scriptsize \textcolor{red} 2} (b);
+      \draw[arc] (r) to[bend right=13] node[midway, below, sloped] {\scriptsize \textcolor{red} 3} (c);
+      \draw[arc] (a) to node[midway, above, sloped] {\scriptsize  3} (b);
       \draw[zero] (b) to node[midway, above, sloped] {\scriptsize \textcolor{blue}{$f_1$}} (c);
       \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 4} (d);
       \draw[arc] (c) to node[midway, above, sloped] {\scriptsize 4} (g);
