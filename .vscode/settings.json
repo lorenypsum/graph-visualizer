@@ -53,5 +53,9 @@
   ],
   "latex-workshop.latex.autoBuild.run": "onSave",
   "latex-workshop.view.pdf.viewer": "tab",
-  "latex-workshop.synctex.afterBuild.enabled": true
+  "latex-workshop.synctex.afterBuild.enabled": true,
+  "latex-workshop.view.pdf.invertMode.grayscale": 0,
+  "latex-workshop.view.pdf.invertMode.sepia": 0,
+  "latex-workshop.view.pdf.invertMode.brightness": 1,
+  "latex-workshop.view.pdf.invert": 0
 }

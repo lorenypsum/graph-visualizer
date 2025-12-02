@@ -235,46 +235,43 @@
 % ==================== SEÇÃO 2: CHU-LIU-EDMONDS ====================
 \section{Algoritmo de Chu-Liu-Edmonds}
 
-\begin{frame}{Chu-Liu-Edmonds}
-  \begin{block}{Algoritmo Recursivo: dado um r-digrafo ponderado $(D,w,r)$}
-    chu--liu--edmonds($(D,w,r)$):
-    \begin{enumerate}
-      \item \textbf{Reduzir pesos}: para cada vértice $v \neq r$, subtrair $\lambda(v) = \min\{w(a) : a \in \delta^-(v)\}$
+\begin{frame}{Encontrando uma $r$-Arborescência Geradora Mínima}
+  \begin{columns}[c]
+    \column{0.20\textwidth}
+    \column{0.70\textwidth}
+    \begin{tikzpicture}[>=Stealth, node distance=2.0cm,
+        v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+        cheap/.style={->, very thick, draw=blue!70},
+        expensive/.style={->, draw=gray!60}]
+      \node[v] (r) {\small $r$};
+      \node[v] (a) [right=2.2cm of r] {\small $a$};
+      \node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
+      \node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
 
-      \item \textbf{Construir $D_0$}: escolhendo um arco $a_v$ de peso reduzido zero para cada $v \neq r$
+      \draw[expensive] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (b);
+      \draw[expensive] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
+      \draw[expensive] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (a);
 
-      \item \textbf{Verificar}: se $D_0$ é uma $r$-arborescência $\Rightarrow$ \textbf{devolver} $D_0$
-
-            Caso contrário:
-
-      \item \textbf{Contração}: encontrar ciclo $C$ em $D_0$ e contrair
-
-      \item \textbf{Chamada recursiva}: Seja $D' = D/C$ e $w' = w_\lambda/C$. Calcular $T' =$ chu-liu-edmonds$(D', w', r)$
-
-      \item \textbf{Devolver}: expandir$(T')$
-    \end{enumerate}
-  \end{block}
+      \draw[expensive] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (a);
+      \draw[expensive] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (b);
+      \draw[expensive] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (c);
+    \end{tikzpicture}
+  \end{columns}
 \end{frame}
 
-% ...existing code...
-\begin{frame}{Exemplo: Escolha Gulosa}
+\begin{frame}{Motivação}
   \begin{columns}[c]
     \column{0.48\textwidth}
-    \textbf{Definição:}
+    \textbf{Objetivo:}
 
-    Para cada $v \neq r$, escolher um arco $a_v$ de peso mínimo que entra em $v$:
+    Para cada $v \neq r$, escolher um arco $a_v$ de peso mínimo que entra em $v$ e forma a arborescência:
     $$T := \{a_v : v \in V \setminus \{r\}\}$$
-
-    \vspace{0.2cm}
-    \textbf{Propriedade:}
-
-    Se $T$ é uma $r$-arborescência, então $T$ tem peso mínimo.
 
     \column{0.52\textwidth}
     \begin{tikzpicture}[>=Stealth, node distance=2.0cm,
         v/.style={circle, draw, fill=blue!8, minimum size=7mm},
         cheap/.style={->, very thick, draw=blue!70},
-        expensive/.style={->, dashed, draw=gray!60}]
+        expensive/.style={->, draw=gray!60}]
       \node[v] (r) {\small $r$};
       \node[v] (a) [right=2.2cm of r] {\small $a$};
       \node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
@@ -289,30 +286,22 @@
       \draw[expensive] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (c);
     \end{tikzpicture}
   \end{columns}
-
-  \vspace{0.2cm}
-  \begin{alertblock}{Resultado}
-    $T = \{(r,a), (a,b), (b,c)\}$ é uma $r$-arborescência geradora mínima!
-  \end{alertblock}
 \end{frame}
 
-\begin{frame}{E quando a escolha gulosa falha?}
+\begin{frame}{Aqui tem um problema...}
   \begin{columns}[c]
     \column{0.48\textwidth}
+
+    \vspace{0.3cm}
     \textbf{Problema:}
 
     A escolha gulosa pode produzir um conjunto $T$ que \emph{não} é uma $r$-arborescência.
-
-    \vspace{0.3cm}
-    \textbf{Exemplo:}
-
-    Os arcos de peso mínimo formam um ciclo $(a, b, c, a)$ sem alcançar $r$.
 
     \column{0.52\textwidth}
     \begin{tikzpicture}[>=Stealth, node distance=2.0cm,
         v/.style={circle, draw, fill=blue!8, minimum size=7mm},
         cheap/.style={->, very thick, draw=blue!70},
-        expensive/.style={->, dashed, draw=gray!60}]
+        expensive/.style={->, draw=gray!60}]
       \node[v] (r) {\small $r$};
       \node[v] (a) [right=2.2cm of r] {\small $a$};
       \node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
@@ -326,11 +315,70 @@
       \draw[expensive] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (b);
       \draw[expensive] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (c);
     \end{tikzpicture}
-
-    \vspace{0.2cm}
-    {\small Arcos azuis formam um \textbf{ciclo}!}
   \end{columns}
 \end{frame}
+
+\begin{frame}{Chu-Liu-Edmonds}
+  \begin{block}{Algoritmo Recursivo: dado um r-digrafo ponderado $(D,w,r)$}
+    chu--liu--edmonds($(D,w,r)$):
+    \begin{enumerate}
+      \item \textbf{Reduzir pesos}: para cada vértice $v \neq r$, subtrair o peso $\lambda(v) = \min\{w(a) : a \in \delta^-(v)\}$ do peso de cada arco que entra em $v$;
+
+      \item \textbf{Construir $D_0$}: escolhendo um arco $a_v$ de peso reduzido zero para cada $v \neq r$;
+
+      \item \textbf{Verificar}: se $D_0$ é uma $r$-arborescência $\Rightarrow$ \textbf{devolver} $D_0$
+
+            Caso contrário:
+
+      \item \textbf{Contração}: encontrar ciclo $C$ em $D_0$ e contrair;
+
+      \item \textbf{Chamada recursiva}: Seja $D' = D/C$ e $w' = w_\lambda/C$. Calcular $T' =$ chu-liu-edmonds$(D', w', r)$;
+
+      \item \textbf{Devolver}: expandir$(T')$.
+    \end{enumerate}
+  \end{block}
+\end{frame}
+
+% ...existing code...
+% \begin{frame}{Exemplo: Escolha Gulosa}
+%   \begin{columns}[c]
+%     \column{0.48\textwidth}
+%     \textbf{Definição:}
+
+%     Para cada $v \neq r$, escolher um arco $a_v$ de peso mínimo que entra em $v$:
+%     $$T := \{a_v : v \in V \setminus \{r\}\}$$
+
+%     \vspace{0.2cm}
+%     \textbf{Propriedade:}
+
+%     Se $T$ é uma $r$-arborescência, então $T$ tem peso mínimo.
+
+%     \column{0.52\textwidth}
+%     \begin{tikzpicture}[>=Stealth, node distance=2.0cm,
+%         v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+%         cheap/.style={->, very thick, draw=blue!70},
+%         expensive/.style={->, dashed, draw=gray!60}]
+%       \node[v] (r) {\small $r$};
+%       \node[v] (a) [right=2.2cm of r] {\small $a$};
+%       \node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
+%       \node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
+
+%       \draw[cheap] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (b);
+%       \draw[cheap] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
+%       \draw[expensive] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (a);
+
+%       \draw[cheap] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (a);
+%       \draw[expensive] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (b);
+%       \draw[expensive] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (c);
+%     \end{tikzpicture}
+%   \end{columns}
+
+%   \vspace{0.2cm}
+%   \begin{alertblock}{Resultado}
+%     $T = \{(r,a), (a,b), (b,c)\}$ é uma $r$-arborescência geradora mínima!
+%   \end{alertblock}
+% \end{frame}
+
 
 \begin{frame}{Passo 1: Redução de Pesos}
   \begin{columns}[c]
@@ -411,6 +459,7 @@ def reduce_weights(D: nx.DiGraph, v: int):
   \begin{columns}[c]
     \column{0.5\textwidth}
     \textbf{Formação de $D_0$:}
+
     \vspace{0.1cm}
     Para cada $v \neq r$, escolher um arco $a_v \in \delta^-(v)$ com $w_\lambda(a_v) = 0$ formar:
 
@@ -550,7 +599,7 @@ if nx.is_arborescence(D_zero):
     \end{itemize}
 
     \vspace{0.1cm}
-    O arco de $D'$ que entra em $x_C$ deve corresponder ao arco de $D$ que entra em algum vértice de $C$
+    O arco de $D'$ que entra em $x_C$ deve corresponder ao arco de menor peso daqueles que vão de r até  $x_C$.
 
     \column{0.52\textwidth}
     \begin{tikzpicture}[>=Stealth, node distance=2cm,
@@ -653,14 +702,19 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph,
 \begin{frame}{Passo 5: Chamada Recursiva}
   \begin{columns}[c]
     \column{0.48\textwidth}
-    \textbf{Novo problema:} $(D', w', r)$
+    \textbf{Novo problema:}
+
+    $(D', w', r)$
 
     \vspace{0.2cm}
     \textbf{Chamada recursiva:}
+
     $$T' := \text{chu--liu--edmonds}(D', w', r)$$
 
     \vspace{0.2cm}
-    \textbf{Resultado:} $T'$ é uma $r$-arborescência geradora mínima em $(D', w')$
+    \textbf{Resultado:}
+
+    $T'$ é uma $r$-arborescência geradora mínima em $(D', w')$
 
     \column{0.52\textwidth}
     \begin{tikzpicture}[>=Stealth, node distance=2cm,
@@ -821,9 +875,9 @@ return F_prime
 
 \begin{frame}{Algoritmo de András Frank}
   \begin{block}{Abordagem em Duas Fases}
-    \textbf{Fase I (Fulkerson):} Construir cobertura de $r$-conjuntos via redução de pesos
+    \textbf{Fase I (Fulkerson):} construir cobertura de $r$-conjuntos via redução de pesos
 
-    \textbf{Fase II (Frank):} Extrair $r$-arborescência geradora da cobertura
+    \textbf{Fase II (Frank):} extrair $r$-arborescência geradora da cobertura
   \end{block}
 
   \vspace{0.3cm}
@@ -848,9 +902,45 @@ return F_prime
   Uma coleção $\mathcal{L}$ de conjuntos é \textbf{laminar} se, para quaisquer $X, Y \in \mathcal{L}$:
   $$X \subseteq Y \quad\text{ou}\quad Y \subseteq X \quad\text{ou}\quad X \cap Y = \emptyset$$
 
+  \begin{center}
+    \begin{tikzpicture}[scale=0.8, every node/.style={scale=0.8}]
+      % Definição dos conjuntos
+      \draw[thick, fill=blue!20] (0,0) ellipse (3 and 2); % Conjunto maior (A)
+      \draw[thick, fill=green!20] (1,0) ellipse (1.5 and 1); % Subconjunto de A (B)
+      \draw[thick, fill=red!20] (-1.5,0) ellipse (0.8 and 0.7); % Subconjunto de A (C)
+      \draw[thick, fill=red!20] (-1,1.2) ellipse (0.4 and 0.4); % Subconjunto de A (F)
+      \draw[thick, fill=yellow!20] (0.5,0) ellipse (0.3 and 0.5); % Subconjunto de B (D)
+      \draw[thick, fill=yellow!20] (1.5,0) ellipse (0.3 and 0.5); % Subconjunto de B (E)
+
+      % Números dentro dos conjuntos
+      \node at (-2, 1) {1}; % Elemento em A
+      \node at (-0.5, -1.2) {2}; % Elemento em A
+      \node at (-1.5, 0.3) {3}; % Elemento em B
+      \node at (1.0, -0.5) {4}; % Elemento em B
+      \node at (-1.5, -0.3) {5}; % Elemento em C
+      \node at (-1, 1.2) {6}; % Elemento em F
+      \node at (0.5, 0) {7}; % Elemento em D
+      \node at (1.5, 0) {8}; % Elemento em E
+
+      % Rótulos dos conjuntos
+      \node at (-2.5, 1.5) {\( A \)}; % Rótulo para o conjunto A
+      \node at (1.5, 1.3) {\( B \)}; % Rótulo para o conjunto B
+      \node at (-2.5, -0.5) {\( C \)}; % Rótulo para o conjunto C
+      \node at (2, 0.5) {\( D \)}; % Rótulo para o conjunto D
+      \node at (1, 0.5) {\( E \)}; % Rótulo para o conjunto E
+      \node at (-0.2, 1.3) {\( F \)}; % Rótulo para o conjunto F
+    \end{tikzpicture}
+    \end{center}
+    \begin{center}
+    {\small Exemplo de coleção laminar: $\mathcal{L} = \{A, B, C, D, E, F\}$}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Fase I: Conceitos Fundamentais}
   \vspace{0.3cm}
   \textbf{Sequência $w$-disjunta:}
 
+  \vspace{0.3cm}  
   Uma sequência $((R_i, \lambda_i))_{i \in [k)}$ é \textbf{$w$-disjunta} se:
   $$\sum_{i \in [k)} \lambda_i \,[a \in \delta^-(R_i)] \;\le\; w(a) \quad \forall a \in A(D)$$
 
@@ -939,25 +1029,25 @@ return F_prime
 \end{frame}
 
 \begin{frame}{Fase I: Invariantes do Algoritmo}
-	\textbf{Em cada iteração}, a sequência $\sigma = ((f_i, R_i, \lambda_i))_{i \in [k)}$ satisfaz:
-	
-	\vspace{0.2cm}
-	\begin{enumerate}
-		\item $c = w - \sum_{i \in [k)} \lambda_i \mathbf{1}_{\delta^-(R_i)}$ \hfill {\small (pesos reduzidos)}
-		
-		\item $\forall i \in [k): f_i$ entra em $R_i$ 
-		
-		\item $\forall i \in [k), \forall j \in [i): f_j$ \emph{não} entra em $R_i$ \hfill {\small (prioridade)}
-		
-		\item $\{R_i : i \in [k)\}$ é uma \textbf{coleção laminar} de $r$-conjuntos
-		
-		\item $((R_i, \lambda_i))_{i \in [k)}$ é uma sequência \textbf{$w$-disjunta}
-		
-		\item $\forall i \in [k): c(f_i) = 0$ \hfill {\small (peso reduzido zero)}
-	\end{enumerate}
-	
-	\vspace{0.2cm}
-	{\small A laminaridade garante estrutura hierárquica; a condição (6) garante a otimalidade.}
+  \textbf{Em cada iteração}, a sequência $\sigma = ((f_i, R_i, \lambda_i))_{i \in [k)}$ satisfaz:
+
+  \vspace{0.2cm}
+  \begin{enumerate}
+    \item $c = w - \sum_{i \in [k)} \lambda_i \mathbf{1}_{\delta^-(R_i)}$ \hfill {\small (pesos reduzidos)}
+
+    \item $\forall i \in [k): f_i$ entra em $R_i$
+
+    \item $\forall i \in [k), \forall j \in [i): f_j$ \emph{não} entra em $R_i$ \hfill {\small (prioridade)}
+
+    \item $\{R_i : i \in [k)\}$ é uma \textbf{coleção laminar} de $r$-conjuntos
+
+    \item $((R_i, \lambda_i))_{i \in [k)}$ é uma sequência \textbf{$w$-disjunta}
+
+    \item $\forall i \in [k): c(f_i) = 0$ \hfill {\small (peso reduzido zero)}
+  \end{enumerate}
+
+  \vspace{0.2cm}
+  {\small A laminaridade garante estrutura hierárquica; a condição (6) garante a otimalidade.}
 \end{frame}
 
 \begin{frame}{Fase I: Encontrando $r$-conjuntos Minimais}
@@ -1121,7 +1211,7 @@ def update_weights(D: nx.DiGraph,
       \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 4} (d);
 
       \draw[arc] (f) to node[midway, below, sloped] {\scriptsize 1} (d);
-      
+
       \draw[arc] (g) to node[midway, above, sloped] {\scriptsize 5} (b);
 
 
@@ -1158,7 +1248,7 @@ def update_weights(D: nx.DiGraph,
     \begin{itemize}
       \item $(r,b): 6$
       \item $(g,b): 5$ ← \textbf{mínimo}
-      \item $(a,b): 8$ 
+      \item $(a,b): 8$
     \end{itemize}
 
     \column{0.52\textwidth}
@@ -1204,7 +1294,7 @@ def update_weights(D: nx.DiGraph,
       \draw[selected] (g) to node[midway, above, sloped] {\scriptsize 4} (b);
 
       \draw[arc] (f) to node[midway, below, sloped] {\scriptsize 1} (d);
-      
+
       \node[rset, fit=(b)] {};
       \node[orange!70, above=0.2cm of b] {\small $R_0$};
 
@@ -1276,7 +1366,7 @@ def update_weights(D: nx.DiGraph,
       \draw[zero] (g) to node[midway, above, sloped] {\scriptsize \textcolor{green} 0} (b);
 
       \draw[arc] (f) to node[midway, below, sloped] {\scriptsize 1} (d);
-      
+
     \end{tikzpicture}
     \vspace{0.05cm}
     {\small Arco em azul tem peso zero}
@@ -1303,7 +1393,7 @@ def update_weights(D: nx.DiGraph,
     \textbf{Redução:}
     \begin{itemize}
       \item $(r,c): 5$, $(b,c): 2$ ← \textbf{mínimo: 2}
-      \item $c(r,c) = 5 - 2 = 3$, $c(b,c) = 2 - 2 = 0$ 
+      \item $c(r,c) = 5 - 2 = 3$, $c(b,c) = 2 - 2 = 0$
     \end{itemize}
 
     \vspace{0.2cm}
@@ -1362,7 +1452,7 @@ def update_weights(D: nx.DiGraph,
 
       \node[rset, fit=(c)] {};
       \node[orange!70, below=0.2cm of c] {\small $R_1$};
-      
+
     \end{tikzpicture}
     \vspace{0.2cm}
     {\small Arco em azul tem peso zero}
@@ -1379,13 +1469,13 @@ def update_weights(D: nx.DiGraph,
     \textbf{Estado:} $F = \{(g,b), (b,c)\}$
 
     \vspace{0.2cm}
-    
+
     \textbf{Escolha:} $R_2 = \{a\}$
 
     \vspace{0.2cm}
     Arcos que entram em $\{a\}$:
     \begin{itemize}
-      \item $(r,a): 5$ 
+      \item $(r,a): 5$
       \item $(e,a): 3$ ← \textbf{mínimo}
     \end{itemize}
 
@@ -1443,7 +1533,7 @@ def update_weights(D: nx.DiGraph,
 
       \node[rset, fit=(a)] {};
       \node[orange!70, above=0.2cm of a] {\small $R_2$};
-      
+
     \end{tikzpicture}
   \end{columns}
 \end{frame}
@@ -1454,13 +1544,13 @@ def update_weights(D: nx.DiGraph,
     \textbf{Estado:} $F = \{(g,b), (b,c), (e,a)\}$
 
     \vspace{0.2cm}
-    
+
     \textbf{Escolha:} $R_3 = \{g\}$
 
     \vspace{0.2cm}
     Arcos que entram em $\{g\}$:
     \begin{itemize}
-      \item $(c,g): 8$ 
+      \item $(c,g): 8$
       \item $(d,g): 4$ ← \textbf{mínimo}
     \end{itemize}
 
@@ -1518,7 +1608,7 @@ def update_weights(D: nx.DiGraph,
 
       \node[rset, fit=(g)] {};
       \node[orange!70, below=0.2cm of g] {\small $R_3$};
-      
+
     \end{tikzpicture}
   \end{columns}
 \end{frame}
@@ -1529,14 +1619,14 @@ def update_weights(D: nx.DiGraph,
     \textbf{Estado:} $F = \{(g,b), (b,c), (e,a), (d,g)\}$
 
     \vspace{0.2cm}
-    
+
     \textbf{Escolha:} $R_4 = \{d\}$
 
     \vspace{0.2cm}
     Arcos que entram em $\{d\}$:
     \begin{itemize}
-      \item $(b,d): 5$ 
-      \item $(e,d): 4$ 
+      \item $(b,d): 5$
+      \item $(e,d): 4$
       \item $(f,d): 1$ ← \textbf{mínimo}
     \end{itemize}
 
@@ -1594,7 +1684,7 @@ def update_weights(D: nx.DiGraph,
 
       \node[rset, fit=(d)] {};
       \node[orange!70, above=0.2cm of d] {\small $R_4$};
-      
+
     \end{tikzpicture}
   \end{columns}
 \end{frame}
@@ -1605,14 +1695,14 @@ def update_weights(D: nx.DiGraph,
     \textbf{Estado:} $F = \{(g,b), (b,c), (e,a), (d,g), (f, d)\}$
 
     \vspace{0.2cm}
-    
+
     \textbf{Escolha:} $R_5 = \{f\}$
 
     \vspace{0.2cm}
     Arcos que entram em $\{f\}$:
     \begin{itemize}
       \item $(c,f): 3$ ← \textbf{mínimo}
-      \item $(e,f): 6$ 
+      \item $(e,f): 6$
     \end{itemize}
 
     \vspace{0.2cm}
@@ -1669,7 +1759,7 @@ def update_weights(D: nx.DiGraph,
 
       \node[rset, fit=(f)] {};
       \node[orange!70, right=0.2cm of f] {\small $R_5$};
-      
+
     \end{tikzpicture}
   \end{columns}
 \end{frame}
@@ -1680,7 +1770,7 @@ def update_weights(D: nx.DiGraph,
     \textbf{Estado:} $F = \{(g,b), (b,c), (e,a), (d,g), (f,d), (c,f)\}$
 
     \vspace{0.2cm}
-    
+
     \textbf{Escolha:} $R_6 = \{e\}$
 
     \vspace{0.2cm}
@@ -1743,7 +1833,7 @@ def update_weights(D: nx.DiGraph,
 
       \node[rset, fit=(e)] {};
       \node[orange!70, above=0.2cm of e] {\small $R_5$};
-      
+
     \end{tikzpicture}
   \end{columns}
 \end{frame}
@@ -1754,7 +1844,7 @@ def update_weights(D: nx.DiGraph,
 %     \textbf{Estado:} $F = \{(g,b), (b,c), (e,a), (d,g), (f,d), (c,f), (d,e)\}$
 
 %     \vspace{0.2cm}
-    
+
 %     \textbf{Escolha:} $R_7 = \{e\}$
 
 %     \vspace{0.2cm}
@@ -1817,7 +1907,7 @@ def update_weights(D: nx.DiGraph,
 
 %       \node[rset, fit=(e)] {};
 %       \node[orange!70, above=0.2cm of e] {\small $R_5$};
-      
+
 %     \end{tikzpicture}
 %   \end{columns}
 % \end{frame}
@@ -1825,13 +1915,13 @@ def update_weights(D: nx.DiGraph,
 \begin{frame}{Fase I: Iteração 9 - Estado Final}
   \begin{columns}[c]
     \column{0.48\textwidth}
-    
+
     \textbf{Redução:}
     \begin{itemize}
       \item $c(r,b) = 1 - 1 = 0$
     \end{itemize}
 
-    
+
     \vspace{0.2cm}
     \textbf{Condição de parada satisfeita!}
 
@@ -1880,7 +1970,7 @@ def update_weights(D: nx.DiGraph,
 
       \draw[zero] (f) to node[midway, below, sloped] {\scriptsize 0} (d);
 
-      
+
     \end{tikzpicture}
 
     {\small Todos arcos de $F$ têm peso zero!}
@@ -2069,7 +2159,7 @@ def andras_frank(D: nx.DiGraph, r: int):
 
       \draw[zero] (f) to node[midway, below, sloped] {\scriptsize 0} (d);
 
-      
+
     \end{tikzpicture}
 
     {\small Verde = vértices em $U$}
@@ -2139,7 +2229,7 @@ def andras_frank(D: nx.DiGraph, r: int):
       \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 4} (d);
 
       \draw[arc] (f) to node[midway, below, sloped] {\scriptsize 1} (d);
-      
+
       \draw[arc] (g) to node[midway, above, sloped] {\scriptsize 5} (b);
 
 
@@ -2208,7 +2298,7 @@ def andras_frank(D: nx.DiGraph, r: int):
       \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 4} (d);
 
       \draw[arc] (f) to node[midway, below, sloped] {\scriptsize 1} (d);
-      
+
       \draw[arc] (g) to node[midway, above, sloped] {\scriptsize 5} (b);
 
 
@@ -2277,7 +2367,7 @@ def andras_frank(D: nx.DiGraph, r: int):
       \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 4} (d);
 
       \draw[arc] (f) to node[midway, below, sloped] {\scriptsize 1} (d);
-      
+
       \draw[arc] (g) to node[midway, above, sloped] {\scriptsize 5} (b);
 
 
@@ -2346,7 +2436,7 @@ def andras_frank(D: nx.DiGraph, r: int):
       \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 4} (d);
 
       \draw[zero] (f) to node[midway, below, sloped] {\scriptsize 1} (d);
-      
+
       \draw[arc] (g) to node[midway, above, sloped] {\scriptsize 5} (b);
 
 
@@ -2415,7 +2505,7 @@ def andras_frank(D: nx.DiGraph, r: int):
       \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 4} (d);
 
       \draw[zero] (f) to node[midway, below, sloped] {\scriptsize 1} (d);
-      
+
       \draw[arc] (g) to node[midway, above, sloped] {\scriptsize 5} (b);
 
 
@@ -2484,7 +2574,7 @@ def andras_frank(D: nx.DiGraph, r: int):
       \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 4} (d);
 
       \draw[zero] (f) to node[midway, below, sloped] {\scriptsize 1} (d);
-      
+
       \draw[arc] (g) to node[midway, above, sloped] {\scriptsize 5} (b);
 
 
@@ -2553,7 +2643,7 @@ def andras_frank(D: nx.DiGraph, r: int):
       \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 4} (d);
 
       \draw[zero] (f) to node[midway, below, sloped] {\scriptsize 1} (d);
-      
+
       \draw[arc] (g) to node[midway, above, sloped] {\scriptsize 5} (b);
 
 
@@ -3058,7 +3148,7 @@ def andras_frank(D: nx.DiGraph, r: int):
     \begin{minipage}{0.95\columnwidth}
       \begin{block}{Extensões Possíveis}
         \begin{itemize}
-		  \item Implementação de algoritmos para resolver o problema da r-arborescência inversa geradora mínima
+          \item Implementação de algoritmos para resolver o problema da r-arborescência inversa geradora mínima
           \item Análise em grafos com estruturas especiais
           \item Paralelização dos algoritmos
           \item Extensão para grafos dinâmicos

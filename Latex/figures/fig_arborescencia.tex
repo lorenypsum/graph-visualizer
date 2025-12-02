@@ -1,0 +1,41 @@
+% !TEX program = latexmk
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{microtype}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,fit,calc}
+
+\begin{document}
+\centering
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=blue!70}, p/.style={->, draw=gray!60}};
+    % vértices da arborescência
+    \node[v, label=below:$r$] (r) at (0,0) {};
+    \node[v, label=above:$a$] (a) at (-1.6,1.4) {};
+    \node[v, label=above:$b$] (b) at (0.0,1.8) {};
+    \node[v, label=above:$c$] (c) at (1.6,1.4) {};
+    \node[v, label=above:$d$] (d) at (-2.4,2.8) {};
+    \node[v, label=above:$e$] (e) at (-0.8,3.0) {};
+    \node[v, label=above:$f$] (f) at (0.8,3.0) {};
+    \node[v, label=above:$g$] (g) at (-4.95,3.0) {};
+    \node[v, label=above:$h$] (h) at (-3.50,3.0) {};
+    % arcos da arborescência (sem ciclos)                      
+    \draw[a] (r) -- (a);
+    \draw[a] (r) -- (b);
+    \draw[a] (r) -- (c);
+    \draw[a] (a) -- (d);
+    \draw[a] (b) -- (e);
+    \draw[a] (c) -- (f);
+    % arco extra (não faz parte da arborescência)
+    \draw[p] (e) -- (d);
+    \draw[p] (f) -- (r);
+    \draw[p] (d) -- (b);
+    \draw[p] (a) -- (b);
+    \draw[p] (g) -- (h);
+    
+    \node[align=left, anchor=west] at (3.0,1.8) {$|V_T|=7,\; |A_T|=6$\\ $|A_T|=|V_T|-1$};
+\end{tikzpicture}
+\end{document}
