@@ -1389,7 +1389,7 @@ def update_weights(D: nx.DiGraph,
         rset/.style={draw=orange!70, very thick, dashed, rounded corners},
         arc/.style={->, thick, draw=gray!70},
         selected/.style={->, very thick, draw=green!70},
-        zero/.style={->, very thick, draw=blue!70}]
+        zero/.style={->, very thick, draw=red!70}]
       \node[v,fill=red!20] (r) {\small $r$};
       \node[v] (b) [right=1.8cm of r] {\small $b$};
       \node[v] (a) [above=1.2cm of b] {\small $a$};
@@ -1424,7 +1424,7 @@ def update_weights(D: nx.DiGraph,
       \draw[arc] (e) to[bend left=14] node[midway, above, sloped] {\scriptsize 6} (f);
       \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 4} (d);
 
-      \draw[zero] (g) to node[midway, above, sloped] {\scriptsize \textcolor{green} 0} (b);
+      \draw[zero] (g) to node[midway, above, sloped] {\scriptsize \textcolor{red}{$f_0$}} (b);
 
       \draw[arc] (f) to node[midway, below, sloped] {\scriptsize 1} (d);
     \end{tikzpicture}
@@ -1472,7 +1472,7 @@ def update_weights(D: nx.DiGraph,
         v/.style={circle, draw, fill=blue!8, minimum size=7mm},
         rset/.style={draw=orange!70, very thick, dashed, rounded corners},
         arc/.style={->, thick, draw=gray!70},
-        selected/.style={->, very thick, draw=green!70},
+        selected/.style={->, very thick, draw=red!70},
         zero/.style={->, very thick, draw=blue!70}]
       \node[v,fill=red!20] (r) {\small $r$};
       \node[v] (b) [right=1.8cm of r] {\small $b$};
@@ -1495,7 +1495,7 @@ def update_weights(D: nx.DiGraph,
       \draw[arc] (a) to node[midway, above, sloped] {\scriptsize 3} (b);
 
 
-      \draw[selected] (b) to node[midway, above, sloped] {\scriptsize \textcolor{green} 0} (c);
+      \draw[selected] (b) to node[midway, above, sloped] {\scriptsize \textcolor{red}{$f_1$}} (c);
       \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 5} (d);
 
       \draw[arc] (c) to node[midway, above, sloped] {\scriptsize 8} (g);
@@ -1508,7 +1508,7 @@ def update_weights(D: nx.DiGraph,
       \draw[arc] (e) to[bend left=14] node[midway, above, sloped] {\scriptsize 6} (f);
       \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 4} (d);
 
-      \draw[zero] (g) to node[midway, above, sloped] {\scriptsize 0} (b);
+      \draw[zero] (g) to node[midway, above, sloped] {\scriptsize {$f_0$}} (b);
 
       \draw[arc] (f) to node[midway, below, sloped] {\scriptsize 1} (d);
 
