@@ -960,7 +960,7 @@ return F_prime
       \node[vertex] (u) at (-2,0) {$u$};
       \node[vertex] (v) at ( 2.5,0) {$v$};
 
-      \draw[arc] (u) -- node[weight,above,yshift=1pt,xshift=-1pt]
+      \draw[arc] (u) -- node[weight,above,yshift=-1pt,xshift=-20pt]
       {$a, 5$} (v);
 
       %-------------------------------
@@ -1029,26 +1029,26 @@ return F_prime
   \end{alertblock}
 \end{frame}
 
-\begin{frame}{Fase I: Objetivo}
-  \textbf{Construir uma sequência} $((f_i, R_i, \lambda_i))_{i \in [k)}$ que satisfaz:
+% \begin{frame}{Fase I: Objetivo}
+%   \textbf{Construir uma sequência} $((f_i, R_i, \lambda_i))_{i \in [k)}$ que satisfaz:
 
-  \vspace{0.2cm}
-  \begin{enumerate}
-    \item $\{f_i : i \in [k)\}$ é uma \textbf{cobertura de $r$-conjuntos} de $D$
+%   \vspace{0.2cm}
+%   \begin{enumerate}
+%     \item $\{f_i : i \in [k)\}$ é uma \textbf{cobertura de $r$-conjuntos} de $D$
 
-    \item $((R_i, \lambda_i))_{i \in [k)}$ é uma \textbf{sequência $w$-disjunta}
+%     \item $((R_i, \lambda_i))_{i \in [k)}$ é uma \textbf{sequência $w$-disjunta}
 
-    \item $\forall j \in [k): \sum_{i \in [k)} \lambda_i\,[f_j \in \delta^-(R_i)] = w(f_j)$ \hfill {\small (CO1)}
-  \end{enumerate}
+%     \item $\forall j \in [k): \sum_{i \in [k)} \lambda_i\,[f_j \in \delta^-(R_i)] = w(f_j)$ \hfill {\small (CO1)}
+%   \end{enumerate}
 
-  \vspace{0.3cm}
-  \textbf{Interpretação:}
-  \begin{itemize}
-    \item A Fase I constrói uma cobertura $F$ que satisfaz a condição de otimalidade (CO1)
-    \item Cada arco $f_j \in F$ tem peso "totalmente explicado" pelos $\lambda_i$
-    \item A coleção $\{R_i\}$ é laminar e os $\lambda_i$ respeitam os pesos dos arcos
-  \end{itemize}
-\end{frame}
+%   \vspace{0.3cm}
+%   \textbf{Interpretação:}
+%   \begin{itemize}
+%     \item A Fase I constrói uma cobertura $F$ que satisfaz a condição de otimalidade (CO1)
+%     \item Cada arco $f_j \in F$ tem peso "totalmente explicado" pelos $\lambda_i$
+%     \item A coleção $\{R_i\}$ é laminar e os $\lambda_i$ respeitam os pesos dos arcos
+%   \end{itemize}
+% \end{frame}
 
 \begin{frame}{Fase I: Algoritmo de Fulkerson}
   \textbf{Processo iterativo}
