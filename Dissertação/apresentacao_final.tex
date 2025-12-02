@@ -1307,7 +1307,7 @@ def update_weights(D: nx.DiGraph,
     Arcos que entram em $\{b\}$:
     \begin{itemize}
       \item $(r,b): 6$
-      \item $(g,b): 4$ ← \textbf{mínimo}
+      \item $(g,b): 5$ ← \textbf{mínimo}
       \item $(a,b): 8$
     \end{itemize}
 
@@ -1351,7 +1351,7 @@ def update_weights(D: nx.DiGraph,
       \draw[arc] (e) to[bend left=14] node[midway, above, sloped] {\scriptsize 6} (f);
       \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 4} (d);
 
-      \draw[selected] (g) to node[midway, above, sloped] {\scriptsize 4} (b);
+      \draw[selected] (g) to node[midway, above, sloped] {\scriptsize 5} (b);
 
       \draw[arc] (f) to node[midway, below, sloped] {\scriptsize 1} (d);
 
@@ -1359,7 +1359,7 @@ def update_weights(D: nx.DiGraph,
       \node[orange!70, above=0.2cm of b] {\small $R_0$};
     \end{tikzpicture}
     \begin{center}
-    {\small $\lambda_0 = 4$, $f_0 = (g,b)$}
+    {\small $\lambda_0 = 5$, $f_0 = (g,b)$}
     \end{center}
   \end{columns}
   
@@ -1515,8 +1515,6 @@ def update_weights(D: nx.DiGraph,
       \node[orange!70, below=0.2cm of c] {\small $R_1$};
 
     \end{tikzpicture}
-    \vspace{0.2cm}
-    {\small Arco em azul tem peso zero}
   \end{columns}
 
   \begin{block}{Observação}
