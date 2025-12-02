@@ -1360,14 +1360,12 @@ def update_weights(D: nx.DiGraph,
       \item $D_0 = (V, \{(r,a)\})$
     \end{itemize}
 
-    \vspace{0.2cm}
     \textbf{Redução de pesos:}
     \begin{itemize}
       \item $c(r,b) = 6 - 5 = 1$ \checkmark
       \item $c(g,b) = 5 - 5 = 0$ \checkmark
       \item $c(a,b) = 8 - 5 = 3$ \checkmark
     \end{itemize}
-
     \column{0.52\textwidth}
     \begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
         v/.style={circle, draw, fill=blue!8, minimum size=7mm},
@@ -1923,20 +1921,20 @@ def update_weights(D: nx.DiGraph,
       \node[v] (f) [right=1.2cm of d] {\small $f$};
       \node[v] (e) [above right=1.2cm and 0.6cm of d] {\small $e$};
       % \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 1} (a);
-      \draw[zero] (r) to node[midway, above, sloped] {\scriptsize 0} (b);
+      \draw[zero] (r) to node[midway, above, sloped] {\scriptsize \textcolor{blue}{$f_7$}} (b);
       % \draw[arc] (r) to[bend right=13] node[midway, below, sloped] {\scriptsize 2} (c);
       % \draw[arc] (a) to node[midway, above, sloped] {\scriptsize 3} (b);
-      \draw[zero] (b) to node[midway, above, sloped] {\scriptsize 0} (c);
+      \draw[zero] (b) to node[midway, above, sloped] {\scriptsize \textcolor{blue}{$f_1$}} (c);
       % \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 4} (d);
       % \draw[arc] (c) to node[midway, above, sloped] {\scriptsize 4} (g);
-      \draw[zero] (c) to[bend right=70] node[midway, below, sloped] {\scriptsize 0} (f);
-      \draw[zero] (d) to[bend left=14] node[midway, above, sloped] {\scriptsize 0} (e);
-      \draw[zero] (d) to node[midway, below, sloped] {\scriptsize 0} (g);
-      \draw[zero] (e) to node[midway, above, sloped] {\scriptsize 0} (a);
+      \draw[zero] (c) to[bend right=70] node[midway, below, sloped] {\scriptsize \textcolor{blue}{$f_5$}} (f);
+      \draw[zero] (d) to[bend left=14] node[midway, above, sloped] {\scriptsize \textcolor{blue}{$f_6$}} (e);
+      \draw[zero] (d) to node[midway, below, sloped] {\scriptsize \textcolor{blue}{$f_3$}} (g);
+      \draw[zero] (e) to node[midway, above, sloped] {\scriptsize \textcolor{blue}{$f_2$}} (a);
       % \draw[arc] (e) to[bend left=14] node[midway, above, sloped] {\scriptsize 3} (f);
       % \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (d);
-      \draw[zero] (g) to node[midway, above, sloped] {\scriptsize 0} (b);
-      \draw[zero] (f) to node[midway, below, sloped] {\scriptsize 0} (d);
+      \draw[zero] (g) to node[midway, above, sloped] {\scriptsize \textcolor{blue}{$f_0$}} (b);
+      \draw[zero] (f) to node[midway, below, sloped] {\scriptsize \textcolor{blue}{$f_4$}} (d);
     \end{tikzpicture}
   \end{columns}
 
@@ -1981,8 +1979,9 @@ def update_weights(D: nx.DiGraph,
     \column{0.48\textwidth}
     \textbf{Entrada da Fase II:}
     \begin{itemize}
-      \item $F = \{(g,b), (b,c), (e,a), (d,g), (f,d), (c,f), (d,e), (r,b)\}$
-      \item Todos arcos em $F$ têm peso zero
+      \item $F = \{(g,b), (b,c), (e,a), (d,g),$ 
+      
+                  $(f,d), (c,f), (d,e), (r,b)\}$
     \end{itemize}
 
     \vspace{0.2cm}
@@ -2010,39 +2009,25 @@ def update_weights(D: nx.DiGraph,
       \node[v] (b) [right=1.8cm of r] {\small $b$};
       \node[v] (a) [above=1.2cm of b] {\small $a$};
       \node[v] (c) [below=1.2cm of b] {\small $c$};
-
       \node[v] (g) [below right=1.4cm and 1.5cm of b] {\small $g$};
-
       \node[v] (d) [right=1.2cm of b] {\small $d$};
-
       \node[v] (f) [right=1.2cm of d] {\small $f$};
-
       \node[v] (e) [above right=1.2cm and 0.6cm of d] {\small $e$};
-
       % \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 1} (a);
-      \draw[zero] (r) to node[midway, above, sloped] {\scriptsize 0} (b);
+      \draw[zero] (r) to node[midway, above, sloped] {\scriptsize \textcolor{blue}{$f_7$}} (b);
       % \draw[arc] (r) to[bend right=13] node[midway, below, sloped] {\scriptsize 2} (c);
       % \draw[arc] (a) to node[midway, above, sloped] {\scriptsize 3} (b);
-
-
-      \draw[zero] (b) to node[midway, above, sloped] {\scriptsize 0} (c);
+      \draw[zero] (b) to node[midway, above, sloped] {\scriptsize \textcolor{blue}{$f_1$}} (c);
       % \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 4} (d);
-
       % \draw[arc] (c) to node[midway, above, sloped] {\scriptsize 4} (g);
-      \draw[zero] (c) to[bend right=70] node[midway, below, sloped] {\scriptsize 0} (f);
-
-      \draw[zero] (d) to[bend left=14] node[midway, above, sloped] {\scriptsize 0} (e);
-      \draw[zero] (d) to node[midway, below, sloped] {\scriptsize 0} (g);
-
-      \draw[zero] (e) to node[midway, above, sloped] {\scriptsize 0} (a);
+      \draw[zero] (c) to[bend right=70] node[midway, below, sloped] {\scriptsize \textcolor{blue}{$f_5$}} (f);
+      \draw[zero] (d) to[bend left=14] node[midway, above, sloped] {\scriptsize \textcolor{blue}{$f_6$}} (e);
+      \draw[zero] (d) to node[midway, below, sloped] {\scriptsize \textcolor{blue}{$f_3$}} (g);
+      \draw[zero] (e) to node[midway, above, sloped] {\scriptsize \textcolor{blue}{$f_2$}} (a);
       % \draw[arc] (e) to[bend left=14] node[midway, above, sloped] {\scriptsize 3} (f);
       % \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (d);
-
-      \draw[zero] (g) to node[midway, above, sloped] {\scriptsize 0} (b);
-
-      \draw[zero] (f) to node[midway, below, sloped] {\scriptsize 0} (d);
-
-
+      \draw[zero] (g) to node[midway, above, sloped] {\scriptsize \textcolor{blue}{$f_0$}} (b);
+      \draw[zero] (f) to node[midway, below, sloped] {\scriptsize \textcolor{blue}{$f_4$}} (d);
     \end{tikzpicture}
   \end{columns}
 
