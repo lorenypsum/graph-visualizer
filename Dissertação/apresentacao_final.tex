@@ -1862,47 +1862,31 @@ def update_weights(D: nx.DiGraph,
         v/.style={circle, draw, fill=blue!8, minimum size=7mm},
         rset/.style={draw=orange!70, very thick, dashed, rounded corners},
         arc/.style={->, thick, draw=gray!70},
-        selected/.style={->, very thick, draw=green!70},
+        selected/.style={->, very thick, draw=red!70},
         zero/.style={->, very thick, draw=blue!70}]
       \node[v,fill=red!20] (r) {\small $r$};
       \node[v] (b) [right=1.8cm of r] {\small $b$};
       \node[v] (a) [above=1.2cm of b] {\small $a$};
       \node[v] (c) [below=1.2cm of b] {\small $c$};
-
       \node[v] (g) [below right=1.4cm and 1.5cm of b] {\small $g$};
-
       \node[v] (d) [right=1.2cm of b] {\small $d$};
-
       \node[v] (f) [right=1.2cm of d] {\small $f$};
-
       \node[v] (e) [above right=1.2cm and 0.6cm of d] {\small $e$};
-
-      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize \textcolor{green} 1} (a);
-      \draw[selected] (r) to node[midway, above, sloped] {\scriptsize \textcolor{green} 0} (b);
-      \draw[arc] (r) to[bend right=13] node[midway, below, sloped] {\scriptsize \textcolor{green} 2} (c);
-
-
-      \draw[arc] (a) to node[midway, above, sloped] {\scriptsize 3} (b);
-
-
-      \draw[zero] (b) to node[midway, above, sloped] {\scriptsize 0} (c);
+      \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 1} (a);
+      \draw[selected] (r) to node[midway, above, sloped] {\scriptsize \textcolor{red} {$f_7$}} (b);
+      \draw[arc] (r) to[bend right=13] node[midway, below, sloped] {\scriptsize 2} (c);
+      \draw[arc] (a) to node[midway, above, sloped] {\scriptsize \textcolor{red} 2} (b);
+      \draw[zero] (b) to node[midway, above, sloped] {\scriptsize \textcolor{blue}{$f_1$}} (c);
       \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 4} (d);
-
       \draw[arc] (c) to node[midway, above, sloped] {\scriptsize 4} (g);
-      \draw[zero] (c) to[bend right=70] node[midway, below, sloped] {\scriptsize 0} (f);
-
-      \draw[zero] (d) to[bend left=14] node[midway, above, sloped] {\scriptsize 0} (e);
-      \draw[zero] (d) to node[midway, below, sloped] {\scriptsize 0} (g);
-
-      \draw[zero] (e) to node[midway, above, sloped] {\scriptsize 0} (a);
+      \draw[zero] (c) to[bend right=70] node[midway, below, sloped] {\scriptsize \textcolor{blue}{$f_5$}} (f);
+      \draw[zero] (d) to[bend left=14] node[midway, above, sloped] {\scriptsize \textcolor{blue}{$f_6$}} (e);
+      \draw[zero] (d) to node[midway, below, sloped] {\scriptsize \textcolor{blue}{$f_3$}} (g);
+      \draw[zero] (e) to node[midway, above, sloped] {\scriptsize \textcolor{blue}{$f_2$}} (a);
       \draw[arc] (e) to[bend left=14] node[midway, above, sloped] {\scriptsize 3} (f);
       \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (d);
-
-      \draw[zero] (g) to node[midway, above, sloped] {\scriptsize 0} (b);
-
-      \draw[zero] (f) to node[midway, below, sloped] {\scriptsize 0} (d);
-
-
+      \draw[zero] (g) to node[midway, above, sloped] {\scriptsize \textcolor{blue}{$f_0$}} (b);
+      \draw[zero] (f) to node[midway, below, sloped] {\scriptsize \textcolor{blue}{$f_4$}} (d);
     \end{tikzpicture}
 
     {\small Todos arcos de $F$ têm peso zero!}
