@@ -1359,10 +1359,10 @@ def update_weights(D: nx.DiGraph,
       \node[orange!70, above=0.2cm of b] {\small $R_0$};
     \end{tikzpicture}
     \begin{center}
-    {\small $\lambda_0 = 5$, $f_0 = (g,b)$}
+      {\small $\lambda_0 = 5$, $f_0 = (g,b)$}
     \end{center}
   \end{columns}
-  
+
 \end{frame}
 
 \begin{frame}{Fase I: Iteração 2 - Redução de Pesos}
@@ -1427,9 +1427,13 @@ def update_weights(D: nx.DiGraph,
       \draw[zero] (g) to node[midway, above, sloped] {\scriptsize \textcolor{green} 0} (b);
 
       \draw[arc] (f) to node[midway, below, sloped] {\scriptsize 1} (d);
-
     \end{tikzpicture}
+    \begin{center}
+      {\small $\lambda_0 = 5$, $f_0 = (g,b)$}
+    \end{center}
   \end{columns}
+
+
 
   \begin{block}{Observação}
     Pesos são reduzidos para garantir que $\sigma$ seja $w$-disjunta.
@@ -1449,11 +1453,16 @@ def update_weights(D: nx.DiGraph,
     \textbf{Escolha:} $R_1 = \{c\}$
 
     \vspace{0.2cm}
-    \textbf{Redução:}
+    \textbf{Seleção:}
+
     \begin{itemize}
-      \item $(r,c): 5$, $(b,c): 2$ ← \textbf{mínimo: 2}
-      \item $c(r,c) = 5 - 2 = 3$, $c(b,c) = 2 - 2 = 0$
+      \item $\lambda_1 = 2$
+      \item $f_1 = (b,c)$
     \end{itemize}
+    % \begin{itemize}
+    %   \item $(r,c): 5$, $(b,c): 2$ ← \textbf{mínimo: 2}
+    %   \item $c(r,c) = 5 - 2 = 3$, $c(b,c) = 2 - 2 = 0$
+    % \end{itemize}
 
     % \vspace{0.2cm}
     % $\mathcal{C}(D_0)$ com $F = \{(g,b), (b,c)\}$.
@@ -1513,8 +1522,8 @@ def update_weights(D: nx.DiGraph,
 \begin{frame}{Fase I: Iteração 4 - Redução de Pesos}
   \begin{columns}[c]
     \column{0.48\textwidth}
-    \textbf{Estado:} 
-    
+    \textbf{Estado:}
+
     $F = \{(g,b), (b,c)\}$
 
     \vspace{0.2cm}
