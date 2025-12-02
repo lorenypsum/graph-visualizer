@@ -2106,6 +2106,30 @@ def update_weights(D: nx.DiGraph,
   \end{center}
 \end{frame}
 
+\begin{frame}{Fase II: Construção da Arborescência}
+  \textbf{Entrada:} Sequência $(f_i)_{i \in [k)}$ da Fase I
+
+  \textbf{Objetivo:} Extrair $J \subseteq \{f_i : i \in [k)\}$ que é uma $r$-arborescência geradora
+
+  \textbf{Algoritmo guloso:}
+  \begin{enumerate}
+    \item Iniciar com $U := \{r\}$ e $J := \emptyset$
+    \item Para $t = 1$ até $|V|-1$:
+          \begin{itemize}
+            \item Para cada $f_i = (u_i, v_i)$ na sequência:
+            \item Se $u_i \in U$ e $v_i \notin U$:
+                  \begin{itemize}
+                    \item $U := U \cup \{v_i\}$
+                    \item $J := J \cup \{f_i\}$
+                    \item Passar para próxima iteração
+                  \end{itemize}
+          \end{itemize}
+  \end{enumerate}
+  \begin{block}{Invariante}
+    Em cada iteração, $\varrho_J(R_i) \le 1$ para todo $i \in [k)$
+  \end{block}
+\end{frame}
+
 \begin{frame}{Fase II - Entrada}
   \begin{columns}[c]
     \column{0.48\textwidth}
@@ -2181,29 +2205,7 @@ def update_weights(D: nx.DiGraph,
   \end{alertblock}
 \end{frame}
 
-\begin{frame}{Fase II: Construção da Arborescência}
-  \textbf{Entrada:} Sequência $(f_i)_{i \in [k)}$ da Fase I
 
-  \textbf{Objetivo:} Extrair $J \subseteq \{f_i : i \in [k)\}$ que é uma $r$-arborescência geradora
-
-  \textbf{Algoritmo guloso:}
-  \begin{enumerate}
-    \item Iniciar com $U := \{r\}$ e $J := \emptyset$
-    \item Para $t = 1$ até $|V|-1$:
-          \begin{itemize}
-            \item Para cada $f_i = (u_i, v_i)$ na sequência:
-            \item Se $u_i \in U$ e $v_i \notin U$:
-                  \begin{itemize}
-                    \item $U := U \cup \{v_i\}$
-                    \item $J := J \cup \{f_i\}$
-                    \item Passar para próxima iteração
-                  \end{itemize}
-          \end{itemize}
-  \end{enumerate}
-  \begin{block}{Invariante}
-    Em cada iteração, $\varrho_J(R_i) \le 1$ para todo $i \in [k)$
-  \end{block}
-\end{frame}
 
 \ifshowimplementation
   \begin{frame}[fragile]{Fase II: Implementação - Versão Lista}
