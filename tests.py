@@ -18,9 +18,9 @@ from andrasfrank import (
 from chuliu import chuliu_edmonds, remove_in_edges_to
 
 # Default parameters
-NUM_TESTS = 1
-MIN_VERTICES = 10
-MAX_VERTICES = 15
+NUM_TESTS = 2000
+MIN_VERTICES = 2000
+MAX_VERTICES = 2000
 PESO_MIN = 1
 PESO_MAX = 10
 LOG_CSV_PATH = "test_results.csv"
@@ -93,6 +93,7 @@ def get_edge_count_for_family(n: int, family: str, m: Optional[int] = None) -> i
         "dense": min(n * (n - 1), 5 * n),
         "sparse": max(n, int(1.2 * n)),
         "layered": 2 * n,
+        "random": 2 * n,
     }
     return edge_counts.get(family, 2 * n)
 
