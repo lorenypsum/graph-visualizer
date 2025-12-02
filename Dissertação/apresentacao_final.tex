@@ -1307,7 +1307,7 @@ def update_weights(D: nx.DiGraph,
     Arcos que entram em $\{b\}$:
     \begin{itemize}
       \item $(r,b): 6$
-      \item $(g,b): 5$ ← \textbf{mínimo}
+      \item $(g,b): 4$ ← \textbf{mínimo}
       \item $(a,b): 8$
     \end{itemize}
 
@@ -1357,11 +1357,12 @@ def update_weights(D: nx.DiGraph,
 
       \node[rset, fit=(b)] {};
       \node[orange!70, above=0.2cm of b] {\small $R_0$};
-
     \end{tikzpicture}
-    \vspace{0.2cm}
-    {\small $\lambda_0 = 5$, $f_0 = (g,b)$}
+    \begin{center}
+    {\small $\lambda_0 = 4$, $f_0 = (g,b)$}
+    \end{center}
   \end{columns}
+  
 \end{frame}
 
 \begin{frame}{Fase I: Iteração 2 - Redução de Pesos}
