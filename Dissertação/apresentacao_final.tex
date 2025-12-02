@@ -930,21 +930,69 @@ return F_prime
       \node at (1, 0.5) {\( E \)}; % Rótulo para o conjunto E
       \node at (-0.2, 1.3) {\( F \)}; % Rótulo para o conjunto F
     \end{tikzpicture}
-    \end{center}
-    \begin{center}
+  \end{center}
+  \begin{center}
     {\small Exemplo de coleção laminar: $\mathcal{L} = \{A, B, C, D, E, F\}$}
-    \end{center}
+  \end{center}
 \end{frame}
 
 \begin{frame}{Fase I: Conceitos Fundamentais}
   \vspace{0.3cm}
   \textbf{Sequência $w$-disjunta:}
-
-  \vspace{0.3cm}  
   Uma sequência $((R_i, \lambda_i))_{i \in [k)}$ é \textbf{$w$-disjunta} se:
   $$\sum_{i \in [k)} \lambda_i \,[a \in \delta^-(R_i)] \;\le\; w(a) \quad \forall a \in A(D)$$
 
   {\small O peso $w(a)$ limita a soma das multiplicidades $\lambda_i$ sobre os conjuntos que $a$ entra.}
+  \vspace{0.3cm}
+  \begin{center}
+    \begin{tikzpicture}[scale=0.6,
+        >=Stealth,
+        vertex/.style={circle,draw,inner sep=1pt,font=\small},
+        arc/.style={->,thick},
+        rset/.style={draw=blue!60,thick},
+        label/.style={font=\small},
+        weight/.style={font=\small}
+      ]
+
+      %-------------------------------
+      % Vértices e arco a
+      %-------------------------------
+      \node[vertex] (u) at (-2,0) {$u$};
+      \node[vertex] (v) at ( 2.5,0) {$v$};
+
+      \draw[arc] (u) -- node[weight,above,yshift=1pt,xshift=-1pt]
+      {$a, 5$} (v);
+
+      %-------------------------------
+      % r-conjuntos laminares com v dentro
+      % R1 ⊂ R2 ⊂ R3
+      %-------------------------------
+      % menor
+      \draw[rset] (v) ellipse (0.8cm and 0.7cm);
+      \node[label,blue!70,anchor=west]
+      at ($(v)+(0.5,0.6)$) {$R_1, 2$};
+
+      % intermediário
+      \draw[rset] (v) ellipse (1.8cm and 1.2cm);
+      \node[label,blue!70,anchor=west]
+      at ($(v)+(1.7,0.0)$) {$R_2, 1$};
+
+      % maior
+      \draw[rset] (v) ellipse (2.8cm and 1.7cm);
+      \node[label,blue!70,anchor=west]
+      at ($(v)+(2.6,-0.6)$) {$R_3, 1$};
+
+      %-------------------------------
+      % Texto da desigualdade
+      %-------------------------------
+
+    \end{tikzpicture}
+  \end{center}
+    \begin{center}
+      \small{Um arco $a$ de peso $5$ que entra nos $r$-conjuntos
+      $R_1$, $R_2$ e $R_3$ com multiplidades $2$, $1$, e $1$, respectivamente.
+    }
+  \end{center}
 \end{frame}
 
 \begin{frame}{Fase I: $r$-conjunto Minimal}
