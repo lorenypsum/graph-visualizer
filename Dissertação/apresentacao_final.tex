@@ -1439,7 +1439,7 @@ def update_weights(D: nx.DiGraph,
 \begin{frame}{Fase I: Iteração 3 - Redução de Pesos}
   \begin{columns}[c]
     \column{0.48\textwidth}
-    \textbf{Atualização:}
+    \textbf{Estado:}
     \begin{itemize}
       \item $F = \{(r,a)\}$
       \item $D_0 = (V, F)$
@@ -1456,13 +1456,7 @@ def update_weights(D: nx.DiGraph,
     \end{itemize}
 
     \vspace{0.2cm}
-    $\mathcal{C}(D_0)$ com $F = \{(g,b), (b,c)\}$:
-
-    \vspace{0.2cm}
-    \begin{itemize}
-      \item CFCs: $\{r\}, \{a\}, \{b\}, \{c\}, \{d\}, \{e\}, \{f\}, \{g\}$
-      \item Fontes em $D_0$: $\{r\}, \{b\}$
-    \end{itemize}
+    $\mathcal{C}(D_0)$ com $F = \{(g,b), (b,c)\}$.
 
     \column{0.52\textwidth}
     \begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
@@ -1514,10 +1508,6 @@ def update_weights(D: nx.DiGraph,
 
     \end{tikzpicture}
   \end{columns}
-
-  \begin{block}{Observação}
-    Pesos são reduzidos para garantir que $\sigma$ seja $w$-disjunta.
-  \end{block}
 \end{frame}
 
 \begin{frame}{Fase I: Iteração 4 - Redução de Pesos}
