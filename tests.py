@@ -80,7 +80,7 @@ class TestConfig:
 
 def log_console_and_file(msg: str, log_txt_path: str = LOG_TXT_PATH) -> None:
     """Log message to both console and file."""
-    print(msg)
+    #print(msg)
     with open(log_txt_path, "a") as f:
         f.write(msg + "\n")
 

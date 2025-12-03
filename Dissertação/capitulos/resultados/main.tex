@@ -11,18 +11,18 @@ A seguir, apresentamos os experimentos empíricos que avaliam o comportamento pr
 
 \section{Análise comparativa dos algoritmos}
 
-Conduzimos 2000 experimentos em digrafos aleatórios construídos a partir de uma raiz \(r\) com quantidade de vértices \(|V| \in [101, 4996]\) (mediana 2464), número de arestas \(|A|\) proporcional ao número de vértices com densidade média de \(1{,}98|V|\) arcos e pesos inteiros associados \(\in [1, 50]\). Para cada instância, executamos Chu--Liu/Edmonds e as duas fases de András Frank com duas versões v1 e v2 para a Fase~II, sendo a v2 uma versão otimizada utilizando fila de prioridade - \emph{heap}.
+Conduzimos 2000 experimentos em digrafos aleatórios construídos a partir de uma raiz \(r\) com número fixo de 2000 vértices, quantidade de arestas \(|A|\) variando no intervalo \([2001, 6000]\) com média de \(3989\) arcos, e pesos inteiros associados \(\in [1, 10]\). Para cada instância, executamos Chu--Liu/Edmonds e as duas fases de András Frank com duas versões v1 e v2 para a Fase~II, sendo a v2 uma versão otimizada utilizando fila de prioridade - \emph{heap}.
 
 Os 2000 testes confirmaram que todos os métodos retornam sempre o mesmo peso, validando a corretude das implementações e a equivalência teórica entre Chu--Liu/Edmonds e Frank. Além disso, as verificações da condição de otimalidade dual foram bem-sucedidas em todos os casos para ambas as variantes de Frank.
 
-Quanto ao desempenho temporal, a Fase~I de Frank apresenta tempo mediano de \(8{,}93\) s (média \(12{,}40\)s), significativamente superior ao tempo mediano de Chu--Liu/Edmonds (\(0{,}25\)s, média \(0{,}58\)s). A Fase~I, responsável pela identificação de subconjuntos minimais via componentes fortemente conexas, domina o tempo total de execução do método de Frank. A Fase~II, em contrapartida, representa uma fração residual do processamento com mediana de \(0{,}98\)s para versão 1 do algoritmo e \(0{,}016\)s para a versão 2.
+Quanto ao desempenho temporal, a Fase~I de Frank apresenta tempo mediano de \(4{,}01\)s (média \(4{,}28\)s), significativamente superior ao tempo mediano de Chu--Liu/Edmonds (\(0{,}13\)s, média \(0{,}25\)s). A Fase~I, responsável pela identificação de subconjuntos minimais via componentes fortemente conexas, domina o tempo total de execução do método de Frank. A Fase~II, em contrapartida, representa uma fração residual do processamento com mediana de \(0{,}42\)s para versão 1 do algoritmo e \(0{,}0083\)s para a versão 2.
 
 As Figuras~\ref{fig:times-boxplot}--\ref{fig:d0-vs-v} apresentam os resultados experimentais.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=.85\linewidth]{figures/fig_times_boxplot.png}
-    \caption{Distribuição de tempos: Fase~I apresenta maior mediana (\(8{,}93\)s) e variabilidade que Chu--Liu/Edmonds (\(0{,}25\)s).}
+    \caption{Distribuição de tempos: Fase~I apresenta maior mediana (\(4{,}01\)s) e variabilidade que Chu--Liu/Edmonds (\(0{,}13\)s).}
     \label{fig:times-boxplot}
 \end{figure}
 
@@ -35,12 +35,12 @@ As Figuras~\ref{fig:times-boxplot}--\ref{fig:d0-vs-v} apresentam os resultados e
     \label{fig:time-vs-edges}
 \end{figure}
 
-A comparação entre as duas variantes da Fase~II revela ganho expressivo com o uso de \emph{heap}. A Figura~\ref{fig:speedup} apresenta essa comparação em dois painéis: à esquerda, o boxplot evidencia a diferença de magnitude entre os tempos de execução --- enquanto v1 (lista) apresenta mediana de \(0{,}98\)s, a versão v2 (heap) reduz para \(0{,}016\)s. À direita, o histograma do fator de aceleração (\emph{speedup}) mostra distribuição com mediana de 58,12 vezes e média de 61,30 vezes, com metade das instâncias apresentando aceleração entre 28 e 91 vezes (intervalo interquartil). Esses resultados confirmam empiricamente a vantagem da estrutura de dados com complexidade \(O(\log n)\) versus \(O(n)\) por operação de seleção de mínimo.
+A comparação entre as duas variantes da Fase~II revela ganho expressivo com o uso de \emph{heap}. A Figura~\ref{fig:speedup} apresenta essa comparação em dois painéis: à esquerda, o boxplot evidencia a diferença de magnitude entre os tempos de execução --- enquanto v1 (lista) apresenta mediana de \(0{,}42\)s, a versão v2 (heap) reduz para \(0{,}0083\)s. À direita, o histograma do fator de aceleração (\emph{speedup}) mostra distribuição com mediana de 50,94 vezes e média de 49,53 vezes. Esses resultados confirmam empiricamente a vantagem da estrutura de dados com complexidade \(O(\log n)\) versus \(O(n)\) por operação de seleção de mínimo.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\linewidth]{figures/fig_speedup_hist.png}
-    \caption{Comparação de desempenho entre implementações da Fase~II. À esquerda, o gráfico de boxplot mostra a distribuição de tempo da v1 do algoritmo com mediana de \(0{,}98\)s enquanto v2 reduz para \(0{,}016\)s. À direita, o histograma do fator de aceleração (\emph{speedup}) mostra a distribuição concentrada entre 40 e 80 vezes, com mediana de 58,12 vezes (linha tracejada vermelha) e média de 61,30 vezes (linha pontilhada laranja).}
+    \caption{Comparação de desempenho entre implementações da Fase~II. À esquerda, o gráfico de boxplot mostra a distribuição de tempo da v1 do algoritmo com mediana de \(0{,}42\)s enquanto v2 reduz para \(0{,}0083\)s. À direita, o histograma do fator de aceleração (\emph{speedup}) mostra mediana de 50,94 vezes (linha tracejada vermelha) e média de 49,53 vezes (linha pontilhada laranja).}
     \label{fig:speedup}
 \end{figure}
 
@@ -73,7 +73,7 @@ O consumo de memória na Fase~I mantém-se modesto (mediana 11{,}5~MB, média 14
 
 Os experimentos validam empiricamente as previsões teóricas e revelam características importantes do comportamento prático dos algoritmos. A equivalência de pesos é verificada em todas as 2000 instâncias, somada à verificação bem-sucedida das condições de otimalidade dual.
 
-Chu--Liu/Edmonds demonstra-se mais eficiente para construção direta de arborescências nas instâncias aleatórias testadas (mediana \(0{,}25\)s, média \(0{,}58\)s), enquanto o método de Frank apresenta tempo adicional significativo na Fase~I (mediana \(8{,}93\)s, média \(12{,}40\)s) devido ao processamento de subconjuntos minimais via componentes fortemente conexas. A versão heap da Fase~II valida os ganhos assintóticos esperados, com aceleração de 58,12 vezes (mediana) sobre a versão linear, demonstrando que melhorias algorítmicas fundamentais se traduzem em benefícios práticos mensuráveis.
+Chu--Liu/Edmonds demonstra-se mais eficiente para construção direta de arborescências nas instâncias aleatórias testadas (mediana \(0{,}13\)s, média \(0{,}25\)s), enquanto o método de Frank apresenta tempo adicional significativo na Fase~I (mediana \(4{,}01\)s, média \(4{,}28\)s) devido ao processamento de subconjuntos minimais via componentes fortemente conexas. A versão heap da Fase~II valida os ganhos assintóticos esperados, com aceleração de 50,94 vezes (mediana) sobre a versão linear, demonstrando que melhorias algorítmicas fundamentais se traduzem em benefícios práticos mensuráveis.
 
 Observamos também que o comportamento em digrafos aleatórios mostra que o número de contrações observado tem mediana 2 e média 6,82 e o subgrafo \(D_0\) mantém razão \(|A_0|/|V_0| \approx 1{,}00\). O consumo modesto de memória (mediana 11{,}5~MB) e a escalabilidade observada viabilizam a aplicação prática de ambos os métodos em contextos com recursos computacionais limitados.
 
