@@ -1096,6 +1096,7 @@ return F_prime
               \item $c := w$
               \item $\sigma := \epsilon$
               \item $F := \emptyset$
+              \item $D_0 := (V, \varnothing)$
             \end{itemize}
       \item \textbf{Enquanto} $\exists$ fonte $R$ em $\mathcal{C}(D_0)$, $r \notin R$:
             \begin{itemize}
@@ -1104,7 +1105,7 @@ return F_prime
               \item $\sigma := \sigma \cdot (f, R, \lambda)$
               \item $F := F \cup \{f\}$
               \item $c := c - \lambda \mathbf{1}_{\delta^-(R)}$
-              \item $D_0 := (V, F)$
+              \item $D_0 := (V, \varnothing)$
             \end{itemize}
       \item \textbf{Devolver}: $\sigma$
     \end{enumerate}
