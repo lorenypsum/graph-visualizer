@@ -407,9 +407,9 @@
       \node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
       \node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
 
-      \draw[cycle] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (b);
-      \draw[cycle] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (c);
-      \draw[cycle] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (a);
+      \draw[arc] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (b);
+      \draw[arc] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (c);
+      \draw[arc] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (a);
 
       \draw[arc] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 0} (a);
       \draw[arc] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 1} (b);
