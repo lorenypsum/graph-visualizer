@@ -1399,8 +1399,8 @@ def update_weights(D: nx.DiGraph,
     \textbf{Atualização:}
     \begin{itemize}
       \item $\sigma = [(f_0, R_0, \lambda_0)]$
-      \item $F = \{(r,a)\}$
-      \item $D_0 = (V, \{(r,a)\})$
+      \item $F = \{(g,b)\}$
+      \item $D_0 = (V, \{(g,b)\})$
     \end{itemize}
 
     \textbf{Redução de pesos:}
@@ -1445,7 +1445,7 @@ def update_weights(D: nx.DiGraph,
     \end{center}
   \end{columns}
 
-  \begin{block}{Observação}
+  \begin{block}{}
     Pesos são reduzidos para garantir que $\sigma$ seja $w$-disjunta.
   \end{block}
 \end{frame}
