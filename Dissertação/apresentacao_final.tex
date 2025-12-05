@@ -117,11 +117,15 @@
 
 % Diagrama de referência para comparação
 \newcommand{\referencediagram}{
-  \begin{tikzpicture}[remember picture, overlay]
-    \node[anchor=south east, xshift=-0.cm, yshift=0.2cm] at (current page.south east) {
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=north east, xshift=-0.cm, yshift=0.2cm] at (current page.north east) {
       \begin{tikzpicture}[scale=0.65, >=Stealth,
           v/.style={circle, draw, fill=blue!8, minimum size=6mm, font=\scriptsize},
           edge/.style={->, draw=gray!60}]
+       
+        % Background expandido para incluir todos os elementos (desenhado primeiro)
+        \fill[white, rounded corners] (-1.0,-2.2) rectangle (4.2,2.5);
+
         \node[v] (r) at (0,0) {$r$};
         \node[v] (a) at (2.2,0) {$a$};
         \node[v] (b) at (3.5,1.2) {$b$};
@@ -134,11 +138,11 @@
         \draw[edge] (r) to[bend left=18] node[midway, above, sloped, font=\scriptsize] {4} (b);
         \draw[edge] (r) to[bend right=10] node[midway, below, sloped, font=\scriptsize] {5} (c);
         
-        % Frame
-        \draw[primarypurple, very thick, rounded corners] 
-          ([xshift=-3pt, yshift=2pt] current bounding box.north west) rectangle 
-          ([xshift=3pt, yshift=-3pt] current bounding box.south east);
-        \node[above, font=\scriptsize\bfseries, color=primarypurple] at (current bounding box.north) {Digrafo Original};
+        % Frame correspondente ao fundo
+        \draw[primarypurple, very thick, rounded corners] (-1.0,-2.2) rectangle (4.2,2.8);
+        % Título posicionado por cima de tudo
+        \node[font=\scriptsize\bfseries, color=primarypurple] at (3.5,2.5) {Digrafo Original};
+        
       \end{tikzpicture}
     };
   \end{tikzpicture}
