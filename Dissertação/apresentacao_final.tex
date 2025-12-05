@@ -268,7 +268,7 @@
   \begin{columns}[c]
     \column{0.20\textwidth}
     \column{0.70\textwidth}
-    \begin{tikzpicture}[>=Stealth, node distance=2.0cm,
+    \begin{tikzpicture}[>=Stealth, node distance=2.0cm, yshift=1cm,
         v/.style={circle, draw, fill=blue!8, minimum size=7mm},
         cheap/.style={->, very thick, draw=blue!70},
         expensive/.style={->, draw=gray!60}]
@@ -298,14 +298,14 @@
     $$T := \{a_v : v \in V \setminus \{r\}\}$$
 
     \column{0.52\textwidth}
-    \begin{tikzpicture}[>=Stealth, node distance=2.0cm,
-        v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+    \begin{tikzpicture}[>=Stealth, node distance=1.6cm, yshift=1.5cm,
+        v/.style={circle, draw, fill=blue!8, minimum size=6mm},
         cheap/.style={->, very thick, draw=blue!70},
         expensive/.style={->, draw=gray!60}]
       \node[v] (r) {\small $r$};
-      \node[v] (a) [right=2.2cm of r] {\small $a$};
-      \node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
-      \node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
+      \node[v] (a) [right=1.8cm of r] {\small $a$};
+      \node[v] (b) [above right=1.0cm and 1.3cm of a] {\small $b$};
+      \node[v] (c) [below right=1.0cm and 1.3cm of a] {\small $c$};
 
       \draw[cheap] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (b);
       \draw[cheap] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
@@ -329,14 +329,14 @@
     A escolha gulosa pode produzir um conjunto $T$ que \emph{não} é uma $r$-arborescência.
 
     \column{0.52\textwidth}
-    \begin{tikzpicture}[>=Stealth, node distance=2.0cm,
-        v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+    \begin{tikzpicture}[>=Stealth, node distance=1.6cm, yshift=1.5cm,
+        v/.style={circle, draw, fill=blue!8, minimum size=6mm},
         cheap/.style={->, very thick, draw=blue!70},
         expensive/.style={->, draw=gray!60}]
       \node[v] (r) {\small $r$};
-      \node[v] (a) [right=2.2cm of r] {\small $a$};
-      \node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
-      \node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
+      \node[v] (a) [right=1.8cm of r] {\small $a$};
+      \node[v] (b) [above right=1.0cm and 1.3cm of a] {\small $b$};
+      \node[v] (c) [below right=1.0cm and 1.3cm of a] {\small $c$};
 
       \draw[cheap] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (b);
       \draw[cheap] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
@@ -430,14 +430,14 @@
     \end{itemize}
 
     \column{0.52\textwidth}
-    \begin{tikzpicture}[>=Stealth, node distance=2.0cm,
-        v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+    \begin{tikzpicture}[>=Stealth, node distance=1.6cm, yshift=1.5cm,
+        v/.style={circle, draw, fill=blue!8, minimum size=6mm},
         cycle/.style={->, very thick, draw=gray!70},
         arc/.style={->, dashed, draw=gray!60}]
       \node[v] (r) {\small $r$};
-      \node[v] (a) [right=2.2cm of r] {\small $a$};
-      \node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
-      \node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
+      \node[v] (a) [right=1.8cm of r] {\small $a$};
+      \node[v] (b) [above right=1.0cm and 1.3cm of a] {\small $b$};
+      \node[v] (c) [below right=1.0cm and 1.3cm of a] {\small $c$};
 
       \draw[cycle] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (b);
       \draw[cycle] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (c);
@@ -507,14 +507,14 @@ def reduce_weights(D: nx.DiGraph, v: int):
     \end{itemize}
 
     \column{0.5\textwidth}
-    \begin{tikzpicture}[>=Stealth, node distance=2.0cm,
-        v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+    \begin{tikzpicture}[>=Stealth, node distance=1.6cm, yshift=1.5cm,
+        v/.style={circle, draw, fill=blue!8, minimum size=6mm},
         cycle/.style={->, very thick, draw=blue!70},
         arc/.style={->, dashed, draw=gray!60}]
       \node[v] (r) {\small $r$};
-      \node[v] (a) [right=2.2cm of r] {\small $a$};
-      \node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
-      \node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
+      \node[v] (a) [right=1.8cm of r] {\small $a$};
+      \node[v] (b) [above right=1.0cm and 1.3cm of a] {\small $b$};
+      \node[v] (c) [below right=1.0cm and 1.3cm of a] {\small $c$};
 
       \draw[cycle] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (b);
       \draw[cycle] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (c);
@@ -576,14 +576,14 @@ def get_Dzero(D: nx.DiGraph, r: int):
     $\Rightarrow$ \textbf{prosseguir} para os passos 4 e 5.
 
     \column{0.52\textwidth}
-    \begin{tikzpicture}[>=Stealth, node distance=2.0cm,
-        v/.style={circle, draw, fill=blue!8, minimum size=7mm},
-        cycle/.style={->, very thick, draw=blue!70},
+    \begin{tikzpicture}[>=Stealth, node distance=1.6cm, yshift=1.5cm,
+        v/.style={circle, draw, fill=blue!8, minimum size=6mm},
+        cycle/.style={->, very thick, draw=gray!70},
         arc/.style={->, dashed, draw=gray!60}]
       \node[v] (r) {\small $r$};
-      \node[v] (a) [right=2.2cm of r] {\small $a$};
-      \node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
-      \node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
+      \node[v] (a) [right=1.8cm of r] {\small $a$};
+      \node[v] (b) [above right=1.0cm and 1.3cm of a] {\small $b$};
+      \node[v] (c) [below right=1.0cm and 1.3cm of a] {\small $c$};
 
       \draw[cycle] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (b);
       \draw[cycle] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (c);
@@ -816,13 +816,13 @@ def chuliu_edmonds(D: nx.DiGraph, r: int, label: int):
     {\small Resultado: $T$ é uma $r$-arborescência geradora mínima}
 
     \column{0.52\textwidth}
-    \begin{tikzpicture}[>=Stealth, node distance=2.0cm,
-        v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+    \begin{tikzpicture}[>=Stealth, node distance=1.6cm, yshift=1.5cm,
+        v/.style={circle, draw, fill=blue!8, minimum size=6mm},
         selected/.style={->, very thick, draw=green!70}]
       \node[v] (r) {\small $r$};
-      \node[v] (a) [right=2.2cm of r] {\small $a$};
-      \node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
-      \node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
+      \node[v] (a) [right=1.8cm of r] {\small $a$};
+      \node[v] (b) [above right=1.0cm and 1.3cm of a] {\small $b$};
+      \node[v] (c) [below right=1.0cm and 1.3cm of a] {\small $c$};
 
       \draw[selected] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (a);
       \draw[selected] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (b);
