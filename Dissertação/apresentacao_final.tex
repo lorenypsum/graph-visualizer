@@ -1112,10 +1112,10 @@ return F_prime
 
     \column{0.48\textwidth}
     \begin{center}
-    \begin{block}{Condensação}
-      {$\mathcal{C}(D_0)$ com $r$ isolado e duas fontes $S_1, S_2$, ressaltando que $S_1, S_2$ são componentes fortemente conexas. - não vértices individuais.}
-    \end{block}
-  \end{center}
+      \begin{block}{Condensação}
+        {$\mathcal{C}(D_0)$ com $r$ isolado e duas fontes $S_1, S_2$, ressaltando que $S_1, S_2$ são componentes fortemente conexas. - não vértices individuais.}
+      \end{block}
+    \end{center}
   \end{columns}
 \end{frame}
 
@@ -1123,54 +1123,54 @@ return F_prime
 \begin{frame}{Fase I: Encontrando $r$-conjuntos minimais}
   \begin{columns}[c]
     \column{0.52\textwidth}
-  \textbf{Como encontrar um $r$-conjunto minimal não coberto?}
+    \textbf{Como encontrar um $r$-conjunto minimal não coberto?}
 
-  \vspace{0.2cm}
-  \begin{enumerate}
-    \item Calcular a condensação $\mathcal{C}(D_0)$
-    \item Identificar componentes fortemente conexas (CFCs)
-    \item Encontrar uma fonte $S$ em $\mathcal{C}(D_0)$ tal que $r \notin S$
-  \end{enumerate}
+    \vspace{0.2cm}
+    \begin{enumerate}
+      \item Calcular a condensação $\mathcal{C}(D_0)$
+      \item Identificar componentes fortemente conexas (CFCs)
+      \item Encontrar uma fonte $S$ em $\mathcal{C}(D_0)$ tal que $r \notin S$
+    \end{enumerate}
 
-  \begin{block}{Proposição}
-    Toda fonte $S$ de $\mathcal{C}(D_0)$ com $r \notin S$ é um $r$-conjunto minimal não coberto por $F$.
-  \end{block}
+    \begin{block}{Proposição}
+      Toda fonte $S$ de $\mathcal{C}(D_0)$ com $r \notin S$ é um $r$-conjunto minimal não coberto por $F$.
+    \end{block}
 
-  \vspace{0.2cm}
-  {\small \textbf{Complexidade:} identificação de CFCs em $O(|V|)$ usando Kosaraju.}
+    \vspace{0.2cm}
+    {\small \textbf{Complexidade:} identificação de CFCs em $O(|V|)$ usando Kosaraju.}
 
-  \column{0.48\textwidth}
-  \begin{center}
+    \column{0.48\textwidth}
+    \begin{center}
       \begin{tikzpicture}[>=Stealth, scale=0.65, transform shape,
-        component/.style={circle, draw, thick, minimum size=1.2cm, fill=blue!10},
-        root/.style={circle, draw, thick, minimum size=1.2cm, fill=red!20},
-        source/.style={circle, draw, thick, minimum size=1.2cm, fill=green!20},
-        arc/.style={->, thick, draw=gray!70}]
+          component/.style={circle, draw, thick, minimum size=1.2cm, fill=blue!10},
+          root/.style={circle, draw, thick, minimum size=1.2cm, fill=red!20},
+          source/.style={circle, draw, thick, minimum size=1.2cm, fill=green!20},
+          arc/.style={->, thick, draw=gray!70}]
 
-      % Componente r (isolada)
-      \node[root] (r) at (0, 3) {$r$};
+        % Componente r (isolada)
+        \node[root] (r) at (0, 3) {$r$};
 
-      % Componentes fortes - duas fontes
-      \node[source] (S1) at (-2, 1) {$S_1$};
-      \node[source] (S2) at (2, 1) {$S_2$};
+        % Componentes fortes - duas fontes
+        \node[source] (S1) at (-2, 1) {$S_1$};
+        \node[source] (S2) at (2, 1) {$S_2$};
 
-      % Outras componentes (não-fontes)
-      \node[component] (C1) at (-1, -0.5) {$C_1$};
-      \node[component] (C2) at (1.5, -0.5) {$C_2$};
+        % Outras componentes (não-fontes)
+        \node[component] (C1) at (-1, -0.5) {$C_1$};
+        \node[component] (C2) at (1.5, -0.5) {$C_2$};
 
-      % Arcos entre componentes
-      \draw[arc] (S1) to[bend right=15] (C1);
-      \draw[arc] (S2) to[bend left=15] (C2);
-      \draw[arc] (S1) to[bend left=10] (C2);
-      \draw[arc] (C1) to[bend right=10] (C2);
+        % Arcos entre componentes
+        \draw[arc] (S1) to[bend right=15] (C1);
+        \draw[arc] (S2) to[bend left=15] (C2);
+        \draw[arc] (S1) to[bend left=10] (C2);
+        \draw[arc] (C1) to[bend right=10] (C2);
 
-      % Legenda
-      \node[anchor=west, font=\large] at (-3.2, -1.8) {\textcolor{red!70}{$\bullet$ raiz $r$}};
-      \node[anchor=west, font=\large] at (-3.2, -2.2) {\textcolor{green!70}{$\bullet$ fontes}};
-      \node[anchor=west, font=\large] at (-3.2, -2.6) {\textcolor{blue!70}{$\bullet$ não-fontes}};
-    \end{tikzpicture}
+        % Legenda
+        \node[anchor=west, font=\large] at (-3.2, -1.8) {\textcolor{red!70}{$\bullet$ raiz $r$}};
+        \node[anchor=west, font=\large] at (-3.2, -2.2) {\textcolor{green!70}{$\bullet$ fontes}};
+        \node[anchor=west, font=\large] at (-3.2, -2.6) {\textcolor{blue!70}{$\bullet$ não-fontes}};
+      \end{tikzpicture}
 
-    {\small Exemplo de condensação $\mathcal{C}(D_0)$ com raiz $r$ isolada e duas fontes $S_1, S_2$.}
+      {\small Exemplo de condensação $\mathcal{C}(D_0)$ com raiz $r$ isolada e duas fontes $S_1, S_2$.}
     \end{center}
   \end{columns}
 \end{frame}
@@ -2325,7 +2325,7 @@ def andras_frank(D: nx.DiGraph, r: int):
         selected/.style={->, very thick, draw=blue!70},
         zero/.style={->, very thick, draw=gray!70}]
       \node[v,fill=red!20] (r) {\small $r$};
-      \node[v] (b) [right=1.8cm of r] {\small $b$};
+      \node[vs] (b) [right=1.8cm of r] {\small $b$};
       \node[v] (a) [above=1.2cm of b] {\small $a$};
       \node[v] (c) [below=1.2cm of b] {\small $c$};
 
@@ -2347,7 +2347,7 @@ def andras_frank(D: nx.DiGraph, r: int):
       % \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 4} (d);
 
       % \draw[arc] (c) to node[midway, above, sloped] {\scriptsize 4} (g);
-      \draw[selected] (c) to[bend right=70] node[midway, below, sloped] {\scriptsize \textcolor{blue!80}{$f_5$}} (f);
+      \draw[zero] (c) to[bend right=70] node[midway, below, sloped] {\scriptsize $f_5$} (f);
 
       \draw[zero] (d) to[bend left=14] node[midway, above, sloped] {\scriptsize $f_6$} (e);
       \draw[zero] (d) to node[midway, below, sloped] {\scriptsize $f_3$} (g);
