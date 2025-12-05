@@ -400,16 +400,16 @@
     \column{0.52\textwidth}
     \begin{tikzpicture}[>=Stealth, node distance=2.0cm,
         v/.style={circle, draw, fill=blue!8, minimum size=7mm},
-        cycle/.style={->, very thick, draw=blue!70},
+        cycle/.style={->, very thick, draw=gray!70},
         arc/.style={->, dashed, draw=gray!60}]
       \node[v] (r) {\small $r$};
       \node[v] (a) [right=2.2cm of r] {\small $a$};
       \node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
       \node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
 
-      \draw[arc] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (b);
-      \draw[arc] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (c);
-      \draw[arc] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (a);
+      \draw[cycle] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (b);
+      \draw[cycle] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (c);
+      \draw[cycle] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (a);
 
       \draw[arc] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 0} (a);
       \draw[arc] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 1} (b);
