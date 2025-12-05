@@ -11,7 +11,7 @@ A seguir, apresentamos os experimentos empíricos que avaliam o comportamento pr
 
 \section{Análise comparativa dos algoritmos}
 
-Conduzimos 2000 experimentos em digrafos aleatórios construídos a partir de uma raiz \(r\) com número fixo de 2000 vértices, quantidade de arestas \(|A|\) variando no intervalo \([2001, 6000]\) com média de \(3989\) arcos, e pesos inteiros associados \(\in [1, 10]\). Para cada instância, executamos Chu--Liu/Edmonds e as duas fases de András Frank com duas versões v1 e v2 para a Fase~II, sendo a v2 uma versão otimizada utilizando fila de prioridade - \emph{heap}.
+Conduzimos 2000 experimentos em digrafos aleatórios construídos a partir de uma raiz \(r\) com número fixo de 2000 vértices e 4000 arestas, com pesos inteiros associados \(\in [1, 10]\). Para cada instância, executamos Chu--Liu/Edmonds e as duas fases de András Frank com duas versões v1 e v2 para a Fase~II, sendo a v2 uma versão otimizada utilizando fila de prioridade - \emph{heap}.
 
 Os 2000 testes confirmaram que todos os métodos retornam sempre o mesmo peso, validando a corretude das implementações e a equivalência teórica entre Chu--Liu/Edmonds e Frank. Além disso, as verificações da condição de otimalidade dual foram bem-sucedidas em todos os casos para ambas as variantes de Frank.
 
@@ -20,53 +20,53 @@ Quanto ao desempenho temporal, a Fase~I de Frank apresenta tempo mediano de \(4{
 As Figuras~\ref{fig:times-boxplot}--\ref{fig:d0-vs-v} apresentam os resultados experimentais.
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=.85\linewidth]{figures/fig_times_boxplot.png}
-    \caption{Distribuição de tempos: Fase~I apresenta maior mediana (\(4{,}01\)s) e variabilidade que Chu--Liu/Edmonds (\(0{,}13\)s).}
-    \label{fig:times-boxplot}
+  \centering
+  \includegraphics[width=.85\linewidth]{figures/fig_times_boxplot.png}
+  \caption{Distribuição de tempos: Fase~I apresenta maior mediana (\(4{,}01\)s) e variabilidade que Chu--Liu/Edmonds (\(0{,}13\)s).}
+  \label{fig:times-boxplot}
 \end{figure}
 
 
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=.85\linewidth]{figures/fig_time_vs_edges_scatter.png}
-    \caption{Escalonamento temporal em função de \(|A|\): crescimento aproximadamente linear.}
-    \label{fig:time-vs-edges}
+  \centering
+  \includegraphics[width=.85\linewidth]{figures/fig_time_vs_edges_scatter.png}
+  \caption{Escalonamento temporal em função de \(|A|\): crescimento aproximadamente linear.}
+  \label{fig:time-vs-edges}
 \end{figure}
 
 A comparação entre as duas variantes da Fase~II revela ganho expressivo com o uso de \emph{heap}. A Figura~\ref{fig:speedup} apresenta essa comparação em dois painéis: à esquerda, o boxplot evidencia a diferença de magnitude entre os tempos de execução --- enquanto v1 (lista) apresenta mediana de \(0{,}42\)s, a versão v2 (heap) reduz para \(0{,}0083\)s. À direita, o histograma do fator de aceleração (\emph{speedup}) mostra distribuição com mediana de 50,94 vezes e média de 49,53 vezes. Esses resultados confirmam empiricamente a vantagem da estrutura de dados com complexidade \(O(\log n)\) versus \(O(n)\) por operação de seleção de mínimo.
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=\linewidth]{figures/fig_speedup_hist.png}
-    \caption{Comparação de desempenho entre implementações da Fase~II. À esquerda, o gráfico de boxplot mostra a distribuição de tempo da v1 do algoritmo com mediana de \(0{,}42\)s enquanto v2 reduz para \(0{,}0083\)s. À direita, o histograma do fator de aceleração (\emph{speedup}) mostra mediana de 50,94 vezes (linha tracejada vermelha) e média de 49,53 vezes (linha pontilhada laranja).}
-    \label{fig:speedup}
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig_speedup_hist.png}
+  \caption{Comparação de desempenho entre implementações da Fase~II. À esquerda, o gráfico de boxplot mostra a distribuição de tempo da v1 do algoritmo com mediana de \(0{,}42\)s enquanto v2 reduz para \(0{,}0083\)s. À direita, o histograma do fator de aceleração (\emph{speedup}) mostra mediana de 50,94 vezes (linha tracejada vermelha) e média de 49,53 vezes (linha pontilhada laranja).}
+  \label{fig:speedup}
 \end{figure}
 
 As métricas estruturais do algoritmo de Chu--Liu/Edmonds são apresentadas na Figura~\ref{fig:contr-depth} em dois histogramas. O painel esquerdo mostra que o número de contrações é pequeno (mediana 2, média 6,82, máximo 406), com a grande maioria das instâncias requerendo menos de 20 contrações. O painel direito exibe a profundidade de recursão, que acompanha o número de contrações.
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=\linewidth]{figures/fig_contractions_depth.png}
-    \caption{Métricas estruturais de Chu--Liu/Edmonds. À esquerda, o histograma vermelho mostra que o número de contrações (eixo horizontal) é concentrado em valores baixos --- a maioria das 2000 instâncias (eixo vertical) requer menos de 20 contrações, com mediana 2 (linha tracejada) e média \(6{,}82\) (linha pontilhada). À direita, o histograma azul da profundidade de recursão exibe padrão similar).}
-    \label{fig:contr-depth}
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig_contractions_depth.png}
+  \caption{Métricas estruturais de Chu--Liu/Edmonds. À esquerda, o histograma vermelho mostra que o número de contrações (eixo horizontal) é concentrado em valores baixos --- a maioria das 2000 instâncias (eixo vertical) requer menos de 20 contrações, com mediana 2 (linha tracejada) e média \(6{,}82\) (linha pontilhada). À direita, o histograma azul da profundidade de recursão exibe padrão similar).}
+  \label{fig:contr-depth}
 \end{figure}
 
 O consumo de memória na Fase~I mantém-se modesto (mediana 11{,}5~MB, média 14{,}8~MB), viabilizando a aplicação dos algoritmos mesmo em ambientes com recursos limitados.
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=.75\linewidth]{figures/fig_peakmem_hist.png}
-    \caption{Pico de memória na Fase~I: mediana \(11{,}5\) MB.}
-    \label{fig:peakmem}
+  \centering
+  \includegraphics[width=.75\linewidth]{figures/fig_peakmem_hist.png}
+  \caption{Pico de memória na Fase~I: mediana \(11{,}5\) MB.}
+  \label{fig:peakmem}
 \end{figure}
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=.75\linewidth]{figures/fig_d0_edges_vs_vertices.png}
-    \caption{Tamanho de \(D_0\) versus \(|V|\): relação linear confirma \(|A_0| = O(|V|)\).}
-    \label{fig:d0-vs-v}
+  \centering
+  \includegraphics[width=.75\linewidth]{figures/fig_d0_edges_vs_vertices.png}
+  \caption{Tamanho de \(D_0\) versus \(|V|\): relação linear confirma \(|A_0| = O(|V|)\).}
+  \label{fig:d0-vs-v}
 \end{figure}
 
 \section{Conclusões}
