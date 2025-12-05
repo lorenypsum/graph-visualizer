@@ -2160,27 +2160,27 @@ def andras_frank(D: nx.DiGraph, r: int):
       \node[v] (e) [above right=1.2cm and 0.6cm of d] {\small $e$};
 
       % \draw[arc] (r) to[bend left=13] node[midway, above, sloped] {\scriptsize 1} (a);
-      \draw[selected] (r) to node[midway, above, sloped] {\scriptsize \textcolor{blue!80}{$f_0$}} (b);
+      \draw[selected] (r) to node[midway, above, sloped] {\scriptsize \textcolor{blue!80}{$f_7$}} (b);
       % \draw[arc] (r) to[bend right=13] node[midway, below, sloped] {\scriptsize 2} (c);
       % \draw[arc] (a) to node[midway, above, sloped] {\scriptsize 3} (b);
 
 
-      \draw[zero] (b) to node[midway, above, sloped] {\scriptsize 0} (c);
+      \draw[zero] (b) to node[midway, above, sloped] {\scriptsize $f_1$} (c);
       % \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 4} (d);
 
       % \draw[arc] (c) to node[midway, above, sloped] {\scriptsize 4} (g);
-      \draw[zero] (c) to[bend right=70] node[midway, below, sloped] {\scriptsize 0} (f);
+      \draw[zero] (c) to[bend right=70] node[midway, below, sloped] {\scriptsize $f_5$} (f);
 
-      \draw[zero] (d) to[bend left=14] node[midway, above, sloped] {\scriptsize 0} (e);
-      \draw[zero] (d) to node[midway, below, sloped] {\scriptsize 0} (g);
+      \draw[zero] (d) to[bend left=14] node[midway, above, sloped] {\scriptsize $f_6$} (e);
+      \draw[zero] (d) to node[midway, below, sloped] {\scriptsize $f_3$} (g);
 
-      \draw[zero] (e) to node[midway, above, sloped] {\scriptsize 0} (a);
+      \draw[zero] (e) to node[midway, above, sloped] {\scriptsize $f_2$} (a);
       % \draw[arc] (e) to[bend left=14] node[midway, above, sloped] {\scriptsize 3} (f);
       % \draw[arc] (e) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (d);
 
-      \draw[zero] (g) to node[midway, above, sloped] {\scriptsize 0} (b);
+      \draw[zero] (g) to node[midway, above, sloped] {\scriptsize $f_0$} (b);
 
-      \draw[zero] (f) to node[midway, below, sloped] {\scriptsize 0} (d);
+      \draw[zero] (f) to node[midway, below, sloped] {\scriptsize $f_4$} (d);
     \end{tikzpicture}
 
     {\small $J = \{(r,b)\}$, peso = 6}
