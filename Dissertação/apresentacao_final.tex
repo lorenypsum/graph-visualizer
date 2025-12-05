@@ -1030,7 +1030,7 @@ return F_prime
   \end{center}
 \end{frame}
 
-\begin{frame}{Fase I: $r$-conjunto Minimal}
+\begin{frame}{Fase I: $r$-conjunto minimal}
   \begin{block}{$r$-conjunto minimal não coberto por $F$}
     Um $r$-conjunto $R$ é \textbf{minimal não coberto por $F$} se:
     \begin{itemize}
@@ -1111,7 +1111,34 @@ return F_prime
     \end{enumerate}
 
     \column{0.48\textwidth}
-    \begin{tikzpicture}[>=Stealth, scale=0.65, transform shape,
+    \begin{block}{Condensação}
+      {$\mathcal{C}(D_0)$ com $r$ isolado e duas fontes $S_1, S_2$, ressaltando que $S_1, S_2$ são componentes fortemente conexas. - não vértices individuais.}
+    \end{block}
+  \end{columns}
+\end{frame}
+
+
+\begin{frame}{Fase I: Encontrando $r$-conjuntos minimais}
+  \begin{columns}[c]
+    \column{0.55\textwidth}
+  \textbf{Como encontrar um $r$-conjunto minimal não coberto?}
+
+  \vspace{0.2cm}
+  Seja $D_0 := (V, F)$ onde $F = \{f_i : i \in [k)\}$ (o conjunto de arcos escolhidos).
+
+  \vspace{0.2cm}
+  \begin{enumerate}
+    \item Calcular a condensação $\mathcal{C}(D_0)$
+    \item Identificar componentes fortemente conexas (CFCs)
+    \item Encontrar uma fonte $S$ em $\mathcal{C}(D_0)$ tal que $r \notin S$
+  \end{enumerate}
+
+  \vspace{0.3cm}
+  \begin{block}{Proposição}
+    Toda fonte $S$ de $\mathcal{C}(D_0)$ com $r \notin S$ é um $r$-conjunto minimal não coberto por $F$.
+  \end{block}
+  \column{0.45\textwidth}
+      \begin{tikzpicture}[>=Stealth, scale=0.65, transform shape,
         component/.style={circle, draw, thick, minimum size=1.2cm, fill=blue!10},
         root/.style={circle, draw, thick, minimum size=1.2cm, fill=red!20},
         source/.style={circle, draw, thick, minimum size=1.2cm, fill=green!20},
@@ -1139,37 +1166,14 @@ return F_prime
       \node[anchor=west, font=\large] at (-3.2, -2.2) {\textcolor{green!70}{$\bullet$ fontes}};
       \node[anchor=west, font=\large] at (-3.2, -2.6) {\textcolor{blue!70}{$\bullet$ não-fontes}};
     \end{tikzpicture}
-
-    \vspace{0.1cm}
-    {\small Condensação $\mathcal{C}(D_0)$ com $r$ isolado e duas fontes $S_1, S_2$, ressaltando que $S_1, S_2$ são componentes fortemente conexas. - não vértices individuais.}
   \end{columns}
-\end{frame}
-
-
-\begin{frame}{Fase I: Encontrando $r$-conjuntos Minimais}
-  \textbf{Como encontrar um $r$-conjunto minimal não coberto?}
-
-  \vspace{0.2cm}
-  Seja $D_0 := (V, F)$ onde $F = \{f_i : i \in [k)\}$ (o conjunto de arcos escolhidos).
-
-  \vspace{0.2cm}
-  \begin{enumerate}
-    \item Calcular a condensação $\mathcal{C}(D_0)$
-    \item Identificar componentes fortemente conexas (CFCs)
-    \item Encontrar uma fonte $S$ em $\mathcal{C}(D_0)$ tal que $r \notin S$
-  \end{enumerate}
-
-  \vspace{0.3cm}
-  \begin{block}{Proposição}
-    Toda fonte $S$ de $\mathcal{C}(D_0)$ com $r \notin S$ é um $r$-conjunto minimal não coberto por $F$.
-  \end{block}
 
   \vspace{0.2cm}
   {\small \textbf{Complexidade:} identificação de CFCs em $O(|A|)$ usando Kosaraju.}
 \end{frame}
 
 \ifshowimplementation
-  \begin{frame}[fragile]{Fase I: Implementação - Encontrar $r$-conjunto Minimal (1/3)}
+  \begin{frame}[fragile]{Fase I: Implementação - Encontrar $r$-conjunto minimal (1/3)}
     \textbf{Função \texttt{phase1}:}
 
     \begin{lstlisting}[basicstyle=\tiny\ttfamily]
@@ -1318,7 +1322,7 @@ def update_weights(D: nx.DiGraph,
   \end{alertblock}
 \end{frame}
 
-\begin{frame}{Fase I: Iteração 1 - Encontrar $r$-conjunto Minimal}
+\begin{frame}{Fase I: Iteração 1 - Encontrar $r$-conjunto minimal}
   \begin{columns}[c]
     \column{0.48\textwidth}
     \textbf{Estado inicial:}
