@@ -1111,20 +1111,19 @@ return F_prime
     \end{enumerate}
 
     \column{0.48\textwidth}
+    \begin{center}
     \begin{block}{Condensação}
       {$\mathcal{C}(D_0)$ com $r$ isolado e duas fontes $S_1, S_2$, ressaltando que $S_1, S_2$ são componentes fortemente conexas. - não vértices individuais.}
     \end{block}
+  \end{center}
   \end{columns}
 \end{frame}
 
 
 \begin{frame}{Fase I: Encontrando $r$-conjuntos minimais}
   \begin{columns}[c]
-    \column{0.55\textwidth}
+    \column{0.52\textwidth}
   \textbf{Como encontrar um $r$-conjunto minimal não coberto?}
-
-  \vspace{0.2cm}
-  Seja $D_0 := (V, F)$ onde $F = \{f_i : i \in [k)\}$ (o conjunto de arcos escolhidos).
 
   \vspace{0.2cm}
   \begin{enumerate}
@@ -1133,11 +1132,15 @@ return F_prime
     \item Encontrar uma fonte $S$ em $\mathcal{C}(D_0)$ tal que $r \notin S$
   \end{enumerate}
 
-  \vspace{0.3cm}
   \begin{block}{Proposição}
     Toda fonte $S$ de $\mathcal{C}(D_0)$ com $r \notin S$ é um $r$-conjunto minimal não coberto por $F$.
   \end{block}
-  \column{0.45\textwidth}
+
+  \vspace{0.2cm}
+  {\small \textbf{Complexidade:} identificação de CFCs em $O(|V|)$ usando Kosaraju.}
+
+  \column{0.48\textwidth}
+  \begin{center}
       \begin{tikzpicture}[>=Stealth, scale=0.65, transform shape,
         component/.style={circle, draw, thick, minimum size=1.2cm, fill=blue!10},
         root/.style={circle, draw, thick, minimum size=1.2cm, fill=red!20},
@@ -1166,10 +1169,10 @@ return F_prime
       \node[anchor=west, font=\large] at (-3.2, -2.2) {\textcolor{green!70}{$\bullet$ fontes}};
       \node[anchor=west, font=\large] at (-3.2, -2.6) {\textcolor{blue!70}{$\bullet$ não-fontes}};
     \end{tikzpicture}
-  \end{columns}
 
-  \vspace{0.2cm}
-  {\small \textbf{Complexidade:} identificação de CFCs em $O(|A|)$ usando Kosaraju.}
+    {\small Exemplo de condensação $\mathcal{C}(D_0)$ com raiz $r$ isolada e duas fontes $S_1, S_2$.}
+    \end{center}
+  \end{columns}
 \end{frame}
 
 \ifshowimplementation
@@ -1333,7 +1336,7 @@ def update_weights(D: nx.DiGraph,
     \end{itemize}
 
     \vspace{0.05cm}
-    \textbf{Fontes que são $r$-conjuntos:}
+    \textbf{7 Fontes são $r$-conjuntos:}
     \begin{itemize}
       \item $\{a\}$, $\{b\}$, $\{c\}$, $\{d\}$, $\{e\}$, $\{f\}$, $\{g\}$
     \end{itemize}
