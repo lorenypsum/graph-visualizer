@@ -115,6 +115,35 @@
 \newcommand{\G}{\mathcal{G}}
 \newcommand{\D}{\mathcal{D}}
 
+% Diagrama de referência para comparação
+\newcommand{\referencediagram}{
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[anchor=south east, xshift=-0.cm, yshift=0.2cm] at (current page.south east) {
+      \begin{tikzpicture}[scale=0.65, >=Stealth,
+          v/.style={circle, draw, fill=blue!8, minimum size=6mm, font=\scriptsize},
+          edge/.style={->, draw=gray!60}]
+        \node[v] (r) at (0,0) {$r$};
+        \node[v] (a) at (2.2,0) {$a$};
+        \node[v] (b) at (3.5,1.2) {$b$};
+        \node[v] (c) at (3.5,-1.2) {$c$};
+        
+        \draw[edge] (a) to[bend left=12] node[midway, above, sloped, font=\scriptsize] {3} (b);
+        \draw[edge] (b) to[bend left=12] node[midway, right, font=\scriptsize] {2} (c);
+        \draw[edge] (c) to[bend left=14] node[midway, below, sloped, font=\scriptsize] {3} (a);
+        \draw[edge] (r) to[bend left=8] node[midway, above, sloped, font=\scriptsize] {3} (a);
+        \draw[edge] (r) to[bend left=18] node[midway, above, sloped, font=\scriptsize] {4} (b);
+        \draw[edge] (r) to[bend right=10] node[midway, below, sloped, font=\scriptsize] {5} (c);
+        
+        % Frame
+        \draw[primarypurple, very thick, rounded corners] 
+          ([xshift=-3pt, yshift=2pt] current bounding box.north west) rectangle 
+          ([xshift=3pt, yshift=-3pt] current bounding box.south east);
+        \node[above, font=\scriptsize\bfseries, color=primarypurple] at (current bounding box.north) {Digrafo Original};
+      \end{tikzpicture}
+    };
+  \end{tikzpicture}
+}
+
 \begin{document}
 
 % ==================== SLIDE 1: TÍTULO ====================
@@ -260,6 +289,7 @@
 \end{frame}
 
 \begin{frame}{Motivação}
+  %\referencediagram
   \begin{columns}[c]
     \column{0.48\textwidth}
     \textbf{Objetivo:}
@@ -289,6 +319,7 @@
 \end{frame}
 
 \begin{frame}{Aqui tem um problema...}
+  %\referencediagram
   \begin{columns}[c]
     \column{0.48\textwidth}
 
@@ -381,6 +412,7 @@
 
 
 \begin{frame}{Passo 1: Redução de Pesos}
+  \referencediagram
   \begin{columns}[c]
     \column{0.48\textwidth}
     \textbf{Definição:}
@@ -456,6 +488,7 @@ def reduce_weights(D: nx.DiGraph, v: int):
 \fi
 
 \begin{frame}{Passo 2: Construção de $D_0$}
+  \referencediagram
   \begin{columns}[c]
     \column{0.5\textwidth}
     \textbf{Formação de $D_0$:}
@@ -528,6 +561,7 @@ def get_Dzero(D: nx.DiGraph, r: int):
 \fi
 
 \begin{frame}{Passo 3: Verificação de $D_0$}
+  \referencediagram
   \begin{columns}[c]
     \column{0.48\textwidth}
     \textbf{Verificar:}
@@ -585,6 +619,7 @@ if nx.is_arborescence(D_zero):
 \fi
 
 \begin{frame}{Passo 4: Contração de Ciclos}
+  \referencediagram
   \begin{columns}[c]
     \column{0.48\textwidth}
     \textbf{Operação:}
@@ -700,6 +735,7 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph,
 \fi
 
 \begin{frame}{Passo 5: Chamada Recursiva}
+  \referencediagram
   \begin{columns}[c]
     \column{0.48\textwidth}
     \textbf{Novo problema:}
@@ -760,6 +796,7 @@ def chuliu_edmonds(D: nx.DiGraph, r: int, label: int):
 \fi
 
 \begin{frame}{Passo 6: Reexpansão da Solução}
+  \referencediagram
   \begin{columns}[c]
     \column{0.48\textwidth}
     \textbf{Dado:} $T'$ ótima em $(D', w')$
@@ -2206,7 +2243,7 @@ def andras_frank(D: nx.DiGraph, r: int):
     \end{itemize}
 
     \column{0.52\textwidth}
-\begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
+    \begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
         v/.style={circle, draw, fill=blue!8, minimum size=7mm},
         rset/.style={draw=orange!70, very thick, dashed, rounded corners},
         arc/.style={->, thick, draw=gray!70},
@@ -2272,7 +2309,7 @@ def andras_frank(D: nx.DiGraph, r: int):
     \end{itemize}
 
     \column{0.52\textwidth}
-\begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
+    \begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
         v/.style={circle, draw, fill=blue!8, minimum size=7mm},
         rset/.style={draw=orange!70, very thick, dashed, rounded corners},
         arc/.style={->, thick, draw=gray!70},
@@ -2404,7 +2441,7 @@ def andras_frank(D: nx.DiGraph, r: int):
     \end{itemize}
 
     \column{0.52\textwidth}
-   \begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
+    \begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
         v/.style={circle, draw, fill=blue!8, minimum size=7mm},
         rset/.style={draw=orange!70, very thick, dashed, rounded corners},
         arc/.style={->, thick, draw=gray!70},
@@ -2470,7 +2507,7 @@ def andras_frank(D: nx.DiGraph, r: int):
     \end{itemize}
 
     \column{0.52\textwidth}
-   \begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
+    \begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
         v/.style={circle, draw, fill=blue!8, minimum size=7mm},
         rset/.style={draw=orange!70, very thick, dashed, rounded corners},
         arc/.style={->, thick, draw=gray!70},
@@ -2536,7 +2573,7 @@ def andras_frank(D: nx.DiGraph, r: int):
     \end{itemize}
 
     \column{0.52\textwidth}
-   \begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
+    \begin{tikzpicture}[>=Stealth, node distance=2.0cm, scale=0.9, transform shape,
         v/.style={circle, draw, fill=blue!8, minimum size=7mm},
         rset/.style={draw=orange!70, very thick, dashed, rounded corners},
         arc/.style={->, thick, draw=gray!70},
@@ -3113,14 +3150,14 @@ def andras_frank(D: nx.DiGraph, r: int):
     \end{itemize}
   \end{block}
 
-   \begin{block}{Samira Haddad - 11201812350}
+  \begin{block}{Samira Haddad - 11201812350}
     \begin{itemize}
       \item Análise e implementação do Algoritmo de András Frank versão com lista
       \item Revisão bibliográfica sobre didática e IHC
       \item Desenvolvimento da interface da aplicação web interativa
     \end{itemize}
   \end{block}
-  \end{frame}
+\end{frame}
 
 
 
