@@ -2529,17 +2529,17 @@ def andras_frank(D: nx.DiGraph, r: int):
         rset/.style={draw=orange!70, very thick, dashed, rounded corners},
         arc/.style={->, thick, draw=gray!70},
         selected/.style={->, very thick, draw=blue!70},
+        pselected/.style={->, very thick, draw=orange!90},
         zero/.style={->, very thick, draw=gray!70}]
       \node[v,fill=red!20] (r) {\small $r$};
-      \node[v] (b) [right=1.8cm of r] {\small $b$};
+      \node[vs] (b) [right=1.8cm of r] {\small $b$};
       \node[v] (a) [above=1.2cm of b] {\small $a$};
-      \node[v] (c) [below=1.2cm of b] {\small $c$};
+      \node[vs] (c) [below=1.2cm of b] {\small $c$};
 
-      \node[v] (g) [below right=1.4cm and 1.5cm of b] {\small $g$};
+      \node[vs] (g) [below right=1.4cm and 1.5cm of b] {\small $g$};
 
-      \node[v] (d) [right=1.2cm of b] {\small $d$};
-
-      \node[v] (f) [right=1.2cm of d] {\small $f$};
+      \node[vs] (d) [right=1.2cm of b] {\small $d$};
+      \node[vs] (f) [right=1.2cm of d] {\small $f$};
 
       \node[v] (e) [above right=1.2cm and 0.6cm of d] {\small $e$};
 
@@ -2555,7 +2555,7 @@ def andras_frank(D: nx.DiGraph, r: int):
       % \draw[arc] (c) to node[midway, above, sloped] {\scriptsize 4} (g);
       \draw[selected] (c) to[bend right=70] node[midway, below, sloped] {\scriptsize \textcolor{blue!80}{$f_5$}} (f);
 
-      \draw[selected] (d) to[bend left=14] node[midway, above, sloped] {\scriptsize \textcolor{blue!80}{$f_6$}} (e);
+      \draw[pselected] (d) to[bend left=14] node[midway, above, sloped] {\scriptsize \textcolor{orange!90}{$f_6$}} (e);
       \draw[selected] (d) to node[midway, below, sloped] {\scriptsize \textcolor{blue!80}{$f_3$}} (g);
 
       \draw[zero] (e) to node[midway, above, sloped] {\scriptsize $f_2$} (a);
