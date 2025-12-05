@@ -2258,6 +2258,7 @@ def andras_frank(D: nx.DiGraph, r: int):
         rset/.style={draw=orange!70, very thick, dashed, rounded corners},
         arc/.style={->, thick, draw=gray!70},
         selected/.style={->, very thick, draw=blue!70},
+        pselected/.style={->, very thick, draw=orange!90},
         zero/.style={->, very thick, draw=gray!70}]
       \node[v,fill=red!20] (r) {\small $r$};
       \node[vs] (b) [right=1.8cm of r] {\small $b$};
@@ -2277,7 +2278,7 @@ def andras_frank(D: nx.DiGraph, r: int):
       % \draw[arc] (r) to[bend right=13] node[midway, below, sloped] {\scriptsize 2} (c);
       % \draw[arc] (a) to node[midway, above, sloped] {\scriptsize 3} (b);
 
-      \draw[zero] (b) to node[midway, above, sloped] {\scriptsize $f_1$} (c);
+      \draw[pselected] (b) to node[midway, above, sloped] {\scriptsize \textcolor{orange!90}{$f_1$}} (c);
       % \draw[arc] (b) to node[midway, above, sloped] {\scriptsize 4} (d);
 
       % \draw[arc] (c) to node[midway, above, sloped] {\scriptsize 4} (g);
