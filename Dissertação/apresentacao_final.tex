@@ -418,7 +418,7 @@
 \begin{frame}{Passo 1: Redução de Pesos}
   \referencediagram
   \begin{columns}[c]
-    \column{0.48\textwidth}
+    \column{0.45\textwidth}
     \textbf{Definição:}
 
     \vspace{0.2cm}
@@ -433,8 +433,8 @@
       \item $\lambda(a) = 3$, $\lambda(b) = 3$, $\lambda(c) = 2$
     \end{itemize}
 
-    \column{0.52\textwidth}
-    \begin{tikzpicture}[>=Stealth, node distance=1.6cm, yshift=1.5cm,
+    \column{0.55\textwidth}
+    \begin{tikzpicture}[>=Stealth, node distance=1.0cm, yshift=-1.5cm,
         v/.style={circle, draw, fill=blue!8, minimum size=6mm},
         cycle/.style={->, very thick, draw=gray!70},
         arc/.style={->, dashed, draw=gray!60}]
@@ -452,14 +452,8 @@
       \draw[arc] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 3} (c);
     \end{tikzpicture}
 
-    \vspace{0.2cm}
     {\small Arcos do ciclo têm peso zero!}
   \end{columns}
-
-  \vspace{0.1cm}
-  \begin{block}{}
-    Arcos com peso zero são candidatos para $A_0$ em $D_0$.
-  \end{block}
 \end{frame}
 
 \ifshowimplementation
