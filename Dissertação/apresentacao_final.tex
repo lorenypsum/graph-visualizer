@@ -131,9 +131,9 @@
         \node[v] (b) at (3.5,1.2) {$b$};
         \node[v] (c) at (3.5,-1.2) {$c$};
         
-        \draw[edge] (a) to[bend left=12] node[midway, above, sloped, font=\scriptsize] {3} (b);
+        \draw[edge] (a) to[bend left=12] node[midway, below, sloped, font=\scriptsize] {3} (b);
         \draw[edge] (b) to[bend left=12] node[midway, right, font=\scriptsize] {2} (c);
-        \draw[edge] (c) to[bend left=14] node[midway, below, sloped, font=\scriptsize] {3} (a);
+        \draw[edge] (c) to[bend left=14] node[midway, above, sloped, font=\scriptsize] {3} (a);
         \draw[edge] (r) to[bend left=8] node[midway, above, sloped, font=\scriptsize] {3} (a);
         \draw[edge] (r) to[bend left=18] node[midway, above, sloped, font=\scriptsize] {4} (b);
         \draw[edge] (r) to[bend right=10] node[midway, below, sloped, font=\scriptsize] {5} (c);
@@ -281,10 +281,9 @@
       \node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
       \node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
 
-      \draw[expensive] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (b);
+      \draw[expensive] (a) to[bend left=12] node[midway, below, sloped] {\scriptsize 3} (b);
       \draw[expensive] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
-      \draw[expensive] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (a);
-
+      \draw[expensive] (c) to[bend left=14] node[midway, above, sloped] {\scriptsize 3} (a);
       \draw[expensive] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (a);
       \draw[expensive] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (b);
       \draw[expensive] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (c);
@@ -311,9 +310,9 @@
       \node[v] (b) [above right=1.0cm and 1.3cm of a] {\small $b$};
       \node[v] (c) [below right=1.0cm and 1.3cm of a] {\small $c$};
 
-      \draw[cheap] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (b);
-      \draw[cheap] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
-      \draw[expensive] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (a);
+      \draw[cheap] (a) to[bend left=12] node[midway, below, sloped] {\scriptsize 3} (b);
+      \draw[cheap] (b) to[bend left=12] node[midway, below, sloped] {\scriptsize 2} (c);
+      \draw[expensive] (c) to[bend left=14] node[midway, above, sloped] {\scriptsize 3} (a);
 
       \draw[cheap] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (a);
       \draw[expensive] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (b);
@@ -342,9 +341,9 @@
       \node[v] (b) [above right=1.0cm and 1.3cm of a] {\small $b$};
       \node[v] (c) [below right=1.0cm and 1.3cm of a] {\small $c$};
 
-      \draw[cheap] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (b);
-      \draw[cheap] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
-      \draw[cheap] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (a);
+      \draw[cheap] (a) to[bend left=12] node[midway, below, sloped] {\scriptsize 3} (b);
+      \draw[cheap] (b) to[bend left=12] node[midway, below, sloped] {\scriptsize 2} (c);
+      \draw[cheap] (c) to[bend left=14] node[midway, above, sloped] {\scriptsize 3} (a);
 
       \draw[expensive] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (a);
       \draw[expensive] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (b);
@@ -443,9 +442,9 @@
       \node[v] (b) [above right=1.0cm and 1.3cm of a] {\small $b$};
       \node[v] (c) [below right=1.0cm and 1.3cm of a] {\small $c$};
 
-      \draw[cycle] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (b);
-      \draw[cycle] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (c);
-      \draw[cycle] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (a);
+      \draw[cycle] (a) to[bend left=12] node[midway, below, sloped] {\scriptsize 0} (b);
+      \draw[cycle] (b) to[bend left=12] node[midway, below, sloped] {\scriptsize 0} (c);
+      \draw[cycle] (c) to[bend left=14] node[midway, above, sloped] {\scriptsize 0} (a);
 
       \draw[arc] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 0} (a);
       \draw[arc] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 1} (b);
@@ -514,9 +513,9 @@ def reduce_weights(D: nx.DiGraph, v: int):
       \node[v] (b) [above right=1.0cm and 1.3cm of a] {\small $b$};
       \node[v] (c) [below right=1.0cm and 1.3cm of a] {\small $c$};
 
-      \draw[cycle] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (b);
-      \draw[cycle] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (c);
-      \draw[cycle] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (a);
+      \draw[cycle] (a) to[bend left=12] node[midway, below, sloped] {\scriptsize 0} (b);
+      \draw[cycle] (b) to[bend left=12] node[midway, below, sloped] {\scriptsize 0} (c);
+      \draw[cycle] (c) to[bend left=14] node[midway, above, sloped] {\scriptsize 0} (a);
 
       \draw[arc] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 0} (a);
       \draw[arc] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 1} (b);
@@ -583,9 +582,9 @@ def get_Dzero(D: nx.DiGraph, r: int):
       \node[v] (b) [above right=1.0cm and 1.3cm of a] {\small $b$};
       \node[v] (c) [below right=1.0cm and 1.3cm of a] {\small $c$};
 
-      \draw[cycle] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (b);
-      \draw[cycle] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (c);
-      \draw[cycle] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (a);
+      \draw[cycle] (a) to[bend left=12] node[midway, below, sloped] {\scriptsize 0} (b);
+      \draw[cycle] (b) to[bend left=12] node[midway, below, sloped] {\scriptsize 0} (c);
+      \draw[cycle] (c) to[bend left=14] node[midway, above, sloped] {\scriptsize 0} (a);
 
       \draw[arc] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 0} (a);
       \draw[arc] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 1} (b);
