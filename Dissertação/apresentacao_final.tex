@@ -148,6 +148,38 @@
   \end{tikzpicture}
 }
 
+% Ciclo de referência para exemplos
+\newcommand{\referencecycle}{
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=north east, xshift=-0.cm, yshift=0.2cm] at (current page.north east) {
+      \begin{tikzpicture}[scale=0.65, >=Stealth,
+          v/.style={circle, draw, fill=blue!8, minimum size=6mm, font=\scriptsize},
+          edge/.style={->, draw=gray!60}]
+       
+        % Background expandido para incluir todos os elementos (desenhado primeiro)
+        \fill[white, rounded corners] (-1.0,-2.2) rectangle (4.2,2.5);
+
+        %\node[v] (r) at (0,0) {$r$};
+        \node[v] (a) at (1.2,0) {$a$};
+        \node[v] (b) at (2.5,1.2) {$b$};
+        \node[v] (c) at (2.5,-1.2) {$c$};
+        
+        \draw[edge] (a) to[bend left=12] node[midway, above, sloped, font=\scriptsize] {0} (b);
+        \draw[edge] (b) to[bend left=12] node[midway, right, font=\scriptsize] {0} (c);
+        \draw[edge] (c) to[bend left=14] node[midway, below, sloped, font=\scriptsize] {0} (a);
+        % \draw[edge] (r) to[bend left=8] node[midway, below, sloped, font=\scriptsize] {3} (a);
+        % \draw[edge] (r) to[bend left=18] node[midway, above, sloped, font=\scriptsize] {4} (b);
+        % \draw[edge] (r) to[bend right=10] node[midway, below, sloped, font=\scriptsize] {5} (c);
+        
+        % Frame correspondente ao fundo
+        \draw[primarypurple, very thick, rounded corners] (-1.0,-2.2) rectangle (4.2,2.8);
+        % Título posicionado por cima de tudo
+        \node[font=\scriptsize\bfseries, color=primarypurple] at (3.0,2.5) {Ciclo em $x_c$};
+      \end{tikzpicture}
+    };
+  \end{tikzpicture}
+}
+
 \begin{document}
 
 % ==================== SLIDE 1: TÍTULO ====================
@@ -732,7 +764,7 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph,
 \fi
 
 \begin{frame}{Passo 5: Chamada Recursiva}
-  %\referencediagram
+  \referencecycle
   \begin{columns}[c]
     \column{0.48\textwidth}
     \textbf{Novo problema:}
@@ -767,6 +799,7 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph,
 
 \ifshowimplementation
   \begin{frame}[fragile]{Passo 5: Implementação - Chamada Recursiva}
+    \referencecycle
     \textbf{Estrutura recursiva:}
 
     \begin{lstlisting}[basicstyle=\tiny\ttfamily]
@@ -822,8 +855,8 @@ def chuliu_edmonds(D: nx.DiGraph, r: int, label: int):
       \node[v] (c) [below right=1.0cm and 1.3cm of a] {\small $c$};
 
       \draw[selected] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (a);
-      \draw[selected] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (b);
-      \draw[selected] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
+      \draw[selected] (a) to[bend left=12] node[midway, below, sloped] {\scriptsize 3} (b);
+      \draw[selected] (b) to[bend left=12] node[midway, below, sloped] {\scriptsize 2} (c);
     \end{tikzpicture}
 
     \vspace{0.3cm}
