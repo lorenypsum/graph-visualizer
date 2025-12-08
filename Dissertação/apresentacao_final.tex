@@ -2521,7 +2521,7 @@ def andras_frank(D: nx.DiGraph, r: int):
       % \draw[arc] (c) to node[midway, above, sloped] {\scriptsize 4} (g);
       \draw[selected] (c) to[bend right=70] node[midway, below, sloped] {\scriptsize \textcolor{blue!80}{$f_5$}} (f);
 
-      \draw[zero] (d) to[bend left=14] node[midway, above, sloped] {\scriptsize $f_6$} (e);
+      \draw[pselected] (d) to[bend left=14] node[midway, above, sloped] {\scriptsize \textcolor{orange!90}{$f_6$}} (e);
       \draw[pselected] (d) to node[midway, below, sloped] {\scriptsize \textcolor{orange!90}{$f_3$}} (g);
 
       \draw[zero] (e) to node[midway, above, sloped] {\scriptsize $f_2$} (a);
@@ -2604,7 +2604,7 @@ def andras_frank(D: nx.DiGraph, r: int):
   \end{columns}
 \end{frame}
 
-\begin{frame}{Fase II: Iteração 7 (Interação final)}
+\begin{frame}{Fase II: Iteração 7}
   \begin{columns}[c]
     \column{0.48\textwidth}
     \textbf{Estado:} $U = \{r,b,c,f,d,g,e\}$
