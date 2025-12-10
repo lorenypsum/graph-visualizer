@@ -52,7 +52,7 @@
 \usepackage{amsmath,amssymb}
 \usepackage{graphicx}
 \usepackage{tikz}
-\usetikzlibrary{graphs,arrows.meta,positioning,fit,calc}
+\usetikzlibrary{graphs,arrows.meta,positioning,fit,calc,backgrounds}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{xcolor}
@@ -1063,18 +1063,64 @@ return F_prime
 \end{frame}
 
 \begin{frame}{Fase I: $r$-conjunto minimal}
-  \begin{block}{$r$-conjunto minimal não coberto por $F \subseteq A$}
-    Um $r$-conjunto $R$ é \textbf{minimal não coberto por $F \subseteq A$} se:
-    \begin{itemize}
-      \item $F$ não entra em $R$ (i.e., $F \cap \delta^-(R) = \emptyset$)
-      \item Para todo $\emptyset \subset R' \subset R$, existe arco de $F$ que entra em $R'$
-    \end{itemize}
-  \end{block}
+  \begin{columns}[c]
+    \column{0.48\textwidth}
+    \begin{block}{$r$-conjunto minimal não coberto por $F \subseteq A$}
+      Um $r$-conjunto $R$ é \textbf{minimal não coberto por $F \subseteq A$} se:
+      \begin{itemize}
+        \item $F$ não entra em $R$ (i.e., $F \cap \delta^-(R) = \emptyset$)
+        \item Para todo $\emptyset \subset R' \subset R$, existe arco de $F$ que entra em $R'$
+      \end{itemize}
+    \end{block}
 
-  \vspace{0.3cm}
-  \textbf{Propriedade importante:}
+    \vspace{0.2cm}
+    \textbf{Propriedade importante:}
 
-  Se $S$ é uma fonte de $\mathcal{C}(D_0)$ com $r \notin S$, então $S$ é um $r$-conjunto minimal não coberto por $A(D_0)$.
+    Se $S$ é uma fonte de $\mathcal{C}(D_0)$ com $r \notin S$, então $S$ é um $r$-conjunto minimal não coberto por $A(D_0)$.
+
+    \column{0.52\textwidth}
+    \begin{center}
+      \begin{tikzpicture}[>=Stealth, scale=0.8,
+          v/.style={circle, draw, fill=blue!8, minimum size=6mm, font=\small},
+          arc/.style={->, thick, draw=gray!70},
+          coveredge/.style={->, very thick, draw=green!70},
+          nocoveredge/.style={->, thick, draw=red!70, dashed}]
+
+        % R-conjunto (fundo - desenhar primeiro)
+        \draw[draw=orange!70, very thick, dashed, rounded corners, fill=orange!10]
+        (-2,-2.2) rectangle (2,0.7);
+        \node[font=\small\bfseries, color=orange!90] at (-1.6,0.4) {$R$};
+
+        % Vértices
+        \node[v,fill=red!20] (r) at (0,2) {$r$};
+        \node[v] (a) at (-1,0) {$a$};
+        \node[v] (b) at (1,0) {$b$};
+        \node[v] (c) at (0,-1.5) {$c$};
+
+        % Subconjuntos de R
+        \draw[blue!60, thick, dashed] (a) circle (0.5cm);
+        \node[below left=-2pt, font=\scriptsize, color=blue!70] at (a) {$R'_1$};
+
+        \draw[blue!60, thick, dashed] (b) circle (0.5cm);
+        \node[below right=-2pt, font=\scriptsize, color=blue!70] at (b) {$R'_2$};
+
+        % Arcos de F entrando em subconjuntos (cobertos)
+        \draw[coveredge] (r) to[bend left=15] node[midway, left, font=\scriptsize] {$f_1 \in F$} (a);
+        \draw[coveredge] (r) to[bend right=15] node[midway, right, font=\scriptsize] {$f_2 \in F$} (b);
+
+        % Arco NÃO entrando em R (não coberto)
+        \draw[nocoveredge] (-2.2,1) to node[midway, above, font=\scriptsize, sloped] {$\notin F$} (a);
+        \draw[nocoveredge] (2.2,1) to node[midway, above, font=\scriptsize, sloped] {$\notin F$} (b);
+
+        % Arcos internos a R
+        \draw[arc] (a) to[bend left=10] (c);
+        \draw[arc] (b) to[bend right=10] (c);
+      \end{tikzpicture}
+    \end{center}
+
+    \vspace{0.1cm}
+    {\small \textbf{Ilustração:} $R = \{a,b,c\}$ é minimal não coberto: $F$ não entra em $R$, mas entra em todos subconjuntos próprios $R'_1=\{a\}$, $R'_2=\{b\}$.}
+  \end{columns}
 \end{frame}
 
 % SÓ COMENTAR SE QUISER MOSTRAR AS CONDIÇÕES DE OTIMALIDADE
@@ -2045,7 +2091,7 @@ def update_weights(D: nx.DiGraph,
                     \item Passar para próxima iteração
                   \end{itemize}
           \end{itemize}
-      \item Devolver $J$ ao final
+    \item Devolver $J$ ao final
   \end{enumerate}
   \begin{block}{Invariante}
     Em cada iteração, $\varrho_J(R_i) \le 1$ para todo $i \in [k)$
@@ -2676,7 +2722,7 @@ def andras_frank(D: nx.DiGraph, r: int):
   \begin{columns}[c]
     \column{0.48\textwidth}
     \textbf{Estado:} $U = \{r,b,c,f,d,g,e,a\}$
-    
+
     \vspace{0.2cm}
     \textbf{Ação:}
     \begin{itemize}
@@ -2686,9 +2732,9 @@ def andras_frank(D: nx.DiGraph, r: int):
     \vspace{0.2cm}
     \textbf{Resultado:}
     \begin{itemize}
-    \item $J = \{(r,b), (b,c), (c,f),$
-    $(f,d), (d,g), (e,a)\}$
-    \item Peso Mínimo = 23
+      \item $J = \{(r,b), (b,c), (c,f),$
+            $(f,d), (d,g), (e,a)\}$
+      \item Peso Mínimo = 23
     \end{itemize}
 
     \column{0.52\textwidth}
