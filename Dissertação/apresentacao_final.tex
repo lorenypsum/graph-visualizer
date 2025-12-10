@@ -1080,41 +1080,55 @@ return F_prime
 
     \column{0.52\textwidth}
     \begin{center}
-      \begin{tikzpicture}[>=Stealth, scale=0.8,
-          v/.style={circle, draw, fill=blue!8, minimum size=6mm, font=\small},
-          arc/.style={->, thick, draw=gray!70},
-          coveredge/.style={->, very thick, draw=green!70},
-          nocoveredge/.style={->, thick, draw=red!70, dashed}]
+      \begin{tikzpicture}[>=Stealth, scale=0.85,
+          v/.style={circle, draw=white, fill=white, minimum size=6mm, font=\small, text=magenta},
+          arc/.style={->, thick, draw=green!60},
+          arcF/.style={->, ultra thick, draw=magenta!80}]
 
-        % R-conjunto (fundo - desenhar primeiro)
-        \draw[draw=orange!70, very thick, dashed, rounded corners, fill=orange!10]
-        (-2,-2.2) rectangle (2,0.7);
-        \node[font=\small\bfseries, color=orange!90] at (-1.6,0.4) {$R$};
+        % Vértice raiz r (fora de R)
+        \node[v] (r) at (0,2.5) {$r$};
 
-        % Vértices
-        \node[v,fill=red!20] (r) at (0,2) {$r$};
-        \node[v] (a) at (-1,0) {$a$};
-        \node[v] (b) at (1,0) {$b$};
-        \node[v] (c) at (0,-1.5) {$c$};
+        % R-conjunto (elipse tracejada verde)
+        \draw[draw=green!70, ultra thick, dashed]
+        (0,-0.3) ellipse (2.8cm and 2.3cm);
+        \node[font=\large\bfseries, color=green!70] at (-2.2,1.6) {$R$};
 
-        % Subconjuntos de R
-        \draw[blue!60, thick, dashed] (a) circle (0.5cm);
-        \node[below left=-2pt, font=\scriptsize, color=blue!70] at (a) {$R'_1$};
+        % Vértices internos formando subconjuntos
+        \node[v] (a) at (-1.2,0.8) {$a$};
+        \node[v] (b) at (1.2,0.8) {$b$};
+        \node[v] (c) at (-1.2,-0.8) {$c$};
+        \node[v] (d) at (0.5,-0.5) {$d$};
+        \node[v] (e) at (1.2,-1.2) {$e$};
 
-        \draw[blue!60, thick, dashed] (b) circle (0.5cm);
-        \node[below right=-2pt, font=\scriptsize, color=blue!70] at (b) {$R'_2$};
+        % Subconjuntos R' (círculos menores tracejados)
+        \draw[draw=cyan!70, thick, dashed]
+        (-1.2,0.8) circle (0.55cm);
+        \node[font=\scriptsize, color=cyan!70] at (-2.0,1.3) {$R'_1$};
 
-        % Arcos de F entrando em subconjuntos (cobertos)
-        \draw[coveredge] (r) to[bend left=15] node[midway, left, font=\scriptsize] {$f_1 \in F$} (a);
-        \draw[coveredge] (r) to[bend right=15] node[midway, right, font=\scriptsize] {$f_2 \in F$} (b);
+        \draw[draw=cyan!70, thick, dashed]
+        (1.0,0.2) ellipse (0.9cm and 1.2cm);
+        \node[font=\scriptsize, color=cyan!70] at (2.2,0.8) {$R'_2$};
 
-        % Arco NÃO entrando em R (não coberto)
-        \draw[nocoveredge] (-2.2,1) to node[midway, above, font=\scriptsize, sloped] {$\notin F$} (a);
-        \draw[nocoveredge] (2.2,1) to node[midway, above, font=\scriptsize, sloped] {$\notin F$} (b);
+        % Arcos de F entrando nos subconjuntos (magenta grosso)
+        \draw[arcF] (r) to[bend left=20] node[midway, left, font=\scriptsize, text=magenta] {$f_1 \in F$} (a);
+        \draw[arcF] (r) to[bend right=20] node[midway, right, font=\scriptsize, text=magenta] {$f_2 \in F$} (b);
 
-        % Arcos internos a R
-        \draw[arc] (a) to[bend left=10] (c);
-        \draw[arc] (b) to[bend right=10] (c);
+        % Arcos que NÃO são de F (tracejados)
+        \draw[arc, dashed] (-2.5,1.5) to[bend right=15] node[midway, above, font=\tiny, sloped, text=green!70] {$\notin F$} (a);
+        \draw[arc, dashed] (2.8,1.8) to[bend left=20] node[midway, above, font=\tiny, sloped, text=green!70] {$\notin F$} (e);
+
+        % Arcos internos (verde fino)
+        \draw[arc] (a) to[bend right=10] (c);
+        \draw[arc] (b) to[bend left=15] (d);
+        \draw[arc] (d) to[bend right=10] (e);
+        \draw[arc] (c) to[bend right=15] (d);
+
+        % Anotações
+        \node[font=\scriptsize, color=green!70, align=center] at (0,-2.8) {
+          (i) O que é um r-conjunto?\\
+          (ii) É minimal em relação a não\\
+          ter nenhum arco de F.
+        };
       \end{tikzpicture}
     \end{center}
 
