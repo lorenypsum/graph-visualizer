@@ -1073,9 +1073,6 @@ return F_prime
       \end{itemize}
     \end{block}
 
-    \vspace{0.2cm}
-    \textbf{Propriedade importante:}
-
     Se $S$ é uma fonte de $\mathcal{C}(D_0)$ com $r \notin S$, então $S$ é um $r$-conjunto minimal não coberto por $A(D_0)$.
 
     \column{0.52\textwidth}
@@ -1095,7 +1092,7 @@ return F_prime
         % R-conjunto principal (elipse tracejada verde)
         \draw[draw=green!70, line width=1.5pt, dashed]
         (0,-0.2) ellipse (2.9cm and 2.4cm);
-        \node[font=\Large\bfseries, color=green!70] at (-2.4,1.8) {$R$};
+        \node[font=\Large\bfseries, color=green!70] at (-1.4,2.3) {$R$};
 
         % Vértices internos
         \node[v, text=magenta!80] (a) at (-1.3,0.9) {$a$};
@@ -1107,12 +1104,12 @@ return F_prime
         % Subconjunto R'_1 (círculo em volta de 'a')
         \draw[draw=magenta!60, line width=1pt, dashed]
         (-1.3,0.9) circle (0.6cm);
-        \node[font=\small\bfseries, color=magenta!70] at (-2.2,1.5) {$R'_1$};
+        \node[font=\small\bfseries, color=magenta!70] at (-0.5,1.5) {$R'_1$};
 
         % Subconjunto R'_2 (elipse em volta de b, d, e)
         \draw[draw=magenta!60, line width=1pt, dashed]
         (1.05,0.0) ellipse (1.05cm and 1.55cm);
-        \node[font=\small\bfseries, color=magenta!70] at (2.4,1.0) {$R'_2$};
+        \node[font=\small\bfseries, color=magenta!70] at (2.4,0.5) {$R'_2$};
 
         % Arcos de F entrando nos subconjuntos (de vértice externo x)
         \draw[arcF] (x) to[bend right=8]
@@ -1127,10 +1124,10 @@ return F_prime
         % node[pos=0.5, above, font=\tiny, sloped, text=red!80] {$\notin F$} (1.8,0.8);
 
         % Indicar que esses arcos são bloqueados (não entram em R)
-        \draw[red!70, line width=1.5pt] (-2.7,1.4) -- (-2.4,1.1);
-        \draw[red!70, line width=1.5pt] (-2.4,1.4) -- (-2.7,1.1);
-        \draw[red!70, line width=1.5pt] (2.0,1.0) -- (2.3,0.7);
-        \draw[red!70, line width=1.5pt] (2.3,1.0) -- (2.0,0.7);
+        % \draw[red!70, line width=1.5pt] (-2.7,1.4) -- (-2.4,1.1);
+        % \draw[red!70, line width=1.5pt] (-2.4,1.4) -- (-2.7,1.1);
+        % \draw[red!70, line width=1.5pt] (2.0,1.0) -- (2.3,0.7);
+        % \draw[red!70, line width=1.5pt] (2.3,1.0) -- (2.0,0.7);
 
         % Arcos internos a R (verde)
         \draw[arc] (a) to[bend right=12] (c);
