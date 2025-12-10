@@ -1120,11 +1120,11 @@ return F_prime
         \draw[arcF] (r) to[bend right=22]
         node[pos=0.4, right, font=\small\bfseries, text=magenta!90] {$f_2 \notin F$} (b);
 
-        % Arcos NÃO de F tentando entrar em R (mas não conseguem)
-        \draw[arcOut] (-3.5,2.0) to[bend right=20]
-        node[pos=0.6, above, font=\tiny, sloped, text=red!80] {$\notin F$} (-2.5,1.2);
-        \draw[arcOut] (3.0,2.2) to[bend left=25]
-        node[pos=0.5, above, font=\tiny, sloped, text=red!80] {$\notin F$} (1.8,0.8);
+        % % Arcos NÃO de F tentando entrar em R (mas não conseguem)
+        % \draw[arcOut] (-3.5,2.0) to[bend right=20]
+        % node[pos=0.6, above, font=\tiny, sloped, text=red!80] {$\notin F$} (-2.5,1.2);
+        % \draw[arcOut] (3.0,2.2) to[bend left=25]
+        % node[pos=0.5, above, font=\tiny, sloped, text=red!80] {$\notin F$} (1.8,0.8);
 
         % Indicar que esses arcos são bloqueados (não entram em R)
         \draw[red!70, line width=1.5pt] (-2.7,1.4) -- (-2.4,1.1);
@@ -1213,7 +1213,7 @@ return F_prime
               \item $\sigma := \sigma \cdot (f, R, \lambda)$
               \item $F := F \cup \{f\}$
               \item $c := c - \lambda \mathbf{1}_{\delta^-(R)}$
-              \item $D_0 := (V, \varnothing)$
+              \item $D_0 := (V, $F)$
             \end{itemize}
       \item \textbf{Devolver}: $\sigma$
     \end{enumerate}
