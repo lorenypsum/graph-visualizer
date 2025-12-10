@@ -153,18 +153,18 @@
   \begin{tikzpicture}[remember picture,overlay]
     \node[anchor=north east, xshift=-0.cm, yshift=0.2cm] at (current page.north east) {
       \begin{tikzpicture}[scale=0.65, >=Stealth,
-          v/.style={circle, draw, fill=blue!8, minimum size=6mm, font=\scriptsize},
+          v/.style={circle, draw, fill=orange!8, minimum size=6mm, font=\scriptsize},
           edge/.style={->, draw=gray!60},
           dashedge/.style={->, draw=gray!50, dashed}]
        
         % Background expandido para incluir todos os elementos (desenhado primeiro)
-        \fill[white, rounded corners] (-1.5,-2.5) rectangle (5.0,3.0);
+        \fill[white, rounded corners] (-1.3,-2.2) rectangle (5.0,2.2);
 
         % Vértices externos
-        \node[v, fill=green!10] (x1) at (-0.5,1.5) {$x$};
-        \node[v, fill=green!10] (x2) at (0.2,-1.8) {$y$};
-        \node[v, fill=orange!10] (z1) at (4.2,0.8) {$u$};
-        \node[v, fill=orange!10] (z2) at (4.2,-0.8) {$v$};
+        \node[v, fill=blue!10] (x1) at (-0.5,1.5) {$v_1$};
+        %\node[v, fill=green!10] (x2) at (0.2,-1.8) {$y$};
+        \node[v, fill=blue!10] (z1) at (4.2,0.8) {$v_2$};
+        \node[v, fill=blue!10] (z2) at (4.2,-0.8) {$v_3$};
 
         % Vértices do ciclo
         \node[v] (a) at (1.5,0) {$a$};
@@ -179,16 +179,16 @@
         % Arcos dashed entrando no ciclo
         \draw[dashedge] (x1) to[bend right=10] (a);
         \draw[dashedge] (x1) to[bend left=5] (b);
-        \draw[dashedge] (x2) to[bend left=10] (c);
+        %\draw[dashedge] (x1) to[bend right=20] (c);
         
         % Arcos dashed saindo do ciclo
         \draw[dashedge] (b) to[bend left=10] (z1);
         \draw[dashedge] (c) to[bend right=10] (z2);
         
         % Frame correspondente ao fundo
-        \draw[primarypurple, very thick, rounded corners] (-1.5,-2.5) rectangle (5.0,3.0);
+        \draw[primarypurple, very thick, rounded corners] (-1.5,-2.5) rectangle (5.0,2.5);
         % Título posicionado por cima de tudo
-        \node[font=\scriptsize\bfseries, color=primarypurple] at (3.5,2.7) {Exemplo de Ciclo};
+        % \node[font=\scriptsize\bfseries, color=primarypurple] at (3.7,2.5) {Exemplo};
       \end{tikzpicture}
     };
   \end{tikzpicture}
