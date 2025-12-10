@@ -251,11 +251,11 @@ def expand_arborescence(
     if lang == "en":
         assert (
             label in F_prime
-        ), f"\nchuliu_edmonds: Vertex '{label}' not found in the graph."
+        ), f"\n chuliu_edmonds: Vertex '{label}' not found in the graph."
     elif lang == "pt":
         assert (
             label in F_prime
-        ), f"\nchuliu_edmonds: Vértice '{label}' não encontrado no grafo."
+        ), f"\n chuliu_edmonds: Vértice '{label}' não encontrado no grafo."
     F_prime.remove_node(label)
 
     if boilerplate and log:
@@ -278,14 +278,14 @@ def expand_arborescence(
 
     if boilerplate and log:
         if lang == "en":
-            log(f"\n✅{indent}Final arborescence: {list(F_prime.edges)}")
+            log(f"\n ✅{indent}Final arborescence: {list(F_prime.edges)}")
         elif lang == "pt":
-            log(f"\n✅{indent}Arborescência final: {list(F_prime.edges)}")
+            log(f"\n ✅{indent}Arborescência final: {list(F_prime.edges)}")
         if draw_fn:
             if lang == "en":
-                draw_fn(F_prime, f"\n{indent}Final Arborescence.")
+                draw_fn(F_prime, f"\n {indent}Final Arborescence.")
             elif lang == "pt":
-                draw_fn(F_prime, f"\n{indent}Arborescência final.")
+                draw_fn(F_prime, f"\n {indent}Arborescência final.")
     return F_prime
 
 def chuliu_edmonds(
