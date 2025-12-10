@@ -154,6 +154,52 @@
     \node[anchor=north east, xshift=-0.cm, yshift=0.2cm] at (current page.north east) {
       \begin{tikzpicture}[scale=0.65, >=Stealth,
           v/.style={circle, draw, fill=blue!8, minimum size=6mm, font=\scriptsize},
+          edge/.style={->, draw=gray!60},
+          dashedge/.style={->, draw=gray!50, dashed}]
+       
+        % Background expandido para incluir todos os elementos (desenhado primeiro)
+        \fill[white, rounded corners] (-1.5,-2.5) rectangle (5.0,3.0);
+
+        % Vértices externos
+        \node[v, fill=green!10] (x1) at (-0.5,1.5) {$x$};
+        \node[v, fill=green!10] (x2) at (0.2,-1.8) {$y$};
+        \node[v, fill=orange!10] (z1) at (4.2,0.8) {$u$};
+        \node[v, fill=orange!10] (z2) at (4.2,-0.8) {$v$};
+
+        % Vértices do ciclo
+        \node[v] (a) at (1.5,0) {$a$};
+        \node[v] (b) at (2.8,1.2) {$b$};
+        \node[v] (c) at (2.8,-1.2) {$c$};
+        
+        % Arcos do ciclo
+        \draw[edge] (a) to[bend left=12] node[midway, above, sloped, font=\scriptsize] {0} (b);
+        \draw[edge] (b) to[bend left=12] node[midway, right, font=\scriptsize] {0} (c);
+        \draw[edge] (c) to[bend left=14] node[midway, below, sloped, font=\scriptsize] {0} (a);
+        
+        % Arcos dashed entrando no ciclo
+        \draw[dashedge] (x1) to[bend right=10] (a);
+        \draw[dashedge] (x1) to[bend left=5] (b);
+        \draw[dashedge] (x2) to[bend left=10] (c);
+        
+        % Arcos dashed saindo do ciclo
+        \draw[dashedge] (b) to[bend left=10] (z1);
+        \draw[dashedge] (c) to[bend right=10] (z2);
+        
+        % Frame correspondente ao fundo
+        \draw[primarypurple, very thick, rounded corners] (-1.5,-2.5) rectangle (5.0,3.0);
+        % Título posicionado por cima de tudo
+        \node[font=\scriptsize\bfseries, color=primarypurple] at (3.5,2.7) {Exemplo de Ciclo};
+      \end{tikzpicture}
+    };
+  \end{tikzpicture}
+}
+
+% Ciclo de referência para exemplos
+\newcommand{\referencecycled}{
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=north east, xshift=-0.cm, yshift=0.2cm] at (current page.north east) {
+      \begin{tikzpicture}[scale=0.65, >=Stealth,
+          v/.style={circle, draw, fill=blue!8, minimum size=6mm, font=\scriptsize},
           edge/.style={->, draw=gray!60}]
        
         % Background expandido para incluir todos os elementos (desenhado primeiro)
@@ -764,7 +810,7 @@ def contract_cycle(D: nx.DiGraph, C: nx.DiGraph,
 \fi
 
 \begin{frame}{Passo 5: Chamada Recursiva}
-  \referencecycle
+  \referencecycled
   \begin{columns}[c]
     \column{0.48\textwidth}
     \textbf{Novo problema:}
@@ -938,129 +984,129 @@ return F_prime
 \end{frame}
 
 % ==================== SEÇÃO 3: ANDRÁS FRANK ====================
-\section{Algoritmo de András Frank}
+% \section{Algoritmo de András Frank}
 
-\begin{frame}{Algoritmo de András Frank}
-  \begin{block}{Abordagem em Duas Fases}
-    \textbf{Fase I (Fulkerson):} construir cobertura de $r$-conjuntos via redução de pesos
+% \begin{frame}{Algoritmo de András Frank}
+%   \begin{block}{Abordagem em Duas Fases}
+%     \textbf{Fase I (Fulkerson):} construir cobertura de $r$-conjuntos via redução de pesos
 
-    \textbf{Fase II (Frank):} extrair $r$-arborescência geradora da cobertura
-  \end{block}
+%     \textbf{Fase II (Frank):} extrair $r$-arborescência geradora da cobertura
+%   \end{block}
 
-  \vspace{0.3cm}
+%   \vspace{0.3cm}
 
-  \textbf{Objetivo da Fase I:}
+%   \textbf{Objetivo da Fase I:}
 
-  Construir uma sequência $\sigma = ((f_i, R_i, \lambda_i))_{i \in [k)}$ tal que:
-  \begin{itemize}
-    \item $F := \{f_i : i \in [k)\}$ é uma \textbf{cobertura de $r$-conjuntos}
-    \item A sequência $(R_i, \lambda_i)_{i \in [k)}$ é \textbf{$w$-disjunta}
-  \end{itemize}
+%   Construir uma sequência $\sigma = ((f_i, R_i, \lambda_i))_{i \in [k)}$ tal que:
+%   \begin{itemize}
+%     \item $F := \{f_i : i \in [k)\}$ é uma \textbf{cobertura de $r$-conjuntos}
+%     \item A sequência $(R_i, \lambda_i)_{i \in [k)}$ é \textbf{$w$-disjunta}
+%   \end{itemize}
 
-  \vspace{0.2cm}
-  \textbf{Objetivo da Fase II:}
+%   \vspace{0.2cm}
+%   \textbf{Objetivo da Fase II:}
 
-  Extrair $r$-arborescência geradora mínima usando $F$.
-\end{frame}
+%   Extrair $r$-arborescência geradora mínima usando $F$.
+% \end{frame}
 
-\begin{frame}{Fase I: Conceitos Fundamentais}
-  \textbf{Coleção Laminar:}
+% \begin{frame}{Fase I: Conceitos Fundamentais}
+%   \textbf{Coleção Laminar:}
 
-  Uma coleção $\mathcal{L}$ de conjuntos é \textbf{laminar} se, para quaisquer $X, Y \in \mathcal{L}$:
-  $$X \subseteq Y \quad\text{ou}\quad Y \subseteq X \quad\text{ou}\quad X \cap Y = \emptyset$$
+%   Uma coleção $\mathcal{L}$ de conjuntos é \textbf{laminar} se, para quaisquer $X, Y \in \mathcal{L}$:
+%   $$X \subseteq Y \quad\text{ou}\quad Y \subseteq X \quad\text{ou}\quad X \cap Y = \emptyset$$
 
-  \begin{center}
-    \begin{tikzpicture}[scale=0.8, every node/.style={scale=0.8}]
-      % Definição dos conjuntos
-      \draw[thick, fill=blue!20] (0,0) ellipse (3 and 2); % Conjunto maior (A)
-      \draw[thick, fill=green!20] (1,0) ellipse (1.5 and 1); % Subconjunto de A (B)
-      \draw[thick, fill=red!20] (-1.5,0) ellipse (0.8 and 0.7); % Subconjunto de A (C)
-      \draw[thick, fill=red!20] (-1,1.2) ellipse (0.4 and 0.4); % Subconjunto de A (F)
-      \draw[thick, fill=yellow!20] (0.5,0) ellipse (0.3 and 0.5); % Subconjunto de B (D)
-      \draw[thick, fill=yellow!20] (1.5,0) ellipse (0.3 and 0.5); % Subconjunto de B (E)
+%   \begin{center}
+%     \begin{tikzpicture}[scale=0.8, every node/.style={scale=0.8}]
+%       % Definição dos conjuntos
+%       \draw[thick, fill=blue!20] (0,0) ellipse (3 and 2); % Conjunto maior (A)
+%       \draw[thick, fill=green!20] (1,0) ellipse (1.5 and 1); % Subconjunto de A (B)
+%       \draw[thick, fill=red!20] (-1.5,0) ellipse (0.8 and 0.7); % Subconjunto de A (C)
+%       \draw[thick, fill=red!20] (-1,1.2) ellipse (0.4 and 0.4); % Subconjunto de A (F)
+%       \draw[thick, fill=yellow!20] (0.5,0) ellipse (0.3 and 0.5); % Subconjunto de B (D)
+%       \draw[thick, fill=yellow!20] (1.5,0) ellipse (0.3 and 0.5); % Subconjunto de B (E)
 
-      % Números dentro dos conjuntos
-      \node at (-2, 1) {1}; % Elemento em A
-      \node at (-0.5, -1.2) {2}; % Elemento em A
-      \node at (-1.5, 0.3) {3}; % Elemento em B
-      \node at (1.0, -0.5) {4}; % Elemento em B
-      \node at (-1.5, -0.3) {5}; % Elemento em C
-      \node at (-1, 1.2) {6}; % Elemento em F
-      \node at (0.5, 0) {7}; % Elemento em D
-      \node at (1.5, 0) {8}; % Elemento em E
+%       % Números dentro dos conjuntos
+%       \node at (-2, 1) {1}; % Elemento em A
+%       \node at (-0.5, -1.2) {2}; % Elemento em A
+%       \node at (-1.5, 0.3) {3}; % Elemento em B
+%       \node at (1.0, -0.5) {4}; % Elemento em B
+%       \node at (-1.5, -0.3) {5}; % Elemento em C
+%       \node at (-1, 1.2) {6}; % Elemento em F
+%       \node at (0.5, 0) {7}; % Elemento em D
+%       \node at (1.5, 0) {8}; % Elemento em E
 
-      % Rótulos dos conjuntos
-      \node at (-2.5, 1.5) {\( A \)}; % Rótulo para o conjunto A
-      \node at (1.5, 1.3) {\( B \)}; % Rótulo para o conjunto B
-      \node at (-2.5, -0.5) {\( C \)}; % Rótulo para o conjunto C
-      \node at (2, 0.5) {\( D \)}; % Rótulo para o conjunto D
-      \node at (1, 0.5) {\( E \)}; % Rótulo para o conjunto E
-      \node at (-0.2, 1.3) {\( F \)}; % Rótulo para o conjunto F
-    \end{tikzpicture}
-  \end{center}
-  \begin{center}
-    {\small Exemplo de coleção laminar: $\mathcal{L} = \{A, B, C, D, E, F\}$}
-  \end{center}
-\end{frame}
+%       % Rótulos dos conjuntos
+%       \node at (-2.5, 1.5) {\( A \)}; % Rótulo para o conjunto A
+%       \node at (1.5, 1.3) {\( B \)}; % Rótulo para o conjunto B
+%       \node at (-2.5, -0.5) {\( C \)}; % Rótulo para o conjunto C
+%       \node at (2, 0.5) {\( D \)}; % Rótulo para o conjunto D
+%       \node at (1, 0.5) {\( E \)}; % Rótulo para o conjunto E
+%       \node at (-0.2, 1.3) {\( F \)}; % Rótulo para o conjunto F
+%     \end{tikzpicture}
+%   \end{center}
+%   \begin{center}
+%     {\small Exemplo de coleção laminar: $\mathcal{L} = \{A, B, C, D, E, F\}$}
+%   \end{center}
+% \end{frame}
 
-\begin{frame}{Fase I: Conceitos Fundamentais}
-  \vspace{0.3cm}
-  \textbf{Sequência $w$-disjunta:}
-  Uma sequência $((R_i, \lambda_i))_{i \in [k)}$ é \textbf{$w$-disjunta} se:
-  $$\sum_{i \in [k)} \lambda_i \,[a \in \delta^-(R_i)] \;\le\; w(a) \quad \forall a \in A(D)$$
+% \begin{frame}{Fase I: Conceitos Fundamentais}
+%   \vspace{0.3cm}
+%   \textbf{Sequência $w$-disjunta:}
+%   Uma sequência $((R_i, \lambda_i))_{i \in [k)}$ é \textbf{$w$-disjunta} se:
+%   $$\sum_{i \in [k)} \lambda_i \,[a \in \delta^-(R_i)] \;\le\; w(a) \quad \forall a \in A(D)$$
 
-  {\small O peso $w(a)$ limita a soma das multiplicidades $\lambda_i$ sobre os conjuntos que $a$ entra.}
-  \vspace{0.3cm}
-  \begin{center}
-    \begin{tikzpicture}[scale=0.6,
-        >=Stealth,
-        vertex/.style={circle,draw,inner sep=1pt,font=\small},
-        arc/.style={->,thick},
-        rset/.style={draw=blue!60,thick},
-        label/.style={font=\small},
-        weight/.style={font=\small}
-      ]
+%   {\small O peso $w(a)$ limita a soma das multiplicidades $\lambda_i$ sobre os conjuntos que $a$ entra.}
+%   \vspace{0.3cm}
+%   \begin{center}
+%     \begin{tikzpicture}[scale=0.6,
+%         >=Stealth,
+%         vertex/.style={circle,draw,inner sep=1pt,font=\small},
+%         arc/.style={->,thick},
+%         rset/.style={draw=blue!60,thick},
+%         label/.style={font=\small},
+%         weight/.style={font=\small}
+%       ]
 
-      %-------------------------------
-      % Vértices e arco a
-      %-------------------------------
-      \node[vertex] (u) at (-2,0) {$u$};
-      \node[vertex] (v) at ( 2.5,0) {$v$};
+%       %-------------------------------
+%       % Vértices e arco a
+%       %-------------------------------
+%       \node[vertex] (u) at (-2,0) {$u$};
+%       \node[vertex] (v) at ( 2.5,0) {$v$};
 
-      \draw[arc] (u) -- node[weight,above,yshift=-1pt,xshift=-20pt]
-      {$a, 5$} (v);
+%       \draw[arc] (u) -- node[weight,above,yshift=-1pt,xshift=-20pt]
+%       {$a, 5$} (v);
 
-      %-------------------------------
-      % r-conjuntos laminares com v dentro
-      % R1 ⊂ R2 ⊂ R3
-      %-------------------------------
-      % menor
-      \draw[rset] (v) ellipse (0.8cm and 0.7cm);
-      \node[label,blue!70,anchor=west]
-      at ($(v)+(0.5,0.6)$) {$R_1, 2$};
+%       %-------------------------------
+%       % r-conjuntos laminares com v dentro
+%       % R1 ⊂ R2 ⊂ R3
+%       %-------------------------------
+%       % menor
+%       \draw[rset] (v) ellipse (0.8cm and 0.7cm);
+%       \node[label,blue!70,anchor=west]
+%       at ($(v)+(0.5,0.6)$) {$R_1, 2$};
 
-      % intermediário
-      \draw[rset] (v) ellipse (1.8cm and 1.2cm);
-      \node[label,blue!70,anchor=west]
-      at ($(v)+(1.7,0.0)$) {$R_2, 1$};
+%       % intermediário
+%       \draw[rset] (v) ellipse (1.8cm and 1.2cm);
+%       \node[label,blue!70,anchor=west]
+%       at ($(v)+(1.7,0.0)$) {$R_2, 1$};
 
-      % maior
-      \draw[rset] (v) ellipse (2.8cm and 1.7cm);
-      \node[label,blue!70,anchor=west]
-      at ($(v)+(2.6,-0.6)$) {$R_3, 1$};
+%       % maior
+%       \draw[rset] (v) ellipse (2.8cm and 1.7cm);
+%       \node[label,blue!70,anchor=west]
+%       at ($(v)+(2.6,-0.6)$) {$R_3, 1$};
 
-      %-------------------------------
-      % Texto da desigualdade
-      %-------------------------------
+%       %-------------------------------
+%       % Texto da desigualdade
+%       %-------------------------------
 
-    \end{tikzpicture}
-  \end{center}
-  \begin{center}
-    \small{Um arco $a$ de peso $5$ que entra nos $r$-conjuntos
-      $R_1$, $R_2$ e $R_3$ com multiplidades $2$, $1$, e $1$, respectivamente.
-    }
-  \end{center}
-\end{frame}
+%     \end{tikzpicture}
+%   \end{center}
+%   \begin{center}
+%     \small{Um arco $a$ de peso $5$ que entra nos $r$-conjuntos
+%       $R_1$, $R_2$ e $R_3$ com multiplidades $2$, $1$, e $1$, respectivamente.
+%     }
+%   \end{center}
+% \end{frame}
 
 \begin{frame}{Fase I: $r$-conjunto minimal}
   \begin{columns}[c]
