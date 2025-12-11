@@ -336,15 +336,15 @@
   \end{columns}
 \end{frame}
 
+% ==================== SEÇÃO 2: CHU-LIU-EDMONDS ====================
+\section{Algoritmo de Chu-Liu-Edmonds}
+
 \begin{frame}{Intermissão}
   \begin{center}
     \LARGE
     Algoritmo de Chu-Liu-Edmonds
   \end{center}
 \end{frame}
-
-% ==================== SEÇÃO 2: CHU-LIU-EDMONDS ====================
-\section{Algoritmo de Chu-Liu-Edmonds}
 
 \begin{frame}{Encontrando uma $r$-Arborescência Geradora Mínima}
   \begin{columns}[c]
@@ -988,7 +988,7 @@ return F_prime
 
 \begin{frame}{Algoritmo de András Frank}
   \vspace{0.3cm}
-  
+
   \begin{block}{Abordagem em Duas Fases}
     \textbf{Fase I (Fulkerson):} construir cobertura de $r$-conjuntos via redução de pesos
 
@@ -1135,23 +1135,22 @@ return F_prime
           arcOut/.style={->, thick, draw=green!70, dashed}]
 
         % Vértice raiz r (fora de R, destacado)
-        \node[v, fill=red!15, draw=red!70] (r) at (0,3.0) {$r$};
+        \node[v, fill=orange!15, draw=orange!70, text=orange!70] (r) at (0,3.0) {$r$};
 
         % Vértice externo x (fora de R)
-        \node[v, fill=blue!10, draw=blue!70] (x) at (-3.2,0.5) {$x$};
+        \node[v, fill=blue!10, draw=blue!70, text=blue!70,] (x) at (-3.2,0.5) {$x$};
 
         % R-conjunto principal (elipse tracejada verde)
-        \draw[draw=green!70, line width=1.5pt, dashed]
-        (0,-0.2) ellipse (2.5cm and 2.0cm);
+        \draw[draw=green!70, fill=green!3, line width=1.0pt]
+        (0,0) ellipse (2.5cm and 2.3cm);
         \node[font=\Large\bfseries, color=green!70] at (-1.4,2.3) {$R$};
 
         % Vértices internos
-        \node[v, text=magenta!80] (a) at (-1.3,0.9) {$a$};
-        \node[v, text=magenta!80] (b) at (1.3,0.9) {$b$};
-        \node[v, text=cyan!70] (c) at (-1.3,-0.9) {$c$};
-        \node[v, text=cyan!70] (d) at (0.6,-0.6) {$d$};
-        \node[v, text=cyan!70] (e) at (1.3,-1.3) {$e$};
-
+        \node[v, fill=magenta!10, draw=magenta!70, text=magenta!80] (a) at (-1.3,0.9) {$a$};
+        \node[v, fill=magenta!10, draw=magenta!70, text=magenta!80] (b) at (1.3,0.9) {$b$};
+        \node[v, fill=cyan!10, draw=cyan!70, text=cyan!70] (c) at (-1.3,-0.9) {$c$};
+        \node[v, fill=cyan!10, draw=cyan!70, text=cyan!70] (d) at (0.6,-0.6) {$d$};
+        \node[v, fill=cyan!10, draw=cyan!70, text=cyan!70] (e) at (1.8,-0.4) {$e$};
         % Subconjunto R'_1 (círculo em volta de 'a')
         \draw[draw=magenta!60, line width=1pt, dashed]
         (-1.3,0.9) circle (0.6cm);
@@ -1159,12 +1158,12 @@ return F_prime
 
         % Subconjunto R'_2 (elipse em volta de b, d, e)
         \draw[draw=magenta!60, line width=1pt, dashed]
-        (1.05,0.0) ellipse (1.05cm and 1.55cm);
+        (1.2,-0.2) ellipse (1.05cm and 1.55cm);
         \node[font=\small\bfseries, color=magenta!70] at (2.4,0.5) {$R'_2$};
 
         % Arcos de F entrando nos subconjuntos (de vértice externo x)
         \draw[arcF] (x) to[bend right=8]
-        node[pos=0.5, above, font=\small\bfseries, text=magenta!90] {$f_1 \notin F$} (a);
+        node[pos=0.5, below, font=\small\bfseries, text=magenta!90] {$f_1 \notin F$} (a);
         \draw[arcF] (r) to[bend right=22]
         node[pos=0.4, right, font=\small\bfseries, text=magenta!90] {$f_2 \notin F$} (b);
 
