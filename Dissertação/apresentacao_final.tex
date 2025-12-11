@@ -3033,7 +3033,7 @@ def andras_frank(D: nx.DiGraph, r: int):
 
 \begin{frame}{Resumidamente...}
   \begin{columns}[c]
-    \column{0.55\textwidth}
+    \column{0.50\textwidth}
     \begin{block}{Principais Resultados}
       \begin{itemize}
         \item \textbf{Corretude verificada:} pesos idênticos em todas as instâncias
@@ -3045,16 +3045,6 @@ def andras_frank(D: nx.DiGraph, r: int):
                 \item Contrações: mediana 2 (limite $O(n)$)
                 \item Uso modesto de memória: 11,5 MB
               \end{itemize}
-      \end{itemize}
-    \end{block}
-    \column{0.40\textwidth}
-    \begin{block}{Conclusões}
-      \begin{itemize}
-        \item Equivalência teórica e prática dos algoritmos confirmada
-        \item Chu-Liu/Edmonds é mais eficiente
-        \item Fase I de Frank é o gargalo computacional
-        \item Heap na Fase II traz ganhos práticos expressivos
-        \item Algoritmos são escaláveis e viáveis para grandes digrafos
       \end{itemize}
     \end{block}
   \end{columns}
