@@ -1113,7 +1113,7 @@ return F_prime
 % \end{frame}
 
 \begin{frame}{Fase I: $r$-conjunto minimal}
-  
+
   \begin{columns}[c]
     \column{0.48\textwidth}
     \begin{block}{$r$-conjunto minimal não coberto por $F \subseteq A$}
@@ -3008,54 +3008,56 @@ def andras_frank(D: nx.DiGraph, r: int):
   \end{minipage}
 \end{frame}
 
-% \begin{frame}{Características Estruturais}
-%     \begin{columns}[c]
-%         \column{0.5\textwidth}
-%         \textbf{Contrações (Chu-Liu):}
-%         \begin{itemize}
-%             \item Mediana: 2 contrações
-%             \item Média: 6,82
-%             \item Máximo: 406
-%             \item 93,8\% com $< 20$
-%         \end{itemize}
-%         \vspace{0.3cm}
-%         Muito abaixo do limite teórico $O(n)$
-%         \column{0.5\textwidth}
-%         \includegraphics[width=\textwidth]{figures/fig_contractions_depth.png}
-%     \end{columns}
-%     \vspace{0.3cm}
-%     \textbf{Tamanho de $D_0$ vs $|V|$:} relação linear confirma $|A_0| = O(|V|)$
-%     \includegraphics[width=0.7\textwidth]{figures/fig_d0_edges_vs_vertices.png}
-% \end{frame}
-
-\begin{frame}{Principais Resultados}
-  \begin{itemize}
-    \item \textbf{Corretude validada:} pesos idênticos em todas as instâncias
-    \item \textbf{Chu-Liu-Edmonds} mais rápido para construção direta
-          \begin{itemize}
-            \item Mediana: 0,13 s vs 4,01 s (Fase I Frank)
-          \end{itemize}
-    \item \textbf{Otimização heap} fundamental na Fase II
-          \begin{itemize}
-            \item Speedup: 50,94× (mediana), 49,53× (média)
-          \end{itemize}
-    \item \textbf{Comportamento prático} muito melhor que limites teóricos
-          \begin{itemize}
-            \item Contrações: mediana 2 (limite $O(n)$)
-            \item Memória modesta: 11,5 MB
-          \end{itemize}
-  \end{itemize}
+\begin{frame}{Características Estruturais}
+  \begin{columns}[c]
+    \column{0.5\textwidth}
+    \textbf{Contrações (Chu-Liu):}
+    \begin{itemize}
+      \item Mediana: 2 contrações
+      \item Média: 6,82
+      \item Máximo: 406
+      \item 93,8\% com $< 20$
+    \end{itemize}
+    \vspace{0.3cm}
+    Muito abaixo do limite teórico $O(n)$
+    \column{0.5\textwidth}
+    \includegraphics[width=\textwidth]{figures/fig_contractions_depth.png}
+  \end{columns}
+  \vspace{0.3cm}
 \end{frame}
 
-\begin{frame}{Conclusões dos Experimentos}
-  \begin{itemize}
-    \item Equivalência teórica e prática dos algoritmos confirmada
-    \item Chu-Liu/Edmonds é mais eficiente
-    \item Fase I de Frank é o gargalo computacional
-    \item Heap na Fase II traz ganhos práticos expressivos
-    \item Algoritmos são escaláveis e viáveis para grandes digrafos
-  \end{itemize}
+\begin{frame}{Características Estruturais}
+  \textbf{Tamanho de $D_0$ vs $|V|$:} relação linear confirma $|A_0| = O(|V|)$
+  \includegraphics[width=0.7\textwidth]{figures/fig_d0_edges_vs_vertices.png}
+\end{frame}
 
+\begin{frame}{Resumidamente...}
+  \begin{columns}[c]
+    \column{0.55\textwidth}
+    \begin{block}{Principais Resultados}
+      \begin{itemize}
+        \item \textbf{Corretude verificada:} pesos idênticos em todas as instâncias
+        \item \textbf{Chu-Liu-Edmonds}: mais rápido, mas cabe discutir implementação
+        \item \textbf{Fase I de Frank}: gargalo computacional
+        \item \textbf{Otimização heap}: fundamental na Fase II, retira necessidade de verificação de arboresencência na Fase I
+        \item \textbf{Comportamento prático}: curioso
+              \begin{itemize}
+                \item Contrações: mediana 2 (limite $O(n)$)
+                \item Uso modesto de memória: 11,5 MB
+              \end{itemize}
+      \end{itemize}
+    \end{block}
+    \column{0.40\textwidth}
+    \begin{block}{Conclusões}
+      \begin{itemize}
+        \item Equivalência teórica e prática dos algoritmos confirmada
+        \item Chu-Liu/Edmonds é mais eficiente
+        \item Fase I de Frank é o gargalo computacional
+        \item Heap na Fase II traz ganhos práticos expressivos
+        \item Algoritmos são escaláveis e viáveis para grandes digrafos
+      \end{itemize}
+    \end{block}
+  \end{columns}
 \end{frame}
 
 
@@ -3358,7 +3360,7 @@ def andras_frank(D: nx.DiGraph, r: int):
     \begin{minipage}{0.95\columnwidth}
       \begin{block}{Extensões Possíveis}
         \begin{itemize}
-          \item Melhoria da versão recursiva do algoritmo de Chu-Liu-Edmonds usando pilha 
+          \item Melhoria da versão recursiva do algoritmo de Chu-Liu-Edmonds usando pilha
           \item Melhoria da fase I do algoritmo de András Frank utilizando contração de componentes fonte
           \item Implementação de algoritmos para resolver o problema inverso da r-arborescência geradora mínima
         \end{itemize}
