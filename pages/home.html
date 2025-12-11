@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Arbograph</title>
+    <link rel="icon" type="image/x-icon" href="../assets/logo.png" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://pyscript.net/releases/2025.3.1/core.css"
+    />
+    <script
+      type="module"
+      src="https://pyscript.net/releases/2025.3.1/core.js"
+    ></script>
+  </head>
+
+  <body class="flex min-h-screen text-gray-800 bg-gray-100">
+    <style>
+      .py-error,
+      .py-terminal-error {
+        display: none !important;
+      }
+    </style>
+    <div class="absolute top-[100px] w-full h-[1px] bg-[#DBDBDB]"></div>
+
+    <!-- MENU LATERAL -->
+    <div id="sidebar"></div>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div id="main-content" class="flex-1 bg-[#E5E5E5] p-6">
+      <!-- Análise e Implementação de Algoritmo de Busca de uma r-Arborescência Inversa de Custo Mínimo em Grafos Dirigidos -->
+      <span class="flex items-center gap-4 mb-10 text-2xl text-[#352B67]"
+        >Algoritmos para o problema da arborescência geradora mínima: uma aplicação didática interativa</span
+      >
+      <section class="mb-10 bg-white p-8 rounded-lg shadow-lg" id="resumo">
+        <scan
+          class="text-3xl font-semibold text-center mb-8 text-[#352B67] text-xl"
+          >Resumo</scan
+        >
+        <div class="prose max-w-none text-gray-700">
+          <scan class="text-lg leading-relaxed mb-4 text-sm font-light">
+            Este trabalho investiga e implementa algoritmos de busca de uma
+            r‑arborescência geradora mínima em digrafos. A partir da
+            formulação clássica e da literatura de Chu–Liu-Edmonds e também da formulação
+            de András Frank, desenvolvemos uma aplicação web que permite: (i)
+            desenhar ou importar um digrafo ponderado, (ii) escolher o nó raiz
+            r, (iii) executar o algoritmo passo a passo com visualização das
+            contrações, seleção de arcos de custo mínimo e reconstrução da
+            arborescência, e (iv) exportar resultados e logs. A solução combina
+            PyScript e NetworkX para a lógica algorítmica, Cytoscape para edição
+            e visualização interativa, e Tailwind/Flowbite na interface. Como
+            contribuição, o sistema oferece um ambiente didático que torna
+            transparentes as decisões do algoritmo e facilita a análise e
+            comparação de soluções em diferentes instâncias, apoiando ensino,
+            experimentação e validação.
+          </scan>
+        </div>
+      </section>
+      <section class="bg-white p-8 rounded-lg shadow-lg" id="integrantes">
+        <h2 class="text-3xl font-light text-center mb-8 text-[#352B67] text-xl">
+          Integrantes do Projeto
+        </h2>
+
+        <div
+          class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 justify-items-center"
+        >
+          <div
+            class="bg-gray-100 p-6 rounded-lg shadow-md text-center flex flex-col items-center w-full max-w-sm"
+          >
+            <img
+              src="../assets/lori.jpg"
+              alt="Foto da Lori"
+              class="w-32 h-32 rounded-full object-cover mb-4 border-2 border-[#8d79e5]"
+            />
+            <h3 class="text-xl font-semibold text-[#4f4678]">Lori Sampaio</h3>
+            <p class="text-gray-600 mt-1">Discente do BCC-UFABC</p>
+            <p class="text-sm text-gray-500 mt-2">
+              <a
+                href="https://linkedin.com/in/integrante1"
+                target="_blank"
+                class="text-blue-500 hover:underline"
+                >LinkedIn</a
+              >
+              |
+              <a
+                href="mailto:lorenypsum@gmail.com"
+                class="text-blue-500 hover:underline"
+                >Email</a
+              >
+            </p>
+          </div>
+          <div
+            class="bg-gray-100 p-6 rounded-lg shadow-md text-center flex flex-col items-center w-full max-w-sm"
+          >
+            <img
+              src="https://www.ufabc.edu.br/images/conteudo/img-padrao-autor.png"
+              alt="Foto do Mario"
+              class="w-32 h-32 rounded-full object-cover mb-4 border-2 border-[#8d79e5]"
+            />
+            <h3 class="text-xl font-semibold text-[#4f4678]">
+              Mario Leston Rey
+            </h3>
+            <p class="text-gray-600 mt-1">Docente do BCC-UFABC</p>
+            <p class="text-sm text-gray-500 mt-2">
+              <a href="#" target="_blank" class="text-blue-500 hover:underline"
+                >LinkedIn</a
+              >
+              |
+              <a
+                href="mailto:mario.leston@ufabc.edu.br"
+                class="text-blue-500 hover:underline"
+                >Email</a
+              >
+            </p>
+          </div>
+          <div
+            class="bg-gray-100 p-6 rounded-lg shadow-md text-center flex flex-col items-center w-full max-w-sm"
+          >
+            <img
+              src="../assets/samira.png"
+              alt="Foto da Samira"
+              class="w-32 h-32 rounded-full object-cover mb-4 border-2 border-[#8d79e5]"
+            />
+            <h3 class="text-xl font-semibold text-[#4f4678]">Samira Haddad</h3>
+            <p class="text-gray-600 mt-1">Discente do BCC-UFABC</p>
+            <p class="text-sm text-gray-500 mt-2">
+              <a
+                href="https://www.linkedin.com/in/samirahad"
+                target="_blank"
+                class="text-blue-500 hover:underline"
+                >LinkedIn</a
+              >
+              |
+              <a
+                href="mailto:samira.had.2000@gmail.com"
+                class="text-blue-500 hover:underline"
+                >Email</a
+              >
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../scripts/js/sidebar.js"></script>
+    <script src="../scripts/js/main.js"></script>
+  </body>
+</html>

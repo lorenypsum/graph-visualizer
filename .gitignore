@@ -1,0 +1,16 @@
+*.venv
+*.pyc
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex.gz
+*.toc
+*.out
+*.bbl
+*.blg
+
+# Test files
+test_log.txt
+test_results.csv
+test_results copy.csv

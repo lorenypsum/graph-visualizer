@@ -1,0 +1,1943 @@
+\documentclass[aspectratio=169]{beamer}
+
+% Tema e cores baseados no design do site ArboGraph
+\usetheme{CambridgeUS}
+\usecolortheme{default}
+
+% Paleta de cores do logo e site
+\definecolor{primarypurple}{RGB}{53, 43, 103}    % #352B67 - roxo escuro principal
+\definecolor{secondarypurple}{RGB}{75, 66, 119}  % #4B4277 - roxo médio
+\definecolor{accentpurple}{RGB}{141, 121, 229}   % #8d79e5 - roxo vibrante
+\definecolor{lightpurple}{RGB}{164, 156, 255}    % #a49cc5ff - roxo claro (borda)
+\definecolor{textgray}{RGB}{120, 116, 134}       % #787486 - cinza texto
+\definecolor{textlightgray}{RGB}{151, 149, 160}       % rgba(151, 149, 160, 1)
+\definecolor{lightgray}{RGB}{229, 229, 229}      % #E5E5E5 - fundo claro
+\definecolor{divider}{RGB}{219, 219, 219}        % #DBDBDB - linhas divisórias
+
+% Estrutura geral
+\setbeamercolor{structure}{fg=primarypurple}
+\setbeamercolor{palette primary}{bg=primarypurple,fg=white}
+\setbeamercolor{palette secondary}{bg=secondarypurple,fg=white}
+\setbeamercolor{palette tertiary}{bg=accentpurple,fg=white}
+\setbeamercolor{frametitle}{bg=primarypurple,fg=white}
+
+% Cores da capa
+\setbeamercolor{title}{fg=lightgray}
+\setbeamercolor{titlelike}{bg=primarypurple,fg=white}
+\setbeamercolor{author}{fg=textgray}
+\setbeamercolor{institute}{fg=textgray}
+\setbeamercolor{date}{fg=textgray}
+
+% Cores dos blocos (caixas de texto)
+\setbeamercolor{block title}{bg=secondarypurple,fg=white}
+\setbeamercolor{block body}{bg=lightgray,fg=black}
+\setbeamercolor{block title alerted}{bg=secondarypurple,fg=white}
+\setbeamercolor{block body alerted}{bg=lightgray,fg=black}
+
+% Itens e enumerações
+\setbeamercolor{item}{fg=accentpurple}
+\setbeamercolor{enumerate item}{fg=accentpurple}
+\setbeamercolor{enumerate subitem}{fg=lightpurple}
+
+% Remover sombra dos blocos
+\setbeamertemplate{blocks}[rounded][shadow=false]
+
+% Remover "Figura" dos captions
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{graphs,arrows.meta,positioning,fit,calc}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{listings}
+
+% Logo da UFABC no canto superior direito (após carregar tikz)
+\addtobeamertemplate{frametitle}{}{%
+	\begin{tikzpicture}[remember picture,overlay]
+		\node[anchor=north east,yshift=-40pt,xshift=-3pt] at (current page.north east) {
+			\includegraphics[height=0.8cm]{logo-ufabc.png}
+		};
+	\end{tikzpicture}
+}
+
+% Logo também na página de capa
+% \addtobeamertemplate{titlepage}{}{%
+% 	\begin{tikzpicture}[remember picture,overlay]
+% 		\node[anchor=north east,yshift=-2pt,xshift=-2pt] at (current page.north east) {
+% 			\includegraphics[height=0.8cm]{logo-ufabc.png}
+% 		};
+% 	\end{tikzpicture}
+% }
+
+% Configuração do listings para código Python
+\lstset{
+	language=Python,
+	basicstyle=\ttfamily\scriptsize,
+	backgroundcolor=\color{lightgray},
+	frame=single,
+	rulecolor=\color{primarypurple},
+	framesep=3pt,
+	framexleftmargin=3pt,
+	xleftmargin=5pt,
+	xrightmargin=5pt,
+	aboveskip=5pt,
+	belowskip=5pt,
+	keywordstyle=\color{primarypurple}\bfseries,
+	commentstyle=\color{textgray}\itshape,
+	stringstyle=\color{accentpurple},
+	showstringspaces=false,
+	breaklines=true,
+	breakindent=10pt,
+	tabsize=4
+}
+
+% Logo da UFABC
+%\logo{\includegraphics[height=0.9cm]{logo-ufabc.png}}
+
+% Configurações do título
+\title[Projeto de Graduação de Curso]{Algoritmos para r-Arborescências Geradoras Mínimas em Digrafos:}
+\subtitle{Uma Aplicação Web Interativa}
+\author[L. Sampaio, S. Haddad]{Lorena Sampaio, Samira Haddad \\ Orientador: Prof. Dr. Mário Leston Rey}
+\institute[UFABC]{Universidade Federal do ABC \\ Centro de Matemática, Computação e Cognição}
+\date{\today}
+
+% Comandos personalizados
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\D}{\mathcal{D}}
+
+\begin{document}
+
+% ==================== SLIDE 1: TÍTULO ====================
+\begin{frame}
+	\titlepage
+\end{frame}
+
+% ==================== SLIDE 2: SUMÁRIO ====================
+\begin{frame}{Sumário}
+	\tableofcontents
+\end{frame}
+
+% ==================== SEÇÃO 1: INTRODUÇÃO ====================
+\section{Introdução}
+
+\begin{frame}{O Problema}
+	\begin{block}{Encontrar uma $r$-Arborescência Geradora de Custo Mínimo}
+		Dado um $r$-digrafo ponderado $(D,w,r)$:
+		\begin{itemize}
+			\item Encontrar uma $r$-arborescência geradora de custo mínimo de $D$
+		\end{itemize}
+	\end{block}
+
+	\vspace{0.5cm}
+
+	\textbf{Algoritmos estudados:}
+	\begin{enumerate}
+		\item Chu-Liu-Edmonds (1965-67)
+		\item András Frank (1981-2014)
+	\end{enumerate}
+\end{frame}
+
+% ==================== SLIDE 3: EXEMPLO ====================
+\begin{frame}{Exemplo: $r$-Arborescência Geradora Mínima}
+	\begin{columns}[c]
+		\column{0.3\textwidth}
+		\begin{figure}[H]
+			\begin{tikzpicture}[scale=0.9,
+					vertex/.style={circle,draw,fill=blue!10,minimum size=0.6cm,font=\small},
+					edge/.style={->,>=stealth,thick,gray!90}]
+
+				\node[vertex,fill=red!20] (r) at (2,2.5) {$r$};
+				\node[vertex] (a) at (0,1) {$a$};
+				\node[vertex] (b) at (2,1) {$b$};
+				\node[vertex] (c) at (4,1) {$c$};
+				\node[vertex] (d) at (1,0) {$d$};
+				\node[vertex] (e) at (3,0) {$e$};
+
+				\draw[edge] (r) -- node[above left,font=\tiny] {3} (a);
+				\draw[edge] (r) -- node[above left,font=\tiny] {5} (b);
+				\draw[edge] (r) -- node[above right,font=\tiny] {4} (c);
+				\draw[edge] (a) -- node[left,font=\tiny] {2} (d);
+				\draw[edge] (b) -- node[above,font=\tiny] {1} (a);
+				\draw[edge] (b) -- node[above,font=\tiny] {3} (d);
+				\draw[edge] (c) -- node[right,font=\tiny] {2} (e);
+				\draw[edge] (c) -- node[above,font=\tiny] {4} (b);
+				\draw[edge] (d) to[bend left] node[below,font=\tiny] {1} (e);
+			\end{tikzpicture}
+			\caption{Digrafo Original}
+			\caption{}
+		\end{figure}
+
+		\column{0.4\textwidth}
+		\begin{figure}[H]
+			\begin{tikzpicture}[scale=0.9,
+					vertex/.style={circle,draw,fill=blue!10,minimum size=0.6cm,font=\small},
+					arb/.style={->,>=stealth,very thick,accentpurple}]
+
+				\node[vertex,fill=red!20] (r) at (2,2.5) {$r$};
+				\node[vertex] (a) at (0,1) {$a$};
+				\node[vertex] (b) at (2,1) {$b$};
+				\node[vertex] (c) at (4,1) {$c$};
+				\node[vertex] (d) at (1,0) {$d$};
+				\node[vertex] (e) at (3,0) {$e$};
+
+				\draw[arb] (r) -- node[above left,font=\tiny,black] {3} (a);
+				\draw[arb] (r) -- node[above right,font=\tiny,black] {4} (c);
+				\draw[arb] (b) -- node[above,font=\tiny,black] {1} (a);
+				\draw[arb] (a) -- node[left,font=\tiny,black] {2} (d);
+				\draw[arb] (c) -- node[right,font=\tiny,black] {2} (e);
+				\draw[arb] (c) -- node[above,font=\tiny,black] {4} (b);
+			\end{tikzpicture}
+			\caption{r-Arborescência Geradora}
+			\caption{Custo: 16}
+		\end{figure}
+
+		\column{0.3\textwidth}
+		\begin{figure}[H]
+			\begin{tikzpicture}[scale=0.9,
+					vertex/.style={circle,draw,fill=blue!10,minimum size=0.6cm,font=\small},
+					arb/.style={->,>=stealth,very thick,accentpurple}]
+
+				\node[vertex,fill=red!20] (r) at (2,2.5) {$r$};
+				\node[vertex] (a) at (0,1) {$a$};
+				\node[vertex] (b) at (2,1) {$b$};
+				\node[vertex] (c) at (4,1) {$c$};
+				\node[vertex] (d) at (1,0) {$d$};
+				\node[vertex] (e) at (3,0) {$e$};
+
+				\draw[arb] (r) -- node[above left,font=\tiny,black] {5} (b);
+				\draw[arb] (r) -- node[above right,font=\tiny,black] {4} (c);
+				\draw[arb] (b) -- node[above,font=\tiny,black] {1} (a);
+				\draw[arb] (a) -- node[left,font=\tiny,black] {2} (d);
+				\draw[arb] (d) -- node[below,font=\tiny,black] {1} (e);
+			\end{tikzpicture}
+			\caption{Geradora Mínima}
+			\caption{Custo: 13}
+		\end{figure}
+	\end{columns}
+\end{frame}
+
+% ==================== SEÇÃO 2: CHU-LIU-EDMONDS ====================
+\section{Algoritmo de Chu-Liu-Edmonds}
+
+\begin{frame}{Chu-Liu-Edmonds}
+	\begin{block}{Algoritmo Recursivo: dado um r-digrafo ponderado $(D,w,r)$}
+		chu--liu--edmonds($(D,w,r)$):
+		\begin{enumerate}
+			\item \textbf{Reduzir custos}: para cada vértice $v \neq r$, subtrair $\lambda(v) = \min\{w(a) : a \in \delta^-(v)\}$
+
+			\item \textbf{Construir $D_0$}: escolhendo um arco $a_v$ de custo reduzido zero para cada $v \neq r$
+
+			\item \textbf{Verificar}: se $D_0$ é uma $r$-arborescência $\Rightarrow$ \textbf{devolver} $D_0$
+
+			      Caso contrário:
+
+			\item \textbf{Contração}: encontrar ciclo $C$ em $D_0$ e contrair
+
+			\item \textbf{Chamada recursiva}: Seja $D' = D/C$ e $w' = w_\lambda/C$. Calcular $T' =$ chu-liu-edmonds$(D', w', r)$
+
+			\item \textbf{Devolver}: expandir$(T')$
+		\end{enumerate}
+	\end{block}
+\end{frame}
+
+
+% ...existing code...
+\begin{frame}{Escolha Gulosa}
+	\begin{columns}[c]
+		\column{0.48\textwidth}
+		\textbf{Definição:}
+
+		Para cada $v \neq r$, escolher um arco $a_v$ de custo mínimo que entra em $v$:
+		$$T := \{a_v : v \in V \setminus \{r\}\}$$
+
+		\vspace{0.2cm}
+		\textbf{Propriedade:}
+
+		Se $T$ é uma $r$-arborescência, então $T$ tem custo mínimo.
+
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				cheap/.style={->, very thick, draw=blue!70},
+				expensive/.style={->, dashed, draw=gray!60}]
+			\node[v] (r) {\small $r$};
+			\node[v] (a) [right=2.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
+			\node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
+
+			\draw[cheap] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (b);
+			\draw[cheap] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
+			\draw[expensive] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (a);
+
+			\draw[cheap] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (a);
+			\draw[expensive] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (b);
+			\draw[expensive] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (c);
+		\end{tikzpicture}
+	\end{columns}
+
+	\vspace{0.2cm}
+	\begin{alertblock}{Resultado}
+		$T = \{(r,a), (a,b), (b,c)\}$ é uma $r$-arborescência de custo mínimo!
+	\end{alertblock}
+\end{frame}
+
+\begin{frame}{E quando a escolha gulosa falha?}
+	\begin{columns}[c]
+		\column{0.48\textwidth}
+		\textbf{Problema:}
+
+		A escolha gulosa pode produzir um conjunto $T$ que \emph{não} é uma $r$-arborescência.
+
+		\vspace{0.3cm}
+		\textbf{Exemplo:}
+
+		Os arcos de custo mínimo formam um ciclo $(a, b, c, a)$ sem alcançar $r$.
+
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				cheap/.style={->, very thick, draw=blue!70},
+				expensive/.style={->, dashed, draw=gray!60}]
+			\node[v] (r) {\small $r$};
+			\node[v] (a) [right=2.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
+			\node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
+
+			\draw[cheap] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (b);
+			\draw[cheap] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
+			\draw[cheap] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (a);
+
+			\draw[expensive] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (a);
+			\draw[expensive] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (b);
+			\draw[expensive] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (c);
+		\end{tikzpicture}
+
+		\vspace{0.2cm}
+		{\small Arcos azuis formam um \textbf{ciclo}!}
+	\end{columns}
+\end{frame}
+
+% \begin{frame}{Passo 1: Redução de Custos}
+% \begin{columns}[t] % alinhamento pelo topo
+% 	\column{0.01\textwidth}
+% 	\column{0.44\textwidth}
+% 	\hspace*{6mm}
+% 	\begin{alertblock}{Objetivo}
+% 		Encontrar a $r$-arborescência geradora de custo mínimo através do algoritmo de Chu-Liu-Edmonds.
+% 		\vspace{0.6em}
+
+% 		Solução:
+% 		\begin{itemize}
+% 			\item Redução de custos por vértice;
+% 			\item Construção de \(D_0\) com arestas de custo zero;
+% 			\item Identificar e contrair de ciclos;
+% 			\item Resolver recursivamente;
+% 		\end{itemize}
+% 		\vspace{4mm}
+% 	\end{alertblock}
+
+% 	\column{0.55\textwidth}
+% 	\begin{center}
+% 		\begin{tikzpicture}[scale=0.9, >=Stealth,
+% 				vertex/.style={circle,draw,fill=blue!8,thick,inner sep=1.2pt,minimum size=7mm},
+% 				edge/.style={->,semithick,gray!70}]
+% 			% nós (posições ajustadas)
+% 			\node[vertex] (r) at (0,0) {$r$};
+% 			\node[vertex] (a) at (2,1.6) {$a$};
+% 			\node[vertex] (b) at (2,-1.6) {$b$};
+% 			\node[vertex] (c) at (4,2.2) {$c$};
+% 			\node[vertex] (d) at (4,0) {$d$};
+% 			\node[vertex] (e) at (4,-2.2) {$e$};
+
+% 			\draw[edge] (r) -- node[above,font=\scriptsize] {1} (a);
+% 			\draw[edge] (r) -- node[below,font=\scriptsize] {2} (b);
+% 			\draw[edge] (r) .. controls (0.8,2.4) and (3.2,3.0) .. node[above, yshift=2pt,pos=0.53,font=\scriptsize] {3} (c);
+% 			\draw[edge] (b) to[bend left=12] node[left,font=\scriptsize] {4} (a);
+% 			\draw[edge] (a) to[bend left=14] node[right,font=\scriptsize] {5} (b);
+% 			\draw[edge] (a) -- node[right,font=\scriptsize] {3} (d);
+% 			\draw[edge] (a) -- node[above,font=\scriptsize] {1} (c);
+% 			\draw[edge] (b) -- node[above,font=\scriptsize] {1} (d);
+% 			\draw[edge] (b) -- node[below,font=\scriptsize] {2} (e);
+% 			\draw[edge] (c) .. controls (5.6,2.6) and (5.6,-2.6) .. node[xshift=8pt,pos=0.52,font=\scriptsize] {5} (e);
+% 		\end{tikzpicture}
+% 	\end{center}
+% \end{columns}
+% \end{frame}
+% ...existing code...
+
+\begin{frame}{Passo 1: Redução de Custos}
+	\begin{columns}[c]
+		\column{0.48\textwidth}
+		\textbf{Definição:}
+
+		\vspace{0.2cm}
+		Para cada $v \in V \setminus \{r\}$:
+		$$\lambda(v) := \min\{w(a) : a \in \delta^-(v)\}$$
+
+		Custo $\lambda$-reduzido:
+		$$w_\lambda(uv) := w(uv) - \lambda(v)$$
+		\vspace{0.1cm}
+		\textbf{Valores de $\lambda$:}
+		\begin{itemize}
+			\item $\lambda(a) = 3$, $\lambda(b) = 3$, $\lambda(c) = 2$
+		\end{itemize}
+
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				cycle/.style={->, very thick, draw=blue!70},
+				arc/.style={->, dashed, draw=gray!60}]
+			\node[v] (r) {\small $r$};
+			\node[v] (a) [right=2.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
+			\node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
+
+			\draw[cycle] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (b);
+			\draw[cycle] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (c);
+			\draw[cycle] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (a);
+
+			\draw[cycle] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 0} (a);
+			\draw[arc] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 1} (b);
+			\draw[arc] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 3} (c);
+		\end{tikzpicture}
+
+		\vspace{0.2cm}
+		{\small Arcos do ciclo têm custo zero!}
+	\end{columns}
+
+	\vspace{0.1cm}
+	\begin{block}{}
+		Arcos com custo zero são candidatos para $D_0$
+	\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Implementação: Redução de Custos}
+	\textbf{Função \texttt{reduce\_weights}:}
+	\begin{columns}[t]
+		\column{0.5\textwidth}
+		\begin{lstlisting}[basicstyle=\scriptsize\ttfamily]
+def reduce_weights(D: nx.DiGraph, v: int):
+    in_edges = D.in_edges(v, data=True)
+    yv = min((data["w"] 
+              for _, _, data in in_edges))
+    for u, _, _ in in_edges:
+        D[u][v]["w"] -= yv
+\end{lstlisting}
+
+		\column{0.45\textwidth}
+		\textbf{Descrição:}
+		\begin{itemize}
+			\item Calcula $\lambda(v) = \min\{w(a) : a \in \delta^-(v)\}$
+			\item Reduz o custo de cada arco que entra em $v$
+			\item Complexidade: $O(k)$ onde $k$ é o número de arcos entrando em $v$
+		\end{itemize}
+	\end{columns}
+
+	\vspace{0.3cm}
+	\begin{block}{Resultado}
+		Após executar \texttt{reduce\_weights(D, v)} para cada $v \neq r$, todos os vértices têm ao menos um arco de entrada com custo zero.
+	\end{block}
+\end{frame}
+
+\begin{frame}{Passo 2: Construção de $D_0$}
+	\begin{columns}[c]
+		\column{0.5\textwidth}
+		\textbf{Formação de $D_0$:}
+		\vspace{0.1cm}
+		Para cada $v \neq r$, escolher um arco $a_v \in \delta^-(v)$ com $w_\lambda(a_v) = 0$ formar:
+
+		$$D_0 := (V, \{a_v : v \in V \setminus \{r\}\})$$
+
+		\vspace{0.1cm}
+		\textbf{Arcos escolhidos:}
+		\begin{itemize}
+			\item $(r,a)$
+			\item $(a,b)$, $(c,a)$
+		\end{itemize}
+
+		\column{0.5\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				cycle/.style={->, very thick, draw=blue!70},
+				arc/.style={->, dashed, draw=gray!60}]
+			\node[v] (r) {\small $r$};
+			\node[v] (a) [right=2.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
+			\node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
+
+			\draw[cycle] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (b);
+			\draw[cycle] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (c);
+			\draw[cycle] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (a);
+
+			\draw[cycle] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 0} (a);
+			\draw[arc] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 1} (b);
+			\draw[arc] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 3} (c);
+		\end{tikzpicture}
+	\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Passo 2: Implementação da Construção de D0 em Python}
+	\textbf{Função \texttt{get\_Dzero}:}
+
+	\vspace{0.2cm}
+	\begin{columns}[t]
+		\column{0.55\textwidth}
+		\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+def get_Dzero(D: nx.DiGraph, r: int):
+    D_zero = nx.DiGraph()
+    for v in D.nodes():
+        if v != r:
+            in_edges = D.in_edges(v, 
+                                  data=True)
+            u = next((u for u, _, data 
+                      in in_edges 
+                      if data["w"] == 0))
+            D_zero.add_edge(u, v)
+    return D_zero
+\end{lstlisting}
+
+		\column{0.45\textwidth}
+		\textbf{Descrição:}
+		\begin{itemize}
+			\item Para cada vértice $v \neq r$, seleciona um arco com custo zero
+			\item Constrói subdigrafo gerador $D_0$
+			\item Garantido existir arco de custo zero após redução
+		\end{itemize}
+	\end{columns}
+
+	\vspace{0.3cm}
+	\begin{block}{Observação}
+		Se $D_0$ for uma arborescência, então $D_0$ é necessariamente uma $r$-arborescência ótima.
+	\end{block}
+\end{frame}
+
+\begin{frame}{Passo 3: Verificação de $D_0$}
+	\begin{columns}[c]
+		\column{0.48\textwidth}
+		\textbf{Verificar:}
+
+		Se $D_0$ é uma $r$-arborescência $\Rightarrow$ \textbf{devolver} $D_0$
+
+		\vspace{0.3cm}
+		\textbf{Caso contrário:}
+
+		$D_0$ contém algum ciclo $C$.
+
+		$\Rightarrow$ \textbf{prosseguir} para os passos 4 e 5.
+
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				cycle/.style={->, very thick, draw=blue!70},
+				arc/.style={->, dashed, draw=gray!60}]
+			\node[v] (r) {\small $r$};
+			\node[v] (a) [right=2.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
+			\node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
+
+			\draw[cycle] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (b);
+			\draw[cycle] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (c);
+			\draw[cycle] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (a);
+
+			\draw[cycle] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 0} (a);
+			\draw[arc] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 1} (b);
+			\draw[arc] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 3} (c);
+		\end{tikzpicture}
+	\end{columns}
+	\vspace{0.3cm}
+	\begin{alertblock}{$D_0$ não é uma $r$-arborescência!}
+		Neste exemplo, $D_0 = \{(r,a), (a,b), (c,a)\}$ não forma uma $r$-arborescência pois contém o ciclo $(a, b, c, a)$.
+	\end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]{Passo 3: Implementação da Verificação de D0 (1/2)}
+	\textbf{Verificação se é arborescência:}
+
+	\vspace{0.1cm}
+	\begin{lstlisting}[basicstyle=\small\ttfamily]
+# Verificar se D_zero eh arborescencia
+if nx.is_arborescence(D_zero):
+    # Restaurar pesos originais
+    for u, v in D_zero.edges:
+        D_zero[u][v]["w"] = D[u][v]["w"]
+    return D_zero
+\end{lstlisting}
+
+	\emph{Esse trecho faz parte do caso base da função recursiva principal.}
+
+	\vspace{0.2cm}
+	\begin{block}{Caso Base}
+		Se $D_0$ é uma arborescência, então ela é a $r$-arborescência de custo mínimo. Restauramos os pesos originais e devolvemos.
+	\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Passo 3: Implementação da Verificação de D0 (2/2)}
+	\textbf{Detecção de ciclo:}
+
+	\vspace{0.1cm}
+	\begin{lstlisting}[basicstyle=\small\ttfamily]
+def find_cycle(D_zero: nx.DiGraph):
+    nodes_in_cycle = set()
+    for u, v, _ in nx.find_cycle(
+            D_zero, orientation="original"):
+        nodes_in_cycle.update([u, v])
+    return D_zero.subgraph(nodes_in_cycle).to_directed()
+\end{lstlisting}
+
+	\vspace{0.2cm}
+	\begin{block}{Descrição}
+		\begin{itemize}
+			\item Usa \texttt{nx.find\_cycle} para encontrar arcos do ciclo
+			\item Coleta todos os vértices envolvidos
+			\item Retorna subdigrafo induzido pelos vértices do ciclo
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\begin{frame}{Passo 4: Contração de Ciclos}
+	\begin{columns}[c]
+		\column{0.48\textwidth}
+		\textbf{Operação:}
+
+		Contrair ciclo $C$ em supervértice $x_C$.
+
+		\vspace{0.2cm}
+		\textbf{Novo problema:}
+		$(D', w', r)$ onde:
+		\begin{itemize}
+			\item $D' := D/C \mapsto x_C$
+			\item $w' := w_\lambda/C \mapsto x_C$
+		\end{itemize}
+
+		\vspace{0.1cm}
+		O arco de $D'$ que entra em $x_C$ deve corresponder ao arco de $D$ que entra em algum vértice de $C$
+
+		\vspace{0.2cm}
+		\emph{Podem ter arcos saindo de $x_C$ em $D'$.}
+
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=2cm,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				super/.style={circle, draw, very thick, fill=orange!10, minimum size=9mm}]
+			\node[v] (r) {\small $r$};
+			\node[super] (xC) [right=3.5cm of r] {\small $x_C$};
+
+			\draw[->, very thick] (r) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (xC);
+		\end{tikzpicture}
+
+		\vspace{0.3cm}
+		{\small Digrafo contraído $D'$}
+	\end{columns}
+
+	\vspace{0.2cm}
+	\begin{block}{Propriedade}
+		Uma solução ótima em $D'$ pode ser expandida para uma solução ótima em $D$.
+	\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Passo 4: Implementação da Contração (1/2)}
+	\textbf{Arcos essenciais que entram no ciclo:}
+
+	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, 
+                   label: int):
+    cycle_nodes: set[int] = set(C.nodes())
+    
+    # Arcos essenciais ENTRANDO no ciclo
+    in_to_cycle: dict[int, tuple[int, float]] = {}
+    for u in D.nodes:
+        if u not in cycle_nodes:
+            min_edge = min(
+                ((v, data["w"])
+                 for _, v, data in D.out_edges(u, data=True)
+                 if v in cycle_nodes),
+                key=lambda x: x[1], default=None)
+            if min_edge:
+                in_to_cycle[u] = min_edge
+    
+    for u, (v, w) in in_to_cycle.items():
+        D.add_edge(u, label, w=w)
+\end{lstlisting}
+
+	\vspace{0.1cm}
+	\begin{block}{Arcos Essenciais de Entrada}
+		Para cada vértice externo, encontra o arco de menor custo que entra no ciclo.
+	\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Passo 4: Implementação da Contração (2/2)}
+	\textbf{Arcos essenciais que saem do ciclo:}
+
+	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+    # Arcos essenciais SAINDO do ciclo
+    out_from_cycle: dict[int, tuple[int, float]] = {}
+    for v in D.nodes:
+        if v not in cycle_nodes:
+            min_edge = min(
+                ((u, data["w"])
+                 for u, _, data in D.in_edges(v, data=True)
+                 if u in cycle_nodes),
+                key=lambda x: x[1], default=None)
+            if min_edge:
+                out_from_cycle[v] = min_edge
+    
+    for v, (u, w) in out_from_cycle.items():
+        D.add_edge(label, v, w=w)
+    
+    D.remove_nodes_from(cycle_nodes)
+    return in_to_cycle, out_from_cycle
+\end{lstlisting}
+
+	\vspace{0.1cm}
+	\begin{block}{Arcos Essenciais de Saída}
+		Os dicionários retornados são usados na expansão. Complexidade: $O(m)$
+	\end{block}
+\end{frame}
+
+\begin{frame}{Passo 5: Chamada Recursiva}
+	\begin{columns}[c]
+		\column{0.48\textwidth}
+		\textbf{Novo problema:} $(D', w', r)$
+
+		\vspace{0.2cm}
+		\textbf{Chamada recursiva:}
+		$$T' := \text{chu--liu--edmonds}(D', w', r)$$
+
+		\vspace{0.2cm}
+		\textbf{Resultado:} $T'$ é uma $r$-arborescência de custo mínimo em $(D', w')$
+
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=2cm,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				super/.style={circle, draw, very thick, fill=orange!10, minimum size=9mm},
+				selected/.style={->, very thick, draw=green!70}]
+			\node[v] (r) {\small $r$};
+			\node[super] (xC) [right=3.5cm of r] {\small $x_C$};
+
+			\draw[selected] (r) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (xC);
+		\end{tikzpicture}
+
+		\vspace{0.3cm}
+		{\small $r$-arborescência ótima em $D'$}
+	\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Passo 5: Implementação da Chamada Recursiva}
+	\textbf{Estrutura recursiva:}
+
+	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+def chuliu_edmonds(D: nx.DiGraph, r: int, label: int):
+    D_copy = D.copy()
+    
+    # Reducao de custos
+    for v in D_copy.nodes:
+        if v != r:
+            reduce_weights(D_copy, v)
+    
+    D_zero = get_Dzero(D_copy, r)
+    
+    if nx.is_arborescence(D_zero):
+        # Restaurar pesos e devolver
+        for u, v in D_zero.edges:
+            D_zero[u][v]["w"] = D[u][v]["w"]
+        return D_zero
+    
+    # Contrair ciclo e recursao
+    C = find_cycle(D_zero)
+    in_to_cycle, out_from_cycle = \
+        contract_cycle(D_copy, C, label)
+    F_prime = chuliu_edmonds(D_copy, r, label + 1)
+    # ... expansao ...
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Passo 6: Reexpansão da Solução}
+	\begin{columns}[c]
+		\column{0.48\textwidth}
+		\textbf{Dado:} $T'$ ótima em $(D', w')$
+
+		\vspace{0.2cm}
+		\textbf{Construir:} $T$ ótima em $(D, w)$
+
+		\vspace{0.2cm}
+		\textbf{Procedimento:}
+		\begin{enumerate}
+			\item Seja $uv$ o arco de $D$ correspondente ao arco $u x_C$ de $T'$
+			\item Incluir $uv$ em $T$
+			\item Incluir todos os arcos de $C$ exceto aquele que entra em $v$
+		\end{enumerate}
+
+		\vspace{0.2cm}
+		{\small Resultado: $T$ é uma $r$-arborescência de custo mínimo}
+
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				selected/.style={->, very thick, draw=green!70}]
+			\node[v] (r) {\small $r$};
+			\node[v] (a) [right=2.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
+			\node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
+
+			\draw[selected] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (a);
+			\draw[selected] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (b);
+			\draw[selected] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
+		\end{tikzpicture}
+
+		\vspace{0.3cm}
+		{\small $r$-arborescência final no digrafo original}
+	\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Passo 6: Implementação da Reexpansão (1/2)}
+	\textbf{Encontrar e adicionar arco correspondente:}
+
+	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+# F_prime: solucao em D' (com supervertice)
+# Encontrar arco que entra em label
+in_edge = next(iter(
+    F_prime.in_edges(label, data=True)))
+u, _, _ = in_edge
+
+# Arco correspondente em D original
+v, _ = in_to_cycle[u]
+F_prime.add_edge(u, v)
+
+# Adicionar arcos do ciclo (exceto o que entra em v)
+for u_c, v_c in C.edges:
+    if v != v_c:
+        F_prime.add_edge(u_c, v_c)
+\end{lstlisting}
+
+	\vspace{0.05cm}
+	{\small \textbf{Observação:} Identifica qual arco do ciclo não será incluído na solução final.}
+\end{frame}
+
+\begin{frame}[fragile]{Passo 6: Implementação da Reexpansão (2/2)}
+	\textbf{Transferir arcos externos e restaurar pesos:}
+
+	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+# Arcos que saem do supervertice
+for _, z, _ in list(
+        F_prime.out_edges(label, data=True)):
+    u_cycle, _ = out_from_cycle[z]
+    F_prime.add_edge(u_cycle, z)
+
+# Remover supervertice
+F_prime.remove_node(label)
+
+# Restaurar pesos originais
+for u, v in F_prime.edges:
+    F_prime[u][v]["w"] = D[u][v]["w"]
+
+return F_prime
+\end{lstlisting}
+
+	\vspace{0.05cm}
+	{\small \textbf{Correção:} A expansão garante que $T$ é uma $r$-arborescência ótima no digrafo original.}
+\end{frame}
+
+% ==================== SEÇÃO 3: ANDRÁS FRANK ====================
+\section{Algoritmo de András Frank}
+
+\begin{frame}{Algoritmo de András Frank}
+	\begin{block}{Abordagem em Duas Fases}
+		\textbf{Fase I (Fulkerson):} Construir cobertura de $r$-conjuntos via redução de custos
+
+		\textbf{Fase II (Frank):} Extrair $r$-arborescência geradora da cobertura
+	\end{block}
+
+	\vspace{0.3cm}
+
+	\textbf{Fase I:} dado um $r$-digrafo ponderado $(D,w,r)$
+	\begin{enumerate}
+		\item \textbf{Inicializar}: $c := w$, $\sigma := \epsilon$ (sequência vazia)
+		\item \textbf{Enquanto} $F$ não cobre todos $r$-conjuntos:
+		      \begin{itemize}
+			      \item Encontrar $r$-conjunto minimal $R_k$ não coberto por $F$
+			      \item Calcular $\lambda_k := \min\{c(a) : a \in \delta^-(R_k)\}$
+			      \item Selecionar $f_k \in \delta^-(R_k)$ com $c(f_k) = \lambda_k$
+			      \item $\sigma := \sigma \cdot (f_k, R_k, \lambda_k)$
+			      \item $c := c - \lambda_k \mathbf{1}_{\delta^-(R_k)}$
+		      \end{itemize}
+		\item \textbf{Devolver}: $\sigma = ((f_i, R_i, \lambda_i))_{i \in [k)}$
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}{Exemplo: Digrafo Inicial}
+	\begin{columns}[c]
+		\column{0.48\textwidth}
+		\textbf{Digrafo ponderado $(D,w,r)$:}
+
+		\vspace{0.2cm}
+		\begin{itemize}
+			\item Vértices: $\{r, a, b, c\}$
+			\item Raiz: $r$
+			\item Objetivo: encontrar $r$-arborescência geradora de custo mínimo
+		\end{itemize}
+
+		\vspace{0.3cm}
+		\textbf{Pesos dos arcos:}
+		\begin{itemize}
+			\item $(r,a): 2$, $(r,b): 10$
+			\item $(b,a): 1$, $(a,c): 4$
+		\end{itemize}
+
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				arc/.style={->, thick, draw=gray!70}]
+			\node[v,fill=red!20] (r) {\small $r$};
+			\node[v] (a) [below right=1.5cm and 1.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.5cm and 1.2cm of r] {\small $b$};
+			\node[v] (c) [right=2.5cm of a] {\small $c$};
+
+			\draw[arc] (r) -- node[midway, below left] {\scriptsize 2} (a);
+			\draw[arc] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
+			\draw[arc] (b) -- node[midway, above right] {\scriptsize 1} (a);
+			\draw[arc] (a) -- node[midway, below] {\scriptsize 4} (c);
+		\end{tikzpicture}
+	\end{columns}
+
+	\vspace{0.3cm}
+	\begin{alertblock}{Problema}
+		Aplicar o algoritmo de András Frank para encontrar a $r$-arborescência geradora de custo mínimo.
+	\end{alertblock}
+\end{frame}
+
+\begin{frame}{Fase I - Iteração 1: Encontrar $r$-conjunto Minimal}
+	\begin{columns}[c]
+		\column{0.48\textwidth}
+		\textbf{Estado inicial:}
+		\begin{itemize}
+			\item $F = \emptyset$ (nenhum arco selecionado)
+			\item $D_0 = (V, \emptyset)$
+			\item $\mathcal{C}(D_0)$ tem 4 fontes
+		\end{itemize}
+
+		\vspace{0.2cm}
+		\textbf{Fontes que são $r$-conjuntos:}
+		\begin{itemize}
+			\item $\{a\}$, $\{b\}$, $\{c\}$
+		\end{itemize}
+
+		\vspace{0.2cm}
+		\textbf{Escolha:} $R_0 = \{a\}$ (minimal)
+
+		\vspace{0.2cm}
+		Arcos que entram em $\{a\}$:
+		\begin{itemize}
+			\item $(r,a): 2$
+			\item $(b,a): 1$ ← \textbf{mínimo}
+		\end{itemize}
+
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				rset/.style={draw=orange!70, very thick, dashed, rounded corners},
+				arc/.style={->, thick, draw=gray!70},
+				selected/.style={->, very thick, draw=green!70}]
+			\node[v,fill=red!20] (r) {\small $r$};
+			\node[v] (a) [below right=1.5cm and 1.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.5cm and 1.2cm of r] {\small $b$};
+			\node[v] (c) [right=2.5cm of a] {\small $c$};
+
+			\draw[arc] (r) -- node[midway, below left] {\scriptsize 2} (a);
+			\draw[arc] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
+			\draw[selected] (b) -- node[midway, above right] {\scriptsize 1} (a);
+			\draw[arc] (a) -- node[midway, below] {\scriptsize 4} (c);
+
+			\node[rset, fit=(a)] {};
+			\node[orange!70, above=0.2cm of a] {\small $R_0$};
+		\end{tikzpicture}
+
+		\vspace{0.2cm}
+		{\small $\lambda_0 = 1$, $f_0 = (b,a)$}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Fase I - Iteração 1: Redução de Custos}
+	\begin{columns}[c]
+		\column{0.48\textwidth}
+		\textbf{Atualização:}
+		\begin{itemize}
+			\item $\sigma = [(f_0, R_0, \lambda_0)]$
+			\item $F = \{(b,a)\}$
+			\item $D_0 = (V, \{(b,a)\})$
+		\end{itemize}
+
+		\vspace{0.2cm}
+		\textbf{Redução de custos:}
+		\begin{itemize}
+			\item $c(r,a) = 2 - 1 = 1$
+			\item $c(b,a) = 1 - 1 = 0$ \checkmark
+		\end{itemize}
+
+		\vspace{0.2cm}
+		Custos reduzidos:
+		\begin{itemize}
+			\item $(r,a): 1$, $(r,b): 10$
+			\item $(b,a): 0$, $(a,c): 4$
+		\end{itemize}
+
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				arc/.style={->, thick, draw=gray!70},
+				zero/.style={->, very thick, draw=blue!70}]
+			\node[v,fill=red!20] (r) {\small $r$};
+			\node[v] (a) [below right=1.5cm and 1.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.5cm and 1.2cm of r] {\small $b$};
+			\node[v] (c) [right=2.5cm of a] {\small $c$};
+
+			\draw[arc] (r) -- node[midway, below left] {\scriptsize 1} (a);
+			\draw[arc] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
+			\draw[zero] (b) -- node[midway, above right] {\scriptsize 0} (a);
+			\draw[arc] (a) -- node[midway, below] {\scriptsize 4} (c);
+		\end{tikzpicture}
+
+		\vspace{0.2cm}
+		{\small Arcos azuis têm custo zero}
+	\end{columns}
+
+	\vspace{0.2cm}
+	\begin{block}{Observação}
+		Custos são reduzidos para garantir que $\sigma$ seja $w$-disjunta.
+	\end{block}
+\end{frame}
+
+\begin{frame}{Fase I - Iteração 2: Próximo $r$-conjunto}
+	\begin{columns}[c]
+		\column{0.48\textwidth}
+		\textbf{Estado:} $F = \{(b,a)\}$
+
+		\vspace{0.2cm}
+		$\mathcal{C}(D_0)$ agora tem:
+		\begin{itemize}
+			\item CFC: $\{b, a\}$ (b → a)
+			\item Fontes: $\{r\}$, $\{c\}$
+		\end{itemize}
+
+		\vspace{0.2cm}
+		\textbf{Escolha:} $R_1 = \{c\}$
+
+		\vspace{0.2cm}
+		Arcos que entram em $\{c\}$:
+		\begin{itemize}
+			\item $(a,c): 4$ ← único
+		\end{itemize}
+
+		\vspace{0.2cm}
+		$\lambda_1 = 4$, $f_1 = (a,c)$
+
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				rset/.style={draw=orange!70, very thick, dashed, rounded corners},
+				arc/.style={->, thick, draw=gray!70},
+				zero/.style={->, thick, draw=blue!70},
+				selected/.style={->, very thick, draw=green!70}]
+			\node[v,fill=red!20] (r) {\small $r$};
+			\node[v] (a) [below right=1.5cm and 1.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.5cm and 1.2cm of r] {\small $b$};
+			\node[v] (c) [right=2.5cm of a] {\small $c$};
+
+			\draw[arc] (r) -- node[midway, below left] {\scriptsize 1} (a);
+			\draw[arc] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
+			\draw[zero] (b) -- node[midway, above right] {\scriptsize 0} (a);
+			\draw[selected] (a) -- node[midway, below] {\scriptsize 4} (c);
+
+			\node[rset, fit=(c)] {};
+			\node[orange!70, above=0.2cm of c] {\small $R_1$};
+		\end{tikzpicture}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Fase I - Iteração 2: Redução e Estado Final}
+	\begin{columns}[c]
+		\column{0.48\textwidth}
+		\textbf{Atualização:}
+		\begin{itemize}
+			\item $F = \{(b,a), (a,c)\}$
+			\item $D_0 = (V, F)$
+		\end{itemize}
+
+		\vspace{0.2cm}
+		\textbf{Redução:}
+		\begin{itemize}
+			\item $c(a,c) = 4 - 4 = 0$ \checkmark
+		\end{itemize}
+
+		\vspace{0.2cm}
+		$\mathcal{C}(D_0)$ agora:
+		\begin{itemize}
+			\item CFC: $\{r\}$, $\{b,a,c\}$
+			\item Apenas 1 fonte (contém $r$)
+		\end{itemize}
+
+		\vspace{0.2cm}
+		\textbf{Fim da Fase I!}
+
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				zero/.style={->, very thick, draw=blue!70},
+				arc/.style={->, thick, draw=gray!70}]
+			\node[v,fill=red!20] (r) {\small $r$};
+			\node[v] (a) [below right=1.5cm and 1.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.5cm and 1.2cm of r] {\small $b$};
+			\node[v] (c) [right=2.5cm of a] {\small $c$};
+
+			\draw[arc] (r) -- node[midway, below left] {\scriptsize 1} (a);
+			\draw[arc] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
+			\draw[zero] (b) -- node[midway, above right] {\scriptsize 0} (a);
+			\draw[zero] (a) -- node[midway, below] {\scriptsize 0} (c);
+		\end{tikzpicture}
+
+		\vspace{0.2cm}
+		{\small Cobertura de $r$-conjuntos construída!}
+	\end{columns}
+
+	\vspace{0.2cm}
+	\begin{block}{Sequência devolvida}
+		$\sigma = [(f_0=(b,a), R_0=\{a\}, \lambda_0=1), (f_1=(a,c), R_1=\{c\}, \lambda_1=4)]$
+	\end{block}
+\end{frame}
+
+\begin{frame}{Fase II: Extração da Arborescência}
+	\begin{columns}[c]
+		\column{0.48\textwidth}
+		\textbf{Entrada da Fase II:}
+		\begin{itemize}
+			\item $F = [f_0, f_1] = [(b,a), (a,c)]$
+		\end{itemize}
+
+		\vspace{0.2cm}
+		\textbf{Algoritmo guloso:}
+		\begin{enumerate}
+			\item $U = \{r\}$, $J = \emptyset$
+			\item Iterar sobre $F$ em ordem:
+			      \begin{itemize}
+				      \item $(b,a)$: $b \notin U$ $\times$ pular
+				      \item $(a,c)$: $a \notin U$ $\times$ pular
+			      \end{itemize}
+			\item Precisamos incluir arcos de $D$ não em $F$!
+		\end{enumerate}
+
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				inU/.style={circle, draw, fill=green!20, minimum size=7mm},
+				arc/.style={->, thick, draw=gray!70},
+				covered/.style={->, thick, draw=blue!70}]
+			\node[v,fill=red!20,inU] (r) {\small $r$};
+			\node[v] (a) [below right=1.5cm and 1.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.5cm and 1.2cm of r] {\small $b$};
+			\node[v] (c) [right=2.5cm of a] {\small $c$};
+
+			\draw[arc] (r) -- node[midway, below left] {\scriptsize 2} (a);
+			\draw[arc] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
+			\draw[covered] (b) -- node[midway, above right] {\scriptsize 1} (a);
+			\draw[covered] (a) -- node[midway, below] {\scriptsize 4} (c);
+		\end{tikzpicture}
+
+		\vspace{0.2cm}
+		{\small Verde = vértices em $U$}
+	\end{columns}
+
+	\vspace{0.2cm}
+	\begin{alertblock}{Observação}
+		Fase II precisa considerar \textbf{todos} arcos de $D$, não apenas $F$.
+	\end{alertblock}
+\end{frame}
+
+\begin{frame}{Fase II: Construção Passo a Passo}
+	\begin{columns}[c]
+		\column{0.48\textwidth}
+		\textbf{Iteração 1:}
+		\begin{itemize}
+			\item $U = \{r\}$
+			\item Procurar arco saindo de $U$
+			\item $(r,a)$: $r \in U$, $a \notin U$ $\checkmark$
+			\item $U := U \cup \{a\}$
+			\item $J := \{(r,a)\}$
+		\end{itemize}
+
+		\vspace{0.2cm}
+		\textbf{Iteração 2:}
+		\begin{itemize}
+			\item $(b,a)$: $a \in U$ $\times$
+			\item $(a,c)$: $a \in U$, $c \notin U$ $\checkmark$
+			\item $U := \{r, a, c\}$
+			\item $J := \{(r,a), (a,c)\}$
+		\end{itemize}
+
+		\column{0.52\textwidth}
+		\begin{tikzpicture}[>=Stealth, node distance=2.0cm,
+				v/.style={circle, draw, fill=blue!8, minimum size=7mm},
+				inJ/.style={circle, draw, fill=green!20, minimum size=7mm},
+				selected/.style={->, very thick, draw=green!70}]
+			\node[inJ,fill=red!20] (r) {\small $r$};
+			\node[inJ] (a) [below right=1.5cm and 1.2cm of r] {\small $a$};
+			\node[v] (b) [above right=1.5cm and 1.2cm of r] {\small $b$};
+			\node[inJ] (c) [right=2.5cm of a] {\small $c$};
+
+			\draw[selected] (r) -- node[midway, below left] {\scriptsize 2} (a);
+			\draw[->, thick, draw=gray!40] (r) to[bend left=15] node[midway, above left] {\scriptsize 10} (b);
+			\draw[->, thick, draw=gray!40] (b) -- node[midway, above right] {\scriptsize 1} (a);
+			\draw[selected] (a) -- node[midway, below] {\scriptsize 4} (c);
+		\end{tikzpicture}
+
+		\vspace{0.2cm}
+		{\small $J$ = arborescência geradora}
+	\end{columns}
+
+	\vspace{0.2cm}
+	\begin{exampleblock}{Resultado Final}
+		$r$-arborescência de custo $w(J) = 2 + 4 = 6$ (custo mínimo!)
+	\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Fase I: Sequência $w$-disjunta}
+	\textbf{Conceitos fundamentais:}
+
+	\vspace{0.2cm}
+	Uma sequência $((R_i, \lambda_i))_{i \in [k)}$ é \textbf{$w$-disjunta} se:
+	$$\sum_{i \in [k)} \lambda_i [a \in \delta^-(R_i)] \le w(a)$$
+	para cada arco $a \in A(D)$.
+
+	\vspace{0.3cm}
+	\textbf{Interpretação:}
+	\begin{itemize}
+		\item $\lambda_i$ é a multiplicidade do $r$-conjunto $R_i$
+		\item O peso total usado por todos os $R_i$ não excede $w(a)$
+	\end{itemize}
+
+	\vspace{0.3cm}
+	\begin{block}{Coleção Laminar}
+		$\{R_i : i \in [k)\}$ é laminar: para quaisquer $R_i, R_j$:
+		$$R_i \subseteq R_j \quad\text{ou}\quad R_j \subseteq R_i \quad\text{ou}\quad R_i \cap R_j = \emptyset$$
+	\end{block}
+\end{frame}
+
+\begin{frame}{Fase I: Encontrando $r$-conjuntos Minimais}
+	\textbf{Como encontrar um $r$-conjunto minimal não coberto?}
+
+	\vspace{0.2cm}
+	Seja $D_0 := (V, F)$ onde $F = \{f_i : i \in [k)\}$.
+
+	\vspace{0.2cm}
+	\begin{enumerate}
+		\item Calcular a condensação $\mathcal{C}(D_0)$
+		\item Identificar componentes fortemente conexas (CFCs)
+		\item Encontrar uma fonte $S$ em $\mathcal{C}(D_0)$ tal que $r \notin S$
+	\end{enumerate}
+
+	\vspace{0.3cm}
+	\begin{block}{Proposição}
+		Toda fonte $S$ de $\mathcal{C}(D_0)$ com $r \notin S$ é um $r$-conjunto minimal não coberto por $F$.
+	\end{block}
+
+	\vspace{0.2cm}
+	{\small \textbf{Complexidade:} Identificação de CFCs em $O(|A|)$ usando Kosaraju}
+\end{frame}
+
+\begin{frame}[fragile]{Fase I: Implementação - Estrutura Principal}
+	\textbf{Função \texttt{phase1}:}
+
+	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+def phase1(D: nx.DiGraph, r: int):
+    D_copy = D.copy()
+    sigma = []
+    D_zero = nx.DiGraph()
+    D_zero.add_nodes_from(D_copy.nodes())
+    
+    while True:
+        C = nx.condensation(D_zero)
+        sources = [x for x in C.nodes() 
+                   if C.in_degree(x) == 0]
+        if len(sources) == 1: 
+            break
+        
+        for s in sources:
+            X = C.nodes[s]["members"]
+            if r in X:
+                continue
+            # ... (continua no proximo slide)
+\end{lstlisting}
+
+	\vspace{0.05cm}
+	{\small \textbf{Observação:} Loop principal até todos $r$-conjuntos estarem cobertos}
+\end{frame}
+
+\begin{frame}[fragile]{Fase I: Implementação - Seleção de Arcos}
+	\textbf{Continuação da função \texttt{phase1}:}
+
+	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+            # ... (continuacao do loop)
+            arcs = [(u, v, data) 
+                    for u, v, data in D_copy.edges(data=True) 
+                    if u not in X and v in X]
+            
+            min_weight = min(data["w"] for _, _, data in arcs)
+            a = update_weights(D_copy, arcs, min_weight)
+            
+            D_zero.add_edge(a[0], a[1])
+            sigma.append((a, X, min_weight))
+    
+    return sigma
+\end{lstlisting}
+
+	\vspace{0.05cm}
+	{\small \textbf{Complexidade:} $O(|V||A|)$ - limitado por $2|V|-1$ iterações}
+\end{frame}
+
+\begin{frame}[fragile]{Fase I: Implementação - Atualização de Pesos}
+	\textbf{Função \texttt{update\_weights}:}
+
+	\begin{lstlisting}[basicstyle=\scriptsize\ttfamily]
+def update_weights(D: nx.DiGraph, 
+                   arcs: list[tuple[int, int, dict]],
+                   min_weight: float):
+    for u, v, _ in arcs:
+        D[u][v]["w"] -= min_weight
+        if D[u][v]["w"] == 0:
+            a = (u, v)
+    return a
+\end{lstlisting}
+
+	\vspace{0.2cm}
+	\begin{block}{Descrição}
+		\begin{itemize}
+			\item Reduz peso de todos arcos que entram no $r$-conjunto
+			\item Devolve arco com peso zero (custo reduzido mínimo)
+			\item Atualiza o digrafo in-place
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\begin{frame}{Fase II: Construção da Arborescência}
+	\textbf{Entrada:} Sequência $(f_i)_{i \in [k)}$ da Fase I
+
+	\vspace{0.2cm}
+	\textbf{Objetivo:} Extrair $J \subseteq \{f_i : i \in [k)\}$ que é uma $r$-arborescência geradora
+
+	\vspace{0.3cm}
+	\textbf{Algoritmo guloso:}
+	\begin{enumerate}
+		\item Iniciar com $U := \{r\}$ e $J := \emptyset$
+		\item Para $t = 1$ até $|V|-1$:
+		      \begin{itemize}
+			      \item Para cada $f_i = (u_i, v_i)$ na sequência:
+			      \item Se $u_i \in U$ e $v_i \notin U$:
+			            \begin{itemize}
+				            \item $U := U \cup \{v_i\}$
+				            \item $J := J \cup \{f_i\}$
+				            \item Passar para próxima iteração
+			            \end{itemize}
+		      \end{itemize}
+	\end{enumerate}
+
+	\vspace{0.3cm}
+	\begin{block}{Invariante}
+		Em cada iteração, $\varrho_J(R_i) \le 1$ para todo $i \in [k)$
+	\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Fase II: Implementação - Versão Lista}
+	\textbf{Versão 1: Iteração sobre lista}
+
+	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+def phase2(D: nx.DiGraph, r: int, 
+           F: list[tuple[int, int]]):
+    Arb = nx.DiGraph()
+    Arb.add_node(r)
+    n = len(D.nodes())
+    
+    for _ in range(n - 1):
+        for u, v in F:
+            if u in Arb.nodes() and v not in Arb.nodes():
+                edge_data = D.get_edge_data(u, v)
+                Arb.add_edge(u, v, **edge_data)
+                break
+    
+    return Arb
+\end{lstlisting}
+
+	\vspace{0.05cm}
+	{\small \textbf{Complexidade:} $O(|V||F|) = O(|V|^2)$ pois $|F| \le 2|V|-1$}
+\end{frame}
+
+\begin{frame}[fragile]{Fase II: Implementação - Versão Heap}
+	\textbf{Versão 2: Usando fila de prioridade (estilo Dijkstra)}
+
+	\begin{lstlisting}[basicstyle=\tiny\ttfamily]
+def phase2_v2(D, r, F):
+    Arb = nx.DiGraph()
+    for i, (u, v) in enumerate(F):
+        Arb.add_edge(u, v, w=i)  # prioridade = indice
+    
+    V = {r}
+    q = []
+    for u, v, data in Arb.out_edges(r, data=True):
+        heapq.heappush(q, (data["w"], u, v))
+    
+    J = nx.DiGraph()
+    while q:
+        _, u, v = heapq.heappop(q)
+        if v in V: continue
+        J.add_edge(u, v, w=D[u][v]["w"])
+        V.add(v)
+        for x, y, data in Arb.out_edges(v, data=True):
+            heapq.heappush(q, (data["w"], x, y))
+    return J
+\end{lstlisting}
+
+	\vspace{0.05cm}
+	{\small \textbf{Complexidade:} $O(|V| \log |V|)$ usando heap binário}
+\end{frame}
+
+\begin{frame}[fragile]{Algoritmo Completo de Frank}
+	\textbf{Composição das duas fases:}
+
+	\begin{lstlisting}[basicstyle=\scriptsize\ttfamily]
+def andras_frank(D: nx.DiGraph, r: int):
+    # Fase I: construir cobertura
+    sigma = phase1(D, r)
+    F = [f for f, _, _ in sigma]
+    
+    # Fase II: extrair arborescencia
+    J = phase2_v2(D, r, F)
+    
+    return J
+\end{lstlisting}
+
+	\vspace{0.3cm}
+	\begin{block}{Complexidade Total}
+		\begin{itemize}
+			\item Fase I: $O(|V||A|)$
+			\item Fase II (heap): $O(|V| \log |V|)$
+			\item \textbf{Total}: $O(|V|(|A| + \log |V|))$
+		\end{itemize}
+	\end{block}
+
+	\vspace{0.2cm}
+	{\small Com heap, Fase II é significativamente mais rápida que versão lista!}
+\end{frame}
+
+% ==================== SEÇÃO 4: RESULTADOS ====================
+% \section{Resultados Experimentais}
+
+% \begin{frame}{Comparação de Desempenho}
+% 	\textbf{Experimentos:} 2000 digrafos aleatórios, $|V| \in [101, 4996]$
+
+% 	\vspace{0.3cm}
+
+% 	\begin{center}
+% 		\begin{tabular}{lcc}
+% 			\toprule
+% 			\textbf{Algoritmo}    & \textbf{Tempo Mediano} & \textbf{Tempo Médio} \\
+% 			\midrule
+% 			Chu-Liu-Edmonds       & 0,25 s                 & 0,58 s               \\
+% 			Frank Fase I          & 8,93 s                 & 12,40 s              \\
+% 			Frank Fase II (lista) & 0,98 s                 & 1,34 s               \\
+% 			Frank Fase II (heap)  & \textbf{0,016 s}       & \textbf{0,020 s}     \\
+% 			\bottomrule
+% 		\end{tabular}
+% 	\end{center}
+
+% 	\vspace{0.5cm}
+
+% 	\begin{block}{Speedup Fase II}
+% 		Heap vs Lista: aceleração de \textbf{58,12 vezes} (mediana)
+% 	\end{block}
+% \end{frame}
+
+% \begin{frame}{Características Estruturais}
+% 	\begin{columns}[c]
+% 		\column{0.5\textwidth}
+% 		\textbf{Contrações (Chu-Liu):}
+% 		\begin{itemize}
+% 			\item Mediana: 2 contrações
+% 			\item Média: 6,82
+% 			\item Máximo: 406
+% 			\item 93,8\% com $< 20$
+% 		\end{itemize}
+
+% 		\vspace{0.3cm}
+% 		Muito abaixo do limite teórico $O(n)$
+
+% 		\column{0.5\textwidth}
+% 		\begin{center}
+% 			\includegraphics[width=\textwidth]{figures/fig_contractions_depth.png}
+% 		\end{center}
+% 	\end{columns}
+
+% 	\vspace{0.3cm}
+% 	\textbf{Consumo de memória:} mediana 11,5 MB (Fase I)
+% \end{frame}
+
+% \begin{frame}{Principais Resultados}
+% 	\begin{itemize}
+% 		\item \textbf{Corretude validada:} custos idênticos em todas as instâncias
+
+% 		      \vspace{0.3cm}
+
+% 		\item \textbf{Chu-Liu-Edmonds} mais rápido para construção direta
+% 		      \begin{itemize}
+% 			      \item Mediana: 0,25 s vs 8,93 s (Fase I Frank)
+% 		      \end{itemize}
+
+% 		      \vspace{0.3cm}
+
+% 		\item \textbf{Otimização heap} fundamental na Fase II
+% 		      \begin{itemize}
+% 			      \item Speedup: 58× (mediana), 61× (média)
+% 		      \end{itemize}
+
+% 		      \vspace{0.3cm}
+
+% 		\item \textbf{Comportamento prático} muito melhor que limites teóricos
+% 		      \begin{itemize}
+% 			      \item Contrações: mediana 2 (limite $O(n)$)
+% 			      \item Memória modesta: 11,5 MB
+% 		      \end{itemize}
+% 	\end{itemize}
+% \end{frame}
+
+
+% ==================== SEÇÃO: RESULTADOS EXPERIMENTAIS ====================
+
+\section{Resultados Experimentais}
+
+\begin{frame}{Comparação de Desempenho}
+    \textbf{Experimentos:} 2000 digrafos aleatórios, $|V| \in [101, 4996]$
+
+    \vspace{0.3cm}
+
+    \begin{center}
+        \begin{tabular}{lcc}
+            \toprule
+            \textbf{Algoritmo}    & \textbf{Tempo Mediano} & \textbf{Tempo Médio} \\
+            \midrule
+            Chu-Liu-Edmonds       & 0,25 s                 & 0,58 s               \\
+            Frank Fase I          & 8,93 s                 & 12,40 s              \\
+            Frank Fase II (lista) & 0,98 s                 & 1,34 s               \\
+            Frank Fase II (heap)  & \textbf{0,016 s}       & \textbf{0,020 s}     \\
+            \bottomrule
+        \end{tabular}
+    \end{center}
+
+    \vspace{0.5cm}
+
+    \begin{block}{Speedup Fase II}
+        Heap vs Lista: aceleração de \textbf{58,12 vezes} (mediana)
+    \end{block}
+\end{frame}
+
+\begin{frame}{Escalonamento e Consumo de Memória}
+    \centering
+    \textbf{Escalonamento temporal:}
+    \begin{itemize}
+        \item Tempo cresce linearmente com o número de arestas
+        \item Fase I de Frank domina o tempo total
+        \item Fase II (heap) é residual e muito rápida
+    \end{itemize}
+    \vspace{0.4cm}
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{figures/fig_times_boxplot.png}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=0.95\textwidth]{figures/fig_time_vs_edges_scatter.png}
+    \end{minipage}
+\end{frame}
+
+% \begin{frame}{Características Estruturais}
+%     \begin{columns}[c]
+%         \column{0.5\textwidth}
+%         \textbf{Contrações (Chu-Liu):}
+%         \begin{itemize}
+%             \item Mediana: 2 contrações
+%             \item Média: 6,82
+%             \item Máximo: 406
+%             \item 93,8\% com $< 20$
+%         \end{itemize}
+%         \vspace{0.3cm}
+%         Muito abaixo do limite teórico $O(n)$
+%         \column{0.5\textwidth}
+%         \includegraphics[width=\textwidth]{figures/fig_contractions_depth.png}
+%     \end{columns}
+%     \vspace{0.3cm}
+%     \textbf{Tamanho de $D_0$ vs $|V|$:} relação linear confirma $|A_0| = O(|V|)$
+%     \includegraphics[width=0.7\textwidth]{figures/fig_d0_edges_vs_vertices.png}
+% \end{frame}
+
+\begin{frame}{Principais Resultados}
+    \begin{itemize}
+        \item \textbf{Corretude validada:} custos idênticos em todas as instâncias
+        \item \textbf{Chu-Liu-Edmonds} mais rápido para construção direta
+            \begin{itemize}
+                \item Mediana: 0,25 s vs 8,93 s (Fase I Frank)
+            \end{itemize}
+        \item \textbf{Otimização heap} fundamental na Fase II
+            \begin{itemize}
+                \item Speedup: 58× (mediana), 61× (média)
+            \end{itemize}
+        \item \textbf{Comportamento prático} muito melhor que limites teóricos
+            \begin{itemize}
+                \item Contrações: mediana 2 (limite $O(n)$)
+                \item Memória modesta: 11,5 MB
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Conclusões dos Experimentos}
+    \begin{itemize}
+        \item Equivalência teórica e prática dos algoritmos confirmada
+        \item Chu-Liu/Edmonds é mais eficiente 
+        \item Fase I de Frank é o gargalo computacional
+        \item Heap na Fase II traz ganhos práticos expressivos
+        \item Algoritmos são escaláveis e viáveis para grandes digrafos
+    \end{itemize}
+    
+\end{frame}
+
+
+% ==================== SEÇÃO 5: DIDÁTICA DO ABSTRATO ====================
+
+\section{Didática do Abstrato}
+
+% \begin{frame}{Desafios na Ensino de Algoritmos de Grafos}
+% 	\begin{block}{Abstração Excessiva}
+% 		\begin{itemize}
+% 			\item Dificuldade em visualizar estruturas
+% 			\item Compreensão limitada dos passos do algoritmo
+% 		\end{itemize}
+% 	\end{block}
+
+% 	\vspace{0.5cm}
+
+% 	\begin{alertblock}{Solução Proposta}
+% 		Ferramenta interativa para visualização e execução passo a passo
+% 	\end{alertblock}
+% \end{frame}
+
+% Fundamentos Cognitivos e Didáticos
+\begin{frame}{Fundamentos Cognitivos e Didáticos}
+    \begin{block}{Desafios do Ensino de Matemática Abstrata}
+        \begin{itemize}
+            \item Conhecimento abstrato exige transitar entre registros: intuitivo, visual, simbólico e formal.
+            \item \textbf{Carga cognitiva:}
+                \begin{itemize}
+                    \item Intrínseca: complexidade dos conceitos e pré-requisitos.
+                    \item Extrínseca: forma de apresentação e coordenação entre texto, fórmulas e figuras.
+                    \item Pertinente: esforço dedicado à organização dos esquemas mentais.
+                \end{itemize}
+            \item Combinar representações verbais e visuais reduz sobrecarga e favorece integração semântica.
+        \end{itemize}
+		\vspace{0.5cm}
+    \end{block}
+\end{frame}
+
+% Lidando com Grafos e Digrafos
+\begin{frame}{Desafios na Ensino de Algoritmos de Grafos}
+    \begin{block}{Três Eixos de Dificuldade}
+        \begin{enumerate}
+            \item \textbf{Decisões locais vs. coerência global:} Escolhas localmente ótimas podem gerar ciclos, dificultando a compreensão da solução global.
+            \item \textbf{Contração e expansão:} Transitar entre grafo original, condensado e reexpansão exige rastreabilidade e clareza sobre o que muda e o que permanece.
+            \item \textbf{Relação com a teoria primal-dual:} Dificuldade em conectar ações operacionais do algoritmo com fundamentos teóricos e certificados de otimalidade.
+        \end{enumerate}
+    \end{block}
+    \vspace{0.2cm}
+    \textbf{Solução:} Visualização e interação bem projetadas facilitam a integração entre prática e teoria.
+\end{frame}
+
+% O Ecossistema de Ferramentas Digitais
+\begin{frame}{O Ecossistema de Ferramentas para Ensino de Grafos}
+    \begin{block}{Categorias de Ferramentas Digitais}
+        \begin{itemize}
+            \item \textbf{Diagramas programáveis:} Visualização estável e integrada ao texto matemático (\textit{Graphviz}, \textit{TikZ}).
+            \item \textbf{Exploração e edição de grafos:} Manipulação gráfica e análise estrutural (\textit{Gephi}, \textit{yEd}, \textit{Cytoscape}).
+            \item \textbf{Visualização de algoritmos:} Animações e explicações dinâmicas (\textit{VisuAlgo}).
+            \item \textbf{Ambientes programáveis:} Integração de código, texto e visualização para exemplos reprodutíveis (\textit{Jupyter}, \textit{NetworkX}).
+        \end{itemize}
+    \end{block}
+    \vspace{0.2cm}
+    Nenhuma ferramenta cobre todos os aspectos didáticos de forma integrada. A aplicação proposta busca preencher essa lacuna.
+\end{frame}
+
+% Objetivos da Ferramenta Didática
+\begin{frame}{Objetivos da Ferramenta Didática}
+	\begin{itemize}
+		\item Facilitar a compreensão dos algoritmos Chu-Liu-Edmonds e András Frank
+		\item Permitir aos usuários interagir com grafos e observar o funcionamento dos algoritmos
+		\item Fornecer feedback imediato sobre as operações realizadas
+		\item Ser acessível via navegador web, sem necessidade de instalação
+	\end{itemize}
+\end{frame}
+
+% ==================== SEÇÃO 6: APLICAÇÃO WEB ====================
+
+\section{Aplicação Web}
+
+% \begin{frame}{Aplicação web}
+% 	\begin{block}{Desafio}
+% 		Algoritmos de grafos são \textbf{abstratos} e \textbf{difíceis de visualizar}
+% 	\end{block}
+
+% 	\vspace{0.5cm}
+
+% 	\begin{columns}[c]
+% 		\column{0.5\textwidth}
+% 		\textbf{Solução Proposta:}
+% 		\begin{itemize}
+% 			\item Visualização interativa
+% 			\item Execução passo a passo
+% 			\item Feedback imediato
+% 			\item Acessível via navegador
+% 		\end{itemize}
+
+% 		\column{0.5\textwidth}
+% 		\textbf{Tecnologias:}
+% 		\begin{itemize}
+% 			\item PyScript (Python no browser)
+% 			\item JavaScript
+% 			\item HTML5/CSS3
+% 			\item NetworkX
+% 		\end{itemize}
+% 	\end{columns}
+% \end{frame}
+
+\begin{frame}{Aplicação web}
+    \begin{columns}[c]
+        \column{0.52\textwidth}
+        \hspace*{0.3cm}
+        \begin{minipage}{0.92\columnwidth}
+            Ferramenta web interativa para ensino de algoritmos de arborescências dirigidas, permitindo visualização passo a passo, edição livre de grafos e exportação de resultados, com arquitetura modular e foco didático.
+        \end{minipage}
+
+        \column{0.46\textwidth}
+        \hspace*{0.3cm}
+        \begin{minipage}{0.92\columnwidth}
+            \begin{alertblock}{Módulos principais:}
+                \begin{itemize}
+                    \item \textbf{Visualização Algorítmica:} Páginas para execução passo a passo dos algoritmos Chu-Liu-Edmonds e András Frank.
+                    \item \textbf{Modelagem Livre:} Editor sandbox para desenhar, testar e exportar grafos arbitrários.
+                    \item \textbf{Disseminação Científica:} Página informativa sobre o projeto e a dissertação.
+                \end{itemize}
+            \end{alertblock}
+        \end{minipage}
+
+		\hspace*{0.5cm}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Arquitetura da Aplicação}
+    \begin{columns}[c]
+        \column{0.55\textwidth}
+        \textbf{Estrutura em três camadas:}
+        \begin{itemize}
+            \item \textbf{Apresentação:} Interface construída em HTML5, estilizada com Tailwind CSS e dinamizada por JavaScript. 
+            \item \textbf{Processamento (PyScript):} Executa algoritmos em Python (NetworkX) diretamente no navegador, gerando visualizações estáticas com Matplotlib.
+            \item \textbf{Dados e Persistência:} Utiliza JSON (\texttt{node\_link}) para serializar grafos, armazenar pesos e permitir exportação/importação entre módulos.
+        \end{itemize}
+        \column{0.45\textwidth}
+        \begin{center}
+            \begin{tikzpicture}[node distance=0.7cm, box/.style={rectangle,draw,rounded corners,minimum width=2.8cm,minimum height=0.9cm,align=center}]
+                \node[box,fill=accentpurple!15] (ui) {Apresentação\\HTML5 + Tailwind + JS};
+                \node[box,fill=accentpurple!8,below=of ui] (py) {Processamento\\PyScript + NetworkX};
+                \node[box,fill=accentpurple!3,below=of py] (data) {Dados/Persistência\\JSON (\texttt{node\_link})};
+                \draw[->,thick] (ui) -- (py);
+                \draw[->,thick] (py) -- (data);
+                % Seta lateral para evitar sobreposição
+                \draw[->,thick] (ui.east) .. controls +(1.2,0) and +(1.2,0) .. (data.east);
+            \end{tikzpicture}
+        \end{center}
+    \end{columns}
+\end{frame}
+
+
+\begin{frame}{Arquitetura da Aplicação}
+    \begin{columns}[c]
+        \column{0.55\textwidth}
+        \textbf{Benefícios:}
+        \begin{itemize}
+            \item Processamento local e rápido
+            \item Facilidade de uso e reprodutibilidade
+            \item Modularidade e extensibilidade
+        \end{itemize}
+        \column{0.45\textwidth}
+        \begin{center}
+            \begin{tikzpicture}[node distance=0.7cm, box/.style={rectangle,draw,rounded corners,minimum width=2.8cm,minimum height=0.9cm,align=center}]
+                \node[box,fill=accentpurple!15] (ui) {Apresentação\\HTML5 + Tailwind + JS};
+                \node[box,fill=accentpurple!8,below=of ui] (py) {Processamento\\PyScript + NetworkX};
+                \node[box,fill=accentpurple!3,below=of py] (data) {Dados/Persistência\\JSON (\texttt{node\_link})};
+                \draw[->,thick] (ui) -- (py);
+                \draw[->,thick] (py) -- (data);
+                % Seta lateral para evitar sobreposição
+                \draw[->,thick] (ui.east) .. controls +(1.2,0) and +(1.2,0) .. (data.east);
+            \end{tikzpicture}
+        \end{center}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Princípios de IHC Aplicados}
+    \begin{block}{Fundamentos para o Design da Ferramenta}
+        O desenvolvimento da aplicação web foi guiado por oito princípios de Interação Humano-Computador (IHC), integrando heurísticas de usabilidade e teorias de aprendizagem:
+    \end{block}
+    \vspace{0.3cm}
+    \begin{itemize}
+        \item \textbf{Usabilidade:} Interface limpa, controles claros e navegação intuitiva.
+        \item \textbf{Eficiência cognitiva:} Redução da carga mental, destaque para informações relevantes.
+        \item \textbf{Feedback imediato:} Atualização visual e textual em tempo real a cada ação.
+        \item \textbf{Engajamento ativo:} Usuário explora, manipula e prediz resultados.
+        \item \textbf{Visão geral com detalhe sob demanda}
+        \item \textbf{Consistência semântica:} Terminologia e estilos padronizados em toda a interface.
+        \item \textbf{Múltiplos registros de representação:} Grafo visual, log textual e parâmetros simbólicos.
+        \item \textbf{Prevenção e recuperação de erros}
+    \end{itemize}
+    \vspace{0.2cm}
+    % \textbf{Impacto:} Esses princípios garantem uma experiência didática acessível, eficiente e engajadora, facilitando o aprendizado dos algoritmos de arborescências dirigidas.
+\end{frame}
+
+% \begin{frame}{Interface: Página Principal}
+% 	\begin{center}
+% 		\includegraphics[width=0.8\textwidth]{../assets/homehtml.png}
+% 	\end{center}
+% 	\vspace{0.8cm}
+% \end{frame}
+
+\begin{frame}{Interface: Página Principal}
+    \begin{figure}
+        \centering \vfill
+		\includegraphics[width=0.55\textwidth]{../assets/homehtml.png}
+        \vfill 
+		\vspace{0.8cm}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Interface: Desenho de Grafos}
+	\begin{center}
+		\includegraphics[width=0.65\textwidth]{../assets/drawhtml.png}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Interface: Chu-Liu-Edmonds}
+	\begin{center}
+		\includegraphics[width=0.65\textwidth]{../assets/chuliuhtml.png}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Interface: András Frank}
+	\begin{center}
+		\includegraphics[width=0.65\textwidth]{../assets/andrasfrankv1html.png}
+	\end{center}
+\end{frame}
+
+% \begin{frame}{Princípios de Design}
+% 	\begin{block}{Teoria dos Registros de Representação (Duval)}
+% 		Transitar entre diferentes representações:
+% 		\begin{itemize}
+% 			\item \textbf{Visual:} diagramas do grafo
+% 			\item \textbf{Simbólico:} código Python
+% 			\item \textbf{Textual:} log das operações
+% 		\end{itemize}
+% 	\end{block}
+
+% 	\vspace{0.5cm}
+
+% 	\begin{alertblock}{Feedback Imediato}
+% 		Validação em tempo real das operações do usuário
+% 	\end{alertblock}
+% \end{frame}
+
+% ==================== SEÇÃO 7: CONCLUSÕES ====================
+
+\section{Conclusões}
+
+\begin{frame}{Contribuições do Trabalho}
+	\begin{enumerate}
+		\item \textbf{Implementação completa} de dois algoritmos clássicos
+		      \begin{itemize}
+			      \item Chu-Liu-Edmonds: recursivo com contração
+			      \item András Frank: duas fases com otimização heap
+		      \end{itemize}
+
+		      \vspace{0.3cm}
+
+		\item \textbf{Análise experimental} detalhada
+		      \begin{itemize}
+			      \item 2000 instâncias aleatórias
+			      \item Comparação de desempenho e características estruturais
+		      \end{itemize}
+
+		      \vspace{0.3cm}
+
+		\item \textbf{Aplicação web interativa}
+		      \begin{itemize}
+			      \item Ferramenta didática para visualização
+			      \item Execução passo a passo dos algoritmos
+			      \item Design centrado no usuário
+		      \end{itemize}
+	\end{enumerate}
+\end{frame}
+
+
+\begin{frame}{Trabalhos Futuros}
+    \vspace{0.3cm}
+    \begin{columns}[c]
+        \column{0.48\textwidth}
+        \begin{minipage}{0.95\columnwidth}
+            \begin{block}{Extensões Possíveis}
+                \begin{itemize}
+                    \item Implementar outras variantes (Tarjan, Gabow)
+                    \item Análise em grafos com estruturas especiais
+                    \item Paralelização dos algoritmos
+                    \item Extensão para grafos dinâmicos
+                \end{itemize}
+            \end{block}
+        \end{minipage}
+        \column{0.52\textwidth}
+        \begin{minipage}{0.95\columnwidth}
+            \begin{block}{Melhorias na Aplicação}
+                \begin{itemize}
+                    \item Modo de edição visual de grafos
+                    \item Geração automática de casos de teste
+                    \item Exercícios interativos com correção automática
+                    \item Integração com plataformas de ensino (Moodle, Jupyter)
+                \end{itemize}
+            \end{block}
+        \end{minipage}
+    \end{columns}
+    \vspace{0.3cm}
+\end{frame}
+
+% ==================== SLIDE FINAL ====================
+\begin{frame}[plain]
+	\centering
+	\vfill
+
+	{\Huge \textcolor{accentpurple}{Obrigado!}}
+
+	\vspace{1cm}
+
+	{\Large Perguntas?}
+
+	\vspace{3cm}
+
+	{\normalsize \textcolor{textlightgray}{\texttt{https://github.com/lorenypsum/graph-visualizer}}}
+
+	\vfill
+\end{frame}
+
+\end{document}

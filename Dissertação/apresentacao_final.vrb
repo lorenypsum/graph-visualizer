@@ -1,0 +1,29 @@
+\frametitle{Passo 2: Implementação - Construção de $D_0$}
+\textbf{Função \texttt{get\_Dzero}:}
+    \begin{columns}[t]
+      \column{0.55\textwidth}
+      \begin{lstlisting}[basicstyle=\tiny\ttfamily]
+def get_Dzero(D: nx.DiGraph, r: int):
+    D_zero = nx.DiGraph()
+    for v in D.nodes():
+        if v != r:
+            in_edges = D.in_edges(v,
+                                  data=True)
+            u = next((u for u, _, data
+                      in in_edges
+                      if data["w"] == 0))
+            D_zero.add_edge(u, v)
+    return D_zero
+\end{lstlisting}
+
+      \column{0.45\textwidth}
+      \textbf{Descrição:}
+      \begin{itemize}
+        \item Para cada vértice $v \neq r$, seleciona um arco com peso zero
+        \item Constrói subdigrafo gerador $D_0$
+        \item Garantido existir arco de peso zero após redução
+      \end{itemize}
+    \end{columns}
+    \begin{block}{Observação}
+      Se $D_0$ for uma arborescência, então $D_0$ é necessariamente uma $r$-arborescência ótima.
+    \end{block}

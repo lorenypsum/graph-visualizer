@@ -1,0 +1,25 @@
+\frametitle{Passo 1: Implementação - Redução de Custos}
+\textbf{Função \texttt{reduce\_weights}:}
+	\begin{columns}[t]
+		\column{0.5\textwidth}
+		\begin{lstlisting}[basicstyle=\scriptsize\ttfamily]
+def reduce_weights(D: nx.DiGraph, v: int):
+    in_edges = D.in_edges(v, data=True)
+    yv = min((data["w"]
+              for _, _, data in in_edges))
+    for u, _, _ in in_edges:
+        D[u][v]["w"] -= yv
+\end{lstlisting}
+
+		\column{0.45\textwidth}
+		\textbf{Descrição:}
+		\begin{itemize}
+			\item Calcula $\lambda(v) = \min\{w(a) : a \in \delta^-(v)\}$
+			\item Reduz o custo de cada arco que entra em $v$
+			\item Complexidade: $O(k)$ $|A|$ onde $k$ é o número de arcos entrando em $v$
+		\end{itemize}
+	\end{columns}
+
+	\begin{block}{Resultado}
+		Após executar \texttt{reduce\_weights(D, v)} para cada $v \neq r$, todos os vértices têm ao menos um arco de entrada com custo zero.
+	\end{block}

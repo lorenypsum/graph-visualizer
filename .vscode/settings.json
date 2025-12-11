@@ -1,0 +1,61 @@
+{
+  // Python testing: discover tests in repo root (not __pycache__)
+  "python.testing.unittestArgs": [
+    "-v",
+    "-s",
+    ".",
+    "-p",
+    "test*.py"
+  ],
+  "python.testing.pytestEnabled": false,
+  "python.testing.unittestEnabled": true,
+
+  // Python formatting and typing for algorithm code
+  "python.formatting.provider": "black",
+  "editor.formatOnSave": true,
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.diagnosticMode": "workspace",
+
+  // LaTeX authoring ergonomics for the dissertation
+  "[latex]": {
+    "editor.wordWrap": "bounded",
+    "editor.wordWrapColumn": 80,
+    "editor.rulers": [80]
+  },
+  // If LaTeX Workshop is installed, compile with latexmk and bibtex; auto-build on save
+  "latex-workshop.latex.tools": [
+    {
+      "name": "latexmk",
+      "command": "latexmk",
+      "args": [
+        "-pdf",
+        "-interaction=nonstopmode",
+        "-synctex=1",
+        "-file-line-error",
+        "%DOC%"
+      ]
+    },
+    {
+      "name": "bibtex",
+      "command": "bibtex",
+      "args": ["%DOCFILE%"]
+    }
+  ],
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "latexmk (pdf)",
+      "tools": ["latexmk"]
+    },
+    {
+      "name": "pdflatex → bibtex → pdflatex ×2",
+      "tools": ["pdflatex", "bibtex", "pdflatex", "pdflatex"]
+    }
+  ],
+  "latex-workshop.latex.autoBuild.run": "onSave",
+  "latex-workshop.view.pdf.viewer": "tab",
+  "latex-workshop.synctex.afterBuild.enabled": true,
+  "latex-workshop.view.pdf.invertMode.grayscale": 0,
+  "latex-workshop.view.pdf.invertMode.sepia": 0,
+  "latex-workshop.view.pdf.invertMode.brightness": 1,
+  "latex-workshop.view.pdf.invert": 0
+}

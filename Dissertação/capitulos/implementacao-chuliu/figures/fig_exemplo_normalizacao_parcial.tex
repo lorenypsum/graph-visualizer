@@ -1,0 +1,33 @@
+\begin{tikzpicture}[>=Stealth, node distance=2cm, scale=1.5, every node/.style={scale=1}]
+    % Nodes (posições aproximadas da imagem)
+    \node[circle,draw,fill=green!20,minimum size=7mm] (n0) at (6.2,2.2) {0};
+    \node[circle,draw,fill=blue!40,minimum size=7mm] (n1) at (4.2,2.7) {1};
+    \node[circle,draw,fill=blue!40,minimum size=7mm] (n2) at (2.5,2.2) {2};
+    \node[circle,draw,fill=blue!40,minimum size=7mm] (n3) at (4.2,4.1) {3};
+    \node[circle,draw,fill=blue!40,minimum size=7mm] (n4) at (2.5,4.1) {4};
+    \node[circle,draw,fill=blue!40,minimum size=7mm] (n5) at (1.0,4.8) {5};
+    \node[circle,draw,fill=blue!40,minimum size=7mm] (n6) at (1.0,3.2) {6};
+    \node[circle,draw,fill=blue!40,minimum size=7mm] (n7) at (0.2,2.0) {7};
+    \node[circle,draw,fill=blue!40,minimum size=7mm] (n8) at (2.0,1.0) {8};
+
+    % Edges with weights and bends
+    \draw[->,thick,red!80,bend left=15] (n0) to node[above right] {2} (n1);
+    \draw[->,thick,gray!80,bend left=20] (n0) to node[below] {6} (n2);
+    \draw[->,thick,gray!80,bend left=10] (n1) to node[below right] {1} (n2);
+    \draw[->,thick,gray!80,bend left=10] (n1) to node[right] {2} (n3);
+    \draw[->,thick,gray!80,bend left=10] (n1) to node[below right] {10} (n4);
+    \draw[->,thick,red!80,bend left=10] (n2) to node[above left] {0} (n1);
+    \draw[->,thick,gray!80,bend left=10] (n3) to node[above] {1} (n4);
+    \draw[->,thick,gray!80,bend left=10] (n4) to node[below left] {10} (n2);
+    \draw[->,thick,gray!80,bend left=10] (n4) to node[above left, xshift=5pt] {1} (n5);
+    \draw[->,thick,gray!80,bend left=10] (n5) to node[left] {1} (n6);
+    \draw[->,thick,gray!80,bend left=10] (n6) to node[below left, xshift=5pt] {1} (n4);
+    \draw[->,thick,gray!80,bend left=10] (n6) to node[left] {8} (n7);
+    % \draw[->,thick,gray!80,bend left=10] (n6) to node[below] {2} (n8);
+    \draw[->,thick,gray!80,bend left=10] (n6) to node[above right] {2} (n8);
+    \draw[->,thick,gray!80,bend left=10] (n7) to node[below left] {4} (n8);
+    % \draw[->,thick,gray!80,bend left=10] (n8) to node[above left] {5} (n6);
+    \draw[->,thick,gray!80,bend left=10] (n8) to node[above left, xshift=-4pt]{5} (n6);
+\end{tikzpicture}
+
+

@@ -1,0 +1,49 @@
+\begin{tikzpicture}[>=Stealth, scale=1.2, every node/.style={scale=1}]
+    % Digrafo D (normalizado) - lado esquerdo
+    \begin{scope}[xshift=0cm]
+        % Nós
+        \node[circle,draw,fill=green!20,minimum size=8mm] (r) at (1.5,2.5) {$r$};
+        \node[circle,draw,fill=blue!20,minimum size=8mm] (v1) at (0,1) {$v_1$};
+        \node[circle,draw,fill=blue!20,minimum size=8mm] (v2) at (1.5,0) {$v_2$};
+        \node[circle,draw,fill=blue!20,minimum size=8mm] (v3) at (3,1) {$v_3$};
+
+        % Arestas de custo zero (vermelho/grosso)
+        \draw[->,very thick,red] (r) to[bend left=15] node[midway,above left,black] {0} (v1);
+        \draw[->,very thick,red] (v2) to[bend left=15] node[midway,below left,black] {0} (v1);
+        \draw[->,very thick,red] (v1) to[bend left=15] node[midway,below,black] {0} (v2);
+        \draw[->,very thick,red] (r) to[bend right=15] node[midway,above right,black] {0} (v3);
+
+        % Arestas com custo positivo (cinza/fino)
+        \draw[->,gray!60] (r) to node[midway,above,black,font=\footnotesize] {2} (v2);
+        \draw[->,gray!60] (v1) to[bend right=15] node[midway,above,black,font=\footnotesize] {3} (v3);
+        \draw[->,gray!60] (v2) to[bend left=15] node[midway,below right,black,font=\footnotesize] {1} (v3);
+
+        % Título
+        \node[below] at (1.5,-0.8) {\textbf{Digrafo D (normalizado)}};
+    \end{scope}
+
+    % Seta de transformação
+    \node[font=\Large] at (4.5,1.25) {$\Rightarrow$};
+    \node[above,font=\footnotesize] at (4.5,1.8) {\texttt{get\_Fstar(D, r)}};
+
+    % Subgrafo F* - lado direito
+    \begin{scope}[xshift=6cm]
+        % Nós
+        \node[circle,draw,fill=green!20,minimum size=8mm] (fr) at (1.5,2.5) {$r$};
+        \node[circle,draw,fill=blue!20,minimum size=8mm] (fv1) at (0,1) {$v_1$};
+        \node[circle,draw,fill=blue!20,minimum size=8mm] (fv2) at (1.5,0) {$v_2$};
+        \node[circle,draw,fill=blue!20,minimum size=8mm] (fv3) at (3,1) {$v_3$};
+
+        % Apenas arestas de custo zero (uma por vértice)
+        \draw[->,very thick,red] (fr) to[bend left=15] node[midway,above left,black] {0} (fv1);
+        \draw[->,very thick,red] (fv1) to[bend left=15] node[midway,below,black] {0} (fv2);
+        \draw[->,very thick,red] (fr) to[bend right=15] node[midway,above right,black] {0} (fv3);
+
+        % Destaque do ciclo
+        \draw[dashed,blue!60,thick,rounded corners=8pt] (-0.4,0.6) rectangle (2,1.4);
+        \node[above,blue!60,font=\footnotesize] at (0.8,1.5) {ciclo detectado};
+
+        % Título
+        \node[below] at (1.5,-0.8) {\textbf{Subgrafo $F^*$}};
+    \end{scope}
+\end{tikzpicture}

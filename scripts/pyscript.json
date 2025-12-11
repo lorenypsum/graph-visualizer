@@ -1,0 +1,24 @@
+{
+    "packages": [
+        "networkx",
+        "matplotlib",
+        "numpy", 
+        "pandas"
+    ],
+    "fetch": [{
+        "files": [
+            "./chuliu_page.py",
+            "./andrasfrank_page_v1.py",
+            "./andrasfrank_page_v2.py",
+            "./draw_page.py",
+            "./solver/chuliu.py",
+            "./solver/andrasfrank.py",
+            "./solver/__init__.py",
+            "./util/graph_utils.py",
+            "./util/ui_utils.py",
+            "./util/visualization_utils.py",
+            "./util/file_utils.py",
+            "./util/__init__.py"
+        ]
+    }]
+}

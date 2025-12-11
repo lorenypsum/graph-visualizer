@@ -1,0 +1,37 @@
+% !TEX program = latexmk
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{microtype}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,fit,calc}
+
+\begin{document}
+\centering
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!70}, cut/.style={->, very thick, draw=red!70}};
+    % vértices
+    \node[v, label=below:$a$] (a) at (0,0) {};
+    \node[v, label=below:$b$] (b) at (2,0) {};
+    \node[v, label=above:$c$] (c) at (1,1.5) {};
+    \node[v, label=below:$d$] (d) at (4,0) {};
+    \node[v, label=above:$e$] (e) at (3,1.5) {};
+    \node[v, label=below:$f$] (f) at (6,0) {};
+    % arcos
+    \draw[a] (a) -- (b);
+    \draw[a] (b) -- (c);
+    \draw[a] (c) -- (a);
+    \draw[a] (b) -- (d);
+    \draw[a] (d) -- (e);
+    \draw[a] (e) -- (b);
+    \draw[a] (d) -- (f);
+    \draw[a] (f) -- (e);
+    % corte destacado (vermelho)
+    \draw[cut] (b) -- (d);
+    % legenda
+    \node[align=left, anchor=west] at (6.5,1.0) {Corte $C=\{(b,d)\}$\\ Remover $C$ desconecta $D$};
+\end{tikzpicture}
+$ está destacado em vermelho. Remover esse arco desconecta o digrafo, impedindo caminhos direcionados entre certos pares de vértices.}
+\end{document}

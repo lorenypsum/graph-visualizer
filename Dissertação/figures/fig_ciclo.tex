@@ -1,0 +1,36 @@
+% !TEX program = latexmk
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{microtype}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,fit,calc}
+
+\begin{document}
+\centering
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, e/.style={semithick, draw=gray!60}, c/.style={very thick, draw=blue!60}}
+
+    % vértices do ciclo (dispostos aproximadamente em círculo)
+    \node[v, label=below:$v_1$] (v1) at (0,0) {};
+    \node[v, label=right:$v_2$] (v2) at (2.0,0.8) {};
+    \node[v, label=above:$v_3$] (v3) at (1.2,2.1) {};
+    \node[v, label=left:$v_4$] (v4) at (-0.8,1.6) {};
+
+    % arestas não pertencentes ao ciclo (cinza)
+    \node[v, label=right:$x$] (x) at (2.6,1.8) {};
+    \draw[e] (x) -- (v2);
+    \draw[e] (x) -- (v3);
+
+    % ciclo destacado (azul)
+    \draw[c] (v1) -- (v2);
+    \draw[c] (v2) -- (v3);
+    \draw[c] (v3) -- (v4);
+    \draw[c] (v4) -- (v1);
+
+    % legenda
+    \node[align=left, anchor=west] at (3.2,1.0) {$C=(v_1,v_2,v_3,v_4,v_1)$\\ $|C|=4$};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,4 @@
+pyscript
+networkx
+matplotlib
+pytest

@@ -1,0 +1,42 @@
+% !TEX program = latexmk
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{microtype}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,fit,calc}
+
+\begin{document}
+\centering
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=blue!70}, p/.style={->, draw=gray!60}};
+    % vértices do dígrafo
+    \node[v, label=below:$r$] (r) at (0,0) {};
+    \node[v, label=above:$a$] (a) at (-1.6,1.4) {};
+    \node[v, label=above:$b$] (b) at (0.0,1.8) {};
+    \node[v, label=above:$c$] (c) at (1.6,1.4) {};
+    \node[v, label=above:$d$] (d) at (-2.4,2.8) {};
+    \node[v, label=above:$e$] (e) at (-0.8,3.0) {};
+    \node[v, label=above:$f$] (f) at (0.8,3.0) {};
+    % arcos do dígrafo                      
+    \draw[a] (r) -- (a);
+    \draw[a] (r) -- (b);
+    \draw[a] (r) -- (c);
+    \draw[a] (a) -- (d);
+    \draw[a] (b) -- (e);
+    \draw[a] (c) -- (f);
+    \draw[a] (e) -- (d);
+    \draw[a] (f) -- (r);
+    \draw[a] (d) -- (b);    
+    \draw[a] (a) -- (b);
+    % arcos extras (não fazem parte das arborescências)
+    \draw[p] (e) -- (f);
+    \draw[p] (f) -- (e);
+    \draw[p] (d) -- (c);    
+    \draw[p] (c) -- (d);
+    \draw[p] (g) -- (h);
+    \draw[p] (h) -- (g);
+\end{tikzpicture}
+\end{document}

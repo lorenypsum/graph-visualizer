@@ -1,0 +1,50 @@
+% !TEX program = latexmk
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{microtype}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,fit,calc}
+
+\begin{document}
+\centering
+    \begin{minipage}[t]{0.52\textwidth}
+        \centering
+        \begin{tikzpicture}[>=Stealth, node distance=1.4cm]
+            	\tikzset{v/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
+                     cheap/.style={->, very thick, draw=blue!70},
+                     e/.style={->, semithick, draw=gray!65}}
+            % ciclo C e arcos internos (a_w em negrito)
+            \node[v] (a) {\small $a$};
+            \node[v] (b) [above right=0.9cm and 1.4cm of a] {\small $b$};
+            \node[v] (c) [below right=0.9cm and 1.4cm of a] {\small $c$};
+            % interno: a->b é a_b (mais barato em b), custo 5
+            \draw[cheap] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize $5$} (b);
+            % outros do ciclo (custos quaisquer)
+            \draw[e] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize $4$} (c);
+            \draw[e] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize $6$} (a);
+            % arco externo u->b com custo 7
+            \node[v] (u) [left=1.9cm of b] {\small $u$};
+            \draw[e] (u) -- node[midway, above, sloped] {\scriptsize $7$} (b);
+            % contorno do ciclo C
+            \node[draw=blue!40, rounded corners, fit=(a)(b)(c), inner sep=6pt, label={[blue!60]below:{\small $C$}}] {};
+        \end{tikzpicture}
+        \vspace{2pt}
+        \small (a) Antes: $a_b=(a\!\to\!b)$ tem custo $5$; o arco externo $(u\!\to\!b)$ tem custo $7$.
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.44\textwidth}
+        \centering
+        \begin{tikzpicture}[>=Stealth, node distance=2.0cm]
+            	\tikzset{v/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
+                     e/.style={->, very thick, draw=blue!70}}
+            \node[v] (x) {\small $x_C$};
+            \node[v] (u) [left=2.1cm of x] {\small $u$};
+            \draw[e] (u) -- node[midway, above, sloped] {\scriptsize $7-5=2$} (x);
+        \end{tikzpicture}
+        \vspace{2pt}
+        \small (b) Depois: $(u\!\to\!x_C)$ recebe custo reduzido $c'(u,x_C)=7-5=2$.
+    \end{minipage}
+    %
+    % Texto explicativo removido para evitar segunda página no PDF.
+    \end{document}

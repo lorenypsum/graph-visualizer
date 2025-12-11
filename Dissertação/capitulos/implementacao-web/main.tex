@@ -1,0 +1,335 @@
+\chapter{A interação humano--computacional em ação: uma aplicação \textit{web} interativa}
+\label{cap:implementacao-web}
+
+
+Discutimos até aqui fundamentos teóricos dos algoritmos, análises de complexidade, resultados empíricos e princípios pedagógicos que justificam o uso de ferramentas interativas. Estabelecemos \emph{o quê} ensinar (Chu–Liu/Edmonds e Frank), \emph{por quê} usar visualizações (redução de carga cognitiva, engajamento ativo).
+
+
+O passo seguinte consiste em transformar essas diretrizes em uma solução concreta. A aplicação \textit{web} desenvolvida busca materializar os princípios apresentados, integrando escolhas didáticas e heurísticas de IHC em uma interface que favorece exploração gradual, leitura orientada e compreensão progressiva. Assim, passamos do plano conceitual para o plano operacional: \emph{como} traduzir teoria e princípios pedagógicos em decisões de design
+
+Mas antes de fundamentar os conceitos de design utilizados iremos apresentar o objetivo da aplicação, sua estrutura e principais funcionalidades, bem como o fluxo de interação proposto para os usuários.
+
+% Isto é, cada botão, cada visualização e cada mensagem de log foi projetada intencionalmente, guiada pelos princípios de IHC e pelas necessidades pedagógicas identificadas, a fim de maximizar a compreensão e o engajamento dos usuários
+
+
+% Com isso em mente, a aplicação \textit{web} interativa foi desenvolvida para ilustrar os algoritmos de Chu–Liu/Edmonds e Frank, permitindo aos usuários acompanhar passo a passo o funcionamento de ambos os métodos. 
+
+% \section{Descrição da aplicação}
+% Nesta seção apresentaremos a aplicação web que desenvolvemos para materializar, de forma interativa e didática, os algoritmos discutidos nos capítulos anteriores. Objetiva-se descrever a finalidade da ferramenta, os princípios de design operacionalizados na interface e os principais recursos que sustentam a exploração pedagógica de arborescências dirigidas. 
+% % Apresentamos aqui uma visão de alto nível da aplicação antes de detalhar a sua arquitetura, páginas e fluxo de interação.
+
+% Para que esses objetivos pedagógicos fossem atingidos, não bastava implementar os algoritmos; a interface precisava seguir rigorosos critérios de usabilidade e didática, a seguir trataremos destes aspectos. 
+
+
+\section{Descrição da aplicação}
+% \subsection{Objetivo da Ferramenta}
+A aplicação \textit{web} foi concebida como uma ferramenta educacional interativa para auxiliar na compreensão dos algoritmos de Chu--Liu--Edmonds e András Frank para a construção de $r$-arborescências dirigidas de custo mínimo. Seu principal objetivo é permitir que estudantes e pesquisadores explorem visualmente o funcionamento desses algoritmos, acompanhando passo a passo suas operações em grafos dirigidos.
+
+\subsection{Estrutura e Funcionalidades}
+\label{subsec:estrutura-funcionalidades}
+
+A aplicação organiza-se em módulos funcionais projetados para atender aos objetivos didáticos do projeto, distribuídos em três eixos principais de navegação. O primeiro eixo, dedicado à visualização algorítmica, reúne três páginas focadas na execução passo a passo dos métodos estudados. Uma delas apresenta o algoritmo de Chu--Liu--Edmonds, enquanto as outras duas exploram diferentes implementações do algoritmo de Frank. Nessas páginas, o sistema mostra as iterações de forma sequencial, evidencia as alterações visuais no grafo e exibe o resultado final da $r$-arborescência.
+
+O segundo eixo corresponde à modelagem livre, disponibilizando uma interface de edição em formato de sandbox na qual o usuário pode desenhar grafos arbitrariamente. Esse espaço oferece liberdade para experimentar diferentes topologias e estruturas, permitindo testar hipóteses além dos exemplos previamente definidos.
+
+Por fim, o terceiro eixo concentra-se na disseminação científica, reunindo uma página informativa dedicada à divulgação da dissertação e do projeto. Seu propósito é contextualizar a ferramenta, esclarecer as motivações de seu desenvolvimento e servir como canal de difusão do conhecimento teórico acerca dos algoritmos implementados.
+
+
+\subsection{Fluxo de interação}
+
+O fluxo de interação foi projetado para ser linear e intuitivo, guiando o usuário desde a criação do grafo até a visualização dos resultados do algoritmo. O fluxo típico é o seguinte: primeiro o usuário monta ou carrega um grafo de teste; em seguida, define (ou confirma) o vértice raiz \(r_0\); depois, executa o algoritmo, aplicando normalizações e seleção de arestas conforme implementado; então, observa os estados sequenciais gerados, onde cada snapshot reforça invariantes como arestas escolhidas, pesos e estrutura alcançada; por fim, o usuário pode optar por exportar o grafo resultante para replicação em notebooks ou comparação com a abordagem dual futura.
+
+Além disso, o log textual funciona como uma \emph{trilha de auditoria didática}. Cada ação do usuário (adição de aresta, definição de raiz, execução de passo) atualiza o grafo e o log, permitindo rastrear a evolução do estado. A exportação em JSON facilita a reimportação e análise posterior.
+
+\subsection{Arquitetura do Sistema}
+
+A arquitetura da aplicação foi projetada para operar integralmente no lado do cliente (\textit{client-side}), utilizando o navegador como ambiente de execução para o código Python via WebAssembly. O sistema estrutura-se em três camadas lógicas principais:
+
+\begin{itemize}
+	\item \textbf{Camada de Apresentação:} Responsável pela interface com o usuário, estruturada em HTML5, estilizada com o \textit{framework} utilitário Tailwind CSS e dinamizada por JavaScript. Esta camada gerencia a entrada de dados, a interatividade dos elementos e a exibição dos resultados, mantendo a responsividade em diferentes dispositivos.
+
+	\item \textbf{Núcleo de Processamento (PyScript):} Atua como a ponte entre a interface \textit{web} e as bibliotecas científicas. O PyScript permite a importação e execução de módulos Python diretamente no DOM. O processamento dos grafos é realizado pela biblioteca \texttt{NetworkX}, enquanto a geração das representações visuais estáticas (snapshots) é delegada ao \texttt{Matplotlib}.
+
+	\item \textbf{Camada de Dados e Persistência:} A troca de informações entre o editor livre e os algoritmos utiliza o formato JSON (\textit{JavaScript Object Notation}). Os grafos são serializados no padrão \texttt{node\_link}, permitindo a representação leve de nós, arestas e atributos (pesos e custos) para armazenamento local ou transferência entre módulos.
+\end{itemize}
+
+
+% \begin{figure}[htbp]
+%     \centering
+%     \begin{tikzpicture}[
+%         node distance=1.5cm,
+%         auto,
+%         block/.style={
+%             rectangle, 
+%             draw, 
+%             fill=blue!10, 
+%             text width=4.5cm, 
+%             text centered, 
+%             rounded corners, 
+%             minimum height=3em,
+%             font=\small
+%         },
+%         line/.style={
+%             draw, 
+%             -latex, 
+%             thick
+%         },
+%         dashedbox/.style={
+%             draw, 
+%             dashed, 
+%             fill=gray!5, 
+%             inner sep=0.8cm, 
+%             rounded corners,
+%             label={[anchor=north west, xshift=0.5cm, yshift=-0.5cm]north west:\textbf{Navegador (Client-Side)}}
+%         }
+%     ]
+
+%     % Nós Principais
+%     \node [block] (interface) {
+%         \textbf{Camada de Apresentação} \\ 
+%         HTML5 + Tailwind CSS \\ 
+%         (DOM Elements \& Canvas)
+%     };
+
+%     \node [block, below=of interface] (pyscript) {
+%         \textbf{Ponte de Execução} \\ 
+%         PyScript (WebAssembly) \\ 
+%         (Interpolação Python-JS)
+%     };
+
+%     \node [block, below=of pyscript] (core) {
+%         \textbf{Núcleo de Processamento} \\ 
+%         NetworkX (Algoritmos) \\ 
+%         Matplotlib (Renderização)
+%     };
+
+%     \node [block, right=of pyscript, xshift=1cm, fill=yellow!10] (data) {
+%         \textbf{Persistência de Dados} \\ 
+%         JSON (node\_link)
+%     };
+
+%     % Container (Browser Environment)
+%     \begin{scope}[on background layer]
+%         \node [dashedbox, fit=(interface) (core) (data)] (browser) {};
+%     \end{scope}
+
+%     % Conexões (Setas)
+%     % Interface -> PyScript
+%     \path [line] (interface) -- node [right, font=\footnotesize] {Eventos / Input} (pyscript);
+
+%     % PyScript -> Core
+%     \path [line] (pyscript) -- node [right, font=\footnotesize] {Chamadas de Função} (core);
+
+%     % Core -> PyScript (Retorno)
+%     \path [line] (core.west) -- ++(-0.5,0) |- node [left, near start, font=\footnotesize] {Snapshots / Grafos} (pyscript.west);
+
+%     % PyScript -> Interface (Update)
+%     \path [line] (pyscript.west) -- ++(-0.5,0) |- (interface.west);
+
+%     % Data Flow
+%     \path [line] (interface) -| node [near start, above, font=\footnotesize] {Export} (data);
+%     \path [line] (data) -- node [above, font=\footnotesize] {Load} (pyscript);
+
+%     \end{tikzpicture}
+
+%     \caption{Diagrama da arquitetura da aplicação, evidenciando o fluxo de dados e o processamento local via PyScript.}
+%     \label{fig:arquitetura_sistema}
+% \end{figure}
+
+
+Esta organização modular assegura que cada página carregue apenas os \textit{scripts} necessários para sua função específica, otimizando o tempo de carregamento e o consumo de recursos do navegador.
+
+\section{Princípios de interação humano-computador}
+
+A Interação Humano-Computador (IHC) orienta o design de sistemas para que sejam, simultaneamente, eficientes, eficazes e agradáveis ao usuário. Nesse contexto, promovemos uma síntese entre heurísticas clássicas de usabilidade \cite{nielsen1994heuristics,shneiderman2016designing} e teorias de aprendizagem e carga cognitiva \cite{rogers2011interaction,mayer2009multimedia,sweller1988cognitive,naps2003engagement}, resultando em oito princípios norteadores: (i) usabilidade, (ii) eficiência cognitiva, (iii) feedback imediato, (iv) engajamento ativo, (v) visão geral com detalhe sob demanda (o mantra overview $\rightarrow$ filter $\rightarrow$ details de \cite{shneiderman1996eyes}), (vi) consistência semântica, (vii) múltiplos registros de representação e (viii) prevenção e recuperação de erros. A seguir, detalhamos cada princípio e sua operacionalização na ferramenta.
+
+
+% VERSÃO 1
+% A interação humano-computador (IHC) estuda como projetar sistemas computacionais que sejam eficientes, eficazes e agradáveis para os usuários.
+
+
+% Sintetizando heurísticas de usabilidade e descoberta \cite{nielsen1994heuristics,shneiderman2016designing} e quadros de interação e aprendizagem \cite{rogers2011interaction,mayer2009multimedia,sweller1988cognitive,naps2003engagement}, destacamos oito princípios orientadores: (i) usabilidade, (ii) eficiência cognitiva, (iii) feedback imediato, (iv) engajamento ativo, (v) visão geral com detalhe sob demanda (mantra \emph{overview→filter→details} de \cite{shneiderman1996eyes}), (vi) consistência semântica, (vii) múltiplos registros de representação e (viii) prevenção/recuperação de erros. A seguir descrevemos cada um e sua materialização na ferramenta.
+
+
+% \subsection{Usabilidade}
+
+Começamos pela usabilidade, que refere-se à facilidade com que os usuários podem aprender a usar um sistema, realizar tarefas e alcançar seus objetivos. Na nossa aplicação, priorizamos uma interface limpa e intuitiva, com controles claros para navegar pelos passos dos algoritmos, selecionar arestas, visualizar cortes ativos e entender a evolução dos custos reduzidos.
+
+% \subsection{Eficiência cognitiva}
+
+Essa clareza se conecta diretamente à eficiência cognitiva, que envolve minimizar a carga cognitiva dos usuários, facilitando a compreensão e o processamento de informações. Implementamos visualizações que destacam mudanças importantes (como contrações e expansões) e fornecem explicações textuais concisas para cada passo, ajudando os usuários a conectar ações com conceitos teóricos.
+
+% \subsection{Feedback Imediato}
+
+A medida que o usuário interage com o sistema, o feedback imediato garante que os usuários informados sobre o estado do sistema e as consequências de suas ações. Nossa ferramenta oferece feedback visual e textual em tempo real, mostrando como cada ação afeta o grafo e os custos associados, reforçando a compreensão causal.
+
+
+% \subsection{Engajamento ativo}
+
+Esses elementos favorecem o engajamento ativo, que refere-se à participação dos usuários no processo de aprendizagem, incentivando-os a explorar, experimentar e interagir com o sistema. Nossa aplicação promove o engajamento ativo ao permitir que os usuários manipulem o grafo, testem diferentes abordagens e visualizem os resultados de suas ações em tempo real, além de acessar descrições passo a passo da execução dos algoritmos.
+
+
+% \subsection{Visão geral com detalhe sob demanda}
+
+Para orientar essa exploração sem sobrecarregar o usuário, aplicamos o princípio de visão geral com detalhe sob demanda que permite que os usuários obtenham uma compreensão ampla do sistema, enquanto ainda têm acesso a informações detalhadas quando necessário. Implementamos essa abordagem ao fornecer uma visualização geral do grafo, com a opção de expandir informações sobre arestas e nós específicos conforme o interesse do usuário.
+
+% \subsection{Consistência semântica}
+
+A navegação entre essas diferentes camadas da interface é apoiada pela consistência semântica, que garante que os elementos da interface e suas interações sejam compreensíveis e previsíveis. Nossa ferramenta mantém a consistência semântica ao usar terminologia e representações visuais padronizadas em toda a aplicação, facilitando a compreensão dos usuários.
+
+% \subsection{Múltiplos registros de representação}
+
+Além disso, adotamos o conceito de múltiplos registros de representação, que referem-se à capacidade de apresentar informações de diferentes maneiras, atendendo às preferências e estilos de aprendizagem dos usuários. Na nossa aplicação oferecemos várias representações do grafo (visual, textual, interativa), permitindo que os usuários escolham a forma que melhor se adapta às suas necessidades.
+
+% \subsection{Prevenção de erros}
+
+Por fim, implementamos conceitos de prevenção de erros, que envolve projetar o sistema de forma a minimizar a probabilidade de erros dos usuários. Em nosso sistema garantimos feedback em tempo real, para ajudar os usuários a evitar ações indesejadas e compreender melhor as consequências de suas escolhas.
+
+
+Esses princípios de interação humano-computador foram fundamentais para o desenvolvimento da nossa aplicação \textit{web} interativa, garantindo que ela seja não apenas funcional, mas também acessível e eficaz como ferramenta de aprendizagem. A seguir, detalhamos a implementação técnica da aplicação e como ela se posiciona no ecossistema de ferramentas didáticas para o ensino de grafos.
+
+\begin{table}[H]
+	\centering
+	\renewcommand{\arraystretch}{1.18}
+	\setlength{\tabcolsep}{6pt}
+	\footnotesize
+	% Ajuste de larguras: 1a coluna ampliada para evitar overlap; leve redução na 3a.
+	\begin{tabular}{p{2.9cm} p{4.0cm} p{7.0cm}}
+		\hline
+		\textbf{Princípio}                               & \textbf{Exemplo Geral}                         & \textbf{Materialização na Aplicação}                                                                                                                                            \\
+		\hline
+		Usabilidade                                      & Botões claros para avançar/voltar etapas       & Barra de controles com rótulos diretos (Adicionar Aresta, Executar, Reset); agrupamento visual consistente via Tailwind; nenhum menu profundo aninhado.                         \\
+		Eficiência\newline cognitiva                     & Reduzir elementos irrelevantes no estado atual & Layout estável entre passos; apenas arestas relevantes destacadas; eliminação de ornamentação visual; custos e rótulos legíveis sem rotação.                                    \\
+		Feedback\newline imediato                        & Mostrar efeito de uma ação logo após o clique  & Cada ação dispara: (i) atualização do desenho do grafo, (ii) entrada no log textual explicando a mudança (ex.: contração, seleção de aresta).                                   \\
+		Engajamento\newline ativo                        & Usuário prediz antes de revelar próximo passo  & Controles passo a passo permitem explorar sequencialmente; usuário insere/edita pesos e escolhe raiz antes de rodar o algoritmo.                                                \\
+		Visão geral→\newline Detalhes                    & Visão global com acesso a informação pontual   & Visão completa do grafo em todos os passos + possibilidade de inspecionar pesos e arestas específicas no log sequencial; estados anteriores preservados para comparação mental. \\
+		Consistência\newline semântica                   & Mesmo conceito, mesma cor/forma                & Raiz destacada de forma fixa; arestas selecionadas mantêm estilo; semântica cromática não muda entre passos (evita remapeamento mental).                                        \\
+		Múltiplos\newline registros                      & Texto + grafo + (futuro) estrutura derivada    & Combinação de: descrição textual no log, representação visual do grafo, parâmetros simbólicos (pesos); prepara expansão futura para mostrar custos reduzidos.                   \\
+		Prevenção /\newline recuperação\newline de erros & Impedir entrada inválida / ação reversível     & Validação de pesos (numéricos); bloqueio de execução sem raiz definida; botão Reset para recompor estado limpo sem recarregar página.                                           \\
+		\hline
+	\end{tabular}
+	\caption{Síntese dos princípios de interação humano-computador aplicados e sua realização concreta na ferramenta interativa.}
+	\label{tab:principios-ihc}
+\end{table}
+
+
+\section{Detalhes de Implementação}
+
+A aplicação foi implementada utilizando tecnologias \textit{web} modernas, com foco em simplicidade, modularidade e reprodutibilidade. A seguir, detalhamos os principais aspectos técnicos da implementação.
+
+
+\subsection{Estrutura de arquivos}
+
+A estrutura de arquivos da aplicação é organizada em diretórios e componentes bem definidos. O diretório \texttt{scripts/} reúne os scripts Python e JavaScript responsáveis pela lógica da aplicação. O diretório \texttt{assets/} armazena imagens, ícones e demais recursos estáticos utilizados pela interface. As páginas HTML encontram-se no diretório \texttt{pages/}, estruturadas de forma modular para facilitar manutenção e extensão futura. Por fim, o arquivo \texttt{pyscript.json} contém as configurações necessárias ao funcionamento do PyScript no ambiente da aplicação.
+
+\subsection{Páginas da Aplicação \textit{web}}
+
+A seguir, apresentamos as páginas que compoem a ferramente desenvolvida.
+
+
+\subsection*{\texttt{Home}} O arquivo \texttt{home.html} serve como a página inicial da aplicação, oferecendo uma visão geral do projeto, incluindo um resumo do trabalho e informações sobre os integrantes. A estrutura da página é projetada para ser acolhedora e informativa, utilizando Tailwind CSS para garantir uma aparência moderna e responsiva. Abaixo, apresentamos um exemplo de captura de tela da página.
+
+% Screenshot da página Home
+\begin{figure}[H]\centering
+	\includegraphics[width=0.95\textwidth]{../assets/homehtml.png}
+	\caption{Captura de tela de \texttt{home.html}: visão geral com resumo e integrantes.}
+	\label{fig:home_html_screenshot}
+\end{figure}
+
+
+\subsection*{\texttt{Draw graph}} Editor de grafos livre com funcionalidades de criação, edição, importação e exportação. Ele constitui o segundo módulo que definimos na seção de  ~\ref{subsec:estrutura-funcionalidades} Utiliza \texttt{Cytoscape.js} para visualização interativa e \texttt{PyScript} para lógica algorítmica. Abaixo, apresentamos uma captura de tela da página.
+
+% Screenshot da página Draw Graph
+\begin{figure}[H]\centering
+	\includegraphics[width=0.95\textwidth]{../assets/drawhtml.png}
+	\caption{Captura de tela de \texttt{draw\_graph.html}: editor livre de grafos.}
+	\label{fig:draw_html_screenshot}
+\end{figure}
+
+\subsection*{\texttt{Dissertação}} Essa página compoem o módulo 3 apresentado na seção ~\ref{subsec:estrutura-funcionalidades}, nela apresentamos nossa dissertação bem como permitimos o download da mesmo, o intuito é permitir com que o usuário possa ter um entendimento maior tanto dos algoritmos quanto do nosso sistema.
+
+\begin{figure}[H]\centering
+	\includegraphics[width=0.95\textwidth]{../assets/tesehtml.png}
+	\caption{Captura de tela de \texttt{tese.html}: visão geral com resumo e integrantes.}
+	\label{fig:tese_html_screenshot}
+\end{figure}
+
+\subsection*{\texttt{Chu--liu--Edmonds}} Página dedicada ao visualizador do algoritmo de Chu--Liu--Edmonds. Inclui um passo a passo guiado para criar um grafo, selecionar o nó raiz e executar o algoritmo, com feedback visual e textual. ELe faz parte do primeiro módulo destacado na seção~\ref{subsec:estrutura-funcionalidades}. Abaixo, apresentamos uma captura de tela da página.
+
+% Screenshot da página Chu--Liu--Edmonds
+\begin{figure}[H]\centering
+	\includegraphics[width=0.95\textwidth]{../assets/chuliuhtml.png}
+	\caption{Captura de tela de \texttt{chuliu.html}: criação de grafo, seleção de raiz e execução do algoritmo.}
+	\label{fig:chuliu_html_screenshot}
+\end{figure}
+
+A figura a seguir destaca a tripartição funcional da página: navegação lateral, conteúdo interativo central e guia de passos à direita.
+\begin{figure}[H]\centering
+	\begin{tikzpicture}[node distance=1.4cm]
+		\node[draw,rounded corners,fill=gray!10,minimum width=1.6cm] (sb4) {Barra Lateral};
+		\node[draw,rounded corners,fill=blue!8,right=0.6cm of sb4,minimum width=5.2cm,minimum height=3.4cm] (maincl) {Principal (Botão de Passos + Editor + Logs)};
+		\node[draw,rounded corners,fill=green!10,right=1.6cm of maincl,minimum width=2cm,minimum height=3.4cm] (rs) {Passos};
+		\draw[->] (maincl.east) -- (rs.west);
+	\end{tikzpicture}
+	\caption{Tripartição funcional (navegação, conteúdo interativo, guia de passos). A presença do passo a passo auxilia na compreensão sequencial do algoritmo.}
+	\label{fig:triparticao_paginas}
+\end{figure}
+
+\subsection{Página do Andrasfrank (v1) e Andrasfrank (v2)}
+Ambas as páginas são dedicadas ao visualizador do algoritmo de Andras Frank (em suas diferentes implementações elucidadas em capítulos anteriores). Assim como na página dedicada ao algoritmo de Chu–Liu/Edmonds, essa página também faz parte do módulo 1 definido na seção ~\ref{subsec:estrutura-funcionalidades}
+Além disso, ele inclui um passo a passo guiado para criar um grafo, selecionar o vértice raiz e executar o algoritmo, com feedback visual e textual. Abaixo, apresentamos uma captura de tela da página.
+
+% Screenshot da página Andras Frank
+\begin{figure}[H]\centering
+	\includegraphics[width=0.95\textwidth]{../assets/andrasfrankv1html.png}
+	\caption{Captura de tela de \texttt{andrasfrank\_v1.html}: interface para o procedimento em duas fases, a tela da página \texttt{andrasfrank\_v2.html} tem aparência similar.}
+	\label{fig:andrasfrank_html_screenshot}
+\end{figure}
+
+Assim como na página do algoritmo de Chu–Liu/Edmonds (fig. ~\ref{fig:triparticao_paginas}) a página dedicadas às implementações do algoritmo do Andras Frank também utilização o padrão de tripartição funcional para manter consistência cognitiva entre páginas.
+
+
+\subsection{Estrutura das páginas}
+
+A estrutura das páginas da aplicação segue um padrão modular e reutilizável, facilitando a manutenção e extensão futura. Cada página é composta por três seções principais: uma barra lateral de navegação, um conteúdo interativo central e um painel de passos à direita. Essa organização promove consistência cognitiva e facilita a navegação do usuário entre diferentes funcionalidades.
+\begin{figure}[H]\centering
+	\begin{tikzpicture}[node distance=2.2cm,>=Stealth]
+		\node[draw,rounded corners,fill=purple!10] (home) {home};
+		\node[draw,rounded corners,fill=purple!10,right=of home] (draw) {draw\_graph};
+		\node[draw,rounded corners,fill=purple!10,right=of draw] (ch) {chuliu};
+		\node[draw,rounded corners,fill=purple!10,right=of ch] (afp) {andrasfrank (v1 e v2)};
+		\node[draw,rounded corners,fill=orange!20,above=of ch] (sb) {barra lateral};
+		\node[draw,rounded corners,fill=purple!20,above=of sb] (ts) {dissertação};
+		\draw[->] (home) -- (draw);
+		\draw[->] (draw) -- (ch);
+		\draw[->] (ch) -- (afp);
+		\draw[->] (sb) -- (ts);
+		\foreach \x in {home,draw,ch,afp,ts} {\draw[->] (sb) -- (\x);}
+	\end{tikzpicture}
+	\caption{A \texttt{barra lateral} injeta navegação consistente; páginas de algoritmo formam trilha exploratória.}
+\end{figure}
+
+
+A arquitetura modular e reutilizável das páginas \textit{web} facilita manutenção, extensão e consistência. A barra lateral comum reduz esforço cognitivo ao navegar, enquanto o padrão tripartido de conteúdo interativo reforça familiaridade. A sequência lógica de páginas guia o usuário do contexto à experimentação e formalização, alinhando-se a princípios pedagógicos. Essa estrutura coesa apoia o aprendizado eficaz des conceitos de arborescências dirigidas e algoritmos associados.
+
+% \section{Avaliação da Interface}
+% \subsection{wip}
+% \textcolor{red}{A avaliação preliminar da interface \textit{web} envolveu testes com um grupo de usuários composto por estudantes de graduação em ciência da computação e profissionais da área. Os participantes foram convidados a utilizar o visualizador interativo para criar grafos, executar os algoritmos de Chu--Liu--Edmonds e Andras Frank, e explorar os passos detalhados. Feedback qualitativo foi coletado através de questionários e entrevistas, focando na usabilidade, clareza das instruções, eficácia do passo a passo e compreensão dos algoritmos.}
+
+% \subsubsection{wip}
+% \textcolor{red}{Os resultados indicaram que a maioria dos usuários considerou a interface intuitiva e fácil de navegar. O passo a passo foi particularmente elogiado por facilitar a compreensão dos algoritmos, permitindo que os usuários acompanhassem cada etapa do processo. Alguns participantes sugeriram melhorias, como a inclusão de mais exemplos de grafos e a possibilidade de salvar e carregar sessões de trabalho.}
+% \subsubsection{Limitações atuais e melhorias previstas}
+
+% A aplicação ainda carece de recursos que facilitariam a compreensão profunda dos algoritmos. A ausência de uma visualização explícita da contração de ciclos, por exemplo, reduz a clareza do processo; nesse ponto, planeja-se incorporar animações de contração/reexpansão com agrupamentos colapsáveis. Da mesma forma, a falta de comparação lado a lado entre as abordagens de Chu--Liu e Frank limita o entendimento de suas diferenças, algo que será endereçado com um módulo comparativo dedicado.
+
+% O layout planar simples também traz restrições, especialmente em instâncias densas com sobreposição de rótulos. Para mitigar isso, está prevista a adoção de layouts adaptativos, como \textit{spring} ou \textit{dagre-like}. Outro aspecto ausente é a sinalização cromática de custos reduzidos e arcos ``apertados'' ($c'=0$); uma camada visual desse tipo deve ajudar na identificação rápida de estruturas críticas.
+
+% Por fim, a exportação atualmente se limita ao grafo inicial e ao final, sem contemplar estados intermediários. Uma futura geração automática de relatórios (logs + estados selecionados) em PDF/ZIP pretende suprir essa lacuna, assim como o monitoramento de métricas como tempo por passo, número de contrações e distribuição de pesos normalizados. Complementarmente, está em desenvolvimento um módulo paralelo para a abordagem primal--dual de Frank.
+
+% \section{Comentários finais sobre a Interface \textit{web}}
+% Este capítulo detalhou a implementação técnica do visualizador interativo de arborescências dirigidas, cobrindo desde a arquitetura \textit{web} até a integração de algoritmos complexos. A escolha de tecnologias modernas como HTML5, CSS3, JavaScript e PyScript permitiu criar uma interface intuitiva e responsiva, facilitando a experimentação e compreensão dos algoritmos de Chu--Liu--Edmonds e Andras Frank. A reutilização de padrões arquiteturais entre páginas promoveu consistência cognitiva, enquanto a estrutura modular facilitou manutenção e extensão futura. No próximo capítulo, discutiremos as considerações finais e perspectivas futuras para o projeto.
+
+\section{Considerações Finais e Trabalhos Futuros}
+
+Este capítulo detalhou a implementação técnica do visualizador interativo de arborescências dirigidas, cobrindo desde a arquitetura \textit{web} até a integração de algoritmos complexos. A escolha de tecnologias modernas como HTML5, CSS3, JavaScript e PyScript permitiu criar uma interface intuitiva e responsiva, facilitando a experimentação e a compreensão dos algoritmos de Chu--Liu/Edmonds e Andras Frank. A reutilização de padrões arquiteturais promoveu consistência cognitiva, enquanto a estrutura modular assegura a manutenção e a extensibilidade do projeto.
+Não obstante os resultados alcançados, a aplicação apresenta oportunidades de evolução para aprofundar a experiência didática. Atualmente, a ausência de uma visualização explícita da contração de ciclos e a falta de uma comparação lado a lado entre as abordagens de Chu--Liu e Frank limitam a clareza de certos processos. Para endereçar essas questões, planeja-se incorporar animações de contração com agrupamentos colapsáveis e desenvolver um módulo comparativo dedicado, incluindo uma extensão paralela para a abordagem primal--dual de Frank.No aspecto visual, o layout planar simples impõe restrições em instâncias densas. A mitigação desse problema prevê a adoção de layouts adaptativos (como \textit{spring} ou \textit{dagre-like}) e a implementação de uma camada de sinalização cromática para custos reduzidos e arcos críticos ($c'=0$). Por fim, a funcionalidade de exportação será expandida para gerar relatórios automáticos (PDF/ZIP) que contemplem estados intermediários e métricas de desempenho, superando a limitação atual de exportar apenas os grafos inicial e final. No próximo capítulo, discutiremos as conclusões gerais da dissertação.

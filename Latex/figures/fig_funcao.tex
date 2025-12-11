@@ -1,0 +1,31 @@
+% !TEX program = latexmk
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{microtype}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,fit,calc}
+
+\begin{document}
+\centering
+\begin{tikzpicture}[>=Stealth, node distance=1.2cm]
+    % Coluna A (domínio) — retângulos arredondados
+    \node[draw, rounded corners, fill=blue!10, minimum width=8mm, minimum height=6mm] (a1f) {$a_1$};
+    \node[draw, rounded corners, fill=blue!10, below=of a1f, minimum width=8mm, minimum height=6mm] (a2f) {$a_2$};
+    \node[draw, rounded corners, fill=blue!10, below=of a2f, minimum width=8mm, minimum height=6mm] (a3f) {$a_3$};
+    % Coluna B (contradomínio) — círculos
+    \node[circle, draw, fill=green!10, right=3.2cm of a1f, minimum size=6mm] (b1f) {$b_1$};
+    \node[circle, draw, fill=green!10, below=of b1f, minimum size=6mm] (b2f) {$b_2$};
+    \node[circle, draw, fill=green!10, below=of b2f, minimum size=6mm] (b3f) {$b_3$};
+    % Agrupadores (caixas) para A e B com rótulos
+    \node[draw=blue!50, rounded corners, fit=(a1f)(a2f)(a3f), inner sep=5pt, label={[blue!60]above:A (domínio)}] {};
+    \node[draw=green!50!black, fit=(b1f)(b2f)(b3f), inner sep=7pt, label={[green!50!black]above:B (contradomínio)}] {};
+    % Setas de função (exatamente uma saída por elemento de A)
+    \draw[->, thick, draw=gray!70] (a1f) -- (b1f);
+    \draw[->, thick, draw=gray!70] (a2f) -- (b2f);
+    \draw[->, thick, draw=gray!70] (a3f) -- (b2f); % muitos-para-um permitido
+\end{tikzpicture}
+%
+% Texto explicativo removido para evitar segunda página no PDF standalone.
+\end{document}

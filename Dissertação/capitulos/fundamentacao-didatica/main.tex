@@ -1,0 +1,128 @@
+\chapter{A Didática do Abstrato}
+\label{cap:didatica}
+
+Thomás de Aquino, em sua obra \emph{De veritate}, argumenta que o conhecimento humano começa com a percepção sensorial do mundo concreto, mas alcança sua plenitude ao transcender o particular e abraçar o universal através da abstração. Esse processo de abstração é fundamental para a matemática e a ciência da computação, onde conceitos complexos são frequentemente representados por meio de símbolos e estruturas que vão além da experiência direta.
+
+
+Grafos e digrafos são simultaneamente concretos (nós e arestas) e abstratos (propriedades globais como cortes e conectividade). Essas noções exigem transitar entre níveis de representação (intuitivo, visual, simbólico, formal) \cite{tall1991advanced}, o que pode ser desafiador. A abstração é poderosa, mas também pode ser uma barreira: conceitos como “complementaridade primal–dual” podem ser difíceis de visualizar e internalizar sem apoio didático adequado.
+
+
+Então, como ensinar e aprender conceitos abstratos de forma eficaz? O ensino de matemática no ensino superior, especialmente em áreas como teoria dos grafos parecem sofrer com dificuldades específicas. A seguir, discutimos essas dificuldades e como o uso de ferramentas visuais e interativas pode ajudar a superá-las.
+
+\subsection{Fundamentos cognitivos e didáticos}
+
+O ensino de matemática no ensino superior exige transitar entre registros de representação (intuitivo, visual, simbólico, formal) com intencionalidade didática \cite{tall1991advanced}. À luz da teoria da carga cognitiva, é útil distinguir: (i) a \emph{carga intrínseca}, determinada pela complexidade dos esquemas a construir e pelos pré-requisitos ativados; (ii) a \emph{carga extrínseca}, criada pela forma de apresentação; e (iii) a \emph{carga pertinente} (\emph{germane}), isto é, o esforço dedicado à organização e automatização de esquemas \cite{sweller1988cognitive}. Em cursos avançados, a extrínseca cresce quando definições, símbolos e figuras não são co-referenciados no tempo e no espaço, dificultando a coordenação entre o que se lê, o que se vê e o que se infere.
+
+Aprender conteúdos de alta abstração envolve lidar com sobrecarga cognitiva intrínseca e extrínseca \cite{sweller1988cognitive}. Diretrizes de aprendizagem multimídia indicam que combinar representações verbais e visuais pode reduzir carga desnecessária e favorecer integração semântica \cite{mayer2009multimedia,paivio1990}. Em matemática avançada, a transição entre níveis de representação (intuitivo, formal, simbólico) exige mediação cuidadosa \cite{tall1991advanced} e atenção a como exemplos, contraexemplos e invariantes são apresentados.
+
+No caso específico de algoritmos com provas baseadas em teorias mais complexas, é frequente que estudantes compreendam os passos operacionais sem internalizar a estrutura teórica que garante correção e otimalidade.
+
+\subsection{Lidando com grafos e digrafos}
+
+Na prática, o principal obstáculo para o ensino de digrafos não está na definição de vértices e arcos, mas na articulação entre as operações realizadas nessas estruturas, os algoritmos que as exploram e as provas de correção que os fundamentam. No contexto desta dissertação, isso inclui compreender as arborescências de custo mínimo e os métodos clássicos de Chu–Liu/Edmonds e de Frank. Quando essa articulação não é explicitada, observa-se um aumento simultâneo da \emph{carga intrínseca} (intrínseca  devido às múltiplas dependências conceituais)  e da \emph{carga extrínseca} (decorrente do esforço de coordenar texto, fórmulas e representações gráficas)
+
+% VERSÃO 1
+% Essas dificuldades manifestam-se particularmente em três eixos didáticos, discutidos a seguir
+
+% VERSÃO 2
+A partir de uma análise reflexiva sobre o próprio processo de aprendizado das autoras, foi possível mapear onde a compreensão falha ou se torna nebulosa. Essas impressões pessoais permitiram sistematizar as dificuldades em três eixos didáticos principais, discutidos a seguir.
+
+% VERSÃO 1
+% (1) Articulação entre decisões locais e coerência global.
+% A escolha da melhor aresta de entrada para cada vértice parece, à primeira vista, uma estratégia natural. No entanto, decisões localmente ótimas podem produzir ciclos, comprometendo a coerência global da solução. Uma dificuldade recorrente consiste na tendência de estudantes projetarem sua intuição local para o comportamento global do algoritmo, o que gera surpresa diante de ciclos “inesperados” e aumenta a carga cognitiva ao colocar em conflito heurísticas locais e restrições estruturais do problema, em exercícios práticos, por exemplo, é comum que estudantes apliquem a regra “escolha a aresta de entrada mais barata de cada vértice” de maneira direta, assumindo que escolhas localmente econômicas sempre conduziriam a uma solução global coerente. No entanto, ao final da seleção, descobrem que as escolhas formaram um ciclo — justamente a situação que o algoritmo precisa detectar e tratar.
+
+% VERSÃO 2
+% A articulação entre decisões locais e coerência global podem ocorrer em diversas etapas da resolução de ambos os métodos, por exemplo durante o processo de seleção da menor aresta de entrada para cada vértice costuma parecer, de imediato, uma estratégia intuitiva e suficiente. Entretanto, escolhas que são localmente ótimas podem gerar ciclos e, portanto, inviabilizar a coerência global exigida por uma arborescência. Uma dificuldade recorrente está justamente nessa extrapolação, durante o processo de aprendizagem podemos aplicar regras simples de decisão local, esperam que o comportamento global do algoritmo “acompanhe” essa intuição.
+
+% Em atividades práticas, por exemplo, é frequente que adotem a regra de escolher a aresta de entrada de menor custo de forma mecânica, acreditando que tal procedimento conduzirá automaticamente a uma solução válida. A surpresa surge quando, ao final dessas seleções, percebem que as escolhas formaram um ciclo — exatamente o tipo de estrutura que o algoritmo precisa identificar e contrair. Esse descompasso entre expectativas locais e consequências globais não apenas gera estranhamento, mas também aumenta a carga cognitiva ao confrontar heurísticas intuitivas com restrições estruturais fundamentais do problema.
+
+% VERSÃO 3
+(1) Articulação entre decisões locais e coerência global. A articulação entre decisões locais e a integridade global da solução é um ponto crítico em ambos os métodos. Isso fica evidente na seleção da menor aresta de entrada para cada vértice: uma estratégia que parece intuitiva, mas que é enganosa. Escolhas localmente ótimas podem introduzir ciclos, violando a coerência global necessária para uma arborescência. O obstáculo principal está na crença equivocada de que regras de decisão simples e locais resultam automaticamente em uma solução global válida
+
+% VERSÃO 1
+% (2) Acompanhamento dos efeitos de contração e expansão.
+% Algoritmos baseados em contração de ciclos exigem alternar entre o grafo original, o grafo condensado e a reexpansão das estruturas contraídas. Cada uma dessas representações altera os custos reduzidos e modifica quais cortes permanecem ativos. A dificuldade típica surge quando o estudante perde a continuidade entre essas diferentes “visões” do grafo. Explicitar, de forma sistemática, quais elementos mudam e quais permanecem invariantes em cada etapa contribui para reduzir a carga extrínseca e tornar o processo mais transparente.
+
+% VERSÃO 2
+(2) Acompanhamento dos efeitos de contração e expansão.
+Um segundo obstáculo central é o gerenciamento das mudanças estruturais e numéricas durante o algoritmo. Métodos de contração de ciclos exigem que o estudante transite mentalmente entre três estados distintos: o grafo original, a versão condensada (onde ciclos tornam-se super-vértices) e a reexpansão final. O desafio não é apenas visual; cada contração altera os custos reduzidos das arestas e redefine quais cortes permanecem ativos. A dificuldade típica ocorre quando se perde a "rastreabilidade" entre essas visões: o aprendiz esquece que uma aresta escolhida no grafo condensado corresponde a uma aresta específica no original, mas com um custo modificado. Sem explicitar o que muda e o que se mantém invariante, o processo torna-se uma "caixa preta", onde o aluno segue passos mecanicamente sem compreender a conexão entre a solução do grafo menor e a do grafo maior.
+
+% VERSÃO 1
+% (3) Relação entre a execução do algoritmo e a formulação primal–dual.
+% Operações como selecionar arestas de entrada, identificar subconjuntos minimais e contrair ciclos possuem interpretações específicas na análise primal–dual que garante a correção e a otimalidade dos métodos. No entanto, essa correspondência nem sempre é evidente para quem está aprendendo. A dificuldade emerge quando os estudantes executam mecanicamente as etapas do algoritmo sem perceber como tais ações tornam certas restrições “justas” ou como induzem certificados de otimalidade. Tornar explícitos os vínculos entre ação operacional e fundamentação teórica, por exemplo, relacionando as operações aos custos reduzidos e às métricas coletadas (tempo, número de contrações, pico de memória) ajuda a aproximar prática e teoria e reduz a distância entre o procedimental e o conceitual.
+
+(3) Relação entre a execução do algoritmo e a formulação primal–dual.
+Aqui o desafio reside na interpretação teórica das ações mecânicas. Passos operacionais, como contrair ciclos, possuem significados precisos na análise Primal-Dual, que é o motor que garante a otimalidade da solução. No entanto, essa correspondência raramente é óbvia para o aprendiz. A dificuldade emerge quando o estudante executa o algoritmo como uma "receita de bolo", sem perceber que cada ação está, na verdade, manipulando variáveis duais para tornar restrições "justas" (tight). Explicitar esses vínculos é fundamental: o aluno precisa entender que modificar um custo no desenho do grafo não é apenas um truque aritmético, mas a atualização de um certificado de otimalidade que valida a resposta final.
+
+\subsection{Visualização e interação: princípios em uso}
+Há evidências de que diagramas e animações, quando bem projetados, podem acelerar a compreensão de relações topológicas e causais \cite{larkin1987diagram,ware2012information}.
+
+
+A teoria da carga cognitiva sugere que combinar representações verbais e visuais pode reduzir \emph{carga extrínseca} e favorecer integração semântica \cite{mayer2009multimedia,paivio1990}. Diretrizes de aprendizagem multimídia recomendam evitar excesso de elementos visuais que não contribuam para o entendimento (reduzindo carga extrínseca) e alinhar texto e imagens no tempo e no espaço (reduzindo esforço de coordenação) \cite{mayer2009multimedia}.
+
+
+No campo específico de matemática avançada, Tall enfatiza a coordenação entre registros — intuitivo, visual, simbólico e formal — como motor da passagem do pensamento predominantemente procedimental para o conceitual \cite{tall1991advanced}. Diagramas não são meros adornos: estruturam inferências espaciais e relacionais de modo mais eficiente que sentenças lineares \cite{larkin1987diagram}.
+
+
+De modo convergente, pesquisas em educação em ciência da computação apontam que visualizações de algoritmos só se traduzem em melhora de aprendizagem quando ativam processos mentais do estudante, promovendo previsão, manipulação e explicação, em vez de mera observação passiva \cite{hundhausen2002meta,naps2003engagement}. Assim, tanto na matemática quanto na computação, o poder das visualizações reside menos no formato gráfico em si e mais na forma como elas integram e articulam o raciocínio.
+
+Esses princípios orientaram o desenvolvimento do sistema interativo criado neste trabalho. A ferramenta permite visualizar e manipular digrafos, acompanhar a execução passo a passo dos métodos de Chu–Liu/Edmonds e de Frank e alternar entre representações essenciais ao entendimento dos algoritmos: o grafo original, as contrações de ciclos, os custos reduzidos e as reexpansões. Ao concentrar em um único ambiente a estrutura gráfica, as operações do algoritmo e sua justificativa conceitual, a ferramenta busca reduzir a carga extrínseca e facilitar a construção de esquemas mentais integrados.
+
+\section{O ecossistema de ferramentas}
+
+Materiais que articulam teoria, evidências empíricas e interatividade tendem a favorecer transferência e retenção. Com base nesses fundamentos, realizamos um levantamento de ferramentas digitais relevantes para o ensino de grafos e digrafos, buscando mapear soluções existentes, suas finalidades e limitações. Esse mapeamento permitiu identificar tanto o espaço de possibilidades quanto lacunas específicas que motivaram o desenvolvimento da aplicação proposta neste trabalho.
+
+De modo geral, ferramentas digitais podem reduzir carga extrínseca e facilitar a integração entre registros visual, simbólico e formal quando a interação é projetada para promover engajamento ativo \cite{mayer2009multimedia,sweller1988cognitive,hundhausen2002meta,naps2003engagement}. No entanto, as abordagens disponíveis atualmente distribuem-se em diferentes categorias, cada qual cobrindo apenas parte das necessidades envolvidas no ensino de algoritmos para arborescências.
+
+% A seguir, descrevemos cada categoria, apresentando suas forças, limitações e exemplos representativos observados na revisão
+
+% Várias ferramentas digitais podem apoiar o ensino de grafos e digrafos, cada uma com forças e limitações específicas. A seguir, discutimos quatro categorias principais: (i) diagramas programáveis e tipografia matemática, (ii) exploração e edição de grafos, (iii) visualização de algoritmos, e (iv) ambientes programáveis e reprodutibilidade.
+
+A seguir, descrevemos quatro categorias de ferramentas digitais que podem apoiar o ensino de grafos e digrafos, indicando para cada uma suas forças, limitações e exemplos representativos: (i) diagramas programáveis e tipografia matemática; (ii) exploração e edição de grafos; (iii) visualização de algoritmos; e (iv) ambientes programáveis e reprodutibilidade.
+
+As ferramentas da primeira categoria permitem criar diagramas de grafos com semântica visual consistente, integrando-os a textos matemáticos. Essas ferramentas são úteis para ilustrar conceitos, definições e provas em materiais didáticos. Existem uma série de benefícios didáticos como semântica visual estável (mesmo conceito, apresentado da mesma forma), autoria próxima ao símbolo e ao texto (co-referência) e manutenção e versionamento fáceis. Podemos levantar como limitações o fato de que as interação costumam ser offline (figuras estáticas) e a curva de aprendizado de sintaxe pode ser um obstáculo inicial. Em contextos de prova e definição, esses recursos ancoram a narrativa formal com diagramas que obedecem às diretrizes de \cite{larkin1987diagram,ware2012information}.
+
+Já ferramentas de exploração e edição de grafos permitem que os usuários interajam com representações gráficas de dados, facilitando a manipulação e a análise de estruturas complexas. Essas ferramentas são essenciais para atividades que exigem uma compreensão profunda das relações entre os elementos de um grafo. Elas são adequadas para: reconhecer padrões estruturais (componentes, comunidades), discutir implicações de layouts para percepção de estruturas, atividades de descoberta assistida (``\textit{overview} \textrightarrow{} \textit{filter} \textrightarrow{} \textit{details}'') \cite{shneiderman1996eyes}. Porém existem algumas limitações, como o fato dessas ferramentas serem focadas para análise exploratória de dados, não em algoritmos específicos, alta carga extrínseca ao alternar entre interface gráfica e conceitos teóricos, além falta de controle fino sobre estados intermediários de algoritmos.
+
+Sobre as ferramentas de visualização de algoritmos, elas são projetadas para ilustrar o funcionamento interno de algoritmos através de animações e representações gráficas. Essas ferramentas são particularmente eficazes para demonstrar processos dinâmicos e mudanças de estado ao longo do tempo. Evidências sugerem ganhos quando o estudante prevê, manipula e explica o que vê, ao invés de consumir animações passivamente. \cite{visualgo,hundhausen2002meta,naps2003engagement}
+
+Ainda temos ferramentas em ambientes programáveia, elas são valiosas para criar exemplos reprodutíveis e explorar algoritmos de forma prática.Contudo, requerem familiaridade com programação e podem introduzir carga extrínseca se o foco se desviar para detalhes de implementação. A curadoria do conteúdo é essencial para manter o foco didático e evitar dispersão.
+
+A Tabela~\ref{tab:ferramentas-categorias} sumariza as categorias discutidas, com suas forças, limitações e exemplos representativos.
+
+\begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabularx}{\textwidth}{X X X X}
+        \hline
+        \textbf{Categoria}                                                                                                                                                          & \textbf{Forças} & \textbf{Limitações} & \textbf{Exemplos} \\
+        \hline
+
+        Diagramas programáveis e tipografia matemática                                                                                                                              &
+        Semântica visual estável; co-referência entre texto e diagrama; manutenção e versionamento fáceis; layouts consistentes.                                                    &
+        Interação offline; curva de aprendizado de sintaxe; pouco adequadas para representar dinâmica de algoritmos.                                                                &
+        \textit{Graphviz/dot}; \textit{TikZ/PGF}                                                                                                                                                                                                \\
+
+        Exploração e edição de grafos                                                                                                                                               &
+        Layouts automáticos; suporte a filtros e métricas; adequadas para investigar padrões estruturais e relações complexas.                                                      &
+        Foco maior em análise do que em algoritmos; alternância entre interface gráfica e conceitos teóricos aumenta carga extrínseca; pouco controle sobre estados intermediários. &
+        \textit{Gephi}; \textit{yEd}; \textit{Cytoscape}                                                                                                                                                                                        \\
+
+        Visualização de algoritmos                                                                                                                                                  &
+        Explica transformações dinâmicas; eficaz para raciocínio procedimental; ganhos quando o estudante prevê, manipula e explica o que vê.                                       &
+        Pode induzir consumo passivo; limita personalização e integração com código.                                                                                                &
+        \textit{VisuAlgo}; repositórios de animações de algoritmos                                                                                                                                                                              \\
+
+        Ambientes programáveis e reprodutibilidade                                                                                                                                  &
+        Alta flexibilidade; integra código, texto e visualizações; ideal para exploração prática e criação de exemplos reprodutíveis.                                               &
+        Exige familiaridade com programação; risco de dispersão em detalhes técnicos; requer curadoria didática.                                                                    &
+        \textit{Jupyter Notebooks}; \textit{NetworkX}                                                                                                                                                                                           \\
+        \hline
+    \end{tabularx}
+    \caption{Síntese das categorias de ferramentas digitais para o ensino de grafos e digrafos.}
+    \label{tab:ferramentas-categorias}
+\end{table}
+
+% Tendo em vista essas categorias, desenvolvemos uma aplicação \textit{web} interativa que combina elementos de visualização de algoritmos e ambientes programáveis, com foco específico nos algoritmos de arborescência de custo mínimo. A seguir, apresentamos princípios envolvendo a teoria de interação humano-computador que orientaram o desenho da ferramenta, e em seguida descrevemos a aplicação com seus respectivos detalhes de implementação e como ela se posiciona nesse ecossistema.
+
+Esse levantamento mostra que, embora existam soluções robustas em cada categoria, nenhuma delas integra de forma unificada a visualização de algoritmos, a manipulação direta do grafo com acesso aos estados intermediários (como contrações, custos reduzidos e reexpansões) e a coordenação entre a representação visual e a explicitação conceitual subjacente. Diante dessas lacunas, desenvolvemos uma aplicação web interativa que combina visualização algorítmica e manipulação gráfica, com foco específico nos procedimentos que compõem a construção de arborescências de custo mínimo. Na seção seguinte, apresentamos os princípios de interação humano–computador que orientaram esse design e detalhamos como a aplicação se posiciona no ecossistema identificado.

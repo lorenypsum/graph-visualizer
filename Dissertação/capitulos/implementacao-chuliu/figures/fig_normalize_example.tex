@@ -1,0 +1,29 @@
+\begin{tikzpicture}[>=Stealth, node distance=2.5cm, scale=0.9, every node/.style={scale=0.9}]
+    % Grafo antes da normalização
+    \node[circle,draw,fill=blue!20,minimum size=8mm] (u1) at (0,2) {\(u_1\)};
+    \node[circle,draw,fill=blue!20,minimum size=8mm] (u2) at (0,0) {\(u_2\)};
+    \node[circle,draw,fill=blue!20,minimum size=8mm] (u3) at (0,-2) {\(u_3\)};
+    \node[circle,draw,fill=green!20,minimum size=8mm] (v1) at (3,0) {\(v\)};
+
+    \draw[->,thick] (u1) to node[above] {5} (v1);
+    \draw[->,thick,red] (u2) to node[above] {3} (v1);
+    \draw[->,thick] (u3) to node[below] {7} (v1);
+
+    \node[above] at (1.5,2.8) {\textbf{Antes:} \(y(v)=\min\{5,3,7\}=3\)};
+
+    % Seta de transformação
+    \node at (5,0) {\Large\(\longrightarrow\)};
+    \node[align=center] at (5,-0.8) {\small\texttt{normalize\_incoming\_}\\[-2pt]\small\texttt{edge\_weights(D, v)}};
+
+    % Grafo depois da normalização
+    \node[circle,draw,fill=blue!20,minimum size=8mm] (u1b) at (7,2) {\(u_1\)};
+    \node[circle,draw,fill=blue!20,minimum size=8mm] (u2b) at (7,0) {\(u_2\)};
+    \node[circle,draw,fill=blue!20,minimum size=8mm] (u3b) at (7,-2) {\(u_3\)};
+    \node[circle,draw,fill=green!20,minimum size=8mm] (v2) at (10,0) {\(v\)};
+
+    \draw[->,thick] (u1b) to node[right, xshift=10pt] {\(5-3=2\)} (v2);
+    \draw[->,thick,red] (u2b) to node[above, xshift=-4pt] {\(3-3=0\)} (v2);
+    \draw[->,thick] (u3b) to node[right, xshift=10pt] {\(7-3=4\)} (v2);
+
+    \node[above] at (8.5,2.8) {\textbf{Depois:} ao menos uma entrada tem custo 0};
+\end{tikzpicture}

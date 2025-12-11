@@ -1,0 +1,96 @@
+% !TEX program = latexmk
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{microtype}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,fit,calc}
+
+\begin{document}
+\centering
+    % Panel (a): contracted graph just before expansion
+    \begin{minipage}{.31\textwidth}
+        \centering
+        \begin{tikzpicture}[>=Latex]
+            	\tikzset{
+                vertex/.style={circle,draw,fill=white,inner sep=1pt,font=\small},
+                sel/.style={-Latex,very thick,green!60!black},
+                zero/.style={-Latex,very thick,blue!70},
+                ext/.style={-Latex,dashed,gray},
+                normal/.style={-Latex,thin}
+            }
+            \node[vertex] (r) at (-0.2,1.0) {$r$};
+            \node[vertex] (u) at (-0.9,0.0) {$u$};
+            \node[vertex,very thick] (x) at (0.6,0.0) {$x_C$};
+            \node[vertex] (v) at (1.9,0.0) {$v$};
+            \draw[sel]   (u) to[bend left=8] (x);   % chosen entering arc to x_C
+            \draw[normal](x) to[bend left=8] (v);   % some outgoing arc
+            \draw[ext]   (r) to[bend left=15] (x);
+        \end{tikzpicture}
+        \\[2pt]
+        \small (a) Antes: grafo contraído com o arco que entra em $x_C$ selecionado.
+    \end{minipage}\hfill
+    % Panel (b): expand C, before removing an internal arc
+    \begin{minipage}{.31\textwidth}
+        \centering
+        \begin{tikzpicture}[>=Latex]
+            	\tikzset{
+                vertex/.style={circle,draw,fill=white,inner sep=1pt,font=\small},
+                sel/.style={-Latex,very thick,green!60!black},
+                zero/.style={-Latex,very thick,blue!70},
+                ext/.style={-Latex,dashed,gray},
+                normal/.style={-Latex,thin}
+            }
+            \node[vertex] (r2) at (-0.2,1.0) {$r$};
+            \node[vertex] (u2) at (-0.9,0.0) {$u$};
+            \node[vertex] (a)  at (0.4,0.35) {$a$};
+            \node[vertex] (b)  at (1.2,0.35) {$b$};
+            \node[vertex] (c)  at (0.8,-0.4) {$c$};
+            \node[vertex] (v2) at (2.2,0.0) {$v$};
+            % internal cycle C with zero-reduced-cost arcs
+            \draw[zero] (a) -- (b);
+            \draw[zero] (b) -- (c);
+            \draw[zero] (c) -- (a);
+            % mapped entering arc to some w in C (e.g., u -> b)
+            \draw[sel] (u2) to[bend left=8] (b);
+            % an outgoing arc from C
+            \draw[normal] (c) to[bend left=8] (v2);
+            % optional external arc from r
+            \draw[ext] (r2) to[bend left=12] (a);
+        \end{tikzpicture}
+        \\[2pt]
+        \small (b) Expansão: $x_C$ é substituído por $C$, mantendo o arco que entra em $C$.
+    \end{minipage}\hfill
+    % Panel (c): remove one internal arc to break the cycle
+    \begin{minipage}{.31\textwidth}
+        \centering
+        \begin{tikzpicture}[>=Latex]
+            	\tikzset{
+                vertex/.style={circle,draw,fill=white,inner sep=1pt,font=\small},
+                sel/.style={-Latex,very thick,green!60!black},
+                zero/.style={-Latex,very thick,blue!70},
+                ext/.style={-Latex,dashed,gray},
+                normal/.style={-Latex,thin}
+            }
+            \node[vertex] (u3) at (-0.9,0.0) {$u$};
+            \node[vertex] (a3)  at (0.4,0.35) {$a$};
+            \node[vertex] (b3)  at (1.2,0.35) {$b$};
+            \node[vertex] (c3)  at (0.8,-0.4) {$c$};
+            \node[vertex] (v3) at (2.2,0.0) {$v$};
+            % keep entering arc and one outgoing
+            \draw[sel]   (u3) to[bend left=8] (b3);
+            \draw[normal](c3) to[bend left=8] (v3);
+            % keep two internal zero-cost arcs and remove one (b->c removed)
+            \draw[zero] (a3) -- (b3);
+            % removed arc visual: faded/dashed with cross
+            \draw[ext] (b3) -- (c3);
+            \path (b3) -- (c3) node[pos=0.5] (mid) {};
+            \node[red] at (mid) {$\times$};
+            \draw[zero] (c3) -- (a3);
+        \end{tikzpicture}
+        \\[2pt]
+        \small (c) Final: remove-se um arco interno de $C$ para quebrar o ciclo (mantendo grau de entrada 1).
+    \end{minipage}
+    % Texto explicativo removido para manter saída em uma única página.
+    \end{document}

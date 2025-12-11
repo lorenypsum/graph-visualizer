@@ -1,0 +1,32 @@
+% !TEX program = latexmk
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{microtype}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,fit,calc}
+
+\begin{document}
+\centering
+\begin{tikzpicture}[>=Stealth, node distance=1.2cm]
+    % Coluna A (domínio) — retângulos arredondados
+    \node[draw, rounded corners, fill=blue!10, minimum width=8mm, minimum height=6mm] (a1) {$a_1$};
+    \node[draw, rounded corners, fill=blue!10, below=of a1, minimum width=8mm, minimum height=6mm] (a2) {$a_2$};
+    \node[draw, rounded corners, fill=blue!10, below=of a2, minimum width=8mm, minimum height=6mm] (a3) {$a_3$};
+    % Coluna B (contradomínio) — círculos
+    \node[circle, draw, fill=green!10, right=3.2cm of a1, minimum size=6mm] (b1) {$b_1$};
+    \node[circle, draw, fill=green!10, below=of b1, minimum size=6mm] (b2) {$b_2$};
+    \node[circle, draw, fill=green!10, below=of b2, minimum size=6mm] (b3) {$b_3$};
+    % Agrupadores (caixas) para A e B com rótulos
+    \node[draw=blue!50, rounded corners, fit=(a1)(a2)(a3), inner sep=5pt, label={[blue!60]above:A (domínio)}] {};
+    \node[draw=green!50!black, fit=(b1)(b2)(b3), inner sep=7pt, label={[green!50!black]above:B (contradomínio)}] {};
+    % Setas representando os pares de R (neutras para destacar os conjuntos)
+    \draw[->, thick, draw=gray!70] (a1) -- (b2);
+    \draw[->, thick, draw=gray!70] (a2) -- (b1);
+    \draw[->, thick, draw=gray!70] (a2) -- (b3);
+    \draw[->, thick, draw=gray!70] (a3) -- (b3);
+\end{tikzpicture}
+%
+% Nota: Texto explicativo removido para manter o PDF em uma única página.
+\end{document}

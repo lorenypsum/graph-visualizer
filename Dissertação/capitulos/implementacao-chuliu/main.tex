@@ -1,0 +1,1145 @@
+\chapter{Algoritmo de Chu–Liu--Edmonds}
+\label{cap:chuliu-edmonds}
+
+Neste capítulo apresentaremos o algoritmo de Chu--Liu--Edmonds~\cite{chu}~\cite{edmonds}, que determina
+uma $r$-arborescência geradora de custo mínimo em um $r$-digrafo ponderado.
+O algoritmo baseia-se em duas operações fundamentais:
+(i) a redução gulosa dos custos dos arcos e (ii) a contração de ciclos.
+Essas operações permitem resolver recursivamente uma instância menor do problema
+e, em seguida, estender a solução obtida para o problema original.
+
+O propósito deste capítulo é fornecer uma descrição precisa tanto do algoritmo
+quanto da implementação desenvolvida neste trabalho.
+
+
+\section{O algoritmo}
+
+O problema que nos interessa consiste em, dado um $r$-digrafo ponderado
+$(D,w,r)$ (veja a página~\pageref{pag:rdig}), encontrar uma $r$-arborescência
+geradora de custo mínimo de $D$.
+
+O algoritmo de Chu--Liu--Edmonds recebe um $r$-digrafo ponderado $(D,w,r)$
+e devolve uma $r$-arborescência geradora de custo mínimo de $D$.
+
+Vamos primeiro fornecer uma visão geral do algoritmo. O algoritmo é recursivo.
+Inicialmente, ele faz uma escolha gulosa de um certo conjunto de arcos.
+Se esse conjunto forma uma arborescência, o algoritmo pára e devolve esse conjunto.
+Caso contrário, identifica um ciclo especial no digrafo e o contrai, produzindo
+um novo digrafo. Esse novo digrafo é então submetido recursivamente ao algoritmo,
+que devolve uma arborescência de custo mínimo. Por fim, utilizamos o ciclo
+contraído para construir uma arborescência de custo mínimo no digrafo original.
+Essa construção é detalhada a seguir.
+
+
+\subsection*{Escolha gulosa}
+Suponha doravante que $(D, w, r)$ é um $r$-digrafo ponderado.
+O algoritmo tem um caráter guloso. Note que, se \(T\) é uma \(r\)-arborescência de $D$,
+então, para cada vértice \(v \neq r\), existe exatamente um arco de \(T\) que entra em \(v\). Isso sugere a seguinte escolha gulosa: para cada vértice \(v \neq r\), selecione um arco \(a_v\) de custo mínimo dentre aqueles que entram em \(v\) e forme o conjunto \(T := \{a_v : v \in V \setminus \{r\}\}\).
+
+\begin{figure}[h]
+	\centering
+	\begin{tikzpicture}[>=Stealth]
+		% estilos
+		\tikzset{
+			vtx/.style={circle, draw,fill=blue!8, thick, inner sep=1.2pt, minimum size=6mm},
+			chosen/.style={->, very thick, draw=blue},
+			other/.style={->, semithick, draw=black!35},
+			costB/.style={font=\scriptsize, fill=white, inner sep=1pt, text=blue},
+			costG/.style={font=\scriptsize, fill=white, inner sep=1pt, text=black!55}
+		}
+
+		% layout (mais espaçado)
+		\node[vtx] (r) at (0,0) {$r$};
+		\node[vtx] (a) at (3,1.6) {$a$};
+		\node[vtx] (b) at (3,-1.6) {$b$};
+		\node[vtx] (c) at (6,2.2) {$c$};
+		\node[vtx] (d) at (6,0.0) {$d$};
+		\node[vtx] (e) at (6,-2.2) {$e$};
+
+		% --- arcos NÃO escolhidos (cinza), agora com curvaturas mais limpas ---
+		\draw[other] (b) to[bend left=12] node[costG, above] {4} (a);   % b->a
+		\draw[other] (a) to[bend left=14] node[costG, below] {5} (b);   % a->b
+
+		% r->c: externo por cima, suave (pontos de controle explícitos)
+		\draw[other]
+		(r) .. controls (0.8,2.4) and (5.2,3.0) ..
+		node[costG, yshift=4pt, pos=0.53] {3} (c);
+
+		% a->d (referência)
+		\draw[other] (a) -- node[costG, right] {3} (d);
+
+		% c->e: leve curvatura pela direita (sem "barriga")
+		\draw[other]
+		(c) .. controls (7.6,2.6) and (7.6,-2.6) ..
+		node[costG, xshift=8pt, pos=0.52] {5} (e);
+
+		% --- arcos ESCOLHIDOS (AZUL) — formam a r-arborescência T ---
+		\draw[chosen] (r) -- node[costB, above] {1} (a);   % r->a
+		\draw[chosen] (r) -- node[costB, below] {2} (b);   % r->b
+		\draw[chosen] (a) -- node[costB, above] {1} (c);   % a->c
+		\draw[chosen] (b) -- node[costB, above] {1} (d);   % b->d
+		\draw[chosen] (b) -- node[costB, below] {2} (e);   % b->e
+
+		% legenda compacta
+		\node[align=left, anchor=west] at (8.4,1.9) {\footnotesize \textbf{Escolha gulosa:}\\[-2pt]
+			\footnotesize para cada \(v\neq r\), escolha\\[-1pt]
+			\footnotesize um arco de custo mínimo\\[-1pt]
+			\footnotesize que entra em \(v\).};
+		\draw[chosen] (9.0,0.8) -- +(0.9,0) node[right, costB] {\footnotesize arcos de \(T\)};
+		\draw[other]  (9.0,0.2) -- +(0.9,0) node[right, costG] {\footnotesize demais arcos};
+	\end{tikzpicture}
+
+	\caption{A figura ilustra a escolha gulosa quando esta produz uma $r$-arborescência.
+		Os arcos em \textcolor{blue}{azul} são os escolhidos; os cinza são os demais arcos
+		do digrafo.}
+\end{figure}
+
+Suponha que \(T\) é uma \(r\)-arborescência. Não é difícil verificar que \(T\) tem custo mínimo.
+De fato, seja \(F\) uma \(r\)-arborescência de \(D\). Para cada vértice \(v \neq r\), escreva \(b_v\) para o \emph{único} arco de \(F\) que entra em \(v\). Pela escolha gulosa,
+\[
+	w(a_v) \leq w(b_v) \quad \text{para todo } v \neq r.
+\]
+Logo,
+\[
+	w(F) \;=\; \sum_{v \in V \setminus \{r\}} w(b_v)
+	\;\;\geq\;\; \sum_{v \in V \setminus \{r\}} w(a_v)
+	\;=\; w(T).
+\]
+Portanto, \(T\) é uma \(r\)-arborescência de custo mínimo.
+
+A Figura~\ref{fig:esc:nfunc} ilustra que podemos não ter tanta sorte com $T$.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[>=Stealth, node distance=2.0cm]
+		% estilos
+		\tikzset{
+			v/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
+			cheap/.style={->, very thick, draw=blue!70},
+			expensive/.style={->, dashed, draw=gray!60}
+		}
+		% vértices
+		\node[v] (r) {\small $r$};
+		\node[v] (a) [right=2.2cm of r] {\small $a$};
+		\node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
+		\node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
+		% ciclo de escolhas mais baratas (custo 1)
+		\draw[cheap] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (b);
+		\draw[cheap] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
+		\draw[cheap] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (a);
+		% arcos da raiz mais caros (não escolhidos pelo critério local)
+		\draw[expensive] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (a);
+		\draw[expensive] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (b);
+		\draw[expensive] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (c);
+	\end{tikzpicture}
+	\caption{Os arcos azuis são os da escolha gulosa.}
+	\label{fig:esc:nfunc}
+\end{figure}
+Ora, se no lugar do arco $(c,a)$ tivessemos escolhido o arco $(r, a)$, então
+$r$-arborescência resultante seria de custo mínimo.
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[>=Stealth, node distance=2.0cm]
+		% estilos
+		\tikzset{
+			v/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
+			cheap/.style={->, very thick, draw=blue!70},
+			expensive/.style={->, dashed, draw=gray!60}
+		}
+		% vértices
+		\node[v] (r) {\small $r$};
+		\node[v] (a) [right=2.2cm of r] {\small $a$};
+		\node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
+		\node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
+		% ciclo de escolhas mais baratas (custo 1)
+		\draw[cheap] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (b);
+		\draw[cheap] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (c);
+		\draw[expensive] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (a);
+		% arcos da raiz mais caros (não escolhidos pelo critério local)
+		\draw[cheap] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 3} (a);
+		\draw[expensive] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (b);
+		\draw[expensive] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (c);
+	\end{tikzpicture}
+	\caption{Os arcos azuis são os da escolha gulosa.}
+\end{figure}
+
+
+\section{Custos reduzidos}
+
+Vamos introduzir agora a noção de custo reduzido. 
+Essa noção permite fazer uma tranformação nos custos que preserva a otimalidade.
+
+Seja \(q : V \setminus \{r\} \to \mathbb{R}\) uma função.
+Definimos o \textbf{custo \(q\)-reduzido} \(w_q : A \to \mathbb{R}\) por%
+\footnote{Recorde que nenhum arco entra em $r$; logo, a função $w_q$ está bem definida.}
+\[
+	w_q(uv) := w(uv) - q(v), \qquad uv \in A.
+\]
+Para um conjunto \(X \subseteq V\), escrevemos \(q(X) := \sum_{u \in X} q(u)\).
+
+A próxima proposição mostra que a transformação por custo \(q\)-reduzido preserva a otimalidade.
+
+\begin{proposicao}
+\label{prop:custo:red}
+	Para toda função \(q: V\setminus \{r\} \to \mathbb{R}\),
+	uma \(r\)-arborescência \(T\) é de custo mínimo em $(D, w)$ se, e somente se, \(T\) é 
+	de custo mínimo em \((D, w_q)\).
+\end{proposicao}
+\begin{proof}[Prova.]
+	Seja \(F\) uma \(r\)-arborescência. Para cada \(u \in V \setminus \{r\}\), seja \(a_u\) o único arco de \(F\) que entra em \(u\). Então
+	\begin{align*}
+		w_q(F)
+		 & = \sum_{u \in V \setminus \{r\}} w_q(a_u)                                     \\
+		 & = \sum_{u \in V \setminus \{r\}} \bigl(w(a_u) - q(u)\bigr)                    \\
+		 & = \sum_{u \in V \setminus \{r\}} w(a_u) - \sum_{u \in V \setminus \{r\}} q(u) \\
+		 & = w(F) - q(V \setminus \{r\}).
+	\end{align*}
+	Assim, para quaisquer $r$-arborescências $T$ e $F$,
+	\[
+		w(T) \le w(F)
+		\;\;\Longleftrightarrow\;\;
+		w_q(T) = w(T) - q(V \setminus \{r\}) \le w(F) - q(V \setminus \{r\}) = w_q(F),
+	\]
+	o que prova a proposição.
+\end{proof}
+
+O custo reduzido de interesse é o dado pela função~$\lambda$ definida a seguir.
+Para cada $v \in V \setminus \{r\}$, definimos
+\[
+  \lambda(v) := \lambda_w(v) := \min\{\, w(a) : a \in \delta^{-}(v) \,\}.
+\]
+Note que $\lambda$ está bem definida, uma vez que $D$ possui uma $r$-arborescência e, portanto,
+existe ao menos um arco que entra em cada vértice diferente de~$r$.
+Consequentemente, para todo $v \in V \setminus \{r\}$,
+\[
+  \min\{\, w_\lambda(a) : a \in \delta^{-}(v) \,\} = 0,
+\]
+isto é, precisamente os arcos de custo mínimo que entram em~$v$ passam a ter custo zero,
+e os demais ficam com custo positivo.
+
+Definimos o subdigrafo gerador $D_0$ de $D$ escolhendo, para cada
+$v \neq r$, exatamente um arco $a_v$ que entra em $v$ e satisfaz
+$w_\lambda(a_v) = 0$. Assim,
+\[
+  V(D_0) := V(D)
+  \quad\text{e}\quad
+  A(D_0) := \{\, a_v : v \in V(D) \setminus \{r\} \,\}.
+\]
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[>=Stealth, node distance=2.0cm]
+		% estilos
+		\tikzset{
+			v/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
+			cheap/.style={->, very thick, draw=blue!70},
+			expensive/.style={->, dashed, draw=gray!60}
+		}
+		% vértices
+		\node[v] (r) {\small $r$};
+		\node[v] (a) [right=2.2cm of r] {\small $a$};
+		\node[v] (b) [above right=1.2cm and 1.6cm of a] {\small $b$};
+		\node[v] (c) [below right=1.2cm and 1.6cm of a] {\small $c$};
+		% ciclo de escolhas mais baratas (custo 1)
+		\draw[cheap] (a) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (b);
+		\draw[cheap] (b) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (c);
+		\draw[cheap] (c) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (a);
+		% arcos da raiz mais caros (não escolhidos pelo critério local)
+		\draw[expensive] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 2} (a);
+		\draw[expensive] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 1} (b);
+		\draw[expensive] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 3} (c);
+	\end{tikzpicture}
+	\caption{Os arcos azuis são os arcos de $D_0$.}
+\end{figure}
+
+Como vimos, se $D_0$ é uma $r$-arborescência, então $D_0$ tem custo mínimo.
+Podemos então supor que $D_0$ não é uma $r$-arborescência. 
+Vamos mostrar que, nesse caso, $D_0$ possui um ciclo.
+
+Seja $v \neq r$ um vértice de $V$ que \emph{não} é alcançável a partir de $r$ em $D_0$;
+um tal vértice existe uma vez que estamos admitindo que $D_0$ não possui uma $r$-aborescência.
+Observe que, por construção, para cada vértice $s$ de $D_0$ existe exatamente um arco
+de $D_0$ que entra em $s$.
+Considere um caminho simples maximal%
+\footnote{Maximal aqui tem o seguinte sentido. Para cada vértice $u$
+	de $D_0$, as sequencias $P \cdot u$ e $u \cdot P$ não são caminhos simples.}
+de $D_0$ que termina em $v$.
+Seja $u$ o início de $P$. Como $v$ não é atingível a partir de $r$, temos que
+$u \neq r$. Logo, existe exatamente um arco, digamos $tu$, de $D_0$ que entra em $u$.
+Pela maximalidade de \(P\), o vértice \(t\) é um dos vértices de \(P\) (caso contrário,%
+\footnote{Para sequências $\alpha$ e $\beta$, escrevemos $\alpha \cdot \beta$ para denotar
+a concatenação de $\alpha$ e $\beta$. Para simplificar a notação, uma sequência
+de comprimento $1$ é identificada com o seu único elemento.}
+$t \cdot P$ é um caminho simples, o que contraria a escolha de $P$).
+Como \(P\) é um caminho simples que começa em \(u\), o vértice \(t\) aparece
+em \(P\) \emph{após} \(u\); portanto, \(P\) contém um subcaminho $S$ de \(u\) até \(t\).
+Consequentemente, $S \cdot u$ é um ciclo de $D_0$. Isso prova que $D_0$ contém um ciclo.
+
+\begin{figure}[h]
+	\centering
+	\begin{tikzpicture}[>=Stealth]
+		% estilos
+		\tikzset{
+			vtx/.style={circle, draw, fill=blue!8, thick, inner sep=1pt, minimum size=6mm},
+			Pdash/.style={->, thick, densely dashed},   % parte tracejada de P
+			cycleedge/.style={->, ultra thick}          % arco que fecha o ciclo
+		}
+
+		% vértices em coordenadas (distância maior entre u e t)
+		\node[vtx] (u) at (0,0) {$u$};
+		\node[vtx] (t) at (4.8,0) {$t$};
+		\node[vtx] (d) at (7.2,0) {$d$};
+		\node[vtx] (v) at (9.6,0) {$v$};
+
+		% raiz r (apenas contexto)
+		\node[vtx] (r) at (-2,1.6) {$r$};
+		\node at (-2,2.2) {\small raiz};
+
+		% --- Caminho P ---
+		% parte inicial de P (u ~~~> w) como arco ondulado azul (sem o vértice intermediário)
+		\draw[blue, very thick, -{Stealth[length=2mm]}, decorate,
+		decoration={snake, amplitude=1.2pt, segment length=5pt}]
+		(u) .. controls (1.4,1.2) and (3.4,1.2) .. node[midway, yshift=8pt] {$S$} (t);
+
+		% continuação de P (tracejada): w -> d -> v
+		\draw[Pdash] (t) -- (d);
+		\draw[Pdash] (d) -- (v);
+
+		% rótulo P (afastado do arco w->u)
+		\node at (7.2,-0.9) {\small \(P\)};
+
+		% arco que fecha o ciclo: t -> u
+		\draw[cycleedge, bend left=35] (t) to node[above, yshift=1pt] {$tu \in A(D_0)$} (u);
+	\end{tikzpicture}
+
+	\caption{O caminho simples maximal \(P\) inicia em \(u\) e termina em \(v\).
+		A porção \(S\) de \(P\) entre \(u\) e \(t\) é indicada pelo arco ondulado azul; o
+		caminho $S \cdot u$ é um ciclo.}
+\end{figure}
+
+Devemos agora mostrar o que fazer com um desses ciclos de $D_0$.
+
+\subsection*{Contração de ciclos}
+
+A próxima operação do algoritmo é a contração de ciclos (veja a Seção~\ref{sec:contracao}).
+É conveniente identificar um ciclo com o conjunto de seus vértices.
+Suponha que o digrafo $D_0$ possua um ciclo, digamos $C$.
+Observe que $r \notin V(C)$.
+Recorde que, ao \emph{contrair} o ciclo $C$ em $D$ e obter o digrafo
+$D/C \mapsto x_C$, identificamos todos os vértices de $C$ em um único vértice,
+denotado por $x_C$ e visto como um supervértice, e redirecionamos os arcos incidentes:
+arcos da forma $uv$, em que $v \in C$ (isto é, que entravam em $C$),
+passam a ser da forma $u x_C$ em $D/C \mapsto x_C$, e arcos da forma $vu$,
+em que $v \in C$ (isto é, que saíam de $C$), passam a ser da forma $x_C u$
+em $D/C \mapsto x_C$.
+Assim, em $D/C \mapsto x_C$, o ciclo $C$ é tratado como um único vértice.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[
+    >=Stealth,
+    node distance=2cm,
+    every node/.style={circle,draw,inner sep=1pt,font=\small}
+]
+
+  % ---------------------------
+  % Digrafo original D (à esquerda)
+  % ---------------------------
+  \begin{scope}[xshift=-4.2cm]
+    \node (r)  at (0,1.6) {$r$};
+    \node (u)  at (-1,0)  {$u$};
+    \node (v)  at ( 1,0)  {$v$};
+
+    % vértices do ciclo C
+    \node (x1) at (-0.5,-1.4) {$v_1$};
+    \node (x2) at ( 0.7,-1.2) {$v_2$};
+    \node (x3) at ( 0.1,-2.4) {$v_3$};
+
+    % arcos "externos"
+    \draw[->] (r) -- (u);
+    \draw[->] (r) -- (v);
+    \draw[->] (u) -- (x1);
+    \draw[->] (v) -- (x2);
+    \draw[->] (x3) .. controls (-1.6,-2.4) .. (u);
+
+    % ciclo C destacado
+    \draw[->,thick,blue] (x1) -- (x2);
+    \draw[->,thick,blue] (x2) -- (x3);
+    \draw[->,thick,blue] (x3) -- (x1);
+
+    % "moldura" em torno de C
+    \node[draw=blue,rounded corners,fit=(x1) (x2) (x3),inner sep=4pt] (Cbox) {};
+
+    % rótulo C sem círculo, em azul
+    \node[draw=none,inner sep=0pt,blue,anchor=south west,font=\small]
+      at (Cbox.north east) {$C$};
+
+    % rótulo do digrafo D sem círculo, em azul
+    \node[draw=none,inner sep=0pt,blue,anchor=north,font=\small]
+      at (0,-3.4) {$D$};
+  \end{scope}
+
+  % ---------------------------
+  % Setinha da contração
+  % ---------------------------
+  \node[draw=none,inner sep=0pt] at (0,0.1) {$\Longrightarrow$};
+  \node[draw=none,inner sep=0pt,font=\small] at (0,-0.5) {contração de $C$};
+
+  % ---------------------------
+  % Digrafo contraído D' (à direita)
+  % ---------------------------
+  \begin{scope}[xshift=4.2cm]
+    \node (r2)  at (0,1.6) {$r$};
+    \node (u2)  at (-1,0)  {$u$};
+    \node (v2)  at ( 1,0)  {$v$};
+
+    % vértice resultante da contração
+    \node[double,thick] (xC) at (0,-1.9) {$x_C$};
+
+    % arcos "externos" preservados
+    \draw[->] (r2) -- (u2);
+    \draw[->] (r2) -- (v2);
+
+    % arcos que antes entravam em C agora entram em x_C
+    \draw[->] (u2) -- (xC);
+    \draw[->] (v2) -- (xC);
+
+    % arco que antes saía de C agora sai de x_C
+    \draw[->] (xC) .. controls (-1.6,-2.3) .. (u2);
+
+    % rótulo D/C → x_C sem círculo (pode ficar em preto mesmo)
+    \node[draw=none,inner sep=0pt,blue,anchor=north,font=\small]
+      at (0,-2.8) {$D/C \mapsto x_C$};
+  \end{scope}
+
+\end{tikzpicture}
+\caption{Contração de um ciclo $C$ em um vértice $x_C$.}
+\label{fig:contracao-ciclo}
+\end{figure}
+
+Precisamos agora definir um novo $r$-digrafo ponderado. Ei-lo:
+$(D',w',r)$, onde $D' := D/C \mapsto x_C$ e $w' := w_\lambda/C \mapsto x_C$.
+Note que $r$ é um vértice de $D'$ e que, além disso, $D'$ possui uma
+$r$-arborescência.
+
+
+Agora vamos ilustrar um exemplo de como essa contração é feita e os custos são ajustados.
+Considere o digrafo a seguir.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[>=Stealth, node distance=2.0cm]
+		% estilos
+		\tikzset{
+			v/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
+			cycle/.style={->, very thick, draw=gray!60},
+			arcs/.style={->, thick, draw=gray!60},
+		}
+		% vértices
+		\node[v] (r) {\small $r$};
+		\node[v] (v1) [right=2.2cm of r] {\small $v_1$};
+		\node[v] (v2) [above right=1.2cm and 1.6cm of v1] {\small $v_2$};
+		\node[v] (v3) [below right=1.2cm and 1.6cm of v1] {\small $v_3$};
+		% vértices adicionais que saem do ciclo
+		\node[v] (u) [right=2.0cm of v2] {\small $u$};
+		\node[v] (w) [right=2.0cm of v3] {\small $w$};
+		% ciclo de escolhas mais baratas (custo 1)
+		\draw[cycle] (v1) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (v2);
+		\draw[cycle] (v2) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (v3);
+		\draw[cycle] (v3) to[bend left=14] node[midway, below, sloped] {\scriptsize 3} (v1);
+		% arcos da raiz mais caros (não escolhidos pelo critério local)
+		\draw[arcs] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 5} (v1);
+		\draw[arcs] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 4} (v2);
+		\draw[arcs] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 5} (v3);
+		% arcos saindo do ciclo
+		\draw[arcs] (v2) -- node[midway, above] {\scriptsize 1} (u);
+		\draw[arcs] (v3) -- node[midway, below] {\scriptsize 2} (w);
+		\draw[arcs] (v3) -- node[midway, below] {\scriptsize 4} (u);
+	\end{tikzpicture}
+\end{figure}
+
+Após a redução dos custos, obtemos um ciclo $C := (v_1, v_2, v_3, v_1)$ cujos arcos têm custo reduzido igual a zero. 
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[>=Stealth, node distance=2.0cm]
+		% estilos
+		\tikzset{
+			v/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
+			cycle/.style={->, very thick, draw=blue!70},
+			arc/.style={->, dashed, draw=gray!60},
+			redarc/.style={->, dashed, draw=red!60}
+		}
+		% vértices
+		\node[v] (r) {\small $r$};
+		\node[v] (v1) [right=2.2cm of r] {\small $v_1$};
+		\node[v] (v2) [above right=1.2cm and 1.6cm of v1] {\small $v_2$};
+		\node[v] (v3) [below right=1.2cm and 1.6cm of v1] {\small $v_3$};
+		% vértices adicionais que saem do ciclo
+		\node[v] (u) [right=2.0cm of v2] {\small $u$};
+		\node[v] (w) [right=2.0cm of v3] {\small $w$};
+
+		% ciclo com custo reduzido zero
+		\draw[cycle] (v1) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (v2);
+		\draw[cycle] (v2) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (v3);
+		\draw[cycle] (v3) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (v1);
+		% arcos da raiz com custos reduzidos
+		\draw[arc] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 2} (v1);
+		\draw[arc] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 1} (v2);
+		\draw[arc] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 3} (v3);
+		% arcos saindo do ciclo com custo reduzido zero
+		\draw[arc] (v2) -- node[midway, above] {\scriptsize 0} (u);
+		\draw[arc] (v3) -- node[midway, below] {\scriptsize 0} (w);
+		\draw[arc] (v3) -- node[midway, below] {\scriptsize 3} (u);
+	\end{tikzpicture}
+\end	{figure}
+
+Após a contração do ciclo \(C\), obtemos o digrafo abaixo com o supervértice \(x_C\).
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[>=Stealth, node distance=2.0cm]
+		% estilos
+		\tikzset{
+			v/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
+			super/.style={circle, draw, very thick, fill=orange!10, minimum size=9mm, inner sep=0pt},
+			cheap/.style={->, very thick, draw=gray!60},
+			expensive/.style={->, dashed, draw=gray!60}
+		}
+		% vértices
+		\node[v] (r) {\small $r$};
+		\node[super] (xC) [right=3.5cm of r] {\small $x_C$};
+		\node[v] (u) [above right=1.2cm and 2.0cm of xC] {\small $u$};
+		\node[v] (w) [below right=1.2cm and 2.0cm of xC] {\small $w$};
+		% arcos do digrafo contraído que entram em xC (mantêm arcos paralelos, escolhemos o de menor custo)
+		\draw[cheap] (r) to[bend left=12] node[midway, above, sloped] {\scriptsize 1} (xC);
+		% arcos que saem de xC
+		\draw[cheap] (xC) to[bend left=8] node[midway, above] {\scriptsize 0} (u);
+		\draw[cheap] (xC) to[bend right=8] node[midway, below] {\scriptsize 0} (w);
+	\end{tikzpicture}
+\end{figure}
+
+
+O digrafo contraído é submetido recursivamente ao algoritmo.
+Assim, o próximo passo consiste em reduzir os custos dos arcos dessa nova intância, obtendo
+assim o seguinte $r$-digrafo ponderado.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[>=Stealth, node distance=2.0cm]
+		% estilos
+		\tikzset{
+			v/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
+			super/.style={circle, draw, very thick, fill=orange!10, minimum size=9mm, inner sep=0pt},
+			cheap/.style={->, very thick, draw=gray!60},
+			expensive/.style={->, dashed, draw=gray!60}
+		}
+		% vértices
+		\node[v] (r) {\small $r$};
+		\node[super] (xC) [right=3.5cm of r] {\small $x_C$};
+		\node[v] (u) [above right=1.2cm and 2.0cm of xC] {\small $u$};
+		\node[v] (w) [below right=1.2cm and 2.0cm of xC] {\small $w$};
+		% arcos do digrafo contraído que entram em xC (mantêm arcos paralelos, escolhemos o de menor custo)
+		\draw[cheap] (r) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (xC);
+		% arcos que saem de xC
+		\draw[cheap] (xC) to[bend left=8] node[midway, above] {\scriptsize 0} (u);
+		\draw[cheap] (xC) to[bend right=8] node[midway, below] {\scriptsize 0} (w);
+	\end{tikzpicture}
+\end{figure}
+
+O subdigrafo gerador obtido a partir desse digrafo, usando apenas os arcos
+de custo reduzido igual a zero, possui uma $r$-arborescência.
+O algoritmo devolve essa $r$-arborescência, que agora deverá passar por
+um processo de expansão.
+
+
+
+
+\subsection*{Reexpansão de arborescências}
+
+Após resolver o problema no digrafo contraído \(D'\), obtemos uma \(r\)-arborescência geradora  \(T'\) de custo mínimo em \((D', w')\). Observe que tão somente um arco de $T'$ entra em $x_C$.
+Para reexpandir \(T'\) em uma \(r\)-arborescência \(T\) em \(D\), substituímos o supervértice \(x_C\) pelo ciclo \(C\) e adicionamos os arcos do ciclo que formam a arborescência dentro de \(C\). Especificamente, o arco \(u x_C\) de \(T'\) corresponde a um arco \(uv\) de \(D\), onde \(v \in C\). Esse arco $uv$ é incluído em $T$. Em seguida, adicionamos os arcos do ciclo \(C\) que conectam os vértices de \(C\) de forma a manter a estrutura de arborescência. Note que, devemos escolher todos os arcos do ciclo \(C\) exceto aquele que entra em \(v\), garantindo que cada vértice de \(C\) tenha grau de entrada igual a 1 em $T$.
+
+Retomemos o exemplo para ilustrar a expansão da \(r\)-arborescência geradora do digrafo contraído. Primeiro, adicionamos os vértices do ciclo \(C\) e, em seguida, incluímos os arcos apropriados para formar a \(r\)-arborescência geradora do digrafo original:
+% Seguindo o exemplo anterior, a figura abaixo ilustra a reexpansão de \(T'\) em \(D'\) para obter a \(r\)-arborescência \(T\) em \(D\):
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[>=Stealth, node distance=2.0cm]
+		% estilos
+		\tikzset{
+			v/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
+			cycle/.style={->, very thick, draw=blue!70},
+			arcs/.style={->, dashed, draw=gray!60},
+			selected/.style={->, very thick, draw=green!70}
+		}
+		% vértices
+		\node[v] (r) {\small $r$};
+		\node[v] (v1) [right=2.2cm of r] {\small $v_1$};
+		\node[v] (v2) [above right=1.2cm and 1.6cm of v1] {\small $v_2$};
+		\node[v] (v3) [below right=1.2cm and 1.6cm of v1] {\small $v_3$};
+		% vértices adicionais que saem do ciclo
+		\node[v] (u) [right=2.0cm of v2] {\small $u$};
+		\node[v] (w) [right=2.0cm of v3] {\small $w$};
+		% ciclo de escolhas mais baratas (custo 1)
+		\draw[selected] (v1) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (v2);
+		\draw[selected] (v2) to[bend left=12] node[midway, above, sloped] {\scriptsize 0} (v3);
+		% \draw[arcs] (v3) to[bend left=14] node[midway, below, sloped] {\scriptsize 0} (v1);
+		% arcos da raiz mais caros (não escolhidos pelo critério local)
+		\draw[selected] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 0} (v1);
+		% \draw[arcs] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize 0} (v2);
+		% \draw[arcs] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize 0} (v3);
+		% arcos saindo do ciclo
+		\draw[selected] (v2) -- node[midway, above] {\scriptsize 0} (u);
+		\draw[selected] (v3) -- node[midway, below] {\scriptsize 0} (w);
+		% \draw[arcs] (v3) -- node[midway, below] {\scriptsize 0} (u);
+	\end{tikzpicture}
+\end{figure}
+
+No $r$-digrafo ponderado original, temos a seguinte configuração.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[>=Stealth, node distance=2.0cm]
+		% estilos
+		\tikzset{
+			v/.style={circle, draw, fill=blue!8, minimum size=7mm, inner sep=0pt},
+			cycle/.style={->, very thick, draw=blue!70},
+			arcs/.style={->, dashed, draw=gray!60},
+			selected/.style={->, very thick, draw=green!70}
+		}
+		% vértices
+		\node[v] (r) {\small $r$};
+		\node[v] (v1) [right=2.2cm of r] {\small $v_1$};
+		\node[v] (v2) [above right=1.2cm and 1.6cm of v1] {\small $v_2$};
+		\node[v] (v3) [below right=1.2cm and 1.6cm of v1] {\small $v_3$};
+		% vértices adicionais que saem do ciclo
+		\node[v] (u) [right=2.0cm of v2] {\small $u$};
+		\node[v] (w) [right=2.0cm of v3] {\small $w$};
+		% ciclo de escolhas mais baratas (custo 1)
+		\draw[selected] (v1) to[bend left=12] node[midway, above, sloped] {\scriptsize 3} (v2);
+		\draw[selected] (v2) to[bend left=12] node[midway, above, sloped] {\scriptsize 2} (v3);
+		% \draw[arcs] (v3) to[bend left=14] node[midway, below, sloped] {\scriptsize} (v1);
+		% arcos da raiz mais caros (não escolhidos pelo critério local)
+		\draw[selected] (r) to[bend left=8] node[midway, above, sloped] {\scriptsize 5} (v1);
+		% \draw[arcs] (r) to[bend left=18] node[midway, above, sloped] {\scriptsize} (v2);
+		% \draw[arcs] (r) to[bend right=10] node[midway, below, sloped] {\scriptsize} (v3);
+		% arcos saindo do ciclo
+		\draw[selected] (v2) -- node[midway, above] {\scriptsize 1} (u);
+		\draw[selected] (v3) -- node[midway, below] {\scriptsize 2} (w);
+		% \draw[arcs] (v3) -- node[midway, below] {\scriptsize} (u);
+	\end{tikzpicture}
+\end{figure}
+
+Vamos agora verificar que a $r$-arborescência geradora $T$, obtida da construção descrita,
+é de custo mínimo em $(D, w)$.
+Por hipótese, $T'$ é uma $r$-arborescência geradora de custo mínimo em $(D',w')$, isto é,
+\[
+  w'(T') \le w'(F')
+\]
+para toda $r$-arborescência geradora $F'$ de $D'$.
+Pela construção de $T$, temos que $T$ é uma $r$-arborescência geradora tal que
+$w_\lambda(T) = w'(T')$, uma vez que todo arco $a$ de $C$ satisfaz $w_\lambda(a) = 0$.
+
+Suponha agora que $F$ seja uma $r$-arborescência geradora de custo mínimo em
+$(D,w_\lambda)$. Então $w_\lambda(F) \le w_\lambda(T)$.
+Seja $F' := F/C \mapsto x_C$. Note que $F'$ pode não ser uma $r$-arborescência de $D'$.
+No entanto, $F'$ \emph{contém} uma $r$-arborescência de $D'$; logo, existe
+$F'' \subseteq F'$ tal que $F''$ é uma $r$-arborescência de $D'$.
+Temos, então, $w'(F'') \le w'(F')$ pois $w'(a) \ge 0$ para cada $a \in A(D')$.
+Por hipótese, $w'(T') \le w'(F'')$ o que, combinado com $w_\lambda(T) = w'(T')$,
+permite inferir que
+\[
+  w_\lambda(T) \le w'(F'') \le w'(F') = w_\lambda(F).
+\]
+Portanto, $T$ é uma $r$-arborescência geradora de custo mínimo em $(D,w_\lambda)$.
+Agora, pela Proposição~\ref{prop:custo:red}, $T$ é uma $r$-arborescência geradora
+de custo mínimo em $(D, w)$, como queríamos. Isso completa a prova de que a $r$-arborescência
+devolvida pelo algoritmo é de custo mínimo em $(D, w)$.
+
+
+Convém agora sumarizar e exibir uma descrição em pseudocódigo do algoritmo
+de Chu--Liu/Edmonds.
+O mapeamento desse pseudocódigo para código \texttt{Python} será discutido
+na próxima seção.
+
+
+\begin{algobox}{Chu–Liu/Edmonds}{chu-liu-edmonds}
+\begin{lstlisting}[mathescape=true, language=Python]
+def chu-liu-edmonds($D$, $w$, $r$):
+    $\lambda := \bigl\{(v, \min \{w(a) : a \in \delta^-(v)\}): v \in V\setminus \{r\}\bigr\}$
+    para cada $v \in V\setminus\{r\}$, seja $a_v \in \delta^-(v)$ tal que $w_\lambda(a_v) = 0$
+    seja $D_0 := \bigl(V, \{a_v : v \in V \setminus \{r\}\}\bigr)$
+    if $D_0$ é $\,$ uma $r$-arborescência: return $D_0$
+    seja $C$ um ciclo em $D_0$
+    $T' :=$ chu-liu-edmonds($D/C \mapsto x_C$, $w_\lambda/C \mapsto x_C$, $r$)
+    $T := $ expand($T'$)
+    return $T$
+\end{lstlisting}
+\end{algobox}
+
+
+\subsection*{Complexidade}
+
+Não é difícil ver que as operações envolvidas nas linhas 2 a 6 e na linha 8
+podem ser implementadas de forma a serem executadas em tempo $O(|A|)$.
+Como cada chamada recursiva contrai ao menos um vértice, o número total
+de chamadas é limitado por $O(|V|)$. Portanto, o consumo de tempo do
+algoritmo está em $O(|V||A|)$.
+
+Quanto ao consumo de memória, é possível realizar as operações de contração
+de modo que o uso total de memória adicional permaneça em $O(|V||A|)$.
+A implementação descrita a seguir, disponível em
+\url{https://github.com/lorenypsum/GraphVisualizer},
+apresenta consumo de tempo e memória em $O(|V||A|)$.
+
+
+\section{Implementação em Python}
+
+Esta seção descreve a implementação do algoritmo de Chu--Liu/Edmonds em \texttt{Python}, 
+estruturada para refletir com precisão as etapas discutidas anteriormente. Cada operação fundamental — redução dos custos, construção do subdigrafo gerador de arcos de custo reduzido iguais a zero, contração de ciclos e reexpansão — é implementada 
+utilizando como suporte a biblioteca \texttt{networkx}.
+
+
+\subsection*{Representação de digrafos e detecção de ciclos}
+
+A implementação utiliza a biblioteca NetworkX\footnote{Disponível em
+\url{https://networkx.org/}.}. Digrafos ponderados são representados por instâncias da
+classe \texttt{DiGraph}. Internamente, essa classe usa dicionários do
+\texttt{Python} para armazenar vértices, arcos e atributos, o que garante
+operações eficientes na prática. Por exemplo, adicionar ou remover um arco
+tem consumo amortizado de tempo em $O(1)$; iterar sobre os sucessores de um
+vértice $u$ tem consumo de tempo em $O(|\delta^+(u)|)$; e iterar sobre todos
+os arcos tem consumo de tempo em $O(m)$, em que $m$ é o número de arcos
+do digrafo.
+
+\subsubsection*{Métodos da API NetworkX}
+
+Elencamos a seguir alguns métodos da API \texttt{NetworkX} utilizados na implementação. 
+Para uma instância \texttt{D} de \texttt{DiGraph}:
+
+\paragraph*{Consulta de estrutura}
+\begin{itemize}\setlength{\itemsep}{2pt}
+  \item \texttt{D.nodes()}: devolve um iterável sobre o conjunto dos vértices
+  de \texttt{D}.
+  
+  \item \texttt{D.in\_edges(v, data="w")}: devolve um iterável de triplas da
+  forma \texttt{(u, v, w)}, em que \texttt{uv} é um arco de \texttt{D} com peso
+  \texttt{w}.
+
+  \item \texttt{D.out\_edges(u, data="w")}: devolve um iterável de triplas da
+  forma \texttt{(u, v, w)}, em que \texttt{uv} é um arco de \texttt{D} com peso
+  \texttt{w}.
+
+  \item \texttt{D[u][v]["w"]}: devolve o peso do arco \texttt{uv} de \texttt{D},
+  isto é, o valor armazenado no atributo \texttt{"w"} associado a esse arco.
+\end{itemize}
+
+\paragraph*{Modificação de estrutura}
+\begin{itemize}\setlength{\itemsep}{2pt}
+  \item \texttt{D.add\_edge(u, v, w=p)}: adiciona o arco \texttt{uv} a \texttt{D}
+  com peso \texttt{p} armazenado no atributo \texttt{"w"}. Os vértices \texttt{u}
+  e/ou \texttt{v} são criados automaticamente se ainda não existirem em \texttt{D}.
+  
+  \item \texttt{D.remove\_edges\_from(edges)}: recebe um iterável \texttt{edges}
+  de arcos e remove de \texttt{D} cada arco \texttt{(u, v)} em \texttt{edges}.
+  
+  \item \texttt{D.remove\_nodes\_from(nodes)}: recebe um iterável \texttt{nodes}
+  de vértices e remove de \texttt{D} cada vértice \texttt{v} em \texttt{nodes}
+  (bem como todos os arcos incidentes em \texttt{v}).
+\end{itemize}
+
+
+\subsection*{Remoção de arcos que entram na raiz}
+
+Recorde que o algoritmo de Chu--Liu--Edmonds recebe um $r$-digrafo ponderado
+e que, por definição, em um $r$-digrafo ponderado nenhum arco entra em $r$.
+Escrevemos esta função como uma etapa de pré-processamento justamente para
+garantir que a raiz $r$ não possua arcos de entrada antes de iniciar
+o algoritmo principal.
+
+
+Em detalhes, essa função recebe como entrada uma instância \texttt{D} de
+\texttt{DiGraph} e um vértice \texttt{r} de \texttt{D}.
+A função modifica \texttt{D} removendo todos os arcos que entram em \texttt{r}
+e tem consumo amortizado de tempo em $O(k)$, em que $k$ é o número de arcos
+que entram em \texttt{r}. Destacamos que é necessário armazenar,
+em uma lista, todos esses arcos usando o método \texttt{in\_edges} (linha 2),
+pois esse método devolve um iterador que é invalidado assim que alguma operação
+modifica a estrutura de dados que o produziu.
+
+
+\begin{tcolorbox}[
+		enhanced, breakable,
+		colframe=blue!60!black, colback=blue!2,
+		colbacktitle=blue!15, coltitle=black,
+		title={Remoção de arcos que entram na raiz},
+		boxed title style={sharp corners, boxrule=0.6pt},
+		sharp corners, boxrule=0.6pt
+	]
+	\emph{Entrada:} \texttt{D: Digraph} e \texttt{r}.
+	
+	\emph{Pré-condição:} \texttt{r} vértice de \texttt{D}.
+	
+	\emph{Modifica:} \texttt{D}.
+	
+	\emph{Pós-condição:} \texttt{D} não possui nenhum arco que entra em \texttt{r}.
+	\tcblower
+	\begin{lstlisting}[mathescape=true, language=Python]
+def remove_edges_to(D: nx.DiGraph, r: int):
+    in_edges = list(D.in_edges(r))
+    D.remove_edges_from(in_edges)
+\end{lstlisting}
+\end{tcolorbox}
+
+\subsection{Redução de custos}
+
+A função \texttt{reduce\_weights} tem como propósito realizar a redução de custos
+por vértice. Em outras palavras, é nessa função que, para um vértice $v$, calculamos
+$\lambda(v)$ e obtemos os custos $\lambda$-reduzidos dos arcos que entram em $v$.
+A função recebe \texttt{D: DiGraph} e um vértice \texttt{v}.
+A variável \texttt{in\_edges} é um iterável de triplas da forma
+\texttt{(u, v, w)}, em que \texttt{(u, v)} é um arco de \texttt{D} e
+\texttt{w} é o seu peso, obtidas por meio do método
+\texttt{D.in\_edges(node, data="w")}.
+A variável \texttt{yv} é o peso mínimo entre esses arcos.
+Em seguida, os pesos dos arcos que entram em \texttt{v} são decrementados
+de \texttt{yv}. O consumo de tempo está em $O(k)$, em que $k$ é o número de
+arcos que entram em \texttt{node}.
+
+\begin{tcolorbox}[
+		enhanced, breakable,
+		colframe=blue!60!black, colback=blue!2,
+		colbacktitle=blue!15, coltitle=black,
+		title={Redução de custos por vértice (normalização)},
+		boxed title style={sharp corners, boxrule=0.6pt},
+		sharp corners, boxrule=0.6pt
+	]
+	\emph{Entrada:} \texttt{D: DiGraph}, \texttt{v: int}.
+	
+	\emph{Pré-condição:} \texttt{v} é vértice de \texttt{D} e possui ao menos um arco de entrada.
+	
+	\emph{Modifica:} \texttt{D}.
+	
+	\emph{Pós-condição:} \texttt{D[u][v][''w'']} é o custo $\lambda$-reduzido do arco \texttt{(u, v)} para cada \texttt{u} que é predecessor de \texttt{v}.  
+	\tcblower
+	\begin{lstlisting}[language=Python]
+def reduce_weights(D: nx.DiGraph, v: int):    
+    in_edges = D.in_edges(v, data=True)
+    yv = min((data["w"] for _, _, data in in_edges))
+    for u, _, _ in in_edges:
+        D[u][v]["w"] -= yv   
+\end{lstlisting}
+\end{tcolorbox}
+
+A Figura~\ref{fig:normalize-example} ilustra o funcionamento da redução:
+
+\begin{figure}[H]
+	\centering
+	\input{capitulos/implementacao-chuliu/figures/fig_normalize_example.tex}
+	\caption{À esquerda, vértice \(v\) com três arcos de entrada (pesos 5, 3 e 7). À direita, após aplicar \texttt{reduce\_weights(D, v)}: o menor peso \(3\) é subtraído de todas as entradas, resultando em custos reduzidos 2, 0 e 4. O arco \((u_2,v)\) (em vermelho) tem custo zero e será selecionado para \(D_0\).}
+	\label{fig:normalize-example}
+\end{figure}
+
+
+\subsection{Construção de $D_0$}
+
+Vamos mostrar agora como construir o subdigrafo $D_0$ de $D$.
+Lembre-se de que $D_0$ é o subdigrafo gerador de $D$ em que, para cada
+vértice $v \neq r$, selecionamos um arco que entra em $v$ com peso zero.
+
+A função é bastante simples. Ela recebe um \texttt{D: DiGraph} e um vértice
+\texttt{r} de \texttt{D} tais que, em cada vértice \texttt{v} diferente de
+\texttt{r}, entra ao menos um arco de peso zero.
+A função devolve um subdigrafo gerador \texttt{D0: DiGraph}, construído ao
+se iterar sobre o conjunto dos vértices \texttt{v} de \texttt{D} distintos
+de \texttt{r} e selecionar exatamente um arco de peso zero que entra em
+\texttt{v}.
+
+
+\begin{tcolorbox}[
+		enhanced, breakable,
+		colframe=blue!60!black, colback=blue!2,
+		colbacktitle=blue!15, coltitle=black,
+		title={Construção de $D_0$},
+		boxed title style={sharp corners, boxrule=0.6pt},
+		sharp corners, boxrule=0.6pt
+	]
+	\emph{Entrada:} \texttt{D: DiGraph}, \texttt{r: int}.
+	
+	\emph{Pré-condição:} \texttt{r} é vértice de \texttt{D} e para cada vértice
+	distinto de \texttt{r} existe um arco de peso zero (atributo \texttt{"w"}) 
+	que nele entra. 
+	
+	\emph{Saída:} \texttt{D0: Digraph} subdigrafo gerador de \texttt{D} tal 
+	que em cada vértice diferente de \texttt{r} entra exatamente 
+	um arco de custo reduzido igual a zero.
+	\tcblower
+	\begin{lstlisting}[mathescape=true, language=Python]
+def get_Dzero(D: nx.DiGraph, r: int):
+    D_zero = nx.DiGraph()
+    for v in D.nodes():
+        if v != r:
+            in_edges = D.in_edges(v, data=True)
+            u = next((u for u, _, data in in_edges 
+                        if data["w"] == 0))
+            D_zero.add_edge(u, v)
+    return D_zero
+\end{lstlisting}
+\end{tcolorbox}
+
+
+As funções de redução de custo e construção de $D_0$ juntas implementam os passos das linhas
+2, 3, e 4 do Algoritmo de Chu--Liu--Edmonds.
+
+\subsection{Detecção de ciclo}
+
+O próximo passo consiste em mostrar como decidir se o digrafo $D_0$ é uma
+$r$-arborescência e, caso isso não ocorra, como encontrar um ciclo para
+futura contração. A decisão sobre se $D_0$ é uma arborescência é delegada
+a uma função de biblioteca, chamada \texttt{is\_arborescence}. 
+Note que, em virtude da forma como $D_0$ é construído, se $D_0$ é uma
+arborescência, então $D_0$ é necessariamente uma $r$-arborescência.
+No que segue, vamos assumir que $D_0$ não é uma arborescência.
+
+
+A função recebe \texttt{D\_zero: DiGraph} e supõe que
+(i) \texttt{D\_zero} não é uma arborescência; (ii) existe exatamente
+um vértice de \texttt{D\_zero} no qual não entra nenhum arco; e (iii)
+em cada um dos demais vértices, entra ao menos um arco.
+A função devolve um subdigrafo \texttt{C: DiGraph} de \texttt{D\_zero}
+que é um ciclo.
+
+Uma função de biblioteca, \texttt{find\_cycle}, é usada para encontrar
+um ciclo em \texttt{D\_zero}. Os arcos desse ciclo — resultado da chamada
+\[ \texttt{find\_cycle(D\_zero, orientation="original")} \] — determinam o
+subconjunto de vértices do ciclo. A função devolve o subdigrafo de \texttt{D\_zero}
+induzido por esse subconjunto vértices.
+
+
+\begin{tcolorbox}[
+		enhanced, breakable,
+		colframe=blue!60!black, colback=blue!2,
+		colbacktitle=blue!15, coltitle=black,
+		title={Detecção de ciclo dirigido em $D_0$},
+		boxed title style={sharp corners, boxrule=0.6pt},
+		sharp corners, boxrule=0.6pt
+	]
+	\emph{Entrada:} \texttt{D\_zero: DiGraph}.
+	
+	\emph{Pré-condição:} \texttt{D\_zero} não é uma arborescência, e existe exatamente
+	um vértice de \texttt{D\_zero} no qual não entra nenhum arco e nos demais vértices
+	entra ao menos um arco.
+	
+	\emph{Saída:} \texttt{C: Digraph} subdigrafo de \texttt{D\_zero} que é um ciclo.
+	\tcblower
+	\begin{lstlisting}[mathescape=true, language=Python]
+def find_cycle(D_zero: nx.DiGraph):
+    nodes_in_cycle = set()
+    for u, v, _ in nx.find_cycle(D_zero, orientation="original"):
+        nodes_in_cycle.update([u, v])
+    return D_zero.subgraph(nodes_in_cycle).to_directed()  
+\end{lstlisting}
+\end{tcolorbox}
+
+
+\subsection{Contração de um ciclo}
+
+Vamos agora mostrar como implementar a contração de um ciclo $C$ de $D_0$.
+A função \texttt{contract\_cycle} recebe um digrafo \texttt{D},
+um\footnote{Isso é irrelevante: \texttt{C} poderia ser qualquer subdigrafo
+não vazio de \texttt{D}.}
+subdigrafo \texttt{C} de \texttt{D}
+e um nome \texttt{label} para o supervértice do digrafo contraído.
+A função modifica \texttt{D} de tal forma que, após a chamada,
+\texttt{D} representa o digrafo $\mathtt{D}/\mathtt{C} \mapsto \mathtt{label}$
+e devolve dois dicionários
+\[
+  \texttt{in\_to\_cycle, out\_from\_cycle}
+  : \texttt{dict[int, tuple[int, float]]},
+\]
+cuja formação é explicada a seguir.
+
+Considere um vértice \texttt{u} de \texttt{D} que está fora de \texttt{C}
+e que possui ao menos um sucessor em \texttt{C}.
+Dizemos que um arco \texttt{uv} de \texttt{D} é \textbf{essencial de} \texttt{u}
+\textbf{para} \texttt{C} se \texttt{v} é vértice de \texttt{C} e o custo de
+\texttt{uv} é mínimo entre os custos dos arcos que saem de \texttt{u} e
+entram em \texttt{C}.
+De forma similar, considere um vértice \texttt{v} de \texttt{D} que está
+fora de \texttt{C} e que possui ao menos um antecessor em \texttt{C}.
+Dizemos que um arco \texttt{uv} de \texttt{D} é \textbf{essencial de} \texttt{C}
+\textbf{para} \texttt{v} se \texttt{u} é vértice de \texttt{C} e o custo de
+\texttt{uv} é mínimo entre os custos dos arcos que saem de \texttt{C}
+e entram em \texttt{v}.
+
+A função constrói os dicionários com os arcos essenciais e seus pesos.
+Assim, para cada \texttt{u} que é antecessor de \texttt{C},
+\texttt{in\_to\_cycle[u] = (v, w)} se, e somente se, \texttt{uv} é um arco
+essencial de \texttt{u} para \texttt{C}, de custo \texttt{w}.
+De forma similar, para cada \texttt{v} que é sucessor de \texttt{C},
+\texttt{out\_from\_cycle[v] = (u, w)} se, e somente se, \texttt{uv} é um arco
+essencial de \texttt{C} para \texttt{v}, de custo \texttt{w}.
+
+É fácil ver que o consumo de tempo da função está em $O(m)$, em que
+$m$ é o número de arcos de \texttt{D}.
+
+
+\begin{tcolorbox}[
+		enhanced, breakable,
+		colframe=blue!60!black, colback=blue!2,
+		colbacktitle=blue!15, coltitle=black,
+		title={Contração de ciclo},
+		boxed title style={sharp corners, boxrule=0.6pt},
+		sharp corners, boxrule=0.6pt
+	]
+	\emph{Entrada:} \texttt{D: DiGraph}, \texttt{C: DiGraph}, \texttt{label: int}.
+	
+	\emph{Pré-condição:} \texttt{C} subdigrafo de \texttt{D} e \texttt{label} não é um vértice de \texttt{D}.
+	
+	\emph{Modifica:} \texttt{D}.
+	
+	\emph{Pós-condição:} \texttt{D} é o digrafo $\mathtt{D}/\mathtt{C} \mapsto \mathtt{label}$. 
+	
+	\emph{Saída:} \texttt{in\_to\_cycle, out\_from\_cycle: dict[int, tuple[int, float]]}.
+	
+	Para cada \texttt{u} que é antecessor de \texttt{C},
+	\texttt{in\_to\_cycle[u] = (v, w)} se, e somente se, \texttt{uv} é um arco
+	essencial de \texttt{u} para \texttt{C} de custo \texttt{w}.
+
+	Para cada \texttt{u} que é sucessor de \texttt{C},
+	\texttt{in\_to\_cycle[u] = (v, w)} se, e somente se, \texttt{vu} é um arco
+	é um arco essencial de \texttt{C} para \texttt{u} de custo \texttt{w}.
+
+	 
+\tcblower
+\begin{lstlisting}[mathescape=true, language=Python]
+def contract_cycle(D: nx.DiGraph, C: nx.DiGraph, label: int):
+    cycle_nodes: set[int] = set(C.nodes())
+    in_to_cycle: dict[int, tuple[int, float]] = {}
+    for u in D.nodes:
+        if u not in cycle_nodes:
+            min_weight_edge_to_cycle = min(
+                ((v, data["w"])
+                    for _, v, data in D.out_edges(u, data=True)
+                    if v in cycle_nodes),
+                key=lambda x: x[1],
+                default=None,)
+            if min_weight_edge_to_cycle:
+                in_to_cycle[u] = min_weight_edge_to_cycle
+    for u, (v, w) in in_to_cycle.items():
+        D.add_edge(u, label, w=w)
+    out_from_cycle: dict[int, tuple[int, float]] = {}
+    for v in D.nodes:
+        if v not in cycle_nodes:
+            min_weight_edge_from_cycle = min(
+                ((u, data["w"])
+                    for u, _, data in D.in_edges(v, data=True)
+                    if u in cycle_nodes),
+                key=lambda x: x[1],
+                default=None,)
+            if min_weight_edge_from_cycle:
+                out_from_cycle[v] = min_weight_edge_from_cycle
+    for v, (u, w) in out_from_cycle.items():
+        D.add_edge(label, v, w=w)
+    D.remove_nodes_from(cycle_nodes)
+    return in_to_cycle, out_from_cycle  
+\end{lstlisting}
+\end{tcolorbox}
+
+\subsection{Procedimento principal}
+
+Vamos agora apresentar a função principal, que orquestra todas as funções
+auxiliares descritas anteriormente e completa a implementação do
+algoritmo de Chu--Liu--Edmonds.
+A função recebe um digrafo ponderado \texttt{D},
+um vértice raiz \texttt{r} e um inteiro \texttt{label} que satisfazem:
+\begin{itemize}
+  \item os vértices de \texttt{D} são inteiros no conjunto
+        $\{0, 1, \dots, n-1\}$, para algum $n \ge 1$;
+  \item \texttt{r} é um vértice de \texttt{D};
+  \item \texttt{D} possui ao menos uma $r$-arborescência;
+  \item nenhum arco de \texttt{D} entra em \texttt{r}; e
+  \item \texttt{label} é um inteiro maior ou igual a $n$.
+\end{itemize}
+A função devolve um digrafo ponderado que é uma $r$-arborescência
+geradora de custo mínimo de \texttt{D}.
+
+A seguir, comentamos brevemente o papel de cada bloco de instruções
+do código.
+
+Na linha 2, \texttt{D\_copy} é uma cópia de \texttt{D}.
+As linhas 3 a 5 são responsáveis por calcular o custo reduzido de
+cada arco do digrafo \texttt{D\_copy} (as modificações dos custos
+são feitas em \texttt{D\_copy}).
+A linha 6 determina o digrafo \texttt{D\_zero}, que contém exatamente
+um arco de custo reduzido igual a zero entrando em cada vértice distinto
+de \texttt{r}.
+A linha 7 determina se \texttt{D\_zero} é uma arborescência. Se esse for
+o caso, a função restaura os pesos originais nos arcos de \texttt{D\_zero}
+e devolve \texttt{D\_zero}.
+
+Suponha que \texttt{D\_zero} não seja uma arborescência.
+A linha 11 determina um ciclo em \texttt{D\_zero}, armazenando-o em \texttt{C}.
+A linha 12 contrai o ciclo \texttt{C} em \texttt{D\_copy}; o digrafo
+\texttt{D\_copy} é modificado de tal forma que corresponda ao digrafo
+contraído.
+A linha 13 determina em \texttt{F\_prime} uma $r$-arborescência geradora
+de custo mínimo do digrafo \texttt{D\_copy}.
+As demais linhas são responsáveis pelo processo de expansão de \texttt{F\_prime}:
+elas modificam \texttt{F\_prime} de tal forma que \texttt{F\_prime} se torne
+uma $r$-arborescência geradora de custo mínimo de \texttt{D}.
+
+
+O código completo da função principal é apresentado a seguir:
+
+\begin{tcolorbox}[
+		enhanced, breakable,
+		colframe=blue!60!black, colback=blue!2,
+		colbacktitle=blue!15, coltitle=black,
+		title={Procedimento principal (recursivo)},
+		boxed title style={sharp corners, boxrule=0.6pt},
+		sharp corners, boxrule=0.6pt
+	]
+	\emph{Entrada:} \texttt{D: DiGraph}, \texttt{r: int}, \texttt{label: int}.
+	
+	\emph{Pré-condição:} \texttt{D} é um digrafo ponderado; 
+	os vértices de \texttt{D} são inteiros no conjunto $\{0, 1, \dots, n-1\}$
+	para algum $n \ge 0$; \texttt{r} é um vértice de \texttt{D}; 
+	\texttt{D} possui ao menos uma \texttt{r}-arborescência;
+	nenhum arco de \texttt{D} entra em \texttt{r}; e 
+	\texttt{label} é maior ou igual a $n$.
+	
+	\emph{Saída:} \texttt{T: DiGraph} é uma \texttt{r}-arborescência de custo mínimo de \texttt{D}.
+	\tcblower
+	\begin{lstlisting}[mathescape=true, language=Python]
+def chuliu_edmonds(D: nx.DiGraph, r: int, label: int):
+	D_copy = cast(nx.DiGraph, D.copy())
+	for v in D_copy.nodes:
+        if v != r:
+            reduce_weights(D_copy, v)
+    D_zero = get_Dzero(D_copy, r)
+    if nx.is_arborescence(D_zero):
+        for u, v in D_zero.edges:
+            D_zero[u][v]["w"] = D[u][v]["w"]
+        return D_zero
+    C = find_cycle(D_zero)
+    in_to_cycle, out_from_cycle = contract_cycle(D_copy, C, label)
+    F_prime = chuliu_edmonds(D_copy, r, label + 1)
+    in_edge = next(iter(F_prime.in_edges(label, data=True)))
+    u, _, _ = cast(tuple, in_edge)
+    v, _ = in_to_cycle[u]
+    F_prime.add_edge(u, v)
+    for u_c, v_c in C.edges:
+        if v != v_c: F_prime.add_edge(u_c, v_c)
+    for _, z, _ in list(F_prime.out_edges(label, data=True)):
+        u_cycle, _ = out_from_cycle[z]
+        F_prime.add_edge(u_cycle, z)
+    F_prime.remove_node(label)
+    for u, v in F_prime.edges:
+        F_prime[u][v]["w"] = D[u][v]["w"]
+    return F_prime 
+\end{lstlisting}
+\end{tcolorbox}
+
+

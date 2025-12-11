@@ -1,0 +1,1027 @@
+\chapter{Preliminares}
+\label{cap:preliminares}
+Neste capítulo, reunimos as noções básicas necessárias para compreensão completa do texto.
+
+\section{Digrafos}
+
+Começamos por introduzir a noção de digrafo. Um \textbf{digrafo} $D$ é um par $(V,A)$,
+em que $V$ é um conjunto finito de elementos chamados \textbf{vértices} e $A$, chamado
+de conjunto dos \textbf{arcos}, é um subconjunto de
+\[
+  \{(u,v) \in V \times V : u \neq v\}.
+\]
+Escrevemos $V(D)$ e $A(D)$ para denotar, respectivamente, o conjunto dos vértices e
+o conjunto dos arcos de $D$.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[
+    >=Stealth,
+    vertex/.style={circle,draw,inner sep=1.5pt,font=\small},
+    arc/.style={->,thick},
+    info/.style={draw=none,font=\small}
+]
+
+  % vértices em forma de pentágono
+  \node[vertex] (a) at (0,1.8)   {$a$};
+  \node[vertex] (b) at (1.7,0.6) {$b$};
+  \node[vertex] (c) at (1.0,-1.5) {$c$};
+  \node[vertex] (d) at (-1.0,-1.5) {$d$};
+  \node[vertex] (e) at (-1.7,0.6) {$e$};
+
+  % arcos de D
+  \draw[arc] (a) -- (b);
+  \draw[arc] (b) -- (c);
+  \draw[arc] (c) -- (d);
+  \draw[arc] (d) -- (e);
+  \draw[arc] (e) -- (a);          % ciclo a-b-c-d-e-a
+  \draw[arc] (b) -- (e);          % arco extra b -> e (reto)
+
+  % destaque de um arco uv = ab
+  \path (a) -- (b)
+    node[info,above,midway,yshift=3pt] {$ab$};
+
+  % rótulo do digrafo
+  \node[info,blue] at (0,2.4) {$D$};
+
+  
+\end{tikzpicture}
+\caption{A figura ilustra um digrafo $D$ cujo conjunto dos vértices é 
+$\{a,b,c,d,e\}$ e cujo conjunto dos arcos é  $\{ab,bc,cd,de,ea,be\}$.}
+\label{fig:definicao-digrafo}
+\end{figure}
+
+Para um arco $a := (u,v)$ de $D$ — o que costumamos abreviar como $uv$ — dizemos que
+$u$ é a \textbf{cauda} (ou \textbf{ponta inicial}) de $a$ e $v$ é a \textbf{cabeça}
+(ou \textbf{ponta final}) de $a$. 
+
+Seja $X$ um subconjunto de $V(D)$.  
+Dizemos que um arco $a$ \textbf{entra} em $X$ se a ponta final de $a$ está fora de $X$ e a inicial está em $X$. Por outro lado, um arco $a$ sai de $X$ se a ponta inicial de $a$ está em $X$ e
+a final está fora de $X$. De forma análoga, dizemos que um subconjunto $B$ de $A(D)$ 
+\textbf{entra} em $X$ se existe um arco de $B$ que entra em $X$.
+O conjunto dos arcos de $D$ que entram em $X$ é denotado por $\delta_D^-(X)$ (ou $\delta^-(X)$
+quando o contexto permitir). De forma similar, o conjuntos dos arcos
+que saem de $X$ é denotado por $\delta_D^+(X)$. Por brevidade, 
+para cada vértice $v \in V(D)$, escrevemos $\delta_D^-(v)$ no lugar de $\delta^-_D(\{v\})$.
+A mesma convenção é usada para $\delta_D^+$.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[
+    >=Stealth,
+    vertex/.style={circle,draw,inner sep=1pt,font=\small},
+    inarc/.style={->,very thick,blue},    % arcos que entram em X
+    outarc/.style={->,thin,gray},         % outros arcos
+    setX/.style={draw=blue!60,rounded corners,inner sep=6pt},
+    info/.style={draw=none,font=\small}
+]
+
+  % -------------------------
+  % subconjunto X como elipse
+  % -------------------------
+  \node[setX,minimum width=3.6cm,minimum height=1.8cm] (Xbox) at (0,0) {};
+  \node[info,blue,anchor=south] at (Xbox.north) {$X$};
+
+  % vértices dentro de X
+  \node[vertex] (x1) at (-0.9, 0.4) {$x_1$};
+  \node[vertex] (x2) at ( 0.8, 0.2) {$x_2$};
+  \node[vertex] (x3) at (-0.2,-0.5) {$x_3$};
+
+  % vértices fora de X
+  \node[vertex] (u1) at (-3.0, 0.8) {$u_1$};
+  \node[vertex] (u2) at (-3.0,-0.2) {$u_2$};
+  \node[vertex] (u3) at ( 3.0, 0.3) {$u_3$};
+
+  % -------------------------
+  % arcos que entram em X (em azul)
+  % -------------------------
+  \draw[inarc] (u1) -- (x1);
+  \draw[inarc] (u2) -- (x3);
+  \draw[inarc] (u3) -- (x2);
+
+  % -------------------------
+  % alguns arcos internos e de saída (cinza, só contexto)
+  % -------------------------
+  \draw[outarc] (x1) -- (x2);
+  \draw[outarc] (x2) -- (x3);
+  \draw[outarc] (x3) -- (x1);
+  \draw[outarc] (x3) -- (u3);
+
+\end{tikzpicture}
+\caption{Os arcos em azul entram em um subconjunto $X \subseteq V(D)$.}
+\label{fig:arcos-que-entram-em-X}
+\end{figure}
+
+
+Um \textbf{digrafo ponderado} é um par $(D,w)$, em que $D$ é um digrafo e
+$w : A(D) \to \mathbb{R}$ é uma função que associa a cada arco $a \in A(D)$
+um \textbf{custo} (ou \textbf{peso}) real $w(a)$.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[
+    >=Stealth,
+    vertex/.style={circle,draw,inner sep=1.3pt,font=\small},
+    arc/.style={->,thick},
+    weight/.style={draw=none,inner sep=1pt,font=\scriptsize,text=BrickRed},
+    info/.style={draw=none,font=\small}
+]
+
+  % vértices (mais próximos verticalmente para compactar a figura)
+  \node[vertex] (s) at (-1.8, 0.6) {$s$};
+  \node[vertex] (u) at ( 0.0, 1.1) {$u$};
+  \node[vertex] (v) at ( 1.8, 0.6) {$v$};
+  \node[vertex] (t) at ( 0.0,-0.3) {$t$};
+
+  % su (rótulo um pouco acima)
+  \draw[arc] (s) -- (u);
+  \path (s) -- (u) node[weight,above,midway,yshift=2pt] {$2$};
+
+  % uv
+  \draw[arc] (u) -- (v);
+  \path (u) -- (v) node[weight,above,midway,yshift=2pt] {$3$};
+
+  % st
+  \draw[arc] (s) -- (t);
+  \path (s) -- (t) node[weight,left,midway,xshift=-2pt,yshift=-2pt] {$5$};
+
+  % tv
+  \draw[arc] (t) -- (v);
+  \path (t) -- (v) node[weight,below,midway,yshift=-2pt] {$1$};
+
+  % ut
+  \draw[arc] (u) -- (t);
+  \path (u) -- (t) node[weight,right,midway,xshift=2pt] {$4$};
+
+  % rótulo do digrafo ponderado, bem perto da figura
+  \node[info,blue] at (0,1.8) {$(D,w)$};
+
+\end{tikzpicture}
+\caption{Exemplo de digrafo ponderado $(D,w)$: cada arco recebe um custo real $w(a)$.}
+\label{fig:digrafo-ponderado}
+\end{figure}
+
+
+Um digrafo $H$ é um \textbf{subdigrafo} de um digrafo $D$ se $V(H) \subseteq V(D)$
+e $A(H) \subseteq A(D)$.
+
+Seja $D$ um digrafo e seja $B \subseteq A(D)$. O subdigrafo de $D$ \textbf{gerado} por $B$,
+denotado $D[B]$, é o par $(W, B)$, em que $W$ é o conjunto dos vértices que são pontas de arcos de $B$, isto é, 
+\[ W = \{ v \in V(D) : \text{existe $u \in V$ tal que $uv \in A(D)$ ou $vu \in A(D)$} \}. \] 
+
+\section{Caminhos}
+
+Um \textbf{caminho} $P$ em um digrafo $D$ é uma sequência de vértices de $D$
+\[
+  (u_0, u_1, \dots, u_k),
+\]
+em que $k \ge 0$ e, para cada $i \in \{0,1,\dots,k-1\}$,
+$u_i u_{i+1}$ é um arco de $D$.
+Dizemos que $P$ é um caminho \textbf{de} $u_0$ \textbf{até} $u_k$
+para destacar a \textbf{origem} $u_0$ de $P$ e o \textbf{destino} $u_k$ de $P$.
+Um caminho $P$ é dito \textbf{simples} se seus vértices são dois a dois distintos.
+Um caminho é \textbf{fechado} se sua origem e seu destino coincidem.
+Finalmente, um caminho fechado $P := (u_0, u_1, \dots, u_k)$ é um \textbf{ciclo}
+se $(u_0, u_1, \dots, u_{k-1})$ é um caminho simples.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[
+    >=Stealth,
+    vertex/.style={circle,draw,inner sep=1.5pt,font=\small},
+    arc/.style={->,thin},
+    patharc/.style={->,very thick,blue},
+    info/.style={draw=none,font=\small}
+]
+
+  % vértices
+  \node[vertex] (u0) at (-3.0, 0.0) {$u_0$};
+  \node[vertex] (u1) at (-1.5, 1.0) {$u_1$};
+  \node[vertex] (u2) at ( 0.0, 0.3) {$u_2$};
+  \node[vertex] (u3) at ( 1.5, 1.0) {$u_3$};
+  \node[vertex] (u4) at ( 3.0, 0.0) {$u_4$};
+
+  % alguns arcos do digrafo D (cinza, só como contexto)
+  \draw[arc,gray] (u0) -- (u2);
+  \draw[arc,gray] (u1) -- (u4);
+  \draw[arc,gray] (u2) -- (u4);
+  \draw[arc,gray] (u3) -- (u4);
+
+  % caminho P = (u0,u1,u2,u3) destacado
+  \draw[patharc] (u0) -- (u1);
+  \draw[patharc] (u1) -- (u2);
+  \draw[patharc] (u2) -- (u3);
+
+
+\end{tikzpicture}
+\caption{A figura ilustra um caminho simples $(u_0,u_1,u_2,u_3)$ em um digrafo.}
+\label{fig:caminho-simples}
+\end{figure}
+
+  \begin{figure}[htb]
+\centering
+\begin{tikzpicture}[
+    >=Stealth,
+    vertex/.style={circle,draw,inner sep=1.5pt,font=\small},
+    arc/.style={->,thin},
+    cyclearc/.style={->,very thick,blue},
+    info/.style={draw=none,font=\small}
+]
+
+  % vértices em forma de quadrado
+  \node[vertex] (u0) at (0,1.5)   {$u_0$};
+  \node[vertex] (u1) at (2,0.5)   {$u_1$};
+  \node[vertex] (u2) at (1.2,-1.3) {$u_2$};
+  \node[vertex] (u3) at (-1.2,-1.3) {$u_3$};
+
+  % alguns arcos extras do digrafo D (cinza)
+  \draw[arc,gray] (u0) -- (u2);
+  \draw[arc,gray] (u1) -- (u3);
+
+  % ciclo P = (u0,u1,u2,u3,u0) destacado
+  \draw[cyclearc] (u0) -- (u1);
+  \draw[cyclearc] (u1) -- (u2);
+  \draw[cyclearc] (u2) -- (u3);
+  \draw[cyclearc] (u3) -- (u0);
+
+
+\end{tikzpicture}
+\caption{A figura ilustra um ciclo $(u_0,u_1,u_2,u_3,u_0)$ em um digrafo.}
+\label{fig:ciclo}
+\end{figure}
+
+A noção de caminho permite definir o território de um vértice em um digrafo.
+Seja $D$ um digrafo e seja $r \in V(D)$. O \textbf{território} de $r$ em $D$
+é o conjunto dos vértices $v \in V(D)$ tais que existe um caminho de $r$ até $v$ em $D$.
+O seguinte fato é bem conhecido. Para enunciá-lo é conveniente introduzir a seguinte 
+definição. Um \textbf{$r$-conjunto} de $D$ é um subconjunto não vazio $X$ de $V(D)$
+tal que $r \notin X$. 
+
+\begin{proposicao}
+\label{prop:arb:exist}
+Seja $D$ um digrafo e $r \in V(D)$. O território de $r$ em $D$ é igual a $V(D)$ 
+se, e somente se, para cada $r$-conjunto $X$ existe ao menos um arco de $D$ que entra em $X$.
+\qed
+\end{proposicao}  
+ 
+ 
+\section{Arborescências}
+
+Podemos agora introduzir um dos objetos fundamentais deste trabalho:
+as arborescências. Dizemos que um digrafo $D$ é uma \textbf{arborescência}
+se existe um vértice $r \in V(D)$ tal que, para cada vértice $v \in V(D)$,
+existe um único caminho em $D$ de $r$ até $v$.
+Nesse caso, chamamos $r$ de \textbf{raiz} de $D$.
+Para destacar o papel de $r$ nesta definição, dizemos que $D$ é uma 
+\textbf{$r$-arborescência}.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[
+    >=Stealth,
+    vertex/.style={circle,draw,inner sep=1.5pt,font=\small},
+    arc/.style={->,thick},
+    info/.style={draw=none,font=\small}
+]
+
+  % raiz
+  \node[vertex] (r) at (0,1.8) {$r$};
+
+  % nível 1
+  \node[vertex] (a) at (-1.8,0.6) {$a$};
+  \node[vertex] (b) at ( 0.0,0.6) {$b$};
+  \node[vertex] (c) at ( 1.8,0.6) {$c$};
+
+  % nível 2
+  \node[vertex] (d) at (-2.4,-0.8) {$d$};
+  \node[vertex] (e) at (-1.2,-0.8) {$e$};
+  \node[vertex] (f) at ( 0.8,-0.8) {$f$};
+  \node[vertex] (g) at ( 2.4,-0.8) {$g$};
+
+  % arcos saindo da raiz
+  \draw[arc] (r) -- (a);
+  \draw[arc] (r) -- (b);
+  \draw[arc] (r) -- (c);
+
+  % arcos níveis de baixo
+  \draw[arc] (a) -- (d);
+  \draw[arc] (a) -- (e);
+  \draw[arc] (b) -- (f);
+  \draw[arc] (c) -- (g);
+
+  % rótulo raiz
+  \node[info,above=3pt of r] {\footnotesize raiz};
+
+\end{tikzpicture}
+\caption{A figura ilustra uma $r$-arborescência.}
+\label{fig:arborescencia}
+\end{figure}
+
+Um subdigrafo $T$ de um digrafo $D$ é uma \textbf{arborescência}
+se $T$ é uma arborescência.
+Dizemos que $T$ é uma arborescência \textbf{geradora} de $D$ se, além disso,
+$V(T) = V(D)$.
+
+ \begin{figure}[htb]
+\centering
+\begin{tikzpicture}[
+    >=Stealth,
+    vertex/.style={circle,draw,inner sep=1.5pt,font=\small},
+    darc/.style={->,thin,gray},          % arcos de D
+    tarc/.style={->,very thick,blue},    % arcos de T
+    info/.style={draw=none,font=\small}
+]
+
+  % vértices
+  \node[vertex] (r) at (0,1.8) {$r$};
+  \node[vertex] (a) at (-1.8,0.6) {$a$};
+  \node[vertex] (b) at ( 0.0,0.6) {$b$};
+  \node[vertex] (c) at ( 1.8,0.6) {$c$};
+  \node[vertex] (d) at (-2.4,-0.8) {$d$};
+  \node[vertex] (e) at (-1.2,-0.8) {$e$};
+  \node[vertex] (f) at ( 0.8,-0.8) {$f$};
+  \node[vertex] (g) at ( 2.4,-0.8) {$g$};
+
+  %----------------------------------
+  % arcos de D (todos os arcos, em cinza)
+  %----------------------------------
+  % da raiz
+  \draw[darc] (r) -- (a);
+  \draw[darc] (r) -- (b);
+  \draw[darc] (r) -- (c);
+
+  % nível intermediário
+  \draw[darc] (a) -- (d);
+  \draw[darc] (a) -- (e);
+  \draw[darc] (b) -- (f);
+  \draw[darc] (c) -- (g);
+
+  % alguns arcos “extras” de D
+  \draw[darc] (b) -- (e);
+  \draw[darc] (b) -- (c);
+  \draw[darc] (e) -- (f);
+  \draw[darc] (f) -- (g);
+
+  %----------------------------------
+  % arcos de T (subdigrafo arborescência geradora), em azul
+  %----------------------------------
+  \draw[tarc] (r) -- (a);
+  \draw[tarc] (r) -- (b);
+  \draw[tarc] (b) -- (c);
+  \draw[tarc] (a) -- (d);
+  \draw[tarc] (a) -- (e);
+  \draw[tarc] (b) -- (f);
+  \draw[tarc] (c) -- (g);
+
+  % rótulos
+  \node[info] at (-2.5,2.1) {$D$};
+  \node[info,blue] at (2.3,1.9) {$T$};
+\end{tikzpicture}
+\caption{O subdigrafo $T$ (em azul) é uma arborescência geradora do digrafo $D$,
+que inclui tanto os arcos azuis quanto os arcos cinza.}
+\label{fig:arborescencia-geradora}
+\end{figure}
+
+Seja $(D,w)$ um digrafo ponderado. Para todo subconjunto $B \subseteq A(D)$, definimos
+\[
+  w(B) := \sum_{b \in B} w(b).
+\]
+Quando $H$ é um subdigrafo de $D$, escrevemos $w(H)$ para abreviar $w(A(H))$.
+
+No contexto de arborescências de um digrafo $D$, é comum identificarmos um
+subconjunto $B \subseteq A(D)$ com o subdigrafo $D[B]$.
+Assim, dizemos que $B \subseteq A(D)$ é uma \textbf{arborescência}
+se $D[B]$ é uma arborescência de $D$.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[
+    >=Stealth,
+    vertex/.style={circle,draw,inner sep=1pt,font=\small},
+    darc/.style={->,thin,gray},           % arcos gerais de D
+    barc/.style={->,very thick,blue},     % arcos do subconjunto B
+    weight/.style={draw=none,inner sep=1pt,font=\scriptsize,text=BrickRed},
+    info/.style={draw=none,font=\small}
+]
+
+  % vértices
+  \node[vertex] (r) at (0,1.8) {$r$};
+  \node[vertex] (a) at (-1.6,0.2) {$a$};
+  \node[vertex] (b) at ( 0.0,0.2) {$b$};
+  \node[vertex] (c) at ( 1.6,0.2) {$c$};
+  \node[vertex] (d) at ( 0.8,-0.9) {$d$};
+
+  %----------------------------------
+  % arcos de D (todos, em cinza)
+  %----------------------------------
+  \draw[darc] (r) -- (a);
+  \draw[darc] (r) -- (b);
+  \draw[darc] (r) -- (c);
+  \draw[darc] (a) -- (d);
+  \draw[darc] (b) -- (d);
+  \draw[darc] (c) -- (d);
+  \draw[darc] (a) -- (b);   % agora reto
+  \draw[darc] (b) -- (c);   % agora reto
+
+  %----------------------------------
+  % arcos de B (arborescência), em azul e mais grossos
+  % B = { r->a, r->b, r->c, b->d }
+  %----------------------------------
+  \draw[barc] (r) -- (a);
+  \draw[barc] (r) -- (b);
+  \draw[barc] (r) -- (c);
+  \draw[barc] (b) -- (d);
+
+  %----------------------------------
+  % pesos w(a) em TODOS os arcos
+  %----------------------------------
+  % arcos saindo de r
+  \path (r) -- (a)
+    node[weight,above left,midway,yshift=2pt] {$2$};
+  \path (r) -- (b)
+    node[weight,left,midway] {$1$};      % afastado da seta
+  \path (r) -- (c)
+    node[weight,above right,midway,yshift=2pt] {$3$};
+
+  % arcos para d
+  \path (a) -- (d)
+    node[weight,left,midway,xshift=-2pt] {$5$};
+  \path (b) -- (d)
+    node[weight,right,midway,xshift=2pt] {$4$};
+  \path (c) -- (d)
+    node[weight,right,midway,xshift=2pt,yshift=-1pt] {$6$};
+
+  % arcos horizontais a-b e b-c (retos)
+  \path (a) -- (b)
+    node[weight,above,midway,yshift=2pt] {$7$};
+  \path (b) -- (c)
+    node[weight,above,midway,yshift=2pt] {$8$};
+\end{tikzpicture}
+\caption{A figura ilustra um subconjunto $B$ (de arcos azuis) de custo
+$w(B) = 2 + 1 + 3 + 4 = 10$ visto como uma arborescência geradora de $D$.}
+\label{fig:custo-arborescencia}
+\end{figure}
+
+Seja $D$ um digrafo e seja $r$ um vértice de $D$.
+Uma \textbf{cobertura de $r$-conjuntos} é um subconjunto $B \subseteq A(D)$
+tal que $B$ entra em todo $r$-conjunto de $D$.
+É claro que uma $r$-arborescência geradora de $D$ é uma cobertura de
+$r$-conjuntos.
+A próxima proposição afirma que $B \subseteq A(D)$ é uma $r$-arborescência
+geradora de $D$ se, e somente se, $B$ é uma cobertura \emph{minimal}
+de $r$-conjuntos de $D$.
+Isto significa que:
+(i) $B$ é uma cobertura de $r$-conjuntos e
+(ii) para cada $a \in B$, o conjunto $B \setminus \{a\}$ não é uma
+cobertura de $r$-conjuntos de $D$.
+
+\begin{proposicao}
+\label{prop:car:arb}
+Seja $D$ um digrafo e seja $r$ um vértice de $D$.
+Um subconjunto $B \subseteq A(D)$ é uma $r$-arborescência geradora de $D$
+se, e somente se, $B$ é uma cobertura \emph{minimal} de $r$-conjuntos de $D$.
+\qed
+\end{proposicao}
+
+\section{Problema da arborescência de custo mínimo}
+\label{pag:rdig}
+
+Finalmente, podemos enunciar o problema que constitui o objeto de estudo deste trabalho.
+\begin{tcolorbox}[
+  colback=gray!5,
+  colframe=black,
+  title={Problema da $r$-arborescência geradora de custo mínimo}
+]
+Dado um digrafo ponderado $(D,w)$ e um vértice $r \in V(D)$, 
+deseja-se encontrar, se existir, uma $r$-arborescência geradora $T$ de $D$
+tal que
+\[
+  w(T) \le w(F)
+\]
+para toda $r$-arborescência geradora $F$ de $D$.
+\end{tcolorbox}
+É uma chateação lidar com a posssibilidade de que uma $r$-arborescência geradora
+de $D$ pode não existir. Além disso,
+decidir se uma $r$-arborescência existe é tarefa simples: basta determinar
+o território do vértice $r$ em $D$, o que pode ser feito por meio de qualquer
+algoritmo de busca.
+Assim, o problema só se coloca quando existe ao menos uma $r$-arborescência.
+Nesse caso, há ainda uma hipótese que pode ser adotada sem perda de generalidade:
+podemos supor que nenhum arco de $D$ entra em $r$, uma vez que nenhuma
+$r$-arborescência contém um arco entrando em $r$.
+Para evitar essas repetições, introduzimos a seguinte definição.
+Dizemos que uma tripla $(D,w,r)$ é um \textbf{$r$-digrafo ponderado} se
+\begin{itemize}
+  \item $(D,w)$ é um digrafo ponderado;
+  \item $r$ é um vértice de $D$;
+  \item $\delta^-(r) = \varnothing$; e
+  \item $D$ possui uma $r$-arborescência.
+\end{itemize}
+Para um $r$-digrafo ponderado $(D,w, r)$, dizemos que uma $r$-arborescência geradora
+é de \textbf{custo mínimo} em $(D,w)$ se
+\[
+  w(T) \le w(F)
+\]
+para toda $r$-arborescência geradora $F$ de $D$.
+
+
+\section{Contração}
+\label{sec:contracao}
+
+A operação de contração de um conjunto de vértices é fundamental para o algoritmo
+de Chu--Liu--Edmonds e é o assunto que passaremos a tratar agora. 
+
+Seja $D$ um digrafo e seja $\mathcal{P}$ uma partição de~$V(D)$.
+Definimos o digrafo obtido de~$D$ pela \textbf{contração} de~$\mathcal{P}$,
+denotado por $D/\mathcal{P}$, como segue.
+Seu conjunto de vértices é
+\[
+  V(D/\mathcal{P}) := \mathcal{P},
+\]
+e seu conjunto de arcos é
+\[
+  A(D/\mathcal{P}) := 
+  \{\, XY \in \mathcal{P} \times \mathcal{P} : X \neq Y
+      \text{ e existem } x \in X,\ y \in Y \text{ tais que } xy \in A(D) \,\}.
+\]
+Em outras palavras, $D/\mathcal{P}$ é o digrafo cujo conjunto de vértices é~$\mathcal{P}$ e
+em que há um arco de~$X$ para~$Y$, com $X,Y \in \mathcal{P}$ e $X \neq Y$, se, e somente se,
+existe um arco $xy \in A(D)$ com $x \in X$ e $y \in Y$.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[
+    >=Stealth,
+    every node/.style={circle,draw,inner sep=1pt,font=\small},
+    partBox/.style={draw=blue,rounded corners,inner sep=4pt}
+]
+
+  % ------------------------------------------------
+  % Digrafo original D com partição P (à esquerda)
+  % ------------------------------------------------
+  \begin{scope}[xshift=-3.2cm]
+
+    % vértices do bloco X  (mais à esquerda)
+    \node (a) at (-2.0,  0.4) {$a$};
+    \node (b) at (-1.6, -0.8) {$b$};
+
+    % vértice do bloco Y  (no centro)
+    \node (c) at (0.0, 0.0) {$c$};
+
+    % vértices do bloco Z  (mais à direita)
+    \node (d) at (2.0,  0.4) {$d$};
+    \node (e) at (1.9, -0.8) {$e$};
+
+    % arcos internos e entre blocos (poucos, para não embolar)
+    \draw[->] (a) -- (b);    % interno em X
+    \draw[->] (b) -- (c);    % de X para Y
+    \draw[->] (c) -- (d);    % de Y para Z
+    \draw[->] (d) -- (e);    % interno em Z
+    \draw[->] (e) .. controls (0.0,-1.4) .. (b); % de Z para X
+
+    % caixas dos blocos da partição
+    \node[partBox,fit=(a) (b)] (Xbox) {};
+    \node[draw=none,blue,anchor=south,font=\small]
+      at ($(Xbox.north)+(0,0.1)$) {$X$};
+
+    \node[partBox,fit=(c)] (Ybox) {};
+    \node[draw=none,blue,anchor=south,font=\small]
+      at ($(Ybox.north)+(0,0.1)$) {$Y$};
+
+    \node[partBox,fit=(d) (e)] (Zbox) {};
+    \node[draw=none,blue,anchor=south,font=\small]
+      at ($(Zbox.north)+(0,0.1)$) {$Z$};
+
+    % rótulo D em azul, bem afastado
+    \node[draw=none,blue,anchor=north,font=\small]
+      at (0.3,-2.0) {$D$};
+  \end{scope}
+
+  % ------------------------------------------------
+  % Setinha da contração (bem próxima)
+  % ------------------------------------------------
+  \node[draw=none,inner sep=0pt] at (1,0.0) {$\Longrightarrow$};
+
+  % ------------------------------------------------
+  % Digrafo contraído D/P (à direita, mais perto)
+  % ------------------------------------------------
+  \begin{scope}[xshift=3.2cm]
+
+    % vértices do quociente (blocos da partição)
+    \node[draw=none,blue,font=\small] (X) at (-0.9, 0.0) {$X$};
+    \node[draw=none,blue,font=\small] (Y) at ( 0.0, 0.8) {$Y$};
+    \node[draw=none,blue,font=\small] (Z) at ( 0.9, 0.0) {$Z$};
+
+    % arcos entre os blocos induzidos pelos arcos de D
+    \draw[->] (X) -- (Y);                    % há arcos de X para Y
+    \draw[->] (Y) -- (Z);                    % há arcos de Y para Z
+    \draw[->] (Z) .. controls (0.0,-0.9) .. (X); % há arcos de Z para X
+
+    % rótulo do digrafo quociente
+    \node[draw=none,anchor=north,font=\small]
+      at (0,-1.8) {$D/\mathcal{P}$};
+  \end{scope}
+
+\end{tikzpicture}
+\caption{Contração de um digrafo $D$ pela partição $\mathcal{P} = \{X,Y,Z\}$,
+em que $X := \{a, b\}$, $Y:= \{c\}$ e $Z := \{d, e\}$.}
+\label{fig:contracao-particao}
+\end{figure}
+
+Definimos agora em que consiste contrair um conjunto não vazio de vértices de um digrafo.
+Seja $D$ um digrafo e seja $\varnothing \neq X \subseteq V(D)$.
+A \textbf{contração} de $X$ em $D$, denotada por $D/X$,
+é o digrafo $D/\mathcal{P}$, em que
+\[
+  \mathcal{P} := \bigl\{ \{u\} : u \in V(D) \setminus X \bigr\} \cup \{X\}.
+\]
+Informalmente, em $D/X$ todos os vértices de $X$ são identificados em um único vértice,
+enquanto os vértices fora de $X$ permanecem inalterados.
+
+Nesse caso, no contexto do digrafo $D/X$, vamos identificar o conjunto $\{u\}$
+com o próprio elemento $u$, para cada $u \in V(D) \setminus X$.
+Também vamos identificar o conjunto $X$ com um vértice $v \notin V(D)$.
+Para explicitar essa identificação, escreveremos $D/X \mapsto v$ em vez de simplesmente $D/X$.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[
+    >=Stealth,
+    vertex/.style={circle,draw,inner sep=1pt,font=\small},
+    partBox/.style={draw=blue,rounded corners,inner sep=3pt}
+]
+
+  % ------------------------------------------------
+  % Digrafo original D (à esquerda)
+  % ------------------------------------------------
+  \begin{scope}[xshift=-3cm]
+
+    % vértices
+    \node[vertex] (a) at (-1.2, 0.8) {$a$};
+    \node[vertex] (b) at ( 0.0, 0.4) {$b$};
+    \node[vertex] (c) at ( 0.0,-0.6) {$c$};
+    \node[vertex] (d) at ( 1.4, 0.6) {$d$};
+
+    % arcos
+    \draw[->] (a) -- (b);
+    \draw[->] (b) -- (c);
+    \draw[->] (c) -- (d);
+    \draw[->] (d) .. controls (0.2,1.3) .. (a);
+    \draw[->] (a) .. controls (-0.8,-0.6) .. (c);
+
+    % subconjunto X = {b,c} destacado
+    \node[partBox,fit=(b) (c)] (Xbox) {};
+    \node[draw=none,blue,anchor=south,font=\small]
+      at ($(Xbox.north)+(0,0)$) {$X$};
+
+    % rótulo do digrafo
+    \node[draw=none,blue,anchor=north,font=\small]
+      at (0,-1.6) {$D$};
+  \end{scope}
+
+  % ------------------------------------------------
+  % Setinha da contração
+  % ------------------------------------------------
+  \node[draw=none] at (0,0.1) {$\Longrightarrow$};
+
+  % ------------------------------------------------
+  % Digrafo contraído D/X (à direita)
+  % ------------------------------------------------
+  \begin{scope}[xshift=3cm]
+
+    % vértices após contração
+    \node[vertex] (a2) at (-1.0, 0.6) {$a$};
+    \node[vertex] (Xv) at ( 0.0, 0.0) {$v$};
+    \node[vertex] (d2) at ( 1.0, 0.6) {$d$};
+
+    % arcos induzidos
+    \draw[->] (a2) -- (Xv);                 % arcos de a para {b,c}
+    \draw[->] (Xv) -- (d2);                 % arcos de {b,c} para d
+    \draw[->] (d2) .. controls (0.0,1.2) .. (a2); % arco d -> a
+    %\draw[->] (a2) .. controls (-0.8,-0.8) .. (Xv); % arco a -> {b,c}
+
+    % rótulo do digrafo contraído
+    \node[draw=none,anchor=north,font=\small]
+      at (0,-1.6) {$D/X \mapsto v$};
+  \end{scope}
+
+\end{tikzpicture}
+\caption{Contração de um subconjunto $X \subseteq V(D)$ em um digrafo $D$.
+À esquerda, o subconjunto $X = \{b,c\}$ é destacado; à direita, os vértices de $X$
+foram identificados em um único vértice $v$, obtendo-se o digrafo $D/X \mapsto v$.}
+\label{fig:contracao-subconjunto}
+\end{figure}
+
+
+Considere agora um digrafo ponderado $(D,w)$ e uma partição $\mathcal{P}$ de~$V(D)$.
+Definimos o digrafo ponderado $(D/\mathcal{P}, w/\mathcal{P})$ pondo
+\[
+  (w/\mathcal{P})(XY) := \min\{\, w(xy) : x \in X,\ y \in Y \,\}
+\]
+para cada $XY \in A(D/\mathcal{P})$.
+Ou seja, o custo de cada arco $XY$ de $D/\mathcal{P}$ é o menor dos custos dos arcos $xy \in A(D)$
+tais que $x \in X$ e $y \in Y$.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[
+    >=Stealth,
+    vertex/.style={circle,draw,inner sep=1pt,font=\small},
+    partBox/.style={draw=blue,rounded corners,inner sep=4pt},
+    weight/.style={draw=none,inner sep=1pt,font=\scriptsize,text=BrickRed}
+]
+
+  % ------------------------------------------------
+  % Digrafo original D com partição P (à esquerda)
+  % ------------------------------------------------
+  \begin{scope}[xshift=-3.2cm]
+
+    % vértices do bloco X
+    \node[vertex] (a) at (-2.0,  0.4) {$a$};
+    \node[vertex] (b) at (-1.6, -0.8) {$b$};
+
+    % vértice do bloco Y
+    \node[vertex] (c) at (0.0, 0.0) {$c$};
+
+    % vértices do bloco Z
+    \node[vertex] (d) at (2.0,  0.4) {$d$};
+    \node[vertex] (e) at (1.9, -0.8) {$e$};
+
+    % arcos internos e entre blocos, com pesos w(·)
+    \draw[->] (a) -- node[weight,left,pos=0.45] {$2$} (b);           % interno em X
+    \draw[->] (a) -- node[weight,above] {$5$} (c);                   % X -> Y
+    \draw[->] (b) -- node[weight,below] {$1$} (c);                   % X -> Y
+    \draw[->] (c) -- node[weight,above] {$3$} (d);                   % Y -> Z
+    \draw[->] (d) -- node[weight,right,pos=0.55] {$2$} (e);          % interno em Z
+    \draw[->] (e) .. controls (0.0,-1.5) ..
+               node[weight,below,pos=0.5] {$4$} (b);                 % Z -> X
+
+    % caixas dos blocos da partição
+    \node[partBox,fit=(a) (b)] (Xbox) {};
+    \node[draw=none,blue,anchor=south,font=\small]
+      at ($(Xbox.north)+(0,0.1)$) {$X$};
+
+    \node[partBox,fit=(c)] (Ybox) {};
+    \node[draw=none,blue,anchor=south,font=\small]
+      at ($(Ybox.north)+(0,0.1)$) {$Y$};
+
+    \node[partBox,fit=(d) (e)] (Zbox) {};
+    \node[draw=none,blue,anchor=south,font=\small]
+      at ($(Zbox.north)+(0,0.1)$) {$Z$};
+
+    % rótulo D em azul
+    \node[draw=none,blue,anchor=north,font=\small]
+      at (0.3,-2.1) {$(D,w)$};
+  \end{scope}
+
+  % ------------------------------------------------
+  % Setinha da contração
+  % ------------------------------------------------
+  \node[draw=none,inner sep=0pt] at (1,0.0) {$\Longrightarrow$};
+
+  % ------------------------------------------------
+  % Digrafo contraído D/P com pesos mínimos (à direita)
+  % ------------------------------------------------
+  \begin{scope}[xshift=3.2cm]
+
+    % vértices do quociente (blocos da partição)
+    \node[draw=none,blue,font=\small] (X) at (-0.9, 0.0) {$X$};
+    \node[draw=none,blue,font=\small] (Y) at ( 0.0, 0.8) {$Y$};
+    \node[draw=none,blue,font=\small] (Z) at ( 0.9, 0.0) {$Z$};
+
+    % --- arcos do quociente (sem rótulos embutidos) ---
+    \draw[->] (X) -- (Y);                    % X -> Y
+    \draw[->] (Y) -- (Z);                    % Y -> Z
+    \draw[->] (Z) .. controls (0.0,-1.0) .. (X); % Z -> X
+
+    % --- rótulos dos pesos, colocados separadamente ---
+
+    % X -> Y: min{5,1} = 1 (acima e ligeiramente à esquerda)
+    \path (X) -- (Y)
+      node[weight,above left,midway,yshift=2pt] {$1$};
+
+    % Y -> Z: min{3} = 3 (acima e ligeiramente à direita)
+    \path (Y) -- (Z)
+      node[weight,above right,midway,yshift=2pt] {$3$};
+
+    % Z -> X: min{4} = 4 (abaixo da curva, já estava bom)
+    \path (Z) .. controls (0.0,-1.0) .. (X)
+      node[weight,below,midway,yshift=-1pt] {$4$};
+
+    % rótulo do digrafo quociente
+    \node[draw=none,anchor=north,font=\small]
+      at (0,-1.8) {$(D/\mathcal{P}, w/\mathcal{P})$};
+  \end{scope}
+
+\end{tikzpicture}
+\caption{Contração de um digrafo ponderado $(D,w)$ pela partição
+$\mathcal{P} = \{X,Y,Z\}$, em que $X := \{a,b\}$, $Y := \{c\}$ e
+$Z := \{d,e\}$. O peso de cada arco $XY$ em $D/\mathcal{P}$ é o mínimo
+dos pesos dos arcos de $D$ que vão de um vértice de $X$ para um vértice de $Y$.}
+\label{fig:contracao-particao-ponderada}
+\end{figure}
+
+Quando $X$ é um subconjunto não vazio de vértices de $D$, escrevemos
+$(D/X \mapsto v, w/X \mapsto v)$ para denotar a contração de $X$
+na qual o conjunto $X$ é identificado com o vértice $v \notin V(D)$.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[
+    >=Stealth,
+    vertex/.style={circle,draw,inner sep=1pt,font=\small},
+    partBox/.style={draw=blue,rounded corners,inner sep=3pt},
+    weight/.style={draw=none,inner sep=1pt,font=\scriptsize,text=BrickRed}
+]
+
+  % ------------------------------------------------
+  % Digrafo original (D,w) com X destacado (à esquerda)
+  % ------------------------------------------------
+  \begin{scope}[xshift=-3.2cm]
+
+    % vértices
+    \node[vertex] (a) at (-1.8, 0.8) {$a$};
+    \node[vertex] (b) at ( 0.0, 0.6) {$b$};
+    \node[vertex] (c) at ( 0.0,-0.6) {$c$};
+    \node[vertex] (d) at ( 1.8, 0.0) {$d$};
+
+    % subconjunto X = {b,c} destacado
+    \node[partBox,fit=(b) (c)] (Xbox) {};
+    \node[draw=none,blue,anchor=south,font=\small]
+      at ($(Xbox.north)+(0,0.1)$) {$X$};
+
+    % arcos com pesos w(·)
+    \draw[->] (a) -- (b);     % a -> b (3)
+    \draw[->] (a) -- (c);     % a -> c (1)
+    \draw[->] (b) -- (d);     % b -> d (4)
+    \draw[->] (c) -- (d);     % c -> d (2)
+    \draw[->] (d) .. controls (-0.2,-1.4) .. (a); % d -> a (5)
+
+    % rótulos dos pesos em D
+    \path (a) -- (b) node[weight,above,midway] {$3$};
+    \path (a) -- (c) node[weight,left,midway] {$1$};
+    \path (b) -- (d) node[weight,above,midway] {$4$};
+    \path (c) -- (d) node[weight,below,midway] {$2$};
+    \path (d) .. controls (-0.2,-1.4) .. (a)
+      node[weight,below,midway,yshift=-1pt] {$5$};
+
+    % rótulo discreto do lado esquerdo
+    \node[draw=none,blue,anchor=south,font=\small]
+      at (0,1.3) {$(D,w)$};
+  \end{scope}
+
+  % ------------------------------------------------
+  % Setinha da contração
+  % ------------------------------------------------
+  \node[draw=none] at (0,0.1) {$\Longrightarrow$};
+
+  % ------------------------------------------------
+  % Digrafo contraído (D/X \mapsto v, w/X) (à direita)
+  % ------------------------------------------------
+  \begin{scope}[xshift=3.2cm]
+
+    % vértices após contração
+    \node[vertex] (a2) at (-1.4, 0.6) {$a$};
+    \node[vertex] (vX) at ( 0.0, 0.0) {$v$};
+    \node[vertex] (d2) at ( 1.4, 0.6) {$d$};
+
+    % arcos (w/X):
+    \draw[->] (a2) -- (vX);                % custo 1
+    \draw[->] (vX) -- (d2);                % custo 2
+    \draw[->] (d2) .. controls (0.0,1.3) .. (a2); % custo 5
+
+    % rótulos dos pesos em D/X
+    \path (a2) -- (vX)
+      node[weight,above,midway,yshift=1pt] {$1$};
+    \path (vX) -- (d2)
+      node[weight,above,midway,yshift=1pt] {$2$};
+    \path (d2) .. controls (0.0,1.3) .. (a2)
+      node[weight,above,midway,yshift=1pt] {$5$};
+
+    % rótulo discreto do lado direito
+    \node[draw=none,blue,anchor=south,font=\small]
+      at (0,1.3) {$(D/X \mapsto v,\, w/X \mapsto v)$};
+  \end{scope}
+
+\end{tikzpicture}
+\caption{Contração ponderada de um subconjunto $X \subseteq V(D)$.
+À esquerda, o digrafo $(D,w)$ com $X = \{b,c\}$ destacado. À direita,
+o digrafo $(D/X \mapsto v, w/X)$, em que os vértices de $X$ foram
+identificados em um único vértice $v$ e cada peso $w/X$ é o mínimo
+dos pesos dos arcos de $D$ entre $X$ e os demais vértices.}
+\label{fig:contracao-ponderada-DX}
+\end{figure}
+
+\section{Componentes fortes}
+
+Seja $D$ um digrafo. Uma \textbf{componente forte} de $D$ é um subconjunto maximal
+$S \subseteq V(D)$ tal que, para cada $s,t \in S$, existe um caminho de $s$ até $t$
+em $D$ e um caminho de $t$ até $s$ em $D$. Nesse caso, qualquer caminho de $s$ até $t$
+(por $s,t \in S$) tem todos os seus vértices contidos em $S$.
+
+O conjunto das componentes fortes de $D$ é denotado por $\mathcal{C}(D)$, ou
+simplesmente por $\mathcal{C}$ quando não houver risco de ambiguidade.
+A \textbf{condensação} de $D$ é o digrafo $D/\mathcal{C}$, cujos vértices são as
+componentes fortes de $D$ e em que há um arco do vértice $S$ para o vértice $T$
+de $D/\mathcal{C}$ se, e somente se,
+existe um arco de $D$ que sai de um vértice de $S$ e entra em um vértice de $T$.
+
+Dizemos que $S \in \mathcal{C}$ é uma \textbf{fonte} de $\mathcal{C}$ se nenhum
+arco de $D/\mathcal{C}$ entra em $S$. É bem sabido que $D/\mathcal{C}$ é um
+digrafo livre de ciclos (isto é, um digrafo acíclico).
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[
+    >=Stealth,
+    vertex/.style={circle,draw,inner sep=1pt,font=\small,fill=white},
+    sccbox/.style={draw=blue!60,rounded corners,inner sep=4pt},
+    info/.style={draw=none,font=\small}
+]
+
+  %------------------------------------------------
+  % Digrafo original D com componentes fortes (à esquerda)
+  %------------------------------------------------
+  \begin{scope}[xshift=-4.0cm]
+
+    % --- Componente forte S1 = {a,b,c} (fonte) ---
+    \node[vertex] (a) at (-2.4,  0.7) {$a$};
+    \node[vertex] (b) at (-1.6, -0.1) {$b$};
+    \node[vertex] (c) at (-2.4, -0.9) {$c$};
+
+    % arcos internos S1
+    \draw[->] (a) -- (b);
+    \draw[->] (b) -- (c);
+    \draw[->] (c) -- (a);
+
+    % caixa S1
+    \node[sccbox,fit=(a) (b) (c)] (S1box) {};
+    \node[info,blue!70,anchor=south]
+      at ($(S1box.north)+(0,0.1)$) {$S_1$};
+
+    % --- Componente forte S2 = {d,e} ---
+    \node[vertex] (d) at ( -0.4, 0.6) {$d$};
+    \node[vertex] (e) at (  0.4,-0.2) {$e$};
+
+    \draw[->] (d) -- (e);
+    \draw[->] (e) .. controls (0.5,0.5) .. (d);
+
+    \node[sccbox,fit=(d) (e)] (S2box) {};
+    \node[info,blue!70,anchor=south]
+      at ($(S2box.north)+(0,0.1)$) {$S_2$};
+
+    % --- Componente forte S3 = {f,g,h} ---
+    \node[vertex] (f) at ( 1.6,  0.7) {$f$};
+    \node[vertex] (g) at ( 2.4, -0.1) {$g$};
+    \node[vertex] (h) at ( 1.6, -0.9) {$h$};
+
+    \draw[->] (f) -- (g);
+    \draw[->] (g) -- (h);
+    \draw[->] (h) -- (f);
+
+    \node[sccbox,fit=(f) (g) (h)] (S3box) {};
+    \node[info,blue!70,anchor=south]
+      at ($(S3box.north)+(0,0.1)$) {$S_3$};
+
+    % --- Arcos entre componentes ---
+    % S1 -> S2
+    \draw[->] (b) -- (d);
+    % S1 -> S3
+    \draw[->] (a) .. controls (-0.2,1.4) .. (f);
+    % S2 -> S3
+    \draw[->] (e) -- (g);
+
+    % rótulo do digrafo D
+    \node[info] at (0,-2.1) {$D$};
+  \end{scope}
+
+  % seta da condensação
+  \node[info] at (0, -0.3) {$\Longrightarrow$};
+
+  %------------------------------------------------
+  % Condensação D / C(D) (à direita)
+  %------------------------------------------------
+  \begin{scope}[xshift=4.0cm]
+
+    \node[vertex] (CS1) at (-1.2, 0.4) {$S_1$};
+    \node[vertex] (CS2) at ( 0.0, 1.1) {$S_2$};
+    \node[vertex] (CS3) at ( 1.2, 0.4) {$S_3$};
+
+    % arcos na condensação
+    \draw[->] (CS1) -- (CS2);
+    \draw[->] (CS1) -- (CS3);
+    \draw[->] (CS2) -- (CS3);
+
+    % destacar que S1 é fonte
+    \node[info,anchor=north]
+      at ($(CS1.south)+(0,-0.25)$) {\footnotesize fonte};
+
+    \node[info] at (0,-1.6) {$D / \mathcal{C}(D)$};
+  \end{scope}
+
+\end{tikzpicture}
+\caption{Componentes fortes $S_1,S_2,S_3$ de um digrafo $D$ e sua condensação $D/\mathcal{C}(D)$,
+um digrafo acíclico em que $S_1$ é fonte.}
+\label{fig:componentes-fortes-condensacao}
+\end{figure}
+

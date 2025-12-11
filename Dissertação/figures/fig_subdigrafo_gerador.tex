@@ -1,0 +1,40 @@
+% !TEX program = latexmk
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{microtype}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,fit,calc}
+
+\begin{document}
+\centering
+\begin{tikzpicture}[>=Stealth]
+    % estilos
+    \tikzset{v/.style={circle, draw, fill=blue!10, minimum size=7mm, inner sep=0pt}, a/.style={->, semithick, draw=gray!60}, span/.style={->, very thick, draw=blue!60}}
+    % vértices
+    \node[v, label=below:$a$] (a) at (0,0) {};
+    \node[v, label=below:$b$] (b) at (2,0) {};
+    \node[v, label=above:$c$] (c) at (1,1.6) {};
+    \node[v, label=above:$d$] (d) at (3,1.6) {};
+    \node[v, label=below:$e$] (e) at (4.2,0) {};
+    \node[v, label=below:$f$] (f) at (5.4,0) {};
+    % arcos do digrafo original (cinza)
+    \draw[a] (a) -- (b);
+    \draw[a] (c) -- (a);
+    \draw[a] (b) -- (c);
+    \draw[a] (d) -- (b);
+    \draw[a] (e) -- (d);
+    \draw[a] (f) -- (e);
+    \draw[a] (b) to[bend left=20] (e);
+    \draw[a] (e) to[bend left=20] (b);
+    % arcos do subdigrafo gerador (azul): V'=V e A' \subseteq A
+    \draw[span] (a) -- (b);
+    \draw[span] (b) -- (c);
+    \draw[span] (d) -- (b);
+    \draw[span] (e) -- (d);
+    \draw[span] (f) -- (e);
+    % anotação
+    \node[align=left, anchor=west] at (6.4,1.0) {$V'=V$\\ $A'\subseteq A$};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,44 @@
+% Definição de ambientes personalizados
+
+\newtheorem{teorema}{Teorema}[chapter]
+\newtheorem{lema}[teorema]{Lema}
+\newtheorem{proposicao}[teorema]{Proposição}
+\newtheorem{corolario}[teorema]{Corolário}
+
+\theoremstyle{definition}
+\newtheorem{definicao}{Definição}[chapter]
+\newtheorem{exemplo}{Exemplo}[chapter]
+
+\theoremstyle{remark}
+\newtheorem{observacao}{Observação}[chapter]
+
+% Ambientes com tcolorbox para algoritmos, teoremas e lemas
+\newtcbtheorem[number within=chapter]{algobox}{Algoritmo}%
+{enhanced,breakable,sharp corners,boxsep=6pt,arc=1pt,
+    colback=green!3,colframe=green!30,fonttitle=\bfseries,coltitle=black,boxrule=0.6pt}{th}
+
+\newtcbtheorem[number within=chapter]{teobox}{Teorema}%
+{enhanced,breakable,sharp corners,boxsep=6pt,arc=1pt,
+    colback=blue!3,colframe=blue!20,fonttitle=\bfseries,coltitle=black,boxrule=0.6pt}{th}
+
+\newtcbtheorem[number within=chapter]{lemabox}{Lema}%
+{enhanced,breakable,sharp corners,boxsep=6pt,arc=1pt,
+    colback=orange!3,colframe=orange!35,fonttitle=\bfseries,coltitle=black,boxrule=0.6pt}{lem}
+
+% Caixa numerada para código Python
+\newtcblisting[auto counter, number within=chapter]{pybox}[2][]{
+    enhanced, breakable, sharp corners, boxsep=6pt, arc=1pt,
+    colback=gray!3, colframe=gray!40, fonttitle=\bfseries, coltitle=black, boxrule=0.6pt,
+    listing only, listing engine=listings,
+    title={Função~\thetcbcounter: #2}, #1,
+    listing options={style=pystyle}
+}
+
+% Caixa numerada para código HTML/markup
+\newtcblisting[auto counter, number within=chapter]{htmlbox}[2][]{
+    enhanced, breakable, sharp corners, boxsep=6pt, arc=1pt,
+    colback=gray!3, colframe=gray!55, fonttitle=\bfseries, coltitle=black, boxrule=0.6pt,
+    listing only, listing engine=listings,
+    title={Markup~\thetcbcounter: #2}, #1,
+    listing options={style=pystyle, language=HTML}
+}
