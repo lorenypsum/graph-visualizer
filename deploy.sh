@@ -1,5 +1,5 @@
 #!/bin/bash
-# Script para deploy no GitHub Pages
+# Script para deploy no GitHub Pages (recriando branch)
 
 echo "🚀 Iniciando deploy para GitHub Pages..."
 
@@ -10,26 +10,24 @@ if [ "$CURRENT_BRANCH" != "main" ]; then
     exit 1
 fi
 
-# Garantir que tudo está commitado
-if [ -n "$(git status --porcelain)" ]; then
-    echo "⚠️  Você tem mudanças não commitadas. Commit ou stash antes de fazer deploy."
-    exit 1
-fi
+# Deletar branch gh-pages local se existir
+git branch -D gh-pages 2>/dev/null || true
 
-# Checkout da branch gh-pages
-git checkout gh-pages
+# Criar branch gh-pages órfã (sem histórico)
+git checkout --orphan gh-pages
 
-# Fazer merge da main
-git merge main --no-edit
+# Adicionar apenas arquivos necessários para o site
+git add -f index.html pages/ assets/ scripts/ pyscript.json requirements.txt Pipfile tailwind.config.js
 
-# Adicionar todos os arquivos necessários
-git add -f index.html pages/ assets/ scripts/ *.py *.json requirements.txt Pipfile
+# Criar .nojekyll para desabilitar Jekyll
+touch .nojekyll
+git add .nojekyll
 
 # Commit
-git commit -m "Deploy to GitHub Pages - $(date '+%Y-%m-%d %H:%M:%S')" || echo "Nada para commitar"
+git commit -m "Deploy to GitHub Pages - $(date '+%Y-%m-%d %H:%M:%S')"
 
-# Push
-git push origin gh-pages
+# Push forçado (substituindo o conteúdo antigo)
+git push -f origin gh-pages
 
 # Voltar para main
 git checkout main
