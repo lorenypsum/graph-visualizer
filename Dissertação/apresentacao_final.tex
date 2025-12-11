@@ -986,28 +986,32 @@ return F_prime
   \end{center}
 \end{frame}
 
-% \begin{frame}{Algoritmo de András Frank}
-%   \begin{block}{Abordagem em Duas Fases}
-%     \textbf{Fase I (Fulkerson):} construir cobertura de $r$-conjuntos via redução de pesos
+\begin{frame}{Algoritmo de András Frank}
+  \vspace{0.3cm}
+  
+  \begin{block}{Abordagem em Duas Fases}
+    \textbf{Fase I (Fulkerson):} construir cobertura de $r$-conjuntos via redução de pesos
 
-%     \textbf{Fase II (Frank):} extrair $r$-arborescência geradora da cobertura
-%   \end{block}
+    \vspace{0.3cm}
 
-%   \vspace{0.3cm}
+    \textbf{Fase II (Frank):} extrair $r$-arborescência geradora da cobertura
+  \end{block}
 
-%   \textbf{Objetivo da Fase I:}
+  \vspace{0.3cm}
 
-%   Construir uma sequência $\sigma = ((f_i, R_i, \lambda_i))_{i \in [k)}$ tal que:
-%   \begin{itemize}
-%     \item $F := \{f_i : i \in [k)\}$ é uma \textbf{cobertura de $r$-conjuntos}
-%     \item A sequência $(R_i, \lambda_i)_{i \in [k)}$ é \textbf{$w$-disjunta}
-%   \end{itemize}
+  % \textbf{Objetivo da Fase I:}
 
-%   \vspace{0.2cm}
-%   \textbf{Objetivo da Fase II:}
+  % Construir uma sequência $\sigma = ((f_i, R_i, \lambda_i))_{i \in [k)}$ tal que:
+  % \begin{itemize}
+  %   \item $F := \{f_i : i \in [k)\}$ é uma \textbf{cobertura de $r$-conjuntos}
+  %   \item A sequência $(R_i, \lambda_i)_{i \in [k)}$ é \textbf{$w$-disjunta}
+  % \end{itemize}
 
-%   Extrair $r$-arborescência geradora mínima usando $F$.
-% \end{frame}
+  % \vspace{0.2cm}
+  % \textbf{Objetivo da Fase II:}
+
+  % Extrair $r$-arborescência geradora mínima usando $F$.
+\end{frame}
 
 % \begin{frame}{Fase I: Conceitos Fundamentais}
 %   \textbf{Coleção Laminar:}
@@ -1109,6 +1113,7 @@ return F_prime
 % \end{frame}
 
 \begin{frame}{Fase I: $r$-conjunto minimal}
+  
   \begin{columns}[c]
     \column{0.48\textwidth}
     \begin{block}{$r$-conjunto minimal não coberto por $F \subseteq A$}
@@ -1189,7 +1194,6 @@ return F_prime
         };
       \end{tikzpicture}
     \end{center}    \vspace{0.1cm}
-    {\small \textbf{Ilustração:} $R = \{a,b,c\}$ é minimal não coberto: $F$ não entra em $R$, mas entra em todos subconjuntos próprios $R'_1=\{a\}$, $R'_2=\{b\}$.}
   \end{columns}
 \end{frame}
 
