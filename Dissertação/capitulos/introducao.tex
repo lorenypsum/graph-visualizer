@@ -2,15 +2,27 @@
 
 Encontrar uma \textit{r-arborescência geradora mínima} em digrafos é um problema clássico em Ciência da Computação estudado desde os anos 1960, com formulações fundamentais apresentadas por Jack Edmonds em 1967 \cite{edmonds}.
 
-Neste trabalho implementamos dois métodos para esse problema: o algoritmo de Chu--Liu--Edmonds \cite{chu,edmonds} e o procedimento em duas fases de András Frank \cite{frankco,frankks}. 
+Neste trabalho implementamos dois métodos para esse problema: o algoritmo de Chu--Liu--Edmonds \cite{chu,edmonds} e o procedimento em duas fases de András Frank \cite{frankco,frankks}.
 
 Além disso, desenvolvemos uma aplicação \textit{web} interativa que permite a visualização passo a passo dessas metodologias, facilitando a compreensão de suas operações e estruturas subjacentes.
+
+\section{Estado da Arte}
+
+O problema da \textit{r-arborescência geradora mínima}, também conhecido como \textit{minimum spanning arborescence} ou \textit{optimum branching}, tem sido objeto de extensa pesquisa desde sua formulação inicial. Este problema generaliza para digrafos o clássico problema da árvore geradora mínima em grafos não-direcionados, cuja solução eficiente é alcançada por algoritmos como os de Prim \cite{prim} e Kruskal \cite{kruskal}.
+
+Em 1965, Chu e Liu \cite{chu} propuseram independentemente o primeiro algoritmo eficiente para o problema em digrafos, com complexidade $O(|V||A|)$. Quase simultaneamente, Edmonds \cite{edmonds} apresentou uma formulação elegante do problema como um programa linear e desenvolveu um algoritmo baseado em contrações de ciclos, estabelecendo as bases teóricas para desenvolvimentos posteriores.
+
+A eficiência computacional foi significativamente melhorada por Tarjan \cite{tarjan}, que introduziu estruturas de dados sofisticadas para alcançar complexidade $O(|A| \log |V|)$. Subsequentemente, Gabow et al. \cite{gabow} propuseram algoritmos ainda mais rápidos utilizando heaps de Fibonacci, atingindo $O(|A| + |V| \log |V|)$.
+
+Uma abordagem alternativa foi desenvolvida por András Frank nos anos 1970, decompondo o problema em duas fases distintas: construção de uma cobertura de \textit{r-conjuntos} via redução de pesos (baseada em resultados de Fulkerson \cite{fulkerson}), seguida da extração da arborescência ótima \cite{frankco,frankks}. Esta perspectiva dual oferece vantagens teóricas e computacionais, especialmente quando combinada com estruturas de dados apropriadas.
+
+Neste trabalho, exploramos essas duas abordagens clássicas, implementando-as em \texttt{Python} e avaliando seu desempenho em termos de tempo de execução, consumo de memória e características estruturais dos digrafos processados. Além disso, desenvolvemos uma aplicação \textit{web} interativa para visualização dos algoritmos, contribuindo para a didática e compreensão desses métodos.
 
 \section{Estrutura do Trabalho}
 
 Resumidamente, esta dissertação abrange as seguintes frentes:
 
-O capítulo~\ref{cap:preliminares} introduz definições e conceitos básicos sobre digrafos, arborescências etc, estabelecendo a notação empregada ao longo do texto. 
+O capítulo~\ref{cap:preliminares} introduz definições e conceitos básicos sobre digrafos, arborescências etc, estabelecendo a notação empregada ao longo do texto.
 
 O capítulo~\ref{cap:chuliu-edmonds} detalha o algoritmo de Chu--Liu--Edmonds e sua implementação em \texttt{Python}.
 
