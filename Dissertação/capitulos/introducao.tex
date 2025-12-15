@@ -14,7 +14,7 @@ Em 1965, Chu e Liu \cite{chu} propuseram independentemente o primeiro algoritmo 
 
 A eficiência computacional foi significativamente melhorada por Tarjan \cite{tarjan}, que introduziu estruturas de dados sofisticadas para alcançar complexidade $O(|A| \log |V|)$. Subsequentemente, Gabow et al. \cite{gabow} propuseram algoritmos ainda mais rápidos utilizando heaps de Fibonacci, atingindo $O(|A| + |V| \log |V|)$.
 
-Uma abordagem alternativa foi desenvolvida por András Frank nos anos 1970, decompondo o problema em duas fases distintas: construção de uma cobertura de \textit{r-conjuntos} via redução de pesos (baseada em resultados de Fulkerson \cite{fulkerson}), seguida da extração da arborescência ótima \cite{frankco,frankks}. Esta perspectiva dual oferece vantagens teóricas e computacionais, especialmente quando combinada com estruturas de dados apropriadas.
+Uma abordagem alternativa foi desenvolvida por András Frank nos anos 1970, decompondo o problema em duas fases distintas: construção de uma cobertura de \textit{r-conjuntos} via redução de pesos (baseada em resultados de Fulkerson \cite{fulkerson}), seguida da extração da arborescência ótima \cite{frankco,frankks}. 
 
 Neste trabalho, exploramos essas duas abordagens clássicas, implementando-as em \texttt{Python} e avaliando seu desempenho em termos de tempo de execução, consumo de memória e características estruturais dos digrafos processados. Além disso, desenvolvemos uma aplicação \textit{web} interativa para visualização dos algoritmos, contribuindo para a didática e compreensão desses métodos.
 
